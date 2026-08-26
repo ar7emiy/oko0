@@ -1,0 +1,11 @@
+# generated artifacts (reproducible from notebooks 01+)
+data/raw_notes/*.txt
+data/ground_truth/manifest.json
+data/hashes.json
+store/*.sqlite
+store/*.parquet
+store/*.faiss
+store/genai_cache/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
