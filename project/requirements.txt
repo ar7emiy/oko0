@@ -1,0 +1,13 @@
+# Entity-intelligence POC — Colab/runtime dependencies
+numpy
+pandas
+pyarrow
+faiss-cpu
+python-igraph
+datasketch
+google-genai
+gradio
+# orchestration (notebook 09 executes 01-08)
+nbformat
+nbconvert
+ipykernel

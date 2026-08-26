@@ -360,7 +360,8 @@ def heuristic_extract_segment(doc_id: str, raw_text: str, seg: dict, id_gen) -> 
 # ---------------------------------------------------------------------------
 # Gemini (online) narrative/email extractor
 # ---------------------------------------------------------------------------
-def _genai_extract_segment(doc_id: str, raw_text: str, seg: dict, id_gen):
+def _genai_job(doc_id: str, raw_text: str, seg: dict) -> dict:
+    """Build a batchable genai job {prompt, offline_handler} for one segment."""
     base = seg["char_start"]
     seg_text = raw_text[base:seg["char_end"]]
     prompt = (
@@ -386,11 +387,7 @@ def _genai_extract_segment(doc_id: str, raw_text: str, seg: dict, id_gen):
             })
         return {"assertions": items}
 
-    data = genai.generate_json(prompt, contracts.extraction_schema(),
-                               task="extraction", offline_handler=offline)
-    # NOTE: online path re-materializes mentions/assertions from the schema output
-    # by mapping segment-relative spans back to doc offsets and validating them.
-    return _materialize_genai(doc_id, raw_text, seg, base, data, id_gen)
+    return {"prompt": prompt, "offline_handler": offline}
 
 
 class _NoopIdGen:
@@ -451,21 +448,35 @@ def run(repo: Repository) -> dict:
     all_mentions, all_assertions, ledger = [], [], []
     online = genai_mode() == "online"
 
+    # Pass 1: deterministic template parse now; collect genai segments (in order).
+    genai_segs = []   # (doc_id, raw, seg)
     for doc_id, g in segs.groupby("doc_id"):
         raw = texts[doc_id]
         for _, seg in g.sort_values("char_start").iterrows():
             seg = seg.to_dict()
             if seg["kind"] == "template_block":
                 mts, asr = parse_template_block(doc_id, raw, seg, id_gen)
+                all_mentions.extend(mts)
+                all_assertions.extend(asr)
                 ledger.append(contracts.ScanSpan(doc_id, seg["char_start"], seg["char_end"],
                                                  "template", TEMPLATE_PASS).__dict__)
             else:
-                if online:
-                    mts, asr = _genai_extract_segment(doc_id, raw, seg, id_gen)
-                else:
-                    mts, asr = heuristic_extract_segment(doc_id, raw, seg, id_gen)
+                genai_segs.append((doc_id, raw, seg))
                 ledger.append(contracts.ScanSpan(doc_id, seg["char_start"], seg["char_end"],
                                                  "genai", NARRATIVE_PASS).__dict__)
+
+    # Pass 2: genai segments. Online -> BATCHED (parallel + cached) Gemini calls;
+    # offline -> direct deterministic heuristic (richer than the schema round-trip).
+    if online:
+        jobs = [_genai_job(d, r, s) for (d, r, s) in genai_segs]
+        datas = genai.generate_json_batch(jobs, contracts.extraction_schema(), task="extraction")
+        for (d, r, s), data in zip(genai_segs, datas):
+            mts, asr = _materialize_genai(d, r, s, s["char_start"], data, id_gen)
+            all_mentions.extend(mts)
+            all_assertions.extend(asr)
+    else:
+        for (d, r, s) in genai_segs:
+            mts, asr = heuristic_extract_segment(d, r, s, id_gen)
             all_mentions.extend(mts)
             all_assertions.extend(asr)
 

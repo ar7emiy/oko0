@@ -9,3 +9,5 @@ store/genai_cache/
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+store/*.html
+store/*.json
