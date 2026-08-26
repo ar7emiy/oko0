@@ -50,11 +50,14 @@ VECTOR_METRIC = "ip"                        # IndexFlatIP (vectors are L2-normal
 # ---- Resolution thresholds / bands ------------------------------------------
 RES_LOW_BAND = 0.30                         # below -> auto no-link
 RES_HIGH_BAND = 0.90                        # above -> auto link
-RES_ADJUDICATE_LOW = 0.30                   # [low, high] ambiguous band -> Gemini adjudicator
-RES_ADJUDICATE_HIGH = 0.90
+RES_ADJUDICATE_LOW = 0.45                   # [low, high] ambiguous band -> adjudicator
+RES_ADJUDICATE_HIGH = 0.80
+ADJUDICATE_MAX = 3000                       # cap adjudicator calls (online feasibility); most-uncertain first
 HUB_IDENTIFIER_MAX_ENTITIES = 8             # identifier shared by >8 provisional entities -> down-weight
 HUB_DOWNWEIGHT = 0.15                       # multiplier applied to a hub identifier's contribution
 CLUSTER_LINK_THRESHOLD = 0.55              # correlation-clustering positive-edge threshold
+# a resolved cluster may never contain two distinct validated values of these:
+CLUSTER_CONSISTENT_IDS = ("emails", "npis", "tins", "ssns", "dobs")
 
 # ---- Pairwise scoring weights (weighted feature model) ----------------------
 # Feature contributions are combined as a weighted sum then squashed to [0,1].
@@ -69,7 +72,8 @@ RES_WEIGHTS = {
     "phone_agree": 1.1,
     "dob_agree": 1.2,
     "dob_conflict": -3.0,
-    "embed_cosine": 1.0,          # banded cosine
+    "embed_cosine": 0.5,          # banded cosine (recall signal; weak on its own)
+    "dup_group": 2.2,             # same near-duplicate group (quoted copy of same text)
     "cooccurrence": 0.4,          # dup-deduped claim co-occurrence
     "bias": -1.1,                 # intercept
 }

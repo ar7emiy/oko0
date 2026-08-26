@@ -496,20 +496,29 @@ def _emit_template_block(nb: NoteBuilder, claim_id: str, roster: dict, rng: _Rng
         if not rng.chance(0.8):
             pass
         nb.add("\n")
-    # provider + NPI
+    # provider + NPI + (address/phone surfaced so shared-building / recycled-phone
+    # hard cases are observable in the text, not just the manifest)
     if "medical_provider" in roster:
         p = roster["medical_provider"][0]
         nb.add(f"{lab['provider']} ")
         nb.add_entity(p.display_name(), p, "canonical")
         nb.add("\n")
         nb.add(f"{lab['npi']} {p.npi}\n")
-    # repair shop + TIN
+        if p.address_windows and rng.chance(0.7):
+            nb.add(f"{lab['address']} {p.current_address()}\n")
+        if p.phone_windows and rng.chance(0.7):
+            nb.add(f"{lab['phone']} {p.current_phone()}\n")
+    # repair shop + TIN + address/phone (phoenix-shop detection needs these)
     if "repair_shop" in roster:
         s = roster["repair_shop"][0]
         nb.add(f"{lab['provider']} ")
         nb.add_entity(s.display_name(), s, "canonical")
         nb.add("\n")
         nb.add(f"{lab['tin']} {s.tin}\n")
+        if s.address_windows and rng.chance(0.8):
+            nb.add(f"{lab['address']} {s.current_address()}\n")
+        if s.phone_windows and rng.chance(0.8):
+            nb.add(f"{lab['phone']} {s.current_phone()}\n")
     # occasionally truncate mid-template with narrative jammed on
     if rng.chance(0.25):
         nb.add(f"{lab['address']} ")

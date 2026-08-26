@@ -35,9 +35,11 @@ class Repository:
     def reset(self) -> None:
         """Drop all known tables and recreate. Used at the top of a fresh run."""
         cur = self.conn.cursor()
+        cur.execute("PRAGMA foreign_keys=OFF")
         for t in contracts.TABLE_NAMES:
             cur.execute(f"DROP TABLE IF EXISTS {t}")
         self.conn.commit()
+        cur.execute("PRAGMA foreign_keys=ON")
         self.init_schema()
 
     def close(self) -> None:

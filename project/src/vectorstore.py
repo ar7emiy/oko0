@@ -107,13 +107,22 @@ class FaissVectorStore(VectorStore):
         self._index.add_with_ids(vectors, np.asarray(int_ids, dtype=np.int64))
 
     def search(self, vector: np.ndarray, k: int,
-               filter_fn: Callable[[dict], bool] | None = None) -> list[tuple[str, float]]:
+               filter_fn: Callable[[dict], bool] | None = None,
+               allowed_ids: list[str] | None = None) -> list[tuple[str, float]]:
+        """Exact top-k. Restrict to a candidate set via filter_fn (predicate over
+        metadata) OR allowed_ids (precomputed string ids -- faster when the same
+        filter is reused across many queries). Either way the filter is applied
+        BEFORE nearest-neighbor selection (faiss IDSelector), so recall over the
+        filtered set is exact."""
         q = np.ascontiguousarray(vector, dtype=np.float32).reshape(1, self.dim)
         if self._index.ntotal == 0:
             return []
         params = None
-        if filter_fn is not None:
-            allowed = [iid for iid, m in self._meta.items() if filter_fn(m)]
+        if allowed_ids is not None or filter_fn is not None:
+            if allowed_ids is not None:
+                allowed = [self._str2int[s] for s in allowed_ids if s in self._str2int]
+            else:
+                allowed = [iid for iid, m in self._meta.items() if filter_fn(m)]
             if not allowed:
                 return []
             sel = faiss.IDSelectorBatch(np.asarray(allowed, dtype=np.int64))
@@ -150,6 +159,19 @@ class FaissVectorStore(VectorStore):
             self._str2int[r["str_id"]] = iid
             self._meta[iid] = json.loads(r["meta"])
         self._next_int = (max(self._int2str) + 1) if self._int2str else 0
+
+    def get_vector(self, sid: str) -> np.ndarray | None:
+        iid = self._str2int.get(sid)
+        if iid is None:
+            return None
+        try:
+            return self._index.reconstruct(int(iid)).astype(np.float32)
+        except Exception:
+            return None
+
+    def get_metadata(self, sid: str) -> dict:
+        iid = self._str2int.get(sid)
+        return dict(self._meta.get(iid, {})) if iid is not None else {}
 
     # convenience for the sidecar metadata DataFrame view
     def metadata_frame(self) -> pd.DataFrame:
