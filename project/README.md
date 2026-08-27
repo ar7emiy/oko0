@@ -80,6 +80,7 @@ tests/                  build_notebooks.py (regenerates notebooks), smoke_test.p
 | 08 | lookup app | name search + NL→plan→table answer; clickable-evidence dossier HTML |
 | 09 | run all | fresh-VM orchestration + acceptance checklist |
 | 10 | Layer 1 | hybrid high-recall extraction (chunk→coref→union→sweep) |
+| — | `entity_resolution.py` | Splink ER → probabilistic SAME_AS edges (Layer 2) |
 | 11 | ablation | recall lift per extraction layer vs ground truth |
 | 12 | Layer 3 | claim-scoped graph + dual storage |
 | 13 | Layer 4 | per-claim agent + scope-isolation proof |
@@ -99,19 +100,32 @@ Checked and printed by notebook 09:
 - Model names only in config; FAISS only behind VectorStore; storage only behind
   the repository layer (all guard-enforced).
 
-## Layer 1–4 architecture
+## Current state (corpus v2)
 
-A second, higher-recall stack is built on the same corpus: hybrid extraction
-(overlapping chunks → coreference → token-NER ∪ gazetteer ∪ LLM → verification
-sweep) feeding entity resolution, a claim-scoped knowledge graph, and a per-claim
-retrieval agent with a proven scope boundary.
+The fixture was rebuilt to match production data shape — occurrence → claim →
+note, 390-word predominantly free-text notes, and pervasive cross-claim entity
+overlap — because the previous fixture flattered every measurement.
 
-Measured: **mention recall 78.2% → 99.4%**, identifier recall **13.5% → 100%**,
-scope isolation holds, graph density 25 edges/claim. It also has a measured
-failure: high recall shifts the bottleneck onto entity resolution, which
-currently under-merges (B³ recall 0.63).
+Measured end to end, offline:
 
-See **`ARCHITECTURE.md`** for the full evaluation, per-layer detail, honest
-caveats, and open items.
+| metric | value |
+|---|---|
+| entity mention recall / precision | 85.7% / 81.0% |
+| identifier recall | **100%** (incl. 100% of name-less mentions) |
+| entity resolution (B³ P/R) | 0.82 / 0.83 — 1,010 entities vs 570 GT |
+| coreference accuracy | 43% — the weakest component |
+| event extraction | not implemented (GT now exists) |
+| scan coverage (hygiene check) | 100% |
+
+Resolution is Splink (Fellegi-Sunter, EM-calibrated); identity is a
+**threshold-derived view** over probabilistic `SAME_AS` edges rather than a
+stored merge, so the operating point is chosen from a measured B³ curve and a
+questionable link is filterable rather than structural.
+
+Run `python tests/smoke_test.py` to verify every invariant end to end
+(`--fast` skips resolution).
+
+See **`ARCHITECTURE.md`** for the full evaluation, the bugs the new fixture
+exposed, and what is still not good enough.
 
 See `DECISIONS.md` for design rationale and honest known limitations.
