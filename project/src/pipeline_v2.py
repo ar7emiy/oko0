@@ -127,7 +127,7 @@ def run(repo: Repository, limit_docs: int | None = None,
         counter[p] += 1
         return f"{p}{counter[p]:07d}"
 
-    mentions, assertions, coref_links = [], [], []
+    mentions, assertions, coref_links, id_obs = [], [], [], []
     n_dropped_boiler = n_dropped_shape = 0
 
     for doc_id in sorted(spans_by_doc):
@@ -200,13 +200,28 @@ def run(repo: Repository, limit_docs: int | None = None,
                     best = mid                      # immediately preceding line
             return best
 
-        # 2) identifier spans -> assertions, bound only on strong proximity
+        # 2) identifier spans. EVERY identifier is recorded as a first-class
+        # observation; binding it to a name is a separate, optional step. An
+        # identifier with no name nearby (an orphan) is not noise -- it is the
+        # case identifier-mediated resolution exists to solve, and dropping it
+        # silently destroyed 100% of them in an earlier build.
         n_unbound = 0
         for c in merged:
             pred = IDENTIFIER_LABEL_TO_PREDICATE.get(c.label)
             if not pred:
                 continue
             subj = subject_for(c.start)
+            kind_i = {"has_email": "email", "has_phone": "phone", "has_npi": "npi",
+                      "has_tin": "tin", "has_ssn": "ssn", "has_address": "address",
+                      "has_dob": "dob"}.get(pred, c.label)
+            id_obs.append({
+                "doc_id": doc_id, "char_start": c.start, "char_end": c.end,
+                "kind": kind_i, "value_raw": c.text,
+                "value_norm": textnorm.normalize_identifier(kind_i, c.text),
+                "subject_mention_id": subj,
+                "validated": 1 if c.score >= 1.0 else 0,
+                "extractor": "+".join(sorted(c.extractors)),
+            })
             if subj is None:
                 n_unbound += 1
                 continue
@@ -231,18 +246,27 @@ def run(repo: Repository, limit_docs: int | None = None,
         ment_dicts = [{"start": m["char_start"], "end": m["char_end"],
                        "text": m["surface"], "label": m["entity_class"]}
                       for m in mentions if m["doc_id"] == doc_id]
+        mid_by_span = {(m["char_start"], m["char_end"]): m["mention_id"]
+                       for m in mentions if m["doc_id"] == doc_id}
         for link in resolver.resolve(raw, ment_dicts):
-            coref_links.append({"doc_id": doc_id, "start": link.start, "end": link.end,
-                                "surface": link.surface,
-                                "antecedent": link.antecedent_surface,
-                                "antecedent_class": link.antecedent_class,
-                                "kind": link.kind, "backend": link.backend})
+            coref_links.append({
+                "doc_id": doc_id,
+                "anaphor_start": link.start, "anaphor_end": link.end,
+                "anaphor_text": link.surface, "anaphor_kind": link.kind,
+                "antecedent_start": link.antecedent_start,
+                "antecedent_end": link.antecedent_end,
+                "antecedent_surface": link.antecedent_surface,
+                "antecedent_mention_id": mid_by_span.get(
+                    (link.antecedent_start, link.antecedent_end)),
+                "backend": link.backend, "confidence": link.confidence,
+            })
 
     # ---- persist ----------------------------------------------------------
     repo.conn.execute("PRAGMA foreign_keys=OFF")
-    for t in ("assertions", "mentions", "scan_ledger", "candidate_pairs",
-              "entity_members", "entity_versions", "entity_attributes",
-              "dossiers", "entities"):
+    for t in ("assertions", "mentions", "scan_ledger", "coref_links",
+              "identifier_observations",
+              "candidate_pairs", "entity_members", "entity_versions",
+              "entity_attributes", "dossiers", "entities"):
         repo.conn.execute(f"DELETE FROM {t}")
     repo.conn.commit()
     repo.conn.execute("PRAGMA foreign_keys=ON")
@@ -250,14 +274,18 @@ def run(repo: Repository, limit_docs: int | None = None,
     repo.add_mentions(mentions)
     repo.add_assertions(assertions)
     repo.add_scan_spans(ledger)
+    repo.add_coref_links(coref_links)
+    repo.add_identifier_observations(id_obs)
 
     return {
         "n_chunks": len(chunks), "n_mentions": len(mentions),
         "n_assertions": len(assertions), "n_coref_links": len(coref_links),
         "n_sweep_added": n_sweep_added,
+        "n_identifier_obs": len(id_obs),
+        "n_orphan_identifiers": sum(1 for o in id_obs if o["subject_mention_id"] is None),
         "dropped_boilerplate": n_dropped_boiler, "dropped_shape": n_dropped_shape,
         "token_ner_backend": token_ner.name, "coref_backend": resolver.name,
-        "coref_sample": coref_links[:5],
+        "coref_sample": coref_links[:3],
     }
 
 

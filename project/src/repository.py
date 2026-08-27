@@ -84,6 +84,12 @@ class Repository:
     def add_assertions(self, rows) -> int:
         return self._insert("assertions", self._as_dicts(rows))
 
+    def add_identifier_observations(self, rows) -> int:
+        return self._insert("identifier_observations", self._as_dicts(rows))
+
+    def add_coref_links(self, rows) -> int:
+        return self._insert("coref_links", self._as_dicts(rows))
+
     def add_scan_spans(self, rows) -> int:
         return self._insert("scan_ledger", self._as_dicts(rows))
 

@@ -213,6 +213,45 @@ CREATE TABLE IF NOT EXISTS dossiers (
     dossier_json TEXT NOT NULL
 );
 
+-- Identifiers are FIRST-CLASS observations, recorded whether or not a name
+-- could be bound to them. An identifier mentioned with no name nearby (a
+-- callback number, a bare billing address) is precisely the case that makes
+-- identifier-mediated resolution valuable, so it must survive extraction.
+CREATE TABLE IF NOT EXISTS identifier_observations (
+    obs_id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    doc_id            TEXT NOT NULL,
+    char_start        INTEGER NOT NULL,
+    char_end          INTEGER NOT NULL,
+    kind              TEXT NOT NULL,      -- phone | email | address | npi | tin | ssn | vin
+    value_raw         TEXT NOT NULL,
+    value_norm        TEXT,
+    subject_mention_id TEXT,              -- NULL => orphan, resolvable only via the id
+    validated         INTEGER DEFAULT 0,
+    extractor         TEXT
+);
+
+CREATE INDEX IF NOT EXISTS ix_idobs_doc ON identifier_observations(doc_id);
+CREATE INDEX IF NOT EXISTS ix_idobs_norm ON identifier_observations(kind, value_norm);
+
+-- Coreference output: an anaphor and the entity mention it was bound to.
+-- Scored against the manifest's coref_chains (which carry the true referent
+-- and hop count), so multi-hop resolution accuracy is measurable.
+CREATE TABLE IF NOT EXISTS coref_links (
+    link_id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    doc_id             TEXT NOT NULL,
+    anaphor_start      INTEGER NOT NULL,
+    anaphor_end        INTEGER NOT NULL,
+    anaphor_text       TEXT,
+    anaphor_kind       TEXT,              -- pronoun | descriptor
+    antecedent_start   INTEGER,
+    antecedent_end     INTEGER,
+    antecedent_surface TEXT,
+    antecedent_mention_id TEXT,
+    backend            TEXT,
+    confidence         REAL
+);
+
+CREATE INDEX IF NOT EXISTS ix_coref_doc ON coref_links(doc_id);
 CREATE INDEX IF NOT EXISTS ix_seg_doc ON segments(doc_id);
 CREATE INDEX IF NOT EXISTS ix_men_doc ON mentions(doc_id);
 CREATE INDEX IF NOT EXISTS ix_men_class ON mentions(entity_class);
@@ -224,7 +263,7 @@ CREATE INDEX IF NOT EXISTS ix_mem_ent ON entity_members(entity_id);
 """
 
 TABLE_NAMES = (
-    "documents", "segments", "mentions", "assertions", "scan_ledger",
+    "documents", "segments", "mentions", "assertions", "scan_ledger", "coref_links", "identifier_observations",
     "candidate_pairs", "entities", "entity_members", "entity_versions",
     "entity_attributes", "dossiers",
 )
