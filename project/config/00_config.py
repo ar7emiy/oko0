@@ -21,12 +21,101 @@ EMBED_DIM = 768                            # embedding dimensionality (index is 
 # ---- Determinism ------------------------------------------------------------
 SEED = 20260826                            # global seed; corpus is reproducible from this
 
-# ---- Corpus generation targets ----------------------------------------------
-N_CLAIMS = 300                             # ~300 claims
-NOTES_PER_CLAIM_MIN = 4
-NOTES_PER_CLAIM_MAX = 11                   # -> ~1,500-3,000 notes total
-N_GROUND_TRUTH_ENTITIES_MIN = 120
-N_GROUND_TRUTH_ENTITIES_MAX = 200
+# =============================================================================
+# CORPUS v2 -- fixture shaped to match production data
+#
+# v1 notes averaged ~65 words and were 34% rigid template, with claim-scoped
+# entities and 1-2 planted cross-claim cases. That made every downstream number
+# unreliable. v2 rebuilds the fixture around the real shape: an
+# occurrence -> claim -> note hierarchy, 250-500 word predominantly free-text
+# notes, and pervasive cross-claim entity overlap.
+# =============================================================================
+MANIFEST_SCHEMA_VERSION = 2
+
+N_OCCURRENCES = 240                        # occurrences spawn 1-4 claims each
+# claims per occurrence: mostly 1-2 (multi-party incidents spawn more)
+CLAIMS_PER_OCCURRENCE_WEIGHTS = {1: 0.52, 2: 0.31, 3: 0.12, 4: 0.05}
+TARGET_NOTES = 2000                        # total notes across all claims
+NOTES_PER_CLAIM_MIN = 3
+NOTES_PER_CLAIM_MAX = 9
+
+# ---- note length / composition ----------------------------------------------
+NOTE_WORDS_MIN = 250
+NOTE_WORDS_MAX = 500
+# Note *form* mix. v1 was template-dominant; real notes are narrative-dominant.
+NOTE_FORM_WEIGHTS = {
+    "narrative": 0.50,        # pure adjuster prose, multiple paragraphs
+    "narrative_email": 0.27,  # prose + an email thread with quoted history
+    "mixed": 0.16,            # small structured header, then prose
+    "template_heavy": 0.07,   # the legacy structured form (now the minority)
+}
+
+# ---- entity population -------------------------------------------------------
+# The claimant pool is sized from the CLAIM COUNT (most claimants appear once,
+# so you need roughly as many claimants as claims). The professional pools are
+# sized independently and are deliberately much smaller than the claim count --
+# that size difference is what produces realistic recurrence.
+N_ATTORNEYS = 62
+N_PROVIDERS = 74
+N_REPAIR_SHOPS = 40
+N_ADJUSTERS = 44
+
+# Recurrence is power-law, not uniform: a flat distribution would not stress
+# resolution or hub handling at all. Zipf exponent: weight(rank i) = 1/(i+1)^a,
+# so a LOWER alpha is flatter and a HIGHER alpha concentrates on the top ranks.
+# Every class is additionally capped (FANOUT_MAX_SHARE) so no single entity can
+# swallow an implausible share of the corpus.
+FANOUT_ALPHA = {
+    "attorney": 1.10,         # a few high-volume firms carry many files
+    "medical_provider": 1.10, # a few high-volume practices
+    "repair_shop": 1.30,      # moderate (geography caps concentration)
+    "adjuster": 1.00,         # caseload spread, not a network signal
+}
+FANOUT_MAX_SHARE = 0.10       # no entity appears on more than 10% of claims
+
+# Claimants are allocated explicitly rather than sampled, because the intended
+# shape is "almost everyone appears once" with a short tail -- a Zipf draw
+# produces a runaway head instead.
+CLAIMANT_POOL_RATIO = 0.86    # claimants per claim; <1 forces some reuse
+CLAIMANT_REPEAT_SHARE = 0.16  # share of claimants who appear on 2-4 claims
+CLAIMANT_MAX_CLAIMS = 4
+
+# ---- coreference planting ----------------------------------------------------
+# Anaphora chains are what test the "hopping" failure mode. hops=1 points
+# straight at a named mention; hops>=2 points at another anaphor that points
+# back to the name.
+COREF_CHAINS_PER_NOTE = (0, 4)
+COREF_MAX_HOPS = 3
+COREF_DESCRIPTOR_RATIO = 0.40   # share of anaphors that are vague descriptors
+
+# ---- identifier planting -----------------------------------------------------
+IDENTIFIER_KINDS = ("address", "phone", "email", "npi", "tin", "ssn", "vin")
+# share of identifier mentions deliberately emitted with NO name nearby, so
+# identifier-first resolution is genuinely testable
+# Chance a note carries a paragraph whose identifier mention has NO name near
+# it. (This is a per-note rate, not the resulting share of identifier mentions;
+# the achieved share is reported by the generator.)
+ORPHAN_PARAGRAPH_CHANCE = 0.35
+IDENTIFIER_REASSIGN_RATIO = 0.10   # identifiers that change hands over time
+
+# ---- event planting ----------------------------------------------------------
+EVENT_TYPES = (
+    "motion_filed", "deposition_taken", "demand_sent", "suit_filed",
+    "ime_performed", "procedure_performed", "records_produced",
+    "payment_issued", "reserve_set", "estimate_written", "siu_referral",
+    "coverage_denied", "settlement_reached", "inspection_completed",
+)
+EVENTS_PER_CLAIM = (1, 5)
+
+# ---- open-vocabulary relationships ------------------------------------------
+# Deliberately beyond the four role types: a closed set drops or force-fits
+# these, which is exactly the failure being corrected.
+RELATION_TYPES = (
+    "represents", "treats", "repairs", "adjusts",           # core roles
+    "witnessed", "referred", "co_counsel", "supervises",
+    "related_to", "subcontracts_to", "opposing_counsel",
+    "employed_by", "billed", "examined",
+)
 
 # ---- Runtime mode -----------------------------------------------------------
 # The system runs against the real Gemini API when an API key is present in the
