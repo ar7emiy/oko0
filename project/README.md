@@ -79,6 +79,10 @@ tests/                  build_notebooks.py (regenerates notebooks), smoke_test.p
 | 07 | audit | recall/precision, B-cubed, coverage proof (GT **reader**) |
 | 08 | lookup app | name search + NL→plan→table answer; clickable-evidence dossier HTML |
 | 09 | run all | fresh-VM orchestration + acceptance checklist |
+| 10 | Layer 1 | hybrid high-recall extraction (chunk→coref→union→sweep) |
+| 11 | ablation | recall lift per extraction layer vs ground truth |
+| 12 | Layer 3 | claim-scoped graph + dual storage |
+| 13 | Layer 4 | per-claim agent + scope-isolation proof |
 
 ## Invariants & acceptance
 
@@ -94,5 +98,20 @@ Checked and printed by notebook 09:
 - NL question → visible structured query plan → table-executed answer → traced UI.
 - Model names only in config; FAISS only behind VectorStore; storage only behind
   the repository layer (all guard-enforced).
+
+## Layer 1–4 architecture
+
+A second, higher-recall stack is built on the same corpus: hybrid extraction
+(overlapping chunks → coreference → token-NER ∪ gazetteer ∪ LLM → verification
+sweep) feeding entity resolution, a claim-scoped knowledge graph, and a per-claim
+retrieval agent with a proven scope boundary.
+
+Measured: **mention recall 78.2% → 99.4%**, identifier recall **13.5% → 100%**,
+scope isolation holds, graph density 25 edges/claim. It also has a measured
+failure: high recall shifts the bottleneck onto entity resolution, which
+currently under-merges (B³ recall 0.63).
+
+See **`ARCHITECTURE.md`** for the full evaluation, per-layer detail, honest
+caveats, and open items.
 
 See `DECISIONS.md` for design rationale and honest known limitations.

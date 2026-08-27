@@ -11,3 +11,11 @@ gradio
 nbformat
 nbconvert
 ipykernel
+
+# --- Layer 1-4 architecture ---
+rapidfuzz                 # fuzzy matching for entity resolution
+# Optional production backends. Both are adapters behind one-method interfaces
+# (TokenNERBackend / CorefResolver) and activate automatically when installed;
+# without them the deterministic offline backends are used.
+# gliner                  # zero-shot token-level NER (Layer 1 safety net)
+# fastcoref               # neural coreference resolution

@@ -138,6 +138,15 @@ def generate_candidates(profiles: dict) -> dict:
             for a, b in _block_pairs(members):
                 add(a, b, "A1")
 
+    # B0: exact normalized name + class. Without this, a very common name lands
+    # in a large phonetic block that falls back to star topology anchored on a
+    # possibly-different person, and identical surfaces never get compared --
+    # fragmenting one real person into many clusters.
+    for members in by_key(lambda p: [("b0", p["norm_name"], p["entity_class"])
+                                     if p["norm_name"] else None]).values():
+        for a, b in _block_pairs(members, max_block=400):
+            add(a, b, "B0")
+
     # B1: phone last-7
     for members in by_key(lambda p: [("ph", v) for v in p["phones7"] if v]).values():
         for a, b in _block_pairs(members):
@@ -189,7 +198,8 @@ def _group(profiles, keyfn):
     groups = defaultdict(list)
     for mid, p in profiles.items():
         for k in keyfn(p):
-            groups[k].append(mid)
+            if k is not None:
+                groups[k].append(mid)
     return groups
 
 
@@ -399,6 +409,28 @@ def adjudicate(pa, pb, feats) -> dict:
 # ---------------------------------------------------------------------------
 # Greedy correlation clustering honoring cannot-link
 # ---------------------------------------------------------------------------
+def _dominant(counter, min_share: float = 0.25):
+    """Values that carry real weight in a cluster's identifier evidence.
+
+    A value seen once inside a large cluster is treated as noise (a mis-bound
+    identifier), not as part of the cluster's identity. Returns the set of values
+    at or above `min_share` of the cluster's observations for that field, always
+    keeping the single most-supported value so a genuine conflict still fires.
+    """
+    if not counter:
+        return set()
+    total = sum(counter.values())
+    top = max(counter.values())
+    # A value asserted by exactly ONE mention inside a multi-mention cluster is
+    # unverified (classically a mis-bound identifier from an adjacent line). It
+    # must not define the cluster's identity, because doing so lets one bad
+    # assertion veto thousands of agreeing edges.
+    if top < 2 and total > 1:
+        return set()
+    return {v for v, c in counter.items() if c == top or c / total >= min_share}
+
+
+
 def cluster(profiles, scored_pairs, cannot):
     """scored_pairs: list of (a,b,score,adjudicated_link_bool).
     Returns {mention_id: cluster_index} and per-cluster cause flags.
@@ -408,10 +440,15 @@ def cluster(profiles, scored_pairs, cannot):
     g = ig.Graph(n=len(mids))
     g.vs["mid"] = mids
 
+    # Edge admission uses the SAME structural-only veto as cannot_idx below.
+    # Identifier/DOB conflicts are deliberately not applied pair-wise here; they
+    # are enforced on aggregate cluster evidence at merge time, so one mis-bound
+    # identifier cannot silently delete thousands of otherwise-valid edges.
+    _STRUCTURAL_VETO = {"person_vs_org", "jr_sr_conflict"}
     pos_edges = []
     for a, b, score, adj_link in scored_pairs:
         link = adj_link if adj_link is not None else (score >= CFG.CLUSTER_LINK_THRESHOLD)
-        if link and cannot.get(frozenset((a, b))) is None:
+        if link and cannot.get(frozenset((a, b))) not in _STRUCTURAL_VETO:
             pos_edges.append((idx[a], idx[b], score, adj_link))
     g.add_edges([(e[0], e[1]) for e in pos_edges])
     g.es["weight"] = [e[2] for e in pos_edges]
@@ -424,12 +461,30 @@ def cluster(profiles, scored_pairs, cannot):
     # per-cluster validated-identifier sets: a cluster may never hold two distinct
     # values of any of these (principled cannot-link enforced at cluster scope,
     # so transitive/embedding chains cannot merge conflicting identities).
+    # Per-cluster identifier evidence is kept as COUNTS, not sets, so a value
+    # asserted by a single mention (typically a mis-bound identifier picked up
+    # from an adjacent line) cannot by itself define the cluster's identity and
+    # veto an otherwise well-supported merge.
+    from collections import Counter as _Counter
     cl_ids = {}
     for i, m in enumerate(mids):
         p = profiles[m]
-        cl_ids[i] = {fld: set(p[fld]) for fld in CFG.CLUSTER_CONSISTENT_IDS}
+        cl_ids[i] = {fld: _Counter(v for v in p[fld] if v)
+                     for fld in CFG.CLUSTER_CONSISTENT_IDS}
+    # Cannot-link vetoes are split by KIND:
+    #   * STRUCTURAL (person_vs_org, jr_sr_conflict) veto at member level -- they
+    #     are properties of the entities themselves and never spurious.
+    #   * IDENTIFIER/DOB conflicts are NOT applied member-to-member. A single
+    #     mis-bound identifier on one mention would otherwise veto the merge of
+    #     two large, otherwise-agreeing clusters (observed: one real adjuster
+    #     fragmented into 10 clusters). Those conflicts are enforced instead by
+    #     the cluster-level identifier-consistency check below, which tests the
+    #     AGGREGATE evidence of both clusters.
+    STRUCTURAL = {"person_vs_org", "jr_sr_conflict"}
     cannot_idx = defaultdict(set)
     for pr, reason in cannot.items():
+        if reason not in STRUCTURAL:
+            continue
         a, b = tuple(pr)
         if a in idx and b in idx:
             cannot_idx[idx[a]].add(idx[b])
@@ -452,11 +507,16 @@ def cluster(profiles, scored_pairs, cannot):
         blocked = any(w in cannot_idx and (mv & cannot_idx[w]) for w in mu)
         if blocked:
             continue
-        # identifier-consistency: union must not hold conflicting validated ids
+        # Cluster-level identifier consistency. TRUE conflict means both clusters
+        # carry evidence for a field and the value sets are DISJOINT (they name
+        # different real identities). Merely "the union has >1 value" would block
+        # on a single mis-bound identifier, so we require disjointness -- clusters
+        # that share the dominant value still merge despite noise.
         conflict = False
         for fld in CFG.CLUSTER_CONSISTENT_IDS:
-            merged = cl_ids[ru][fld] | cl_ids[rv][fld]
-            if len(merged) > 1:
+            a_dom = _dominant(cl_ids[ru][fld])
+            b_dom = _dominant(cl_ids[rv][fld])
+            if a_dom and b_dom and not (a_dom & b_dom):
                 conflict = True
                 break
         if conflict:
@@ -469,7 +529,7 @@ def cluster(profiles, scored_pairs, cannot):
         mu |= mv
         cl_members[ru] = mu
         for fld in CFG.CLUSTER_CONSISTENT_IDS:
-            cl_ids[ru][fld] |= cl_ids[rv][fld]
+            cl_ids[ru][fld].update(cl_ids[rv][fld])
         if adj:
             cl_cause[ru] = "adjudicated_link"
         del cl_members[rv]

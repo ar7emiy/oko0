@@ -108,3 +108,78 @@ SURVIVORSHIP_TIERS = {
 # ---- Audit ------------------------------------------------------------------
 COVERAGE_TARGET = 1.0             # 100% char coverage per doc is the target
 BCUBED_REPORT = True
+
+
+# =============================================================================
+# LAYER 1-4 ARCHITECTURE (hybrid high-recall extraction -> ER -> dual storage
+# -> per-claim agentic retrieval). All knobs for the new layers live here.
+# =============================================================================
+
+# ---- Layer 1: chunking ------------------------------------------------------
+CHUNK_TOKENS = 300                  # target chunk size in tokens
+CHUNK_OVERLAP_RATIO = 0.5           # 50% sliding window -> every sentence read twice
+# No tiktoken dependency: we approximate tokens by whitespace words scaled by
+# TOKENS_PER_WORD (GPT-family averages ~1.3 tokens/word on prose like this).
+TOKENS_PER_WORD = 1.3
+
+# ---- Layer 1: coreference ---------------------------------------------------
+COREF_BACKEND = "auto"              # auto | fastcoref | rulebased | off
+COREF_MAX_ANTECEDENT_CHARS = 600    # how far back to look for an antecedent
+COREF_PRONOUNS = (
+    "he", "him", "his", "she", "her", "hers", "they", "them", "their", "theirs", "it", "its",
+)
+# vague descriptors that are coreferences, not stand-alone entities
+COREF_DESCRIPTORS = (
+    "the physician", "the doctor", "the provider", "the treating facility",
+    "the facility", "the clinic", "the hospital", "the claimant", "the clmt",
+    "the attorney", "the atty", "the counsel", "the shop", "the adjuster",
+    "the insured", "the carrier", "same as above", "said provider",
+)
+
+# ---- Layer 1: token-level NER ensemble --------------------------------------
+NER_BACKEND = "auto"                # auto | gliner | deterministic
+GLINER_MODEL = "urchade/gliner_multi-v2.1"   # only used when gliner is installed
+GLINER_THRESHOLD = 0.35             # recall-first; precision recovered downstream
+NER_LABELS = (
+    "person", "organization", "medical_provider", "law_firm", "repair_shop",
+    "address", "phone", "email", "identifier", "date", "medical_condition",
+    "procedure", "monetary_amount",
+)
+
+# ---- Layer 1: verification sweep (pass 2 differential audit) ----------------
+SWEEP_ENABLED = True
+SWEEP_MIN_TOKEN_LEN = 3             # ignore trivially short unmapped tokens
+SWEEP_MAX_CANDIDATES_PER_CHUNK = 40
+
+# ---- Layer 3: graph store ---------------------------------------------------
+GRAPH_BACKEND = "igraph"            # igraph | neo4j (neo4j = production swap)
+GRAPH_FILENAME = "claims_graph.pkl"
+# Restricted, domain-specific predicate schema. Generic edges (MENTIONED_IN,
+# HAS_NOTE, RELATED_TO) are REJECTED -- they turn the graph into a hairy ball
+# and dilute retrieval precision.
+GRAPH_PREDICATES = (
+    "REPRESENTED_BY",       # claimant -> attorney
+    "TREATED_BY",           # claimant -> medical_provider
+    "DIAGNOSED_WITH",       # claimant -> medical_condition
+    "UNDERWENT_PROCEDURE",  # claimant -> procedure
+    "REPAIRED_BY",          # claimant/vehicle -> repair_shop
+    "ISSUED_PAYMENT",       # adjuster/carrier -> payee
+    "ADJUSTED_BY",          # claim -> adjuster
+    "EMPLOYED_BY",          # person -> organization (firm/shop)
+    "SHARES_ADDRESS_WITH",  # entity -> entity
+    "SHARES_PHONE_WITH",    # entity -> entity
+    "SHARES_IDENTIFIER_WITH",
+    "ALLEGES",              # entity -> allegation text node
+    "PARTY_TO",             # entity -> claim
+)
+GRAPH_BANNED_PREDICATES = ("MENTIONED_IN", "HAS_NOTE", "RELATED_TO", "ASSOCIATED_WITH")
+
+# ---- Layer 3: chunk vector index -------------------------------------------
+CHUNK_INDEX_FILENAME = "chunks.faiss"
+CHUNK_META_FILENAME = "chunks_meta.parquet"
+
+# ---- Layer 4: agentic retrieval --------------------------------------------
+AGENT_VECTOR_TOPK = 5               # top-k chunks within the claim scope
+AGENT_GRAPH_HOPS = 2                # 1-2 hop neighborhood expansion
+AGENT_MAX_TRIPLES = 60              # cap context handed to the synthesizer
+AGENT_ENFORCE_CLAIM_SCOPE = True    # hard filter; cross-claim reads are impossible

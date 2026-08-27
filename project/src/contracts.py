@@ -68,6 +68,7 @@ IDENTIFIER_PREDICATES = ("has_email", "has_phone", "has_npi", "has_tin", "has_ss
 
 # resolution candidate-generation pass identifiers (logged per pair as gen_passes)
 GEN_PASSES = {
+    "B0": "exact normalized name x class",
     "A1": "exact validated identifier (npi/tin/ssn/email)",
     "B1": "phone last-7 match",
     "B2": "normalized-address key match",

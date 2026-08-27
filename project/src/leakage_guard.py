@@ -23,6 +23,7 @@ GT_TOKEN = "ground" + "_truth"  # avoid this file itself tripping a naive grep
 GT_ALLOWED_FILES = {
     "src/corpus_gen.py",
     "src/audit.py",
+    "src/ablation.py",       # audit-side: measures recall against the manifest
     "src/settings.py",       # defines the path constants (infra, never reads content)
     "src/leakage_guard.py",  # this guard
 }
@@ -31,10 +32,17 @@ GT_ALLOWED_FILES = {
 PIPELINE_MODULES = [
     "src/profiling.py", "src/extraction.py", "src/embed_index.py",
     "src/resolution.py", "src/profiles.py", "src/app.py",
+    # Layer 1-4 architecture: none of these may see ground truth either
+    "src/chunking.py", "src/gazetteers.py", "src/coref.py",
+    "src/ner_ensemble.py", "src/sweep.py", "src/pipeline_v2.py",
+    "src/graph_store.py", "src/build_graph.py", "src/agent.py",
 ]
 
+# Notebook 11 (ablation) is audit-side and legitimately reads ground truth.
 LEAKAGE_NOTEBOOKS = ["02_profiling", "03_extraction", "04_embed_index",
-                     "05_resolution", "06_profiles_dossiers", "08_lookup_app"]
+                     "05_resolution", "06_profiles_dossiers", "08_lookup_app",
+                     "10_layer1_hybrid_extraction", "12_layer3_scoped_graph",
+                     "13_layer4_agent"]
 
 
 def _notebook_source(nb_path: Path) -> str:
