@@ -36,7 +36,14 @@ PIPELINE_MODULES = [
     "src/chunking.py", "src/gazetteers.py", "src/coref.py",
     "src/ner_ensemble.py", "src/sweep.py", "src/pipeline_v2.py",
     "src/graph_store.py", "src/build_graph.py", "src/agent.py",
+    "src/entity_resolution.py",
 ]
+
+# NOTE ON data/doc_index.json: it maps note -> claim/occurrence. That is
+# STRUCTURAL SYSTEM METADATA, not ground truth -- every real claim system knows
+# which file a note was written on. Only ENTITY IDENTITY must be inferred from
+# text, and that lives solely in the manifest. The guard below deliberately
+# polices the manifest, not the doc index.
 
 # Notebook 11 (ablation) is audit-side and legitimately reads ground truth.
 LEAKAGE_NOTEBOOKS = ["02_profiling", "03_extraction", "04_embed_index",

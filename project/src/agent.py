@@ -2,11 +2,11 @@
 
 Sequence, in order, for every request:
 
-  1. SCOPE BOUNDARY  -- a mandatory hard filter on claim_id. The vector search is
-     restricted to that claim's chunks via the VectorStore filter (applied before
-     nearest-neighbor selection), and graph traversal only ever reads that
-     claim's adjacency partition. The agent is structurally incapable of reading
-     another claim's data; `test_scope_isolation` proves it.
+  1. SCOPE FILTER    -- retrieval is restricted to one claim's chunks via the
+     VectorStore filter (applied before nearest-neighbor selection). This is a
+     RELEVANCE filter on the retrieval path, not an identity boundary: the graph
+     beneath is global, so `enrich()` can then report what the rest of the
+     corpus knows about the parties those chunks surfaced.
   2. VECTOR ENTRY    -- top-k relevant chunks WITHIN the scope.
   3. GRAPH EXPANSION -- entity ids mentioned in those chunks are expanded 1-2
      hops through the claim-scoped graph, yielding domain-verb triples with
@@ -26,7 +26,7 @@ import re
 from collections import defaultdict
 
 from . import genai, textnorm
-from .graph_store import CROSS_CLAIM_SCOPE, GraphStore, ScopeViolation, get_graph_store
+from .graph_store import GraphStore, get_graph_store
 from .repository import Repository
 from .settings import CFG, Paths
 from .vectorstore import FaissVectorStore
@@ -74,7 +74,7 @@ class ClaimScopedAgent:
     def retrieve_chunks(self, claim_id: str, query: str, k: int | None = None) -> list[dict]:
         """Top-k chunks WITHIN claim_id. The filter is applied inside the index."""
         if CFG.AGENT_ENFORCE_CLAIM_SCOPE and not claim_id:
-            raise ScopeViolation("retrieve_chunks requires a claim_id")
+            raise ValueError("retrieve_chunks requires a claim_id")
         qv = genai.embed([query])[0]
         hits = self.chunks.search(
             qv, k or CFG.AGENT_VECTOR_TOPK,
@@ -106,9 +106,44 @@ class ClaimScopedAgent:
                     break
         return sorted(found)
 
-    def expand(self, claim_id: str, entity_ids: list[str], hops: int | None = None) -> list[dict]:
+    def expand(self, claim_id: str | None, entity_ids: list[str],
+               hops: int | None = None) -> list[dict]:
+        """Graph expansion. `claim_id` filters; pass None to follow entities
+        across the whole corpus."""
         triples = self.graph.neighbors(entity_ids, hops or CFG.AGENT_GRAPH_HOPS, claim_id)
         return triples[:CFG.AGENT_MAX_TRIPLES]
+
+    def enrich(self, entity_ids: list[str]) -> dict:
+        """Cross-claim enrichment for entities surfaced by claim-scoped retrieval.
+
+        This is the integration point with the existing assistant: retrieval
+        stays scoped to one claim, and the entity layer then contributes what the
+        rest of the corpus knows about the parties in those chunks. An ordinary
+        read -- cross-claim linkage is the purpose, not a privileged operation.
+        """
+        out = {}
+        for eid in entity_ids:
+            node = self.graph.node(eid) if hasattr(self.graph, "node") else None
+            links = (self.graph.cross_claim_links([eid])
+                     if hasattr(self.graph, "cross_claim_links") else [])
+            out[eid] = {
+                "claims": sorted(node.claim_ids) if node else [],
+                "occurrences": sorted(node.occurrence_ids) if node else [],
+                "cross_claim_links": links[:20],
+            }
+        return out
+
+    def who_is_at(self, kind: str, value: str) -> list[dict]:
+        """'Who is associated with this address/phone?' -- the unnamed-identifier
+        query, answered by a direct lookup on the identifier node."""
+        from . import textnorm
+        norm = textnorm.normalize_identifier(kind, value)
+        if kind == "address":
+            norm = textnorm.address_key(value)
+        if kind == "phone":
+            norm = textnorm.phone_last7(value)
+        return (self.graph.find_by_identifier(kind, norm)
+                if hasattr(self.graph, "find_by_identifier") else [])
 
     # ---- step 4: grounded synthesis --------------------------------------
     def answer(self, claim_id: str, question: str, hops: int | None = None) -> dict:
@@ -227,36 +262,24 @@ def _deterministic_dossier(claim_id, chunks, triples, entities, eids) -> str:
 # ---------------------------------------------------------------------------
 # Scope isolation proof
 # ---------------------------------------------------------------------------
-def test_scope_isolation(agent: ClaimScopedAgent, claim_a: str, claim_b: str,
-                         probe: str = "attorney provider payment") -> dict:
-    """Prove the agent cannot read outside its claim.
+def test_scope_filter(agent, claim_a: str, claim_b: str,
+                      probe: str = "attorney provider payment") -> dict:
+    """Verify claim scoping works as a FILTER on the retrieval path.
 
-    Retrieves under claim_a and asserts that no returned chunk, entity or triple
-    belongs to claim_b, and that cross-claim traversal raises.
+    This is deliberately no longer an isolation proof. Identity is global by
+    design; what must hold is that when a caller asks for one claim, the
+    retrieved chunks and the claim-filtered triples belong to that claim -- while
+    the entity layer remains free to report what other claims an entity touches.
     """
     res = agent.answer(claim_a, probe)
-    leaked_chunks = [c for c in res["retrieved_chunks"] if c["claim_id"] != claim_a]
-    leaked_triples = [t for t in res["triples"] if t["claim_id"] != claim_a]
-    b_entities = agent._ent_by_claim.get(claim_b, set()) - agent._ent_by_claim.get(claim_a, set())
-    leaked_entities = [e["entity_id"] for e in res["entities"] if e["entity_id"] in b_entities]
-
-    try:
-        agent.graph.neighbors([], 1, CROSS_CLAIM_SCOPE)
-        cross_blocked = False
-    except ScopeViolation:
-        cross_blocked = True
-    try:
-        agent.cross_claim_network(["x"], authorized=False)
-        unauth_blocked = False
-    except ScopeViolation:
-        unauth_blocked = True
-
-    ok = not (leaked_chunks or leaked_triples or leaked_entities) and cross_blocked and unauth_blocked
+    off_chunks = [c for c in res["retrieved_chunks"] if c["claim_id"] != claim_a]
+    off_triples = [t for t in res["triples"] if t["claim_id"] != claim_a]
+    enriched = agent.enrich([e["entity_id"] for e in res["entities"]][:5])
+    cross = sum(len(v["cross_claim_links"]) for v in enriched.values())
     return {
-        "scope_claim": claim_a, "probe_claim": claim_b,
-        "leaked_chunks": len(leaked_chunks), "leaked_triples": len(leaked_triples),
-        "leaked_entities": len(leaked_entities),
-        "cross_claim_traversal_blocked": cross_blocked,
-        "unauthorized_cross_claim_blocked": unauth_blocked,
-        "isolation_holds": ok,
+        "scope_claim": claim_a,
+        "chunks_outside_claim": len(off_chunks),
+        "claim_filtered_triples_outside_claim": len(off_triples),
+        "retrieval_filter_holds": not off_chunks and not off_triples,
+        "cross_claim_links_available_via_enrichment": cross,
     }

@@ -87,6 +87,7 @@ DDL = r"""
 CREATE TABLE IF NOT EXISTS documents (
     doc_id            TEXT PRIMARY KEY,
     claim_id          TEXT NOT NULL,
+    occurrence_id     TEXT,             -- parsed from note text, never the manifest
     category          TEXT,            -- stored category field (may be NULL/implied)
     category_implied  TEXT,           -- category inferred from content (profiling)
     n_chars           INTEGER NOT NULL,
@@ -166,6 +167,30 @@ CREATE TABLE IF NOT EXISTS candidate_pairs (
     adjudicated   INTEGER DEFAULT 0,
     verdict       TEXT                     -- 'link' | 'no_link' | NULL
 );
+
+-- Resolution output. NOT a merge decision: a probability-weighted assertion
+-- that two mentions co-refer. Identity is derived from these at a chosen
+-- threshold, so a questionable link is filterable rather than structural.
+CREATE TABLE IF NOT EXISTS same_as_edges (
+    edge_id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    mention_id_a     TEXT NOT NULL,
+    mention_id_b     TEXT NOT NULL,
+    probability      REAL NOT NULL,
+    match_weight     REAL,
+    backend          TEXT,
+    suppressed_reason TEXT               -- non-NULL => excluded from clustering
+);
+
+-- Materialized view of identity at one operating threshold.
+CREATE TABLE IF NOT EXISTS entity_snapshot (
+    entity_id  TEXT NOT NULL,
+    mention_id TEXT NOT NULL,
+    threshold  REAL NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS ix_sae_a ON same_as_edges(mention_id_a);
+CREATE INDEX IF NOT EXISTS ix_sae_b ON same_as_edges(mention_id_b);
+CREATE INDEX IF NOT EXISTS ix_snap_ent ON entity_snapshot(entity_id);
 
 CREATE TABLE IF NOT EXISTS entities (
     entity_id       TEXT PRIMARY KEY,
@@ -263,7 +288,7 @@ CREATE INDEX IF NOT EXISTS ix_mem_ent ON entity_members(entity_id);
 """
 
 TABLE_NAMES = (
-    "documents", "segments", "mentions", "assertions", "scan_ledger", "coref_links", "identifier_observations",
+    "documents", "segments", "mentions", "assertions", "scan_ledger", "coref_links", "identifier_observations", "same_as_edges", "entity_snapshot",
     "candidate_pairs", "entities", "entity_members", "entity_versions",
     "entity_attributes", "dossiers",
 )

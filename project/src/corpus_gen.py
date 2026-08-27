@@ -1403,6 +1403,16 @@ def generate_corpus(seed: int | None = None) -> dict:
     Paths.manifest_json.parent.mkdir(parents=True, exist_ok=True)
     Paths.manifest_json.write_text(json.dumps(manifest, indent=1))
 
+    # Structural document metadata: which claim/occurrence each note belongs to.
+    # This is NOT ground truth and NOT subject to the leakage guard -- every real
+    # claim system knows which file a note was written on. Only ENTITY identity
+    # must be inferred. Without it, ~70% of narrative notes (which never state a
+    # claim number in prose) would be unattributable to a claim at all.
+    doc_index = {d["doc_id"]: {"claim_id": d["claim_id"],
+                               "occurrence_id": d["occurrence_id"]}
+                 for d in doc_rows}
+    (Paths.data / "doc_index.json").write_text(json.dumps(doc_index, indent=1))
+
     words = [d["n_words"] for d in doc_rows]
     kinds = {}
     for p in all_placements:

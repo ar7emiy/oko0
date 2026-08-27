@@ -121,6 +121,20 @@ class DeterministicTokenNER(TokenNERBackend):
         rf"\b{_NAME_TOK}(?:{_SP}{_NAME_TOK}){{1,3}}(?:{_SP}(?:Jr|Sr|II|III))?\b")
     _RE_INITIAL = re.compile(rf"\b[A-Z]\.{_SP}{_NAME_TOK}\b")
 
+    # Verbs/adverbs that open a sentence get capitalized, so a greedy
+    # capitalized-sequence match swallows them into the following name
+    # ("Contacted James Moore"). They are trimmed from the START of a span
+    # rather than rejecting it, so the real name survives.
+    _LEADING_NOISE = {
+        "Contacted", "Spoke", "Reached", "Called", "Received", "Sent", "Left",
+        "Confirmed", "Advised", "Requested", "Reviewed", "Discussed", "Emailed",
+        "Followed", "Following", "Per", "Attached", "Forwarded", "Submitted",
+        "Completed", "Performed", "Issued", "Filed", "Provider", "Counsel",
+        "Treatment", "Status", "Financial", "Investigation", "Correspondence",
+        "Mailing", "Billing", "Coverage", "Note", "File", "Diary", "Reserves",
+        "Expense", "Nothing", "Awaiting", "Documentation", "No", "Will",
+    }
+
     # tokens that are structural noise in legacy notes, never a name on their own
     _STOP = {
         "Claim", "Claimant", "Clmt", "Atty", "Attorney", "Counsel", "Provider",
@@ -138,6 +152,16 @@ class DeterministicTokenNER(TokenNERBackend):
         found: dict[tuple[int, int], SpanCandidate] = {}
 
         def add(s, e, label, score):
+            # trim leading sentence-opening words, keeping offsets exact
+            while True:
+                surface = text[s:e]
+                stripped = surface.lstrip()
+                s += len(surface) - len(stripped)
+                first = stripped.split(" ")[0] if stripped else ""
+                if first in self._LEADING_NOISE and len(stripped.split()) > 1:
+                    s += len(first)
+                    continue
+                break
             surface = text[s:e].strip()
             if not surface or coref.is_anaphor(surface):
                 return

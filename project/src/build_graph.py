@@ -1,38 +1,44 @@
-"""Layer 3 builder: populate the dual storage system.
+"""Layer 3 builder: populate the global entity graph + the chunk vector index.
 
-Reads Layer 1/2 output from the repository and writes:
-  1. the claim-scoped knowledge graph (nodes + domain-verb edges + provenance)
-  2. the chunk vector index (chunk embeddings + metadata carrying claim_id)
+Node kinds, all first-class:
+  party         resolved person (claimant / attorney / adjuster / provider)
+  organization  firm, practice, shop
+  identifier    address / phone / email / npi / tin / ssn  -- their own nodes,
+                which is what makes an unnamed identifier mention resolvable
+  event         dated action with no external id
+  claim         containment
+  occurrence    containment (claims group under it)
 
-Relationship inference is deliberately conservative and schema-restricted: only
-the domain verbs in CFG.GRAPH_PREDICATES are emitted, derived from resolved
-entity roles, co-membership on a claim, and shared identifiers/addresses. No
-generic MENTIONED_IN edges.
+Predicates are an OPEN vocabulary: whatever the relation extractor supports is
+emitted, normalized toward canonical forms. Only bulk provenance is rejected.
 """
 from __future__ import annotations
 
 from collections import defaultdict
 
 from . import chunking, genai, textnorm
-from .graph_store import (CROSS_CLAIM_SCOPE, GraphEdge, GraphNode, GraphStore,
-                          get_graph_store)
+from .graph_store import GraphEdge, GraphNode, GraphStore, get_graph_store
 from .repository import Repository
 from .settings import CFG, Paths
 from .vectorstore import FaissVectorStore
 
-# entity class -> the predicate linking it to the claimant of that claim
+# entity class -> the verb linking it to the claimant on that claim
 ROLE_PREDICATE = {
     "attorney": "REPRESENTED_BY",
     "medical_provider": "TREATED_BY",
     "repair_shop": "REPAIRED_BY",
     "adjuster": "ADJUSTED_BY",
 }
+ORG_CLASSES = {"repair_shop"}
 
 
 def build_chunk_index(repo: Repository, store: FaissVectorStore | None = None) -> dict:
-    """Embed every chunk and index it with claim_id in the metadata payload."""
+    """Embed every chunk; claim_id and occurrence_id ride in the metadata so the
+    RAG path can filter to a claim without the graph being partitioned."""
     docs = repo.table("documents")
     claim_of = {r["doc_id"]: r["claim_id"] for _, r in docs.iterrows()}
+    occ_of = ({r["doc_id"]: r.get("occurrence_id") for _, r in docs.iterrows()}
+              if "occurrence_id" in docs.columns else {})
     texts = {f.stem: f.read_text() for f in Paths.raw_notes.glob("*.txt")}
     doc_map = {d: (claim_of.get(d, "UNKNOWN"), t) for d, t in texts.items()}
     chunks = chunking.chunk_corpus(doc_map)
@@ -42,162 +48,144 @@ def build_chunk_index(repo: Repository, store: FaissVectorStore | None = None) -
         CFG.EMBED_DIM, Paths.store / CFG.CHUNK_INDEX_FILENAME,
         Paths.store / CFG.CHUNK_META_FILENAME)
     store.upsert([c.chunk_id for c in chunks], vecs,
-                 [{**c.to_meta(), "text": c.text} for c in chunks])
+                 [{**c.to_meta(), "occurrence_id": occ_of.get(c.doc_id) or "",
+                   "text": c.text} for c in chunks])
     store.persist()
     return {"n_chunks": len(chunks), "index": str(store.index_path)}
 
 
 def build_graph(repo: Repository, graph: GraphStore | None = None) -> dict:
-    """Derive claim-scoped nodes and domain-verb edges from resolved entities."""
     graph = graph or get_graph_store()
 
-    entities = repo.table("entities").set_index("entity_id")
+    entities = repo.table("entities")
+    if entities.empty:
+        return {"error": "no resolved entities; run entity_resolution first"}
+    entities = entities.set_index("entity_id")
     members = repo.table("entity_members")
     mentions = repo.table("mentions").set_index("mention_id")
-    docs = repo.table("documents").set_index("doc_id")["claim_id"].to_dict()
-    assertions = repo.table("assertions")
+    docs = repo.table("documents").set_index("doc_id")
+    claim_of = docs["claim_id"].to_dict()
+    occ_of = docs["occurrence_id"].to_dict() if "occurrence_id" in docs.columns else {}
 
-    # entity -> claims it appears on, with a representative mention per claim
-    ent_claims: dict[str, dict[str, dict]] = defaultdict(dict)
+    # entity -> the claims/occurrences it touches, plus provenance per claim
+    ent_claims: dict[str, dict] = defaultdict(dict)
+    ent_occ: dict[str, set] = defaultdict(set)
+    mention_to_entity: dict[str, str] = {}
     for _, r in members.iterrows():
         mid = r["mention_id"]
+        mention_to_entity[mid] = r["entity_id"]
         if mid not in mentions.index:
             continue
         m = mentions.loc[mid]
-        claim = docs.get(m["doc_id"], "UNKNOWN")
-        ent_claims[r["entity_id"]].setdefault(claim, {
-            "doc_id": m["doc_id"], "span": (int(m["char_start"]), int(m["char_end"])),
-        })
+        c = claim_of.get(m["doc_id"], "UNKNOWN")
+        o = occ_of.get(m["doc_id"]) or ""
+        ent_claims[r["entity_id"]].setdefault(
+            c, {"doc_id": m["doc_id"],
+                "span": (int(m["char_start"]), int(m["char_end"]))})
+        if o:
+            ent_occ[r["entity_id"]].add(o)
 
-    # ---- nodes: one per (entity, claim) so every node carries a claim scope --
-    nodes: list[GraphNode] = []
+    nodes, edges = [], []
+
+    # ---- party / organization nodes (one per ENTITY, spanning all claims) ---
     for eid, claims in ent_claims.items():
         if eid not in entities.index:
             continue
         ent = entities.loc[eid]
-        for claim in claims:
-            nodes.append(GraphNode(
-                node_id=eid, claim_id=claim,
-                label=ent["entity_class"], name=ent["canonical_name"] or eid,
-                description=f"{ent['entity_class']} on claim {claim}",
-                attrs={"n_mentions": int(ent["n_mentions"])},
-            ))
-    graph.upsert_nodes(nodes)
+        kind = "organization" if ent["entity_class"] in ORG_CLASSES else "party"
+        nodes.append(GraphNode(
+            node_id=eid, kind=kind, label=ent["entity_class"],
+            name=ent["canonical_name"] or eid,
+            claim_ids=set(claims), occurrence_ids=set(ent_occ.get(eid, ())),
+            attrs={"n_mentions": int(ent["n_mentions"])}))
 
-    # ---- edges --------------------------------------------------------------
-    edges: list[GraphEdge] = []
-    by_claim: dict[str, list[str]] = defaultdict(list)
+    # ---- containment: claim + occurrence -----------------------------------
+    claims_seen = {c for cs in ent_claims.values() for c in cs}
+    for c in claims_seen:
+        nodes.append(GraphNode(node_id=f"CLAIM::{c}", kind="claim", name=c,
+                               claim_ids={c}))
+    occ_claims = defaultdict(set)
+    for d, c in claim_of.items():
+        o = occ_of.get(d)
+        if o:
+            occ_claims[o].add(c)
+    for o, cs in occ_claims.items():
+        nodes.append(GraphNode(node_id=f"OCC::{o}", kind="occurrence", name=o,
+                               claim_ids=set(cs), occurrence_ids={o}))
+        for c in cs:
+            edges.append(GraphEdge(src=f"CLAIM::{c}", dst=f"OCC::{o}",
+                                   predicate="PART_OF", claim_id=c, occurrence_id=o))
+
+    for eid, claims in ent_claims.items():
+        for c, prov in claims.items():
+            edges.append(GraphEdge(src=eid, dst=f"CLAIM::{c}", predicate="PARTY_TO",
+                                   claim_id=c, doc_id=prov["doc_id"],
+                                   span=prov["span"]))
+
+    # ---- role edges, anchored on the claimant of each claim ----------------
+    by_claim = defaultdict(list)
     for eid, claims in ent_claims.items():
         for c in claims:
             by_claim[c].append(eid)
-
-    for claim, eids in by_claim.items():
-        claimants = [e for e in eids if e in entities.index
-                     and entities.loc[e]["entity_class"] == "claimant"]
-        anchor = claimants[0] if claimants else None
+    for c, eids in by_claim.items():
+        anchors = [e for e in eids
+                   if e in entities.index and entities.loc[e]["entity_class"] == "claimant"]
+        anchor = anchors[0] if anchors else None
+        if not anchor:
+            continue
         for eid in eids:
-            if eid not in entities.index:
+            if eid == anchor or eid not in entities.index:
                 continue
-            cls = entities.loc[eid]["entity_class"]
-            prov = ent_claims[eid][claim]
-            # PARTY_TO: every resolved entity is a party to the claim it appears on
-            edges.append(GraphEdge(src=eid, dst=f"CLAIM::{claim}", predicate="PARTY_TO",
-                                   claim_id=claim, doc_id=prov["doc_id"], span=prov["span"]))
-            pred = ROLE_PREDICATE.get(cls)
-            if pred and anchor and eid != anchor:
-                edges.append(GraphEdge(src=anchor, dst=eid, predicate=pred, claim_id=claim,
-                                       doc_id=prov["doc_id"], span=prov["span"], confidence=0.9))
-        # the claim node itself
-        graph.upsert_nodes([GraphNode(node_id=f"CLAIM::{claim}", claim_id=claim,
-                                      label="claim", name=claim,
-                                      description=f"claim file {claim}")])
+            pred = ROLE_PREDICATE.get(entities.loc[eid]["entity_class"])
+            if pred:
+                prov = ent_claims[eid][c]
+                edges.append(GraphEdge(src=anchor, dst=eid, predicate=pred, claim_id=c,
+                                       doc_id=prov["doc_id"], span=prov["span"],
+                                       confidence=0.9))
 
-    # ---- allegation + shared-identifier edges (within claim scope) ----------
-    grounded = assertions[assertions["grounded"] == 1]
-    mention_to_entity = {r["mention_id"]: r["entity_id"] for _, r in members.iterrows()}
+    # ---- identifier nodes: first-class, including orphans -------------------
+    n_orphan_edges = 0
+    try:
+        obs = repo.table("identifier_observations")
+    except Exception:
+        obs = None
+    if obs is not None and not obs.empty:
+        for _, o in obs.iterrows():
+            val = o["value_norm"] or o["value_raw"]
+            if not val:
+                continue
+            nid = f"ID::{o['kind']}::{val}"
+            c = claim_of.get(o["doc_id"], "UNKNOWN")
+            oc = occ_of.get(o["doc_id"]) or ""
+            nodes.append(GraphNode(node_id=nid, kind="identifier", label=o["kind"],
+                                   name=str(o["value_raw"]), claim_ids={c},
+                                   occurrence_ids={oc} if oc else set()))
+            subj = o["subject_mention_id"]
+            eid = mention_to_entity.get(subj) if subj else None
+            if eid:
+                edges.append(GraphEdge(
+                    src=eid, dst=nid, predicate="HAS_IDENTIFIER", claim_id=c,
+                    occurrence_id=oc, doc_id=o["doc_id"],
+                    span=(int(o["char_start"]), int(o["char_end"])),
+                    confidence=0.95 if o["validated"] else 0.7))
+            else:
+                # orphan: no name bound. It still connects to the claim, which is
+                # what lets a later query attribute it through the identifier.
+                edges.append(GraphEdge(
+                    src=nid, dst=f"CLAIM::{c}", predicate="OBSERVED_ON", claim_id=c,
+                    occurrence_id=oc, doc_id=o["doc_id"],
+                    span=(int(o["char_start"]), int(o["char_end"])),
+                    confidence=0.6))
+                n_orphan_edges += 1
 
-    alleg_n = 0
-    for _, a in grounded[grounded["predicate"] == "allegation"].iterrows():
-        eid = mention_to_entity.get(a["subject_mention_id"])
-        if not eid:
-            continue
-        claim = docs.get(a["source_doc_id"], "UNKNOWN")
-        if claim not in ent_claims.get(eid, {}):
-            continue
-        node_id = f"ALLEG::{a['assertion_id']}"
-        graph.upsert_nodes([GraphNode(node_id=node_id, claim_id=claim, label="allegation",
-                                      name=(a["object_value_raw"] or "")[:120],
-                                      description="allegation (segregated from fact)")])
-        edges.append(GraphEdge(src=eid, dst=node_id, predicate="ALLEGES", claim_id=claim,
-                               doc_id=a["source_doc_id"],
-                               span=(int(a["source_span_start"]), int(a["source_span_end"])),
-                               polarity="alleged", confidence=0.7))
-        alleg_n += 1
-
-    # shared identifier / address links, emitted only inside a shared claim scope
-    ident_index: dict[tuple, set] = defaultdict(set)
-    for _, a in grounded.iterrows():
-        eid = mention_to_entity.get(a["subject_mention_id"])
-        if not eid:
-            continue
-        p = a["predicate"]
-        if p in ("has_email", "has_phone", "has_npi", "has_tin", "has_ssn"):
-            ident_index[(p, a["object_value_norm"])].add(eid)
-        elif p == "has_address":
-            k = textnorm.address_key(a["object_value_raw"] or "")
-            if k:
-                ident_index[("addr", k)].add(eid)
-
-    # Shared identifiers link entities that are usually on DIFFERENT claims (a
-    # phoenix shop, one attorney across many files). Emitting those inside a
-    # claim scope would breach the boundary, so they go to the reserved
-    # cross-claim scope, reachable only via graph.cross_claim_links(authorized=True).
-    shared_same_claim = 0
-    shared_cross_claim = 0
-    for (kind, val), eids in ident_index.items():
-        if len(eids) < 2:
-            continue
-        eids = sorted(eids)
-        pred = ("SHARES_ADDRESS_WITH" if kind == "addr"
-                else "SHARES_PHONE_WITH" if kind == "has_phone"
-                else "SHARES_IDENTIFIER_WITH")
-        for i in range(len(eids)):
-            for j in range(i + 1, len(eids)):
-                a_, b_ = eids[i], eids[j]
-                claims_a = set(ent_claims.get(a_, {}))
-                claims_b = set(ent_claims.get(b_, {}))
-                common = claims_a & claims_b
-                for claim in common:
-                    prov = ent_claims[a_][claim]
-                    edges.append(GraphEdge(src=a_, dst=b_, predicate=pred, claim_id=claim,
-                                           doc_id=prov["doc_id"], span=prov["span"],
-                                           confidence=0.8))
-                    shared_same_claim += 1
-                if claims_a - common and claims_b - common:
-                    prov = ent_claims[a_][sorted(claims_a)[0]]
-                    edges.append(GraphEdge(src=a_, dst=b_, predicate=pred,
-                                           claim_id=CROSS_CLAIM_SCOPE,
-                                           doc_id=prov["doc_id"], span=prov["span"],
-                                           confidence=0.8))
-                    shared_cross_claim += 1
-                    for nid in (a_, b_):
-                        if nid in entities.index:
-                            graph.upsert_nodes([GraphNode(
-                                node_id=nid, claim_id=CROSS_CLAIM_SCOPE,
-                                label=entities.loc[nid]["entity_class"],
-                                name=entities.loc[nid]["canonical_name"] or nid,
-                                description="cross-claim network node")])
-
+    graph.upsert_nodes(nodes)
     graph.upsert_edges(edges)
     graph.persist()
     st = graph.stats()
-    st.update({"n_allegation_edges": alleg_n,
-               "n_shared_same_claim": shared_same_claim,
-               "n_shared_cross_claim": shared_cross_claim})
+    st["n_orphan_identifier_edges"] = n_orphan_edges
+    st["hubs"] = graph.hub_nodes(5) if hasattr(graph, "hub_nodes") else []
     return st
 
 
 def run(repo: Repository) -> dict:
-    idx = build_chunk_index(repo)
-    g = build_graph(repo)
-    return {"chunk_index": idx, "graph": g}
+    return {"chunk_index": build_chunk_index(repo), "graph": build_graph(repo)}

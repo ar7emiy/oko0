@@ -84,6 +84,12 @@ class Repository:
     def add_assertions(self, rows) -> int:
         return self._insert("assertions", self._as_dicts(rows))
 
+    def add_same_as_edges(self, rows) -> int:
+        return self._insert("same_as_edges", self._as_dicts(rows))
+
+    def add_entity_snapshot(self, rows) -> int:
+        return self._insert("entity_snapshot", self._as_dicts(rows))
+
     def add_identifier_observations(self, rows) -> int:
         return self._insert("identifier_observations", self._as_dicts(rows))
 

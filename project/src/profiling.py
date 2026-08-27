@@ -20,6 +20,7 @@ from .repository import Repository
 from .settings import CFG, Paths
 
 CLAIM_RE = re.compile(r"\bCLM\d{4}\b")
+OCC_RE = re.compile(r"\bOCC\d{4}\b")
 CATEGORY_HEADER_RE = re.compile(r"^\[([A-Z_]+)\]")
 LABEL_RE = re.compile(r"^\s*([A-Za-z][A-Za-z0-9 ._#/&-]{0,40})\s*[:=]\s|^\s*([A-Za-z][A-Za-z0-9 ._#/&]{0,40})\s+-\s")
 EMAIL_HEADER_RE = re.compile(r"^\s*(From|Sent|To|Cc|Bcc|Subject|Date)\s*:", re.I)
@@ -39,19 +40,35 @@ CATEGORY_KEYWORDS = {
 }
 
 
+def _doc_index() -> dict:
+    """Structural note->claim/occurrence metadata from the source system.
+
+    Not ground truth: a real claim system always knows which file a note was
+    filed on. Entity identity is what must be inferred from text.
+    """
+    import json
+    p = Paths.data / "doc_index.json"
+    return json.loads(p.read_text()) if p.exists() else {}
+
+
 def ingest_documents(repo: Repository) -> int:
+    idx = _doc_index()
     rows = []
     for f in sorted(Paths.raw_notes.glob("*.txt")):
         text = f.read_text()
         doc_id = f.stem
+        meta = idx.get(doc_id, {})
         m = CLAIM_RE.search(text)
-        claim_id = m.group(0) if m else "UNKNOWN"
+        claim_id = meta.get("claim_id") or (m.group(0) if m else "UNKNOWN")
+        mo = OCC_RE.search(text)
+        occurrence_id = meta.get("occurrence_id") or (mo.group(0) if mo else None)
         stored = ""
         mh = CATEGORY_HEADER_RE.match(text)
         if mh:
             stored = mh.group(1).lower()
         rows.append({
             "doc_id": doc_id, "claim_id": claim_id,
+            "occurrence_id": occurrence_id,
             "category": stored or None,
             "category_implied": classify_category(text),
             "n_chars": len(text), "seq_in_claim": None, "created_ts": None,

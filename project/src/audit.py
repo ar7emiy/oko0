@@ -341,6 +341,45 @@ def cluster_quality(repo: Repository, mention_gold: dict) -> dict:
     }
 
 
+def bcubed_sweep(repo: Repository, mention_gold: dict,
+                 thresholds=None) -> dict:
+    """B-cubed at every threshold, because identity is a threshold-derived view.
+
+    A single B-cubed number is misleading under this architecture: the same
+    stored edges yield different partitions at different read thresholds. The
+    operating point should be chosen from this curve, not assumed.
+    """
+    from .settings import CFG
+    from . import entity_resolution as er
+    thresholds = thresholds or CFG.ER_THRESHOLD_SWEEP
+    edges = repo.table("same_as_edges")
+    if edges.empty:
+        return {"available": False}
+    live = edges[edges["suppressed_reason"].isna()].rename(
+        columns={"mention_id_a": "mention_id_l", "mention_id_b": "mention_id_r",
+                 "probability": "match_probability"})
+    mention_ids = repo.table("mentions")["mention_id"].tolist()
+
+    rows = []
+    for t in thresholds:
+        labels = er.cluster_at(live, mention_ids, t)
+        by_pred, by_gold = defaultdict(list), defaultdict(list)
+        items = [(m, g, labels[m]) for m, g in mention_gold.items() if m in labels]
+        for m, g, p in items:
+            by_pred[p].append(g)
+            by_gold[g].append(p)
+        if not items:
+            continue
+        bp = sum(by_pred[p].count(g) / len(by_pred[p]) for _, g, p in items) / len(items)
+        br = sum(by_gold[g].count(p) / len(by_gold[g]) for _, g, p in items) / len(items)
+        f1 = (2 * bp * br / (bp + br)) if (bp + br) else 0.0
+        rows.append({"threshold": t, "n_entities": len(set(labels.values())),
+                     "bcubed_precision": round(bp, 4), "bcubed_recall": round(br, 4),
+                     "bcubed_f1": round(f1, 4)})
+    best = max(rows, key=lambda r: r["bcubed_f1"]) if rows else None
+    return {"available": True, "curve": rows, "best_by_f1": best}
+
+
 def entity_mapping(repo: Repository, manifest: dict, mention_gold: dict) -> dict:
     members = repo.table("entity_members")
     m2e = {r["mention_id"]: r["entity_id"] for _, r in members.iterrows()} if not members.empty else {}

@@ -136,7 +136,24 @@ GENAI_CACHE_ENABLED = True                  # cache keyed by (model, prompt_hash
 EMBED_TOPK = 50                             # class-filtered embedding candidate pass
 VECTOR_METRIC = "ip"                        # IndexFlatIP (vectors are L2-normalized -> cosine)
 
-# ---- Resolution thresholds / bands ------------------------------------------
+# ---- Layer 2 entity resolution (Splink) --------------------------------------
+# Identity is a THRESHOLD-DERIVED VIEW over probability-weighted SAME_AS edges,
+# not a stored merge. This is the operating point; the audit reports the whole
+# precision/recall curve across thresholds rather than this single number.
+# Chosen FROM THE MEASURED B-cubed CURVE (audit.bcubed_sweep), not assumed.
+# The curve is flat across 0.30-0.60 (F1 0.813-0.837); we operate at 0.45
+# (P 0.818 / R 0.833, F1 0.825) rather than the F1 max at 0.60 (F1 0.837)
+# because the product goal is not missing connections, and the lower threshold
+# yields an entity count closer to truth. At the intuitive 0.90 precision is
+# 0.997 but recall collapses to 0.106 -- the true-match probability mass sits
+# in 0.5-0.9, which is exactly why identity is a threshold-derived view.
+ER_LINK_THRESHOLD = 0.45
+# Assumed recall of the deterministic rules used to estimate the match prior.
+# Splink's 1e-4 default is far off for a corpus where entities recur heavily.
+ER_DETERMINISTIC_RECALL = 0.7
+ER_THRESHOLD_SWEEP = (0.30, 0.40, 0.45, 0.50, 0.55, 0.60, 0.70, 0.80, 0.90)
+
+# ---- Legacy resolver thresholds (superseded by Splink) ----------------------
 RES_LOW_BAND = 0.30                         # below -> auto no-link
 RES_HIGH_BAND = 0.90                        # above -> auto link
 RES_ADJUDICATE_LOW = 0.45                   # [low, high] ambiguous band -> adjudicator

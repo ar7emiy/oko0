@@ -1,24 +1,33 @@
-"""Layer 3: scoped knowledge graph (dual storage, half 2).
+"""Layer 3: the entity graph.
 
-Every node and every edge MUST carry a `claim_id`. That single property is what
-makes Layer 4's hard scope filter possible: an agent scoped to CLAIM_123 is
-physically unable to traverse into another claim's subgraph, because the
-traversal frontier is filtered on claim_id at every hop.
+THREE CORRECTIONS FROM THE FIRST BUILD
+--------------------------------------
+1. **Identity is global, not claim-partitioned.** The first version partitioned
+   adjacency by claim_id so a traversal physically could not leave a claim. That
+   was the wrong boundary: a person is the same person across every claim in the
+   corpus, and cross-claim linkage is the point of the system, not a hazard.
+   `claim_id` and `occurrence_id` are now node/edge PROPERTIES and containment
+   edges. Claim scoping is a QUERY-TIME FILTER, which is what the RAG path needs.
 
-GRAPH DENSITY CONTROL: the predicate schema is a whitelist of domain-specific
-verbs (CFG.GRAPH_PREDICATES). Generic edges (MENTIONED_IN, HAS_NOTE,
-RELATED_TO, ASSOCIATED_WITH) are REJECTED at insert time -- dense generic edges
-turn the graph into a "hairy ball" that dilutes retrieval precision.
+2. **Cross-claim edges are ordinary edges.** The first version quarantined them
+   behind an authorization gate. Removed: cross-claim linkage is axiomatic here.
 
-Every edge carries provenance (doc_id + char span) so a fact surfaced through
-the graph can be traced back to the exact characters that asserted it.
+3. **Predicates are an OPEN vocabulary.** The first version enforced a
+   whitelist of four role verbs, which silently dropped or force-fit everything
+   else (witnessed, referred, co_counsel, supervises, subcontracts_to,
+   opposing_counsel, ...). Now any predicate is accepted; only bulk
+   provenance-as-edge is rejected, and a normalization map folds surface forms
+   toward canonical types over time.
+
+Density is controlled by confidence and hub down-weighting, not by banning edge
+types. Every edge carries a probability and a doc_id + char span.
 """
 from __future__ import annotations
 
-import json
 import pickle
+import re
 from abc import ABC, abstractmethod
-from collections import defaultdict
+from collections import Counter, defaultdict
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
@@ -27,81 +36,97 @@ import igraph as ig
 from .settings import CFG, Paths
 
 
-# Reserved scope for links that are inherently CROSS-CLAIM (a repair shop reusing
-# an address under a new TIN; one attorney on many files). These are exactly the
-# fraud/network signals an investigator needs, but surfacing them inside a
-# claim-scoped agent would breach the scope boundary. So they live under this
-# reserved scope and are reachable ONLY through cross_claim_links(), a separate
-# API that the per-claim agent never calls unless explicitly authorized.
-CROSS_CLAIM_SCOPE = "__CROSS_CLAIM__"
-
-
 class PredicateRejected(ValueError):
-    """Raised when an edge uses a banned or non-whitelisted predicate."""
+    """Raised only for bulk provenance-as-edge, never for an unfamiliar verb."""
 
 
-class ScopeViolation(RuntimeError):
-    """Raised when an operation would cross a claim boundary."""
+# ---------------------------------------------------------------------------
+# Node / edge records
+# ---------------------------------------------------------------------------
+NODE_KINDS = ("party", "organization", "identifier", "event", "claim",
+              "occurrence", "allegation")
 
 
 @dataclass
 class GraphNode:
-    node_id: str                 # canonical entity id (from Layer 2 ER)
-    claim_id: str                # MANDATORY scope key
-    label: str                   # entity class
-    name: str
-    description: str = ""
+    node_id: str
+    kind: str                    # one of NODE_KINDS
+    label: str = ""              # entity class / identifier kind / event type
+    name: str = ""
+    claim_ids: set = field(default_factory=set)
+    occurrence_ids: set = field(default_factory=set)
     attrs: dict = field(default_factory=dict)
+
+    def to_dict(self):
+        d = asdict(self)
+        d["claim_ids"] = sorted(self.claim_ids)
+        d["occurrence_ids"] = sorted(self.occurrence_ids)
+        return d
 
 
 @dataclass
 class GraphEdge:
     src: str
     dst: str
-    predicate: str               # must be in CFG.GRAPH_PREDICATES
-    claim_id: str                # MANDATORY scope key
-    doc_id: str = ""             # provenance
+    predicate: str
+    claim_id: str = ""           # property, NOT a partition key
+    occurrence_id: str = ""
+    doc_id: str = ""
     span: tuple = (0, 0)
     confidence: float = 1.0
     polarity: str = "asserted"
 
 
-def validate_predicate(predicate: str) -> str:
-    p = (predicate or "").upper()
-    if p in {b.upper() for b in CFG.GRAPH_BANNED_PREDICATES}:
-        raise PredicateRejected(
-            f"predicate {p!r} is banned (generic edges dilute retrieval precision); "
-            f"use one of {CFG.GRAPH_PREDICATES}")
-    if p not in {x.upper() for x in CFG.GRAPH_PREDICATES}:
-        raise PredicateRejected(
-            f"predicate {p!r} is not in the restricted domain schema {CFG.GRAPH_PREDICATES}")
-    return p
+# ---------------------------------------------------------------------------
+# Predicate handling -- open vocabulary
+# ---------------------------------------------------------------------------
+# Bulk provenance is not a relationship: it is already carried as doc_id + span
+# properties on every real edge, and as an edge to the claim node. Emitting it
+# as its own edge type is what produces an unnavigable "hairy ball".
+BANNED_PREDICATES = {"MENTIONED_IN", "HAS_NOTE", "APPEARS_IN", "REFERENCED_BY"}
+
+# Surface forms folded toward a canonical type. This grows into a taxonomy;
+# anything not listed passes through unchanged rather than being dropped.
+PREDICATE_NORMALIZATION = {
+    "WENT_TO": "TREATED_BY", "WAS_SEEN_AT": "TREATED_BY", "VISITED": "TREATED_BY",
+    "SEEN_BY": "TREATED_BY", "TREATS": "TREATED_BY",
+    "REPRESENTS": "REPRESENTED_BY", "COUNSEL_FOR": "REPRESENTED_BY",
+    "REPAIRS": "REPAIRED_BY", "FIXED": "REPAIRED_BY",
+    "ADJUSTS": "ADJUSTED_BY", "HANDLED_BY": "ADJUSTED_BY",
+    "WORKS_FOR": "EMPLOYED_BY", "EMPLOYED_AT": "EMPLOYED_BY",
+}
 
 
+def normalize_predicate(predicate: str) -> str:
+    """Fold a surface predicate toward its canonical form.
+
+    Unknown predicates pass through: an open vocabulary is the point. A closed
+    set drops real relationships or force-fits them into the wrong semantics.
+    """
+    p = re.sub(r"\s+", "_", (predicate or "").strip()).upper()
+    if p in BANNED_PREDICATES:
+        raise PredicateRejected(
+            f"{p!r} is bulk provenance, not a relationship -- it is already "
+            "carried as doc_id + span on every edge")
+    return PREDICATE_NORMALIZATION.get(p, p)
+
+
+# ---------------------------------------------------------------------------
+# Interface
+# ---------------------------------------------------------------------------
 class GraphStore(ABC):
-    """Abstract claim-scoped knowledge graph.
+    """Global entity graph.
 
-    Contract every implementation must honor:
-      - upsert_nodes / upsert_edges: reject any node or edge lacking a claim_id,
-        and reject any predicate outside the whitelist.
-      - neighbors(node_ids, hops, claim_id): breadth-limited expansion that never
-        leaves `claim_id`. Must return the triples traversed, with provenance.
-      - subgraph(claim_id): everything inside one claim.
-      - persist / load.
+    Contract:
+      - upsert_nodes / upsert_edges: accept any predicate except bulk
+        provenance; normalize surface forms; carry confidence + provenance.
+      - neighbors(node_ids, hops, claim_id=None): breadth-limited expansion over
+        the GLOBAL graph. `claim_id` is an optional filter, not a wall -- pass it
+        to answer "within this claim", omit it to follow an entity anywhere.
+      - subgraph(claim_id) / persist / load.
 
-    ---------------------------------------------------------------------------
-    To swap in Neo4j (Neo4jGraphStore), implement the same five methods:
-      * upsert_nodes -> MERGE (n:Entity {node_id}) SET n.claim_id = $claim_id ...
-        with an index on (claim_id, node_id).
-      * upsert_edges -> MERGE (a)-[r:PREDICATE {claim_id}]->(b) after running the
-        same validate_predicate() check.
-      * neighbors    -> MATCH p=(a)-[*1..hops]-(b) WHERE a.node_id IN $ids AND
-        ALL(r IN relationships(p) WHERE r.claim_id = $claim_id) -- the claim_id
-        predicate MUST be inside the traversal, not a post-filter, or the scope
-        boundary is unenforced.
-      * subgraph / persist -> label-scoped MATCH and no-op respectively.
-    Nothing in Layer 4 changes.
-    ---------------------------------------------------------------------------
+    To swap in Neo4j: implement these methods with (claim_id) as an indexed
+    property and an optional WHERE clause, NOT as a partition or label.
     """
 
     @abstractmethod
@@ -111,7 +136,9 @@ class GraphStore(ABC):
     def upsert_edges(self, edges: list[GraphEdge]) -> int: ...
 
     @abstractmethod
-    def neighbors(self, node_ids: list[str], hops: int, claim_id: str) -> list[dict]: ...
+    def neighbors(self, node_ids: list[str], hops: int,
+                  claim_id: str | None = None,
+                  min_confidence: float = 0.0) -> list[dict]: ...
 
     @abstractmethod
     def subgraph(self, claim_id: str) -> dict: ...
@@ -124,71 +151,64 @@ class GraphStore(ABC):
 
 
 class IGraphStore(GraphStore):
-    """igraph-backed implementation with claim_id-partitioned adjacency."""
+    """In-memory global graph with a single adjacency index."""
 
     def __init__(self, path: Path | None = None):
         self.path = Path(path or (Paths.store / CFG.GRAPH_FILENAME))
         self._nodes: dict[str, GraphNode] = {}
         self._edges: list[GraphEdge] = []
-        # adjacency partitioned by claim so traversal cannot leak across claims
-        self._adj: dict[str, dict[str, list[int]]] = defaultdict(lambda: defaultdict(list))
+        self._adj: dict[str, list[int]] = defaultdict(list)   # GLOBAL, not per-claim
 
     # ---- writes ----------------------------------------------------------
     def upsert_nodes(self, nodes: list[GraphNode]) -> int:
-        n = 0
         for nd in nodes:
-            if not nd.claim_id:
-                raise ScopeViolation(f"node {nd.node_id!r} has no claim_id; every node must be scoped")
-            key = self._nkey(nd.node_id, nd.claim_id)
-            self._nodes[key] = nd
-            n += 1
-        return n
+            cur = self._nodes.get(nd.node_id)
+            if cur is None:
+                self._nodes[nd.node_id] = nd
+            else:
+                cur.claim_ids |= nd.claim_ids
+                cur.occurrence_ids |= nd.occurrence_ids
+                cur.attrs.update(nd.attrs)
+                if nd.name and not cur.name:
+                    cur.name = nd.name
+        return len(nodes)
 
     def upsert_edges(self, edges: list[GraphEdge]) -> int:
         n = 0
         for e in edges:
-            if not e.claim_id:
-                raise ScopeViolation(f"edge {e.src}->{e.dst} has no claim_id; every edge must be scoped")
-            e.predicate = validate_predicate(e.predicate)
+            e.predicate = normalize_predicate(e.predicate)
             idx = len(self._edges)
             self._edges.append(e)
-            self._adj[e.claim_id][e.src].append(idx)
-            self._adj[e.claim_id][e.dst].append(idx)   # undirected traversal, directed semantics
+            self._adj[e.src].append(idx)
+            self._adj[e.dst].append(idx)
             n += 1
         return n
 
-    @staticmethod
-    def _nkey(node_id: str, claim_id: str) -> str:
-        return f"{claim_id}::{node_id}"
-
     # ---- reads -----------------------------------------------------------
-    def neighbors(self, node_ids: list[str], hops: int, claim_id: str) -> list[dict]:
-        """BFS up to `hops`, never leaving `claim_id`.
+    def neighbors(self, node_ids: list[str], hops: int,
+                  claim_id: str | None = None,
+                  min_confidence: float = 0.0) -> list[dict]:
+        """BFS over the global graph.
 
-        The claim filter is applied to the ADJACENCY ITSELF (we only ever read
-        self._adj[claim_id]), so an edge belonging to another claim is not merely
-        filtered out of the result -- it is unreachable.
+        `claim_id` filters which edges may be traversed; omitting it follows an
+        entity across every claim and occurrence in the corpus, which is the
+        whole point of a global identity graph.
         """
-        if not claim_id:
-            raise ScopeViolation("neighbors() requires a claim_id scope")
-        if claim_id == CROSS_CLAIM_SCOPE:
-            raise ScopeViolation(
-                "cross-claim links are not traversable through neighbors(); "
-                "use cross_claim_links() which is separately authorized")
-        adj = self._adj.get(claim_id, {})
         seen_edges: set[int] = set()
-        frontier = {nid for nid in node_ids}
+        frontier = set(node_ids)
         visited = set(frontier)
-        triples: list[dict] = []
+        triples = []
         for _ in range(max(0, hops)):
             nxt = set()
             for nid in frontier:
-                for ei in adj.get(nid, []):
+                for ei in self._adj.get(nid, []):
                     if ei in seen_edges:
                         continue
                     seen_edges.add(ei)
                     e = self._edges[ei]
-                    if e.claim_id != claim_id:          # defense in depth
+                    if claim_id is not None and e.claim_id != claim_id:
+                        continue
+                    if e.confidence < min_confidence:
                         continue
                     triples.append(self._triple(e))
                     for other in (e.src, e.dst):
@@ -201,86 +221,100 @@ class IGraphStore(GraphStore):
         return triples
 
     def _triple(self, e: GraphEdge) -> dict:
-        s = self._nodes.get(self._nkey(e.src, e.claim_id))
-        d = self._nodes.get(self._nkey(e.dst, e.claim_id))
+        s, d = self._nodes.get(e.src), self._nodes.get(e.dst)
         return {
             "subject_id": e.src, "subject": s.name if s else e.src,
-            "subject_class": s.label if s else "?",
+            "subject_kind": s.kind if s else "?",
             "predicate": e.predicate,
             "object_id": e.dst, "object": d.name if d else e.dst,
-            "object_class": d.label if d else "?",
-            "claim_id": e.claim_id, "doc_id": e.doc_id,
-            "span": list(e.span), "confidence": e.confidence, "polarity": e.polarity,
+            "object_kind": d.kind if d else "?",
+            "claim_id": e.claim_id, "occurrence_id": e.occurrence_id,
+            "doc_id": e.doc_id, "span": list(e.span),
+            "confidence": e.confidence, "polarity": e.polarity,
         }
 
     def subgraph(self, claim_id: str) -> dict:
-        if not claim_id:
-            raise ScopeViolation("subgraph() requires a claim_id scope")
-        nodes = [asdict(n) for k, n in self._nodes.items() if n.claim_id == claim_id]
+        nodes = [n.to_dict() for n in self._nodes.values() if claim_id in n.claim_ids]
         edges = [self._triple(e) for e in self._edges if e.claim_id == claim_id]
         return {"claim_id": claim_id, "nodes": nodes, "edges": edges}
 
-    def cross_claim_links(self, node_ids: list[str], authorized: bool = False) -> list[dict]:
-        """Cross-claim network links (shared address / phone / identifier).
+    def cross_claim_links(self, node_ids: list[str],
+                          min_confidence: float = 0.0) -> list[dict]:
+        """Edges connecting a node to entities on OTHER claims.
 
-        SEPARATELY AUTHORIZED. The per-claim retrieval agent must never call this
-        with authorized=True unless the caller holds cross-claim investigation
-        rights; a claim-scoped session cannot reach these edges via neighbors().
-        Returns the links plus, for each, the claims each endpoint touches.
+        An ordinary read. No authorization gate: cross-claim linkage is the
+        system's purpose, and quarantining it behind a permission check made the
+        fraud/network signal unreachable by the very queries that need it.
         """
-        if not authorized:
-            raise ScopeViolation(
-                "cross_claim_links() requires authorized=True (cross-claim "
-                "investigation scope); claim-scoped agents may not call it")
         ids = set(node_ids)
         out = []
         for e in self._edges:
-            if e.claim_id != CROSS_CLAIM_SCOPE:
+            if e.confidence < min_confidence:
                 continue
             if e.src in ids or e.dst in ids:
-                t = self._triple(e)
-                t["claims_of_subject"] = sorted(self._claims_of(e.src))
-                t["claims_of_object"] = sorted(self._claims_of(e.dst))
-                out.append(t)
+                other = e.dst if e.src in ids else e.src
+                nd = self._nodes.get(other)
+                mine = self._nodes.get(e.src if e.src in ids else e.dst)
+                if nd and mine and (nd.claim_ids - mine.claim_ids):
+                    t = self._triple(e)
+                    t["other_claims"] = sorted(nd.claim_ids - mine.claim_ids)
+                    out.append(t)
         return out
 
-    def _claims_of(self, node_id: str) -> set:
-        return {n.claim_id for n in self._nodes.values()
-                if n.node_id == node_id and n.claim_id != CROSS_CLAIM_SCOPE}
+    def node(self, node_id: str) -> GraphNode | None:
+        return self._nodes.get(node_id)
 
-    def node(self, node_id: str, claim_id: str) -> GraphNode | None:
-        return self._nodes.get(self._nkey(node_id, claim_id))
-
-    def claim_ids(self) -> list[str]:
-        return sorted({n.claim_id for n in self._nodes.values()})
+    def find_by_identifier(self, kind: str, value_norm: str) -> list[dict]:
+        """Everything ever associated with an identifier -- the 'address with no
+        name' query, as a direct lookup."""
+        nid = f"ID::{kind}::{value_norm}"
+        if nid not in self._nodes:
+            return []
+        return self.neighbors([nid], hops=1)
 
     def stats(self) -> dict:
-        from collections import Counter
         return {
-            "n_nodes": len(self._nodes), "n_edges": len(self._edges),
-            "n_claims": len(self.claim_ids()),
+            "n_nodes": len(self._nodes),
+            "n_edges": len(self._edges),
+            "node_kinds": dict(Counter(n.kind for n in self._nodes.values())),
             "predicates": dict(Counter(e.predicate for e in self._edges)),
-            "avg_edges_per_claim": round(len(self._edges) / max(1, len(self.claim_ids())), 2),
+            "n_claims": len({c for n in self._nodes.values() for c in n.claim_ids}),
+            "n_occurrences": len({o for n in self._nodes.values() for o in n.occurrence_ids}),
         }
 
-    def to_igraph(self, claim_id: str) -> ig.Graph:
-        """Materialize one claim's subgraph as an igraph object for analytics."""
-        sub = self.subgraph(claim_id)
-        ids = [n["node_id"] for n in sub["nodes"]]
+    def to_igraph(self) -> ig.Graph:
+        ids = list(self._nodes)
         idx = {v: i for i, v in enumerate(ids)}
         g = ig.Graph(n=len(ids), directed=True)
         g.vs["node_id"] = ids
-        g.vs["name_"] = [n["name"] for n in sub["nodes"]]
-        g.vs["label_"] = [n["label"] for n in sub["nodes"]]
+        g.vs["kind"] = [self._nodes[i].kind for i in ids]
         es, preds = [], []
-        for e in sub["edges"]:
-            if e["subject_id"] in idx and e["object_id"] in idx:
-                es.append((idx[e["subject_id"]], idx[e["object_id"]]))
-                preds.append(e["predicate"])
+        for e in self._edges:
+            if e.src in idx and e.dst in idx:
+                es.append((idx[e.src], idx[e.dst]))
+                preds.append(e.predicate)
         g.add_edges(es)
         if preds:
             g.es["predicate"] = preds
         return g
+
+    def hub_nodes(self, top_n: int = 20) -> list[dict]:
+        """Highest-degree nodes -- the density control surface.
+
+        Hubs are down-weighted at query time rather than removed: a shared office
+        address is real information, it just should not imply that everyone who
+        ever billed from it is the same operation.
+        """
+        deg = Counter()
+        for e in self._edges:
+            deg[e.src] += 1
+            deg[e.dst] += 1
+        out = []
+        for nid, d in deg.most_common(top_n):
+            n = self._nodes.get(nid)
+            out.append({"node_id": nid, "kind": n.kind if n else "?",
+                        "name": n.name if n else nid, "degree": d})
+        return out
 
     # ---- persistence -----------------------------------------------------
     def persist(self) -> None:
@@ -293,16 +327,16 @@ class IGraphStore(GraphStore):
             data = pickle.load(f)
         self._nodes = data["nodes"]
         self._edges = data["edges"]
-        self._adj = defaultdict(lambda: defaultdict(list))
+        self._adj = defaultdict(list)
         for i, e in enumerate(self._edges):
-            self._adj[e.claim_id][e.src].append(i)
-            self._adj[e.claim_id][e.dst].append(i)
+            self._adj[e.src].append(i)
+            self._adj[e.dst].append(i)
 
 
 def get_graph_store(backend: str | None = None) -> GraphStore:
     b = (backend or CFG.GRAPH_BACKEND).lower()
     if b == "neo4j":
         raise NotImplementedError(
-            "Neo4jGraphStore is the production swap; implement GraphStore's five "
-            "methods per the class docstring. Set GRAPH_BACKEND='igraph' to run locally.")
+            "Neo4jGraphStore is the production swap; implement GraphStore's "
+            "methods with claim_id as an indexed PROPERTY, not a partition.")
     return IGraphStore()
