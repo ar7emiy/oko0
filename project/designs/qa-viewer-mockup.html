@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Extraction QA Viewer — Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#F6F7F9; --surface:#FFFFFF; --surface-2:#EDF0F4; --surface-3:#E3E8EF;
+    --ink:#10151C; --ink-2:#4A5666; --ink-3:#6E7A8A;
+    --rule:#D6DCE4; --rule-strong:#B9C2CE;
+    --accent:#B4650A; --accent-soft:#F6E7CE;
+    --steel:#3E5C76; --steel-soft:#E0E8EF;
+    --good:#2F6B4F; --good-soft:#DFEDE5;
+    --alert:#A33A2A; --alert-soft:#F6E0DB;
+    --warn:#9C7B12; --warn-soft:#F5EDCF;
+    --shadow:0 1px 2px rgba(16,21,28,.06), 0 8px 24px -12px rgba(16,21,28,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#0E1218; --surface:#151B24; --surface-2:#1C242F; --surface-3:#232D3A;
+      --ink:#E8ECF2; --ink-2:#A3AEBD; --ink-3:#7C8797;
+      --rule:#2A3441; --rule-strong:#3A4756;
+      --accent:#E9A03C; --accent-soft:#3A2C16;
+      --steel:#7FA5C4; --steel-soft:#1D2A36;
+      --good:#5FBF8F; --good-soft:#16281F;
+      --alert:#E07A63; --alert-soft:#2E1913;
+      --warn:#E3C24C; --warn-soft:#332B10;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0E1218; --surface:#151B24; --surface-2:#1C242F; --surface-3:#232D3A;
+    --ink:#E8ECF2; --ink-2:#A3AEBD; --ink-3:#7C8797;
+    --rule:#2A3441; --rule-strong:#3A4756;
+    --accent:#E9A03C; --accent-soft:#3A2C16;
+    --steel:#7FA5C4; --steel-soft:#1D2A36;
+    --good:#5FBF8F; --good-soft:#16281F;
+    --alert:#E07A63; --alert-soft:#2E1913;
+    --warn:#E3C24C; --warn-soft:#332B10;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+  *{box-sizing:border-box}
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:"Source Serif 4", Georgia, serif;
+    font-size:16px; line-height:1.55; margin:0; padding:0 20px 100px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .col{max-width:920px; margin:0 auto}
+  header.mast{max-width:920px; margin:0 auto; padding:56px 0 32px; border-bottom:1px solid var(--rule)}
+  .eyebrow{
+    font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--accent); margin:0 0 16px;
+  }
+  h1{font-family:Archivo, sans-serif; font-weight:700; font-size:clamp(28px,4.6vw,42px);
+     line-height:1.06; letter-spacing:-.02em; margin:0 0 16px; text-wrap:balance}
+  .standfirst{font-size:17.5px; color:var(--ink-2); margin:0 0 8px; max-width:70ch}
+  .disclaimer{
+    margin-top:20px; padding:12px 14px; border:1px solid var(--rule-strong);
+    border-left:3px solid var(--warn); background:var(--warn-soft); border-radius:2px;
+    font-family:"IBM Plex Mono", monospace; font-size:12px; color:var(--ink-2); line-height:1.6;
+  }
+  section{max-width:920px; margin:0 auto; padding-top:52px}
+  .screen-tag{
+    font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--accent); margin:0 0 8px;
+  }
+  h2{font-family:Archivo, sans-serif; font-weight:600; font-size:23px; letter-spacing:-.01em;
+     margin:0 0 8px}
+  .desc{color:var(--ink-2); font-size:15px; margin:0 0 20px; max-width:70ch}
+  .frame{
+    background:var(--surface); border:1px solid var(--rule); border-radius:6px;
+    box-shadow:var(--shadow); overflow:hidden;
+  }
+  .frame-bar{
+    display:flex; align-items:center; gap:10px; padding:9px 14px;
+    background:var(--surface-2); border-bottom:1px solid var(--rule);
+    font-family:"IBM Plex Mono", monospace; font-size:11.5px; color:var(--ink-2);
+  }
+  .dots{display:flex; gap:5px; margin-right:4px}
+  .dots span{width:8px; height:8px; border-radius:50%; background:var(--rule-strong)}
+  .frame-body{padding:0}
+
+  /* ---- Screen 1: overlay ---- */
+  .qa-top{
+    display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between;
+    padding:12px 18px; border-bottom:1px solid var(--rule); background:var(--surface);
+  }
+  .qa-doc{font-family:"IBM Plex Mono", monospace; font-size:12px; color:var(--ink-2)}
+  .qa-doc b{color:var(--ink); font-weight:600}
+  .chips{display:flex; gap:6px; flex-wrap:wrap}
+  .chip{
+    font-family:"IBM Plex Mono", monospace; font-size:11px; padding:4px 10px; border-radius:12px;
+    border:1px solid var(--rule-strong); color:var(--ink-2); background:var(--surface); cursor:default;
+  }
+  .chip.on{background:var(--steel-soft); color:var(--steel); border-color:var(--steel)}
+  .legend{display:flex; gap:16px; flex-wrap:wrap; padding:10px 18px; font-family:"IBM Plex Mono", monospace;
+           font-size:11px; color:var(--ink-2); border-bottom:1px solid var(--rule); background:var(--surface-2)}
+  .legend .k{display:inline-flex; align-items:center; gap:6px}
+  .swatch{width:12px; height:12px; border-radius:2px; display:inline-block}
+  .qa-split{display:grid; grid-template-columns:1.5fr 1fr}
+  @media (max-width:760px){ .qa-split{grid-template-columns:1fr} }
+  .qa-text{
+    padding:22px 24px; font-size:14.5px; line-height:1.85; border-right:1px solid var(--rule);
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+  }
+  .qa-text mark{border-radius:2px; padding:1px 2px; box-decoration-break:clone}
+  mark.tp{background:var(--good-soft); box-shadow:inset 0 -2px 0 var(--good)}
+  mark.fn{background:var(--alert-soft); box-shadow:inset 0 -2px 0 var(--alert); text-decoration:underline wavy var(--alert)}
+  mark.fp{background:var(--warn-soft); box-shadow:inset 0 -2px 0 var(--warn)}
+  .qa-side{padding:14px 16px; max-height:420px; overflow:auto}
+  .qa-row{
+    border:1px solid var(--rule); border-radius:4px; padding:8px 10px; margin-bottom:8px;
+    font-size:12.5px; background:var(--surface); cursor:default;
+  }
+  .qa-row:hover{border-color:var(--steel)}
+  .qa-row .top{display:flex; justify-content:space-between; align-items:baseline; gap:8px}
+  .qa-row .surf{font-family:"IBM Plex Mono", monospace; font-weight:600; font-size:12.5px}
+  .badge{
+    font-family:"IBM Plex Mono", monospace; font-size:9.5px; text-transform:uppercase;
+    letter-spacing:.06em; padding:1px 6px; border-radius:8px; flex:none;
+  }
+  .badge.tp{background:var(--good-soft); color:var(--good)}
+  .badge.fn{background:var(--alert-soft); color:var(--alert)}
+  .badge.fp{background:var(--warn-soft); color:var(--warn)}
+  .qa-row .meta{font-size:11px; color:var(--ink-3); margin-top:3px}
+  .qa-row .tag{
+    display:inline-block; margin-top:5px; font-size:10.5px; font-family:"IBM Plex Mono", monospace;
+    background:var(--surface-2); border:1px solid var(--rule); border-radius:8px; padding:1px 7px; color:var(--ink-2);
+  }
+
+  /* ---- Screen 2: dedup drill-down ---- */
+  .dd-head{padding:14px 18px; border-bottom:1px solid var(--rule); background:var(--surface)}
+  .dd-head .name{font-family:Archivo,sans-serif; font-weight:600; font-size:16px}
+  .dd-head .sub{font-family:"IBM Plex Mono", monospace; font-size:11.5px; color:var(--ink-2); margin-top:2px}
+  .slider-wrap{padding:16px 18px; background:var(--surface-2); border-bottom:1px solid var(--rule)}
+  .slider-row{display:flex; align-items:center; gap:14px}
+  .slider-row label{font-family:"IBM Plex Mono", monospace; font-size:11.5px; color:var(--ink-2); flex:none}
+  input[type=range]{flex:1; accent-color:var(--accent)}
+  .ticks{display:flex; justify-content:space-between; font-family:"IBM Plex Mono", monospace;
+         font-size:10.5px; color:var(--ink-3); margin-top:6px; padding:0 2px}
+  .tick.active{color:var(--accent); font-weight:600}
+  .dd-stat{
+    margin-top:12px; padding:10px 12px; border:1px solid var(--rule); border-radius:4px;
+    background:var(--surface); font-family:"IBM Plex Mono", monospace; font-size:12px; color:var(--ink);
+  }
+  .dd-stat b{color:var(--accent)}
+  .dd-split{display:grid; grid-template-columns:1fr 1fr}
+  @media (max-width:760px){ .dd-split{grid-template-columns:1fr} }
+  .dd-col{padding:16px 18px}
+  .dd-col:first-child{border-right:1px solid var(--rule)}
+  .dd-col h4{
+    font-family:"IBM Plex Mono", monospace; font-size:11px; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--ink-3); margin:0 0 10px;
+  }
+  .cluster-card{border:1px solid var(--rule); border-radius:4px; padding:8px 10px; margin-bottom:8px; background:var(--surface)}
+  .cluster-card.split{border-color:var(--alert); border-style:dashed}
+  .cluster-card .cid{font-family:"IBM Plex Mono", monospace; font-size:10.5px; color:var(--ink-3); margin-bottom:5px}
+  .mchip{
+    display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:11px; padding:2px 8px;
+    margin:2px 3px 0 0; border-radius:10px; background:var(--steel-soft); color:var(--steel);
+  }
+
+  /* ---- Screen 3: correction form ---- */
+  .cf-context{padding:16px 18px; border-bottom:1px solid var(--rule); font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:14px; line-height:1.8}
+  .cf-body{padding:18px}
+  .cf-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  @media (max-width:760px){ .cf-grid{grid-template-columns:1fr} }
+  .field{display:flex; flex-direction:column; gap:5px}
+  .field label{font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--ink-2); text-transform:uppercase; letter-spacing:.04em}
+  .field select, .field input[type=text], .field textarea{
+    font-family:"Source Serif 4", Georgia, serif; font-size:14px; padding:7px 9px;
+    border:1px solid var(--rule-strong); border-radius:4px; background:var(--surface); color:var(--ink);
+  }
+  .field textarea{resize:vertical; min-height:52px; font-family:"IBM Plex Mono", monospace; font-size:12.5px}
+  .cf-tags{display:flex; gap:8px; flex-wrap:wrap}
+  .cf-tags label{
+    display:flex; align-items:center; gap:5px; font-family:"IBM Plex Mono", monospace; font-size:11px;
+    border:1px solid var(--rule); border-radius:12px; padding:3px 10px; color:var(--ink-2); text-transform:none;
+    letter-spacing:0;
+  }
+  .cf-actions{display:flex; justify-content:space-between; align-items:center; margin-top:16px; gap:10px}
+  .cf-note{font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--ink-3); max-width:48ch}
+  button.primary{
+    font-family:Archivo, sans-serif; font-weight:600; font-size:13px; letter-spacing:.01em;
+    background:var(--accent); color:#fff; border:none; border-radius:4px; padding:9px 16px; cursor:pointer;
+  }
+  button.primary:hover{opacity:.92}
+  .pending{padding:14px 18px; border-top:1px solid var(--rule); background:var(--surface-2)}
+  .pending h4{font-family:"IBM Plex Mono", monospace; font-size:11px; text-transform:uppercase;
+              letter-spacing:.08em; color:var(--ink-3); margin:0 0 10px}
+  .pend-row{
+    display:flex; justify-content:space-between; gap:10px; font-family:"IBM Plex Mono", monospace;
+    font-size:11.5px; padding:7px 0; border-bottom:1px dashed var(--rule); color:var(--ink-2);
+  }
+  .pend-row:last-child{border-bottom:none}
+  .pend-empty{font-family:"IBM Plex Mono", monospace; font-size:11.5px; color:var(--ink-3); font-style:normal}
+
+  figcaption{font-size:13.5px; color:var(--ink-2); margin-top:12px; line-height:1.6; max-width:70ch}
+  figcaption b{
+    font-family:"IBM Plex Mono", monospace; font-size:11px; font-weight:600; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--accent); margin-right:6px;
+  }
+  footer{max-width:920px; margin:64px auto 0; padding-top:24px; border-top:1px solid var(--rule);
+         font-family:"IBM Plex Mono", monospace; font-size:11.5px; color:var(--ink-3)}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <p class="eyebrow">Design sketch · not implemented</p>
+  <h1>Extraction QA viewer — three sample screens</h1>
+  <p class="standfirst">
+    A mockup of the workflow described earlier: overlay ground truth against what the
+    pipeline extracted, drill into how mentions cluster into entities at a given
+    resolution threshold, and correct a ground-truth label without touching the sealed
+    manifest. Static, with the threshold slider and correction queue wired up in
+    client-side JS against canned sample data — everything else is a picture of the
+    intended interaction, not a live view over a real run.
+  </p>
+  <div class="disclaimer">
+    None of this reads real pipeline output. Sample doc text, spans, and cluster
+    memberships below are illustrative, written to match the shapes described in
+    ARCHITECTURE.md — not pulled from data/ground_truth or store/. Nothing here is
+    published anywhere; it is a local file for review before any of it gets built.
+  </div>
+</header>
+
+<section>
+  <p class="screen-tag">Screen 1 of 3</p>
+  <h2>Document overlay — extraction vs. ground truth</h2>
+  <p class="desc">
+    One note, two highlight layers merged into one. Green = the extractor found what
+    ground truth planted (true positive). Red wavy = ground truth planted it and
+    nothing matched (miss). Amber = the extractor found something ground truth didn't
+    plant there (false positive). The sidebar lists every span in this note and would
+    be seeded from <code style="font-family:'IBM Plex Mono',monospace;background:var(--surface-2);border:1px solid var(--rule);border-radius:2px;padding:1px 5px">audit.entity_recall()</code>'s
+    miss sample, so the viewer opens already pointed at the interesting documents.
+  </p>
+  <div class="frame">
+    <div class="frame-bar"><span class="dots"><span></span><span></span><span></span></span> qa_viewer.py — document overlay</div>
+    <div class="qa-top">
+      <div class="qa-doc"><b>note_0734.txt</b> · claim CLM0182 · occurrence OCC0091</div>
+      <div class="chips">
+        <span class="chip on">All spans (11)</span>
+        <span class="chip">Misses only (2)</span>
+        <span class="chip">False positives (1)</span>
+        <span class="chip">Orphan identifiers (1)</span>
+      </div>
+    </div>
+    <div class="legend">
+      <span class="k"><span class="swatch" style="background:var(--good)"></span>true positive</span>
+      <span class="k"><span class="swatch" style="background:var(--alert)"></span>ground-truth miss (FN)</span>
+      <span class="k"><span class="swatch" style="background:var(--warn)"></span>extractor-only (FP)</span>
+    </div>
+    <div class="qa-split">
+      <div class="qa-text">Spoke with <mark class="tp">Robert Miller</mark> regarding the POA update filed
+      last week. <mark class="fn">He</mark> confirmed the treating provider remains
+      <mark class="tp">Alicia Reyes, MD</mark> at the Lakeshore clinic. A callback was left at
+      <mark class="tp">(312) 555-0148</mark>, no name given on the message — logged as an
+      unbound identifier pending confirmation. Adjuster reassigned the file to
+      <mark class="fp">Contacted James</mark> Moore per yesterday's transfer note. Claimant's
+      attorney of record continues to be <mark class="tp">D. Alvarez, Esq.</mark> Next
+      scheduled contact <mark class="fn">with the same firm</mark> is set for the 14th.</div>
+      <div class="qa-side">
+        <div class="qa-row">
+          <div class="top"><span class="surf">Robert Miller</span><span class="badge tp">TP</span></div>
+          <div class="meta">entity · person · claimant</div>
+        </div>
+        <div class="qa-row" style="border-color:var(--alert)">
+          <div class="top"><span class="surf">He</span><span class="badge fn">FN</span></div>
+          <div class="meta">coref · hop 1 → gt_e00231 (Robert Miller)</div>
+          <span class="tag">missed anaphor</span>
+        </div>
+        <div class="qa-row">
+          <div class="top"><span class="surf">Alicia Reyes, MD</span><span class="badge tp">TP</span></div>
+          <div class="meta">entity · person · medical_provider</div>
+        </div>
+        <div class="qa-row">
+          <div class="top"><span class="surf">(312) 555-0148</span><span class="badge tp">TP</span></div>
+          <div class="meta">identifier · phone · no subject bound</div>
+          <span class="tag">orphan — correct by design</span>
+        </div>
+        <div class="qa-row" style="border-color:var(--warn)">
+          <div class="top"><span class="surf">Contacted James</span><span class="badge fp">FP</span></div>
+          <div class="meta">entity · person · sentence-opener leaked into span</div>
+          <span class="tag">variant_kind: none (spurious)</span>
+        </div>
+        <div class="qa-row">
+          <div class="top"><span class="surf">D. Alvarez, Esq.</span><span class="badge tp">TP</span></div>
+          <div class="meta">entity · person · attorney</div>
+        </div>
+        <div class="qa-row" style="border-color:var(--alert)">
+          <div class="top"><span class="surf">with the same firm</span><span class="badge fn">FN</span></div>
+          <div class="meta">coref · hop 2 → gt_e00231 (Robert Miller)</div>
+          <span class="tag">descriptor referent, not attempted</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption><b>Reads</b> ground truth from the sealed manifest, so this module joins <code style="font-family:'IBM Plex Mono',monospace">audit.py</code> in the leakage guard's allowed-files list rather than living alongside the pipeline modules.</figcaption>
+</section>
+
+<section>
+  <p class="screen-tag">Screen 2 of 3</p>
+  <h2>Resolution drill-down — one ground-truth person, at a threshold you choose</h2>
+  <p class="desc">
+    Left is fixed: every mention ground truth says belongs to this person. Right
+    changes as you drag the slider across the same operating points measured in
+    ARCHITECTURE.md §3 — watch the six mentions consolidate into one cluster around
+    0.30–0.45 and fragment again past 0.70, the same curve behind the B³ sweep table,
+    made tangible for one entity instead of read off a row of numbers.
+  </p>
+  <div class="frame">
+    <div class="frame-bar"><span class="dots"><span></span><span></span><span></span></span> qa_viewer.py — resolution drill-down</div>
+    <div class="dd-head">
+      <div class="name">gt_e00231 — Robert Miller</div>
+      <div class="sub">6 planted mentions · 4 documents · 3 claims</div>
+    </div>
+    <div class="slider-wrap">
+      <div class="slider-row">
+        <label>match threshold</label>
+        <input type="range" id="thr" min="0" max="4" step="1" value="1">
+        <span id="thrval" class="dd-stat" style="margin:0; padding:6px 12px">0.45</span>
+      </div>
+      <div class="ticks">
+        <span class="tick" data-i="0">0.30</span>
+        <span class="tick active" data-i="1">0.45 (operating)</span>
+        <span class="tick" data-i="2">0.60 (F1 max)</span>
+        <span class="tick" data-i="3">0.70</span>
+        <span class="tick" data-i="4">0.90</span>
+      </div>
+      <div class="dd-stat" id="stattext">At <b>0.45</b>, all 6 mentions resolve into <b>1</b> entity — matches ground truth.</div>
+    </div>
+    <div class="dd-split">
+      <div class="dd-col">
+        <h4>Ground truth (fixed)</h4>
+        <div class="cluster-card">
+          <div class="cid">gt_e00231</div>
+          <span class="mchip">note_0734 · "Robert Miller"</span>
+          <span class="mchip">note_0201 · "R. Miller"</span>
+          <span class="mchip">note_0198 · "Miller, Robert"</span>
+          <span class="mchip">note_1420 · "Mr. Miller"</span>
+          <span class="mchip">note_0734 · "He" (coref)</span>
+          <span class="mchip">note_0891 · "the claimant"</span>
+        </div>
+      </div>
+      <div class="dd-col" id="resolvedCol">
+        <h4>Resolved at this threshold</h4>
+      </div>
+    </div>
+  </div>
+  <figcaption><b>Interactive</b> the slider and stat line below run on a small hardcoded lookup for this one example — a real version reads <code style="font-family:'IBM Plex Mono',monospace">same_as_edges</code> and recomputes connected components client-side or via a small local server.</figcaption>
+</section>
+
+<section>
+  <p class="screen-tag">Screen 3 of 3</p>
+  <h2>Correcting a ground-truth label</h2>
+  <p class="desc">
+    Clicking a flagged span from Screen 1 opens this form instead of editing the
+    manifest by hand. Submissions append to <code style="font-family:'IBM Plex Mono',monospace;background:var(--surface-2);border:1px solid var(--rule);border-radius:2px;padding:1px 5px">data/gt_corrections.json</code> — a
+    patch file <code style="font-family:'IBM Plex Mono',monospace;background:var(--surface-2);border:1px solid var(--rule);border-radius:2px;padding:1px 5px">audit.py</code> applies at read time. The sealed manifest itself is never
+    touched, so <code style="font-family:'IBM Plex Mono',monospace;background:var(--surface-2);border:1px solid var(--rule);border-radius:2px;padding:1px 5px">corpus_gen.py</code> + seed still regenerates the exact same base file —
+    corrections are corpus-immutability-safe by construction.
+  </p>
+  <div class="frame">
+    <div class="frame-bar"><span class="dots"><span></span><span></span><span></span></span> qa_viewer.py — correct ground truth</div>
+    <div class="cf-context">…Adjuster reassigned the file to <mark class="fp" style="padding:1px 3px">Contacted James</mark> Moore per yesterday's transfer note…</div>
+    <div class="cf-body">
+      <div class="cf-grid">
+        <div class="field">
+          <label>span kind</label>
+          <select><option>entity</option><option>identifier</option><option>event</option><option>non_entity</option></select>
+        </div>
+        <div class="field">
+          <label>correct boundary</label>
+          <input type="text" value="[41, 46] → [51, 61]" readonly style="font-family:'IBM Plex Mono',monospace;color:var(--ink-2)">
+        </div>
+        <div class="field">
+          <label>entity_class</label>
+          <select><option>person</option><option>organization</option></select>
+        </div>
+        <div class="field">
+          <label>gt_entity_id</label>
+          <input type="text" placeholder="gt_e00417 (James Moore)" value="gt_e00417">
+        </div>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>hard-case tags</label>
+        <div class="cf-tags">
+          <label><input type="checkbox" checked> sentence_opener_leak</label>
+          <label><input type="checkbox"> name_order_flip</label>
+          <label><input type="checkbox"> nickname</label>
+          <label><input type="checkbox"> orphan</label>
+        </div>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>note</label>
+        <textarea id="cfnote">"Contacted" is a sentence-opener, not part of the name — the actual planted span starts at "James Moore".</textarea>
+      </div>
+      <div class="cf-actions">
+        <span class="cf-note">Queued locally in this page only — nothing is written to disk from this mockup.</span>
+        <button class="primary" id="queueBtn">Queue correction</button>
+      </div>
+    </div>
+    <div class="pending">
+      <h4>Pending corrections (this session)</h4>
+      <div id="pendList"><span class="pend-empty">none queued yet</span></div>
+    </div>
+  </div>
+  <figcaption><b>Not real</b> the button below appends to an in-page list so you can see the interaction; a working version would append a JSON line to the patch file via a small local helper, since a static file can't write to disk on its own.</figcaption>
+</section>
+
+<footer>designs/qa-viewer-mockup.html · sketch for review, not wired to the pipeline</footer>
+
+<script>
+  // Screen 2: canned lookup, not a real clustering computation.
+  const levels = [
+    {t:"0.30", n:1, note:"all 6 mentions resolve into <b>1</b> entity — matches ground truth."},
+    {t:"0.45", n:1, note:"all 6 mentions resolve into <b>1</b> entity — matches ground truth (operating point)."},
+    {t:"0.60", n:1, note:"still <b>1</b> entity — the coref-derived mentions (“He”, “the claimant”) stay attached."},
+    {t:"0.70", n:2, note:"splits into <b>2</b> entities — “Miller, Robert” (name-order flip) drops off into its own cluster."},
+    {t:"0.90", n:4, note:"fragments into <b>4</b> entities — only exact-string matches survive; this is the collapse from the ARCHITECTURE.md table."}
+  ];
+  const clusters = [
+    [["note_0734","Robert Miller"],["note_0201","R. Miller"],["note_0198","Miller, Robert"],["note_1420","Mr. Miller"],["note_0734","He (coref)"],["note_0891","the claimant"]],
+    [["note_0734","Robert Miller"],["note_0201","R. Miller"],["note_0198","Miller, Robert"],["note_1420","Mr. Miller"],["note_0734","He (coref)"],["note_0891","the claimant"]],
+    [["note_0734","Robert Miller"],["note_0201","R. Miller"],["note_0198","Miller, Robert"],["note_1420","Mr. Miller"],["note_0734","He (coref)"],["note_0891","the claimant"]],
+    [["note_0734","Robert Miller"],["note_0201","R. Miller"],["note_1420","Mr. Miller"]],
+    null // rendered specially: 4 singleton cards
+  ];
+  const thr = document.getElementById('thr');
+  const thrval = document.getElementById('thrval');
+  const stattext = document.getElementById('stattext');
+  const resolvedCol = document.getElementById('resolvedCol');
+  const ticks = document.querySelectorAll('.tick');
+
+  function render(i){
+    thrval.textContent = levels[i].t;
+    stattext.innerHTML = 'At <b>' + levels[i].t + '</b>, ' + levels[i].note;
+    ticks.forEach((t,idx)=>t.classList.toggle('active', idx==i));
+    resolvedCol.innerHTML = '<h4>Resolved at this threshold</h4>';
+    if(i < 4){
+      const card = document.createElement('div');
+      card.className = 'cluster-card' + (levels[i].n>1 ? ' split':'');
+      card.innerHTML = '<div class="cid">resolved_entity_' + (1000+i) + '</div>' +
+        clusters[i].map(([d,s])=>'<span class="mchip">'+d+' · "'+s+'"</span>').join('');
+      resolvedCol.appendChild(card);
+      if(levels[i].n>1){
+        const rest = document.createElement('div');
+        rest.className = 'cluster-card split';
+        rest.innerHTML = '<div class="cid">resolved_entity_' + (2000+i) + '</div><span class="mchip">note_0198 · "Miller, Robert"</span><span class="mchip">note_0734 · "He (coref)"</span><span class="mchip">note_0891 · "the claimant"</span>';
+        resolvedCol.appendChild(rest);
+      }
+    } else {
+      const singles = [["note_0734","Robert Miller"],["note_0201","R. Miller"],["note_1420","Mr. Miller"],["note_0198 + note_0734 + note_0891","Miller, Robert / He / the claimant"]];
+      singles.forEach((s,idx)=>{
+        const card = document.createElement('div');
+        card.className = 'cluster-card split';
+        card.innerHTML = '<div class="cid">resolved_entity_' + (3000+idx) + '</div><span class="mchip">'+s[0]+' · "'+s[1]+'"</span>';
+        resolvedCol.appendChild(card);
+      });
+    }
+  }
+  thr.addEventListener('input', ()=>render(+thr.value));
+  render(1);
+
+  // Screen 3: local-only queue, no persistence.
+  const pendList = document.getElementById('pendList');
+  let n = 0;
+  document.getElementById('queueBtn').addEventListener('click', ()=>{
+    n++;
+    if(n===1) pendList.innerHTML = '';
+    const row = document.createElement('div');
+    row.className = 'pend-row';
+    row.innerHTML = '<span>note_0734.txt [51:61] → gt_e00417 · sentence_opener_leak</span><span>queued #' + n + '</span>';
+    pendList.appendChild(row);
+  });
+</script>
+</body>
+</html>

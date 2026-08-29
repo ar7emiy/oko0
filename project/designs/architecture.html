@@ -1,0 +1,553 @@
+<title>Entity Intelligence Pipeline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+  :root{
+    --ground:#F6F7F9; --surface:#FFFFFF; --surface-2:#EDF0F4; --surface-3:#E3E8EF;
+    --ink:#10151C; --ink-2:#4A5666; --ink-3:#6E7A8A;
+    --rule:#D6DCE4; --rule-strong:#B9C2CE;
+    --accent:#B4650A; --accent-soft:#F6E7CE;
+    --steel:#3E5C76; --steel-soft:#E0E8EF;
+    --good:#2F6B4F; --good-soft:#DFEDE5;
+    --alert:#A33A2A; --alert-soft:#F6E0DB;
+    --shadow:0 1px 2px rgba(16,21,28,.06), 0 8px 24px -12px rgba(16,21,28,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#0E1218; --surface:#151B24; --surface-2:#1C242F; --surface-3:#232D3A;
+      --ink:#E8ECF2; --ink-2:#A3AEBD; --ink-3:#7C8797;
+      --rule:#2A3441; --rule-strong:#3A4756;
+      --accent:#E9A03C; --accent-soft:#3A2C16;
+      --steel:#7FA5C4; --steel-soft:#1D2A36;
+      --good:#5FBF8F; --good-soft:#16281F;
+      --alert:#E07A63; --alert-soft:#2E1913;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0E1218; --surface:#151B24; --surface-2:#1C242F; --surface-3:#232D3A;
+    --ink:#E8ECF2; --ink-2:#A3AEBD; --ink-3:#7C8797;
+    --rule:#2A3441; --rule-strong:#3A4756;
+    --accent:#E9A03C; --accent-soft:#3A2C16;
+    --steel:#7FA5C4; --steel-soft:#1D2A36;
+    --good:#5FBF8F; --good-soft:#16281F;
+    --alert:#E07A63; --alert-soft:#2E1913;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:"Source Serif 4", Georgia, serif;
+    font-size:17px; line-height:1.62;
+    margin:0; padding:0 24px 96px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1280px; margin:0 auto}
+  .col{max-width:68ch; margin:0 auto}
+
+  /* ---- masthead ---- */
+  header.mast{
+    max-width:68ch; margin:0 auto; padding:72px 0 40px;
+    border-bottom:1px solid var(--rule);
+  }
+  .eyebrow{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:11.5px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--accent); margin:0 0 18px;
+  }
+  h1{
+    font-family:Archivo, system-ui, sans-serif; font-weight:700;
+    font-size:clamp(34px,5.2vw,52px); line-height:1.04; letter-spacing:-.022em;
+    margin:0 0 20px; text-wrap:balance;
+  }
+  .standfirst{font-size:19.5px; color:var(--ink-2); margin:0; text-wrap:pretty}
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px; margin-top:26px;
+    font-family:"IBM Plex Mono", monospace; font-size:11.5px;
+  }
+  .meta span{
+    border:1px solid var(--rule); border-radius:2px; padding:4px 9px;
+    color:var(--ink-2); background:var(--surface);
+  }
+
+  /* ---- sections ---- */
+  section{max-width:68ch; margin:0 auto; padding-top:56px}
+  h2{
+    font-family:Archivo, sans-serif; font-weight:600;
+    font-size:26px; letter-spacing:-.012em; line-height:1.2;
+    margin:0 0 6px; display:flex; gap:14px; align-items:baseline; text-wrap:balance;
+  }
+  h2 .num{
+    font-family:"IBM Plex Mono", monospace; font-size:13px; font-weight:500;
+    color:var(--accent); letter-spacing:.04em; flex:none;
+  }
+  h3{
+    font-family:Archivo, sans-serif; font-weight:600; font-size:16.5px;
+    letter-spacing:-.004em; margin:30px 0 6px;
+  }
+  p{margin:0 0 16px; text-wrap:pretty}
+  .lede{color:var(--ink-2); font-size:17.5px; margin-bottom:26px}
+  strong{font-weight:600}
+  code{
+    font-family:"IBM Plex Mono", monospace; font-size:.87em;
+    background:var(--surface-2); border:1px solid var(--rule);
+    border-radius:2px; padding:1px 5px; color:var(--ink);
+  }
+
+  /* ---- figures ---- */
+  figure{
+    margin:34px 0 8px; max-width:1280px;
+    margin-left:calc(50% - 640px); margin-right:calc(50% - 640px);
+  }
+  @media (max-width:1330px){ figure{margin-left:0; margin-right:0; max-width:100%} }
+  .figframe{
+    background:var(--surface); border:1px solid var(--rule);
+    border-radius:3px; padding:22px; overflow-x:auto; box-shadow:var(--shadow);
+  }
+  figure svg{display:block; width:100%; height:auto; min-width:720px; color:var(--ink)}
+  figcaption{
+    max-width:68ch; margin:14px auto 0; font-size:14.5px; color:var(--ink-2);
+    line-height:1.55;
+  }
+  figcaption b{
+    font-family:"IBM Plex Mono", monospace; font-size:11.5px; font-weight:600;
+    letter-spacing:.09em; text-transform:uppercase; color:var(--accent);
+    margin-right:8px;
+  }
+
+  /* svg type */
+  .t-title{font-family:Archivo,sans-serif; font-size:13px; font-weight:700; letter-spacing:.055em}
+  .t-node{font-family:Archivo,sans-serif; font-size:13.5px; font-weight:600}
+  .t-sub{font-family:"IBM Plex Mono",monospace; font-size:11px}
+  .t-edge{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.03em}
+  .t-num{font-family:"IBM Plex Mono",monospace; font-size:12px; font-weight:600}
+
+  /* ---- callout ---- */
+  .note{
+    border-left:2px solid var(--accent); background:var(--surface);
+    padding:16px 20px; margin:26px 0; border-radius:0 3px 3px 0;
+    font-size:16px; color:var(--ink-2);
+  }
+  .note b{color:var(--ink); font-weight:600}
+
+  /* ---- measured table ---- */
+  .tablewrap{overflow-x:auto; margin:26px 0}
+  table{border-collapse:collapse; width:100%; font-size:14.5px; min-width:520px}
+  th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--rule)}
+  th{
+    font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--ink-3); font-weight:500;
+    border-bottom:1px solid var(--rule-strong);
+  }
+  td.num{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; text-align:right}
+  .gain{color:var(--good); font-weight:600}
+  tr.hi td{background:var(--accent-soft)}
+
+  ul{margin:0 0 16px; padding-left:20px}
+  li{margin-bottom:7px}
+  li::marker{color:var(--accent)}
+
+  hr.end{border:0; border-top:1px solid var(--rule); margin:64px auto 0; max-width:68ch}
+  .foot{max-width:68ch; margin:20px auto 0; font-size:13.5px; color:var(--ink-3)}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">System architecture · v2</p>
+  <h1>Finding every entity in unstructured claim notes</h1>
+  <p class="standfirst">A four-layer pipeline that reads every character of a claim file, resolves who is who across the entire corpus, and stores the result so any downstream system can ask questions of it.</p>
+  <div class="meta">
+    <span>~2,000 notes</span><span>occurrence → claim → note</span><span>Splink ER</span><span>global entity graph</span>
+  </div>
+</header>
+
+<section>
+  <h2><span class="num">01</span> The whole pipeline</h2>
+  <p class="lede">Text enters on the left as raw notes and leaves on the right as a queryable entity graph. Each layer hands the next a strictly more structured artifact, and every artifact keeps a pointer back to the exact characters it came from.</p>
+
+  <figure>
+    <div class="figframe">
+      <svg viewBox="0 0 1240 560" role="img" aria-label="Four-layer pipeline: raw notes feed high-recall extraction, then entity resolution producing probabilistic SAME_AS edges, then dual storage of chunk vectors and a global entity graph, then consumers.">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--steel)"/>
+          </marker>
+          <marker id="ar-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/>
+          </marker>
+        </defs>
+
+        <!-- SOURCE -->
+        <rect x="16" y="150" width="148" height="182" rx="3" fill="var(--surface-2)" stroke="var(--rule-strong)"/>
+        <text x="90" y="176" text-anchor="middle" class="t-node" fill="var(--ink)">Raw notes</text>
+        <rect x="34" y="192" width="112" height="30" rx="2" fill="var(--surface)" stroke="var(--rule)"/>
+        <text x="90" y="211" text-anchor="middle" class="t-sub" fill="var(--ink-2)">occurrence</text>
+        <rect x="42" y="228" width="104" height="30" rx="2" fill="var(--surface)" stroke="var(--rule)"/>
+        <text x="94" y="247" text-anchor="middle" class="t-sub" fill="var(--ink-2)">claim ×1–4</text>
+        <rect x="50" y="264" width="96" height="30" rx="2" fill="var(--surface)" stroke="var(--rule)"/>
+        <text x="98" y="283" text-anchor="middle" class="t-sub" fill="var(--ink-2)">note</text>
+        <text x="90" y="316" text-anchor="middle" class="t-sub" fill="var(--ink-3)">250–500 words</text>
+
+        <line x1="168" y1="241" x2="204" y2="241" stroke="var(--steel)" stroke-width="1.5" marker-end="url(#ar)"/>
+
+        <!-- LAYER 1 -->
+        <rect x="208" y="60" width="268" height="440" rx="3" fill="none" stroke="var(--rule-strong)"/>
+        <rect x="208" y="60" width="268" height="30" rx="3" fill="var(--steel-soft)" stroke="var(--rule-strong)"/>
+        <text x="222" y="80" class="t-title" fill="var(--steel)">LAYER 1 · EXTRACTION</text>
+
+        <rect x="226" y="106" width="232" height="52" rx="2" fill="var(--surface-2)" stroke="var(--rule)"/>
+        <text x="240" y="127" class="t-node" fill="var(--ink)">Chunk + overlap</text>
+        <text x="240" y="145" class="t-sub" fill="var(--ink-3)">300 tok · 50% · offsets kept</text>
+
+        <rect x="226" y="168" width="232" height="52" rx="2" fill="var(--surface-2)" stroke="var(--rule)"/>
+        <text x="240" y="189" class="t-node" fill="var(--ink)">Coreference chains</text>
+        <text x="240" y="207" class="t-sub" fill="var(--ink-3)">anaphora → referent, multi-hop</text>
+
+        <rect x="226" y="230" width="232" height="128" rx="2" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="240" y="251" class="t-node" fill="var(--ink)">Union of 3 extractors</text>
+        <rect x="240" y="262" width="204" height="26" rx="2" fill="var(--surface)" stroke="var(--rule)"/>
+        <text x="250" y="279" class="t-sub" fill="var(--ink-2)">token NER — every literal span</text>
+        <rect x="240" y="292" width="204" height="26" rx="2" fill="var(--surface)" stroke="var(--rule)"/>
+        <text x="250" y="309" class="t-sub" fill="var(--ink-2)">gazetteers — codes, checksums</text>
+        <rect x="240" y="322" width="204" height="26" rx="2" fill="var(--surface)" stroke="var(--rule)"/>
+        <text x="250" y="339" class="t-sub" fill="var(--ink-2)">LLM — context, relations</text>
+
+        <rect x="226" y="368" width="232" height="52" rx="2" fill="var(--surface-2)" stroke="var(--rule)"/>
+        <text x="240" y="389" class="t-node" fill="var(--ink)">Verification sweep</text>
+        <text x="240" y="407" class="t-sub" fill="var(--ink-3)">re-reads what nothing covered</text>
+
+        <text x="342" y="447" text-anchor="middle" class="t-sub" fill="var(--ink-3)">every span carries doc + offsets</text>
+        <text x="342" y="466" text-anchor="middle" class="t-sub" fill="var(--ink-3)">and which extractor found it</text>
+
+        <line x1="480" y1="280" x2="516" y2="280" stroke="var(--steel)" stroke-width="1.5" marker-end="url(#ar)"/>
+        <text x="498" y="271" text-anchor="middle" class="t-edge" fill="var(--ink-3)">spans</text>
+
+        <!-- LAYER 2 -->
+        <rect x="520" y="60" width="232" height="440" rx="3" fill="none" stroke="var(--rule-strong)"/>
+        <rect x="520" y="60" width="232" height="30" rx="3" fill="var(--steel-soft)" stroke="var(--rule-strong)"/>
+        <text x="534" y="80" class="t-title" fill="var(--steel)">LAYER 2 · RESOLUTION</text>
+
+        <rect x="538" y="106" width="196" height="46" rx="2" fill="var(--surface-2)" stroke="var(--rule)"/>
+        <text x="552" y="126" class="t-node" fill="var(--ink)">Blocking rules</text>
+        <text x="552" y="143" class="t-sub" fill="var(--ink-3)">id · phone · addr · phonetic</text>
+
+        <rect x="538" y="162" width="196" height="46" rx="2" fill="var(--surface-2)" stroke="var(--rule)"/>
+        <text x="552" y="182" class="t-node" fill="var(--ink)">Comparisons + EM</text>
+        <text x="552" y="199" class="t-sub" fill="var(--ink-3)">Splink · Fellegi–Sunter</text>
+
+        <rect x="538" y="218" width="196" height="86" rx="2" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="552" y="239" class="t-node" fill="var(--ink)">SAME_AS edges</text>
+        <text x="552" y="257" class="t-sub" fill="var(--ink-2)">calibrated probability</text>
+        <text x="552" y="274" class="t-sub" fill="var(--ink-2)">per mention pair</text>
+        <text x="552" y="292" class="t-sub" fill="var(--ink-3)">no destructive merge</text>
+
+        <rect x="538" y="314" width="196" height="60" rx="2" fill="var(--surface-2)" stroke="var(--rule)"/>
+        <text x="552" y="334" class="t-node" fill="var(--ink)">Identity = view</text>
+        <text x="552" y="352" class="t-sub" fill="var(--ink-3)">components at threshold T</text>
+        <text x="552" y="367" class="t-sub" fill="var(--ink-3)">recomputed, never baked in</text>
+
+        <text x="636" y="404" text-anchor="middle" class="t-sub" fill="var(--ink-3)">constraints suppress edges</text>
+        <text x="636" y="422" text-anchor="middle" class="t-sub" fill="var(--ink-3)">before clustering, not forever</text>
+
+        <line x1="756" y1="280" x2="792" y2="280" stroke="var(--steel)" stroke-width="1.5" marker-end="url(#ar)"/>
+        <text x="774" y="271" text-anchor="middle" class="t-edge" fill="var(--ink-3)">identity</text>
+
+        <!-- LAYER 3 -->
+        <rect x="796" y="60" width="232" height="440" rx="3" fill="none" stroke="var(--rule-strong)"/>
+        <rect x="796" y="60" width="232" height="30" rx="3" fill="var(--steel-soft)" stroke="var(--rule-strong)"/>
+        <text x="810" y="80" class="t-title" fill="var(--steel)">LAYER 3 · STORAGE</text>
+
+        <rect x="814" y="106" width="196" height="96" rx="2" fill="var(--surface-2)" stroke="var(--rule)"/>
+        <text x="828" y="127" class="t-node" fill="var(--ink)">Chunk vectors</text>
+        <text x="828" y="146" class="t-sub" fill="var(--ink-3)">text + claim / occurrence</text>
+        <text x="828" y="163" class="t-sub" fill="var(--ink-3)">metadata for filtering</text>
+        <text x="828" y="186" class="t-sub" fill="var(--steel)">serves the RAG path</text>
+
+        <rect x="814" y="214" width="196" height="180" rx="2" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="828" y="235" class="t-node" fill="var(--ink)">Global entity graph</text>
+        <text x="828" y="254" class="t-sub" fill="var(--ink-2)">one identity space —</text>
+        <text x="828" y="270" class="t-sub" fill="var(--ink-2)">not partitioned by claim</text>
+        <rect x="828" y="282" width="168" height="24" rx="2" fill="var(--surface)" stroke="var(--rule)"/>
+        <text x="838" y="298" class="t-sub" fill="var(--ink-2)">parties · organizations</text>
+        <rect x="828" y="310" width="168" height="24" rx="2" fill="var(--surface)" stroke="var(--rule)"/>
+        <text x="838" y="326" class="t-sub" fill="var(--ink-2)">identifiers · events</text>
+        <rect x="828" y="338" width="168" height="24" rx="2" fill="var(--surface)" stroke="var(--rule)"/>
+        <text x="838" y="354" class="t-sub" fill="var(--ink-2)">open predicates</text>
+        <text x="828" y="380" class="t-sub" fill="var(--ink-3)">claim = filter, not a wall</text>
+
+        <text x="912" y="424" text-anchor="middle" class="t-sub" fill="var(--ink-3)">every edge: confidence</text>
+        <text x="912" y="442" text-anchor="middle" class="t-sub" fill="var(--ink-3)">+ doc id + char span</text>
+
+        <line x1="1032" y1="280" x2="1068" y2="280" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#ar-a)"/>
+        <text x="1050" y="271" text-anchor="middle" class="t-edge" fill="var(--accent)">query</text>
+
+        <!-- LAYER 4 -->
+        <rect x="1072" y="60" width="152" height="440" rx="3" fill="none" stroke="var(--rule-strong)"/>
+        <rect x="1072" y="60" width="152" height="30" rx="3" fill="var(--steel-soft)" stroke="var(--rule-strong)"/>
+        <text x="1086" y="80" class="t-title" fill="var(--steel)">LAYER 4 · USE</text>
+
+        <rect x="1088" y="120" width="120" height="70" rx="2" fill="var(--surface-2)" stroke="var(--rule)"/>
+        <text x="1148" y="149" text-anchor="middle" class="t-node" fill="var(--ink)">Dossier</text>
+        <text x="1148" y="168" text-anchor="middle" class="t-sub" fill="var(--ink-3)">who is this?</text>
+
+        <rect x="1088" y="204" width="120" height="70" rx="2" fill="var(--surface-2)" stroke="var(--rule)"/>
+        <text x="1148" y="233" text-anchor="middle" class="t-node" fill="var(--ink)">Claim AI</text>
+        <text x="1148" y="252" text-anchor="middle" class="t-sub" fill="var(--ink-3)">enrichment</text>
+
+        <rect x="1088" y="288" width="120" height="70" rx="2" fill="var(--surface-2)" stroke="var(--rule)"/>
+        <text x="1148" y="317" text-anchor="middle" class="t-node" fill="var(--ink)">Partner API</text>
+        <text x="1148" y="336" text-anchor="middle" class="t-sub" fill="var(--ink-3)">shared ER</text>
+      </svg>
+    </div>
+    <figcaption><b>Figure 1</b>Raw notes become a queryable entity graph in four passes. The two amber blocks are where this pipeline departs from a conventional GraphRAG build: extraction is an <em>ensemble</em> rather than one LLM pass, and resolved identity is a <em>recomputable view</em> over probability-weighted edges rather than a merge written permanently into the store.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2><span class="num">02</span> Why three extractors, not one</h2>
+  <p class="lede">A single LLM pass drifts. It reliably captures the main narrative and quietly drops the long tail — the paralegal named once in a signature block, the clinic in a footer, a lone diagnostic code. Those omissions are silent: nothing in the output says an entity was missed.</p>
+  <p>So three independent readers scan every chunk and their outputs are unioned, with each surviving span recording which readers saw it. A token-level NER model reads every literal token regardless of salience. Deterministic gazetteers with checksum validation catch structured codes — an LLM is never asked to find an NPI. The LLM contributes what only it can: context, roles, and relationships.</p>
+
+  <figure>
+    <div class="figframe">
+      <svg viewBox="0 0 1140 400" role="img" aria-label="One line of note text scanned by three extractors; each catches a different subset, and the union recovers all of them.">
+        <defs>
+          <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--steel)"/>
+          </marker>
+        </defs>
+
+        <text x="24" y="30" class="t-title" fill="var(--ink-3)">ONE CHUNK OF NOTE TEXT</text>
+        <rect x="24" y="42" width="1092" height="48" rx="2" fill="var(--surface-2)" stroke="var(--rule)"/>
+        <text x="40" y="72" class="t-sub" fill="var(--ink-2)" font-size="12.5">
+          <tspan>IME set w/ </tspan><tspan fill="var(--ink)" font-weight="600">Dr. Alicia Reyes</tspan><tspan>; records via her paralegal </tspan><tspan fill="var(--ink)" font-weight="600">M. Okonjo</tspan><tspan>. NPI </tspan><tspan fill="var(--ink)" font-weight="600">1932847561</tspan><tspan>, billing to </tspan><tspan fill="var(--ink)" font-weight="600">88 Larkin Ave</tspan><tspan>.</tspan>
+        </text>
+
+        <!-- column guides -->
+        <line x1="150" y1="96" x2="150" y2="330" stroke="var(--rule)" stroke-dasharray="2 4"/>
+        <line x1="425" y1="96" x2="425" y2="330" stroke="var(--rule)" stroke-dasharray="2 4"/>
+        <line x1="672" y1="96" x2="672" y2="330" stroke="var(--rule)" stroke-dasharray="2 4"/>
+        <line x1="880" y1="96" x2="880" y2="330" stroke="var(--rule)" stroke-dasharray="2 4"/>
+
+        <text x="150" y="112" text-anchor="middle" class="t-sub" fill="var(--ink-3)">Reyes</text>
+        <text x="425" y="112" text-anchor="middle" class="t-sub" fill="var(--ink-3)">Okonjo</text>
+        <text x="672" y="112" text-anchor="middle" class="t-sub" fill="var(--ink-3)">NPI</text>
+        <text x="880" y="112" text-anchor="middle" class="t-sub" fill="var(--ink-3)">address</text>
+
+        <!-- lane rows -->
+        <text x="24" y="152" class="t-node" fill="var(--ink)">LLM only</text>
+        <text x="24" y="169" class="t-sub" fill="var(--ink-3)">high salience wins</text>
+        <line x1="24" y1="182" x2="1116" y2="182" stroke="var(--rule)"/>
+        <circle cx="150" cy="146" r="8" fill="var(--good)"/>
+        <circle cx="425" cy="146" r="8" fill="none" stroke="var(--alert)" stroke-dasharray="2 3"/>
+        <circle cx="672" cy="146" r="8" fill="none" stroke="var(--alert)" stroke-dasharray="2 3"/>
+        <circle cx="880" cy="146" r="8" fill="none" stroke="var(--alert)" stroke-dasharray="2 3"/>
+
+        <text x="24" y="216" class="t-node" fill="var(--ink)">Token NER</text>
+        <text x="24" y="233" class="t-sub" fill="var(--ink-3)">every literal span</text>
+        <line x1="24" y1="246" x2="1116" y2="246" stroke="var(--rule)"/>
+        <circle cx="150" cy="210" r="8" fill="var(--good)"/>
+        <circle cx="425" cy="210" r="8" fill="var(--good)"/>
+        <circle cx="672" cy="210" r="8" fill="none" stroke="var(--rule-strong)"/>
+        <circle cx="880" cy="210" r="8" fill="var(--good)"/>
+
+        <text x="24" y="280" class="t-node" fill="var(--ink)">Gazetteers</text>
+        <text x="24" y="297" class="t-sub" fill="var(--ink-3)">regex + checksum</text>
+        <line x1="24" y1="310" x2="1116" y2="310" stroke="var(--rule)"/>
+        <circle cx="150" cy="274" r="8" fill="none" stroke="var(--rule-strong)"/>
+        <circle cx="425" cy="274" r="8" fill="none" stroke="var(--rule-strong)"/>
+        <circle cx="672" cy="274" r="8" fill="var(--good)"/>
+        <circle cx="880" cy="274" r="8" fill="var(--good)"/>
+
+        <!-- union -->
+        <rect x="16" y="326" width="1108" height="56" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="34" y="349" class="t-node" fill="var(--ink)">Union</text>
+        <text x="34" y="367" class="t-sub" fill="var(--ink-2)">provenance recorded per span</text>
+        <circle cx="150" cy="356" r="8" fill="var(--accent)"/>
+        <circle cx="425" cy="356" r="8" fill="var(--accent)"/>
+        <circle cx="672" cy="356" r="8" fill="var(--accent)"/>
+        <circle cx="880" cy="356" r="8" fill="var(--accent)"/>
+        <text x="960" y="361" class="t-sub" fill="var(--ink-2)">nothing dropped</text>
+      </svg>
+    </div>
+    <figcaption><b>Figure 2</b>Each reader has a characteristic blind spot. The LLM takes the salient name and skips the rest; the token model catches names but has no notion of a checksum; the gazetteers own structured codes and see no people. Union coverage is what closes the gap — and because provenance is kept per span, the contribution of each reader stays measurable rather than assumed.</figcaption>
+  </figure>
+
+  <p>On the current fixture this is the largest single effect in the pipeline. Adding the token-level reader moved entity recall by more than twenty points; adding gazetteers moved structured-identifier recall from near-nothing to complete.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Measured on the rebuilt corpus</th><th style="text-align:right">Result</th></tr></thead>
+      <tbody>
+        <tr><td>Entity mention recall</td><td class="num">85.7%</td></tr>
+        <tr><td>Entity mention precision</td><td class="num">81.0%</td></tr>
+        <tr class="hi"><td>Identifier recall</td><td class="num">100%</td></tr>
+        <tr class="hi"><td>&nbsp;&nbsp;— of which carry <em>no name</em> nearby</td><td class="num">100% <span class="gain">was 0%</span></td></tr>
+        <tr><td>Coreference referent accuracy</td><td class="num">43%</td></tr>
+        <tr><td>Event extraction</td><td class="num">not built</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note"><b>The per-extractor ablation is pending re-measurement.</b> The
+  earlier corpus showed the token-level reader adding more than twenty points of
+  entity recall and the gazetteers taking identifier recall from near-zero to
+  complete. Those numbers were measured on a fixture with much shorter, far more
+  templated notes, so they are not carried forward here. The end-to-end figures
+  above are from the rebuilt corpus and are the ones to trust.</div>
+</section>
+
+<section>
+  <h2><span class="num">03</span> Identity is a view, not a merge</h2>
+  <p class="lede">The conventional move is to decide once that two mentions are the same person and write that decision into the store. It is also the move that makes a graph quietly wrong: one bad merge is indistinguishable from a true one afterwards, and one bad veto silently splits a person forever.</p>
+  <p>Instead, resolution (Splink, Fellegi–Sunter with EM-calibrated weights) emits <code>SAME_AS</code> edges carrying a real probability, and identity is computed from them at a chosen threshold. Raising the threshold splits; lowering it merges. Nothing is destroyed, so a questionable link is a low-weight edge you can filter — not a structural mistake baked into the data.</p>
+  <p>This is not a theoretical nicety. On the rebuilt corpus the intuitive threshold of 0.90 yields precision 0.997 and recall <strong>0.106</strong> — a 16,766-entity graph where the truth is 570. The workable operating point, 0.45, was read off a measured curve rather than assumed. Under a destructive-merge design that first choice would have been written into the store with no way to see the mistake, let alone undo it.</p>
+
+  <figure>
+    <div class="figframe">
+      <svg viewBox="0 0 1080 350" role="img" aria-label="The same four mentions and probability-weighted SAME_AS edges resolve into three entities at a strict threshold and two at a permissive one.">
+        <!-- shared edge set caption -->
+        <text x="24" y="28" class="t-title" fill="var(--ink-3)">ONE EDGE SET · TWO READINGS</text>
+
+        <!-- panel A -->
+        <rect x="24" y="46" width="490" height="272" rx="3" fill="var(--surface-2)" stroke="var(--rule-strong)"/>
+        <text x="44" y="74" class="t-node" fill="var(--ink)">threshold 0.90 — strict</text>
+        <text x="44" y="92" class="t-sub" fill="var(--alert)">measured: 16,766 entities · recall 0.11</text>
+
+        <line x1="126" y1="170" x2="248" y2="170" stroke="var(--good)" stroke-width="3"/>
+        <text x="187" y="162" text-anchor="middle" class="t-num" fill="var(--good)">0.97</text>
+        <line x1="272" y1="182" x2="376" y2="240" stroke="var(--rule-strong)" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="316" y="222" text-anchor="middle" class="t-num" fill="var(--ink-3)">0.71</text>
+        <line x1="272" y1="158" x2="376" y2="112" stroke="var(--rule-strong)" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="330" y="124" text-anchor="middle" class="t-num" fill="var(--ink-3)">0.64</text>
+
+        <circle cx="110" cy="170" r="22" fill="var(--surface)" stroke="var(--good)" stroke-width="2"/>
+        <text x="110" y="175" text-anchor="middle" class="t-sub" fill="var(--ink)">m1</text>
+        <circle cx="264" cy="170" r="22" fill="var(--surface)" stroke="var(--good)" stroke-width="2"/>
+        <text x="264" y="175" text-anchor="middle" class="t-sub" fill="var(--ink)">m2</text>
+        <circle cx="392" cy="100" r="22" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="2"/>
+        <text x="392" y="105" text-anchor="middle" class="t-sub" fill="var(--ink)">m3</text>
+        <circle cx="392" cy="252" r="22" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="2"/>
+        <text x="392" y="257" text-anchor="middle" class="t-sub" fill="var(--ink)">m4</text>
+
+        <text x="440" y="105" class="t-sub" fill="var(--ink-3)">own</text>
+        <text x="440" y="257" class="t-sub" fill="var(--ink-3)">own</text>
+        <text x="187" y="206" text-anchor="middle" class="t-sub" fill="var(--good)">merged</text>
+
+        <!-- panel B -->
+        <rect x="566" y="46" width="490" height="272" rx="3" fill="var(--surface-2)" stroke="var(--rule-strong)"/>
+        <text x="586" y="74" class="t-node" fill="var(--ink)">threshold 0.45 — operating point</text>
+        <text x="586" y="92" class="t-sub" fill="var(--good)">measured: 1,010 entities · recall 0.83</text>
+
+        <line x1="668" y1="170" x2="790" y2="170" stroke="var(--accent)" stroke-width="3"/>
+        <text x="729" y="162" text-anchor="middle" class="t-num" fill="var(--accent)">0.97</text>
+        <line x1="814" y1="182" x2="918" y2="240" stroke="var(--accent)" stroke-width="3"/>
+        <text x="858" y="222" text-anchor="middle" class="t-num" fill="var(--accent)">0.71</text>
+        <line x1="814" y1="158" x2="918" y2="112" stroke="var(--accent)" stroke-width="3"/>
+        <text x="872" y="124" text-anchor="middle" class="t-num" fill="var(--accent)">0.64</text>
+
+        <circle cx="652" cy="170" r="22" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="652" y="175" text-anchor="middle" class="t-sub" fill="var(--ink)">m1</text>
+        <circle cx="806" cy="170" r="22" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="806" y="175" text-anchor="middle" class="t-sub" fill="var(--ink)">m2</text>
+        <circle cx="934" cy="100" r="22" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="934" y="105" text-anchor="middle" class="t-sub" fill="var(--ink)">m3</text>
+        <circle cx="934" cy="252" r="22" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="2"/>
+        <text x="934" y="257" text-anchor="middle" class="t-sub" fill="var(--ink)">m4</text>
+        <text x="982" y="257" class="t-sub" fill="var(--ink-3)">own</text>
+        <text x="800" y="206" text-anchor="middle" class="t-sub" fill="var(--accent)">merged (3)</text>
+
+        <text x="24" y="340" class="t-sub" fill="var(--ink-3)">Edges and probabilities are identical in both panels — only the read threshold changed. Nothing was rewritten.</text>
+      </svg>
+    </div>
+    <figcaption><b>Figure 3</b>The same stored edges, read twice. Because the merge is never written down, the precision/recall trade becomes an operating dial rather than a one-way decision made at index time — and a later correction re-scores an edge instead of surgically unpicking a cluster. The measured consequence on this corpus is stark: the intuitive strict threshold produces a graph roughly thirty times more fragmented than the truth.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2><span class="num">04</span> Identifiers are entities too</h2>
+  <p class="lede">A note that says a payment went to an address, and never says whose address, is worthless to a system that stores addresses as text on a person record. It is highly informative to one that stores the address as its own node.</p>
+  <div class="note"><b>This is where the rebuilt corpus paid for itself.</b> Measured
+  against it, recall on name-less identifier mentions was <b>0% — none of 1,211</b>.
+  The pattern matchers had found every one of them correctly; the pipeline then
+  discarded any identifier it could not attach to a nearby name. The capability the
+  system exists to provide was being silently thrown away, and the previous corpus
+  contained no such mentions, so nothing could have revealed it. Identifiers are now
+  recorded whether or not a name binds: <b>0% → 100%</b>.</div>
+  <p>Addresses, phones, emails, TINs, NPIs and VINs are resolved and stored as first-class nodes with their own association history. That makes the unnamed mention a two-hop path instead of a dead end, and it makes the history queryable: who was reachable at this number, and when.</p>
+
+  <figure>
+    <div class="figframe">
+      <svg viewBox="0 0 1080 320" role="img" aria-label="Two notes on different claims connect through a shared phone number node even though the second note names no person.">
+        <defs>
+          <marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/>
+          </marker>
+        </defs>
+
+        <!-- note A -->
+        <rect x="24" y="40" width="290" height="90" rx="3" fill="var(--surface-2)" stroke="var(--rule-strong)"/>
+        <text x="42" y="66" class="t-sub" fill="var(--ink-3)">CLAIM 4471 · note 12</text>
+        <text x="42" y="90" class="t-sub" fill="var(--ink)" font-size="12">“…billing contact <tspan font-weight="600">Dr. A. Reyes</tspan>,</text>
+        <text x="42" y="110" class="t-sub" fill="var(--ink)" font-size="12">ph <tspan font-weight="600">(312) 555-0148</tspan>…”</text>
+
+        <!-- note B -->
+        <rect x="24" y="192" width="290" height="90" rx="3" fill="var(--surface-2)" stroke="var(--rule-strong)"/>
+        <text x="42" y="218" class="t-sub" fill="var(--ink-3)">CLAIM 8820 · note 3</text>
+        <text x="42" y="242" class="t-sub" fill="var(--ink)" font-size="12">“…callback left at</text>
+        <text x="42" y="262" class="t-sub" fill="var(--ink)" font-size="12"><tspan font-weight="600">(312) 555-0148</tspan>, no name given…”</text>
+
+        <!-- arrows to identifier -->
+        <line x1="322" y1="85" x2="440" y2="145" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#ar3)"/>
+        <line x1="322" y1="237" x2="440" y2="177" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#ar3)"/>
+
+        <!-- identifier node -->
+        <rect x="446" y="126" width="196" height="70" rx="35" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="544" y="153" text-anchor="middle" class="t-node" fill="var(--ink)">phone node</text>
+        <text x="544" y="174" text-anchor="middle" class="t-sub" fill="var(--ink-2)">(312) 555-0148</text>
+
+        <line x1="650" y1="161" x2="756" y2="161" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#ar3)"/>
+        <text x="703" y="152" text-anchor="middle" class="t-edge" fill="var(--ink-3)">associated</text>
+
+        <!-- resolved entity -->
+        <rect x="762" y="96" width="290" height="130" rx="3" fill="var(--surface)" stroke="var(--good)" stroke-width="2"/>
+        <text x="782" y="124" class="t-node" fill="var(--ink)">Dr. Alicia Reyes</text>
+        <text x="782" y="145" class="t-sub" fill="var(--ink-3)">medical provider · NPI 1932847561</text>
+        <line x1="782" y1="158" x2="1032" y2="158" stroke="var(--rule)"/>
+        <text x="782" y="180" class="t-sub" fill="var(--ink-2)">reachable at this number</text>
+        <text x="782" y="198" class="t-sub" fill="var(--ink-2)">2023-04 → present</text>
+        <text x="782" y="216" class="t-sub" fill="var(--good)">claim 8820 mention now attributed</text>
+
+        <text x="24" y="308" class="t-sub" fill="var(--ink-3)">The second note names nobody. The identifier node is what carries the attribution — and the validity window is what keeps it honest when the number is later reassigned.</text>
+      </svg>
+    </div>
+    <figcaption><b>Figure 4</b>An unnamed mention resolves through a shared identifier rather than through a name. Storing the phone as a node with a dated association also prevents the opposite error: once the number is reassigned, the window closes and later mentions stop inheriting the old attribution.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2><span class="num">05</span> What each layer guarantees</h2>
+  <p class="lede">The pipeline is designed so that every claim it makes is checkable against the text it came from, and so that no stage silently discards information the next stage might need.</p>
+  <ul>
+    <li><strong>Every span keeps its origin.</strong> Document id and character offsets travel with each mention, assertion and edge, so any fact in a dossier reopens the note at the exact characters that assert it.</li>
+    <li><strong>Nothing is dropped for not fitting a schema.</strong> Relationship predicates are open vocabulary and normalized toward canonical forms over time, rather than filtered against a fixed list at write time.</li>
+    <li><strong>Scope is a filter, not a wall.</strong> Retrieval can restrict to one claim; identity never does. A person is the same person across every claim and occurrence in the corpus.</li>
+    <li><strong>Confidence is carried, not hidden.</strong> Every association and every identity link stores a probability, so downstream systems can choose their own operating point.</li>
+  </ul>
+
+  <h3>What is not good enough yet</h3>
+  <ul>
+    <li><strong>Resolution is still roughly twice as fragmented as the truth</strong> — 1,010 entities where there are 570. The measured cause is candidate generation: 27% of genuinely co-referring pairs are never compared at all, which caps how much recall any scoring model can recover.</li>
+    <li><strong>Coreference is the weakest link at 43%.</strong> Counter-intuitively it is <em>worse</em> on direct references than on chained ones, because the nearest preceding person in dense prose is frequently not the referent — and a nearest-mention rule takes it anyway. This is the component most likely to improve with a real model rather than more tuning.</li>
+    <li><strong>Bare single-token names are missed outright</strong> — a lone surname is rejected by the name-shape filter. A deliberate trade, now measured, and the clearest next lever.</li>
+    <li><strong>Event extraction is not built.</strong> The ground truth for it exists and is waiting.</li>
+  </ul>
+</section>
+
+<hr class="end">
+<p class="foot">Measurements shown are from the current research fixture and are being re-established against a rebuilt corpus that matches production note length, structure and cross-claim density.</p>
+
+</div>

@@ -1,0 +1,538 @@
+<title>Entity Dossier Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+  :root{
+    --ground:#F6F7F9; --surface:#FFFFFF; --surface-2:#EDF0F4; --surface-3:#E3E8EF;
+    --ink:#10151C; --ink-2:#4A5666; --ink-3:#6E7A8A;
+    --rule:#D6DCE4; --rule-strong:#B9C2CE;
+    --accent:#B4650A; --accent-soft:#F6E7CE;
+    --steel:#3E5C76; --steel-soft:#E0E8EF;
+    --good:#2F6B4F; --good-soft:#DFEDE5;
+    --warn:#8A6212; --warn-soft:#F7EBCC;
+    --alert:#A33A2A; --alert-soft:#F6E0DB;
+    --shadow:0 1px 2px rgba(16,21,28,.06), 0 10px 30px -14px rgba(16,21,28,.22);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#0E1218; --surface:#151B24; --surface-2:#1C242F; --surface-3:#232D3A;
+      --ink:#E8ECF2; --ink-2:#A3AEBD; --ink-3:#7C8797;
+      --rule:#2A3441; --rule-strong:#3A4756;
+      --accent:#E9A03C; --accent-soft:#3A2C16;
+      --steel:#7FA5C4; --steel-soft:#1D2A36;
+      --good:#5FBF8F; --good-soft:#16281F;
+      --warn:#D9AE55; --warn-soft:#2E2513;
+      --alert:#E07A63; --alert-soft:#2E1913;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0E1218; --surface:#151B24; --surface-2:#1C242F; --surface-3:#232D3A;
+    --ink:#E8ECF2; --ink-2:#A3AEBD; --ink-3:#7C8797;
+    --rule:#2A3441; --rule-strong:#3A4756;
+    --accent:#E9A03C; --accent-soft:#3A2C16;
+    --steel:#7FA5C4; --steel-soft:#1D2A36;
+    --good:#5FBF8F; --good-soft:#16281F;
+    --warn:#D9AE55; --warn-soft:#2E2513;
+    --alert:#E07A63; --alert-soft:#2E1913;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:"Source Serif 4", Georgia, serif; font-size:17px; line-height:1.6;
+    margin:0; padding:0 24px 96px; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px; margin:0 auto}
+  .col{max-width:68ch; margin:0 auto}
+
+  header.mast{max-width:68ch; margin:0 auto; padding:72px 0 36px; border-bottom:1px solid var(--rule)}
+  .eyebrow{font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--accent); margin:0 0 18px}
+  h1{font-family:Archivo,sans-serif; font-weight:700; font-size:clamp(34px,5vw,50px);
+    line-height:1.05; letter-spacing:-.022em; margin:0 0 18px; text-wrap:balance}
+  .standfirst{font-size:19.5px; color:var(--ink-2); margin:0; text-wrap:pretty}
+
+  section{max-width:68ch; margin:0 auto; padding-top:58px}
+  h2{font-family:Archivo,sans-serif; font-weight:600; font-size:26px; letter-spacing:-.012em;
+    margin:0 0 6px; display:flex; gap:14px; align-items:baseline; text-wrap:balance}
+  h2 .num{font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:500;
+    color:var(--accent); letter-spacing:.04em; flex:none}
+  p{margin:0 0 16px; text-wrap:pretty}
+  .lede{color:var(--ink-2); font-size:17.5px; margin-bottom:26px}
+  strong{font-weight:600}
+  ul{margin:0 0 16px; padding-left:20px} li{margin-bottom:7px} li::marker{color:var(--accent)}
+
+  .wide{max-width:1180px; margin-left:calc(50% - 590px); margin-right:calc(50% - 590px)}
+  @media (max-width:1230px){ .wide{margin-left:0; margin-right:0; max-width:100%} }
+
+  /* ---------- app mockup ---------- */
+  .app{
+    border:1px solid var(--rule-strong); border-radius:5px; overflow:hidden;
+    background:var(--surface); box-shadow:var(--shadow); margin:34px 0 10px;
+  }
+  .appbar{
+    display:flex; align-items:center; gap:12px; padding:11px 16px;
+    background:var(--surface-2); border-bottom:1px solid var(--rule);
+    font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-3);
+  }
+  .dots{display:flex; gap:6px} .dots i{width:9px; height:9px; border-radius:50%;
+    background:var(--rule-strong); display:block}
+  .addr{flex:1; background:var(--surface); border:1px solid var(--rule); border-radius:3px;
+    padding:4px 10px; color:var(--ink-2)}
+
+  .ehead{padding:22px 26px 20px; border-bottom:1px solid var(--rule);
+    display:flex; flex-wrap:wrap; gap:18px; align-items:flex-start}
+  .ename{font-family:Archivo,sans-serif; font-weight:700; font-size:27px; letter-spacing:-.018em;
+    margin:0 0 7px; line-height:1.15}
+  .eclass{font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--steel)}
+  .escore{margin-left:auto; text-align:right; flex:none}
+  .escore .v{font-family:"IBM Plex Mono",monospace; font-size:30px; font-weight:600;
+    color:var(--good); line-height:1; font-variant-numeric:tabular-nums}
+  .escore .l{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.09em;
+    text-transform:uppercase; color:var(--ink-3); margin-top:6px}
+
+  .stats{display:flex; flex-wrap:wrap; gap:0; border-bottom:1px solid var(--rule)}
+  .stat{flex:1 1 150px; padding:15px 26px; border-right:1px solid var(--rule)}
+  .stat:last-child{border-right:0}
+  .stat .n{font-family:"IBM Plex Mono",monospace; font-size:22px; font-weight:600;
+    font-variant-numeric:tabular-nums; line-height:1}
+  .stat .k{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.09em;
+    text-transform:uppercase; color:var(--ink-3); margin-top:7px}
+
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:0}
+  @media (max-width:860px){ .grid{grid-template-columns:1fr} }
+  .pane{padding:22px 26px; border-right:1px solid var(--rule); border-bottom:1px solid var(--rule)}
+  .pane:nth-child(even){border-right:0}
+  .ptitle{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.11em;
+    text-transform:uppercase; color:var(--ink-3); margin:0 0 14px; display:flex;
+    justify-content:space-between; align-items:center}
+
+  .row{display:flex; gap:12px; align-items:baseline; padding:8px 0;
+    border-bottom:1px solid var(--rule); font-size:14.5px}
+  .row:last-child{border-bottom:0}
+  .row .k{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3);
+    width:78px; flex:none; letter-spacing:.05em; text-transform:uppercase}
+  .row .v{font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--ink); flex:1}
+  .win{font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--ink-3); white-space:nowrap}
+
+  .chip{display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:10.5px;
+    padding:2px 7px; border-radius:2px; letter-spacing:.04em; white-space:nowrap}
+  .c-ok{background:var(--good-soft); color:var(--good); border:1px solid var(--good)}
+  .c-warn{background:var(--warn-soft); color:var(--warn); border:1px solid var(--warn)}
+  .c-alert{background:var(--alert-soft); color:var(--alert); border:1px solid var(--alert)}
+  .c-mute{background:var(--surface-2); color:var(--ink-3); border:1px solid var(--rule-strong)}
+
+  .alias{display:flex; flex-wrap:wrap; gap:6px; margin-top:4px}
+  .alias span{font-family:"IBM Plex Mono",monospace; font-size:11px; padding:3px 8px;
+    background:var(--surface-2); border:1px solid var(--rule); border-radius:2px; color:var(--ink-2)}
+
+  /* linked entities */
+  .link{padding:11px 0; border-bottom:1px solid var(--rule)}
+  .link:last-child{border-bottom:0}
+  .link .top{display:flex; justify-content:space-between; gap:10px; align-items:baseline}
+  .link .nm{font-family:Archivo,sans-serif; font-weight:600; font-size:14.5px}
+  .link .why{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-2); margin-top:5px}
+  .bar{height:3px; background:var(--surface-3); border-radius:2px; margin-top:8px; overflow:hidden}
+  .bar i{display:block; height:100%; background:var(--accent)}
+
+  /* timeline */
+  .tl{position:relative; padding-left:20px}
+  .tl:before{content:""; position:absolute; left:4px; top:6px; bottom:6px; width:1px; background:var(--rule-strong)}
+  .ev{position:relative; padding:9px 0; border-bottom:1px solid var(--rule)}
+  .ev:last-child{border-bottom:0}
+  .ev:before{content:""; position:absolute; left:-20px; top:15px; width:9px; height:9px;
+    border-radius:50%; background:var(--surface); border:2px solid var(--steel)}
+  .ev.alleged:before{border-color:var(--alert)}
+  .ev .d{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3)}
+  .ev .t{font-size:14.5px; margin-top:2px}
+
+  /* evidence */
+  .ev-item{border:1px solid var(--rule); border-radius:3px; padding:12px 14px; margin-bottom:10px;
+    background:var(--surface-2); cursor:pointer}
+  .ev-item:hover{border-color:var(--accent)}
+  .ev-item .src{font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--ink-3);
+    display:flex; justify-content:space-between; gap:10px}
+  .ev-item .q{font-size:14px; margin:8px 0 0; line-height:1.5}
+  mark{background:var(--accent-soft); color:var(--ink); padding:1px 3px; border-radius:2px;
+    box-shadow:inset 0 -1px 0 var(--accent)}
+  .ann{font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--ink-3);
+    margin-top:8px; padding-top:8px; border-top:1px dashed var(--rule-strong)}
+
+  .split{display:grid; grid-template-columns:1fr 1fr; gap:0}
+  @media (max-width:860px){ .split{grid-template-columns:1fr} }
+
+  .tablewrap{overflow-x:auto; margin:26px 0}
+  table{border-collapse:collapse; width:100%; font-size:14.5px; min-width:520px}
+  th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--rule)}
+  th{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--ink-3); font-weight:500;
+    border-bottom:1px solid var(--rule-strong)}
+  td.num{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
+    text-align:right; white-space:nowrap}
+  tr.hi td{background:var(--accent-soft)}
+
+  figure{margin:32px 0 8px}
+  .figframe{background:var(--surface); border:1px solid var(--rule); border-radius:3px;
+    padding:22px; overflow-x:auto; box-shadow:var(--shadow)}
+  figure svg{display:block; width:100%; height:auto; min-width:700px; color:var(--ink)}
+  figcaption{max-width:68ch; margin:14px auto 0; font-size:14.5px; color:var(--ink-2); line-height:1.55}
+  figcaption b{font-family:"IBM Plex Mono",monospace; font-size:11.5px; font-weight:600;
+    letter-spacing:.09em; text-transform:uppercase; color:var(--accent); margin-right:8px}
+
+  .t-title{font-family:Archivo,sans-serif; font-size:12.5px; font-weight:700; letter-spacing:.055em}
+  .t-node{font-family:Archivo,sans-serif; font-size:13px; font-weight:600}
+  .t-sub{font-family:"IBM Plex Mono",monospace; font-size:10.8px}
+  .t-edge{font-family:"IBM Plex Mono",monospace; font-size:10.2px; letter-spacing:.03em}
+
+  .note{border-left:2px solid var(--accent); background:var(--surface); padding:16px 20px;
+    margin:26px 0; border-radius:0 3px 3px 0; font-size:16px; color:var(--ink-2)}
+  .note b{color:var(--ink); font-weight:600}
+  .caveat{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-3);
+    text-align:center; margin:10px 0 0}
+  hr.end{border:0; border-top:1px solid var(--rule); margin:64px auto 0; max-width:68ch}
+  .foot{max-width:68ch; margin:20px auto 0; font-size:13.5px; color:var(--ink-3)}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">Product preview</p>
+  <h1>What we know about a person, and how we know it</h1>
+  <p class="standfirst">A single resolved view of any party in the claim file — assembled from thousands of unstructured notes, with every statement traceable to the sentence that supports it.</p>
+</header>
+
+<section>
+  <h2><span class="num">01</span> The dossier</h2>
+  <p class="lede">Today this information exists, but only as prose scattered across notes on separate claims. Nobody can see it in one place, and nothing connects a mention on one file to the same person on another.</p>
+</section>
+
+<div class="wide">
+  <div class="app">
+    <div class="appbar">
+      <div class="dots"><i></i><i></i><i></i></div>
+      <div class="addr">entity-intelligence / provider / e_4f2a91</div>
+      <div>resolved view</div>
+    </div>
+
+    <div class="ehead">
+      <div>
+        <h3 class="ename">Alicia M. Reyes, MD</h3>
+        <div class="eclass">Medical provider · orthopedics</div>
+        <div class="alias">
+          <span>Dr. A. Reyes</span><span>Reyes, Alicia</span><span>A Reyes MD</span>
+          <span>Dr. Reyes</span><span>Alicia Reyas</span>
+        </div>
+      </div>
+      <div class="escore">
+        <div class="v">0.96</div>
+        <div class="l">identity confidence</div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="n">7</div><div class="k">claims</div></div>
+      <div class="stat"><div class="n">5</div><div class="k">occurrences</div></div>
+      <div class="stat"><div class="n">143</div><div class="k">mentions</div></div>
+      <div class="stat"><div class="n">9</div><div class="k">linked parties</div></div>
+      <div class="stat"><div class="n">2019</div><div class="k">first seen</div></div>
+    </div>
+
+    <div class="grid">
+      <!-- identity -->
+      <div class="pane">
+        <p class="ptitle"><span>Identity &amp; identifiers</span><span class="chip c-ok">3 validated</span></p>
+        <div class="row"><span class="k">NPI</span><span class="v">1932847561</span><span class="chip c-ok">checksum ok</span></div>
+        <div class="row"><span class="k">Email</span><span class="v">a.reyes@northlineortho.com</span><span class="chip c-ok">validated</span></div>
+        <div class="row"><span class="k">Phone</span><span class="v">(312) 555-0148</span><span class="win">2023-04 → now</span></div>
+        <div class="row"><span class="k">Phone</span><span class="v">(312) 555-0902</span><span class="win">2019-01 → 2023-03</span></div>
+        <div class="row"><span class="k">Address</span><span class="v">88 Larkin Ave, Ste 300</span><span class="win">2021-06 → now</span></div>
+        <div class="row"><span class="k">Address</span><span class="v">1450 W Grand Blvd</span><span class="win">2019-01 → 2021-05</span></div>
+        <div class="row"><span class="k">DOB</span><span class="v">—</span><span class="chip c-mute">not asserted</span></div>
+      </div>
+
+      <!-- linked -->
+      <div class="pane">
+        <p class="ptitle"><span>Linked parties</span><span class="chip c-mute">why + confidence</span></p>
+
+        <div class="link">
+          <div class="top"><span class="nm">Northline Orthopedic Group</span><span class="chip c-ok">0.98</span></div>
+          <div class="why">employed_by · shared email domain + address 88 Larkin Ave</div>
+          <div class="bar"><i style="width:98%"></i></div>
+        </div>
+
+        <div class="link">
+          <div class="top"><span class="nm">Marcus Okonjo</span><span class="chip c-ok">0.91</span></div>
+          <div class="why">works_with · named as her paralegal contact on 4 claims</div>
+          <div class="bar"><i style="width:91%"></i></div>
+        </div>
+
+        <div class="link">
+          <div class="top"><span class="nm">Delgado Legal Partners</span><span class="chip c-warn">0.74</span></div>
+          <div class="why">referred_by · co-occurs on 5 of 7 claims, no direct assertion</div>
+          <div class="bar"><i style="width:74%"></i></div>
+        </div>
+
+        <div class="link">
+          <div class="top"><span class="nm">Vernon Imaging LLC</span><span class="chip c-warn">0.62</span></div>
+          <div class="why">shares_address · same suite, different TIN — unverified</div>
+          <div class="bar"><i style="width:62%"></i></div>
+        </div>
+      </div>
+
+      <!-- timeline -->
+      <div class="pane">
+        <p class="ptitle"><span>Activity</span><span class="chip c-mute">across all claims</span></p>
+        <div class="tl">
+          <div class="ev"><div class="d">2026-03-11 · claim 8820</div><div class="t">Performed IME on claimant</div></div>
+          <div class="ev"><div class="d">2026-02-27 · claim 8820</div><div class="t">Produced treatment records</div></div>
+          <div class="ev"><div class="d">2025-11-04 · claim 7315</div><div class="t">Submitted billing, $14,200</div></div>
+          <div class="ev alleged"><div class="d">2025-09-18 · claim 7315</div>
+            <div class="t">Billing pattern questioned by adjuster <span class="chip c-alert">alleged</span></div></div>
+          <div class="ev"><div class="d">2025-06-02 · claim 6640</div><div class="t">Referred claimant for imaging</div></div>
+        </div>
+      </div>
+
+      <!-- evidence -->
+      <div class="pane">
+        <p class="ptitle"><span>Evidence</span><span class="chip c-mute">click to open note</span></p>
+
+        <div class="ev-item">
+          <div class="src"><span>DOC-4471-012</span><span>chars 214–229</span></div>
+          <p class="q">“…IME set w/ <mark>Dr. Alicia Reyes</mark>; records to follow via her paralegal M. Okonjo…”</p>
+          <div class="ann">asserted has_name · extractor token_ner+llm · conf 0.94</div>
+        </div>
+
+        <div class="ev-item">
+          <div class="src"><span>DOC-8820-003</span><span>chars 88–102</span></div>
+          <p class="q">“…callback left at <mark>(312) 555-0148</mark>, no name given on the outgoing message…”</p>
+          <div class="ann">attributed via identifier node · phone assoc 2023-04→now · conf 0.89</div>
+        </div>
+
+        <div class="ev-item">
+          <div class="src"><span>DOC-7315-021</span><span>chars 512–566</span></div>
+          <p class="q">“…adjuster notes the <mark>billing volume from this provider looks inflated</mark> relative to peers…”</p>
+          <div class="ann">alleged · segregated from fact · conf 0.71</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="caveat">Illustrative mockup — fictional entity, representative of the resolved output the pipeline produces.</p>
+</div>
+
+<section>
+  <p>Three things in that view are not obtainable from the notes today. The <strong>alias set</strong> is evidence that five different spellings were resolved to one person. The <strong>closed phone window</strong> means a later mention of the old number will not be wrongly attributed to her. And the second evidence item is attributed to her <strong>even though the note names nobody</strong> — the identifier node carries it.</p>
+  <div class="note"><b>Allegations never become facts.</b> The questioned billing appears on the timeline and in evidence, marked and separated. The system records that someone alleged it, with the span that proves they did — it does not assert it.</div>
+</section>
+
+<section>
+  <h2><span class="num">02</span> Enriching the claim assistant</h2>
+  <p class="lede">The assistant already filters to a claim and retrieves the most relevant chunks. That gate stays exactly as it is. The entity layer is consulted after it — on the way out, not instead of it.</p>
+  <p>Retrieved chunks contain entity mentions. Those mentions are already resolved to global identities, so the assistant can attach what is known about each party from the whole corpus before it composes an answer — and can answer questions that are structurally impossible for claim-scoped retrieval alone.</p>
+
+  <figure class="wide">
+    <div class="figframe">
+      <svg viewBox="0 0 1140 430" role="img" aria-label="The claim assistant's existing vector retrieval gate is unchanged; an entity enrichment step is added after it, giving the model resolved cross-claim facts before it answers.">
+        <defs>
+          <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--steel)"/></marker>
+          <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker>
+        </defs>
+
+        <text x="20" y="26" class="t-title" fill="var(--ink-3)">EXISTING PATH — UNCHANGED</text>
+
+        <rect x="20" y="44" width="146" height="62" rx="3" fill="var(--surface-2)" stroke="var(--rule-strong)"/>
+        <text x="93" y="70" text-anchor="middle" class="t-node" fill="var(--ink)">Question</text>
+        <text x="93" y="88" text-anchor="middle" class="t-sub" fill="var(--ink-3)">from adjuster</text>
+
+        <line x1="170" y1="75" x2="202" y2="75" stroke="var(--steel)" stroke-width="1.5" marker-end="url(#a1)"/>
+
+        <rect x="206" y="44" width="150" height="62" rx="3" fill="var(--surface-2)" stroke="var(--rule-strong)"/>
+        <text x="281" y="70" text-anchor="middle" class="t-node" fill="var(--ink)">Claim filter</text>
+        <text x="281" y="88" text-anchor="middle" class="t-sub" fill="var(--ink-3)">partition → one claim</text>
+
+        <line x1="360" y1="75" x2="392" y2="75" stroke="var(--steel)" stroke-width="1.5" marker-end="url(#a1)"/>
+
+        <rect x="396" y="44" width="150" height="62" rx="3" fill="var(--surface-2)" stroke="var(--rule-strong)"/>
+        <text x="471" y="70" text-anchor="middle" class="t-node" fill="var(--ink)">Vector top-k</text>
+        <text x="471" y="88" text-anchor="middle" class="t-sub" fill="var(--ink-3)">relevant chunks</text>
+
+        <line x1="550" y1="75" x2="582" y2="75" stroke="var(--steel)" stroke-width="1.5" marker-end="url(#a1)"/>
+
+        <!-- NEW GATE -->
+        <rect x="586" y="30" width="230" height="118" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="701" y="54" text-anchor="middle" class="t-title" fill="var(--accent)">NEW · ENTITY LAYER</text>
+        <rect x="602" y="64" width="198" height="24" rx="2" fill="var(--surface)" stroke="var(--rule)"/>
+        <text x="612" y="80" class="t-sub" fill="var(--ink-2)">entities in retrieved chunks</text>
+        <rect x="602" y="92" width="198" height="24" rx="2" fill="var(--surface)" stroke="var(--rule)"/>
+        <text x="612" y="108" class="t-sub" fill="var(--ink-2)">→ resolved global identity</text>
+        <rect x="602" y="120" width="198" height="22" rx="2" fill="var(--surface)" stroke="var(--rule)"/>
+        <text x="612" y="135" class="t-sub" fill="var(--ink-2)">→ graph facts + provenance</text>
+
+        <line x1="820" y1="89" x2="852" y2="89" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#a2)"/>
+
+        <rect x="856" y="44" width="150" height="90" rx="3" fill="var(--surface-2)" stroke="var(--rule-strong)"/>
+        <text x="931" y="72" text-anchor="middle" class="t-node" fill="var(--ink)">Answer</text>
+        <text x="931" y="92" text-anchor="middle" class="t-sub" fill="var(--ink-3)">chunks + entity facts</text>
+        <text x="931" y="110" text-anchor="middle" class="t-sub" fill="var(--ink-3)">every claim cited</text>
+
+        <line x1="20" y1="182" x2="1120" y2="182" stroke="var(--rule)"/>
+
+        <!-- what changes -->
+        <text x="20" y="212" class="t-title" fill="var(--ink-3)">WHAT THE ADJUSTER CAN NOW ASK</text>
+
+        <rect x="20" y="228" width="540" height="176" rx="3" fill="var(--surface-2)" stroke="var(--rule-strong)"/>
+        <text x="40" y="254" class="t-node" fill="var(--ink)">Before</text>
+        <text x="40" y="276" class="t-sub" fill="var(--ink-2)">“What did the provider bill on this claim?”</text>
+        <text x="40" y="296" class="t-sub" fill="var(--good)">answered — the text is in the claim</text>
+        <line x1="40" y1="312" x2="540" y2="312" stroke="var(--rule)"/>
+        <text x="40" y="336" class="t-sub" fill="var(--ink-2)">“Has this provider appeared on other claims?”</text>
+        <text x="40" y="356" class="t-sub" fill="var(--alert)">structurally unanswerable —</text>
+        <text x="40" y="374" class="t-sub" fill="var(--alert)">retrieval cannot see outside the claim</text>
+
+        <rect x="580" y="228" width="540" height="176" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="600" y="254" class="t-node" fill="var(--ink)">After</text>
+        <text x="600" y="276" class="t-sub" fill="var(--ink-2)">“What did the provider bill on this claim?”</text>
+        <text x="600" y="296" class="t-sub" fill="var(--good)">answered — unchanged path</text>
+        <line x1="600" y1="312" x2="1100" y2="312" stroke="var(--rule-strong)"/>
+        <text x="600" y="336" class="t-sub" fill="var(--ink-2)">“Has this provider appeared on other claims?”</text>
+        <text x="600" y="356" class="t-sub" fill="var(--good)">answered — 7 claims, 5 occurrences,</text>
+        <text x="600" y="374" class="t-sub" fill="var(--good)">each with the note and span that proves it</text>
+      </svg>
+    </div>
+    <figcaption><b>Figure 1</b>The retrieval gate is untouched — the same claim filter, the same top-k. The entity layer runs on its output, turning mentions into resolved identities and attaching what the rest of the corpus knows. The lower panel is the point: the second question is not a hard question today, it is an <em>impossible</em> one, because claim-scoped retrieval has no way to see another claim.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2><span class="num">03</span> The resolution layer as a shared service</h2>
+  <p class="lede">Nothing in the extraction and resolution core is specific to one team's corpus. It takes unstructured text and returns resolved entities, links and provenance — which makes it usable by any group with a document pile and a need to know who is in it.</p>
+  <p>Each consuming team keeps its own corpus and its own graph. What they share is the engine: the same extraction ensemble, the same resolution model, the same evidence discipline. On top of a team's graph sits a chat interface that answers over their entities rather than over raw text alone.</p>
+
+  <figure class="wide">
+    <div class="figframe">
+      <svg viewBox="0 0 1140 420" role="img" aria-label="Multiple teams send their own corpora to a shared extraction and resolution engine; each receives its own isolated entity graph and a chat interface over it.">
+        <defs>
+          <marker id="b1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--steel)"/></marker>
+          <marker id="b2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker>
+        </defs>
+
+        <text x="20" y="26" class="t-title" fill="var(--ink-3)">TENANT CORPORA</text>
+        <rect x="20" y="40" width="176" height="56" rx="3" fill="var(--surface-2)" stroke="var(--rule-strong)"/>
+        <text x="108" y="64" text-anchor="middle" class="t-node" fill="var(--ink)">Claims</text>
+        <text x="108" y="82" text-anchor="middle" class="t-sub" fill="var(--ink-3)">adjuster notes</text>
+
+        <rect x="20" y="106" width="176" height="56" rx="3" fill="var(--surface-2)" stroke="var(--rule-strong)"/>
+        <text x="108" y="130" text-anchor="middle" class="t-node" fill="var(--ink)">SIU</text>
+        <text x="108" y="148" text-anchor="middle" class="t-sub" fill="var(--ink-3)">investigation files</text>
+
+        <rect x="20" y="172" width="176" height="56" rx="3" fill="var(--surface-2)" stroke="var(--rule-strong)"/>
+        <text x="108" y="196" text-anchor="middle" class="t-node" fill="var(--ink)">Legal</text>
+        <text x="108" y="214" text-anchor="middle" class="t-sub" fill="var(--ink-3)">matter files</text>
+
+        <rect x="20" y="238" width="176" height="56" rx="3" fill="var(--surface-2)" stroke="var(--rule-strong)"/>
+        <text x="108" y="262" text-anchor="middle" class="t-node" fill="var(--ink)">Underwriting</text>
+        <text x="108" y="280" text-anchor="middle" class="t-sub" fill="var(--ink-3)">submissions</text>
+
+        <line x1="200" y1="68" x2="300" y2="150" stroke="var(--steel)" stroke-width="1.2" marker-end="url(#b1)"/>
+        <line x1="200" y1="134" x2="300" y2="158" stroke="var(--steel)" stroke-width="1.2" marker-end="url(#b1)"/>
+        <line x1="200" y1="200" x2="300" y2="174" stroke="var(--steel)" stroke-width="1.2" marker-end="url(#b1)"/>
+        <line x1="200" y1="266" x2="300" y2="182" stroke="var(--steel)" stroke-width="1.2" marker-end="url(#b1)"/>
+
+        <!-- shared engine -->
+        <rect x="306" y="66" width="248" height="200" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="430" y="94" text-anchor="middle" class="t-title" fill="var(--accent)">SHARED ENGINE</text>
+        <rect x="324" y="108" width="212" height="30" rx="2" fill="var(--surface)" stroke="var(--rule)"/>
+        <text x="336" y="127" class="t-sub" fill="var(--ink-2)">extraction ensemble</text>
+        <rect x="324" y="144" width="212" height="30" rx="2" fill="var(--surface)" stroke="var(--rule)"/>
+        <text x="336" y="163" class="t-sub" fill="var(--ink-2)">coreference + identifiers</text>
+        <rect x="324" y="180" width="212" height="30" rx="2" fill="var(--surface)" stroke="var(--rule)"/>
+        <text x="336" y="199" class="t-sub" fill="var(--ink-2)">probabilistic resolution</text>
+        <rect x="324" y="216" width="212" height="30" rx="2" fill="var(--surface)" stroke="var(--rule)"/>
+        <text x="336" y="235" class="t-sub" fill="var(--ink-2)">evidence + provenance</text>
+
+        <line x1="558" y1="166" x2="600" y2="166" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#b2)"/>
+
+        <!-- per tenant outputs -->
+        <text x="606" y="26" class="t-title" fill="var(--ink-3)">PER-TENANT OUTPUT · ISOLATED</text>
+
+        <rect x="606" y="66" width="240" height="200" rx="3" fill="none" stroke="var(--rule-strong)" stroke-dasharray="4 3"/>
+        <text x="726" y="92" text-anchor="middle" class="t-node" fill="var(--ink)">Tenant graph</text>
+        <text x="726" y="112" text-anchor="middle" class="t-sub" fill="var(--ink-3)">own entities, own storage</text>
+
+        <circle cx="668" cy="164" r="17" fill="var(--surface)" stroke="var(--steel)" stroke-width="1.6"/>
+        <circle cx="756" cy="146" r="17" fill="var(--surface)" stroke="var(--steel)" stroke-width="1.6"/>
+        <circle cx="762" cy="212" r="17" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.6"/>
+        <circle cx="820" cy="180" r="17" fill="var(--surface)" stroke="var(--steel)" stroke-width="1.6"/>
+        <line x1="685" y1="160" x2="739" y2="149" stroke="var(--rule-strong)"/>
+        <line x1="681" y1="176" x2="748" y2="204" stroke="var(--rule-strong)"/>
+        <line x1="773" y1="158" x2="807" y2="172" stroke="var(--rule-strong)"/>
+        <line x1="779" y1="205" x2="806" y2="190" stroke="var(--rule-strong)"/>
+        <text x="726" y="252" text-anchor="middle" class="t-sub" fill="var(--ink-3)">no cross-tenant edges</text>
+
+        <line x1="850" y1="166" x2="890" y2="166" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#b2)"/>
+
+        <rect x="896" y="66" width="224" height="200" rx="3" fill="var(--surface-2)" stroke="var(--rule-strong)"/>
+        <text x="1008" y="92" text-anchor="middle" class="t-node" fill="var(--ink)">Graph chat</text>
+        <text x="1008" y="110" text-anchor="middle" class="t-sub" fill="var(--ink-3)">asks the graph, not the pile</text>
+        <rect x="912" y="126" width="192" height="26" rx="13" fill="var(--surface)" stroke="var(--rule)"/>
+        <text x="924" y="143" class="t-sub" fill="var(--ink-2)">“who recurs across matters?”</text>
+        <rect x="912" y="158" width="192" height="26" rx="13" fill="var(--surface)" stroke="var(--rule)"/>
+        <text x="924" y="175" class="t-sub" fill="var(--ink-2)">“anyone at this address?”</text>
+        <rect x="912" y="190" width="192" height="26" rx="13" fill="var(--surface)" stroke="var(--rule)"/>
+        <text x="924" y="207" class="t-sub" fill="var(--ink-2)">“show me the evidence”</text>
+        <text x="1008" y="242" text-anchor="middle" class="t-sub" fill="var(--good)">answers cite documents</text>
+
+        <line x1="20" y1="322" x2="1120" y2="322" stroke="var(--rule)"/>
+        <text x="20" y="352" class="t-sub" fill="var(--ink-3)">The engine is shared; the data is not. Each tenant's corpus, entities and graph stay in their own store —</text>
+        <text x="20" y="372" class="t-sub" fill="var(--ink-3)">what is reused across teams is the extraction and resolution capability, not the records.</text>
+        <text x="20" y="398" class="t-sub" fill="var(--accent)">One integration surface: send documents, receive resolved entities, links, and the spans that prove them.</text>
+      </svg>
+    </div>
+    <figcaption><b>Figure 2</b>The same core serves any team with unstructured documents. Tenant graphs stay isolated — there are no edges between them — while the extraction ensemble, resolution model and evidence discipline are shared infrastructure. The chat layer sits on a team's own graph, so its answers are about entities and carry citations rather than being a summary of retrieved text.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2><span class="num">04</span> Where the build actually stands</h2>
+  <p class="lede">Measured against a corpus rebuilt to match production shape — not a simplified stand-in — so these numbers are the ones worth planning against.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Capability</th><th style="text-align:right">Measured</th><th>Read</th></tr></thead>
+      <tbody>
+        <tr class="hi"><td>Identifiers captured</td><td class="num">100%</td><td>including those mentioned with no name attached</td></tr>
+        <tr><td>Named parties captured</td><td class="num">85.7%</td><td>precision 81%</td></tr>
+        <tr><td>Identity resolution</td><td class="num">~1.8&times;</td><td>more fragmented than truth — usable, not final</td></tr>
+        <tr><td>Pronoun / descriptor resolution</td><td class="num">43%</td><td>weakest component; current focus</td></tr>
+        <tr><td>Action timeline extraction</td><td class="num">—</td><td>not built yet</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note"><b>The rebuild earned its keep immediately.</b> Against the realistic
+  corpus, identifiers mentioned without a name were being captured correctly and then
+  silently discarded — none of 1,211 survived. That is precisely the "address with no
+  name" case this system exists to solve, and the earlier simplified corpus contained
+  no such mentions, so nothing could have surfaced it. Now fully recovered.</div>
+</section>
+
+<section>
+  <h2><span class="num">05</span> What this is worth</h2>
+  <ul>
+    <li><strong>A question that is impossible today becomes routine.</strong> Whether a party recurs across claims cannot be answered by claim-scoped retrieval at any level of model quality. It is an architectural limit, and the entity layer is what removes it.</li>
+    <li><strong>Every answer carries its receipt.</strong> Each fact reopens the note at the characters that assert it, which is what makes the output usable where decisions have to be defended.</li>
+    <li><strong>Confidence is explicit.</strong> Links are scored rather than asserted, so a reviewer can see the difference between a validated identifier match and a co-occurrence pattern.</li>
+    <li><strong>The capability is reusable.</strong> Nothing in the core assumes claims — any team with documents and parties can send text in and get resolved entities back.</li>
+  </ul>
+</section>
+
+<hr class="end">
+<p class="foot">The dossier above is a mockup using a fictional entity, illustrating the target output. Underlying performance is now measured against a corpus rebuilt to match production note characteristics: identifier capture is complete (including identifiers mentioned with no name attached), entity capture runs in the mid-eighties percent, and identity resolution is roughly twice as fragmented as the truth — good enough to demonstrate the capability, not yet good enough to ship. Coreference is the weakest component and the current focus.</p>
+
+</div>
