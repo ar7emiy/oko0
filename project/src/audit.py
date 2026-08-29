@@ -51,6 +51,7 @@ def _apply_corrections(manifest: dict) -> dict:
     for c in corrections:
         orig_key = (c["doc_id"], c.get("orig_char_start", c["char_start"]),
                    c.get("orig_char_end", c["char_end"]))
+        new_key = (c["doc_id"], c["char_start"], c["char_end"])
         idx = by_key.get(orig_key)
         if idx is not None:
             p = dict(placements[idx])
@@ -65,6 +66,7 @@ def _apply_corrections(manifest: dict) -> dict:
         else:
             # no existing placement at that span -- ground truth was missing
             # this one outright; add it.
+            idx = len(placements)
             placements.append({
                 "kind": c["span_kind"], "doc_id": c["doc_id"],
                 "char_start": c["char_start"], "char_end": c["char_end"],
@@ -73,6 +75,11 @@ def _apply_corrections(manifest: dict) -> dict:
                 "inside_quoted_dup": False, "orphan": c.get("orphan", False),
                 "identifier_kind": c.get("entity_class") if c["span_kind"] == "identifier" else None,
             })
+        # keep the index in sync so a LATER correction in this same batch --
+        # e.g. one queued today refining a placement another one added last
+        # week -- can find it by either its original or its corrected span.
+        by_key[orig_key] = idx
+        by_key[new_key] = idx
         if c.get("hard_case_tags") and c.get("gt_entity_id"):
             for e in manifest["entities"]:
                 if e["gt_entity_id"] == c["gt_entity_id"]:

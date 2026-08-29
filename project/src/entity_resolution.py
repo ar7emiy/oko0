@@ -177,7 +177,10 @@ def comparison_level_labels() -> dict:
         levels = comp.get_comparison("duckdb").as_dict()["comparison_levels"]
         non_null = [lvl for lvl in levels if not lvl.get("is_null_level")]
         labels = {i: lvl.get("label_for_charts", "") for i, lvl in enumerate(reversed(non_null))}
-        labels[-1] = "both sides null -- no evidence either way"
+        # Splink's null level is an OR ("<col>_l IS NULL OR <col>_r IS NULL"),
+        # not an AND -- one side can carry a real value while the other is
+        # missing and this level still applies. Don't claim "both".
+        labels[-1] = "one or both sides missing -- no evidence either way"
         out[name] = labels
     return out
 

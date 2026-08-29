@@ -432,8 +432,12 @@ def mention_lineage_rows(linker, frame_by_id, mention_a: str, mention_b: str,
     """
     if mention_a not in frame_by_id.index or mention_b not in frame_by_id.index:
         return {"available": False, "reason": "mention not found in the current frame"}
-    rec_a = frame_by_id.loc[mention_a].to_dict()
-    rec_b = frame_by_id.loc[mention_b].to_dict()
+    # Single-row DataFrame slices, not .to_dict(): a bare Python dict loses
+    # the corpus-wide column dtype, and DuckDB then infers a fully-null
+    # 2-record column (e.g. both mentions lack an email) as DOUBLE instead
+    # of VARCHAR, which breaks the email comparison's regexp_extract call.
+    rec_a = frame_by_id.loc[[mention_a]]
+    rec_b = frame_by_id.loc[[mention_b]]
     pred = linker.inference.compare_two_records(rec_a, rec_b)
     row = pred.as_pandas_dataframe().iloc[0]
 
