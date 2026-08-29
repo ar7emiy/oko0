@@ -28,7 +28,60 @@ from .settings import Paths
 
 
 def _load_manifest() -> dict:
-    return json.loads(Paths.manifest_json.read_text())
+    """The sealed manifest, with any queued ground-truth corrections applied
+    on top. data/gt_corrections.json (written by src/qa_viewer.py) is a patch
+    file, never a mutation of the sealed manifest -- so corpus_gen.py + seed
+    still regenerates the identical base file. See _apply_corrections.
+    """
+    manifest = json.loads(Paths.manifest_json.read_text())
+    return _apply_corrections(manifest)
+
+
+def _apply_corrections(manifest: dict) -> dict:
+    corrections_path = Paths.data / "gt_corrections.json"
+    if not corrections_path.exists():
+        return manifest
+    corrections = json.loads(corrections_path.read_text())
+    if not corrections:
+        return manifest
+
+    placements = list(manifest["placements"])
+    by_key = {(p["doc_id"], p["char_start"], p["char_end"]): i for i, p in enumerate(placements)}
+
+    for c in corrections:
+        orig_key = (c["doc_id"], c.get("orig_char_start", c["char_start"]),
+                   c.get("orig_char_end", c["char_end"]))
+        idx = by_key.get(orig_key)
+        if idx is not None:
+            p = dict(placements[idx])
+            p.update({
+                "kind": c["span_kind"], "doc_id": c["doc_id"],
+                "char_start": c["char_start"], "char_end": c["char_end"],
+                "gt_id": c.get("gt_entity_id") or p.get("gt_id"),
+            })
+            if c["span_kind"] == "identifier":
+                p["orphan"] = c.get("orphan", p.get("orphan"))
+            placements[idx] = p
+        else:
+            # no existing placement at that span -- ground truth was missing
+            # this one outright; add it.
+            placements.append({
+                "kind": c["span_kind"], "doc_id": c["doc_id"],
+                "char_start": c["char_start"], "char_end": c["char_end"],
+                "gt_id": c.get("gt_entity_id"), "surface": "",
+                "variant_kind": "corrected", "segment_kind": "narrative",
+                "inside_quoted_dup": False, "orphan": c.get("orphan", False),
+                "identifier_kind": c.get("entity_class") if c["span_kind"] == "identifier" else None,
+            })
+        if c.get("hard_case_tags") and c.get("gt_entity_id"):
+            for e in manifest["entities"]:
+                if e["gt_entity_id"] == c["gt_entity_id"]:
+                    e["hard_case_tags"] = sorted(set(e["hard_case_tags"]) | set(c["hard_case_tags"]))
+                    break
+
+    manifest = dict(manifest)
+    manifest["placements"] = placements
+    return manifest
 
 
 def _overlaps(s1, e1, s2, e2) -> bool:

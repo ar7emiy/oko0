@@ -47,6 +47,17 @@ from src import app
 app.build_app(Repository()).launch(share=True)
 ```
 
+To launch the extraction QA viewer (ground truth vs. extraction overlay,
+resolution match-lineage drill-down, ground-truth correction queue -- see
+`designs/qa-viewer-mockup.html` for the design this implements) after a full
+run including `entity_resolution.run()`:
+
+```python
+from src.repository import Repository
+from src import qa_viewer
+qa_viewer.build_app(Repository()).launch(share=True)
+```
+
 Run the notebooks individually in order (00 → 08) to step through each phase.
 
 ## Layout

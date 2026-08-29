@@ -33,7 +33,7 @@ import pandas as pd
 
 from . import textnorm
 from .repository import Repository
-from .settings import CFG
+from .settings import CFG, Paths
 
 
 # ---------------------------------------------------------------------------
@@ -133,6 +133,55 @@ def build_mention_frame(repo: Repository) -> pd.DataFrame:
 # ---------------------------------------------------------------------------
 # Splink backend
 # ---------------------------------------------------------------------------
+def comparison_specs():
+    """(name, comparison, raw_value_columns) for every scored comparison.
+
+    Single source of truth for the comparisons Splink scores: SplinkResolver
+    builds its settings from this, and comparison_level_labels() (used by the
+    QA viewer's match-lineage display) derives its gamma-level labels from the
+    exact same objects, so the two can never drift apart.
+
+    entity_class is deliberately absent: it is a noisy derived label from our
+    own classifier, not identity evidence. Comparing it penalizes correct
+    matches whenever the classifier disagreed with itself across two mentions
+    of one entity.
+    """
+    import splink.comparison_library as cl
+
+    return [
+        ("first_name_last_name",
+         cl.ForenameSurnameComparison("first_name", "last_name")
+           .configure(term_frequency_adjustments=True),
+         ["first_name", "last_name"]),
+        ("name_sorted", cl.JaroWinklerAtThresholds("name_sorted", [0.95, 0.88]), ["name_sorted"]),
+        ("email", cl.EmailComparison("email"), ["email"]),
+        ("phone7", cl.ExactMatch("phone7"), ["phone7"]),
+        ("npi", cl.ExactMatch("npi"), ["npi"]),
+        ("address_key", cl.ExactMatch("address_key"), ["address_key"]),
+        ("dob", cl.ExactMatch("dob"), ["dob"]),
+    ]
+
+
+def comparison_level_labels() -> dict:
+    """{comparison_name: {gamma_level: human label}}, derived from the live
+    comparison objects rather than hand-copied, so it can't drift from what
+    Splink actually scored. gamma -1 always means both sides were null.
+
+    Splink lists each comparison's levels most-specific-first after the null
+    level; the stored gamma ("comparison vector value") counts up from 0 at
+    the last (least specific, "All other comparisons") entry -- so reverse the
+    non-null levels and enumerate.
+    """
+    out = {}
+    for name, comp, _ in comparison_specs():
+        levels = comp.get_comparison("duckdb").as_dict()["comparison_levels"]
+        non_null = [lvl for lvl in levels if not lvl.get("is_null_level")]
+        labels = {i: lvl.get("label_for_charts", "") for i, lvl in enumerate(reversed(non_null))}
+        labels[-1] = "both sides null -- no evidence either way"
+        out[name] = labels
+    return out
+
+
 class SplinkResolver(ERBackend):
     """Fellegi-Sunter linkage with EM-calibrated m/u probabilities."""
 
@@ -143,7 +192,6 @@ class SplinkResolver(ERBackend):
 
     def _settings(self):
         from splink import SettingsCreator, block_on
-        import splink.comparison_library as cl
 
         return SettingsCreator(
             link_type="dedupe_only",
@@ -161,23 +209,7 @@ class SplinkResolver(ERBackend):
                 block_on("name_soundex", "first_name"),
                 block_on("last_name"),
             ],
-            comparisons=[
-                # ForenameSurname handles the name-inversion case explicitly,
-                # which plain string similarity on the full name does not.
-                cl.ForenameSurnameComparison(
-                    "first_name", "last_name",
-                ).configure(term_frequency_adjustments=True),
-                cl.JaroWinklerAtThresholds("name_sorted", [0.95, 0.88]),
-                cl.EmailComparison("email"),
-                cl.ExactMatch("phone7"),
-                cl.ExactMatch("npi"),
-                cl.ExactMatch("address_key"),
-                cl.ExactMatch("dob"),
-                # entity_class is deliberately NOT compared: it is a noisy
-                # derived label from our own classifier, not identity evidence.
-                # Comparing it penalizes correct matches whenever the classifier
-                # disagreed with itself across two mentions of one entity.
-            ],
+            comparisons=[c for _, c, _ in comparison_specs()],
             retain_intermediate_calculation_columns=True,
         )
 
@@ -217,6 +249,17 @@ class SplinkResolver(ERBackend):
         preds = linker.inference.predict(threshold_match_probability=0.01)
         df = preds.as_pandas_dataframe()
         keep = ["mention_id_l", "mention_id_r", "match_probability", "match_weight"]
+
+        # Persist the trained model (settings + m/u parameters) so the QA
+        # viewer can later re-score any specific pair on demand via
+        # linker.inference.compare_two_records() -- real Splink output,
+        # computed lazily per click instead of serialized for every one of
+        # the (possibly millions of) scored edges up front.
+        try:
+            linker.misc.save_model_to_json(str(Paths.store / "splink_model.json"), overwrite=True)
+        except Exception:
+            pass
+
         return df[[c for c in keep if c in df.columns]]
 
 
@@ -292,8 +335,11 @@ def cluster_at(edges: pd.DataFrame, mention_ids: list[str], threshold: float) ->
             parent[ry] = rx
 
     sel = edges[edges["match_probability"] >= threshold]
-    for _, e in sel.iterrows():
-        a, b = e["mention_id_l"], e["mention_id_r"]
+    # .itertuples()/.to_numpy() rather than .iterrows(): this runs on every
+    # threshold change (interactively, from the QA viewer) as well as once
+    # per point in threshold_sweep, and .iterrows() boxing each row into a
+    # Series made that visibly slow at corpus scale.
+    for a, b in zip(sel["mention_id_l"].to_numpy(), sel["mention_id_r"].to_numpy()):
         if a in parent and b in parent:
             union(a, b)
 

@@ -14,6 +14,8 @@ ipykernel
 
 # --- Layer 1-4 architecture ---
 rapidfuzz                 # fuzzy matching for entity resolution
+splink                    # Layer 2: Fellegi-Sunter entity resolution (src/entity_resolution.py)
+duckdb                    # Splink's default backend
 # Optional production backends. Both are adapters behind one-method interfaces
 # (TokenNERBackend / CorefResolver) and activate automatically when installed;
 # without them the deterministic offline backends are used.

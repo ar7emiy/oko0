@@ -24,6 +24,7 @@ GT_ALLOWED_FILES = {
     "src/corpus_gen.py",
     "src/audit.py",
     "src/ablation.py",       # audit-side: measures recall against the manifest
+    "src/qa_viewer.py",      # audit-side: overlays extraction against ground truth
     "src/settings.py",       # defines the path constants (infra, never reads content)
     "src/leakage_guard.py",  # this guard
 }
