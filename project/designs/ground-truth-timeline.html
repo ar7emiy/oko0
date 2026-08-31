@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ground Truth Timeline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#F6F7F9; --surface:#FFFFFF; --surface-2:#EDF0F4; --surface-3:#E3E8EF;
+    --ink:#10151C; --ink-2:#4A5666; --ink-3:#6E7A8A;
+    --rule:#D6DCE4; --rule-strong:#B9C2CE;
+    --accent:#B4650A; --accent-soft:#F6E7CE;
+    --good:#2F6B4F; --good-soft:#DFEDE5;
+    --alert:#A33A2A; --alert-soft:#F6E0DB;
+    --warn:#9C7B12; --warn-soft:#F5EDCF;
+    --shadow:0 1px 2px rgba(16,21,28,.06), 0 8px 24px -12px rgba(16,21,28,.18);
+    /* validated categorical slots (dataviz skill default ramp, slots 1-4) */
+    --lane-ds1:#2a78d6; --lane-ds2:#eb6834; --lane-sme:#1baf7a; --lane-joint:#eda100;
+    --lane-ds1-tx:#0b3f77; --lane-ds2-tx:#7a2c0c; --lane-sme-tx:#0a5236; --lane-joint-tx:#5c3c00;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#0E1218; --surface:#151B24; --surface-2:#1C242F; --surface-3:#232D3A;
+      --ink:#E8ECF2; --ink-2:#A3AEBD; --ink-3:#7C8797;
+      --rule:#2A3441; --rule-strong:#3A4756;
+      --accent:#E9A03C; --accent-soft:#3A2C16;
+      --good:#5FBF8F; --good-soft:#16281F;
+      --alert:#E07A63; --alert-soft:#2E1913;
+      --warn:#E3C24C; --warn-soft:#332B10;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+      --lane-ds1:#3987e5; --lane-ds2:#d95926; --lane-sme:#199e70; --lane-joint:#c98500;
+      --lane-ds1-tx:#cfe3fb; --lane-ds2-tx:#fbd9c8; --lane-sme-tx:#c7ecdd; --lane-joint-tx:#f7e0b3;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0E1218; --surface:#151B24; --surface-2:#1C242F; --surface-3:#232D3A;
+    --ink:#E8ECF2; --ink-2:#A3AEBD; --ink-3:#7C8797;
+    --rule:#2A3441; --rule-strong:#3A4756;
+    --accent:#E9A03C; --accent-soft:#3A2C16;
+    --good:#5FBF8F; --good-soft:#16281F;
+    --alert:#E07A63; --alert-soft:#2E1913;
+    --warn:#E3C24C; --warn-soft:#332B10;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    --lane-ds1:#3987e5; --lane-ds2:#d95926; --lane-sme:#199e70; --lane-joint:#c98500;
+    --lane-ds1-tx:#cfe3fb; --lane-ds2-tx:#fbd9c8; --lane-sme-tx:#c7ecdd; --lane-joint-tx:#f7e0b3;
+  }
+  *{box-sizing:border-box}
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:"Source Serif 4", Georgia, serif;
+    font-size:16.5px; line-height:1.6; margin:0; padding:0 20px 100px;
+    -webkit-font-smoothing:antialiased;
+  }
+  header.mast{max-width:1180px; margin:0 auto; padding:56px 0 30px; border-bottom:1px solid var(--rule)}
+  .eyebrow{font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.16em;
+           text-transform:uppercase; color:var(--accent); margin:0 0 16px}
+  h1{font-family:Archivo, sans-serif; font-weight:700; font-size:clamp(28px,4.6vw,42px);
+     line-height:1.06; letter-spacing:-.02em; margin:0 0 16px}
+  .standfirst{font-size:17.5px; color:var(--ink-2); margin:0; max-width:80ch}
+  main{max-width:1180px; margin:0 auto}
+  section{padding-top:46px}
+  h2{font-family:Archivo, sans-serif; font-weight:600; font-size:22px; margin:0 0 8px}
+  .lede{color:var(--ink-2); font-size:15.5px; margin:0 0 20px; max-width:80ch}
+  code{font-family:"IBM Plex Mono",monospace; font-size:.86em; background:var(--surface-2);
+       border:1px solid var(--rule); border-radius:2px; padding:1px 5px; color:var(--ink)}
+
+  .callout{border:1px solid var(--rule-strong); border-left:3px solid var(--accent);
+           background:var(--surface); border-radius:2px; padding:15px 17px; margin:18px 0;
+           box-shadow:var(--shadow)}
+  .callout .h{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em;
+              text-transform:uppercase; color:var(--accent); margin-bottom:7px}
+  .callout p{margin:0 0 8px; font-size:14.5px; color:var(--ink-2)}
+  .callout p:last-child{margin-bottom:0}
+  .callout b{color:var(--ink)}
+
+  /* ---- chart frame ---- */
+  .chartframe{background:var(--surface); border:1px solid var(--rule); border-radius:6px;
+              box-shadow:var(--shadow); overflow-x:auto; margin:22px 0}
+  .chartinner{padding:20px 22px 14px; min-width:1100px}
+  .legend{display:flex; gap:18px; flex-wrap:wrap; margin-bottom:14px;
+          font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-2)}
+  .legend .k{display:inline-flex; align-items:center; gap:7px}
+  .legend .sw{width:13px; height:13px; border-radius:3px; display:inline-block}
+  svg{display:block; overflow:visible}
+  .lane-label{font-family:"IBM Plex Mono",monospace; font-size:11.5px; font-weight:600}
+  .lane-sub{font-family:"IBM Plex Mono",monospace; font-size:9.5px; fill:var(--ink-3)}
+  .wk-label{font-family:"IBM Plex Mono",monospace; font-size:10.5px; fill:var(--ink-3);
+            text-transform:uppercase; letter-spacing:.06em}
+  .sprint-label{font-family:"IBM Plex Mono",monospace; font-size:10px; fill:var(--ink-3);
+                text-transform:uppercase; letter-spacing:.08em}
+  .bar{cursor:pointer}
+  .bar rect{stroke:var(--surface); stroke-width:1.5}
+  .bar text{font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600;
+            pointer-events:none}
+  .gate-line{stroke:var(--alert); stroke-width:1.5; stroke-dasharray:4,3}
+  .gate-label{font-family:"IBM Plex Mono",monospace; font-size:9.5px; fill:var(--alert);
+              font-weight:600; text-transform:uppercase; letter-spacing:.05em}
+  .grid-line{stroke:var(--rule)}
+  .sprint-band{fill:var(--surface-2)}
+
+  #tooltip{
+    position:fixed; display:none; z-index:50; max-width:340px;
+    background:var(--ink); color:var(--ground); border-radius:5px; padding:10px 13px;
+    font-family:"Source Serif 4", Georgia, serif; font-size:13px; line-height:1.5;
+    box-shadow:0 8px 28px -6px rgba(0,0,0,.4); pointer-events:none;
+  }
+  #tooltip .tt-id{font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600;
+                  letter-spacing:.04em; opacity:.75; margin-bottom:3px; display:block}
+  #tooltip .tt-title{font-family:Archivo,sans-serif; font-weight:600; font-size:13.5px;
+                     margin-bottom:5px; display:block}
+  #tooltip .tt-meta{font-family:"IBM Plex Mono",monospace; font-size:10.5px; opacity:.8;
+                    margin-bottom:6px}
+  #tooltip .tt-accept{font-size:12px; opacity:.92}
+
+  .tablewrap{overflow-x:auto; border:1px solid var(--rule); border-radius:3px;
+             background:var(--surface); box-shadow:var(--shadow); margin:20px 0}
+  table{width:100%; border-collapse:collapse; font-size:13px}
+  th,td{padding:8px 11px; text-align:left; border-bottom:1px solid var(--rule); vertical-align:top}
+  th{font-family:"IBM Plex Mono",monospace; font-size:10px; text-transform:uppercase;
+     letter-spacing:.07em; color:var(--ink-3); background:var(--surface-2); font-weight:500}
+  tr:last-child td{border-bottom:none}
+  td.id{font-family:"IBM Plex Mono",monospace; font-weight:600; color:var(--accent)}
+  td.mono{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-2); white-space:nowrap}
+  .lanepill{display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:10px;
+            padding:1px 8px; border-radius:8px; font-weight:600}
+
+  details.tabletoggle{margin:14px 0}
+  details.tabletoggle summary{cursor:pointer; font-family:"IBM Plex Mono",monospace;
+    font-size:11.5px; color:var(--ink-2); letter-spacing:.03em; padding:6px 0}
+  details.tabletoggle summary:hover{color:var(--accent)}
+
+  footer{max-width:1180px; margin:60px auto 0; padding-top:22px; border-top:1px solid var(--rule);
+         font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-3)}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <p class="eyebrow">Ground truth · timeline view</p>
+  <h1>Who does what, when — the same 30 tickets, laid out on a calendar</h1>
+  <p class="standfirst">
+    <code>ground-truth-plan.html</code> as a schedule instead of a table: four swim
+    lanes (who), six weeks (when), every bar sized to its estimate and positioned by
+    its real dependencies — not by sprint-label guesswork. Hover a bar for the full
+    ticket; a plain table is below for anything the chart compresses too much to read.
+    (The plan doc undercounted these as 28 — correction noted; it's 30.)
+  </p>
+</header>
+
+<main>
+<section>
+  <h2>Six weeks, dependency-scheduled</h2>
+  <p class="lede">
+    Every bar's position was computed from the actual dependency graph in the ticket
+    plan, not eyeballed against the sprint boundaries — resource-constrained scheduling,
+    one lane = one person working sequentially. Two things fell out of doing that
+    honestly, both worth knowing before this goes to the client:
+  </p>
+
+  <div class="callout">
+    <div class="h">Finding 1 — DS1 alone doesn't fit in six weeks</div>
+    <p>
+      If <b>DS1</b> owns the entire corpus/locator/sampling epic (<code>A</code>→<code>B</code>→<code>C</code>)
+      serially and only then does the freeze (<code>F3</code>→<code>H1</code>→<code>H2</code>), that
+      lane alone runs to <b>week 8</b>, not week 6 — the honest total is ~33 person-days
+      of serial work against a 30-day budget. Meanwhile <b>DS2</b> finishes the tooling
+      epic (<code>E1–E5</code>) by week 2–3 and then sits idle for the rest of the project
+      under the original split.
+    </p>
+    <p>
+      <b>Fix applied below:</b> once DS2 clears the tooling epic, the identifier
+      locator (<code>B3</code>), the not-found bucket (<code>B5</code>), and the sampling
+      epic (<code>C1–C3</code>) hand off to DS2. Same total work, redistributed — this
+      is what actually gets the plan back to six weeks, and it's the reason this chart
+      exists rather than the flat ticket list.
+    </p>
+  </div>
+
+  <div class="callout warn">
+    <div class="h">Finding 2 — a missing dependency in the original ticket table</div>
+    <p>
+      <code>F2</code> (adjudication) was written as depending only on <code>F1</code>
+      (gold annotation producing conflicts to adjudicate) — but adjudication also needs
+      the adjudication <em>queue</em>, <code>E4</code>, to exist. That dependency was
+      missing from the plan. It's added below; it does not change the critical path
+      (E4 already finishes well before F1 does), but it would have been a real gap if
+      someone scheduled off the table as written.
+    </p>
+  </div>
+
+  <div class="legend">
+    <span class="k"><span class="sw" style="background:var(--lane-ds1)"></span>DS1</span>
+    <span class="k"><span class="sw" style="background:var(--lane-ds2)"></span>DS2</span>
+    <span class="k"><span class="sw" style="background:var(--lane-sme)"></span>SME</span>
+    <span class="k"><span class="sw" style="background:var(--lane-joint)"></span>Joint (DS + SME together)</span>
+    <span class="k" style="margin-left:6px"><span style="display:inline-block;width:16px;border-top:2px dashed var(--alert)"></span>κ gate</span>
+  </div>
+
+  <div class="chartframe">
+    <div class="chartinner">
+      <svg id="chart"></svg>
+    </div>
+  </div>
+  <p style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-3);margin-top:-8px">
+    5-day weeks, no calendar holidays modeled. Bars are idealized-day estimates, not
+    a commitment — read this as sequencing and relative load, not a promise about
+    which Tuesday something ships.
+  </p>
+
+  <details class="tabletoggle">
+    <summary>▸ Show as a plain table (same data, no positions to read off an axis)</summary>
+    <div class="tablewrap">
+      <table id="ticket-table">
+        <thead><tr><th>ID</th><th>Title</th><th>Lane</th><th>Week</th><th>Days</th><th>Depends on</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </details>
+</section>
+</main>
+
+<div id="tooltip"></div>
+
+<footer>designs/ground-truth-timeline.html · companion to designs/ground-truth-plan.html — same tickets, scheduled</footer>
+
+<script>
+const DAY_W = 42;           // px per working day
+const LANE_H = 76;          // px per lane row
+const LEFT_W = 130;         // px reserved for lane labels
+const TOP_H = 40;           // px reserved for week header
+const DAYS_TOTAL = 30;      // 6 working weeks
+
+const LANES = [
+  {key:"DS1",   label:"DS1",   sub:"data scientist 1"},
+  {key:"DS2",   label:"DS2",   sub:"data scientist 2"},
+  {key:"SME",   label:"SME",   sub:"subject-matter expert"},
+  {key:"Joint", label:"Joint", sub:"DS + SME together"},
+];
+
+// id: [lane, epic, start, end, title, deps[], accept]
+const TICKETS = {
+  A1: ["DS1","A",0,2,"Freeze note corpus + hash manifest",[],"Every note has a stable ID + SHA-256 over exact text bytes."],
+  A2: ["DS1","A",2,5,"Ingest client entity list",["A1"],"Client list normalized; referential integrity to frozen notes checked."],
+  A3: ["DS1","A",5,7,"Asset profile report",["A2"],"Entity/note counts and null-rate distributions, by note category."],
+  W1: ["DS1","W",7,10,"Null-metadata gap report",["A1","A2"],"Ranked candidate recovered identifiers; ≥50 SME-verified via T4."],
+  B1: ["DS1","B",10,13,"Span locator: exact + normalized",["A2"],"Byte-accurate candidate spans per client entity, match tier recorded."],
+  B2: ["DS1","B",13,17,"Variant matching: flip, nickname, initial, typo",["B1"],"Catches name-order flips, nicknames, initials, near-miss spelling."],
+  B4: ["DS1","B",17,19,"Match-tier routing rules",["B2","B3"],"Config-driven accept/sample/human-review policy per match tier."],
+  F3: ["DS1","F",19,21,"Adjudication complete → gold freeze prep",["F2"],"All F2 conflicts resolved and reflected in the working gold set."],
+  H1: ["DS1","H",23,26,"Emit GT v1 in manifest schema v2",["F3","G1","G2","G3"],"Frozen manifest, hashed, tier-tagged. audit.py/qa_viewer.py run on it unmodified."],
+  H2: ["DS1","H",26,28,"Baseline metrics run",["H1"],"Stratified recall/precision, identifier recall, ER B³ sweep — dev split only."],
+
+  E1: ["DS2","E",0,2,"Annotator identity + doc completion state",[],"Every judgement carries annotator+timestamp; doc completeness is tracked."],
+  E2: ["DS2","E",2,6,"Click/keyboard span marking",["E1"],"Offsets computed from a mark, never typed. Target ≤5s per span."],
+  E3: ["DS2","E",6,9,"Work queues + blind mode",["E2"],"Annotator served next item by task type; blind mode hides pre-annotation."],
+  E4: ["DS2","E",9,11,"Adjudication queue",["E3"],"Conflicting spans shown side by side with the 4-way response."],
+  C1: ["DS2","C",11,13,"Stratification scheme + near-dup filter",["A3"],"Strata justified from the real distribution; near-dups collapsed."],
+  B3: ["DS2","B",13,16,"Identifier locator from metadata",["B1"],"Locates client-supplied address/phone/ID in note text incl. format variants."],
+  C2: ["DS2","C",16,17,"Gold sample draw",["C1"],"Reproducible seeded draw hitting the per-stratum instance target."],
+  C3: ["DS2","C",17,19,"Dev/test lockbox split + guard",["C2"],"Test split sealed; leakage_guard.py extended to protect it."],
+  B5: ["DS2","B",19,21,"Not-found bucket + triage queue",["B2"],"Client-list entities with no locatable span queued for T3."],
+  D4: ["DS2","D",21,22,"SME quick-reference card",["D3"],"One page: task types, response vocab, boundary rules — lives in the tool."],
+  E5: ["DS2","E",22,24,"IAA + throughput dashboard",["E4"],"Live κ, per-annotator throughput, disagreement-class breakdown."],
+
+  D2: ["SME","D",9,11,"Calibration round + IAA",["D1","E3"],"30 notes, dual, blind. GATE: κ ≥ 0.75 before gold starts."],
+  F1: ["SME","F",11,15,"Gold annotation pass",["D2","E3"],"~120 notes cold-annotated, marked complete."],
+  G3: ["SME","G",15,17,"Null-metadata recovery pass",["W1","E3"],"Candidates from the W1 gap report worked via T4; confirmed recoveries become identifier GT."],
+  G1: ["SME","G",19,20,"Locator certification",["B4","E3"],"Per-tier precision on a random sample. GATE: exact/norm ≥98%, fuzzy ≥90%."],
+  G2: ["SME","G",21,23,"Not-found triage pass",["B5","E3"],"B5's not-found bucket worked via T3: matcher gap vs. absent vs. unnamed."],
+
+  D1: ["Joint","D",0,3,"Annotation guidelines v1",[],"Every boundary rule settled with worked examples. Blocks D2 and all of F."],
+  D3: ["Joint","D",11,13,"Guidelines v2 from disagreements",["D2"],"Every D2 disagreement resolved by a new rule or declared genuinely ambiguous."],
+  F2: ["Joint","F",15,16,"Adjudication",["F1","E4"],"All calibration-round conflicts resolved; resolution is attributable."],
+  H3: ["Joint","H",28,30,"Quality report",["H2"],"Every number carries its CI, tier, and IAA ceiling."],
+};
+
+const GATE_DAY = 11; // end of D2
+
+const svg = document.getElementById('chart');
+const chartW = LEFT_W + DAYS_TOTAL * DAY_W + 10;
+const chartH = TOP_H + LANES.length * LANE_H + 10;
+svg.setAttribute('width', chartW);
+svg.setAttribute('height', chartH);
+svg.setAttribute('viewBox', `0 0 ${chartW} ${chartH}`);
+
+function el(tag, attrs, parent){
+  const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  if(parent) parent.appendChild(e);
+  return e;
+}
+function x(day){ return LEFT_W + day * DAY_W; }
+
+// sprint bands (weeks 1-2, 3-4, 5-6 alternate)
+const sprints = [[0,10],[10,20],[20,30]];
+sprints.forEach(([s,e],i)=>{
+  if(i % 2 === 1){
+    el('rect', {x:x(s), y:TOP_H, width:(e-s)*DAY_W, height: LANES.length*LANE_H,
+                class:'sprint-band'}, svg);
+  }
+  el('text', {x:x(s)+((e-s)*DAY_W)/2, y:16, class:'sprint-label', 'text-anchor':'middle'},
+    svg).textContent = 'sprint ' + (i+1);
+});
+
+// week gridlines + labels
+for(let w=0; w<=6; w++){
+  const d = w*5;
+  el('line', {x1:x(d), y1:TOP_H, x2:x(d), y2:TOP_H+LANES.length*LANE_H, class:'grid-line'}, svg);
+  if(w<6) el('text', {x:x(d)+6, y:TOP_H-6, class:'wk-label'}, svg).textContent = 'week ' + (w+1);
+}
+
+// lane rows -- identity carried by the swatch, never by coloring the text itself
+LANES.forEach((lane, i)=>{
+  const ly = TOP_H + i*LANE_H;
+  el('line', {x1:0, y1:ly, x2:x(DAYS_TOTAL), y2:ly, class:'grid-line'}, svg);
+  el('rect', {x:0, y:ly+LANE_H/2-15, width:11, height:11, rx:2,
+              fill:`var(--lane-${lane.key.toLowerCase()})`}, svg);
+  el('text', {x:16, y:ly+LANE_H/2-5, class:'lane-label', fill:'var(--ink)'},
+    svg).textContent = lane.label;
+  el('text', {x:0, y:ly+LANE_H/2+12, class:'lane-sub'}, svg).textContent = lane.sub;
+});
+el('line', {x1:0, y1:TOP_H+LANES.length*LANE_H, x2:x(DAYS_TOTAL), y2:TOP_H+LANES.length*LANE_H,
+            class:'grid-line'}, svg);
+
+// gate marker
+const gx = x(GATE_DAY);
+el('line', {x1:gx, y1:TOP_H-2, x2:gx, y2:TOP_H+LANES.length*LANE_H, class:'gate-line'}, svg);
+el('text', {x:gx+5, y:TOP_H+12, class:'gate-label'}, svg).textContent = 'κ gate';
+
+// bars
+const laneIndex = Object.fromEntries(LANES.map((l,i)=>[l.key,i]));
+const tooltip = document.getElementById('tooltip');
+
+Object.entries(TICKETS).forEach(([id, t])=>{
+  const [lane, epic, s, e, title, deps, accept] = t;
+  const li = laneIndex[lane];
+  const bx = x(s), bw = Math.max((e-s)*DAY_W - 4, 6);
+  const by = TOP_H + li*LANE_H + 14, bh = LANE_H - 28;
+  const g = el('g', {class:'bar'}, svg);
+  el('rect', {x:bx, y:by, width:bw, height:bh, rx:5, fill:`var(--lane-${lane.toLowerCase()})`}, g);
+  if(bw > 34){
+    el('text', {x:bx+bw/2, y:by+bh/2+4, 'text-anchor':'middle', fill:'#fff'}, g).textContent = id;
+  }
+  const show = (evt)=>{
+    tooltip.innerHTML =
+      `<span class="tt-id">${id} · ${lane}</span>` +
+      `<span class="tt-title">${title}</span>` +
+      `<span class="tt-meta">days ${s}–${e} (week ${Math.floor(s/5)+1}–${Math.ceil(e/5)}) ` +
+      (deps.length ? `· needs ${deps.join(', ')}` : '· no dependencies') + `</span>` +
+      `<span class="tt-accept">${accept}</span>`;
+    tooltip.style.display = 'block';
+    const pad = 14;
+    let left = evt.clientX + pad, top = evt.clientY + pad;
+    if(left + 350 > window.innerWidth) left = evt.clientX - 350 - pad;
+    if(top + 130 > window.innerHeight) top = evt.clientY - 130 - pad;
+    tooltip.style.left = left + 'px';
+    tooltip.style.top = top + 'px';
+  };
+  g.addEventListener('mouseenter', show);
+  g.addEventListener('mousemove', show);
+  g.addEventListener('mouseleave', ()=>{ tooltip.style.display = 'none'; });
+});
+
+// table fallback
+const tbody = document.querySelector('#ticket-table tbody');
+const laneColorVar = k => `var(--lane-${k.toLowerCase()})`;
+Object.entries(TICKETS).sort((a,b)=>a[1][2]-b[1][2]).forEach(([id,t])=>{
+  const [lane,epic,s,e,title,deps] = t;
+  const tr = document.createElement('tr');
+  tr.innerHTML =
+    `<td class="id">${id}</td><td>${title}</td>` +
+    `<td><span class="lanepill" style="background:${laneColorVar(lane)};color:#fff">${lane}</span></td>` +
+    `<td class="mono">wk ${Math.floor(s/5)+1}–${Math.ceil(e/5)}</td>` +
+    `<td class="mono">${s}–${e}</td>` +
+    `<td class="mono">${deps.length ? deps.join(', ') : '—'}</td>`;
+  tbody.appendChild(tr);
+});
+</script>
+</body>
+</html>

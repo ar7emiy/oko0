@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SME Annotation Guidelines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#F6F7F9; --surface:#FFFFFF; --surface-2:#EDF0F4; --surface-3:#E3E8EF;
+    --ink:#10151C; --ink-2:#4A5666; --ink-3:#6E7A8A;
+    --rule:#D6DCE4; --rule-strong:#B9C2CE;
+    --accent:#B4650A; --accent-soft:#F6E7CE;
+    --steel:#3E5C76; --steel-soft:#E0E8EF;
+    --good:#2F6B4F; --good-soft:#DFEDE5;
+    --alert:#A33A2A; --alert-soft:#F6E0DB;
+    --warn:#9C7B12; --warn-soft:#F5EDCF;
+    --shadow:0 1px 2px rgba(16,21,28,.06), 0 8px 24px -12px rgba(16,21,28,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#0E1218; --surface:#151B24; --surface-2:#1C242F; --surface-3:#232D3A;
+      --ink:#E8ECF2; --ink-2:#A3AEBD; --ink-3:#7C8797;
+      --rule:#2A3441; --rule-strong:#3A4756;
+      --accent:#E9A03C; --accent-soft:#3A2C16;
+      --steel:#7FA5C4; --steel-soft:#1D2A36;
+      --good:#5FBF8F; --good-soft:#16281F;
+      --alert:#E07A63; --alert-soft:#2E1913;
+      --warn:#E3C24C; --warn-soft:#332B10;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0E1218; --surface:#151B24; --surface-2:#1C242F; --surface-3:#232D3A;
+    --ink:#E8ECF2; --ink-2:#A3AEBD; --ink-3:#7C8797;
+    --rule:#2A3441; --rule-strong:#3A4756;
+    --accent:#E9A03C; --accent-soft:#3A2C16;
+    --steel:#7FA5C4; --steel-soft:#1D2A36;
+    --good:#5FBF8F; --good-soft:#16281F;
+    --alert:#E07A63; --alert-soft:#2E1913;
+    --warn:#E3C24C; --warn-soft:#332B10;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+  *{box-sizing:border-box}
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:"Source Serif 4", Georgia, serif;
+    font-size:17px; line-height:1.65; margin:0; padding:0 24px 100px;
+    -webkit-font-smoothing:antialiased;
+  }
+  header.mast{max-width:68ch; margin:0 auto; padding:60px 0 32px; border-bottom:1px solid var(--rule)}
+  .eyebrow{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.16em;
+           text-transform:uppercase; color:var(--accent); margin:0 0 16px}
+  h1{font-family:Archivo,sans-serif; font-weight:700; font-size:clamp(28px,4.6vw,42px);
+     line-height:1.06; letter-spacing:-.02em; margin:0 0 16px}
+  .standfirst{font-size:18px; color:var(--ink-2); margin:0 0 8px; max-width:64ch}
+  .meta{display:flex; flex-wrap:wrap; gap:8px; margin-top:22px; font-family:"IBM Plex Mono",monospace; font-size:11.5px}
+  .meta span{border:1px solid var(--rule); border-radius:2px; padding:4px 9px; color:var(--ink-2); background:var(--surface)}
+
+  nav.toc{max-width:68ch; margin:26px auto 0; padding:16px 18px; border:1px solid var(--rule);
+          border-radius:4px; background:var(--surface); box-shadow:var(--shadow)}
+  nav.toc .h{font-family:"IBM Plex Mono",monospace; font-size:10.5px; text-transform:uppercase;
+             letter-spacing:.1em; color:var(--ink-3); margin-bottom:8px}
+  nav.toc ol{margin:0; padding-left:20px; columns:2; column-gap:24px; font-size:14px}
+  nav.toc li{margin-bottom:5px}
+  nav.toc a{color:var(--ink-2); text-decoration:none}
+  nav.toc a:hover{color:var(--accent)}
+
+  section{max-width:68ch; margin:0 auto; padding-top:52px}
+  h2{font-family:Archivo,sans-serif; font-weight:600; font-size:26px; letter-spacing:-.012em;
+     margin:0 0 8px; display:flex; gap:14px; align-items:baseline}
+  h2 .num{font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:500; color:var(--accent)}
+  h3{font-family:Archivo,sans-serif; font-weight:600; font-size:17px; margin:28px 0 8px}
+  p{margin:0 0 15px}
+  .lede{color:var(--ink-2); font-size:17.5px; margin-bottom:22px}
+  code{font-family:"IBM Plex Mono",monospace; font-size:.85em; background:var(--surface-2);
+       border:1px solid var(--rule); border-radius:2px; padding:1px 5px; color:var(--ink)}
+  strong{font-weight:600}
+  ul,ol{margin:0 0 15px; padding-left:22px}
+  li{margin-bottom:6px}
+
+  .note{font-family:"IBM Plex Mono",monospace; font-size:15px; line-height:2.1;
+        background:var(--surface); border:1px solid var(--rule); border-radius:4px;
+        padding:16px 18px; margin:16px 0; box-shadow:var(--shadow)}
+  .note mark{border-radius:2px; padding:1px 3px; box-decoration-break:clone}
+  mark.yes{background:var(--good-soft); box-shadow:inset 0 -2px 0 var(--good)}
+  mark.no{background:var(--alert-soft); box-shadow:inset 0 -2px 0 var(--alert); text-decoration:line-through; text-decoration-color:var(--alert)}
+  mark.probable{background:var(--warn-soft); box-shadow:inset 0 -2px 0 var(--warn)}
+
+  .verdict{display:flex; gap:10px; align-items:flex-start; margin:10px 0 18px;
+           font-family:"IBM Plex Mono",monospace; font-size:13px}
+  .verdict .tag{flex:none; padding:2px 9px; border-radius:9px; font-weight:600;
+                text-transform:uppercase; letter-spacing:.04em; font-size:10.5px}
+  .verdict .tag.mark{background:var(--good-soft); color:var(--good)}
+  .verdict .tag.skip{background:var(--alert-soft); color:var(--alert)}
+  .verdict .tag.probable{background:var(--warn-soft); color:var(--warn)}
+  .verdict .why{color:var(--ink-2); font-family:"Source Serif 4",Georgia,serif; font-size:14.5px; padding-top:1px}
+
+  .card{border:1px solid var(--rule); border-radius:5px; background:var(--surface);
+        box-shadow:var(--shadow); padding:18px 20px; margin:20px 0}
+  .card h4{font-family:Archivo,sans-serif; font-weight:600; font-size:15.5px; margin:0 0 4px}
+  .card .sub{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--accent);
+             text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px}
+  .card .step{display:flex; gap:10px; margin:9px 0; font-size:14.5px; align-items:flex-start}
+  .card .step b{flex:none; font-family:"IBM Plex Mono",monospace; font-size:11px;
+                background:var(--surface-2); border:1px solid var(--rule); border-radius:9px;
+                padding:2px 8px; color:var(--ink-2)}
+  .card .resp{margin-top:10px; padding-top:10px; border-top:1px dashed var(--rule);
+              font-size:13.5px; color:var(--ink-2)}
+  .card .resp code{margin:0 2px}
+
+  .callout{border:1px solid var(--rule-strong); border-left:3px solid var(--accent);
+           background:var(--surface); border-radius:2px; padding:15px 17px; margin:20px 0;
+           box-shadow:var(--shadow)}
+  .callout.warn{border-left-color:var(--warn); background:var(--warn-soft)}
+  .callout.alert{border-left-color:var(--alert); background:var(--alert-soft)}
+  .callout .h{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em;
+              text-transform:uppercase; color:var(--accent); margin-bottom:7px}
+  .callout.warn .h{color:var(--warn)} .callout.alert .h{color:var(--alert)}
+  .callout p{margin:0 0 8px; font-size:14.5px} .callout p:last-child{margin-bottom:0}
+
+  .flowbox{border:1px solid var(--rule); border-radius:4px; background:var(--surface);
+           box-shadow:var(--shadow); padding:4px; margin:20px 0}
+  .fnode{padding:12px 16px; font-size:15px}
+  .fnode.q{font-family:Archivo,sans-serif; font-weight:600; background:var(--surface-2);
+           border-radius:3px; margin:4px}
+  .fbranch{display:grid; grid-template-columns:1fr 1fr; gap:0; margin:0 4px 4px}
+  .fbranch > div{padding:11px 15px; font-size:14px; border-radius:3px}
+  .fbranch .y{background:var(--good-soft); color:var(--good); border:1px solid var(--good)}
+  .fbranch .n{background:var(--alert-soft); color:var(--alert); border:1px solid var(--alert); margin-left:6px}
+  .fbranch .y b, .fbranch .n b{font-family:"IBM Plex Mono",monospace; font-size:10px;
+    text-transform:uppercase; letter-spacing:.06em; display:block; margin-bottom:3px}
+
+  .tablewrap{overflow-x:auto; border:1px solid var(--rule); border-radius:3px;
+             background:var(--surface); box-shadow:var(--shadow); margin:18px 0}
+  table{width:100%; border-collapse:collapse; font-size:13.5px}
+  th,td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--rule); vertical-align:top}
+  th{font-family:"IBM Plex Mono",monospace; font-size:10px; text-transform:uppercase;
+     letter-spacing:.07em; color:var(--ink-3); background:var(--surface-2); font-weight:500}
+  tr:last-child td{border-bottom:none}
+  td.tag{font-family:"IBM Plex Mono",monospace; font-weight:600; color:var(--accent); white-space:nowrap}
+
+  .refcard{background:var(--ink); color:var(--ground); border-radius:6px; padding:26px 28px; margin:24px 0}
+  .refcard h3{color:var(--ground); margin-top:0; font-family:Archivo,sans-serif}
+  .refcard .h{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em;
+              text-transform:uppercase; color:var(--accent); margin:18px 0 6px}
+  .refcard .h:first-child{margin-top:0}
+  .refcard ul{margin:0 0 4px; padding-left:20px; font-size:13.5px; color:#D8DEE8}
+  .refcard li{margin-bottom:4px}
+  .refcard code{background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18); color:#fff}
+
+  footer{max-width:68ch; margin:64px auto 0; padding-top:24px; border-top:1px solid var(--rule);
+         font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-3)}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <p class="eyebrow">Ticket D1 · guidelines v1 · draft for SME review</p>
+  <h1>Annotation guidelines</h1>
+  <p class="standfirst">
+    This is the field manual — what to do, in what order, and how to decide the cases
+    that aren't obvious. If you're an SME doing the marking, this document is written
+    for you, not for the engineering team. Every rule below has a worked example. Where
+    a call is genuinely a judgment call, that's said plainly, and it's what the
+    calibration round (§08) exists to catch before it costs anything.
+  </p>
+  <div class="meta">
+    <span>No technical background assumed</span>
+    <span>Every rule has an example</span>
+    <span>Revised after calibration → v2</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="h">Contents</div>
+  <ol>
+    <li><a href="#s1">What you're doing, and why it matters</a></li>
+    <li><a href="#s2">The five task types</a></li>
+    <li><a href="#s3">Is this an entity? — the decision tree</a></li>
+    <li><a href="#s4">Boundary rules</a></li>
+    <li><a href="#s5">Certainty: certain vs. probable</a></li>
+    <li><a href="#s6">Hard-case tags</a></li>
+    <li><a href="#s7">Common mistakes</a></li>
+    <li><a href="#s8">Calibration and what happens to disagreements</a></li>
+    <li><a href="#s9">Quick reference</a></li>
+  </ol>
+</nav>
+
+<section id="s1">
+  <h2><span class="num">01</span> What you're doing, and why it matters</h2>
+  <p class="lede">
+    We're measuring how well an automated system finds people, organizations, and their
+    contact details in claim notes. To measure that, we need a small set of notes where
+    a human has already found everything — that set is what every other number in this
+    project gets compared against. If it's sloppy, every number built on it is sloppy,
+    including the number that tells the client whether this system is worth buying.
+  </p>
+  <p>
+    You are not grading the system. You will not see what it found. You are reading the
+    note as if the system doesn't exist, and marking what's actually there. That's the
+    whole job for most of what you'll do — the rest is verifying or correcting things a
+    machine already located, which is much faster and explained separately below.
+  </p>
+  <div class="callout">
+    <div class="h">The one thing that matters more than speed</div>
+    <p>
+      <strong>If you're not sure, mark it "probable" and move on — never skip it and never
+      guess "certain."</strong> A skipped mention makes the system look worse than it is.
+      A wrongly-certain mention makes it look better than it is. "Probable" is the honest
+      answer to "I think so but I'm not sure," and it's tracked separately for exactly
+      this reason. See §05.
+    </p>
+  </div>
+</section>
+
+<section id="s2">
+  <h2><span class="num">02</span> The five task types</h2>
+  <p class="lede">
+    You'll be assigned one task type at a time through the review tool — you don't choose
+    which note you see or what task it is. Here's what each one looks and feels like.
+  </p>
+
+  <div class="card">
+    <h4>T1 · Cold annotation</h4>
+    <div class="sub">the core task — most of your hours go here</div>
+    <div class="step"><b>see</b> A blank note. No highlights, no hints, nothing pre-marked.</div>
+    <div class="step"><b>do</b> Read it once for context. Then go through and mark every person, organization, and identifier (phone/email/address/ID number) exactly as described in §03–§04.</div>
+    <div class="step"><b>do</b> When you reach the end, mark the document <em>complete</em>. This one click is what allows this note to be used for measuring precision later — don't skip it, and don't mark complete if you were interrupted partway through.</div>
+    <div class="resp">You record: a span (drag or click-to-click), an entity type, and a certainty (§05).</div>
+  </div>
+
+  <div class="card">
+    <h4>T2 · Located-span verify</h4>
+    <div class="sub">fast — a few seconds each</div>
+    <div class="step"><b>see</b> One span already highlighted in the note, in context.</div>
+    <div class="step"><b>do</b> Decide: is the highlight in the right place, referring to the right entity?</div>
+    <div class="resp">You record one of: <code>correct</code> / <code>wrong span</code> (then drag the right one) / <code>not this entity</code>.</div>
+  </div>
+
+  <div class="card">
+    <h4>T3 · Not-found triage</h4>
+    <div class="sub">an entity name, and the whole note to search</div>
+    <div class="step"><b>see</b> A name from the client's records (e.g. <em>"Marisol Vega"</em>) and the full text of one note it's supposedly on.</div>
+    <div class="step"><b>do</b> Search the note. Is she actually named in the text somewhere our matching missed? Referred to without her name ("the claimant's daughter")? Or genuinely absent — maybe she's only in the system's metadata, not this note's prose?</div>
+    <div class="resp">You record: <code>found here</code> (mark the span) / <code>not textually present</code> / <code>referenced without a name</code>.</div>
+  </div>
+
+  <div class="card">
+    <h4>T4 · Null-metadata recovery</h4>
+    <div class="sub">this is the week-one deliverable — see it as validating a specific, checkable claim</div>
+    <div class="step"><b>see</b> A phone number, address, or ID our system found in the note text, and the entity it's plausibly attached to (whose record has that field blank).</div>
+    <div class="step"><b>do</b> Read the sentence it's in. Does this identifier actually belong to this entity?</div>
+    <div class="resp">You record: <code>belongs</code> / <code>does not belong</code> / <code>unsure</code>.</div>
+  </div>
+
+  <div class="card">
+    <h4>T5 · Adjudication</h4>
+    <div class="sub">only if you're annotating alongside a second SME</div>
+    <div class="step"><b>see</b> A place where you and another annotator marked the same note differently.</div>
+    <div class="step"><b>do</b> Look at both markings side by side and decide which is right — or if both are, or neither.</div>
+    <div class="resp">You record: <code>pick A</code> / <code>pick B</code> / <code>neither</code> / <code>both</code>.</div>
+  </div>
+</section>
+
+<section id="s3">
+  <h2><span class="num">03</span> Is this an entity? — the decision tree</h2>
+  <p class="lede">
+    We're marking every person and every organization named or clearly referenced in the
+    note — every party, not just the claimant and their attorney. Work through this in
+    order for anything you're unsure about.
+  </p>
+
+  <div class="flowbox">
+    <div class="fnode q">Does this refer to a specific person or organization — not a category?</div>
+    <div class="fbranch">
+      <div class="n"><b>No → skip</b>"the adjuster's office," "our legal team" as a generic group, "insurance company" used generically</div>
+      <div class="y"><b>Yes → continue</b>a specific name, or a role clearly pointing at one identifiable individual</div>
+    </div>
+    <div class="fnode q">Is it named directly (a proper name, or "Dr. ___," a firm name)?</div>
+    <div class="fbranch">
+      <div class="y"><b>Yes → mark, certain</b>"Robert Miller," "Alicia Reyes, MD," "Whitfield Trial Group"</div>
+      <div class="n"><b>No → continue</b>a pronoun, a role-only phrase, a descriptor</div>
+    </div>
+    <div class="fnode q">Does a role-only phrase point at exactly one person in context ("the adjuster," "her attorney")?</div>
+    <div class="fbranch">
+      <div class="y"><b>Yes → mark, probable</b>unless the note makes it unambiguous, then certain</div>
+      <div class="n"><b>No → skip</b>too vague to attribute to one entity</div>
+    </div>
+  </div>
+
+  <h3>Worked examples</h3>
+  <div class="note">Spoke with <mark class="yes">Robert Miller</mark> regarding the POA update. <mark class="probable">He</mark> confirmed the treating provider remains <mark class="yes">Alicia Reyes, MD</mark> at <mark class="no">the Lakeshore clinic</mark>. <mark class="probable">Claimant's attorney</mark> continues to be <mark class="yes">D. Alvarez, Esq.</mark> of <mark class="yes">Whitfield Trial Group</mark>.</div>
+
+  <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:20px">
+    <tr><td style="padding:4px 0"><mark class="yes" style="padding:1px 5px">green</mark></td><td style="padding:4px 0 4px 10px;color:var(--ink-2)">named directly — mark certain</td></tr>
+    <tr><td style="padding:4px 0"><mark class="probable" style="padding:1px 5px">amber</mark></td><td style="padding:4px 0 4px 10px;color:var(--ink-2)">pronoun/role pointing at one clear person — mark probable</td></tr>
+    <tr><td style="padding:4px 0"><mark class="no" style="padding:1px 5px">struck</mark></td><td style="padding:4px 0 4px 10px;color:var(--ink-2)">a place, not an entity — do not mark</td></tr>
+  </table>
+
+  <div class="callout">
+    <div class="h">Identifiers get marked too, separately from names</div>
+    <p>
+      A phone number, email, mailing address, or ID number is its own mark, even when
+      it's sitting right next to a name — don't fold it into the name span. And
+      critically: <strong>mark an identifier even when no name is anywhere nearby.</strong>
+      "Callback left at (312) 555-0148, no name given" — mark the phone number on its
+      own. This is the single case the system exists to get right, so it's the single
+      case most worth getting right here too.
+    </p>
+  </div>
+</section>
+
+<section id="s4">
+  <h2><span class="num">04</span> Boundary rules</h2>
+  <p class="lede">
+    Where exactly a mark starts and ends. Each of these was an open question until
+    calibration settled it — if you hit a case not covered here, mark your best judgment,
+    flag it with a note, and it becomes a rule in v2 (§08).
+  </p>
+
+  <div class="verdict"><span class="tag mark">include</span><span class="why">Titles: <mark class="yes">Dr. Reyes</mark>, not <mark class="no">Dr.</mark> <mark class="yes">Reyes</mark> split apart.</span></div>
+  <div class="verdict"><span class="tag mark">include</span><span class="why">Suffixes: <mark class="yes">Robert Miller Jr.</mark> — the whole thing is one mark, not two people.</span></div>
+  <div class="verdict"><span class="tag mark">include</span><span class="why">Org suffixes: <mark class="yes">Whitfield Trial Group LLC</mark> — the legal-entity suffix stays in the span.</span></div>
+  <div class="verdict"><span class="tag skip">exclude</span><span class="why">Possessive 's: mark <mark class="yes">Robert Miller</mark>'s policy, not <mark class="yes">Robert Miller's</mark> policy — the 's is not part of the name.</span></div>
+  <div class="verdict"><span class="tag mark">mark, probable</span><span class="why">Role-only references with no name: <mark class="probable">the treating physician</mark> ordered an MRI — mark it, tier probable, per §03.</span></div>
+  <div class="verdict"><span class="tag mark">mark every occurrence</span><span class="why">Quoted/forwarded email chains: if the same mention appears three times in a quoted thread, mark all three — flag them as <code>quoted</code> so they can be included or excluded from a metric later.</span></div>
+  <div class="verdict"><span class="tag skip">exclude</span><span class="why">Sentence-initial verbs that happen to be capitalized: "<mark class="no">Contacted</mark> James Moore" — <mark class="yes">James Moore</mark> is the mark, "Contacted" is not part of it.</span></div>
+
+  <div class="callout warn">
+    <div class="h">The most common real mistake</div>
+    <p>
+      Swallowing a sentence-opening word into the name because both are capitalized —
+      "Contacted James Moore," "Spoke with Alicia Reyes." Read the sentence, not just the
+      capitalization pattern, before setting your boundary.
+    </p>
+  </div>
+</section>
+
+<section id="s5">
+  <h2><span class="num">05</span> Certainty: certain vs. probable</h2>
+  <p class="lede">
+    Every mark carries one of two tiers. This is not optional and it is not a hedge —
+    it's the mechanism that keeps a genuinely ambiguous mention from being silently
+    scored as if it were obvious.
+  </p>
+  <table style="width:100%;border-collapse:collapse;margin:16px 0">
+    <tr><td style="width:110px;padding:8px 0;vertical-align:top"><strong>certain</strong></td>
+        <td style="padding:8px 0;color:var(--ink-2)">You would stake your judgment on it without hesitation. A named person or org, a role reference with only one possible referent.</td></tr>
+    <tr><td style="padding:8px 0;vertical-align:top"><strong>probable</strong></td>
+        <td style="padding:8px 0;color:var(--ink-2)">You believe it, but a reasonable second reader might not mark it, or might mark it differently — an ambiguous pronoun, a role phrase with two possible referents nearby, a partly-legible fragment.</td></tr>
+  </table>
+  <p>
+    Every metric that comes out of this dataset is reported twice — <strong>strict</strong>
+    (certain only) and <strong>lenient</strong> (certain + probable). Both numbers matter;
+    neither is "the real one." That's why the tier has to be honest rather than optimistic.
+  </p>
+</section>
+
+<section id="s6">
+  <h2><span class="num">06</span> Hard-case tags</h2>
+  <p class="lede">
+    Attach any that apply to an entity while you're marking it. These aren't required —
+    add them when you notice the pattern, don't go hunting for them.
+  </p>
+  <div class="tablewrap">
+    <table>
+      <tr><td class="tag">jr_sr</td><td>Jr/Sr suffix conflict — two entities at the same address differing only by suffix.</td></tr>
+      <tr><td class="tag">shared_address</td><td>Two distinct entities share one address.</td></tr>
+      <tr><td class="tag">recycled_phone</td><td>A phone number that seems to have moved from one entity to another over time.</td></tr>
+      <tr><td class="tag">address_change</td><td>This entity's address changed between notes.</td></tr>
+      <tr><td class="tag">identifier_reassigned</td><td>An identifier appears to have moved from one entity to another.</td></tr>
+      <tr><td class="tag">high_fanout</td><td>This entity (usually an attorney or provider) recurs across an unusual number of claims.</td></tr>
+      <tr><td class="tag">phoenix_shop</td><td>A repair shop that appears to have reopened under a new name at an old address.</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="s7">
+  <h2><span class="num">07</span> Common mistakes</h2>
+  <ul>
+    <li><strong>Marking complete on a note you skimmed.</strong> If you're not confident you read every line, don't mark it complete — leave it in progress. A falsely-complete note quietly corrupts every precision number built on it.</li>
+    <li><strong>Splitting one mention into two marks</strong> (title, or suffix, separated from the name) — see §04.</li>
+    <li><strong>Treating "certain" as the default</strong> and only downgrading when actively unsure. Ask the reverse question: would a second reader agree without discussion? If not, it's probable.</li>
+    <li><strong>Silently resolving ambiguity yourself.</strong> If a pronoun could point at two different people and you're guessing, that's exactly what "probable" is for — don't quietly pick one and mark it certain.</li>
+    <li><strong>Skipping identifiers with no attached name.</strong> This is the highest-value case in the whole dataset — see the callout in §03.</li>
+  </ul>
+</section>
+
+<section id="s8">
+  <h2><span class="num">08</span> Calibration, and what happens to disagreements</h2>
+  <p class="lede">
+    Before any note counts toward the real gold set, two SMEs annotate the same 30 notes
+    independently — neither sees the other's marks. We measure how often you agreed
+    (Cohen's κ). If it's below 0.75, that's not a grade on either annotator: it means
+    this document has an ambiguous rule in it, and we fix the document, not the people.
+  </p>
+  <p>
+    Every disagreement from that round goes through T5. The resolution — and the reason
+    for it — becomes a new rule here, in v2. If you hit a case during real annotation
+    that isn't covered above, mark your best judgment, add a note explaining the call,
+    and expect to see it addressed in the next revision.
+  </p>
+</section>
+
+<section id="s9">
+  <h2><span class="num">09</span> Quick reference</h2>
+  <div class="refcard">
+    <h3>Cheat sheet</h3>
+    <div class="h">Mark it</div>
+    <ul>
+      <li>Named person or org → <strong>certain</strong></li>
+      <li>Role/pronoun with one clear referent → <strong>probable</strong> (certain only if truly unambiguous)</li>
+      <li>Any phone / email / address / ID number → its own mark, always, even with no name nearby</li>
+    </ul>
+    <div class="h">Don't mark it</div>
+    <ul>
+      <li>A place, not a person or org</li>
+      <li>A generic category ("the insurance company," "our office")</li>
+      <li>Sentence-opening verbs swallowed into a capitalized name</li>
+    </ul>
+    <div class="h">Boundary</div>
+    <ul>
+      <li>Include: titles, suffixes (Jr./Sr.), org suffixes (LLC, Group)</li>
+      <li>Exclude: possessive 's</li>
+      <li>Mark quoted/forwarded duplicates every time they appear</li>
+    </ul>
+    <div class="h">When unsure</div>
+    <ul>
+      <li>Mark <code>probable</code>, never skip, never guess <code>certain</code></li>
+      <li>Add a note — it becomes a rule for everyone next revision</li>
+    </ul>
+  </div>
+</section>
+
+<footer>designs/annotation-guidelines.html · ticket D1 draft · revise after the D2 calibration round → v2</footer>
+</body>
+</html>

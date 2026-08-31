@@ -433,7 +433,7 @@
         </tr>
         <tr>
           <td class="id">B3</td><td>Identifier locator from metadata</td>
-          <td class="mono">DS1</td><td class="num">3</td><td class="mono">B1</td>
+          <td class="mono">DS2</td><td class="num">3</td><td class="mono">B1</td>
           <td>Locates client-supplied addresses / phones / IDs in note text, including format variants. Emits spans in the same shape as B1 so both feed one queue.</td>
         </tr>
         <tr>
@@ -443,24 +443,24 @@
         </tr>
         <tr>
           <td class="id">B5</td><td>Not-found bucket + triage queue</td>
-          <td class="mono">DS1</td><td class="num">2</td><td class="mono">B2</td>
+          <td class="mono">DS2</td><td class="num">2</td><td class="mono">B2</td>
           <td>Entities on the client list with no locatable span are queued for T3 with the full note rendered. Bucket size reported by category — a high rate in one category is itself a finding.</td>
         </tr>
 
         <tr class="epic"><td colspan="6">EPIC C — Sampling</td></tr>
         <tr>
           <td class="id">C1</td><td>Stratification scheme + near-dup filter</td>
-          <td class="mono">DS1</td><td class="num">2</td><td class="mono">A3</td>
+          <td class="mono">DS2</td><td class="num">2</td><td class="mono">A3</td>
           <td>Strata defined and justified from A3's real distribution. Near-duplicate notes collapsed using existing MinHash so annotation budget is not spent on copy-pasted notes.</td>
         </tr>
         <tr>
           <td class="id">C2</td><td>Gold sample draw</td>
-          <td class="mono">DS1</td><td class="num">1</td><td class="mono">C1</td>
+          <td class="mono">DS2</td><td class="num">1</td><td class="mono">C1</td>
           <td>Reproducible seeded draw hitting the per-stratum instance target from §03. Draw is re-runnable and produces the identical set.</td>
         </tr>
         <tr>
           <td class="id">C3</td><td>Dev/test lockbox split + guard</td>
-          <td class="mono">DS1</td><td class="num">2</td><td class="mono">C2</td>
+          <td class="mono">DS2</td><td class="num">2</td><td class="mono">C2</td>
           <td>Test split sealed; <code>leakage_guard.py</code> extended so tuning code cannot read it. Test set is opened exactly once, at final reporting.</td>
         </tr>
 
@@ -521,7 +521,7 @@
         </tr>
         <tr>
           <td class="id">F2</td><td>Adjudication</td>
-          <td class="mono">SME + DS2</td><td class="num">1</td><td class="mono">F1</td>
+          <td class="mono">SME + DS2</td><td class="num">1</td><td class="mono">F1, E4</td>
           <td>All conflicts from the dual-annotated subset resolved. Zero unresolved conflicts in the gold set.</td>
         </tr>
         <tr>
@@ -570,23 +570,43 @@
 
 <section>
   <h2><span class="num">06</span> Sprint plan and critical path</h2>
+  <div class="callout">
+    <div class="h">See it as a schedule, not a table</div>
+    <p>
+      <code>designs/ground-truth-timeline.html</code> lays these 30 tickets out as a
+      four-lane swim chart, positioned by actually solving the dependency graph below
+      (resource-constrained scheduling, not sprint-label guesswork) — hover any bar for
+      its full ticket. Two things fell out of doing that honestly: <strong>DS1</strong>
+      alone doesn't fit the epic below into six weeks (it needs about eight), so
+      <code>B3</code>, <code>B5</code>, and <code>C1–C3</code> below are assigned to
+      <strong>DS2</strong>, not DS1 as a flat reading might suggest — DS2 clears its own
+      tooling epic by week 2–3 and has slack for the rest of the project otherwise. And
+      <code>F2</code> (adjudication) was missing a real dependency on <code>E4</code>
+      (the adjudication queue tool) — added below.
+    </p>
+  </div>
+
   <div class="flow">SPRINT 1   foundations + tooling, two parallel tracks
-  DS1  A1 → A2 → A3 → B1 → B2 → C1        DS2  E1 → E2 → E3 | D1 (with SME)
-  SME  guidelines input (~2h), W1 spot-check
-  ✓ exit: locator running, tool can capture a span, guidelines v1 written
+  DS1  A1 → A2 → A3 → W1 → B1 → B2 (→ B4 starts once B3 lands)
+  DS2  E1 → E2 → E3 → E4
+  SME  guidelines input with D1 (~2h)
+  ✓ exit: locator running, tool can capture a span + queue conflicts, guidelines v1 written
 
 SPRINT 2   calibration gate, then gold starts
-  DS1  B3 → B4 → B5 → C2 → C3             DS2  E4 → E5 → D3 → D4
-  SME  D2 calibration (dual, blind) → F1 gold begins
-  ✓ exit: κ ≥ 0.75 achieved, gold annotation underway, silver located
+  DS1  B4 → F3 (after F2) → H1 starts       DS2  C1 → B3 → C2 → C3 → B5 → D4 → E5
+  SME  D2 calibration (dual, blind) → GATE → F1 gold begins → G3, G1, G2
+  Joint  D1 (wk1) → D3 → F2
+  ✓ exit: κ ≥ 0.75 achieved (day 11 / early wk3), gold annotation underway, silver located
 
 SPRINT 3   execution and freeze
-  DS1  F3 → H1 → H2                       DS2  supports queues, H3
-  SME  F1 completes → F2 → G1 → G2 → G3
-  ✓ exit: GT v1 frozen, baseline metrics on dev split, test still sealed
+  DS1  H1 → H2                            DS2  (idle capacity — pulls H-epic support)
+  SME  F1 completes → G-epic wraps up
+  Joint  H3 (quality report)
+  ✓ exit: GT v1 frozen, baseline metrics on dev split, test still sealed, day 30 (wk 6)
 
-CRITICAL PATH   A1 → A2 → B1 → B2 → C1 → C2 → [D2 gate] → F1 → F2 → F3 → H1
-                 the κ gate is the only true stop-the-line dependency</div>
+CRITICAL PATH   D1 → E1 → E2 → E3 → [D2 gate, day 9–11] → F1 → F2 → F3 → H1 → H2 → H3
+                 the κ gate is the only true stop-the-line dependency; the A/B/C epic
+                 runs alongside it and only has to finish before G1–G3, not before F1</div>
 
   <div class="callout">
     <div class="h">Where this slips, if it slips</div>
