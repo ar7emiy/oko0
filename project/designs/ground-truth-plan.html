@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ground Truth Build Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#F6F7F9; --surface:#FFFFFF; --surface-2:#EDF0F4; --surface-3:#E3E8EF;
+    --ink:#10151C; --ink-2:#4A5666; --ink-3:#6E7A8A;
+    --rule:#D6DCE4; --rule-strong:#B9C2CE;
+    --accent:#B4650A; --accent-soft:#F6E7CE;
+    --steel:#3E5C76; --steel-soft:#E0E8EF;
+    --good:#2F6B4F; --good-soft:#DFEDE5;
+    --alert:#A33A2A; --alert-soft:#F6E0DB;
+    --warn:#9C7B12; --warn-soft:#F5EDCF;
+    --shadow:0 1px 2px rgba(16,21,28,.06), 0 8px 24px -12px rgba(16,21,28,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#0E1218; --surface:#151B24; --surface-2:#1C242F; --surface-3:#232D3A;
+      --ink:#E8ECF2; --ink-2:#A3AEBD; --ink-3:#7C8797;
+      --rule:#2A3441; --rule-strong:#3A4756;
+      --accent:#E9A03C; --accent-soft:#3A2C16;
+      --steel:#7FA5C4; --steel-soft:#1D2A36;
+      --good:#5FBF8F; --good-soft:#16281F;
+      --alert:#E07A63; --alert-soft:#2E1913;
+      --warn:#E3C24C; --warn-soft:#332B10;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0E1218; --surface:#151B24; --surface-2:#1C242F; --surface-3:#232D3A;
+    --ink:#E8ECF2; --ink-2:#A3AEBD; --ink-3:#7C8797;
+    --rule:#2A3441; --rule-strong:#3A4756;
+    --accent:#E9A03C; --accent-soft:#3A2C16;
+    --steel:#7FA5C4; --steel-soft:#1D2A36;
+    --good:#5FBF8F; --good-soft:#16281F;
+    --alert:#E07A63; --alert-soft:#2E1913;
+    --warn:#E3C24C; --warn-soft:#332B10;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+  *{box-sizing:border-box}
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:"Source Serif 4", Georgia, serif;
+    font-size:16.5px; line-height:1.6; margin:0; padding:0 20px 100px;
+    -webkit-font-smoothing:antialiased;
+  }
+  header.mast{max-width:70ch; margin:0 auto; padding:64px 0 34px; border-bottom:1px solid var(--rule)}
+  .eyebrow{
+    font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--accent); margin:0 0 16px;
+  }
+  h1{font-family:Archivo, sans-serif; font-weight:700; font-size:clamp(30px,5vw,46px);
+     line-height:1.05; letter-spacing:-.021em; margin:0 0 18px; text-wrap:balance}
+  .standfirst{font-size:18.5px; color:var(--ink-2); margin:0; text-wrap:pretty}
+  .meta{display:flex; flex-wrap:wrap; gap:8px; margin-top:24px;
+        font-family:"IBM Plex Mono", monospace; font-size:11.5px}
+  .meta span{border:1px solid var(--rule); border-radius:2px; padding:4px 9px;
+             color:var(--ink-2); background:var(--surface)}
+
+  section{max-width:70ch; margin:0 auto; padding-top:54px}
+  h2{font-family:Archivo, sans-serif; font-weight:600; font-size:25px; letter-spacing:-.012em;
+     line-height:1.2; margin:0 0 8px; display:flex; gap:14px; align-items:baseline; text-wrap:balance}
+  h2 .num{font-family:"IBM Plex Mono", monospace; font-size:13px; font-weight:500;
+          color:var(--accent); letter-spacing:.04em; flex:none}
+  h3{font-family:Archivo, sans-serif; font-weight:600; font-size:16.5px; margin:30px 0 6px}
+  p{margin:0 0 16px; text-wrap:pretty}
+  .lede{color:var(--ink-2); font-size:17px; margin-bottom:24px}
+  ul,ol{margin:0 0 16px; padding-left:22px}
+  li{margin-bottom:7px}
+  code, .kbd{font-family:"IBM Plex Mono", monospace; font-size:.86em;
+       background:var(--surface-2); border:1px solid var(--rule);
+       border-radius:2px; padding:1px 5px; color:var(--ink)}
+  strong{font-weight:600}
+
+  .callout{
+    border:1px solid var(--rule-strong); border-left:3px solid var(--accent);
+    background:var(--surface); border-radius:2px; padding:16px 18px; margin:24px 0;
+    box-shadow:var(--shadow);
+  }
+  .callout.warn{border-left-color:var(--warn); background:var(--warn-soft)}
+  .callout.good{border-left-color:var(--good); background:var(--good-soft)}
+  .callout .h{font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.1em;
+              text-transform:uppercase; color:var(--accent); margin-bottom:7px}
+  .callout.warn .h{color:var(--warn)}
+  .callout.good .h{color:var(--good)}
+  .callout p:last-child{margin-bottom:0}
+
+  .wide{max-width:1180px; margin-left:auto; margin-right:auto}
+  .tablewrap{overflow-x:auto; border:1px solid var(--rule); border-radius:3px;
+             background:var(--surface); box-shadow:var(--shadow); margin:20px 0}
+  table{width:100%; border-collapse:collapse; font-size:13.5px}
+  th,td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--rule);
+        vertical-align:top}
+  th{font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase;
+     letter-spacing:.07em; color:var(--ink-3); background:var(--surface-2); font-weight:500;
+     white-space:nowrap}
+  tr:last-child td{border-bottom:none}
+  td.id{font-family:"IBM Plex Mono", monospace; font-weight:600; color:var(--accent); white-space:nowrap}
+  td.mono{font-family:"IBM Plex Mono", monospace; font-size:12px; white-space:nowrap; color:var(--ink-2)}
+  td.num{font-family:"IBM Plex Mono", monospace; text-align:right; white-space:nowrap}
+  tr.epic td{background:var(--surface-2); font-family:Archivo, sans-serif; font-weight:600;
+             font-size:13px; letter-spacing:.01em}
+
+  .tier{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:22px 0}
+  @media (max-width:800px){ .tier{grid-template-columns:1fr} }
+  .tiercard{border:1px solid var(--rule); border-radius:3px; background:var(--surface);
+            padding:15px 16px; box-shadow:var(--shadow)}
+  .tiercard .t{font-family:Archivo,sans-serif; font-weight:600; font-size:15px; margin-bottom:3px}
+  .tiercard .sz{font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent);
+                margin-bottom:9px}
+  .tiercard p{font-size:13.5px; color:var(--ink-2); margin:0 0 8px}
+  .tiercard ul{font-size:13px; color:var(--ink-2); padding-left:18px; margin:0}
+  .tiercard li{margin-bottom:4px}
+
+  .flow{font-family:"IBM Plex Mono", monospace; font-size:12.5px; line-height:1.75;
+        background:var(--surface); border:1px solid var(--rule); border-radius:3px;
+        padding:16px 18px; overflow-x:auto; white-space:pre; color:var(--ink-2);
+        box-shadow:var(--shadow); margin:20px 0}
+
+  footer{max-width:70ch; margin:70px auto 0; padding-top:24px; border-top:1px solid var(--rule);
+         font-family:"IBM Plex Mono", monospace; font-size:11.5px; color:var(--ink-3)}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <p class="eyebrow">Client onboarding · Track 1 of 2</p>
+  <h1>Building the ground truth set on real claim notes</h1>
+  <p class="standfirst">
+    A six-week plan to produce a defensible, span-level ground-truth dataset from the
+    client's unstructured notes, using their existing entity list as a location oracle
+    and reserving expensive human reading for the one thing it cannot tell us: what
+    everybody is already missing.
+  </p>
+  <div class="meta">
+    <span>2 data scientists · 1–2 SMEs</span>
+    <span>3 sprints × 2 weeks</span>
+    <span>Scope: ground truth only</span>
+    <span>Excludes: system architecture, query-layer eval</span>
+  </div>
+</header>
+
+<section>
+  <h2><span class="num">01</span> What we have, and what each asset is actually worth</h2>
+  <p class="lede">
+    The client hands us three things, and they have very different evidential value.
+    Getting this straight determines the entire cost structure of the build.
+  </p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Asset</th><th>Tells us</th><th>Does not tell us</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Entity name + note ID</strong></td>
+          <td>Identity, and that it appears somewhere in this note</td>
+          <td>Where in the note. Nothing about entities not on the list.</td>
+        </tr>
+        <tr>
+          <td><strong>Entity metadata</strong> (address, category/duty, ID citations)</td>
+          <td>Additional attributes we can independently locate in the text</td>
+          <td>Whether absence is real absence</td>
+        </tr>
+        <tr>
+          <td><strong>Null metadata</strong></td>
+          <td>Where their pipeline gave up — a ready-made hard-case pool</td>
+          <td>Whether the fact is in the text at all</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <div class="h">The one asymmetry that shapes everything</div>
+    <p>
+      Their entity list is a <strong>precision oracle, not a recall oracle</strong>. If a name is
+      on it, it is almost certainly real — so we can trust it enough to auto-locate and
+      only spot-check. If a name is <em>absent</em> from it, that tells us nothing, because
+      incompleteness is the exact complaint that started this engagement.
+    </p>
+    <p>
+      So: use their list to make the <em>known</em> entities nearly free to label, and spend
+      the entire human budget on the <em>unknown</em> ones. Any plan that spends SME hours
+      re-confirming exact string matches is burning the budget in the wrong place.
+    </p>
+  </div>
+
+  <h3>The null-metadata pool is the fastest early win</h3>
+  <p>
+    Where their record has a null address but our extractor finds an address adjacent to
+    that same entity in the note text, we have a concrete, checkable claim: <em>your system
+    dropped this and here is the sentence it is in</em>. Verifying one of these takes an SME
+    about five seconds. This costs almost nothing, needs no ground truth to be credible,
+    and gives the engagement a visible result in week one — see ticket <code>W1</code>.
+  </p>
+</section>
+
+<section>
+  <h2><span class="num">02</span> The dataset has three tiers, and they support different claims</h2>
+  <p class="lede">
+    The most common way ground-truth projects produce misleading numbers is treating
+    partially-labelled documents as if they were complete. You cannot measure precision on
+    a document where nobody looked at the unmarked text — every correct-but-unlabelled
+    find becomes a phantom false positive, and tuning against it actively drives recall
+    down. So completeness must be recorded per document, not assumed.
+  </p>
+
+  <div class="tier">
+    <div class="tiercard">
+      <div class="t">Gold</div>
+      <div class="sz">~150 notes · read cold</div>
+      <p>Exhaustively annotated by an SME with no pre-annotation shown. Every entity mention marked.</p>
+      <ul>
+        <li>Supports recall <em>and</em> precision</li>
+        <li>Only tier that can audit the client's list</li>
+        <li>Source of the coverage estimate</li>
+      </ul>
+    </div>
+    <div class="tiercard">
+      <div class="t">Silver</div>
+      <div class="sz">~2,000 notes · auto-located</div>
+      <p>Client-list entities located in text by the matcher, with a certified per-tier error rate.</p>
+      <ul>
+        <li>Supports recall against the known set</li>
+        <li>Supports ER cluster evaluation at scale</li>
+        <li><strong>Cannot</strong> support precision</li>
+      </ul>
+    </div>
+    <div class="tiercard">
+      <div class="t">Unlabelled</div>
+      <div class="sz">remainder of corpus</div>
+      <p>No labels. Used for throughput, stability and distribution checks only.</p>
+      <ul>
+        <li>Never appears in a quality metric</li>
+        <li>Feeds sampling frames</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout good">
+    <div class="h">Why silver can be trusted at scale without verifying every span</div>
+    <p>
+      We do not need a human to confirm every located span. We need to <strong>certify the
+      locator</strong>: verify a random sample per match tier (exact / normalized / fuzzy /
+      surname-only), establish an error rate for each tier with a confidence interval, then
+      apply the locator in bulk with that error rate stated. Sampling to certify the tool
+      replaces reviewing its every output, and it is the single biggest time saving in this
+      plan.
+    </p>
+  </div>
+
+  <h3>Output format: the existing manifest schema, unchanged</h3>
+  <p>
+    The frozen ground-truth set is emitted in the same <code>schema_version: 2</code> manifest
+    shape the synthetic corpus already uses. That means <code>audit.py</code>,
+    <code>qa_viewer.py</code> and <code>ablation.py</code> run against real client data with no
+    modification — the stratified recall breakdowns, the B³ threshold sweep, the overlay
+    viewer, all of it works on day one. The synthetic corpus does not get retired; it
+    becomes the regression suite we tune against without spending SME hours.
+  </p>
+</section>
+
+<section>
+  <h2><span class="num">03</span> How big, and how we know</h2>
+  <p class="lede">
+    Gold sizing is driven by the confidence interval we want on recall, per stratum — not
+    by a round number of documents.
+  </p>
+  <div class="flow">recall ≈ 0.85, target ±5% at 95% confidence
+  → n ≈ 1.96² × 0.85 × 0.15 / 0.05²        ≈ 196 entity instances per stratum
+  → × 1.5 design effect (mentions cluster within a note)
+                                            ≈ 300 instances per stratum
+  → ÷ ~15 entity mentions per note          ≈ 20 notes per stratum
+  → × 5 strata                              ≈ 100 notes
+  → + 30 dual-annotated calibration notes
+  → + headroom                              ≈ 150 gold notes</div>
+  <p>
+    Strata are drawn on note category (medical / legal / SIU / payment / general), which is
+    where extraction behaviour actually differs. A single blended number hides the thing
+    the client needs: <em>which</em> kind of note we handle badly.
+  </p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Activity</th><th>Who</th><th>Volume</th><th class="num">Hours</th></tr></thead>
+      <tbody>
+        <tr><td>Calibration round (dual, blind)</td><td class="mono">2 SME</td><td>30 notes × 2</td><td class="num">8</td></tr>
+        <tr><td>Gold annotation (single, post-calibration)</td><td class="mono">SME</td><td>120 notes @ ~8 min</td><td class="num">16</td></tr>
+        <tr><td>Adjudication of disagreements</td><td class="mono">SME + DS</td><td>~90 conflicts</td><td class="num">4</td></tr>
+        <tr><td>Locator certification samples</td><td class="mono">SME</td><td>~400 decisions @ ~7 s</td><td class="num">1</td></tr>
+        <tr><td>Not-found triage</td><td class="mono">SME</td><td>~300 entities</td><td class="num">4</td></tr>
+        <tr><td>Null-metadata recovery queue</td><td class="mono">SME</td><td>~500 candidates</td><td class="num">3</td></tr>
+        <tr class="epic"><td>Total SME load across 3 sprints</td><td></td><td></td><td class="num">~36</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Roughly one SME at 25% allocation, or two at 15%. The SME is <em>not</em> the bottleneck if
+    the tooling and queues are ready when they are — which is why the tooling tickets sit
+    in sprint 1 and the annotation tickets in sprints 2–3.
+  </p>
+</section>
+
+<section>
+  <h2><span class="num">04</span> What the SME actually does, and in what form</h2>
+  <p class="lede">
+    Five task types, each with a fixed, closed response vocabulary. Nothing is free-text
+    except the optional note field, because free-text judgements cannot be aggregated into
+    a metric. Everything is recorded through the QA viewer, not in spreadsheets — spans
+    typed by hand into a sheet drift from the text and cannot be re-verified.
+  </p>
+
+  <div class="tablewrap wide">
+    <table>
+      <thead><tr><th>Task</th><th>SME sees</th><th>SME records</th><th>Feeds</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>T1 · Cold annotation</strong></td>
+          <td>Note text only. No pre-marks, no client list.</td>
+          <td>Span boundary + entity class + certainty (<code>certain</code> / <code>probable</code>) ; mark doc <code>complete</code> when done</td>
+          <td>Gold tier, coverage estimate</td>
+        </tr>
+        <tr>
+          <td><strong>T2 · Located-span verify</strong></td>
+          <td>One pre-located span highlighted in context</td>
+          <td><code>correct</code> / <code>wrong span</code> / <code>not this entity</code>, + boundary fix if wrong</td>
+          <td>Locator certification</td>
+        </tr>
+        <tr>
+          <td><strong>T3 · Not-found triage</strong></td>
+          <td>Entity name from client list + full note text</td>
+          <td><code>found here</code> (mark span) / <code>not textually present</code> / <code>referenced without a name</code></td>
+          <td>Matcher gap analysis</td>
+        </tr>
+        <tr>
+          <td><strong>T4 · Null-metadata recovery</strong></td>
+          <td>Candidate identifier our extractor found + the entity it may belong to</td>
+          <td><code>belongs</code> / <code>does not belong</code> / <code>unsure</code></td>
+          <td>Week-1 gap demo, identifier GT</td>
+        </tr>
+        <tr>
+          <td><strong>T5 · Adjudication</strong></td>
+          <td>Two annotators' conflicting spans side by side</td>
+          <td>Pick A / pick B / neither / both</td>
+          <td>Gold tier, guideline revision</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warn">
+    <div class="h">Two protocol rules that protect the recall goal</div>
+    <p>
+      <strong>Certainty is three-tier, not binary.</strong> <code>certain</code> / <code>probable</code> /
+      not-marked. Metrics get reported bracketed — strict (certain only) and lenient
+      (certain + probable). The width of that bracket is itself a finding, and it stops
+      genuinely ambiguous mentions from being silently scored against the system.
+    </p>
+    <p>
+      <strong>A false positive is presumed to be a ground-truth gap until an SME says
+      otherwise.</strong> When the system finds something gold does not have, it routes to T2
+      before it counts against precision. Skipping this is how a recall-biased product ends
+      up tuned for recall loss.
+    </p>
+  </div>
+
+  <h3>Guidelines must exist before anyone annotates</h3>
+  <p>
+    The boundary questions have to be settled once, in writing, with worked examples:
+    do we include titles (<code>Dr. Smith</code>), suffixes (<code>Jr.</code>), possessives
+    (<code>Jones's</code>), org suffixes (<code>LLC</code>)? Are role-only references
+    (<code>the adjuster</code>) entities? Do duplicated mentions in quoted email chains get
+    marked? Each unsettled question becomes pure noise in the final number. Ticket
+    <code>D1</code>, and it is a hard dependency of every annotation ticket.
+  </p>
+</section>
+
+<section class="wide">
+  <h2 style="max-width:70ch;margin-left:auto;margin-right:auto"><span class="num">05</span> Tickets</h2>
+  <p class="lede" style="max-width:70ch;margin-left:auto;margin-right:auto">
+    Estimates are ideal-days. <code>DS1</code> owns data plumbing, <code>DS2</code> owns
+    tooling, so the two tracks run in parallel through sprint 1 and converge at the first
+    annotation round.
+  </p>
+
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Title</th><th>Owner</th><th>Est</th><th>Deps</th><th>Acceptance criteria</th></tr>
+      </thead>
+      <tbody>
+        <tr class="epic"><td colspan="6">EPIC W — Week-one gap demonstration (no ground truth required)</td></tr>
+        <tr>
+          <td class="id">W1</td>
+          <td>Null-metadata gap report</td>
+          <td class="mono">DS1</td><td class="num">3</td><td class="mono">A1, A2</td>
+          <td>Runs our extractor over notes where client metadata is null; produces a ranked list of candidate recovered identifiers with note text in context. Deliverable is a browsable HTML report, ≥50 verified examples confirmed by SME via T4.</td>
+        </tr>
+
+        <tr class="epic"><td colspan="6">EPIC A — Corpus foundation</td></tr>
+        <tr>
+          <td class="id">A1</td><td>Freeze note corpus + hash manifest</td>
+          <td class="mono">DS1</td><td class="num">2</td><td class="mono">—</td>
+          <td>Every note has a stable ID and a SHA-256 over its exact text bytes. Re-running the freeze is a no-op. All downstream offsets anchor to this snapshot; a change of snapshot invalidates and is detected, not silently absorbed.</td>
+        </tr>
+        <tr>
+          <td class="id">A2</td><td>Ingest client entity list</td>
+          <td class="mono">DS1</td><td class="num">3</td><td class="mono">A1</td>
+          <td>Client list normalized into <code>client_entities</code> (entity_id, name, note_id, category/duty, address, identifiers, per-field null flags). Referential integrity to frozen notes checked; orphan note IDs reported, not dropped.</td>
+        </tr>
+        <tr>
+          <td class="id">A3</td><td>Asset profile report</td>
+          <td class="mono">DS1</td><td class="num">2</td><td class="mono">A2</td>
+          <td>Counts and distributions: entities per note, notes per entity, null rate per metadata field broken out by note category. This is what tells us whether the strata assumed here are the right ones.</td>
+        </tr>
+
+        <tr class="epic"><td colspan="6">EPIC B — Automated span location (silver layer)</td></tr>
+        <tr>
+          <td class="id">B1</td><td>Span locator: exact + normalized</td>
+          <td class="mono">DS1</td><td class="num">3</td><td class="mono">A2</td>
+          <td>For each (note, client entity), emits candidate spans with byte offsets. Reuses <code>textnorm.normalize_name</code>. Every emitted span verified byte-accurate against the frozen text. Match tier recorded per span.</td>
+        </tr>
+        <tr>
+          <td class="id">B2</td><td>Variant matching: flip, nickname, initial, typo</td>
+          <td class="mono">DS1</td><td class="num">4</td><td class="mono">B1</td>
+          <td>Catches <code>Jones, Robert</code> ↔ <code>Robert Jones</code>, <code>Bob</code> ↔ <code>Robert</code>, <code>R. Jones</code>, and near-miss spellings via the existing soundex/nickname tables. Each tier tagged separately so its error rate can be certified separately.</td>
+        </tr>
+        <tr>
+          <td class="id">B3</td><td>Identifier locator from metadata</td>
+          <td class="mono">DS1</td><td class="num">3</td><td class="mono">B1</td>
+          <td>Locates client-supplied addresses / phones / IDs in note text, including format variants. Emits spans in the same shape as B1 so both feed one queue.</td>
+        </tr>
+        <tr>
+          <td class="id">B4</td><td>Match-tier routing rules</td>
+          <td class="mono">DS1</td><td class="num">2</td><td class="mono">B2, B3</td>
+          <td>Config-driven policy: which tiers auto-accept, which sample for certification, which go 100% to human. Defaults documented with rationale; changing the policy does not require a code change.</td>
+        </tr>
+        <tr>
+          <td class="id">B5</td><td>Not-found bucket + triage queue</td>
+          <td class="mono">DS1</td><td class="num">2</td><td class="mono">B2</td>
+          <td>Entities on the client list with no locatable span are queued for T3 with the full note rendered. Bucket size reported by category — a high rate in one category is itself a finding.</td>
+        </tr>
+
+        <tr class="epic"><td colspan="6">EPIC C — Sampling</td></tr>
+        <tr>
+          <td class="id">C1</td><td>Stratification scheme + near-dup filter</td>
+          <td class="mono">DS1</td><td class="num">2</td><td class="mono">A3</td>
+          <td>Strata defined and justified from A3's real distribution. Near-duplicate notes collapsed using existing MinHash so annotation budget is not spent on copy-pasted notes.</td>
+        </tr>
+        <tr>
+          <td class="id">C2</td><td>Gold sample draw</td>
+          <td class="mono">DS1</td><td class="num">1</td><td class="mono">C1</td>
+          <td>Reproducible seeded draw hitting the per-stratum instance target from §03. Draw is re-runnable and produces the identical set.</td>
+        </tr>
+        <tr>
+          <td class="id">C3</td><td>Dev/test lockbox split + guard</td>
+          <td class="mono">DS1</td><td class="num">2</td><td class="mono">C2</td>
+          <td>Test split sealed; <code>leakage_guard.py</code> extended so tuning code cannot read it. Test set is opened exactly once, at final reporting.</td>
+        </tr>
+
+        <tr class="epic"><td colspan="6">EPIC D — Protocol</td></tr>
+        <tr>
+          <td class="id">D1</td><td>Annotation guidelines v1</td>
+          <td class="mono">DS2 + SME</td><td class="num">3</td><td class="mono">—</td>
+          <td>Written doc settling every boundary rule in §04 with worked examples from real notes. Versioned. Blocks D2 and all of F.</td>
+        </tr>
+        <tr>
+          <td class="id">D2</td><td>Calibration round + IAA</td>
+          <td class="mono">SME ×2</td><td class="num">2</td><td class="mono">D1, E3</td>
+          <td>30 notes annotated independently and blind. Span-level F1 and Cohen's κ computed and published. <strong>Gate: κ ≥ 0.75 before gold annotation starts.</strong></td>
+        </tr>
+        <tr>
+          <td class="id">D3</td><td>Guidelines v2 from disagreements</td>
+          <td class="mono">DS2 + SME</td><td class="num">2</td><td class="mono">D2</td>
+          <td>Every D2 disagreement class is either resolved by a new rule or explicitly declared genuinely ambiguous. Re-run calibration if κ missed the gate.</td>
+        </tr>
+        <tr>
+          <td class="id">D4</td><td>SME quick-reference card</td>
+          <td class="mono">DS2</td><td class="num">1</td><td class="mono">D3</td>
+          <td>One page: the five task types, the response vocabularies, the boundary rules. Lives in the tool, not a separate file.</td>
+        </tr>
+
+        <tr class="epic"><td colspan="6">EPIC E — Annotation tooling (extends the existing QA viewer)</td></tr>
+        <tr>
+          <td class="id">E1</td><td>Annotator identity + doc completion state</td>
+          <td class="mono">DS2</td><td class="num">2</td><td class="mono">—</td>
+          <td>Every recorded judgement carries annotator, timestamp, task type. New <code>doc_annotation_status</code> records whether a doc was exhaustively read — the flag that makes precision measurable.</td>
+        </tr>
+        <tr>
+          <td class="id">E2</td><td>Click/keyboard span marking</td>
+          <td class="mono">DS2</td><td class="num">4</td><td class="mono">E1</td>
+          <td>Select a span by click-drag or keyboard; offsets computed, never typed. Target ≤5 s per mark. The current type-the-offsets flow is fine for 20 corrections and unusable for 4,000.</td>
+        </tr>
+        <tr>
+          <td class="id">E3</td><td>Work queues + blind mode</td>
+          <td class="mono">DS2</td><td class="num">3</td><td class="mono">E2</td>
+          <td>Annotator is served the next item for their assigned task type. Blind mode hides all pre-annotation and the other annotator's marks — required for D2 and T1 to be valid.</td>
+        </tr>
+        <tr>
+          <td class="id">E4</td><td>Adjudication queue</td>
+          <td class="mono">DS2</td><td class="num">2</td><td class="mono">E3</td>
+          <td>Conflicting spans surfaced side by side with T5's four-way response. Resolution writes the gold record and is attributable.</td>
+        </tr>
+        <tr>
+          <td class="id">E5</td><td>IAA + throughput dashboard</td>
+          <td class="mono">DS2</td><td class="num">2</td><td class="mono">E4</td>
+          <td>Live κ, per-annotator throughput and disagreement-class breakdown. Detects annotator drift mid-project rather than at the end.</td>
+        </tr>
+
+        <tr class="epic"><td colspan="6">EPIC F — Gold execution</td></tr>
+        <tr>
+          <td class="id">F1</td><td>Gold annotation pass</td>
+          <td class="mono">SME</td><td class="num">4</td><td class="mono">D2 gate, E3</td>
+          <td>~120 notes cold-annotated and marked complete. Daily throughput tracked against the sprint burn.</td>
+        </tr>
+        <tr>
+          <td class="id">F2</td><td>Adjudication</td>
+          <td class="mono">SME + DS2</td><td class="num">1</td><td class="mono">F1</td>
+          <td>All conflicts from the dual-annotated subset resolved. Zero unresolved conflicts in the gold set.</td>
+        </tr>
+        <tr>
+          <td class="id">F3</td><td>Coverage estimate (capture–recapture)</td>
+          <td class="mono">DS1</td><td class="num">2</td><td class="mono">F2</td>
+          <td>Lincoln–Petersen estimate of entities missed by <em>both</em> annotators, with CI. Reported as the ceiling on any measured recall — including the client's own.</td>
+        </tr>
+
+        <tr class="epic"><td colspan="6">EPIC G — Silver execution</td></tr>
+        <tr>
+          <td class="id">G1</td><td>Locator certification</td>
+          <td class="mono">SME</td><td class="num">1</td><td class="mono">B4, E3</td>
+          <td>Per-tier precision measured on a random sample with CI. <strong>Gate: exact/normalized ≥98%, fuzzy ≥90%</strong>, else the tier is demoted to full human review.</td>
+        </tr>
+        <tr>
+          <td class="id">G2</td><td>Not-found triage pass</td>
+          <td class="mono">SME</td><td class="num">2</td><td class="mono">B5, E3</td>
+          <td>Not-found bucket worked through T3. Output classified into matcher gap vs. genuinely absent vs. unnamed reference — the third class is the coreference workload, quantified.</td>
+        </tr>
+        <tr>
+          <td class="id">G3</td><td>Null-metadata recovery pass</td>
+          <td class="mono">SME</td><td class="num">2</td><td class="mono">W1, E3</td>
+          <td>Candidates worked through T4. Confirmed recoveries become identifier ground truth and the substance of the client-facing gap report.</td>
+        </tr>
+
+        <tr class="epic"><td colspan="6">EPIC H — Freeze &amp; report</td></tr>
+        <tr>
+          <td class="id">H1</td><td>Emit GT v1 in manifest schema v2</td>
+          <td class="mono">DS1</td><td class="num">3</td><td class="mono">F3, G1–G3</td>
+          <td>Frozen manifest, hashed, tier-tagged per placement. <code>audit.py</code> and <code>qa_viewer.py</code> run against it unmodified. Every span byte-accurate against the frozen corpus.</td>
+        </tr>
+        <tr>
+          <td class="id">H2</td><td>Baseline metrics run</td>
+          <td class="mono">DS1</td><td class="num">2</td><td class="mono">H1</td>
+          <td>Recall/precision on gold, stratified by category and by hard-case class; identifier recall incl. orphans; ER B³ sweep on silver clusters. Dev split only — test stays sealed.</td>
+        </tr>
+        <tr>
+          <td class="id">H3</td><td>Quality report</td>
+          <td class="mono">DS1 + DS2</td><td class="num">2</td><td class="mono">H2</td>
+          <td>Every number carries its CI, its tier, and the IAA ceiling. Explicit statement of what the dataset cannot measure.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">06</span> Sprint plan and critical path</h2>
+  <div class="flow">SPRINT 1   foundations + tooling, two parallel tracks
+  DS1  A1 → A2 → A3 → B1 → B2 → C1        DS2  E1 → E2 → E3 | D1 (with SME)
+  SME  guidelines input (~2h), W1 spot-check
+  ✓ exit: locator running, tool can capture a span, guidelines v1 written
+
+SPRINT 2   calibration gate, then gold starts
+  DS1  B3 → B4 → B5 → C2 → C3             DS2  E4 → E5 → D3 → D4
+  SME  D2 calibration (dual, blind) → F1 gold begins
+  ✓ exit: κ ≥ 0.75 achieved, gold annotation underway, silver located
+
+SPRINT 3   execution and freeze
+  DS1  F3 → H1 → H2                       DS2  supports queues, H3
+  SME  F1 completes → F2 → G1 → G2 → G3
+  ✓ exit: GT v1 frozen, baseline metrics on dev split, test still sealed
+
+CRITICAL PATH   A1 → A2 → B1 → B2 → C1 → C2 → [D2 gate] → F1 → F2 → F3 → H1
+                 the κ gate is the only true stop-the-line dependency</div>
+
+  <div class="callout">
+    <div class="h">Where this slips, if it slips</div>
+    <p>
+      <strong>D2's κ gate.</strong> If the first calibration round misses 0.75, the fix is a
+      guidelines revision and a re-run — roughly a week. That is the intended behaviour, not
+      a failure: shipping a gold set built on annotators who disagree produces a number
+      nobody can defend. Budget for one re-run and treat a clean first pass as upside.
+    </p>
+    <p>
+      <strong>E2.</strong> If span marking is not fast, gold annotation stretches from days into
+      weeks. It is the highest-leverage engineering ticket in the plan and should not be
+      deferred to sprint 2.
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">07</span> Decisions needed before sprint 1 opens</h2>
+  <p class="lede">
+    Each of these changes ticket content. They are cheap to answer now and expensive to
+    answer after annotation has started.
+  </p>
+  <ol>
+    <li><strong>Is a role-only reference an entity?</strong> "The adjuster confirmed…" with no name. Recommend: yes, marked as a distinct class — coreference needs it, and excluding it hides a real category of miss.</li>
+    <li><strong>Do quoted/forwarded email duplicates get annotated?</strong> Recommend: yes, flagged as quoted, so they can be included or excluded from a metric after the fact rather than being unrecoverable.</li>
+    <li><strong>Boundary conventions</strong> for titles, suffixes, possessives, org suffixes. Any answer works; no answer is fatal.</li>
+    <li><strong>Does the client's category/duty field become part of ground truth</strong>, or context only? If it is ground truth, role classification becomes a measurable task and adds an SME response field.</li>
+    <li><strong>How many SMEs are actually available?</strong> With one, IAA has to come from a DS acting as second annotator on the calibration set — weaker, since a DS lacks the domain judgement, but far better than no agreement measurement at all.</li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="num">08</span> What this dataset will not be able to tell us</h2>
+  <p>
+    Stated plainly now so it does not have to be explained defensively later.
+  </p>
+  <ul>
+    <li><strong>Precision anywhere but gold.</strong> Silver notes are not exhaustively read; a system find outside the located set is unjudged, not wrong.</li>
+    <li><strong>Anything above the IAA ceiling.</strong> If two SMEs agree at 0.88, a system scoring 0.92 against them is measuring annotation noise. Every metric is reported against that ceiling.</li>
+    <li><strong>Entities nobody found.</strong> The capture–recapture estimate bounds this, it does not eliminate it. The bound is reported with the number.</li>
+    <li><strong>Whether the client's list was right.</strong> We treat it as a precision oracle by assumption. Gold is the only tier that tests that assumption, on ~150 notes.</li>
+  </ul>
+</section>
+
+<footer>
+  designs/ground-truth-plan.html · Track 1 (ground truth). System architecture is tracked separately.
+</footer>
+</body>
+</html>
