@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Scientist Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#F6F7F9; --surface:#FFFFFF; --surface-2:#EDF0F4; --surface-3:#E3E8EF;
+    --ink:#10151C; --ink-2:#4A5666; --ink-3:#6E7A8A;
+    --rule:#D6DCE4; --rule-strong:#B9C2CE;
+    --accent:#B4650A; --accent-soft:#F6E7CE;
+    --steel:#3E5C76; --steel-soft:#E0E8EF;
+    --good:#2F6B4F; --good-soft:#DFEDE5;
+    --alert:#A33A2A; --alert-soft:#F6E0DB;
+    --warn:#9C7B12; --warn-soft:#F5EDCF;
+    --shadow:0 1px 2px rgba(16,21,28,.06), 0 8px 24px -12px rgba(16,21,28,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#0E1218; --surface:#151B24; --surface-2:#1C242F; --surface-3:#232D3A;
+      --ink:#E8ECF2; --ink-2:#A3AEBD; --ink-3:#7C8797;
+      --rule:#2A3441; --rule-strong:#3A4756;
+      --accent:#E9A03C; --accent-soft:#3A2C16;
+      --steel:#7FA5C4; --steel-soft:#1D2A36;
+      --good:#5FBF8F; --good-soft:#16281F;
+      --alert:#E07A63; --alert-soft:#2E1913;
+      --warn:#E3C24C; --warn-soft:#332B10;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0E1218; --surface:#151B24; --surface-2:#1C242F; --surface-3:#232D3A;
+    --ink:#E8ECF2; --ink-2:#A3AEBD; --ink-3:#7C8797;
+    --rule:#2A3441; --rule-strong:#3A4756;
+    --accent:#E9A03C; --accent-soft:#3A2C16;
+    --steel:#7FA5C4; --steel-soft:#1D2A36;
+    --good:#5FBF8F; --good-soft:#16281F;
+    --alert:#E07A63; --alert-soft:#2E1913;
+    --warn:#E3C24C; --warn-soft:#332B10;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+  *{box-sizing:border-box}
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:"Source Serif 4", Georgia, serif;
+    font-size:17px; line-height:1.65; margin:0; padding:0 24px 100px;
+    -webkit-font-smoothing:antialiased;
+  }
+  header.mast{max-width:74ch; margin:0 auto; padding:60px 0 32px; border-bottom:1px solid var(--rule)}
+  .eyebrow{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.16em;
+           text-transform:uppercase; color:var(--accent); margin:0 0 16px}
+  h1{font-family:Archivo,sans-serif; font-weight:700; font-size:clamp(28px,4.6vw,42px);
+     line-height:1.06; letter-spacing:-.02em; margin:0 0 16px}
+  .standfirst{font-size:18px; color:var(--ink-2); margin:0 0 8px; max-width:68ch}
+  .meta{display:flex; flex-wrap:wrap; gap:8px; margin-top:22px; font-family:"IBM Plex Mono",monospace; font-size:11.5px}
+  .meta span{border:1px solid var(--rule); border-radius:2px; padding:4px 9px; color:var(--ink-2); background:var(--surface)}
+
+  nav.toc{max-width:74ch; margin:26px auto 0; padding:16px 18px; border:1px solid var(--rule);
+          border-radius:4px; background:var(--surface); box-shadow:var(--shadow)}
+  nav.toc .h{font-family:"IBM Plex Mono",monospace; font-size:10.5px; text-transform:uppercase;
+             letter-spacing:.1em; color:var(--ink-3); margin-bottom:8px}
+  nav.toc ol{margin:0; padding-left:20px; columns:2; column-gap:24px; font-size:14px}
+  nav.toc li{margin-bottom:5px}
+  nav.toc a{color:var(--ink-2); text-decoration:none}
+  nav.toc a:hover{color:var(--accent)}
+
+  section{max-width:74ch; margin:0 auto; padding-top:52px}
+  h2{font-family:Archivo,sans-serif; font-weight:600; font-size:25px; letter-spacing:-.012em;
+     margin:0 0 8px; display:flex; gap:14px; align-items:baseline}
+  h2 .num{font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:500; color:var(--accent)}
+  h3{font-family:Archivo,sans-serif; font-weight:600; font-size:16.5px; margin:26px 0 8px}
+  p{margin:0 0 15px}
+  .lede{color:var(--ink-2); font-size:16.5px; margin-bottom:20px}
+  code{font-family:"IBM Plex Mono",monospace; font-size:.85em; background:var(--surface-2);
+       border:1px solid var(--rule); border-radius:2px; padding:1px 5px; color:var(--ink)}
+  strong{font-weight:600}
+  ul,ol{margin:0 0 15px; padding-left:22px}
+  li{margin-bottom:6px}
+
+  .stage{border:1px solid var(--rule); border-radius:6px; background:var(--surface);
+         box-shadow:var(--shadow); margin:22px 0; overflow:hidden}
+  .stage-head{display:flex; align-items:center; gap:12px; padding:14px 18px;
+              background:var(--surface-2); border-bottom:1px solid var(--rule)}
+  .stage-num{font-family:"IBM Plex Mono",monospace; font-size:12px; font-weight:600;
+             color:#fff; background:var(--accent); border-radius:50%; width:26px; height:26px;
+             display:flex; align-items:center; justify-content:center; flex:none}
+  .stage-title{font-family:Archivo,sans-serif; font-weight:600; font-size:16.5px}
+  .stage-status{margin-left:auto; font-family:"IBM Plex Mono",monospace; font-size:10px;
+                text-transform:uppercase; letter-spacing:.06em; padding:2px 9px; border-radius:8px;
+                flex:none}
+  .stage-status.new{background:var(--warn-soft); color:var(--warn)}
+  .stage-status.reuse{background:var(--good-soft); color:var(--good)}
+  .stage-status.adapt{background:var(--steel-soft); color:var(--steel)}
+  .stage-body{padding:16px 18px}
+  .stage-body .process{font-size:15px; margin-bottom:14px}
+  .stage-body .process strong{color:var(--ink)}
+  .filebox{background:var(--surface-2); border:1px solid var(--rule); border-radius:4px;
+           padding:11px 14px; margin:0 0 6px}
+  .filebox .path{font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:600; color:var(--accent)}
+  .filebox .desc{font-size:13px; color:var(--ink-2); margin-top:3px}
+  .filebox .fn{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-3); margin-top:4px}
+
+  .callout{border:1px solid var(--rule-strong); border-left:3px solid var(--accent);
+           background:var(--surface); border-radius:2px; padding:15px 17px; margin:16px 0;
+           box-shadow:var(--shadow)}
+  .callout.warn{border-left-color:var(--warn); background:var(--warn-soft)}
+  .callout .h{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em;
+              text-transform:uppercase; color:var(--accent); margin-bottom:7px}
+  .callout.warn .h{color:var(--warn)}
+  .callout p{margin:0 0 8px; font-size:14.5px} .callout p:last-child{margin-bottom:0}
+
+  .legend{display:flex; gap:16px; flex-wrap:wrap; margin:18px 0; font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-2)}
+  .legend .k{display:inline-flex; align-items:center; gap:7px}
+  .legend .sw{padding:1px 8px; border-radius:8px; font-size:10px; text-transform:uppercase; letter-spacing:.05em}
+
+  .flow{font-family:"IBM Plex Mono",monospace; font-size:12.5px; line-height:1.8;
+        background:var(--surface); border:1px solid var(--rule); border-radius:3px;
+        padding:16px 18px; overflow-x:auto; white-space:pre; color:var(--ink-2);
+        box-shadow:var(--shadow); margin:20px 0}
+
+  .tablewrap{overflow-x:auto; border:1px solid var(--rule); border-radius:3px;
+             background:var(--surface); box-shadow:var(--shadow); margin:18px 0}
+  table{width:100%; border-collapse:collapse; font-size:13.5px}
+  th,td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--rule); vertical-align:top}
+  th{font-family:"IBM Plex Mono",monospace; font-size:10px; text-transform:uppercase;
+     letter-spacing:.07em; color:var(--ink-3); background:var(--surface-2); font-weight:500}
+  tr:last-child td{border-bottom:none}
+  td.mono{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--accent)}
+
+  footer{max-width:74ch; margin:64px auto 0; padding-top:24px; border-top:1px solid var(--rule);
+         font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-3)}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <p class="eyebrow">Ground truth build · engineering reference</p>
+  <h1>Data scientist manual</h1>
+  <p class="standfirst">
+    What actually happens at each stage of building ground truth on real client
+    data, and which file is responsible for it. This isn't a run-book of
+    commands — the point is that you understand the <em>process</em> well
+    enough to change the logic, swap a matching strategy, or debug a bad
+    result, not just execute a script.
+  </p>
+  <div class="meta">
+    <span>Repo: <code>src/</code>, relative to project root</span>
+    <span>New work vs. reused code called out per stage</span>
+  </div>
+  <div class="legend">
+    <span class="k"><span class="sw" style="background:#F5EDCF;color:#9C7B12">new</span>doesn't exist yet — you're writing it</span>
+    <span class="k"><span class="sw" style="background:#DFEDE5;color:#2F6B4F">reuse</span>existing code, works unmodified on real data</span>
+    <span class="k"><span class="sw" style="background:#E0E8EF;color:#3E5C76">adapt</span>existing code, needs validation/tuning against real notes</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="h">Stages</div>
+  <ol>
+    <li><a href="#s1">Freeze and fingerprint the notes</a></li>
+    <li><a href="#s2">Ingest the client's entity spreadsheet</a></li>
+    <li><a href="#s3">Locate known entities in the note text</a></li>
+    <li><a href="#s4">Run our extraction pipeline on real notes</a></li>
+    <li><a href="#s5">Compare: system output vs. located ground truth</a></li>
+    <li><a href="#s6">Entity resolution on real mentions</a></li>
+    <li><a href="#s7">The correction loop</a></li>
+    <li><a href="#s8">Assemble and freeze the manifest</a></li>
+    <li><a href="#s9">Audit and report</a></li>
+  </ol>
+</nav>
+
+<section id="s1">
+  <h2><span class="num">01</span> Freeze and fingerprint the notes</h2>
+  <p class="lede">Before anything reads a note's contents, lock down the note's identity.</p>
+  <div class="stage">
+    <div class="stage-head">
+      <div class="stage-num">1</div>
+      <div class="stage-title">Freeze + hash</div>
+      <div class="stage-status new">new</div>
+    </div>
+    <div class="stage-body">
+      <p class="process">
+        Every span anyone ever records — a system's or a human's — is a
+        <code>(note_id, char_start, char_end)</code> triple. That position is only
+        meaningful if the note's text can never silently change underneath it.
+        This stage assigns/confirms a stable ID per note and computes a checksum
+        of its exact byte content, so any later change is detected, not
+        silently absorbed.
+      </p>
+      <div class="filebox">
+        <div class="path">src/hashing.py</div>
+        <div class="desc">Already does exactly this for the synthetic corpus — reuse the pattern directly.</div>
+        <div class="fn"><code>sha256_file(path)</code> — hash one file · <code>write_hashes()</code> / <code>verify_hashes(stage)</code> — write and re-check a corpus-wide manifest</div>
+      </div>
+      <div class="filebox">
+        <div class="path">new: scripts/freeze_client_notes.py</div>
+        <div class="desc">Point <code>hashing.py</code>'s functions at the client's raw note directory instead of <code>data/raw_notes/</code>. Small glue script, not new logic.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s2">
+  <h2><span class="num">02</span> Ingest the client's entity spreadsheet</h2>
+  <div class="stage">
+    <div class="stage-head">
+      <div class="stage-num">2</div>
+      <div class="stage-title">Parse and normalize the client file</div>
+      <div class="stage-status new">new</div>
+    </div>
+    <div class="stage-body">
+      <p class="process">
+        The client's file has two independent sources per claim: an
+        exact-string search (<code>exact_string_bolo_search_matched_entity_name</code> +
+        bar-delimited note IDs) and a GenAI match (<code>genai_matched_entity_record</code>,
+        double-bar-delimited: name/address/city/state/zip/phone/email/ner-tag, +
+        <code>genai_matched_note_ids</code>). Parse both into one flat table: one row
+        per (entity, note_id, source). Note which fields are blank per entity —
+        that blank-field list is what stage 3's null-metadata pass runs against.
+      </p>
+      <div class="filebox">
+        <div class="path">new: scripts/ingest_client_entities.py</div>
+        <div class="desc">Splits the delimited columns, flattens to one row per (entity, note_id), flags blank fields per entity. Straightforward parsing, no modeling.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s3">
+  <h2><span class="num">03</span> Locate known entities in the note text</h2>
+  <div class="stage">
+    <div class="stage-head">
+      <div class="stage-num">3</div>
+      <div class="stage-title">The locator</div>
+      <div class="stage-status new">new</div>
+    </div>
+    <div class="stage-body">
+      <p class="process">
+        The client's file tells us <em>which note</em> an entity is supposedly
+        in. It never gives a character position. This stage converts "Robert
+        Miller is somewhere in note #4471" into an exact offset.
+      </p>
+      <p class="process">
+        Two paths, because the two sources behave differently:
+      </p>
+      <ul>
+        <li><strong>Exact-search entities</strong> — trivial. The client already told us the string is a literal match in a specific note; find it with a plain substring search against that note's frozen text. No fuzzy logic needed here.</li>
+        <li><strong>GenAI-matched entities</strong> — not guaranteed literal. The record may be normalized or reformatted relative to how it actually reads in the note (name-order flips, nicknames, differently-formatted addresses/phones). This path needs real matching logic.</li>
+      </ul>
+      <div class="filebox">
+        <div class="path">src/textnorm.py</div>
+        <div class="desc">Built for exactly this. Don't re-derive it.</div>
+        <div class="fn"><code>normalize_name()</code>, <code>are_nickname_variants()</code>, <code>soundex()</code>, <code>jaro_winkler()</code> / <code>token_set_jw()</code> — name matching under flips/nicknames/typos · <code>phone_last7()</code>, <code>address_key()</code>, <code>normalize_email()</code>, <code>normalize_identifier(kind, value)</code> — identifier normalization for matching client-format values against note text</div>
+      </div>
+      <div class="filebox">
+        <div class="path">new: scripts/locate_entities.py</div>
+        <div class="desc">Orchestrates: for each entity, try exact match first, fall back to normalized/fuzzy match via <code>textnorm.py</code> against the note text named in <code>genai_matched_note_ids</code>. Emits (entity, note_id, char_start, char_end, match_tier).</div>
+      </div>
+      <div class="callout">
+        <div class="h">This is not entity_resolution.py</div>
+        <p>
+          <code>src/entity_resolution.py</code> resolves <em>our own extracted
+          mentions</em> against each other (mention-to-mention, via Splink).
+          This stage is different: matching a <em>known name string</em> against
+          <em>raw text</em> to find its position. Don't conflate the two —
+          they solve different problems and the locator has to exist before
+          entity resolution is even relevant here.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s4">
+  <h2><span class="num">04</span> Run our extraction pipeline on real notes</h2>
+  <div class="stage">
+    <div class="stage-head">
+      <div class="stage-num">4</div>
+      <div class="stage-title">Extraction, pointed at new input</div>
+      <div class="stage-status adapt">adapt</div>
+    </div>
+    <div class="stage-body">
+      <p class="process">
+        This is the actual system under evaluation. It has only ever run
+        against our synthetic corpus. Running it on real notes for the first
+        time is itself a validation step — expect to find and fix real
+        surprises, not just execute a known-good command.
+      </p>
+      <div class="filebox">
+        <div class="path">src/pipeline_v2.py</div>
+        <div class="desc">Orchestrates the extraction pass: builds mentions, identifier observations, coref links from raw note text.</div>
+        <div class="fn"><code>_is_plausible_name(surface)</code> — the name-shape filter (currently requires ≥2 capitalized tokens). This is the single most likely thing to need adjusting for real phrasing — it's already a known limitation on the synthetic corpus too (misses bare surnames).</div>
+      </div>
+      <div class="filebox">
+        <div class="path">src/ner_ensemble.py</div>
+        <div class="desc">The token-level name/org pattern matcher and its noise/stopword lists.</div>
+        <div class="fn"><code>DeterministicTokenNER</code> — the regex patterns (<code>_RE_SEQ</code>, <code>_RE_FLIP</code>, <code>_RE_TITLED</code>, <code>_RE_INITIAL</code>) and the <code>_LEADING_NOISE</code> / <code>_STOP</code> word lists. Real client notes will use different sentence-opener verbs and structural boilerplate than the synthetic generator produced — expect to extend these lists from what silver-pass triage turns up.</div>
+      </div>
+      <div class="filebox">
+        <div class="path">src/gazetteers.py</div>
+        <div class="desc">Identifier pattern matchers (phone/email/address/NPI/etc.) and role-from-context inference.</div>
+      </div>
+      <div class="callout warn">
+        <div class="h">Expect to tune here, not just run</div>
+        <p>
+          If extraction looks obviously wrong on real notes (missing an entire
+          category of mention, or over-firing on boilerplate), this is the
+          stage to fix — not a sign the whole approach is broken. The
+          synthetic-corpus numbers in <code>ARCHITECTURE.md</code> are a lower
+          bound, not a guarantee, on unfamiliar real-world phrasing.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s5">
+  <h2><span class="num">05</span> Compare: system output vs. located ground truth</h2>
+  <div class="stage">
+    <div class="stage-head">
+      <div class="stage-num">5</div>
+      <div class="stage-title">Overlap-based scoring</div>
+      <div class="stage-status reuse">reuse</div>
+    </div>
+    <div class="stage-body">
+      <p class="process">
+        Once stage 3 has produced located spans and stage 4 has produced the
+        system's own spans, scoring is comparing two sets of
+        <code>(char_start, char_end)</code> ranges for overlap — found / missed /
+        extra. This logic already exists and doesn't change for real data,
+        because it was written against the manifest shape, not against
+        anything synthetic-specific.
+      </p>
+      <div class="filebox">
+        <div class="path">src/audit.py</div>
+        <div class="desc">The scoring engine. Works unmodified once ground truth exists in the same manifest shape (stage 8).</div>
+        <div class="fn"><code>_overlaps(s1,e1,s2,e2)</code> — the core span-overlap test · <code>entity_recall()</code> / <code>entity_precision()</code> — found/missed/extra classification, broken out by hard-case tags · <code>identifier_recall()</code> — same, for identifiers, orphan vs. named broken out separately</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s6">
+  <h2><span class="num">06</span> Entity resolution on real mentions</h2>
+  <div class="stage">
+    <div class="stage-head">
+      <div class="stage-num">6</div>
+      <div class="stage-title">Clustering mentions into entities</div>
+      <div class="stage-status reuse">reuse</div>
+    </div>
+    <div class="stage-body">
+      <p class="process">
+        Once real mentions exist (from stage 4), the same probabilistic
+        resolver clusters them into entities, exactly as it does for the
+        synthetic corpus. The comparisons (name, email, phone, address, etc.)
+        are generic — they don't assume synthetic data.
+      </p>
+      <div class="filebox">
+        <div class="path">src/entity_resolution.py</div>
+        <div class="fn"><code>SplinkResolver.resolve()</code> — trains and scores match probabilities · <code>comparison_specs()</code> / <code>comparison_level_labels()</code> — the field comparisons and their human-readable levels · <code>cluster_at(edges, mention_ids, threshold)</code> — connected components at a chosen threshold · <code>run()</code> — orchestrates end to end, saves the trained model to <code>store/splink_model.json</code></div>
+      </div>
+      <div class="callout">
+        <div class="h">The operating threshold needs re-checking</div>
+        <p>
+          <code>CFG.ER_LINK_THRESHOLD = 0.45</code> was chosen from the synthetic
+          corpus's B³ curve. Real-data name distributions (common surnames,
+          real address formats) will shift that curve — re-run the threshold
+          sweep against real ground truth once it exists rather than assuming
+          0.45 still holds.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s7">
+  <h2><span class="num">07</span> The correction loop</h2>
+  <div class="stage">
+    <div class="stage-head">
+      <div class="stage-num">7</div>
+      <div class="stage-title">Fixing ground truth without breaking reproducibility</div>
+      <div class="stage-status reuse">reuse</div>
+    </div>
+    <div class="stage-body">
+      <p class="process">
+        When an annotator flags a wrong span or a wrong entity, that correction
+        never edits the frozen ground truth file directly — it's appended to a
+        separate patch file, applied on read. This is what lets you fix
+        mistakes without invalidating everything built on the sealed data.
+      </p>
+      <div class="filebox">
+        <div class="path">src/audit.py</div>
+        <div class="fn"><code>_load_manifest()</code> — loads the sealed file, then applies patches · <code>_apply_corrections(manifest)</code> — merges <code>data/gt_corrections.json</code> on top, matching by (doc_id, span)</div>
+      </div>
+      <div class="filebox">
+        <div class="path">src/qa_viewer.py</div>
+        <div class="desc">The review tool — used <em>after</em> ground truth exists, to audit the system's output against it and queue corrections. Not part of creating ground truth itself.</div>
+        <div class="fn"><code>queue_correction()</code> — writes one correction · <code>doc_overlay()</code> / <code>render_doc_overlay_html()</code> — the found/missed/extra visual per document</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s8">
+  <h2><span class="num">08</span> Assemble and freeze the manifest</h2>
+  <div class="stage">
+    <div class="stage-head">
+      <div class="stage-num">8</div>
+      <div class="stage-title">One shared shape for silver and gold</div>
+      <div class="stage-status new">new</div>
+    </div>
+    <div class="stage-body">
+      <p class="process">
+        Silver output (stage 3, human-verified) and gold output (the SME's cold
+        reads) both get written into the <strong>same manifest shape</strong> the
+        synthetic corpus already uses — <code>placements</code> (entity/identifier/event
+        spans), <code>entities</code>, <code>coref_chains</code>. This is a schema to
+        match, not code to reuse — real ground truth doesn't run
+        <code>corpus_gen.py</code>, it just writes to the shape that module documents.
+        Tag every placement with its tier (<code>silver</code> / <code>gold</code>) and
+        match method, so downstream reporting can separate them.
+      </p>
+      <div class="filebox">
+        <div class="path">src/corpus_gen.py</div>
+        <div class="desc">Reference only — read <code>_entity_manifest()</code> and the final <code>manifest = {...}</code> assembly for the exact field names to match, not to execute.</div>
+      </div>
+      <div class="filebox">
+        <div class="path">src/contracts.py</div>
+        <div class="fn"><code>GROUND_TRUTH_MANIFEST_SHAPE</code> — the documented shape, and the authority for field names if <code>corpus_gen.py</code> and this manual ever disagree.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s9">
+  <h2><span class="num">09</span> Audit and report</h2>
+  <div class="stage">
+    <div class="stage-head">
+      <div class="stage-num">9</div>
+      <div class="stage-title">The numbers that go to the client</div>
+      <div class="stage-status reuse">reuse</div>
+    </div>
+    <div class="stage-body">
+      <p class="process">
+        Once the manifest exists, every metric in this project's evaluation
+        layer runs against it unmodified — recall/precision stratified by
+        category and hard-case, identifier recall, the entity-resolution B³
+        threshold sweep.
+      </p>
+      <div class="filebox">
+        <div class="path">src/audit.py</div>
+        <div class="fn"><code>run()</code> — full audit, everything below · <code>bcubed_sweep()</code> — cluster quality across resolution thresholds · <code>coverage_check()</code> — hygiene check only, not a quality metric</div>
+      </div>
+      <div class="callout">
+        <div class="h">Report by tier, not just overall</div>
+        <p>
+          Silver-derived and gold-derived numbers answer different questions
+          (§01 of the annotator manual). Keep them separate in any report —
+          collapsing them into one blended number hides which claim you can
+          actually defend.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>designs/data-scientist-manual.html · companion: designs/annotation-guidelines.html, designs/ground-truth-plan.html</footer>
+</body>
+</html>
