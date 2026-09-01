@@ -140,3 +140,44 @@ See **`ARCHITECTURE.md`** for the full evaluation, the bugs the new fixture
 exposed, and what is still not good enough.
 
 See `DECISIONS.md` for design rationale and honest known limitations.
+
+## Ground truth on real client data
+
+Everything above is measured against the synthetic corpus. Building a real
+ground-truth set on a client's actual notes is a separate track, planned in
+full in `designs/`:
+
+- **`ground-truth-plan.html`** — the build plan: tiers, sizing, sprints, tickets.
+- **`ground-truth-timeline.html`** — the same tickets scheduled on a calendar, by owner.
+- **`annotation-guidelines.html`** — the manual for whoever does the marking.
+- **`data-scientist-manual.html`** — the engineering process, stage by stage, with file citations.
+
+The short version of what those four documents work out in detail:
+
+**Silver.** The client's own records already say a name belongs to a given
+claim, but never say *where* in the note text — and our extraction system
+scores on exact position, not just on a name matching. So a script locates
+each client-known entity in the actual note text (trivial where the client
+already ran an exact-text search; real name-matching where their AI-derived
+match may have normalized the text away from its literal form), our
+extraction pipeline runs against those same real notes for the first time,
+and the two are compared. Anywhere they disagree — a name the locator
+couldn't find, a phone number our system found that the client's record left
+blank — a human gives a quick yes or no. That produces two cheap, concrete
+things: specific, provable evidence of what the client's process is missing
+today (the actual deliverable), and a sanity check that our system isn't
+somehow worse than what they already have. It cannot tell you how much
+*nobody's* process is finding, because every question in it starts from a
+name someone already had.
+
+**Gold.** A separate, smaller set of notes gets read by a human with nothing
+shown — no client list, no located spans — who marks every entity they see,
+then only afterward reconciles against what the locator found. That's the
+only step that can surface entities nobody's process — not the client's, not
+ours — ever flagged, and it's what makes the eventual recall and precision
+numbers defensible with a real confidence interval rather than "we agree
+with what was already tracked."
+
+Both write into the same manifest shape the synthetic corpus already
+produces, so `audit.py` and `qa_viewer.py` run against real ground truth
+unmodified once it exists.

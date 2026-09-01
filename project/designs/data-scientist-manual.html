@@ -424,6 +424,17 @@
         Tag every placement with its tier (<code>silver</code> / <code>gold</code>) and
         match method, so downstream reporting can separate them.
       </p>
+      <p class="process">
+        A third source feeds the same table: <strong>incidental</strong>
+        placements — the "notice anything else?" field on every silver row
+        (annotator manual §01). An annotator jots down a phrase they happened
+        to see while doing a narrower task; run it through the same exact-match
+        locator as any other silver find (stage 3) and add it as a placement
+        tagged <code>source: incidental</code>. It's real evidence a mention
+        exists, so it counts toward recall — but the note it came from was
+        never exhaustively read, so it must never be treated as if it passed
+        through gold, and it must never flip a note's completion flag.
+      </p>
       <div class="filebox">
         <div class="path">src/corpus_gen.py</div>
         <div class="desc">Reference only — read <code>_entity_manifest()</code> and the final <code>manifest = {...}</code> assembly for the exact field names to match, not to execute.</div>
@@ -458,10 +469,14 @@
       <div class="callout">
         <div class="h">Report by tier, not just overall</div>
         <p>
-          Silver-derived and gold-derived numbers answer different questions
-          (§01 of the annotator manual). Keep them separate in any report —
-          collapsing them into one blended number hides which claim you can
-          actually defend.
+          Silver-, gold-, and incidental-derived numbers answer different
+          questions (§01 of the annotator manual). Keep them separate in any
+          report — collapsing them into one blended number hides which claim
+          you can actually defend. Concretely: incidental placements are
+          eligible for recall numerator counts on any note; they are never
+          eligible for a precision denominator, because that requires the
+          note-level completion flag from a real cold read (stage 8), which
+          an incidental catch never sets.
         </p>
       </div>
     </div>
