@@ -1,0 +1,113 @@
+---
+title: "ERD 1 — Evidence layer (documents, segments, mentions, assertions)"
+---
+erDiagram
+  DOCUMENTS {
+    TEXT doc_id PK
+    TEXT claim_id "from filename, never note text"
+    TEXT occurrence_id "from client occurrence table"
+    TEXT category "stored, may be NULL"
+    TEXT category_implied "content-inferred; currently always NULL, see note"
+    INTEGER n_chars
+    INTEGER seq_in_claim
+    TEXT created_ts
+  }
+
+  SEGMENTS {
+    TEXT segment_id PK
+    TEXT doc_id FK
+    TEXT kind "body | quoted — see note"
+    REAL boilerplate_score "0..1, advisory only"
+    TEXT casing_regime "mixed | upper | lower | sparse"
+    INTEGER case_informative "0 = casing carries no signal"
+    INTEGER char_start
+    INTEGER char_end
+    TEXT template_fingerprint "label-sequence hash, form-like segments"
+    TEXT dup_group_id "near-duplicate group"
+    INTEGER is_canonical_dup
+  }
+
+  MENTIONS {
+    TEXT mention_id PK
+    TEXT doc_id FK
+    TEXT segment_id "logical ref, no FK clause"
+    TEXT entity_class "guessed when unmatched — see note"
+    TEXT surface "raw extracted text"
+    TEXT norm_surface
+    INTEGER char_start
+    INTEGER char_end
+    TEXT extractor "token_ner+gazetteer+llm, any combo"
+    TEXT dup_group_id
+    INTEGER inside_quoted
+    REAL boilerplate_score "carried from containing segment"
+  }
+
+  ASSERTIONS {
+    TEXT assertion_id PK
+    TEXT subject_mention_id FK
+    TEXT predicate "open vocabulary, canonical forms preferred"
+    TEXT object_value_raw
+    TEXT object_value_norm
+    TEXT object_mention_id "logical ref, relation predicates only"
+    TEXT polarity "asserted|negated|alleged|reported|retracted"
+    TEXT effective_from
+    TEXT effective_to
+    TEXT recorded_date
+    REAL temporal_conf
+    TEXT source_doc_id "logical ref, no FK clause"
+    INTEGER source_span_start "the EVIDENCE location, not the subject's"
+    INTEGER source_span_end
+    INTEGER grounded
+    TEXT extractor
+    TEXT pass_id
+    REAL confidence
+  }
+
+  IDENTIFIER_OBSERVATIONS {
+    INTEGER obs_id PK
+    TEXT doc_id "logical ref, no FK clause"
+    INTEGER char_start
+    INTEGER char_end
+    TEXT kind "phone|email|address|npi|tin|ssn|vin"
+    TEXT value_raw
+    TEXT value_norm
+    TEXT subject_mention_id "logical ref; NULL = orphan, kept anyway"
+    INTEGER validated "bare bool; see validation-strength note"
+    TEXT extractor
+  }
+
+  COREF_LINKS {
+    INTEGER link_id PK
+    TEXT doc_id "logical ref, no FK clause"
+    INTEGER anaphor_start
+    INTEGER anaphor_end
+    TEXT anaphor_text
+    TEXT anaphor_kind "pronoun | descriptor"
+    INTEGER antecedent_start
+    INTEGER antecedent_end
+    TEXT antecedent_surface
+    TEXT antecedent_mention_id "logical ref, no FK clause"
+    TEXT backend
+    REAL confidence
+  }
+
+  SCAN_LEDGER {
+    INTEGER ledger_id PK
+    TEXT doc_id FK
+    INTEGER char_start
+    INTEGER char_end
+    TEXT extractor
+    TEXT pass_id
+  }
+
+  DOCUMENTS ||--o{ SEGMENTS       : "FK doc_id"
+  DOCUMENTS ||--o{ MENTIONS       : "FK doc_id"
+  DOCUMENTS ||--o{ SCAN_LEDGER    : "FK doc_id"
+  DOCUMENTS ||..o{ IDENTIFIER_OBSERVATIONS : "logical doc_id"
+  DOCUMENTS ||..o{ COREF_LINKS    : "logical doc_id"
+  SEGMENTS  ||..o{ MENTIONS       : "logical segment_id"
+  MENTIONS  ||--o{ ASSERTIONS     : "FK subject_mention_id"
+  MENTIONS  ||..o{ ASSERTIONS     : "logical object_mention_id (relation predicates)"
+  DOCUMENTS ||..o{ ASSERTIONS     : "logical source_doc_id"
+  MENTIONS  ||..o{ IDENTIFIER_OBSERVATIONS : "logical subject_mention_id (nullable)"
+  MENTIONS  ||..o{ COREF_LINKS    : "logical antecedent_mention_id (nullable)"

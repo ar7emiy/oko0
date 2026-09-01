@@ -1,0 +1,28 @@
+---
+title: "ERD 3 — Graph store: a different storage model, fed BY the SQL layer"
+---
+erDiagram
+  GRAPH_NODE {
+    TEXT node_id PK "entity_id | CLAIM::x | OCC::x | ID::kind::value"
+    TEXT kind "party|organization|identifier|claim|occurrence — see note"
+    TEXT label "entity_class, or identifier kind"
+    TEXT name
+    SET claim_ids "every claim this node touches"
+    SET occurrence_ids
+    DICT attrs "e.g. n_mentions"
+  }
+
+  GRAPH_EDGE {
+    TEXT src "logical ref -> GRAPH_NODE.node_id"
+    TEXT dst "logical ref -> GRAPH_NODE.node_id"
+    TEXT predicate "open vocabulary; BANNED_PREDICATES rejected — see note"
+    TEXT claim_id "a PROPERTY, not a partition key"
+    TEXT occurrence_id
+    TEXT doc_id "provenance"
+    TUPLE span "provenance: (char_start, char_end)"
+    REAL confidence
+    TEXT polarity
+  }
+
+  GRAPH_NODE ||..o{ GRAPH_EDGE : "logical src"
+  GRAPH_NODE ||..o{ GRAPH_EDGE : "logical dst"

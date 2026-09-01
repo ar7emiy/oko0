@@ -1,0 +1,83 @@
+---
+title: "ERD 2 — Identity layer (resolution, entities, attributes, dossiers)"
+---
+erDiagram
+  MENTIONS {
+    TEXT mention_id PK
+    TEXT entity_class "full attribute list — see ERD 1"
+  }
+
+  ASSERTIONS {
+    TEXT assertion_id PK "full attribute list — see ERD 1"
+  }
+
+  SAME_AS_EDGES {
+    INTEGER edge_id PK
+    TEXT mention_id_a "logical ref, no FK clause"
+    TEXT mention_id_b "logical ref, no FK clause"
+    REAL probability "calibrated Splink score, NOT a decision"
+    REAL match_weight
+    TEXT backend
+    TEXT suppressed_reason "non-NULL = excluded from clustering"
+  }
+
+  ENTITY_SNAPSHOT {
+    TEXT entity_id "logical ref; no PK declared at all"
+    TEXT mention_id "logical ref, no FK clause"
+    REAL threshold "identity is a VIEW at this T, not a merge"
+  }
+
+  ENTITIES {
+    TEXT entity_id PK
+    TEXT entity_class "proposed split — see note"
+    TEXT canonical_name
+    TEXT version_id "logical ref, current-version pointer"
+    INTEGER n_mentions
+  }
+
+  ENTITY_MEMBERS {
+    TEXT entity_id PK "part of composite PK"
+    TEXT mention_id PK "part of composite PK"
+    TEXT version_id PK "part of composite PK"
+  }
+
+  ENTITY_VERSIONS {
+    TEXT version_id PK
+    TEXT entity_id "logical ref, no FK clause"
+    TEXT cause "initial | merge | split | adjudicated_link"
+    TEXT parent_entity_ids "JSON list — multi-valued, not a normal FK"
+    TEXT created_ts
+  }
+
+  ENTITY_ATTRIBUTES {
+    TEXT attr_id PK
+    TEXT entity_id FK
+    TEXT attribute "predicate-derived name"
+    TEXT value_raw
+    TEXT value_norm
+    TEXT valid_from "real-world validity window"
+    TEXT valid_to
+    TEXT known_from "system-knowledge window"
+    TEXT known_to
+    TEXT tier "survivorship tier"
+    TEXT polarity
+    INTEGER conflict_flag
+    TEXT source_assertion_id "logical ref, no FK clause"
+  }
+
+  DOSSIERS {
+    TEXT entity_id PK "also the 1:1 ref target, no FK clause"
+    TEXT dossier_json
+  }
+
+  MENTIONS       ||..o{ SAME_AS_EDGES    : "logical mention_id_a / mention_id_b"
+  MENTIONS       ||..o{ ENTITY_SNAPSHOT  : "logical mention_id"
+  MENTIONS       ||..o{ ENTITY_MEMBERS   : "logical mention_id"
+  ENTITIES       ||..o{ ENTITY_SNAPSHOT  : "logical entity_id"
+  ENTITIES       ||--o{ ENTITY_ATTRIBUTES : "FK entity_id"
+  ENTITIES       ||..o{ ENTITY_MEMBERS   : "logical entity_id"
+  ENTITIES       ||..o{ ENTITY_VERSIONS  : "logical entity_id"
+  ENTITIES       ||..o| DOSSIERS         : "logical 1:1, entity_id"
+  ENTITY_VERSIONS ||..o{ ENTITY_MEMBERS  : "logical version_id"
+  ENTITIES       ||..o| ENTITY_VERSIONS  : "logical version_id = current version"
+  ASSERTIONS     ||..o{ ENTITY_ATTRIBUTES : "logical source_assertion_id (from ERD 1)"

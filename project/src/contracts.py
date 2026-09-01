@@ -84,7 +84,7 @@ DDL = r"""
 CREATE TABLE IF NOT EXISTS documents (
     doc_id            TEXT PRIMARY KEY,
     claim_id          TEXT NOT NULL,
-    occurrence_id     TEXT,             -- parsed from note text, never the manifest
+    occurrence_id     TEXT,             -- from the client's occurrence table, never the note text
     category          TEXT,            -- stored category field (may be NULL/implied)
     category_implied  TEXT,           -- category inferred from content (profiling)
     n_chars           INTEGER NOT NULL,

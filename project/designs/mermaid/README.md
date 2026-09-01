@@ -6,6 +6,10 @@ remains the fuller companion: it carries the per-stage goal statements, the
 worked-example tables in full, and the `entity_class` design discussion that has
 no diagram.
 
+These show the *process* — what happens to a document as it moves through the
+pipeline. For the *data model* — what tables exist and how they relate — see
+[`erd/`](erd/README.md).
+
 Each `.mermaid` file here is standalone and is the source of truth. The blocks
 below are generated copies so they render on GitHub — regenerate with
 `python3 build_readme.py` after editing any diagram.
