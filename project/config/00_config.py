@@ -14,7 +14,7 @@
 # NOTE: these strings are intentionally the *only* hardcoded model identifiers
 # in the repo. src/leakage_guard.py + tests assert no other source file names a
 # model. Change these freely; nothing downstream hardcodes them.
-GENAI_MODEL = "gemini-3.7"                 # extraction / adjudication / NL planning / generation
+GENAI_MODEL = "gemini-3.7-flash"                # extraction / adjudication / NL planning / generation
 EMBED_MODEL = "gemini-embedding-001"       # Gemini embedding endpoint
 EMBED_DIM = 768                            # embedding dimensionality (index is built to this)
 
