@@ -1,0 +1,32 @@
+# Repo-root ignores. Generated corpus/store artifacts are handled by
+# project/.gitignore; this file covers secrets and environment-level noise.
+
+# --- secrets -------------------------------------------------------------
+# settings.py reads GEMINI_API_KEY / GOOGLE_API_KEY / GOOGLE_GENAI_API_KEY.
+# Keep every local form of those out of the repository.
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# --- environments --------------------------------------------------------
+.venv/
+venv/
+env/
+.python-version
+
+# --- model weights / caches ---------------------------------------------
+# GLiNER weights are fetched on first load: hundreds of MB, never committed.
+.cache/
+models/
+*.safetensors
+
+# --- tooling -------------------------------------------------------------
+.pytest_cache/
+.ruff_cache/
+node_modules/
+
+# --- os ------------------------------------------------------------------
+Thumbs.db
+.DS_Store

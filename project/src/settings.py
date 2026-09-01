@@ -27,6 +27,39 @@ PROJECT_ROOT = find_project_root()
 CONFIG_PATH = PROJECT_ROOT / "config" / "00_config.py"
 
 
+def load_dotenv(path: Path | None = None) -> list[str]:
+    """Read KEY=VALUE lines from a local .env into os.environ.
+
+    Zero-dependency and deliberately conservative: an existing environment
+    variable always wins, so an explicit `GEMINI_API_KEY=... python ...` or a
+    CI secret is never silently overridden by a stale file on disk.
+
+    Searched at the repo root and at the project root, in that order. Values
+    may be quoted; `export ` prefixes and `#` comments are tolerated.
+    """
+    loaded: list[str] = []
+    candidates = [path] if path else [PROJECT_ROOT.parent / ".env", PROJECT_ROOT / ".env"]
+    for env_path in candidates:
+        if not env_path or not env_path.exists():
+            continue
+        for raw in env_path.read_text(encoding="utf-8").splitlines():
+            line = raw.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            if line.startswith("export "):
+                line = line[len("export "):]
+            key, _, val = line.partition("=")
+            key, val = key.strip(), val.strip().strip('"').strip("'")
+            if key and key not in os.environ:
+                os.environ[key] = val
+                loaded.append(key)
+    return loaded
+
+
+# Load before CFG so config-time reads of the environment see the file too.
+DOTENV_KEYS_LOADED = load_dotenv()
+
+
 def load_config() -> SimpleNamespace:
     ns = runpy.run_path(str(CONFIG_PATH))
     public = {k: v for k, v in ns.items() if not k.startswith("_")}

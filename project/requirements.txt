@@ -16,8 +16,17 @@ ipykernel
 rapidfuzz                 # fuzzy matching for entity resolution
 splink                    # Layer 2: Fellegi-Sunter entity resolution (src/entity_resolution.py)
 duckdb                    # Splink's default backend
-# Optional production backends. Both are adapters behind one-method interfaces
-# (TokenNERBackend / CorefResolver) and activate automatically when installed;
-# without them the deterministic offline backends are used.
-# gliner                  # zero-shot token-level NER (Layer 1 safety net)
-# fastcoref               # neural coreference resolution
+# --- Production backends ---
+# These are NOT optional any more and do NOT activate "automatically". A
+# missing backend raises rather than falling through to a corpus-fitted
+# stand-in, because a silent fallback produces output shaped exactly like a
+# real run and quietly invalidates every number measured from it.
+# gliner: Layer 1 token-level NER. NER_BACKEND="gliner" raises
+# NERBackendUnavailable if it cannot load.
+gliner
+# fastcoref: neural coreference; rule-based resolver used otherwise.
+fastcoref
+
+# Research/offline backends live in src/research/ and must be selected by
+# name (NER_BACKEND=deterministic, GENAI_MODE=offline). Nothing selects them
+# for you.
