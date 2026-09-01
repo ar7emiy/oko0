@@ -1,0 +1,32 @@
+---
+title: "A — Freeze and fingerprint the note"
+---
+flowchart TD
+  classDef act  fill:#EDF0F4,stroke:#4A5666,stroke-width:1.2px,color:#10151C
+  classDef obj  fill:#E0E8EF,stroke:#3E5C76,stroke-width:1.3px,color:#10151C
+  classDef dec  fill:#FFFFFF,stroke:#4A5666,stroke-width:1.2px,color:#10151C
+  classDef bar  fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
+  classDef bad  fill:#F6E0DB,stroke:#A33A2A,stroke-width:1.4px,color:#10151C
+  classDef key  fill:#F6E7CE,stroke:#B4650A,stroke-width:1.6px,color:#10151C
+  classDef muted fill:#FFFFFF,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:4 3,color:#4A5666
+  classDef ex   fill:#FBFCFD,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:3 3,color:#33404F
+  classDef warn fill:#FFF6E8,stroke:#B4650A,stroke-width:1.3px,stroke-dasharray:5 3,color:#3A2C16
+  classDef term fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
+
+
+  A0(["raw note file arrives"]):::term
+  A1["<b>Read note bytes from disk</b><br/><i>hashing.sha256_file</i>"]:::act
+  A2["<b>sha256 hex digest</b><br/>64-char string"]:::obj
+  A3["<b>Write digest to hashes.json</b><br/><i>hashing.write_hashes</i>"]:::act
+  A4["<b>Assign stable doc_id</b><br/>doc_id ← filename stem"]:::act
+  A5{"re-run:<br/>digest matches?"}:::dec
+  A6["<b>HALT — corpus mutated</b><br/><i>verify_hashes raises</i>"]:::bad
+  A7["<b>frozen corpus + hash manifest</b><br/>every later span anchors here"]:::obj
+  A8(["ready for segmentation"]):::term
+
+  A0 --> A1 --> A2 --> A3 --> A4 --> A5
+  A5 -->|"no"| A6
+  A5 -->|"yes"| A7 --> A8
+
+  AX1["<b>in</b> — note_0734.txt, 2,317 bytes<br/>'Spoke with Robert Miller regarding the POA update filed last week. He confirmed…'<br/><b>out</b> — 'note_0734': 'a3f1c9e2b7d4…8e1f'<br/><i>The whole file collapses to one fixed-length digest, so a single changed character produces a different digest and is caught on the next verify.</i>"]:::ex
+  A2 -.->|"example"| AX1

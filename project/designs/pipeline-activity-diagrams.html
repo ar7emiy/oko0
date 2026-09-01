@@ -306,6 +306,67 @@
 <tr><td class="d-in"><code>Claimant: Jones<br>D.O.B 04/11/1979<br><br>Spoke with Robert Miller regarding…</code><br><span class='meta'>raw lines</span></td><td class="d-out"><code>{kind: "template_block", char_start: 0, char_end: 41}</code><br><code>{kind: "narrative", char_start: 43, char_end: 512}</code></td><td class="d-note">Runs of similarly-shaped lines are grouped into one typed segment each, so the label-value header and the prose below it are handled by different logic.</td></tr>
 <tr><td class="d-in"><code>CONFIDENTIALITY NOTICE: This message is intended…</code></td><td class="d-out"><code>{kind: "boilerplate"}</code> → excluded range</td><td class="d-note">Legal footer text is typed as boilerplate and its character range is excluded, so names inside it never reach the name-shape filter.</td></tr>
 </tbody></table></div>
+  <h3>Will this line classifier generalize?</h3>
+  <p style="max-width:78ch">
+    It is worth being blunt about what <code>_classify_line</code> actually is: five
+    regexes over one line at a time, plus one stateful flag. There is no model here.
+    On the synthetic corpus it scores well, but that is a closed loop — our own
+    generator writes the very markers the classifier looks for. Three specific
+    places it is likely to behave differently on real client notes:
+  </p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>rule</th><th>what breaks on real notes</th><th>consequence</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="d-in"><code>SIG_MARK_RE = ^\s*--\s*$</code><br><span class="meta">signature delimiter</span></td>
+        <td class="d-out">This is the Usenet/mailing-list convention. Outlook and Exchange
+          almost never emit a bare <code>--</code> line; real signatures start with
+          &ldquo;Thanks,&rdquo; or a name. Worse, <code>in_sig</code> is a <strong>one-way
+          latch</strong> — set once, never cleared.</td>
+        <td class="d-note">The likely failure is not a missed signature but the opposite: one
+          stray <code>--</code> divider turns <em>every remaining line in the note</em> into
+          <code>email_signature</code>. That is a bug, not just a tuning gap.</td>
+      </tr>
+      <tr>
+        <td class="d-in"><code>BOILER_RE</code><br><span class="meta">3 hardcoded phrases</span></td>
+        <td class="d-out">Matches only &ldquo;CONFIDENTIALITY NOTICE&rdquo;, &ldquo;intended
+          recipient&rdquo;, &ldquo;privileged&rdquo;. Real disclaimers vary by carrier, firm,
+          and jurisdiction.</td>
+        <td class="d-note">A disclaimer worded differently is never excluded, so the names
+          inside it reach the name filter and become mentions. Precision loss, and it looks
+          like an extraction error rather than a segmentation one.</td>
+      </tr>
+      <tr>
+        <td class="d-in"><code>LABEL_RE</code><br><span class="meta">leading &ldquo;Word:&rdquo;</span></td>
+        <td class="d-out">Fires on any line beginning with a short token then a colon —
+          including ordinary narrative openers: <code>Update: spoke with counsel</code>,
+          <code>Status: pending</code>, <code>Per adjuster: no coverage</code>.</td>
+        <td class="d-note">Prose gets typed <code>template_block</code>. Mostly harmless today
+          (a single line will not reach <code>TEMPLATE_MIN_LABELS</code> and so will not
+          fingerprint), but it makes any &ldquo;how much of this corpus is template?&rdquo;
+          measurement read high.</td>
+      </tr>
+    </tbody>
+  </table></div>
+  <p style="max-width:78ch;margin-top:15px">
+    The reason this matters more than it looks: the label is not advisory. <code>pipeline_v2</code>
+    reads boilerplate ranges straight from this table and <em>drops</em> name candidates inside
+    them (<code>n_dropped_boiler</code>). So a missed disclaimer costs precision, and a
+    false-positive boilerplate segment silently deletes real names with no trace in the output.
+  </p>
+  <p style="max-width:78ch">
+    Honest answer to &ldquo;will it generalize?&rdquo; — the email-header rule will, because
+    <code>From:/Sent:/To:/Subject:</code> is a near-invariant of text-rendered mail. The
+    label-colon rule will, roughly. The signature latch and the boilerplate whitelist will not,
+    and the latch can fail catastrophically rather than gracefully. The fix is not longer
+    regexes: it is (1) clear the latch at a blank line or a new header block, (2) score
+    boilerplate on disclaimer-like features rather than three literal phrases, and (3) make the
+    label <em>advisory</em> — never let a segment kind be the sole reason a candidate is
+    dropped, so a classifier mistake degrades ranking instead of erasing evidence. Which of
+    these actually bite is measurable the moment we have real notes in hand, and that
+    measurement belongs in the ground-truth track.
+  </p>
+
 </section>
 
 <section id="stage-c">

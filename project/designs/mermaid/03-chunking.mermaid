@@ -1,0 +1,35 @@
+---
+title: "C — Cut the note into overlapping chunks"
+---
+flowchart TD
+  classDef act  fill:#EDF0F4,stroke:#4A5666,stroke-width:1.2px,color:#10151C
+  classDef obj  fill:#E0E8EF,stroke:#3E5C76,stroke-width:1.3px,color:#10151C
+  classDef dec  fill:#FFFFFF,stroke:#4A5666,stroke-width:1.2px,color:#10151C
+  classDef bar  fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
+  classDef bad  fill:#F6E0DB,stroke:#A33A2A,stroke-width:1.4px,color:#10151C
+  classDef key  fill:#F6E7CE,stroke:#B4650A,stroke-width:1.6px,color:#10151C
+  classDef muted fill:#FFFFFF,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:4 3,color:#4A5666
+  classDef ex   fill:#FBFCFD,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:3 3,color:#33404F
+  classDef warn fill:#FFF6E8,stroke:#B4650A,stroke-width:1.3px,stroke-dasharray:5 3,color:#3A2C16
+  classDef term fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
+
+
+  C0(["segmented note"]):::term
+  C1["<b>Compute target window size</b><br/><i>chunking.words_per_chunk</i> from config"]:::act
+  C2["<b>Walk words, emit overlapping windows</b><br/><i>chunking.chunk_document</i>"]:::act
+  C3["<b>Chunk objects</b><br/>chunk_id, char_start, char_end, index, n_words"]:::obj
+  C4["<b>Verify every char lands in ≥1 chunk</b><br/><i>chunking.coverage_report</i>"]:::act
+  C5{"coverage == 100%?"}:::dec
+  C6["<b>Report shortfall</b><br/>hygiene check fails loudly"]:::bad
+  C7["<b>chunks ready for extraction</b><br/>text + absolute offsets preserved"]:::obj
+  C8(["ready for D1"]):::term
+
+  C0 --> C1 --> C2 --> C3 --> C4 --> C5
+  C5 -->|"no"| C6
+  C5 -->|"yes"| C7 --> C8
+
+  CX1["<b>in</b> — narrative segment, 470 words, chars 43–2317<br/><b>out</b> — chunk_id='c0734_02', char_start=43, char_end=1180, index=2, n_words=190<br/><i>The segment becomes a window small enough to process, tagged with the absolute offsets that let any span found inside it map back to the raw note.</i>"]:::ex
+  C3 -.->|"example"| CX1
+
+  CW["<b>Why overlap at all</b><br/>A hard cut can land mid-entity: 'Dr. Alicia' ends one window and 'Reyes' opens the next, so neither window contains the mention. Overlapping the windows means every span is wholly inside at least one of them; the coverage check then proves no character was read by nobody. The duplicate hits this creates are collapsed by union_spans in D1/D2, which is why overlap is safe to add."]:::warn
+  C2 -.->|"rationale"| CW

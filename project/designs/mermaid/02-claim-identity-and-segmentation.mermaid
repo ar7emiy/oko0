@@ -1,0 +1,48 @@
+---
+title: "B — Source claim identity, then segment the note"
+---
+flowchart TD
+  classDef act  fill:#EDF0F4,stroke:#4A5666,stroke-width:1.2px,color:#10151C
+  classDef obj  fill:#E0E8EF,stroke:#3E5C76,stroke-width:1.3px,color:#10151C
+  classDef dec  fill:#FFFFFF,stroke:#4A5666,stroke-width:1.2px,color:#10151C
+  classDef bar  fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
+  classDef bad  fill:#F6E0DB,stroke:#A33A2A,stroke-width:1.4px,color:#10151C
+  classDef key  fill:#F6E7CE,stroke:#B4650A,stroke-width:1.6px,color:#10151C
+  classDef muted fill:#FFFFFF,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:4 3,color:#4A5666
+  classDef ex   fill:#FBFCFD,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:3 3,color:#33404F
+  classDef warn fill:#FFF6E8,stroke:#B4650A,stroke-width:1.3px,stroke-dasharray:5 3,color:#3A2C16
+  classDef term fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
+
+
+  B0(["frozen note file"]):::term
+  B1["<b>Parse claim_number + note_id from filename</b><br/>filename pattern: ClaimNumber_NoteID.txt"]:::act
+  B2["<b>Join against the client's occurrence table</b><br/>Occurrence Number · Claim Number · Note ID<br/>client-provided, never extracted from text"]:::key
+  B3["<b>doc_id → claim_id + occurrence_id</b><br/>structural metadata, known before any text is read"]:::obj
+  B4["<b>Split note into physical lines</b><br/><i>profiling._line_spans</i>"]:::act
+  B5["<b>Classify each line by shape</b><br/><i>profiling._classify_line</i> — 5 regexes + a signature latch"]:::act
+  B6["<b>Group runs of like lines into segments</b><br/><i>profiling.segment_document</i>"]:::act
+  B7{"segment kind?"}:::dec
+  B8["<b>Marked as excluded range</b><br/>the NAME lane in D3 drops candidates inside it"]:::muted
+  B9["<b>Fingerprint template blocks</b><br/><i>profiling.template_fingerprint</i> — hash of the label sequence"]:::act
+  B10["<b>MinHash shingles → near-dup groups</b><br/><i>profiling._minhash + assign_dup_groups</i>"]:::act
+  B11["<b>segments rows</b><br/>kind, char_start, char_end, dup_group_id"]:::obj
+  B12(["ready for chunking"]):::term
+
+  B0 --> B1 --> B2 --> B3 --> B4 --> B5 --> B6 --> B7
+  B7 -->|"boilerplate"| B8
+  B7 -->|"narrative / template / email"| B9 --> B10 --> B11 --> B12
+
+  BX1["<b>in</b> — CLM00182_0734.txt, the filename as delivered<br/><b>out</b> — claim_number='CLM00182', note_id='0734'<br/><i>Parsed directly from the name; no text has been read yet.</i>"]:::ex
+  B1 -.->|"example"| BX1
+
+  BX2["<b>in</b> — join row: OCC0091 · CLM00182 · 0734<br/><b>out</b> — doc_id='note_0734' → claim_id='CLM00182', occurrence_id='OCC0091'<br/><i>A join on claim_number + note_id resolves the occurrence. Structural metadata established before extraction runs — not a claim about what the text says.</i>"]:::ex
+  B2 -.->|"example"| BX2
+
+  BX3["<b>in</b> — 'Claimant: Jones' / 'D.O.B 04/11/1979' / blank / 'Spoke with Robert Miller regarding…'<br/><b>out</b> — kind='template_block' chars 0–41; kind='narrative' chars 43–512<br/><i>Runs of similarly-shaped lines become one typed segment each, so the label-value header and the prose below it are handled by different logic downstream.</i>"]:::ex
+  B6 -.->|"example"| BX3
+
+  BX4["<b>in</b> — 'CONFIDENTIALITY NOTICE: This message is intended…'<br/><b>out</b> — kind='boilerplate' → excluded character range<br/><i>Legal footer text is typed as boilerplate and its range excluded, so names inside it never reach the name-shape filter.</i>"]:::ex
+  B8 -.->|"example"| BX4
+
+  BW["<b>Known limitation of this classifier</b><br/>It is 5 regexes over a single line plus one stateful flag — not a learned model.<br/>· <b>SIG_MARK_RE</b> matches only a bare '--' line, the Usenet signature convention. Outlook rarely emits it, and the in_sig flag is a <b>one-way latch</b>: once set it is never cleared, so one stray '--' turns the whole rest of the note into email_signature.<br/>· <b>BOILER_RE</b> is three hardcoded English phrases; a disclaimer worded differently is not excluded, and its names reach the name filter.<br/>· <b>LABEL_RE</b> fires on any line starting 'Word:', so narrative openers like 'Update: spoke with counsel' are typed template_block.<br/><i>These labels are a hard gate today — D3 drops name candidates inside a boilerplate range — so a miss costs precision and a false positive silently deletes real names. Measure on real client notes before trusting it; prefer making the label advisory over widening the regexes.</i>"]:::warn
+  B5 -.->|"caveat"| BW

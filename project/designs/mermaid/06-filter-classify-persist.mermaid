@@ -1,0 +1,82 @@
+---
+title: "D3 — Filter, classify, bind, and persist"
+---
+flowchart TD
+  classDef act  fill:#EDF0F4,stroke:#4A5666,stroke-width:1.2px,color:#10151C
+  classDef obj  fill:#E0E8EF,stroke:#3E5C76,stroke-width:1.3px,color:#10151C
+  classDef dec  fill:#FFFFFF,stroke:#4A5666,stroke-width:1.2px,color:#10151C
+  classDef bar  fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
+  classDef bad  fill:#F6E0DB,stroke:#A33A2A,stroke-width:1.4px,color:#10151C
+  classDef key  fill:#F6E7CE,stroke:#B4650A,stroke-width:1.6px,color:#10151C
+  classDef muted fill:#FFFFFF,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:4 3,color:#4A5666
+  classDef ex   fill:#FBFCFD,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:3 3,color:#33404F
+  classDef warn fill:#FFF6E8,stroke:#B4650A,stroke-width:1.3px,stroke-dasharray:5 3,color:#3A2C16
+  classDef term fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
+
+
+  F0(["per-document candidate pool — from diagram 04"]):::term
+  FORK["<b>fork</b> — every candidate is routed by its label"]:::bar
+  F0 --> FORK
+
+  subgraph NAMES["Name lane — a name has to look like a name"]
+    direction TB
+    N1["<b>label ∈ NAME_LABELS</b><br/>person / organization / attorney / repair_shop / …"]:::act
+    N2{"inside a<br/>boilerplate range?"}:::dec
+    N2D["<b>Dropped</b><br/>n_dropped_boiler += 1"]:::bad
+    N3{"passes<br/>_is_plausible_name?"}:::dec
+    N3D["<b>Dropped</b><br/>n_dropped_shape += 1"]:::bad
+    N4["<b>Classify entity_class</b><br/><i>_classify</i> over surface, label, left context, right context"]:::act
+    N5["<b>Persist mentions row</b><br/>mention_id, surface, char_start, char_end, entity_class"]:::act
+    N6["<b>Persist has_name assertion</b><br/>source_span = the mention's OWN span"]:::act
+    N1 --> N2
+    N2 -->|"yes"| N2D
+    N2 -->|"no"| N3
+    N3 -->|"no"| N3D
+    N3 -->|"yes"| N4 --> N5 --> N6
+  end
+
+  subgraph IDS["Identifier lane — an identifier has to be found near a name, or not"]
+    direction TB
+    I1["<b>label ∈ IDENTIFIER_LABEL_TO_PREDICATE</b><br/>phone / email / npi / tin / ssn / address"]:::act
+    I2["<b>subject_for on char_start</b><br/>same line, or ≤120 chars on the immediately preceding line"]:::act
+    I3["<b>Persist identifier_observations row — always</b><br/>subject_mention_id = the binding result, NULL if none"]:::key
+    I4{"a subject<br/>was found?"}:::dec
+    I5["<b>Persist binding assertion</b> e.g. has_phone<br/>source_span = the IDENTIFIER's own location, not the name's"]:::key
+    I6["<b>Orphan — no assertion</b><br/>the observation row still stands on its own"]:::key
+    I1 --> I2 --> I3 --> I4
+    I4 -->|"yes"| I5
+    I4 -->|"no"| I6
+  end
+
+  FORK --> N1
+  FORK --> I1
+
+  JOIN["<b>join</b>"]:::bar
+  N6 --> JOIN
+  I5 --> JOIN
+  I6 --> JOIN
+
+  G1["<b>Scan raw text for allegation language</b><br/>regex over the SOURCE TEXT directly — not over the candidate pool at all"]:::act
+  G2["<b>Bind to nearest mention, persist allegation assertion</b><br/>polarity 'alleged' — kept separate from asserted fact"]:::act
+  G3["<b>Resolve coreference over every mention found above</b><br/><i>coref.RuleBasedCorefResolver.resolve</i> over raw_text + mentions"]:::act
+  G4["<b>Persist coref_links row</b><br/>anaphor span + antecedent span + antecedent_mention_id"]:::act
+  G5["<b>Record scan_ledger coverage for this document</b>"]:::obj
+  G6["<b>Persist mentions, assertions, identifier_observations, coref_links</b><br/>one transaction per corpus run"]:::act
+  G7(["to entity resolution"]):::term
+
+  JOIN --> G1 -->|"match"| G2 --> G3 -->|"anaphor found"| G4 --> G5 --> G6 --> G7
+
+  IX1["<b>in</b> — SpanCandidate text='(312) 555-0148', label='phone', with no name on this line or the previous one<br/><b>out</b> — identifier_observations kind='phone', value_norm='3125550148', subject_mention_id=NULL<br/><i>Recorded anyway. An identifier with no name nearby is exactly the case this system exists to catch, not a reason to drop it.</i>"]:::ex
+  I6 -.->|"example"| IX1
+
+  IX2["<b>in</b> — subject: mention m0000153, 'Robert Miller', chars 40–52<br/>identifier candidate '(312) 555-0148', chars 918–932, bound via subject_for<br/><b>out</b> — Assertion subject_mention_id='m0000153', predicate='has_phone', object_value_norm='3125550148', source_span_start=918, source_span_end=932<br/><i><b>This is what an evidence span is.</b> The assertion's subject points at the name's location; its evidence span points at the phone number's location — a different place in the text. The fact is ABOUT the subject but PROVEN at the evidence span, and the two are not always the same characters.</i>"]:::ex
+  I5 -.->|"example"| IX2
+
+  CX1["<b>Resolving anaphora to antecedent mentions</b> means finding the specific earlier word or phrase that a pronoun or later reference points back to.<br/><br/>'John gave Mary a present. She loved it.'<br/><b>Antecedents</b> — 'Mary' and 'a present'<br/><b>Anaphors</b> — 'She', referring to Mary, and 'it', referring to the present.<br/><i>Without this step 'She' is either dropped or becomes its own bogus entity; with it, the sentence's second half attaches to the entity named in the first half.</i>"]:::warn
+  G3 -.->|"what this means"| CX1
+
+  CX2["<b>in</b> — '…Spoke with Robert Miller regarding the POA update. He confirmed the demand was served…'<br/>mention m0000153 = 'Robert Miller' at 40:52<br/><b>out</b> — CorefLink surface='He', start=95, end=97, antecedent_surface='Robert Miller', antecedent_start=40, antecedent_end=52, kind='pronoun'<br/><i>The anaphor keeps its own span, so the sentence it appears in stays traceable, while pointing at the antecedent's span and mention id.</i>"]:::ex
+  G4 -.->|"example"| CX2
+
+  NW["<b>Open question on entity_class</b><br/>_classify falls back to LABEL_TO_CLASS.get with default 'claimant', so an unmatched 'person' is silently labelled claimant and an unmatched 'organization' is silently labelled medical_provider. That is a guess written into a field readers treat as a fact. See the entity_class section of the HTML companion for the proposed split into a closed entity_type and an open role."]:::warn
+  N4 -.->|"caveat"| NW

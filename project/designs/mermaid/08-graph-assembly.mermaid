@@ -1,0 +1,40 @@
+---
+title: "F — Assemble the global entity graph"
+---
+flowchart TD
+  classDef act  fill:#EDF0F4,stroke:#4A5666,stroke-width:1.2px,color:#10151C
+  classDef obj  fill:#E0E8EF,stroke:#3E5C76,stroke-width:1.3px,color:#10151C
+  classDef dec  fill:#FFFFFF,stroke:#4A5666,stroke-width:1.2px,color:#10151C
+  classDef bar  fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
+  classDef bad  fill:#F6E0DB,stroke:#A33A2A,stroke-width:1.4px,color:#10151C
+  classDef key  fill:#F6E7CE,stroke:#B4650A,stroke-width:1.6px,color:#10151C
+  classDef muted fill:#FFFFFF,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:4 3,color:#4A5666
+  classDef ex   fill:#FBFCFD,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:3 3,color:#33404F
+  classDef warn fill:#FFF6E8,stroke:#B4650A,stroke-width:1.3px,stroke-dasharray:5 3,color:#3A2C16
+  classDef term fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
+
+
+  P0(["resolved entities + identifier observations"]):::term
+  P1["<b>Emit a node per resolved entity</b><br/>kind: party | organization"]:::act
+  P2["<b>Emit a node per distinct identifier value</b><br/>kind: identifier — first-class, not an attribute"]:::key
+  P3["<b>Emit claim and occurrence container nodes</b><br/>kind: claim | occurrence"]:::act
+  P4{"predicate allowed?"}:::dec
+  P5["<b>Rejected: provenance-as-edge</b><br/>MENTIONED_IN / HAS_NOTE — already on every edge as doc_id + span"]:::bad
+  P6["<b>Link entity → identifier</b><br/>HAS_IDENTIFIER, carrying confidence + doc_id + span"]:::act
+  P7["<b>Link entity → claim, claim → occurrence</b><br/>PARTY_TO / PART_OF containment"]:::act
+  P8["<b>Insert into ONE global adjacency</b><br/>claim_id is a node and edge property, not a partition"]:::key
+  P9["<b>global entity graph</b><br/>claim scoping happens at query time, as a filter"]:::obj
+  P10(["consumed by Layer 4 retrieval"]):::term
+
+  P0 --> P1 --> P2 --> P3 --> P4
+  P4 -->|"banned"| P5
+  P4 -->|"open vocabulary, normalized"| P6 --> P7 --> P8 --> P9 --> P10
+
+  PX1["<b>in</b> — identifier_observations value_norm='3125550148' seen on 3 claims<br/><b>out</b> — one identifier node, three HAS_IDENTIFIER edges from three different entities<br/><i>Promoting the identifier to a node is what makes the shared-phone pattern visible as graph structure instead of a repeated column value.</i>"]:::ex
+  P2 -.->|"example"| PX1
+
+  PX2["<b>in</b> — proposed edge entity → note, predicate MENTIONED_IN<br/><b>out</b> — rejected<br/><i>Provenance is already carried as doc_id + span on every real edge; adding it again as its own edge type inflates the graph without adding information.</i>"]:::ex
+  P5 -.->|"example"| PX2
+
+  PW["<b>Why the vocabulary stays open</b><br/>Only bulk provenance-as-edge is banned. Real predicates are freeform and normalized toward canonical forms over time — 'went to' / 'was seen at' / 'visited' consolidate — because a closed whitelist either drops relationships it never anticipated or force-fits them into the nearest allowed label, and both failures are invisible after the fact."]:::warn
+  P4 -.->|"rationale"| PW

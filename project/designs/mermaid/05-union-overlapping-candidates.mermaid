@@ -1,0 +1,48 @@
+---
+title: "D2 — How union_spans merges overlapping candidates"
+---
+flowchart TD
+  classDef act  fill:#EDF0F4,stroke:#4A5666,stroke-width:1.2px,color:#10151C
+  classDef obj  fill:#E0E8EF,stroke:#3E5C76,stroke-width:1.3px,color:#10151C
+  classDef dec  fill:#FFFFFF,stroke:#4A5666,stroke-width:1.2px,color:#10151C
+  classDef bar  fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
+  classDef bad  fill:#F6E0DB,stroke:#A33A2A,stroke-width:1.4px,color:#10151C
+  classDef key  fill:#F6E7CE,stroke:#B4650A,stroke-width:1.6px,color:#10151C
+  classDef muted fill:#FFFFFF,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:4 3,color:#4A5666
+  classDef ex   fill:#FBFCFD,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:3 3,color:#33404F
+  classDef warn fill:#FFF6E8,stroke:#B4650A,stroke-width:1.3px,stroke-dasharray:5 3,color:#3A2C16
+  classDef term fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
+
+
+  U0(["flat list of candidates from every source"]):::term
+  U1["<b>Sort by start, then by descending length</b><br/>longest-starting-first tie-break"]:::act
+  U2["<b>Take the next candidate C, walk the merged list</b>"]:::act
+  U3{"C overlaps an<br/>already-merged span M?"}:::dec
+  U4["<b>Start a new merged entry from C</b>"]:::act
+  U5["<b>Union provenance onto M</b><br/>M.extractors |= C.extractors"]:::key
+  U6{"C longer than M?"}:::dec
+  U7["<b>M adopts C's span and text</b><br/>and keeps C's label if it is more specific than person / organization"]:::act
+  U8["<b>Keep M's span</b><br/>if M's label is generic and C's is specific, adopt C's label only"]:::act
+  U9["<b>deduplicated candidate set</b><br/>one entry per real-world mention, provenance preserved"]:::obj
+  U10(["to filter / classify / persist"]):::term
+
+  U0 --> U1 --> U2 --> U3
+  U3 -->|"no"| U4
+  U3 -->|"yes"| U5 --> U6
+  U6 -->|"yes"| U7
+  U6 -->|"no"| U8
+  U4 --> LOOP
+  U7 --> LOOP
+  U8 --> LOOP
+  LOOP{"more candidates?"}:::dec
+  LOOP -->|"yes — advance to the next candidate"| U2
+  LOOP -->|"no — list exhausted"| U9 --> U10
+
+  UX1["<b>in</b> — A: 'Moore' at 818:823, token_ner, person<br/>B: 'James Moore' at 812:823, llm, person<br/><b>out</b> — 'James Moore' at 812:823, extractors = token_ner + llm, person<br/><i>The spans overlap and B is longer, so its text and offsets win, while A's contribution survives in the merged extractor set.</i>"]:::ex
+  U7 -.->|"example"| UX1
+
+  UX2["<b>in</b> — A: 'Reyes' at 40:45, token_ner, person<br/>B: 'Dr. Alicia Reyes' at 30:47, gazetteer, medical_provider<br/><b>out</b> — 'Dr. Alicia Reyes' at 30:47, extractors = token_ner + gazetteer, medical_provider<br/><i>B is both longer and more specific than the generic 'person' label, so its label is kept rather than A's.</i>"]:::ex
+  U7 -.->|"example"| UX2
+
+  UW["<b>Why no extractor has to win</b><br/>Merging on overlap is what makes the three-way fork in diagram 04 safe. Agreement and disagreement are both preserved: the surviving candidate's extractor set records who found it, so a span found by all three and a span found only by the LLM stay distinguishable downstream instead of being flattened into one undifferentiated pool."]:::warn
+  U5 -.->|"rationale"| UW
