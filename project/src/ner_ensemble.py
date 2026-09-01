@@ -6,8 +6,9 @@ a footer clinic, a lone diagnostic code). So we run independent extractors over
 every chunk and take their UNION, tracking which extractor found each span:
 
   1. token_ner   -- span-level scanner that reads every literal token.
-                    `GlinerBackend` (real, zero-shot GLiNER) when available;
-                    `DeterministicTokenNER` otherwise. Recall-first.
+                    `GlinerBackend` (zero-shot GLiNER) is the production
+                    backend and is REQUIRED; there is no silent fallback.
+                    Recall-first.
   2. gazetteer   -- deterministic regex/checksum for structured codes.
   3. llm         -- semantic extraction (Gemini structured output), which
                     contributes context, entity descriptions and relationships
@@ -27,7 +28,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 
 from . import contracts, coref, gazetteers, genai, textnorm
-from .settings import CFG
+from .settings import CFG, genai_mode, genai_mode_is_forced
 
 
 @dataclass
@@ -94,127 +95,46 @@ class GlinerBackend(TokenNERBackend):
         return out
 
 
-class DeterministicTokenNER(TokenNERBackend):
-    """Deterministic high-recall span scanner (offline stand-in for GLiNER).
+class LLMExtractorUnavailable(RuntimeError):
+    """Raised when the semantic extraction lane cannot run for real."""
 
-    Plays the same architectural role: it reads every literal token and emits
-    name-shaped spans regardless of salience, so entities the LLM's attention
-    skips are still caught. Recall-first by design -- precision is recovered by
-    entity resolution and the verification sweep, not here.
 
-    Detects: capitalized name sequences (incl. `Dr.` titles and Jr/Sr suffixes),
-    `Last, First` order flips, and organization names ending in a known suffix.
+class NERBackendUnavailable(RuntimeError):
+    """Raised when the configured production NER backend cannot be loaded.
+
+    Deliberately fatal. The predecessor of this code fell back to a
+    corpus-fitted regex scanner whenever GLiNER was missing, which meant a run
+    with no model weights produced output shaped exactly like a real run and
+    every number measured from it was silently a regex number.
     """
-
-    name = "token_ner"
-
-    # NOTE: these use [ \t] rather than \s so a name span can NEVER cross a
-    # newline. In legacy notes a name is routinely followed on the next line by a
-    # firm or a label ("Hassan Williams\nWhitfield Trial Group"); a \s-based
-    # pattern swallows both into one span, which corrupts the surface, breaks
-    # entity resolution, and gets the mention dropped by the name-shape filter.
-    _NAME_TOK = r"[A-Z][a-zA-Z'’\-]+"
-    _SP = r"[ \t]+"
-    _RE_TITLED = re.compile(rf"\bDr\.?{_SP}{_NAME_TOK}(?:{_SP}{_NAME_TOK}){{0,2}}")
-    _RE_FLIP = re.compile(rf"\b({_NAME_TOK}),{_SP}({_NAME_TOK})(?:{_SP}(Jr|Sr|II|III))?")
-    _RE_SEQ = re.compile(
-        rf"\b{_NAME_TOK}(?:{_SP}{_NAME_TOK}){{1,3}}(?:{_SP}(?:Jr|Sr|II|III))?\b")
-    _RE_INITIAL = re.compile(rf"\b[A-Z]\.{_SP}{_NAME_TOK}\b")
-
-    # Verbs/adverbs that open a sentence get capitalized, so a greedy
-    # capitalized-sequence match swallows them into the following name
-    # ("Contacted James Moore"). They are trimmed from the START of a span
-    # rather than rejecting it, so the real name survives.
-    _LEADING_NOISE = {
-        "Contacted", "Spoke", "Reached", "Called", "Received", "Sent", "Left",
-        "Confirmed", "Advised", "Requested", "Reviewed", "Discussed", "Emailed",
-        "Followed", "Following", "Per", "Attached", "Forwarded", "Submitted",
-        "Completed", "Performed", "Issued", "Filed", "Provider", "Counsel",
-        "Treatment", "Status", "Financial", "Investigation", "Correspondence",
-        "Mailing", "Billing", "Coverage", "Note", "File", "Diary", "Reserves",
-        "Expense", "Nothing", "Awaiting", "Documentation", "No", "Will",
-    }
-
-    # tokens that are structural noise in legacy notes, never a name on their own
-    _STOP = {
-        "Claim", "Claimant", "Clmt", "Atty", "Attorney", "Counsel", "Provider",
-        "Physician", "Email", "Phone", "Address", "Mailing", "Contact", "Birthdate",
-        "From", "Sent", "To", "Subject", "Direct", "Date", "Of", "Birth", "Please",
-        "Following", "Per", "Client", "Records", "Desk", "Re", "See", "Kindly", "We",
-        "Confidentiality", "Notice", "This", "If", "You", "The", "Status", "Available",
-        "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Jan", "Feb", "Mar", "Apr",
-        "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Law", "Group",
-        "Department", "Claims", "Notify", "Sender", "Delete", "Message", "Intended",
-        "Recipient", "Sole", "Use", "Attachments", "POA", "NPI", "TIN", "DOB",
-    }
-
-    def extract(self, text: str, base_offset: int = 0) -> list[SpanCandidate]:
-        found: dict[tuple[int, int], SpanCandidate] = {}
-
-        def add(s, e, label, score):
-            # trim leading sentence-opening words, keeping offsets exact
-            while True:
-                surface = text[s:e]
-                stripped = surface.lstrip()
-                s += len(surface) - len(stripped)
-                first = stripped.split(" ")[0] if stripped else ""
-                if first in self._LEADING_NOISE and len(stripped.split()) > 1:
-                    s += len(first)
-                    continue
-                break
-            surface = text[s:e].strip()
-            if not surface or coref.is_anaphor(surface):
-                return
-            toks = [t for t in re.split(r"[\s,]+", surface) if t]
-            alpha = [t.strip(".") for t in toks if t.strip(".").isalpha()]
-            # reject spans made only of structural stopwords
-            if alpha and all(t in self._STOP for t in alpha):
-                return
-            key = (base_offset + s, base_offset + e)
-            cand = SpanCandidate(start=key[0], end=key[1], text=surface,
-                                 label=label, extractors={self.name}, score=score)
-            prev = found.get(key)
-            if prev is None or score > prev.score:
-                found[key] = cand
-
-        for m in self._RE_TITLED.finditer(text):
-            add(m.start(), m.end(), "medical_provider", 0.9)
-        for m in self._RE_FLIP.finditer(text):
-            add(m.start(), m.end(), "person", 0.85)
-        for m in self._RE_INITIAL.finditer(text):
-            add(m.start(), m.end(), "person", 0.7)
-        for m in self._RE_SEQ.finditer(text):
-            surface = m.group(0)
-            label = "organization" if any(
-                surface.endswith(sfx) or f" {sfx}" in surface
-                for sfx in gazetteers.ORG_SUFFIXES) else "person"
-            left = text[max(0, m.start() - 40):m.start()]
-            role = gazetteers.role_from_context(left)
-            if role and label == "person":
-                label = role
-            add(m.start(), m.end(), label, 0.75)
-
-        # drop spans strictly contained in a longer detected span
-        spans = sorted(found.values(), key=lambda c: (c.start, -(c.end - c.start)))
-        out = []
-        for c in spans:
-            if any(o is not c and o.start <= c.start and c.end <= o.end
-                   and (o.end - o.start) > (c.end - c.start) for o in spans):
-                continue
-            out.append(c)
-        return out
 
 
 def get_token_ner(backend: str | None = None) -> TokenNERBackend:
+    """Return the token-NER backend. Never silently degrades.
+
+    'gliner'        -- production. Raises NERBackendUnavailable if unusable.
+    'deterministic' -- research/offline regex scanner. Must be asked for by
+                       name; it is corpus-fitted and capitalization-dependent.
+    """
     b = (backend or CFG.NER_BACKEND).lower()
-    if b in ("auto", "gliner"):
+    if b == "gliner":
         try:
             return GlinerBackend()
-        except Exception:
-            if b == "gliner":
-                raise
-    return DeterministicTokenNER()
-
+        except Exception as e:
+            raise NERBackendUnavailable(
+                f"GLiNER backend unavailable ({type(e).__name__}: {e}). "
+                "Install `gliner` and make its weights reachable, or set "
+                "NER_BACKEND='deterministic' to run the research scanner "
+                "KNOWINGLY -- its output is not comparable to a model run."
+            ) from e
+    if b == "deterministic":
+        from .research.deterministic_ner import DeterministicTokenNER
+        return DeterministicTokenNER()
+    raise ValueError(
+        f"Unknown NER_BACKEND {b!r}. Use 'gliner' (production) or "
+        "'deterministic' (research/offline). 'auto' was removed: it hid which "
+        "backend actually served a run."
+    )
 
 # ---------------------------------------------------------------------------
 # LLM extractor (semantic pass)
@@ -235,22 +155,21 @@ def llm_extract_chunk(chunk_text: str, base_offset: int, chunk_kind: str = "note
         f"CHUNK:\n<<<\n{chunk_text}\n>>>"
     )
 
-    def offline():
-        det = DeterministicTokenNER().extract(chunk_text, 0)
-        items = []
-        for i, c in enumerate(det):
-            left = chunk_text[max(0, c.start - 40):c.start].lower()
-            cued = any(cue in left for cues in gazetteers.ROLE_CUES.values() for cue in cues)
-            # salience bias: keep early mentions and explicitly-cued ones; drop
-            # the long tail the way a single LLM pass does
-            if i < 3 or cued:
-                items.append({
-                    "text": c.text, "label": c.label,
-                    "start": c.start, "end": c.end,
-                    "description": f"{c.label} mentioned in claim note",
-                    "confidence": 0.8,
-                })
-        return {"entities": items}
+    if genai_mode() == "offline":
+        if not genai_mode_is_forced():
+            raise LLMExtractorUnavailable(
+                "No GenAI API key is set, so the semantic extraction lane cannot "
+                "run. Refusing to substitute a stand-in silently: the previous "
+                "behaviour returned the deterministic regex scanner's output "
+                "under the 'llm' provenance tag, which made the three-extractor "
+                "union effectively two extractors and quietly invalidated every "
+                "recall number measured from it. Set an API key, or set "
+                "GENAI_MODE=offline to run the labelled research stub knowingly."
+            )
+        from .research.llm_stub import salience_biased_stub
+        offline = lambda: salience_biased_stub(chunk_text)   # noqa: E731
+    else:
+        offline = None
 
     data = genai.generate_json(prompt, _llm_ner_schema(), task="ner_extract",
                                offline_handler=offline)
@@ -352,9 +271,14 @@ def extract_chunk(chunk, token_ner: TokenNERBackend, use_llm: bool = True,
     if use_token_ner:
         groups.append(token_ner.extract(chunk.text, chunk.char_start))
     if use_gazetteer:
+        # Score by what actually backs the hit, not by the fact that a regex
+        # matched: a check-digit-verified NPI is not the same evidence as a
+        # 9-digit string that merely looks like a TIN.
+        _GAZ_SCORE = {"checksum": 1.0, "format": 0.8, "none": 0.6}
         groups.append([
             SpanCandidate(start=h.start, end=h.end, text=h.text, label=h.label,
-                          extractors={"gazetteer"}, score=1.0 if h.valid else 0.5)
+                          extractors={"gazetteer"},
+                          score=_GAZ_SCORE.get(h.validation, 0.6))
             for h in gazetteers.scan(chunk.text, chunk.char_start) if h.valid
         ])
     if use_llm:

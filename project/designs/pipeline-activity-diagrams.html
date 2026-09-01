@@ -457,7 +457,7 @@
     <line class="edge" x1="520" y1="111" x2="520" y2="149" marker-end="url(#ah4)"/>
     <rect class="n" x="370" y="151" width="300" height="50" rx="7"/>
     <text class="lbl" x="520" y="173" text-anchor="middle">Pattern scan</text>
-    <text class="sub" x="520" y="189" text-anchor="middle">gazetteers.scan() — phone / email / npi / claim_id / …</text>
+    <text class="sub" x="520" y="189" text-anchor="middle">gazetteers.scan() — phone / email / npi / ssn / tin / address / …</text>
     <line class="edge" x1="520" y1="201" x2="520" y2="239" marker-end="url(#ah4)"/>
     <text class="elbl" x="528" y="224">raw pattern hit</text>
     <rect class="n" x="370" y="241" width="300" height="50" rx="7"/>
@@ -555,9 +555,9 @@
   <div class="tablewrap"><table>
 <thead><tr><th>data going in</th><th>data coming out</th><th>what happened</th></tr></thead><tbody>
 <tr><td class="d-in"><code>…callback left at (312) 555-0148, no name given…</code></td><td class="d-out">raw pattern hit: <code>"(312) 555-0148"</code> [918:932], label <code>phone</code></td><td class="d-note">A regex pattern for the identifier shape matches, independent of any nearby name.</td></tr>
-<tr><td class="d-in"><code>NPI 1568291037</code></td><td class="d-out"><code>_validate("npi", …) → True</code></td><td class="d-note">A checksum-style structural check runs before the hit is trusted — this is what separates a real NPI from ten random digits.</td></tr>
-<tr><td class="d-in"><code>tax id 12-345678X</code> (malformed)</td><td class="d-out"><code>valid: False</code> → <span class='drop'>discarded here</span></td><td class="d-note">A pattern match that fails validation never reaches the candidate pool, rather than being persisted and flagged unvalidated.</td></tr>
-<tr><td class="d-in"><code>GazetteerHit{start:918, end:932, text:"(312) 555-0148", label:"phone", valid:true}</code></td><td class="d-out"><code>SpanCandidate{…, extractors:{"gazetteer"}, score:1.0}</code></td><td class="d-note">A validated hit converts 1:1 into a candidate at full confidence.</td></tr>
+<tr><td class="d-in"><code>NPI 1568291037</code></td><td class="d-out"><code>valid=True, validation="checksum"</code></td><td class="d-note">A real Luhn check over <code>"80840"</code> + the first 9 digits (the NPPES standard). A random 10-digit string passes with p&nbsp;&asymp;&nbsp;0.1, so this genuinely discriminates. <strong>NPI is the only label with a real check digit.</strong></td></tr>
+<tr><td class="d-in"><code>SSN 123-45-6789</code></td><td class="d-out"><code>valid=True, validation="none"</code></td><td class="d-note"><strong>Correction to the earlier version of this diagram,</strong> which showed validation as the general case for this lane. It is not. <code>ssn</code> and <code>tin</code> were &ldquo;validated&rdquo; by re-running the identical regex that had already matched &mdash; tautological, adding no information while reading as though a check had occurred. Of 14 patterns exactly one (<code>npi</code>) carries a real check digit and 7 have no check at all. Each hit now reports its strength (<code>checksum</code> / <code>format</code> / <code>none</code>) and the ensemble scores it accordingly (1.0 / 0.8 / 0.6).</td></tr>
+<tr><td class="d-in"><code>GazetteerHit{start:918, end:932, text:"(312) 555-0148", label:"phone", valid:true}</code></td><td class="d-out"><code>SpanCandidate{…, extractors:{"gazetteer"}, score:0.8}</code></td><td class="d-note">A hit converts 1:1 into a candidate, scored by what actually backs it &mdash; <code>format</code> here, so 0.8 rather than the 1.0 a checksum-verified NPI earns.</td></tr>
 </tbody></table></div>
   <h3>LLM semantic lane — every node</h3>
   <div class="tablewrap"><table>

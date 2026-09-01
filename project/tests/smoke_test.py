@@ -21,6 +21,39 @@ from src.repository import Repository  # noqa: E402
 from src.settings import Paths  # noqa: E402
 
 
+def _assert_no_silent_fallback():
+    """A run must never quietly substitute a research stand-in for a model.
+
+    This is a regression guard, not a style check. Both substitutions used to
+    happen automatically: a missing GLiNER install fell through to the regex
+    scanner, and a missing API key returned that same scanner's output tagged
+    as the LLM lane. Either one produces output shaped exactly like a real run,
+    so nothing downstream -- including the recall numbers -- could tell.
+    """
+    import os
+    from src import ner_ensemble
+    from src.settings import genai_mode, genai_mode_is_forced
+
+    saved = os.environ.pop("NER_BACKEND", None)
+    try:
+        ner_ensemble.get_token_ner("gliner")
+    except ner_ensemble.NERBackendUnavailable:
+        pass          # correct: refuses rather than degrading
+    except Exception as e:
+        raise AssertionError(f"expected NERBackendUnavailable, got {e!r}")
+    else:
+        pass          # GLiNER really is available; also fine
+    finally:
+        if saved is not None:
+            os.environ["NER_BACKEND"] = saved
+
+    if genai_mode() == "offline" and not genai_mode_is_forced():
+        raise AssertionError(
+            "offline GenAI was fallen into rather than chosen; the LLM lane "
+            "must refuse instead of substituting the research stub")
+    print("      no-silent-fallback guards OK")
+
+
 def main(full: bool = True):
     print("[1/7] generate corpus v2 + seal hashes")
     summ = corpus_gen.generate_corpus()
@@ -58,6 +91,7 @@ def main(full: bool = True):
           f"{100*len(multi)//len(man['entities'])}% cross-claim entities")
 
     print("[2/7] guards")
+    _assert_no_silent_fallback()
     g = leakage_guard.run_all_guards()
     assert all(v["ok"] for v in g.values())
 

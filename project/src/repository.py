@@ -99,9 +99,6 @@ class Repository:
     def add_scan_spans(self, rows) -> int:
         return self._insert("scan_ledger", self._as_dicts(rows))
 
-    def add_candidate_pairs(self, rows) -> int:
-        return self._insert("candidate_pairs", self._as_dicts(rows))
-
     def add_entities(self, rows) -> int:
         return self._insert("entities", self._as_dicts(rows))
 
@@ -142,7 +139,7 @@ class Repository:
     # ---- parquet bulk dump (bulk tables) ----------------------------------
     def dump_parquet(self, tables: Iterable[str] | None = None) -> list[Path]:
         tables = list(tables or ("documents", "segments", "mentions", "assertions",
-                                 "scan_ledger", "candidate_pairs", "entity_attributes"))
+                                 "scan_ledger", "entity_attributes"))
         out = []
         for t in tables:
             df = self.table(t)

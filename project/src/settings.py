@@ -35,6 +35,16 @@ def load_config() -> SimpleNamespace:
 
 CFG = load_config()
 
+# Explicit, auditable override for the NER backend. There is no automatic
+# fallback any more: a run that cannot load the production model must either
+# fail or be told, in so many words, to use the research scanner instead. This
+# env var is how the offline test harness says so -- and because it is
+# recorded in the run output (`token_ner_backend`), a research run can never be
+# mistaken for a model run after the fact.
+_ner_override = os.environ.get("NER_BACKEND", "").strip().lower()
+if _ner_override:
+    CFG.NER_BACKEND = _ner_override
+
 
 # ---- Canonical paths (everything relative to PROJECT_ROOT) -------------------
 class Paths:
@@ -70,6 +80,16 @@ def genai_mode() -> str:
         if os.environ.get(var):
             return "online"
     return "offline"
+
+
+def genai_mode_is_forced() -> bool:
+    """True when offline/online was chosen DELIBERATELY, not fallen into.
+
+    Without this distinction a run with no API key looks identical to a run
+    with one. Callers that would otherwise substitute a stand-in for the model
+    use this to refuse unless the substitution was asked for explicitly.
+    """
+    return os.environ.get("GENAI_MODE", "").strip().lower() in ("online", "offline")
 
 
 def api_key() -> str | None:

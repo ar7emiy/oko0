@@ -19,6 +19,8 @@ coverage proof survives the architecture change.
 """
 from __future__ import annotations
 
+import difflib
+
 import re
 from collections import defaultdict
 
@@ -70,17 +72,54 @@ def _is_plausible_name(surface: str) -> bool:
     return len(caps) >= 2 or s.lower().startswith("dr")
 
 
-def _boilerplate_ranges(repo: Repository) -> dict[str, list[tuple[int, int]]]:
-    """Char ranges of boilerplate/disclaimer segments, per doc (from Layer 0 profiling)."""
+def span_grounded(raw_text: str, span_start: int, span_end: int, value: str) -> int:
+    """1 if `value` fuzzy-locates within the claimed span (with small slack)."""
+    if not value:
+        return 0
+    lo = max(0, span_start - 5)
+    hi = min(len(raw_text), span_end + 5)
+    window = raw_text[lo:hi].lower()
+    v = value.strip().lower()
+    if not v:
+        return 0
+    if v in window:
+        return 1
+    # sliding fuzzy match
+    n = len(v)
+    best = 0.0
+    for i in range(0, max(1, len(window) - n + 1)):
+        best = max(best, difflib.SequenceMatcher(None, v, window[i:i + n]).ratio())
+        if best >= CFG.SPAN_FIDELITY_MIN_RATIO:
+            return 1
+    return 1 if best >= CFG.SPAN_FIDELITY_MIN_RATIO else 0
+
+
+def _boilerplate_ranges(repo: Repository) -> dict[str, list[tuple[int, float]]]:
+    """Per-doc (start, end, score) for disclaimer-ish segments.
+
+    Returns a SCORE, not a verdict. Layer 0 no longer emits a 'boilerplate'
+    segment kind: a hard kind meant one misclassified segment silently deleted
+    every real name inside it, and a differently-worded disclaimer (the common
+    case on real data) excluded nothing at all. The score is attached to the
+    mention instead, so a downstream consumer can discount it while the
+    evidence stays in the record.
+    """
     segs = repo.table("segments")
-    out: dict[str, list[tuple[int, int]]] = defaultdict(list)
-    for _, s in segs[segs["kind"] == "boilerplate"].iterrows():
-        out[s["doc_id"]].append((int(s["char_start"]), int(s["char_end"])))
+    out: dict[str, list[tuple[int, int, float]]] = defaultdict(list)
+    if "boilerplate_score" not in segs.columns:
+        return out
+    for _, s in segs[segs["boilerplate_score"] > 0].iterrows():
+        out[s["doc_id"]].append(
+            (int(s["char_start"]), int(s["char_end"]), float(s["boilerplate_score"])))
     return out
 
 
-def _in_ranges(pos: int, ranges: list[tuple[int, int]]) -> bool:
-    return any(a <= pos < b for (a, b) in ranges)
+def _boilerplate_score_at(pos: int, ranges: list[tuple[int, int, float]]) -> float:
+    """Disclaimer-likeness of the segment containing `pos` (0.0 if none)."""
+    for (a, b, sc) in ranges:
+        if a <= pos < b:
+            return sc
+    return 0.0
 
 
 def run(repo: Repository, limit_docs: int | None = None,
@@ -128,7 +167,7 @@ def run(repo: Repository, limit_docs: int | None = None,
         return f"{p}{counter[p]:07d}"
 
     mentions, assertions, coref_links, id_obs = [], [], [], []
-    n_dropped_boiler = n_dropped_shape = 0
+    n_in_boilerplate = n_dropped_shape = 0
 
     for doc_id in sorted(spans_by_doc):
         raw = texts[doc_id]
@@ -147,9 +186,9 @@ def run(repo: Repository, limit_docs: int | None = None,
         for c in merged:
             if c.label not in NAME_LABELS:
                 continue
-            if _in_ranges(c.start, bl):
-                n_dropped_boiler += 1
-                continue
+            boiler_sc = _boilerplate_score_at(c.start, bl)
+            if boiler_sc >= 0.5:
+                n_in_boilerplate += 1        # counted, NOT dropped
             if not _is_plausible_name(c.text):
                 n_dropped_shape += 1
                 continue
@@ -265,7 +304,7 @@ def run(repo: Repository, limit_docs: int | None = None,
     repo.conn.execute("PRAGMA foreign_keys=OFF")
     for t in ("assertions", "mentions", "scan_ledger", "coref_links",
               "identifier_observations",
-              "candidate_pairs", "entity_members", "entity_versions",
+              "entity_members", "entity_versions",
               "entity_attributes", "dossiers", "entities"):
         repo.conn.execute(f"DELETE FROM {t}")
     repo.conn.commit()
@@ -283,7 +322,9 @@ def run(repo: Repository, limit_docs: int | None = None,
         "n_sweep_added": n_sweep_added,
         "n_identifier_obs": len(id_obs),
         "n_orphan_identifiers": sum(1 for o in id_obs if o["subject_mention_id"] is None),
-        "dropped_boilerplate": n_dropped_boiler, "dropped_shape": n_dropped_shape,
+        # kept and flagged, never dropped -- see _boilerplate_ranges
+        "mentions_in_boilerplate": n_in_boilerplate,
+        "dropped_shape": n_dropped_shape,
         "token_ner_backend": token_ner.name, "coref_backend": resolver.name,
         "coref_sample": coref_links[:3],
     }
@@ -348,7 +389,6 @@ def _polarity(raw: str, s: int, e: int) -> str:
 
 
 def _assn(nid, subj, pred, raw_v, norm_v, doc_id, s, e, pol, extractor, raw_text):
-    from .extraction import span_grounded
     return contracts.Assertion(
         assertion_id=nid("a"), subject_mention_id=subj, predicate=pred,
         object_value_raw=raw_v, object_value_norm=norm_v, polarity=pol,

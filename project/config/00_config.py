@@ -243,8 +243,8 @@ COREF_DESCRIPTORS = (
 )
 
 # ---- Layer 1: token-level NER ensemble --------------------------------------
-NER_BACKEND = "auto"                # auto | gliner | deterministic
-GLINER_MODEL = "urchade/gliner_multi-v2.1"   # only used when gliner is installed
+NER_BACKEND = "gliner"        # gliner (production) | deterministic (research/offline only)
+GLINER_MODEL = "urchade/gliner_multi-v2.1"   # required: NER_BACKEND="gliner" fails loudly if unreachable
 GLINER_THRESHOLD = 0.35             # recall-first; precision recovered downstream
 NER_LABELS = (
     "person", "organization", "medical_provider", "law_firm", "repair_shop",

@@ -6,8 +6,24 @@ id, NPI, TIN, SSN, CPT or ICD-10 code. Deterministic extractors run on every
 character of every chunk and their output is UNIONed with the model extractors.
 
 Every matcher returns absolute-offset spans (given the chunk's char_start) plus
-a validity flag, so downstream code can distinguish a syntactically-shaped code
-from a checksum-validated one.
+an explicit VALIDATION STRENGTH, so downstream code can tell what a hit is
+actually worth:
+
+  * 'checksum'  -- a real check digit was verified. Only `npi` qualifies (Luhn
+                   over '80840' + the first 9 digits, the NPPES standard). A
+                   random 10-digit string passes with p~0.1, so this genuinely
+                   discriminates.
+  * 'format'    -- a shape or context constraint beyond the matching pattern
+                   itself (email has an '@' and a dotted host; phone reduces to
+                   10 digits; icd10/cpt require a cue word nearby).
+  * 'none'      -- the pattern matched and nothing further was checked.
+
+This distinction used to be a single `valid: bool` that conflated all three.
+`ssn` and `tin` in particular were "validated" by re-running the identical
+regex that had already matched, which added no information while reading -- in
+code and in the architecture diagrams -- as though a real check had occurred.
+Identifiers ARE structurally stronger than names, but that strength is
+per-label and must not be claimed uniformly.
 """
 from __future__ import annotations
 
@@ -22,9 +38,15 @@ class GazetteerHit:
     start: int          # absolute char offset in the document
     end: int
     text: str
-    label: str          # semantic label, e.g. 'npi', 'claim_id'
-    valid: bool         # checksum / structural validation passed
+    label: str          # semantic label, e.g. 'npi', 'phone'
+    valid: bool         # passed whatever check applies to this label
+    validation: str = "none"   # 'checksum' | 'format' | 'none'
     extractor: str = "regex_gazetteer"
+
+    @property
+    def checksum_verified(self) -> bool:
+        """True only for a genuinely check-digit-verified identifier."""
+        return self.validation == "checksum" and self.valid
 
 
 # ---------------------------------------------------------------------------
@@ -32,7 +54,6 @@ class GazetteerHit:
 # ensemble (longest span wins, provenance unioned).
 # ---------------------------------------------------------------------------
 PATTERNS: list[tuple[str, re.Pattern]] = [
-    ("claim_id",        re.compile(r"\bCLM\d{4}\b")),
     ("ssn",             re.compile(r"\b\d{3}-\d{2}-\d{4}\b")),
     ("tin",             re.compile(r"\b\d{2}-\d{7}\b")),
     ("npi",             re.compile(r"\b\d{10}\b")),
@@ -58,28 +79,47 @@ _ICD_CUE = re.compile(r"(?:icd|dx|diagnos)", re.I)
 _CPT_CUE = re.compile(r"(?:cpt|procedure code|proc code)", re.I)
 
 
-def _validate(label: str, text: str, left_context: str) -> bool:
+# What kind of check, if any, backs each label. See the module docstring.
+VALIDATION_STRENGTH = {
+    "npi": "checksum",
+    "email": "format",
+    "phone": "format",
+    "icd10": "format",     # cue-word context, not a code-set membership test
+    "cpt": "format",       # same
+    # Everything else has no check beyond the pattern that matched:
+    "ssn": "none", "tin": "none", "policy_number": "none",
+    "monetary_amount": "none", "date": "none", "date_written": "none",
+    "zip": "none", "address": "none",
+}
+
+
+def _validate(label: str, text: str, left_context: str) -> tuple[bool, str]:
+    """Return (passed, validation_strength).
+
+    NOTE: a label with strength 'none' returns True -- the pattern matched and
+    nothing more was asserted. That is not the same as being verified, which is
+    why the strength is returned alongside and must be carried downstream.
+    """
+    strength = VALIDATION_STRENGTH.get(label, "none")
     if label == "npi":
-        return textnorm.npi_is_valid(text)
-    if label == "ssn":
-        return bool(re.fullmatch(r"\d{3}-\d{2}-\d{4}", text))
-    if label == "tin":
-        return bool(re.fullmatch(r"\d{2}-\d{7}", text))
+        return textnorm.npi_is_valid(text), strength
     if label == "email":
-        return "@" in text and "." in text.split("@")[-1]
+        return ("@" in text and "." in text.split("@")[-1]), strength
     if label == "phone":
-        return len(textnorm.phone_digits(text)) == 10
+        return (len(textnorm.phone_digits(text)) == 10), strength
     if label == "icd10":
-        return bool(_ICD_CUE.search(left_context))
+        return bool(_ICD_CUE.search(left_context)), strength
     if label == "cpt":
-        return bool(_CPT_CUE.search(left_context))
-    return True
+        return bool(_CPT_CUE.search(left_context)), strength
+    # ssn / tin previously re-ran their own matching regex here and called the
+    # result validation. Removed: it was tautological.
+    return True, strength
 
 
 # When two patterns claim the SAME span (e.g. a valid 10-digit NPI also matches
 # the bare-digit phone shape), the higher-priority label wins.
 LABEL_PRIORITY = {
-    "claim_id": 100, "ssn": 95, "tin": 94, "npi": 93, "email": 92,
+    "ssn": 95, "tin": 94, "npi": 93, "email": 92,
     "policy_number": 90, "address": 80, "date_written": 72, "date": 70,
     "monetary_amount": 65, "phone": 60, "icd10": 55, "cpt": 54, "zip": 20,
 }
@@ -99,9 +139,10 @@ def scan(text: str, base_offset: int = 0, resolve_conflicts: bool = True) -> lis
         for m in pat.finditer(text):
             s, e = m.start(), m.end()
             left = text[max(0, s - 30):s]
+            ok, strength = _validate(label, m.group(0), left)
             hits.append(GazetteerHit(
                 start=base_offset + s, end=base_offset + e, text=m.group(0),
-                label=label, valid=_validate(label, m.group(0), left),
+                label=label, valid=ok, validation=strength,
             ))
     if not resolve_conflicts:
         return hits
@@ -130,8 +171,18 @@ def scan(text: str, base_offset: int = 0, resolve_conflicts: bool = True) -> lis
 
 
 def scan_valid(text: str, base_offset: int = 0) -> list[GazetteerHit]:
-    """Only checksum/cue-validated hits (what feeds the high-precision path)."""
+    """Hits that passed whatever check applies to their label.
+
+    For most labels that check is vacuous -- see VALIDATION_STRENGTH. Use
+    `scan_checksum_verified` when you need identifiers that are actually
+    verified rather than merely well-shaped.
+    """
     return [h for h in scan(text, base_offset) if h.valid]
+
+
+def scan_checksum_verified(text: str, base_offset: int = 0) -> list[GazetteerHit]:
+    """Only hits backed by a real check digit (today: npi)."""
+    return [h for h in scan(text, base_offset) if h.checksum_verified]
 
 
 # ---------------------------------------------------------------------------

@@ -30,7 +30,7 @@ flowchart TD
   subgraph LANE2["Lane 2 · Gazetteer — patterns with structural validation"]
     direction TB
     M1["<b>Pattern scan</b><br/><i>gazetteers.scan</i> — phone / email / npi / claim_id / …"]:::act
-    M2["<b>Structural validation</b><br/><i>_validate</i> — e.g. textnorm.npi_is_valid checksum"]:::act
+    M2["<b>Validation — strength varies by label</b><br/>checksum: npi only · format: email, phone, icd10, cpt · none: the rest"]:::act
     M3["<b>Keep only valid hits</b><br/>invalid checksum → discarded here, not downstream"]:::act
     M4["<b>Emit SpanCandidate</b><br/>extractors = gazetteer; score 1.0 valid / 0.5 unvalidated"]:::act
     M1 --> M2 --> M3 --> M4
@@ -86,9 +86,9 @@ flowchart TD
 
   MX1["<b>in</b> — '…callback left at (312) 555-0148, no name given…'<br/><b>out</b> — raw pattern hit '(312) 555-0148' at 918:932, label='phone'<br/><i>The identifier shape matches on its own, independent of any nearby name.</i>"]:::ex
   M1 -.->|"example"| MX1
-  MX2["<b>in</b> — 'NPI 1568291037'<br/><b>out</b> — _validate npi → True<br/><i>A checksum-style structural check runs before the hit is trusted — this is what separates a real NPI from ten random digits.</i>"]:::ex
+  MX2["<b>in</b> — 'NPI 1568291037'<br/><b>out</b> — valid=True, validation='checksum'<br/><i>A real Luhn check over '80840' + the first 9 digits, the NPPES standard. A random 10-digit string passes with p≈0.1, so this genuinely discriminates. <b>npi is the only label with a real check digit.</b></i>"]:::ex
   M2 -.->|"example"| MX2
-  MX3["<b>in</b> — 'tax id 12-345678X', malformed<br/><b>out</b> — valid=False → discarded here<br/><i>A pattern match that fails validation never reaches the candidate pool, rather than being persisted and flagged unvalidated.</i>"]:::ex
+  MX3["<b>in</b> — 'SSN 123-45-6789'<br/><b>out</b> — valid=True, validation='none'<br/><i>Nothing beyond the pattern was checked. This previously re-ran the identical regex that had already matched and called the result validation — tautological, and it read in code and in this diagram as though a real check had occurred. ssn and tin now report validation='none' honestly, and the ensemble scores them lower than a checksum-verified hit.</i>"]:::ex
   M3 -.->|"example"| MX3
   MX4["<b>in</b> — GazetteerHit start=918, end=932, text='(312) 555-0148', label='phone', valid=true<br/><b>out</b> — SpanCandidate with extractors=gazetteer, score=1.0<br/><i>A validated hit converts 1:1 into a candidate at full confidence.</i>"]:::ex
   M4 -.->|"example"| MX4

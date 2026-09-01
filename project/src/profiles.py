@@ -66,32 +66,30 @@ def render_assertion_annotation(a) -> str:
 
 
 def render_link_annotation(shared_key: str, pair_row: dict | None) -> str:
-    """Deterministic link explanation from stored candidate-pair evidence."""
-    if pair_row is None:
-        return f"Linked via {shared_key} (shared attribute; no adjudicated pair record)."
-    passes = ", ".join(json.loads(pair_row["gen_passes"])) if pair_row.get("gen_passes") else ""
-    feats = json.loads(pair_row["feature_json"]) if pair_row.get("feature_json") else {}
-    bits = [f"shared {shared_key}"]
-    if feats.get("name_jw") is not None:
-        bits.append(f"name similarity {feats['name_jw']:.2f}")
-    if feats.get("identifier_agree"):
-        bits.append(f"identifier_agree={feats['identifier_agree']}")
-    if feats.get("phone_agree"):
-        bits.append("phone match")
-    if feats.get("address_exact"):
-        bits.append("address match")
-    if feats.get("embed_cosine"):
-        bits.append(f"embed band {feats['embed_cosine']}")
-    ann = "Linked via: " + "; ".join(bits)
-    if passes:
-        ann += f" [passes: {passes}]"
-    adj = feats.get("_adjudicator")
-    if adj:
-        ann += f" | adjudicator: {adj.get('rationale', '')}"
-    if pair_row.get("score") is not None:
-        ann += f" | score={pair_row['score']}"
-    return ann
+    """Deterministic link explanation from the stored resolution edge.
 
+    Reads `same_as_edges` (Splink output): a calibrated probability plus the
+    blocking/​suppression context. There is no adjudicator verdict any more --
+    identity is threshold-derived, so the honest annotation is the probability
+    and whether the edge was suppressed before clustering.
+    """
+    if pair_row is None:
+        return f"Linked via {shared_key} (shared attribute; no scored resolution edge)."
+    bits = [f"shared {shared_key}"]
+    prob = pair_row.get("probability")
+    if prob is not None:
+        bits.append(f"match probability {float(prob):.3f}")
+    mw = pair_row.get("match_weight")
+    if mw is not None:
+        bits.append(f"match weight {float(mw):+.2f}")
+    backend = pair_row.get("backend")
+    if backend:
+        bits.append(f"backend {backend}")
+    ann = "Linked via: " + "; ".join(bits)
+    supp = pair_row.get("suppressed_reason")
+    if supp:
+        ann += f" [edge SUPPRESSED before clustering: {supp}]"
+    return ann
 
 def run(repo: Repository) -> dict:
     texts = {f.stem: f.read_text() for f in Paths.raw_notes.glob("*.txt")}
@@ -132,8 +130,9 @@ def run(repo: Repository) -> dict:
                     if dom:
                         ent_identifiers[eid]["email_domain"].add(dom)
 
-    # candidate pairs indexed by (mention_a, mention_b) for link annotations
-    cp = repo.table("candidate_pairs")
+    # resolution edges indexed by (mention_a, mention_b) for link annotations.
+    # v2: probabilistic same_as_edges, not the retired adjudicated candidate_pairs.
+    cp = repo.table("same_as_edges")
     pair_by_mentions = {}
     for _, r in cp.iterrows():
         pair_by_mentions[frozenset((r["mention_id_a"], r["mention_id_b"]))] = r.to_dict()

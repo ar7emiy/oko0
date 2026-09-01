@@ -22,15 +22,20 @@ ENTITY_CLASSES = (
     "adjuster",       # our-side adjuster / client rep
 )
 
-SEGMENT_KINDS = (
-    "template_block",
-    "narrative",
-    "email_header",
-    "email_body",
-    "email_signature",
-    "email_quoted",
-    "boilerplate",
-)
+# Segment kinds actually consumed downstream. The previous seven-value set
+# computed five kinds (template_block, narrative, email_header, email_body,
+# email_signature) that nothing in the production path ever read, using the
+# most fragile rules in the classifier -- including a signature latch that,
+# once set, was never cleared and swallowed the rest of the note.
+#
+# What remains is what has a consumer:
+#   'quoted' -> sets `inside_quoted` on mentions (a re-sent chain is not a new
+#               sighting), and
+#   'body'   -> everything else.
+# Boilerplate is no longer a kind. It is a per-segment SCORE (see
+# `segments.boilerplate_score`), because a hard kind meant a
+# misclassification silently deleted real names.
+SEGMENT_KINDS = ("body", "quoted")
 
 NOTE_CATEGORIES = (
     "medical_management",
@@ -45,8 +50,12 @@ NOTE_CATEGORIES = (
 
 POLARITIES = ("asserted", "negated", "alleged", "reported", "retracted")
 
-# predicate vocabulary for assertions (subject mention -> predicate -> object)
-PREDICATES = (
+# Canonical predicate forms for assertions (subject mention -> predicate -> object).
+# NOT a whitelist: the vocabulary is open by design. These are the canonical
+# spellings that surface forms are normalized TOWARD; an unlisted predicate is
+# persisted as-is rather than dropped or force-fit. graph_store.BANNED_PREDICATES
+# is the only actual restriction, and it bans bulk provenance-as-edge only.
+CANONICAL_PREDICATES = (
     "has_name",
     "has_role",            # object_value in ENTITY_CLASSES-ish role string, per claim
     "has_email",
@@ -65,18 +74,6 @@ PREDICATES = (
 )
 
 IDENTIFIER_PREDICATES = ("has_email", "has_phone", "has_npi", "has_tin", "has_ssn")
-
-# resolution candidate-generation pass identifiers (logged per pair as gen_passes)
-GEN_PASSES = {
-    "B0": "exact normalized name x class",
-    "A1": "exact validated identifier (npi/tin/ssn/email)",
-    "B1": "phone last-7 match",
-    "B2": "normalized-address key match",
-    "B3": "phonetic-name x state",
-    "B4": "name-initials x DOB-year",
-    "C1": "embedding top-k class-filtered",
-    "D1": "claim co-occurrence",
-}
 
 # ---------------------------------------------------------------------------
 # Relational schema (SQLite).  All tables are append/immutable-by-convention:
@@ -99,6 +96,9 @@ CREATE TABLE IF NOT EXISTS segments (
     segment_id           TEXT PRIMARY KEY,
     doc_id               TEXT NOT NULL,
     kind                 TEXT NOT NULL,   -- one of SEGMENT_KINDS
+    boilerplate_score    REAL DEFAULT 0.0,-- 0..1 disclaimer-likeness; advisory, never a gate
+    casing_regime        TEXT,            -- casing.CasingProfile.regime for this span
+    case_informative     INTEGER DEFAULT 1,-- 0 => capitalization carries no signal here
     char_start           INTEGER NOT NULL,
     char_end             INTEGER NOT NULL,
     template_fingerprint TEXT,            -- label-sequence hash for template_block
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS mentions (
 CREATE TABLE IF NOT EXISTS assertions (
     assertion_id       TEXT PRIMARY KEY,
     subject_mention_id TEXT NOT NULL,
-    predicate          TEXT NOT NULL,      -- one of PREDICATES
+    predicate          TEXT NOT NULL,      -- canonical form preferred; open vocabulary
     object_value_raw   TEXT,
     object_value_norm  TEXT,
     object_mention_id  TEXT,               -- set for relation predicates
@@ -155,18 +155,6 @@ CREATE TABLE IF NOT EXISTS scan_ledger (
     FOREIGN KEY (doc_id) REFERENCES documents(doc_id)
 );
 
-CREATE TABLE IF NOT EXISTS candidate_pairs (
-    pair_id       TEXT PRIMARY KEY,
-    mention_id_a  TEXT NOT NULL,
-    mention_id_b  TEXT NOT NULL,
-    entity_class  TEXT,
-    gen_passes    TEXT,                    -- JSON list of pass ids
-    score         REAL,
-    feature_json  TEXT,                    -- JSON of feature contributions + adjudicator verdict/rationale
-    band          TEXT,                    -- 'link' | 'adjudicate' | 'no_link'
-    adjudicated   INTEGER DEFAULT 0,
-    verdict       TEXT                     -- 'link' | 'no_link' | NULL
-);
 
 -- Resolution output. NOT a merge decision: a probability-weighted assertion
 -- that two mentions co-refer. Identity is derived from these at a chosen
@@ -289,7 +277,7 @@ CREATE INDEX IF NOT EXISTS ix_mem_ent ON entity_members(entity_id);
 
 TABLE_NAMES = (
     "documents", "segments", "mentions", "assertions", "scan_ledger", "coref_links", "identifier_observations", "same_as_edges", "entity_snapshot",
-    "candidate_pairs", "entities", "entity_members", "entity_versions",
+    "entities", "entity_members", "entity_versions",
     "entity_attributes", "dossiers",
 )
 
@@ -298,62 +286,6 @@ TABLE_NAMES = (
 # Gemini JSON-schema constrained output specs.
 # These are response_schema dicts (OpenAPI-subset) for structured extraction.
 # ---------------------------------------------------------------------------
-def extraction_schema() -> dict:
-    """Schema for narrative/email segment extraction.
-
-    Returns a list of assertions, each carrying span offsets (relative to the
-    segment text handed to the model), polarity, predicate, object value, and
-    temporal info. The extractor maps segment-relative spans back to document
-    offsets and runs the span-fidelity validator before persisting.
-    """
-    return {
-        "type": "object",
-        "properties": {
-            "assertions": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "entity_surface": {"type": "string"},
-                        "entity_class": {"type": "string", "enum": list(ENTITY_CLASSES)},
-                        "subject_span_start": {"type": "integer"},
-                        "subject_span_end": {"type": "integer"},
-                        "predicate": {"type": "string", "enum": list(PREDICATES)},
-                        "object_value": {"type": "string"},
-                        "object_entity_surface": {"type": "string"},
-                        "polarity": {"type": "string", "enum": list(POLARITIES)},
-                        "effective_from": {"type": "string"},
-                        "effective_to": {"type": "string"},
-                        "temporal_conf": {"type": "number"},
-                        "evidence_span_start": {"type": "integer"},
-                        "evidence_span_end": {"type": "integer"},
-                        "confidence": {"type": "number"},
-                    },
-                    "required": [
-                        "entity_surface", "entity_class", "predicate",
-                        "polarity", "evidence_span_start", "evidence_span_end",
-                    ],
-                },
-            }
-        },
-        "required": ["assertions"],
-    }
-
-
-def adjudication_schema() -> dict:
-    """Schema for the pairwise resolution adjudicator (ambiguous band)."""
-    return {
-        "type": "object",
-        "properties": {
-            "verdict": {"type": "string", "enum": ["link", "no_link"]},
-            "confidence": {"type": "number"},
-            "rationale": {"type": "string"},
-            "key_signals": {"type": "array", "items": {"type": "string"}},
-        },
-        "required": ["verdict", "confidence", "rationale"],
-    }
-
-
 def query_plan_schema() -> dict:
     """Typed query-plan schema. Gemini fills this; deterministic code executes it.
 

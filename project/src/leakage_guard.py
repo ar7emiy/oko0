@@ -31,8 +31,8 @@ GT_ALLOWED_FILES = {
 
 # Pipeline modules that must be ground-truth-free (imported by notebooks 02-06,08).
 PIPELINE_MODULES = [
-    "src/profiling.py", "src/extraction.py", "src/embed_index.py",
-    "src/resolution.py", "src/profiles.py", "src/app.py",
+    "src/profiling.py", "src/embed_index.py",
+    "src/profiles.py", "src/app.py",
     # Layer 1-4 architecture: none of these may see ground truth either
     "src/chunking.py", "src/gazetteers.py", "src/coref.py",
     "src/ner_ensemble.py", "src/sweep.py", "src/pipeline_v2.py",
@@ -47,8 +47,8 @@ PIPELINE_MODULES = [
 # polices the manifest, not the doc index.
 
 # Notebook 11 (ablation) is audit-side and legitimately reads ground truth.
-LEAKAGE_NOTEBOOKS = ["02_profiling", "03_extraction", "04_embed_index",
-                     "05_resolution", "06_profiles_dossiers", "08_lookup_app",
+LEAKAGE_NOTEBOOKS = ["02_profiling", "04_embed_index",
+                     "06_profiles_dossiers", "08_lookup_app",
                      "10_layer1_hybrid_extraction", "12_layer3_scoped_graph",
                      "13_layer4_agent"]
 
