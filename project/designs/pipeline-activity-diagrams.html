@@ -50,6 +50,14 @@
   h1{font-family:Archivo,sans-serif; font-weight:700; font-size:clamp(28px,4.6vw,42px);
      line-height:1.06; letter-spacing:-.02em; margin:0 0 16px}
   .standfirst{font-size:18px; color:var(--ink-2); margin:0; max-width:66ch}
+  nav.toc{max-width:1180px; margin:26px auto 0; padding:16px 18px; border:1px solid var(--rule);
+          border-radius:4px; background:var(--surface); box-shadow:var(--shadow)}
+  nav.toc .h{font-family:"IBM Plex Mono",monospace; font-size:10.5px; text-transform:uppercase;
+             letter-spacing:.1em; color:var(--ink-3); margin-bottom:8px}
+  nav.toc ol{margin:0; padding-left:20px; columns:3; column-gap:24px; font-size:13.5px}
+  nav.toc li{margin-bottom:5px}
+  nav.toc a{color:var(--ink-2); text-decoration:none}
+  nav.toc a:hover{color:var(--accent)}
   section{max-width:1180px; margin:0 auto; padding-top:58px}
   section > h2, section > h3, section > .goal, section > p, section > .tablewrap,
   section > figure > figcaption{max-width:none}
@@ -66,14 +74,12 @@
         padding:12px 15px; margin:0 0 22px; font-size:15.5px; color:var(--ink); max-width:78ch}
   .goal-h{display:block; font-family:"IBM Plex Mono",monospace; font-size:10px;
           letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:5px}
-
   figure{margin:0 0 8px}
   .figframe{background:var(--surface); border:1px solid var(--rule); border-radius:4px;
             padding:20px; overflow-x:auto; box-shadow:var(--shadow)}
   figcaption{font-size:14.5px; color:var(--ink-2); margin-top:12px; max-width:78ch; line-height:1.55}
   figcaption b{font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600;
                letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin-right:8px}
-
   svg{display:block; max-width:100%; height:auto; color:var(--ink-2); min-width:640px}
   svg .n{fill:var(--surface-2); stroke:var(--ink-3); stroke-width:1.2}
   svg .n.bad{fill:var(--alert-soft); stroke:var(--alert)}
@@ -90,7 +96,6 @@
   svg .sub{font-size:10.5px; fill:var(--ink-3); font-weight:400}
   svg .tag{font-size:10px; fill:var(--accent); letter-spacing:.04em}
   svg .elbl{font-size:10.5px; fill:var(--ink-3)}
-
   .tablewrap{overflow-x:auto; border:1px solid var(--rule); border-radius:3px;
              background:var(--surface); box-shadow:var(--shadow); margin:12px 0 0}
   table{width:100%; border-collapse:collapse; font-size:13.5px}
@@ -102,7 +107,11 @@
   .meta{font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--ink-3)}
   .drop{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--alert);
         background:var(--alert-soft); border-radius:8px; padding:1px 8px; font-weight:600}
-
+  .note{font-family:"IBM Plex Mono",monospace; font-size:15px; line-height:2;
+        background:var(--surface); border:1px solid var(--rule); border-radius:4px;
+        padding:14px 16px; box-shadow:var(--shadow)}
+  .note mark{border-radius:2px; padding:1px 3px}
+  mark.located{background:var(--steel-soft); box-shadow:inset 0 -2px 0 var(--steel)}
   .legend{max-width:1180px; margin:26px auto 0; border:1px solid var(--rule); border-radius:4px;
           background:var(--surface); padding:16px 18px; box-shadow:var(--shadow)}
   .legend .h{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em;
@@ -116,7 +125,6 @@
   .sw.forkb{background:var(--ink-2); height:7px; border-radius:3px}
   .sw.rej{background:var(--alert-soft); border:1.2px solid var(--alert)}
   .sw.keyn{background:var(--accent-soft); border:1.8px solid var(--accent)}
-
   .backlog{max-width:70ch; margin:0 auto; border:1px solid var(--rule-strong); border-left:3px solid var(--ink-3);
            background:var(--surface); border-radius:2px; padding:16px 18px; box-shadow:var(--shadow)}
   .backlog .h{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em;
@@ -130,15 +138,32 @@
 <body>
 
 <header class="mast">
-  <p class="eyebrow">System architecture · track 2</p>
+  <p class="eyebrow">System architecture · track 2 · revised</p>
   <h1>How a raw note becomes a resolved entity</h1>
   <p class="standfirst">
-    Six UML activity diagrams covering the identification and metadata-linkage
-    pipeline end to end, each with the real data going in and coming out of every
-    step. Node subtitles name the actual function that does the work, so a
-    diagram and the code can be read against each other.
+    UML activity diagrams covering the identification and metadata-linkage
+    pipeline end to end, each with the real data going in and coming out of
+    every step. Extraction is now three diagrams instead of one: generate
+    candidates (D1), the union mechanism zoomed in (D2), and filter/classify/
+    persist (D3) — because that block had too much happening to read as one
+    picture.
   </p>
 </header>
+
+<nav class="toc">
+  <div class="h">Contents</div>
+  <ol>
+    <li><a href="#stage-a">A — Freeze &amp; fingerprint</a></li>
+    <li><a href="#stage-b">B — Claim identity &amp; segmentation</a></li>
+    <li><a href="#stage-c">C — Chunking</a></li>
+    <li><a href="#stage-d1">D1 — Generate candidates</a></li>
+    <li><a href="#stage-d2">D2 — How the union works</a></li>
+    <li><a href="#stage-d3">D3 — Filter, classify, persist</a></li>
+    <li><a href="#stage-e">E — Entity resolution</a></li>
+    <li><a href="#stage-f">F — Graph assembly</a></li>
+    <li><a href="#entity-class">— entity_class: what and why</a></li>
+  </ol>
+</nav>
 
 <div class="legend">
   <div class="h">Notation</div>
@@ -148,7 +173,7 @@
     <span class="k"><span class="sw dec"></span>decision</span>
     <span class="k"><span class="sw forkb"></span>fork / join</span>
     <span class="k"><span class="sw rej"></span>data discarded here</span>
-    <span class="k"><span class="sw keyn"></span>the orphan-identifier path</span>
+    <span class="k"><span class="sw keyn"></span>a path worth noticing</span>
   </div>
 </div>
 
@@ -205,66 +230,81 @@
 </section>
 
 <section id="stage-b">
-  <h2><span class="num">B</span> Segment the note into typed regions</h2>
-  <div class="goal"><span class="goal-h">single goal of this block</span>Label which parts of the note are form-like, prose, email furniture, or boilerplate — so extraction can treat them differently.</div>
+  <h2><span class="num">B</span> Source claim identity, then segment the note</h2>
+  <div class="goal"><span class="goal-h">single goal of this block</span>Attach a note to its claim and occurrence using the client's own records — never by reading the note text — then label which parts of the note are form-like, prose, email furniture, or boilerplate.</div>
   <figure>
-    <div class="figframe"><svg role="img" aria-label="Activity diagram: segmenting a note into typed regions and grouping near-duplicates" viewBox="0 0 780 894">
+    <div class="figframe"><svg role="img" aria-label="Activity diagram: sourcing claim identity from the client's own data, then segmenting a note into typed regions" viewBox="0 0 780 1086">
     <defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker></defs>
     <circle class="term" cx="390" cy="20" r="10"/>
-    <text class="sub" x="410" y="24">frozen note</text>
+    <text class="sub" x="410" y="24">frozen note file</text>
     <line class="edge" x1="390" y1="30" x2="390" y2="74" marker-end="url(#ah2)"/>
     <rect class="n" x="230" y="76" width="320" height="50" rx="7"/>
-    <text class="lbl" x="390" y="98" text-anchor="middle">Look up claim_id / occurrence_id</text>
-    <text class="sub" x="390" y="114" text-anchor="middle">profiling._doc_index() — structural metadata</text>
+    <text class="lbl" x="390" y="98" text-anchor="middle">Parse claim_number + note_id from filename</text>
+    <text class="sub" x="390" y="114" text-anchor="middle">filename pattern: [ClaimNumber]_[NoteID].txt</text>
     <line class="edge" x1="390" y1="126" x2="390" y2="170" marker-end="url(#ah2)"/>
-    <text class="elbl" x="398" y="152">doc row</text>
+    <text class="elbl" x="398" y="152">claim_number, note_id</text>
     <rect class="n" x="230" y="172" width="320" height="50" rx="7"/>
-    <text class="lbl" x="390" y="194" text-anchor="middle">Split note into physical lines</text>
-    <text class="sub" x="390" y="210" text-anchor="middle">profiling._line_spans()</text>
+    <text class="lbl" x="390" y="194" text-anchor="middle">Join against client's occurrence table</text>
+    <text class="sub" x="390" y="210" text-anchor="middle">Occurrence Number | Claim Number | Note ID — client-provided, not extracted</text>
     <line class="edge" x1="390" y1="222" x2="390" y2="266" marker-end="url(#ah2)"/>
-    <text class="elbl" x="398" y="248">line spans</text>
-    <rect class="n" x="230" y="268" width="320" height="50" rx="7"/>
-    <text class="lbl" x="390" y="290" text-anchor="middle">Classify each line by shape</text>
-    <text class="sub" x="390" y="306" text-anchor="middle">profiling._classify_line()</text>
+    <text class="elbl" x="398" y="248">joined row</text>
+    <rect class="obj" x="230" y="268" width="320" height="50" rx="7"/>
+    <text class="lbl" x="390" y="290" text-anchor="middle">doc_id → {claim_id, occurrence_id}</text>
+    <text class="sub" x="390" y="306" text-anchor="middle">structural metadata, known before any text is read</text>
     <line class="edge" x1="390" y1="318" x2="390" y2="362" marker-end="url(#ah2)"/>
-    <text class="elbl" x="398" y="344">line kinds</text>
     <rect class="n" x="230" y="364" width="320" height="50" rx="7"/>
-    <text class="lbl" x="390" y="386" text-anchor="middle">Group runs of like lines into segments</text>
-    <text class="sub" x="390" y="402" text-anchor="middle">profiling.segment_document()</text>
+    <text class="lbl" x="390" y="386" text-anchor="middle">Split note into physical lines</text>
+    <text class="sub" x="390" y="402" text-anchor="middle">profiling._line_spans()</text>
     <line class="edge" x1="390" y1="414" x2="390" y2="458" marker-end="url(#ah2)"/>
-    <polygon class="d" points="390,460 495,489 390,518 285,489"/>
-    <text class="lbl" x="390" y="493" text-anchor="middle">segment kind?</text>
-    <line class="edge" x1="495" y1="489" x2="588" y2="489" marker-end="url(#ah2)"/>
-    <text class="elbl" x="541" y="482" text-anchor="middle">boilerplate</text>
-    <rect class="n muted" x="590" y="464" width="176" height="50" rx="7"/>
-    <text class="lbl" x="678" y="486" text-anchor="middle">Marked as excluded range</text>
-    <text class="sub" x="678" y="502" text-anchor="middle">extraction skips it later</text>
-    <line class="edge" x1="390" y1="518" x2="390" y2="562" marker-end="url(#ah2)"/>
-    <text class="elbl" x="398" y="544">narrative / template / email</text>
-    <rect class="n" x="230" y="564" width="320" height="50" rx="7"/>
-    <text class="lbl" x="390" y="586" text-anchor="middle">Fingerprint template blocks</text>
-    <text class="sub" x="390" y="602" text-anchor="middle">profiling.template_fingerprint()</text>
-    <line class="edge" x1="390" y1="614" x2="390" y2="658" marker-end="url(#ah2)"/>
-    <text class="elbl" x="398" y="640">fingerprints</text>
-    <rect class="n" x="230" y="660" width="320" height="50" rx="7"/>
-    <text class="lbl" x="390" y="682" text-anchor="middle">MinHash shingles → near-dup groups</text>
-    <text class="sub" x="390" y="698" text-anchor="middle">profiling._minhash() + assign_dup_groups()</text>
+    <text class="elbl" x="398" y="440">line spans</text>
+    <rect class="n" x="230" y="460" width="320" height="50" rx="7"/>
+    <text class="lbl" x="390" y="482" text-anchor="middle">Classify each line by shape</text>
+    <text class="sub" x="390" y="498" text-anchor="middle">profiling._classify_line()</text>
+    <line class="edge" x1="390" y1="510" x2="390" y2="554" marker-end="url(#ah2)"/>
+    <text class="elbl" x="398" y="536">line kinds</text>
+    <rect class="n" x="230" y="556" width="320" height="50" rx="7"/>
+    <text class="lbl" x="390" y="578" text-anchor="middle">Group runs of like lines into segments</text>
+    <text class="sub" x="390" y="594" text-anchor="middle">profiling.segment_document()</text>
+    <line class="edge" x1="390" y1="606" x2="390" y2="650" marker-end="url(#ah2)"/>
+    <polygon class="d" points="390,652 495,681 390,710 285,681"/>
+    <text class="lbl" x="390" y="685" text-anchor="middle">segment kind?</text>
+    <line class="edge" x1="495" y1="681" x2="588" y2="681" marker-end="url(#ah2)"/>
+    <text class="elbl" x="541" y="674" text-anchor="middle">boilerplate</text>
+    <rect class="n muted" x="590" y="656" width="176" height="50" rx="7"/>
+    <text class="lbl" x="678" y="678" text-anchor="middle">Marked as excluded range</text>
+    <text class="sub" x="678" y="694" text-anchor="middle">extraction skips it later</text>
     <line class="edge" x1="390" y1="710" x2="390" y2="754" marker-end="url(#ah2)"/>
-    <text class="elbl" x="398" y="736">dup groups</text>
-    <rect class="obj" x="230" y="756" width="320" height="50" rx="7"/>
-    <text class="lbl" x="390" y="778" text-anchor="middle">segments rows</text>
-    <text class="sub" x="390" y="794" text-anchor="middle">kind, char_start, char_end, dup_group_id</text>
-    <circle class="term-o" cx="390" cy="858" r="12"/>
-    <circle class="term" cx="390" cy="858" r="6"/>
-    <text class="sub" x="412" y="862">end</text>
+    <text class="elbl" x="398" y="736">narrative / template / email</text>
+    <rect class="n" x="230" y="756" width="320" height="50" rx="7"/>
+    <text class="lbl" x="390" y="778" text-anchor="middle">Fingerprint template blocks</text>
+    <text class="sub" x="390" y="794" text-anchor="middle">profiling.template_fingerprint()</text>
+    <line class="edge" x1="390" y1="806" x2="390" y2="850" marker-end="url(#ah2)"/>
+    <text class="elbl" x="398" y="832">fingerprints</text>
+    <rect class="n" x="230" y="852" width="320" height="50" rx="7"/>
+    <text class="lbl" x="390" y="874" text-anchor="middle">MinHash shingles → near-dup groups</text>
+    <text class="sub" x="390" y="890" text-anchor="middle">profiling._minhash() + assign_dup_groups()</text>
+    <line class="edge" x1="390" y1="902" x2="390" y2="946" marker-end="url(#ah2)"/>
+    <text class="elbl" x="398" y="928">dup groups</text>
+    <rect class="obj" x="230" y="948" width="320" height="50" rx="7"/>
+    <text class="lbl" x="390" y="970" text-anchor="middle">segments rows</text>
+    <text class="sub" x="390" y="986" text-anchor="middle">kind, char_start, char_end, dup_group_id</text>
+    <circle class="term-o" cx="390" cy="1050" r="12"/>
+    <circle class="term" cx="390" cy="1050" r="6"/>
+    <text class="sub" x="412" y="1054">end</text>
 </svg></div>
-    <figcaption><b>Fig B</b> Line shape drives segment type; segments are what later stages exclude (boilerplate) or fingerprint (templates). Near-duplicate detection groups copy-pasted notes so they don't get counted as independent evidence.</figcaption>
+    <figcaption><b>Fig B</b> The client's file naming and occurrence table are the identity source, not extraction — nothing here is inferred from the note's contents. Line shape then drives segment type, which is what later stages exclude (boilerplate) or fingerprint (templates).</figcaption>
   </figure>
-  <h3>Worked data example</h3>
+  <h3>Worked data example — claim identity</h3>
+  <div class="tablewrap"><table>
+<thead><tr><th>data going in</th><th>data coming out</th><th>what happened</th></tr></thead><tbody>
+<tr><td class="d-in"><code>CLM00182_0734.txt</code><br><span class='meta'>filename, as delivered by the client</span></td><td class="d-out"><code>claim_number="CLM00182", note_id="0734"</code></td><td class="d-note">The filename is parsed directly — no text is read yet.</td></tr>
+<tr><td class="d-in"><code>Occurrence Number | Claim Number | Note ID</code><br><code>OCC0091 | CLM00182 | 0734</code><br><span class='meta'>client-provided join table</span></td><td class="d-out"><code>doc_id="note_0734" → {claim_id: "CLM00182", occurrence_id: "OCC0091"}</code></td><td class="d-note">A join on claim_number + note_id resolves the occurrence — structural metadata, established before extraction runs, not a claim about what the text says.</td></tr>
+</tbody></table></div>
+  <h3>Worked data example — segmentation</h3>
   <div class="tablewrap"><table>
 <thead><tr><th>data going in</th><th>data coming out</th><th>what happened</th></tr></thead><tbody>
 <tr><td class="d-in"><code>Claimant: Jones<br>D.O.B 04/11/1979<br><br>Spoke with Robert Miller regarding…</code><br><span class='meta'>raw lines</span></td><td class="d-out"><code>{kind: "template_block", char_start: 0, char_end: 41}</code><br><code>{kind: "narrative", char_start: 43, char_end: 512}</code></td><td class="d-note">Runs of similarly-shaped lines are grouped into one typed segment each, so the label-value header and the prose below it are handled by different logic.</td></tr>
-<tr><td class="d-in"><code>CONFIDENTIALITY NOTICE: This message is intended…</code></td><td class="d-out"><code>{kind: "boilerplate"}</code> → excluded range</td><td class="d-note">Legal footer text is typed as boilerplate and its character range is excluded, so names inside it never become mentions.</td></tr>
+<tr><td class="d-in"><code>CONFIDENTIALITY NOTICE: This message is intended…</code></td><td class="d-out"><code>{kind: "boilerplate"}</code> → excluded range</td><td class="d-note">Legal footer text is typed as boilerplate and its character range is excluded, so names inside it never reach the name-shape filter.</td></tr>
 </tbody></table></div>
 </section>
 
@@ -312,7 +352,7 @@
     <circle class="term" cx="390" cy="666" r="6"/>
     <text class="sub" x="412" y="670">end</text>
 </svg></div>
-    <figcaption><b>Fig C</b> Chunks exist so the LLM pass has bounded input. The overlap and the coverage check together guarantee no character falls between two windows and gets read by nobody.</figcaption>
+    <figcaption><b>Fig C</b> Chunks bound the input size fed to any single extractor pass. The overlap and the coverage check together guarantee no character falls between two windows and gets read by nobody — the standard mitigation for the sliding-window boundary problem.</figcaption>
   </figure>
   <h3>Worked data example</h3>
   <div class="tablewrap"><table>
@@ -321,207 +361,416 @@
 </tbody></table></div>
 </section>
 
-<section id="stage-d">
-  <h2><span class="num">D</span> Extract candidates, filter, and persist</h2>
-  <div class="goal"><span class="goal-h">single goal of this block</span>Turn chunk text into typed, span-grounded rows: mentions, identifier observations, assertions, coreference links.</div>
+<section id="stage-d1">
+  <h2><span class="num">D1</span> Generate candidates: fork, extract, join, sweep</h2>
+  <div class="goal"><span class="goal-h">single goal of this block</span>Run three independent extractors over the same chunk text so a miss by one is covered by another, then verify the union against itself with a second, targeted pass.</div>
   <figure>
-    <div class="figframe"><svg role="img" aria-label="Activity diagram: three parallel extractors fork over the same chunk, then their spans are unioned, filtered, classified and persisted" viewBox="0 0 1040 1452">
+    <div class="figframe"><svg role="img" aria-label="Activity diagram D1: three extractors fork over one chunk, are unioned, audited by a differential sweep pass, then merged again across every chunk in the document" viewBox="0 0 1040 1480">
     <defs><marker id="ah4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker></defs>
     <circle class="term" cx="520" cy="20" r="10"/>
-    <text class="sub" x="540" y="24">chunk text (absolute offsets known)</text>
-    <line class="edge" x1="390" y1="30" x2="390" y2="68" marker-end="url(#ah4)"/>
-    <rect class="n" x="230" y="70" width="320" height="50" rx="7"/>
-    <text class="lbl" x="390" y="92" text-anchor="middle">Load chunk + boilerplate exclusion ranges</text>
-    <text class="sub" x="390" y="108" text-anchor="middle">pipeline_v2._boilerplate_ranges()</text>
-    <line class="edge" x1="520" y1="120" x2="520" y2="158" marker-end="url(#ah4)"/>
-    <rect class="bar" x="140" y="160" width="760" height="7" rx="3"/>
-    <text class="tag" x="908" y="167">fork: three independent extractors, same text</text>
-    <line class="edge" x1="190" y1="167" x2="190" y2="201" marker-end="url(#ah4)"/>
-    <line class="edge" x1="520" y1="167" x2="520" y2="201" marker-end="url(#ah4)"/>
-    <line class="edge" x1="850" y1="167" x2="850" y2="201" marker-end="url(#ah4)"/>
-    <line class="edge" x1="190" y1="201" x2="190" y2="237" marker-end="url(#ah4)"/>
-    <rect class="n" x="40" y="239" width="300" height="50" rx="7"/>
-    <text class="lbl" x="190" y="261" text-anchor="middle">Regex name-shape scan</text>
-    <text class="sub" x="190" y="277" text-anchor="middle">ner_ensemble.DeterministicTokenNER._RE_SEQ / _RE_FLIP / _RE_TITLED</text>
-    <line class="edge" x1="190" y1="289" x2="190" y2="325" marker-end="url(#ah4)"/>
-    <text class="elbl" x="198" y="311">raw match</text>
-    <rect class="n" x="40" y="327" width="300" height="50" rx="7"/>
-    <text class="lbl" x="190" y="349" text-anchor="middle">Trim sentence-opener words</text>
-    <text class="sub" x="190" y="365" text-anchor="middle">strips _LEADING_NOISE, offsets stay exact</text>
-    <line class="edge" x1="190" y1="377" x2="190" y2="413" marker-end="url(#ah4)"/>
-    <rect class="n" x="40" y="415" width="300" height="50" rx="7"/>
-    <text class="lbl" x="190" y="437" text-anchor="middle">Reject all-stopword spans</text>
-    <text class="sub" x="190" y="453" text-anchor="middle">_STOP set</text>
-    <line class="edge" x1="190" y1="465" x2="190" y2="501" marker-end="url(#ah4)"/>
-    <rect class="n" x="40" y="503" width="300" height="50" rx="7"/>
-    <text class="lbl" x="190" y="525" text-anchor="middle">Emit SpanCandidate</text>
-    <text class="sub" x="190" y="541" text-anchor="middle">start, end, text, label, score</text>
-    <line class="edge" x1="520" y1="201" x2="520" y2="237" marker-end="url(#ah4)"/>
-    <rect class="n" x="370" y="239" width="300" height="50" rx="7"/>
-    <text class="lbl" x="520" y="261" text-anchor="middle">Identifier pattern scan</text>
-    <text class="sub" x="520" y="277" text-anchor="middle">gazetteers.scan_valid() — phone/email/npi/tin/address</text>
-    <line class="edge" x1="520" y1="289" x2="520" y2="325" marker-end="url(#ah4)"/>
-    <text class="elbl" x="528" y="311">raw hits</text>
-    <rect class="n" x="370" y="327" width="300" height="50" rx="7"/>
-    <text class="lbl" x="520" y="349" text-anchor="middle">Structural validation</text>
-    <text class="sub" x="520" y="365" text-anchor="middle">_validate() → textnorm.npi_is_valid() checksum</text>
-    <line class="edge" x1="520" y1="377" x2="520" y2="413" marker-end="url(#ah4)"/>
-    <rect class="n" x="370" y="415" width="300" height="50" rx="7"/>
-    <text class="lbl" x="520" y="437" text-anchor="middle">Emit GazetteerHit</text>
-    <text class="sub" x="520" y="453" text-anchor="middle">start, end, text, label, valid</text>
-    <line class="edge" x1="850" y1="201" x2="850" y2="237" marker-end="url(#ah4)"/>
-    <rect class="n" x="700" y="239" width="300" height="50" rx="7"/>
-    <text class="lbl" x="850" y="261" text-anchor="middle">LLM semantic pass</text>
-    <text class="sub" x="850" y="277" text-anchor="middle">genai.generate_json(contracts.extraction_schema())</text>
-    <line class="edge" x1="850" y1="289" x2="850" y2="325" marker-end="url(#ah4)"/>
-    <text class="elbl" x="858" y="311">JSON</text>
-    <rect class="n" x="700" y="327" width="300" height="50" rx="7"/>
-    <text class="lbl" x="850" y="349" text-anchor="middle">Constrain output to typed triples</text>
-    <text class="sub" x="850" y="365" text-anchor="middle">subject / predicate / object + evidence span</text>
-    <line class="edge" x1="850" y1="377" x2="850" y2="413" marker-end="url(#ah4)"/>
-    <text class="elbl" x="858" y="399">triples</text>
-    <rect class="n" x="700" y="415" width="300" height="50" rx="7"/>
-    <text class="lbl" x="850" y="437" text-anchor="middle">Re-ground spans onto raw offsets</text>
-    <text class="sub" x="850" y="453" text-anchor="middle">segment-relative → document-absolute</text>
-    <line class="edge" x1="850" y1="465" x2="850" y2="501" marker-end="url(#ah4)"/>
-    <rect class="n" x="700" y="503" width="300" height="50" rx="7"/>
-    <text class="lbl" x="850" y="525" text-anchor="middle">Emit Assertion rows</text>
-    <text class="sub" x="850" y="541" text-anchor="middle">contracts.Assertion dataclass</text>
-    <line class="edge" x1="190" y1="553" x2="190" y2="591" marker-end="url(#ah4)"/>
-    <line class="edge" x1="520" y1="465" x2="520" y2="591" marker-end="url(#ah4)"/>
-    <line class="edge" x1="850" y1="553" x2="850" y2="591" marker-end="url(#ah4)"/>
-    <rect class="bar" x="140" y="593" width="760" height="7" rx="3"/>
-    <text class="tag" x="908" y="600">join: union by span, longest wins, provenance merged</text>
-    <line class="edge" x1="520" y1="600" x2="520" y2="638" marker-end="url(#ah4)"/>
-    <rect class="n" x="350" y="640" width="340" height="50" rx="7"/>
-    <text class="lbl" x="520" y="662" text-anchor="middle">Union overlapping candidates</text>
-    <text class="sub" x="520" y="678" text-anchor="middle">extractor provenance kept per span</text>
-    <line class="edge" x1="520" y1="690" x2="520" y2="732" marker-end="url(#ah4)"/>
-    <polygon class="d" points="520,734 625,763 520,792 415,763"/>
-    <text class="lbl" x="520" y="767" text-anchor="middle">passes name-shape filter?</text>
-    <line class="edge" x1="625" y1="763" x2="700" y2="763" marker-end="url(#ah4)"/>
-    <text class="elbl" x="662" y="756" text-anchor="middle">no</text>
-    <rect class="n bad" x="700" y="738" width="300" height="50" rx="7"/>
-    <text class="lbl" x="850" y="760" text-anchor="middle">Dropped (n_dropped_shape)</text>
-    <text class="sub" x="850" y="776" text-anchor="middle">pipeline_v2._is_plausible_name()</text>
-    <line class="edge" x1="520" y1="792" x2="520" y2="834" marker-end="url(#ah4)"/>
-    <text class="elbl" x="528" y="817">yes</text>
-    <rect class="n" x="350" y="836" width="340" height="50" rx="7"/>
-    <text class="lbl" x="520" y="858" text-anchor="middle">Classify entity_class from context</text>
-    <text class="sub" x="520" y="874" text-anchor="middle">pipeline_v2._classify() + gazetteers.role_from_context()</text>
-    <line class="edge" x1="520" y1="886" x2="520" y2="928" marker-end="url(#ah4)"/>
-    <text class="elbl" x="528" y="911">classified</text>
-    <rect class="obj" x="350" y="930" width="340" height="50" rx="7"/>
-    <text class="lbl" x="520" y="952" text-anchor="middle">mentions row</text>
-    <text class="sub" x="520" y="968" text-anchor="middle">mention_id, doc_id, surface, char_start/end, entity_class</text>
-    <line class="edge" x1="520" y1="980" x2="520" y2="1022" marker-end="url(#ah4)"/>
-    <polygon class="d" points="520,1024 650,1053 520,1082 390,1053"/>
-    <text class="lbl" x="520" y="1057" text-anchor="middle">name co-located with identifier?</text>
-    <line class="edge" x1="650" y1="1053" x2="700" y2="1053" marker-end="url(#ah4)"/>
-    <text class="elbl" x="675" y="1046" text-anchor="middle">no</text>
-    <rect class="n key" x="700" y="1028" width="300" height="50" rx="7"/>
-    <text class="lbl" x="850" y="1050" text-anchor="middle">identifier_observations row, subject_mention_id = NULL</text>
-    <text class="sub" x="850" y="1066" text-anchor="middle">the orphan case — recorded, never discarded</text>
-    <line class="edge" x1="520" y1="1082" x2="520" y2="1124" marker-end="url(#ah4)"/>
-    <text class="elbl" x="528" y="1107">yes</text>
-    <rect class="obj" x="350" y="1126" width="340" height="50" rx="7"/>
-    <text class="lbl" x="520" y="1148" text-anchor="middle">identifier_observations row, subject bound</text>
-    <text class="sub" x="520" y="1164" text-anchor="middle">kind, value_norm, subject_mention_id</text>
-    <line class="edge" x1="520" y1="1176" x2="520" y2="1218" marker-end="url(#ah4)"/>
-    <rect class="n" x="350" y="1220" width="340" height="50" rx="7"/>
-    <text class="lbl" x="520" y="1242" text-anchor="middle">Resolve anaphora to antecedent mentions</text>
-    <text class="sub" x="520" y="1258" text-anchor="middle">coref.RuleBasedCorefResolver.resolve()</text>
-    <line class="edge" x1="520" y1="1270" x2="520" y2="1312" marker-end="url(#ah4)"/>
-    <text class="elbl" x="528" y="1295">CorefLink</text>
-    <rect class="n" x="350" y="1314" width="340" height="50" rx="7"/>
-    <text class="lbl" x="520" y="1336" text-anchor="middle">Record scanned char ranges</text>
-    <text class="sub" x="520" y="1352" text-anchor="middle">scan_ledger — proves every char was read</text>
-    <circle class="term-o" cx="520" cy="1416" r="12"/>
-    <circle class="term" cx="520" cy="1416" r="6"/>
-    <text class="sub" x="542" y="1420">end</text>
+    <text class="sub" x="540" y="24">one chunk (text + absolute offsets)</text>
+    <line class="edge" x1="520" y1="30" x2="520" y2="68" marker-end="url(#ah4)"/>
+    <rect class="bar" x="140" y="70" width="760" height="7" rx="3"/>
+    <text class="tag" x="908" y="77">fork: three independent extractors read the same chunk text</text>
+    <line class="edge" x1="190" y1="77" x2="190" y2="111" marker-end="url(#ah4)"/>
+    <line class="edge" x1="520" y1="77" x2="520" y2="111" marker-end="url(#ah4)"/>
+    <line class="edge" x1="850" y1="77" x2="850" y2="111" marker-end="url(#ah4)"/>
+    <line class="edge" x1="190" y1="111" x2="190" y2="149" marker-end="url(#ah4)"/>
+    <rect class="n" x="40" y="151" width="300" height="50" rx="7"/>
+    <text class="lbl" x="190" y="173" text-anchor="middle">Regex name-shape scan</text>
+    <text class="sub" x="190" y="189" text-anchor="middle">DeterministicTokenNER._RE_SEQ / _RE_FLIP / _RE_TITLED</text>
+    <line class="edge" x1="190" y1="201" x2="190" y2="239" marker-end="url(#ah4)"/>
+    <text class="elbl" x="198" y="224">raw regex hit</text>
+    <rect class="n" x="40" y="241" width="300" height="50" rx="7"/>
+    <text class="lbl" x="190" y="263" text-anchor="middle">Trim sentence-opener words</text>
+    <text class="sub" x="190" y="279" text-anchor="middle">strip _LEADING_NOISE, offsets stay exact</text>
+    <line class="edge" x1="190" y1="291" x2="190" y2="329" marker-end="url(#ah4)"/>
+    <text class="elbl" x="198" y="314">trimmed span</text>
+    <rect class="n" x="40" y="331" width="300" height="50" rx="7"/>
+    <text class="lbl" x="190" y="353" text-anchor="middle">Reject all-stopword spans</text>
+    <text class="sub" x="190" y="369" text-anchor="middle">surface ⊆ _STOP → discarded</text>
+    <line class="edge" x1="190" y1="381" x2="190" y2="419" marker-end="url(#ah4)"/>
+    <rect class="n" x="40" y="421" width="300" height="50" rx="7"/>
+    <text class="lbl" x="190" y="443" text-anchor="middle">Emit SpanCandidate</text>
+    <text class="sub" x="190" y="459" text-anchor="middle">extractors={"token_ner"}</text>
+    <line class="edge" x1="520" y1="111" x2="520" y2="149" marker-end="url(#ah4)"/>
+    <rect class="n" x="370" y="151" width="300" height="50" rx="7"/>
+    <text class="lbl" x="520" y="173" text-anchor="middle">Pattern scan</text>
+    <text class="sub" x="520" y="189" text-anchor="middle">gazetteers.scan() — phone / email / npi / claim_id / …</text>
+    <line class="edge" x1="520" y1="201" x2="520" y2="239" marker-end="url(#ah4)"/>
+    <text class="elbl" x="528" y="224">raw pattern hit</text>
+    <rect class="n" x="370" y="241" width="300" height="50" rx="7"/>
+    <text class="lbl" x="520" y="263" text-anchor="middle">Structural validation</text>
+    <text class="sub" x="520" y="279" text-anchor="middle">_validate() — e.g. textnorm.npi_is_valid() checksum</text>
+    <line class="edge" x1="520" y1="291" x2="520" y2="329" marker-end="url(#ah4)"/>
+    <text class="elbl" x="528" y="314">valid: bool</text>
+    <rect class="n" x="370" y="331" width="300" height="50" rx="7"/>
+    <text class="lbl" x="520" y="353" text-anchor="middle">Keep only valid hits</text>
+    <text class="sub" x="520" y="369" text-anchor="middle">invalid checksum → discarded here, not downstream</text>
+    <line class="edge" x1="520" y1="381" x2="520" y2="419" marker-end="url(#ah4)"/>
+    <rect class="n" x="370" y="421" width="300" height="50" rx="7"/>
+    <text class="lbl" x="520" y="443" text-anchor="middle">Emit SpanCandidate</text>
+    <text class="sub" x="520" y="459" text-anchor="middle">extractors={"gazetteer"}, score 1.0 valid / 0.5 unvalidated</text>
+    <line class="edge" x1="850" y1="111" x2="850" y2="149" marker-end="url(#ah4)"/>
+    <rect class="n" x="700" y="151" width="300" height="50" rx="7"/>
+    <text class="lbl" x="850" y="173" text-anchor="middle">Build extraction prompt</text>
+    <text class="sub" x="850" y="189" text-anchor="middle">chunk text + allowed label enum</text>
+    <line class="edge" x1="850" y1="201" x2="850" y2="239" marker-end="url(#ah4)"/>
+    <text class="elbl" x="858" y="224">prompt</text>
+    <rect class="n" x="700" y="241" width="300" height="50" rx="7"/>
+    <text class="lbl" x="850" y="263" text-anchor="middle">Constrained JSON generation</text>
+    <text class="sub" x="850" y="279" text-anchor="middle">genai.generate_json(_llm_ner_schema())</text>
+    <line class="edge" x1="850" y1="291" x2="850" y2="329" marker-end="url(#ah4)"/>
+    <text class="elbl" x="858" y="314">entities[]</text>
+    <rect class="n" x="700" y="331" width="300" height="50" rx="7"/>
+    <text class="lbl" x="850" y="353" text-anchor="middle">Drop pronouns / vague descriptors</text>
+    <text class="sub" x="850" y="369" text-anchor="middle">coref.is_anaphor() filter; clip offsets to chunk</text>
+    <line class="edge" x1="850" y1="381" x2="850" y2="419" marker-end="url(#ah4)"/>
+    <rect class="n" x="700" y="421" width="300" height="50" rx="7"/>
+    <text class="lbl" x="850" y="443" text-anchor="middle">Emit SpanCandidate</text>
+    <text class="sub" x="850" y="459" text-anchor="middle">extractors={"llm"}, carries free-text description</text>
+    <line class="edge" x1="190" y1="471" x2="190" y2="509" marker-end="url(#ah4)"/>
+    <line class="edge" x1="520" y1="471" x2="520" y2="509" marker-end="url(#ah4)"/>
+    <line class="edge" x1="850" y1="471" x2="850" y2="509" marker-end="url(#ah4)"/>
+    <rect class="bar" x="140" y="511" width="760" height="7" rx="3"/>
+    <text class="tag" x="908" y="518">join: union_spans() — see Fig D2 for the merge rule itself</text>
+    <line class="edge" x1="520" y1="518" x2="520" y2="556" marker-end="url(#ah4)"/>
+    <rect class="obj" x="340" y="558" width="360" height="50" rx="7"/>
+    <text class="lbl" x="520" y="588" text-anchor="middle">per-chunk candidate list (post first union)</text>
+    <line class="edge" x1="520" y1="608" x2="520" y2="650" marker-end="url(#ah4)"/>
+    <polygon class="d" points="520,652 620,681 520,710 420,681"/>
+    <text class="lbl" x="520" y="685" text-anchor="middle">sweep enabled?</text>
+    <line class="edge" x1="620" y1="681" x2="850" y2="681" marker-end="url(#ah4)"/>
+    <text class="elbl" x="735" y="674" text-anchor="middle">no</text>
+    <rect class="n muted" x="720" y="656" width="260" height="50" rx="7"/>
+    <text class="lbl" x="850" y="686" text-anchor="middle">Skip straight to next chunk</text>
+    <line class="edge" x1="520" y1="710" x2="520" y2="752" marker-end="url(#ah4)"/>
+    <text class="elbl" x="528" y="735">yes</text>
+    <line class="edge" x1="390" y1="754" x2="390" y2="792" marker-end="url(#ah4)"/>
+    <rect class="n" x="230" y="794" width="320" height="50" rx="7"/>
+    <text class="lbl" x="390" y="816" text-anchor="middle">Find text spans no candidate covers</text>
+    <text class="sub" x="390" y="832" text-anchor="middle">sweep.uncovered_candidates()</text>
+    <line class="edge" x1="390" y1="844" x2="390" y2="882" marker-end="url(#ah4)"/>
+    <text class="elbl" x="398" y="867">uncovered tokens</text>
+    <rect class="n" x="230" y="884" width="320" height="50" rx="7"/>
+    <text class="lbl" x="390" y="906" text-anchor="middle">Differential-audit prompt: "what's missing?"</text>
+    <text class="sub" x="390" y="922" text-anchor="middle">shown its own extraction list, asked only for gaps</text>
+    <line class="edge" x1="390" y1="934" x2="390" y2="972" marker-end="url(#ah4)"/>
+    <rect class="n" x="230" y="974" width="320" height="50" rx="7"/>
+    <text class="lbl" x="390" y="996" text-anchor="middle">Second constrained LLM pass</text>
+    <text class="sub" x="390" y="1012" text-anchor="middle">low-salience recall net — paralegals, codes, secondary providers</text>
+    <line class="edge" x1="390" y1="1024" x2="390" y2="1062" marker-end="url(#ah4)"/>
+    <text class="elbl" x="398" y="1047">new spans</text>
+    <rect class="n" x="230" y="1064" width="320" height="50" rx="7"/>
+    <text class="lbl" x="390" y="1086" text-anchor="middle">Union sweep results into the pool</text>
+    <text class="sub" x="390" y="1102" text-anchor="middle">union_spans([spans, extra])</text>
+    <rect class="obj" x="230" y="1154" width="320" height="50" rx="7"/>
+    <text class="lbl" x="390" y="1176" text-anchor="middle">final per-chunk candidate dataset</text>
+    <text class="sub" x="390" y="1192" text-anchor="middle">repeats for every chunk in the note</text>
+    <line class="edge" x1="520" y1="1204" x2="520" y2="1246" marker-end="url(#ah4)"/>
+    <text class="elbl" x="528" y="1229">one chunk's output ×N chunks</text>
+    <rect class="n" x="340" y="1248" width="360" height="50" rx="7"/>
+    <text class="lbl" x="520" y="1270" text-anchor="middle">Merge every chunk's candidates for this document</text>
+    <text class="sub" x="520" y="1286" text-anchor="middle">second union_spans() call — cross-chunk overlaps collapse too</text>
+    <line class="edge" x1="520" y1="1298" x2="520" y2="1340" marker-end="url(#ah4)"/>
+    <rect class="obj" x="340" y="1342" width="360" height="50" rx="7"/>
+    <text class="lbl" x="520" y="1364" text-anchor="middle">per-document candidate pool</text>
+    <text class="sub" x="520" y="1380" text-anchor="middle">→ continues in Fig D3</text>
+    <circle class="term-o" cx="520" cy="1444" r="12"/>
+    <circle class="term" cx="520" cy="1444" r="6"/>
+    <text class="sub" x="542" y="1448">end</text>
 </svg></div>
-    <figcaption><b>Fig D</b> The three extractors run over the same text independently and their spans are unioned — a miss by one is covered by another. Everything after the join is narrowing: shape filter, classification, subject binding. The one path that deliberately keeps data others would drop is the orphan identifier, highlighted.</figcaption>
+    <figcaption><b>Fig D1</b> Each lane runs the identical text through a different detection strategy and emits the same SpanCandidate shape, so they can be merged without knowing which extractor found what. The differential sweep is a second LLM call shown its own output and asked only what's missing — a deliberate low-salience recall net, not a duplicate first pass.</figcaption>
+  </figure>
+  <h3>Token-NER lane — every node</h3>
+  <div class="tablewrap"><table>
+<thead><tr><th>data going in</th><th>data coming out</th><th>what happened</th></tr></thead><tbody>
+<tr><td class="d-in"><code>…transfer note. Contacted James Moore per yesterday's…</code></td><td class="d-out">raw regex hit: <code>"Contacted James Moore"</code> [800:823]</td><td class="d-note">The capitalized-run pattern matches greedily and includes the sentence-opening verb.</td></tr>
+<tr><td class="d-in"><code>"Contacted James Moore"</code> [800:823]</td><td class="d-out">trimmed: <code>"James Moore"</code> [812:823]</td><td class="d-note">The leading token is a known sentence-opener, so it's stripped — the offset shifts, but stays byte-exact.</td></tr>
+<tr><td class="d-in"><code>"Claims Department"</code> [40:58]</td><td class="d-out"><span class='drop'>discarded</span></td><td class="d-note">Every token in the span is a structural stopword, so it's rejected before it ever becomes a candidate.</td></tr>
+<tr><td class="d-in"><code>"James Moore"</code> [812:823]</td><td class="d-out"><code>SpanCandidate{start:812, end:823, text:"James Moore", label:"person", extractors:{"token_ner"}, score:0.75}</code></td><td class="d-note">A surviving span is packaged into the common candidate type every extractor emits.</td></tr>
+</tbody></table></div>
+  <h3>Gazetteer lane — every node</h3>
+  <div class="tablewrap"><table>
+<thead><tr><th>data going in</th><th>data coming out</th><th>what happened</th></tr></thead><tbody>
+<tr><td class="d-in"><code>…callback left at (312) 555-0148, no name given…</code></td><td class="d-out">raw pattern hit: <code>"(312) 555-0148"</code> [918:932], label <code>phone</code></td><td class="d-note">A regex pattern for the identifier shape matches, independent of any nearby name.</td></tr>
+<tr><td class="d-in"><code>NPI 1568291037</code></td><td class="d-out"><code>_validate("npi", …) → True</code></td><td class="d-note">A checksum-style structural check runs before the hit is trusted — this is what separates a real NPI from ten random digits.</td></tr>
+<tr><td class="d-in"><code>tax id 12-345678X</code> (malformed)</td><td class="d-out"><code>valid: False</code> → <span class='drop'>discarded here</span></td><td class="d-note">A pattern match that fails validation never reaches the candidate pool, rather than being persisted and flagged unvalidated.</td></tr>
+<tr><td class="d-in"><code>GazetteerHit{start:918, end:932, text:"(312) 555-0148", label:"phone", valid:true}</code></td><td class="d-out"><code>SpanCandidate{…, extractors:{"gazetteer"}, score:1.0}</code></td><td class="d-note">A validated hit converts 1:1 into a candidate at full confidence.</td></tr>
+</tbody></table></div>
+  <h3>LLM semantic lane — every node</h3>
+  <div class="tablewrap"><table>
+<thead><tr><th>data going in</th><th>data coming out</th><th>what happened</th></tr></thead><tbody>
+<tr><td class="d-in">chunk text, 190 words</td><td class="d-out"><code>"Extract every entity mention… Labels: [person, organization, …]\n\nCHUNK:\n&lt;&lt;&lt;\n…Lakeshore Imaging Center performed the follow-up scan…\n&gt;&gt;&gt;"</code></td><td class="d-note">The whole chunk is embedded in one instruction asking for every mention, not just the ones a pattern would catch.</td></tr>
+<tr><td class="d-in">(prompt above)</td><td class="d-out"><code>{"entities":[{"text":"Lakeshore Imaging Center","label":"organization","start":214,"end":238,"description":"secondary imaging provider, mentioned once","confidence":0.8}]}</code></td><td class="d-note">Output is constrained to this exact JSON shape — the model cannot return free text instead.</td></tr>
+<tr><td class="d-in"><code>{"text":"She","label":"person","start":260,"end":263}</code></td><td class="d-out"><span class='drop'>discarded</span></td><td class="d-note">A pronoun slipped past the prompt's instruction; the anaphor filter catches it before it becomes a candidate.</td></tr>
+<tr><td class="d-in"><code>{"text":"Lakeshore Imaging Center", start:214, end:238, …}</code></td><td class="d-out"><code>SpanCandidate{start: chunk_offset+214, end: chunk_offset+238, label:"organization", extractors:{"llm"}, description:"secondary imaging provider, mentioned once"}</code></td><td class="d-note">The chunk-relative offset is shifted to the document-absolute offset the other two lanes already use.</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="stage-d2">
+  <h2><span class="num">D2</span> Zoom in: how the union actually merges spans</h2>
+  <div class="goal"><span class="goal-h">single goal of this block</span>Collapse overlapping candidates from different extractors into one span per real mention, without losing which extractor(s) found it.</div>
+  <figure>
+    <div class="figframe"><svg role="img" aria-label="Activity diagram D2: how union_spans merges overlapping candidates from different extractors into one span per mention" viewBox="0 0 900 784">
+    <defs><marker id="ah5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker></defs>
+    <circle class="term" cx="450" cy="20" r="10"/>
+    <text class="sub" x="470" y="24">flat list of candidates from every source</text>
+    <line class="edge" x1="390" y1="30" x2="390" y2="68" marker-end="url(#ah5)"/>
+    <text class="elbl" x="398" y="53">candidates</text>
+    <rect class="n" x="230" y="70" width="320" height="50" rx="7"/>
+    <text class="lbl" x="390" y="92" text-anchor="middle">Sort by (start, −length)</text>
+    <text class="sub" x="390" y="108" text-anchor="middle">longest-starting-first tie-break</text>
+    <line class="edge" x1="450" y1="120" x2="450" y2="158" marker-end="url(#ah5)"/>
+    <rect class="n" x="280" y="160" width="340" height="50" rx="7"/>
+    <text class="lbl" x="450" y="190" text-anchor="middle">Take next candidate C, walk the merged list</text>
+    <line class="edge" x1="450" y1="210" x2="450" y2="252" marker-end="url(#ah5)"/>
+    <polygon class="d" points="450,254 590,283 450,312 310,283"/>
+    <text class="lbl" x="450" y="287" text-anchor="middle">C overlaps an already-merged span M?</text>
+    <line class="edge" x1="590" y1="283" x2="780" y2="283" marker-end="url(#ah5)"/>
+    <text class="elbl" x="685" y="276" text-anchor="middle">no</text>
+    <rect class="n" x="670" y="258" width="220" height="50" rx="7"/>
+    <text class="lbl" x="780" y="288" text-anchor="middle">Start a new merged entry from C</text>
+    <line class="edge" x1="450" y1="312" x2="450" y2="354" marker-end="url(#ah5)"/>
+    <text class="elbl" x="458" y="337">yes</text>
+    <rect class="n" x="280" y="356" width="340" height="50" rx="7"/>
+    <text class="lbl" x="450" y="378" text-anchor="middle">Union provenance onto M</text>
+    <text class="sub" x="450" y="394" text-anchor="middle">M.extractors |= C.extractors</text>
+    <line class="edge" x1="450" y1="406" x2="450" y2="448" marker-end="url(#ah5)"/>
+    <polygon class="d" points="450,450 560,479 450,508 340,479"/>
+    <text class="lbl" x="450" y="483" text-anchor="middle">C longer than M?</text>
+    <line class="edge" x1="560" y1="479" x2="780" y2="479" marker-end="url(#ah5)"/>
+    <text class="elbl" x="670" y="472" text-anchor="middle">yes</text>
+    <rect class="n" x="670" y="454" width="220" height="50" rx="7"/>
+    <text class="lbl" x="780" y="484" text-anchor="middle">M adopts C's span + text; keeps C's label if more specific than person/organization</text>
+    <line class="edge" x1="450" y1="508" x2="450" y2="550" marker-end="url(#ah5)"/>
+    <text class="elbl" x="458" y="533">no</text>
+    <rect class="n" x="280" y="552" width="340" height="50" rx="7"/>
+    <text class="lbl" x="450" y="582" text-anchor="middle">If M's label is generic and C's is specific, adopt C's label only</text>
+    <rect class="obj" x="280" y="646" width="340" height="50" rx="7"/>
+    <text class="lbl" x="450" y="668" text-anchor="middle">deduplicated candidate set</text>
+    <text class="sub" x="450" y="684" text-anchor="middle">one entry per real-world mention, provenance preserved</text>
+    <circle class="term-o" cx="450" cy="748" r="12"/>
+    <circle class="term" cx="450" cy="748" r="6"/>
+    <text class="sub" x="472" y="752">end</text>
+</svg></div>
+    <figcaption><b>Fig D2</b> Sorting longest-first and merging on overlap is what makes the fork in Fig D1 safe — no extractor has to "win," their agreement and disagreement are both preserved in the surviving candidate's extractor set.</figcaption>
   </figure>
   <h3>Worked data example</h3>
   <div class="tablewrap"><table>
 <thead><tr><th>data going in</th><th>data coming out</th><th>what happened</th></tr></thead><tbody>
-<tr><td class="d-in"><code>…transfer note. Contacted James Moore per yesterday's…</code><br><span class='meta'>chunk text → token NER</span></td><td class="d-out"><code>SpanCandidate{start: 812, end: 823, text: "James Moore", label: "person", score: 0.75}</code></td><td class="d-note">The capitalized-run regex first matched "Contacted James Moore"; the trimming pass stripped the sentence-opening verb while keeping the offsets byte-exact.</td></tr>
-<tr><td class="d-in"><code>…callback left at (312) 555-0148, no name given…</code><br><span class='meta'>chunk text → gazetteer</span></td><td class="d-out"><code>GazetteerHit{start: 918, end: 932, text: "(312) 555-0148", label: "phone", valid: true}</code></td><td class="d-note">A pattern match plus structural validation turns a run of characters into a typed identifier hit that carries its own provenance.</td></tr>
-<tr><td class="d-in"><code>Dr. Alicia Reyes (NPI 1568291037) confirmed the claimant remains under care.</code><br><span class='meta'>chunk text → LLM pass</span></td><td class="d-out"><code>Assertion{subject_mention_id: "m0000153", predicate: "has_npi", object_value_raw: "1568291037", object_value_norm: "1568291037", polarity: "asserted", source_span_start: 1204, source_span_end: 1214, confidence: 0.9}</code></td><td class="d-note">The model reads one sentence and emits a subject–predicate–object triple whose evidence span points back at the exact characters it was drawn from — the triple is rejected if that span doesn't re-ground.</td></tr>
-<tr><td class="d-in"><code>SpanCandidate{text: "Jones", label: "person"}</code></td><td class="d-out"><span class='drop'>dropped</span> · <code>n_dropped_shape += 1</code></td><td class="d-note">A single-token surname fails the two-capitalized-token shape filter and never becomes a mention — a known, measured recall gap rather than a silent one.</td></tr>
-<tr><td class="d-in"><code>GazetteerHit{text: "(312) 555-0148"}</code> with no name inside the proximity window</td><td class="d-out"><code>identifier_observations{kind: "phone", value_norm: "3125550148", subject_mention_id: NULL}</code></td><td class="d-note">With no name nearby, the identifier is still recorded and the subject left null — this is the case that identifier-first resolution exists to serve, and dropping it here was the original 0%-orphan-recall bug.</td></tr>
+<tr><td class="d-in"><code>A: {"Moore", [818:823], token_ner, person}</code><br><code>B: {"James Moore", [812:823], llm, person}</code></td><td class="d-out"><code>{"James Moore", [812:823], extractors:{token_ner, llm}, person}</code></td><td class="d-note">The spans overlap; B is longer, so its text and offsets win, while A's contribution survives only in the merged extractor set.</td></tr>
+<tr><td class="d-in"><code>A: {"Reyes", [40:45], token_ner, person}</code><br><code>B: {"Dr. Alicia Reyes", [30:47], gazetteer, medical_provider}</code></td><td class="d-out"><code>{"Dr. Alicia Reyes", [30:47], extractors:{token_ner, gazetteer}, medical_provider}</code></td><td class="d-note">B is both longer and more specific than the generic "person" label, so its label is kept rather than A's.</td></tr>
 </tbody></table></div>
 </section>
+
+<section id="stage-d3">
+  <h2><span class="num">D3</span> Filter, classify, bind, and persist</h2>
+  <div class="goal"><span class="goal-h">single goal of this block</span>Turn the surviving candidates into typed, span-grounded database rows — separating name handling from identifier handling, since they follow genuinely different rules.</div>
+  <figure>
+    <div class="figframe"><svg role="img" aria-label="Activity diagram D3: candidates fork into name and identifier handling, then allegations and coreference are resolved from the persisted mentions before everything is written to the repository" viewBox="0 0 1080 1364">
+    <defs><marker id="ah6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker></defs>
+    <circle class="term" cx="520" cy="20" r="10"/>
+    <text class="sub" x="540" y="24">per-document candidate pool (from Fig D1)</text>
+    <line class="edge" x1="520" y1="30" x2="520" y2="68" marker-end="url(#ah6)"/>
+    <rect class="bar" x="130" y="70" width="780" height="7" rx="3"/>
+    <text class="tag" x="918" y="77">fork: every candidate is routed by its label</text>
+    <line class="edge" x1="300" y1="77" x2="300" y2="111" marker-end="url(#ah6)"/>
+    <line class="edge" x1="740" y1="77" x2="740" y2="111" marker-end="url(#ah6)"/>
+    <line class="edge" x1="300" y1="111" x2="300" y2="147" marker-end="url(#ah6)"/>
+    <rect class="n" x="130" y="149" width="340" height="50" rx="7"/>
+    <text class="lbl" x="300" y="171" text-anchor="middle">label ∈ NAME_LABELS</text>
+    <text class="sub" x="300" y="187" text-anchor="middle">person / organization / attorney / repair_shop / …</text>
+    <line class="edge" x1="300" y1="199" x2="300" y2="235" marker-end="url(#ah6)"/>
+    <rect class="n" x="130" y="237" width="340" height="50" rx="7"/>
+    <text class="lbl" x="300" y="259" text-anchor="middle">Inside a boilerplate range?</text>
+    <text class="sub" x="300" y="275" text-anchor="middle">n_dropped_boiler += 1 if so, then skip</text>
+    <line class="edge" x1="300" y1="287" x2="300" y2="323" marker-end="url(#ah6)"/>
+    <text class="elbl" x="308" y="309">not boilerplate</text>
+    <rect class="n" x="130" y="325" width="340" height="50" rx="7"/>
+    <text class="lbl" x="300" y="347" text-anchor="middle">Passes _is_plausible_name?</text>
+    <text class="sub" x="300" y="363" text-anchor="middle">≥2 capitalized tokens (or "Dr.") — n_dropped_shape += 1 if not</text>
+    <line class="edge" x1="300" y1="375" x2="300" y2="411" marker-end="url(#ah6)"/>
+    <text class="elbl" x="308" y="397">plausible name</text>
+    <rect class="n" x="130" y="413" width="340" height="50" rx="7"/>
+    <text class="lbl" x="300" y="435" text-anchor="middle">Classify entity_class</text>
+    <text class="sub" x="300" y="451" text-anchor="middle">_classify(surface, label, left ctx, right ctx)</text>
+    <line class="edge" x1="300" y1="463" x2="300" y2="499" marker-end="url(#ah6)"/>
+    <rect class="n" x="130" y="501" width="340" height="50" rx="7"/>
+    <text class="lbl" x="300" y="523" text-anchor="middle">Persist mentions row</text>
+    <text class="sub" x="300" y="539" text-anchor="middle">mention_id, surface, char_start/end, entity_class</text>
+    <line class="edge" x1="300" y1="551" x2="300" y2="587" marker-end="url(#ah6)"/>
+    <text class="elbl" x="308" y="573">mention_id</text>
+    <rect class="n" x="130" y="589" width="340" height="50" rx="7"/>
+    <text class="lbl" x="300" y="611" text-anchor="middle">Persist has_name assertion</text>
+    <text class="sub" x="300" y="627" text-anchor="middle">source_span = the mention's OWN span</text>
+    <line class="edge" x1="740" y1="111" x2="740" y2="147" marker-end="url(#ah6)"/>
+    <rect class="n" x="570" y="149" width="340" height="50" rx="7"/>
+    <text class="lbl" x="740" y="171" text-anchor="middle">label ∈ IDENTIFIER_LABEL_TO_PREDICATE</text>
+    <text class="sub" x="740" y="187" text-anchor="middle">phone / email / npi / tin / ssn / address</text>
+    <line class="edge" x1="740" y1="199" x2="740" y2="235" marker-end="url(#ah6)"/>
+    <rect class="n" x="570" y="237" width="340" height="50" rx="7"/>
+    <text class="lbl" x="740" y="259" text-anchor="middle">subject_for(char_start)</text>
+    <text class="sub" x="740" y="275" text-anchor="middle">same line, or ≤120 chars on the immediately preceding line</text>
+    <line class="edge" x1="740" y1="287" x2="740" y2="323" marker-end="url(#ah6)"/>
+    <text class="elbl" x="748" y="309">binding attempt</text>
+    <rect class="n" x="570" y="325" width="340" height="50" rx="7"/>
+    <text class="lbl" x="740" y="347" text-anchor="middle">Persist identifier_observations row — always</text>
+    <text class="sub" x="740" y="363" text-anchor="middle">subject_mention_id = binding result, NULL if none — the orphan case</text>
+    <polygon class="d" points="740,419 860,448 740,477 620,448"/>
+    <text class="lbl" x="740" y="452" text-anchor="middle">a subject was found?</text>
+    <line class="edge" x1="860" y1="448" x2="860" y2="675" marker-end="url(#ah6)"/>
+    <text class="elbl" x="868" y="464">no — orphan, no assertion</text>
+    <line class="edge" x1="740" y1="477" x2="740" y2="519" marker-end="url(#ah6)"/>
+    <text class="elbl" x="748" y="502">yes</text>
+    <rect class="n" x="570" y="521" width="340" height="50" rx="7"/>
+    <text class="lbl" x="740" y="543" text-anchor="middle">Persist binding assertion (e.g. has_phone)</text>
+    <text class="sub" x="740" y="559" text-anchor="middle">source_span = the IDENTIFIER's own location, not the name's</text>
+    <line class="edge" x1="300" y1="639" x2="300" y2="715" marker-end="url(#ah6)"/>
+    <line class="edge" x1="740" y1="571" x2="740" y2="715" marker-end="url(#ah6)"/>
+    <line class="edge" x1="860" y1="677" x2="860" y2="715" marker-end="url(#ah6)"/>
+    <rect class="bar" x="130" y="717" width="780" height="7" rx="3"/>
+    <text class="tag" x="918" y="724">join</text>
+    <line class="edge" x1="520" y1="724" x2="520" y2="762" marker-end="url(#ah6)"/>
+    <rect class="n" x="290" y="764" width="460" height="50" rx="7"/>
+    <text class="lbl" x="520" y="786" text-anchor="middle">Scan raw text for allegation language</text>
+    <text class="sub" x="520" y="802" text-anchor="middle">regex over the SOURCE TEXT directly — not from the candidate pool at all</text>
+    <line class="edge" x1="520" y1="814" x2="520" y2="852" marker-end="url(#ah6)"/>
+    <text class="elbl" x="528" y="837">match</text>
+    <rect class="n" x="290" y="854" width="460" height="50" rx="7"/>
+    <text class="lbl" x="520" y="876" text-anchor="middle">Bind to nearest mention, persist allegation assertion</text>
+    <text class="sub" x="520" y="892" text-anchor="middle">polarity: "alleged" — kept separate from asserted fact</text>
+    <line class="edge" x1="520" y1="904" x2="520" y2="946" marker-end="url(#ah6)"/>
+    <rect class="n" x="290" y="948" width="460" height="50" rx="7"/>
+    <text class="lbl" x="520" y="970" text-anchor="middle">Resolve coreference over every mention found above</text>
+    <text class="sub" x="520" y="986" text-anchor="middle">coref.RuleBasedCorefResolver.resolve(raw_text, mentions)</text>
+    <line class="edge" x1="520" y1="998" x2="520" y2="1036" marker-end="url(#ah6)"/>
+    <text class="elbl" x="528" y="1021">anaphor found</text>
+    <rect class="n" x="290" y="1038" width="460" height="50" rx="7"/>
+    <text class="lbl" x="520" y="1060" text-anchor="middle">Persist coref_links row</text>
+    <text class="sub" x="520" y="1076" text-anchor="middle">anaphor span + antecedent span + antecedent_mention_id</text>
+    <text class="tag" x="298" y="1032">see anaphora note below</text>
+    <line class="edge" x1="520" y1="1088" x2="520" y2="1130" marker-end="url(#ah6)"/>
+    <rect class="obj" x="290" y="1132" width="460" height="50" rx="7"/>
+    <text class="lbl" x="520" y="1162" text-anchor="middle">record scan_ledger coverage for this document</text>
+    <line class="edge" x1="520" y1="1182" x2="520" y2="1224" marker-end="url(#ah6)"/>
+    <rect class="n" x="290" y="1226" width="460" height="50" rx="7"/>
+    <text class="lbl" x="520" y="1248" text-anchor="middle">Persist mentions, assertions, identifier_observations, coref_links</text>
+    <text class="sub" x="520" y="1264" text-anchor="middle">repo.add_*() — one transaction per corpus run</text>
+    <circle class="term-o" cx="520" cy="1328" r="12"/>
+    <circle class="term" cx="520" cy="1328" r="6"/>
+    <text class="sub" x="542" y="1332">end</text>
+</svg></div>
+    <figcaption><b>Fig D3</b> Names and identifiers fork because they're validated differently: a name has to look like a name, an identifier has to be found near one (or not — the orphan path is highlighted). Allegory extraction and coreference both run afterward, directly against the raw text and the now-final mention list.</figcaption>
+  </figure>
+  <h3>Worked data example — the orphan identifier path</h3>
+  <div class="tablewrap"><table>
+<thead><tr><th>data going in</th><th>data coming out</th><th>what happened</th></tr></thead><tbody>
+<tr><td class="d-in"><code>SpanCandidate{text:"(312) 555-0148", label:"phone"}</code>, no name on this or the previous line</td><td class="d-out"><code>identifier_observations{kind:"phone", value_norm:"3125550148", subject_mention_id: NULL}</code></td><td class="d-note">Recorded anyway — an identifier with no name nearby is exactly the case this system exists to catch, not a reason to drop it.</td></tr>
+</tbody></table></div>
+  <h3>Worked data example — what "evidence span" means</h3>
+  <div class="tablewrap"><table>
+<thead><tr><th>data going in</th><th>data coming out</th><th>what happened</th></tr></thead><tbody>
+<tr><td class="d-in">subject: mention <code>m0000153</code> ("Robert Miller", chars 40–52)<br>identifier candidate: <code>"(312) 555-0148"</code>, chars 918–932, bound via <code>subject_for()</code></td><td class="d-out"><code>Assertion{subject_mention_id:"m0000153", predicate:"has_phone", object_value_norm:"3125550148", source_span_start:918, source_span_end:932}</code></td><td class="d-note">The assertion's subject points at the name's location; its evidence span (<code>source_span_start/end</code>) points at the phone number's location — a different place in the text. That gap is exactly why evidence span is its own field: the fact is ABOUT the subject, but PROVEN at the evidence span, and the two are not always the same characters.</td></tr>
+</tbody></table></div>
+</section>
+<section id="stage-d3-coref">
+  <h3>What "resolving anaphora to antecedent mentions" means</h3>
+  <p style="max-width:78ch;color:var(--ink-2);font-size:15.5px;margin:0 0 14px">
+    An <b>antecedent</b> is the earlier word or phrase a later reference points back
+    to. An <b>anaphor</b> is that later reference itself — a pronoun, or a
+    descriptor like "the claimant." Coreference resolution is the activity of
+    finding, for every anaphor, which antecedent it points at.
+  </p>
+  <div class="note" style="margin-bottom:14px">John gave Mary a present. <mark class="located">She</mark> loved <mark class="located">it</mark>.</div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>anaphor</th><th>antecedent</th><th>relationship</th></tr></thead>
+    <tbody>
+      <tr><td><code>"She"</code></td><td><code>"Mary"</code></td><td>pronoun refers back to the person named earlier</td></tr>
+      <tr><td><code>"it"</code></td><td><code>"a present"</code></td><td>pronoun refers back to the object named earlier</td></tr>
+    </tbody>
+  </table></div>
+  <h4 style="font-family:Archivo,sans-serif;font-weight:600;font-size:14.5px;margin:20px 0 8px">The same pattern inside a claim note</h4>
+  <div class="tablewrap"><table>
+    <thead><tr><th>data going in</th><th>data coming out</th><th>what happened</th></tr></thead>
+    <tbody>
+      <tr><td class="d-in">"Spoke with <b>Robert Miller</b> regarding the POA update. <b>He</b> confirmed the treating provider remains Alicia Reyes, MD."</td>
+          <td class="d-out"><code>CorefLink{start:73, end:75, surface:"He", antecedent_start:12, antecedent_end:25, antecedent_surface:"Robert Miller", kind:"pronoun"}</code></td>
+          <td class="d-note">"He" is the anaphor; "Robert Miller" — the nearest preceding compatible mention — is resolved as its antecedent.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
 
 <section id="stage-e">
   <h2><span class="num">E</span> Resolve mentions into entities</h2>
   <div class="goal"><span class="goal-h">single goal of this block</span>Decide which mentions refer to the same real-world entity, as a probability per pair rather than a permanent merge.</div>
   <figure>
     <div class="figframe"><svg role="img" aria-label="Activity diagram: mentions become calibrated pairwise edges, then identity is derived as connected components at a chosen threshold" viewBox="0 0 780 1420">
-    <defs><marker id="ah5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker></defs>
+    <defs><marker id="ah7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker></defs>
     <circle class="term" cx="390" cy="20" r="10"/>
     <text class="sub" x="410" y="24">all mentions for the corpus</text>
-    <line class="edge" x1="390" y1="30" x2="390" y2="74" marker-end="url(#ah5)"/>
+    <line class="edge" x1="390" y1="30" x2="390" y2="74" marker-end="url(#ah7)"/>
     <rect class="n" x="230" y="76" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="98" text-anchor="middle">Build one feature row per mention</text>
     <text class="sub" x="390" y="114" text-anchor="middle">entity_resolution.build_mention_frame()</text>
-    <line class="edge" x1="390" y1="126" x2="390" y2="170" marker-end="url(#ah5)"/>
+    <line class="edge" x1="390" y1="126" x2="390" y2="170" marker-end="url(#ah7)"/>
     <text class="elbl" x="398" y="152">frame</text>
     <rect class="n" x="230" y="172" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="194" text-anchor="middle">Null out missing identifiers</text>
     <text class="sub" x="390" y="210" text-anchor="middle">'' would block-explode; NULL is excluded by Splink</text>
-    <line class="edge" x1="390" y1="222" x2="390" y2="266" marker-end="url(#ah5)"/>
+    <line class="edge" x1="390" y1="222" x2="390" y2="266" marker-end="url(#ah7)"/>
     <rect class="obj" x="230" y="268" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="290" text-anchor="middle">mention frame</text>
     <text class="sub" x="390" y="306" text-anchor="middle">name_sorted, first/last, soundex, email, phone7, npi, address_key</text>
-    <line class="edge" x1="390" y1="318" x2="390" y2="362" marker-end="url(#ah5)"/>
+    <line class="edge" x1="390" y1="318" x2="390" y2="362" marker-end="url(#ah7)"/>
     <text class="elbl" x="398" y="344">frame</text>
     <rect class="n" x="230" y="364" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="386" text-anchor="middle">Declare blocking rules</text>
     <text class="sub" x="390" y="402" text-anchor="middle">block_on(email) … block_on(name_sorted), block_on(last_name)</text>
-    <line class="edge" x1="390" y1="414" x2="390" y2="458" marker-end="url(#ah5)"/>
+    <line class="edge" x1="390" y1="414" x2="390" y2="458" marker-end="url(#ah7)"/>
     <rect class="n" x="230" y="460" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="482" text-anchor="middle">Estimate match prior from deterministic rules</text>
     <text class="sub" x="390" y="498" text-anchor="middle">estimate_probability_two_random_records_match()</text>
-    <line class="edge" x1="390" y1="510" x2="390" y2="554" marker-end="url(#ah5)"/>
+    <line class="edge" x1="390" y1="510" x2="390" y2="554" marker-end="url(#ah7)"/>
     <text class="elbl" x="398" y="536">prior</text>
     <rect class="n" x="230" y="556" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="578" text-anchor="middle">Estimate u by random sampling</text>
     <text class="sub" x="390" y="594" text-anchor="middle">estimate_u_using_random_sampling()</text>
-    <line class="edge" x1="390" y1="606" x2="390" y2="650" marker-end="url(#ah5)"/>
+    <line class="edge" x1="390" y1="606" x2="390" y2="650" marker-end="url(#ah7)"/>
     <text class="elbl" x="398" y="632">u values</text>
     <rect class="n" x="230" y="652" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="674" text-anchor="middle">Train m by expectation-maximisation</text>
     <text class="sub" x="390" y="690" text-anchor="middle">one pass per blocking rule; sparse blocks skipped</text>
-    <line class="edge" x1="390" y1="702" x2="390" y2="746" marker-end="url(#ah5)"/>
+    <line class="edge" x1="390" y1="702" x2="390" y2="746" marker-end="url(#ah7)"/>
     <text class="elbl" x="398" y="728">trained model</text>
     <rect class="n" x="230" y="748" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="770" text-anchor="middle">Score every blocked candidate pair</text>
     <text class="sub" x="390" y="786" text-anchor="middle">linker.inference.predict()</text>
-    <line class="edge" x1="390" y1="798" x2="390" y2="842" marker-end="url(#ah5)"/>
+    <line class="edge" x1="390" y1="798" x2="390" y2="842" marker-end="url(#ah7)"/>
     <rect class="obj" x="230" y="844" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="866" text-anchor="middle">same_as_edges rows</text>
     <text class="sub" x="390" y="882" text-anchor="middle">mention_a, mention_b, probability, match_weight</text>
-    <line class="edge" x1="390" y1="894" x2="390" y2="938" marker-end="url(#ah5)"/>
+    <line class="edge" x1="390" y1="894" x2="390" y2="938" marker-end="url(#ah7)"/>
     <polygon class="d" points="390,940 505,969 390,998 275,969"/>
     <text class="lbl" x="390" y="973" text-anchor="middle">structural conflict?</text>
-    <line class="edge" x1="505" y1="969" x2="588" y2="969" marker-end="url(#ah5)"/>
+    <line class="edge" x1="505" y1="969" x2="588" y2="969" marker-end="url(#ah7)"/>
     <text class="elbl" x="546" y="962" text-anchor="middle">yes</text>
     <rect class="n bad" x="590" y="944" width="176" height="50" rx="7"/>
     <text class="lbl" x="678" y="966" text-anchor="middle">Edge suppressed before clustering</text>
     <text class="sub" x="678" y="982" text-anchor="middle">cannot_link_reason() — person vs org, Jr/Sr, conflicting NPI</text>
-    <line class="edge" x1="390" y1="998" x2="390" y2="1042" marker-end="url(#ah5)"/>
+    <line class="edge" x1="390" y1="998" x2="390" y2="1042" marker-end="url(#ah7)"/>
     <text class="elbl" x="398" y="1024">no</text>
-    <line class="edge" x1="390" y1="1044" x2="390" y2="1088" marker-end="url(#ah5)"/>
+    <line class="edge" x1="390" y1="1044" x2="390" y2="1088" marker-end="url(#ah7)"/>
     <rect class="n" x="230" y="1090" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="1112" text-anchor="middle">Union-find over edges ≥ threshold</text>
     <text class="sub" x="390" y="1128" text-anchor="middle">entity_resolution.cluster_at(edges, ids, T)</text>
-    <line class="edge" x1="390" y1="1140" x2="390" y2="1184" marker-end="url(#ah5)"/>
+    <line class="edge" x1="390" y1="1140" x2="390" y2="1184" marker-end="url(#ah7)"/>
     <text class="elbl" x="398" y="1166">components</text>
     <rect class="obj" x="230" y="1186" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="1208" text-anchor="middle">entity_snapshot / entities / entity_members</text>
     <text class="sub" x="390" y="1224" text-anchor="middle">identity is a VIEW at T, never a destructive merge</text>
-    <line class="edge" x1="390" y1="1236" x2="390" y2="1280" marker-end="url(#ah5)"/>
+    <line class="edge" x1="390" y1="1236" x2="390" y2="1280" marker-end="url(#ah7)"/>
     <rect class="n" x="230" y="1282" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="1304" text-anchor="middle">Sweep T to plot the operating curve</text>
     <text class="sub" x="390" y="1320" text-anchor="middle">threshold_sweep() → B³ precision/recall per T</text>
@@ -545,48 +794,48 @@
   <div class="goal"><span class="goal-h">single goal of this block</span>Make entities, their identifiers, and their claim context queryable as one graph where identity is global and claim scope is a filter.</div>
   <figure>
     <div class="figframe"><svg role="img" aria-label="Activity diagram: resolved entities and identifiers become nodes in one global graph, with claim scope as a property rather than a partition" viewBox="0 0 780 940">
-    <defs><marker id="ah6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker></defs>
+    <defs><marker id="ah8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker></defs>
     <circle class="term" cx="390" cy="20" r="10"/>
     <text class="sub" x="410" y="24">resolved entities + identifier observations</text>
-    <line class="edge" x1="390" y1="30" x2="390" y2="74" marker-end="url(#ah6)"/>
+    <line class="edge" x1="390" y1="30" x2="390" y2="74" marker-end="url(#ah8)"/>
     <rect class="n" x="230" y="76" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="98" text-anchor="middle">Emit a node per resolved entity</text>
     <text class="sub" x="390" y="114" text-anchor="middle">build_graph — kind: party | organization</text>
-    <line class="edge" x1="390" y1="126" x2="390" y2="170" marker-end="url(#ah6)"/>
+    <line class="edge" x1="390" y1="126" x2="390" y2="170" marker-end="url(#ah8)"/>
     <text class="elbl" x="398" y="152">entity nodes</text>
     <rect class="n" x="230" y="172" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="194" text-anchor="middle">Emit a node per distinct identifier value</text>
     <text class="sub" x="390" y="210" text-anchor="middle">kind: identifier — first-class, not an attribute</text>
-    <line class="edge" x1="390" y1="222" x2="390" y2="266" marker-end="url(#ah6)"/>
+    <line class="edge" x1="390" y1="222" x2="390" y2="266" marker-end="url(#ah8)"/>
     <text class="elbl" x="398" y="248">identifier nodes</text>
     <rect class="n" x="230" y="268" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="290" text-anchor="middle">Emit claim and occurrence container nodes</text>
     <text class="sub" x="390" y="306" text-anchor="middle">kind: claim | occurrence</text>
-    <line class="edge" x1="390" y1="318" x2="390" y2="362" marker-end="url(#ah6)"/>
+    <line class="edge" x1="390" y1="318" x2="390" y2="362" marker-end="url(#ah8)"/>
     <polygon class="d" points="390,364 505,393 390,422 275,393"/>
     <text class="lbl" x="390" y="397" text-anchor="middle">predicate allowed?</text>
-    <line class="edge" x1="505" y1="393" x2="588" y2="393" marker-end="url(#ah6)"/>
+    <line class="edge" x1="505" y1="393" x2="588" y2="393" marker-end="url(#ah8)"/>
     <text class="elbl" x="546" y="386" text-anchor="middle">banned</text>
     <rect class="n bad" x="590" y="368" width="176" height="50" rx="7"/>
     <text class="lbl" x="678" y="390" text-anchor="middle">Rejected: provenance-as-edge</text>
     <text class="sub" x="678" y="406" text-anchor="middle">MENTIONED_IN / HAS_NOTE — already on every edge as doc_id + span</text>
-    <line class="edge" x1="390" y1="422" x2="390" y2="466" marker-end="url(#ah6)"/>
+    <line class="edge" x1="390" y1="422" x2="390" y2="466" marker-end="url(#ah8)"/>
     <text class="elbl" x="398" y="448">open vocabulary, normalized</text>
-    <line class="edge" x1="390" y1="468" x2="390" y2="512" marker-end="url(#ah6)"/>
+    <line class="edge" x1="390" y1="468" x2="390" y2="512" marker-end="url(#ah8)"/>
     <rect class="n" x="230" y="514" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="536" text-anchor="middle">Link entity → identifier</text>
     <text class="sub" x="390" y="552" text-anchor="middle">HAS_IDENTIFIER, carries confidence + doc_id + span</text>
-    <line class="edge" x1="390" y1="564" x2="390" y2="608" marker-end="url(#ah6)"/>
+    <line class="edge" x1="390" y1="564" x2="390" y2="608" marker-end="url(#ah8)"/>
     <text class="elbl" x="398" y="590">identifier edges</text>
     <rect class="n" x="230" y="610" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="632" text-anchor="middle">Link entity → claim, claim → occurrence</text>
     <text class="sub" x="390" y="648" text-anchor="middle">PARTY_TO / PART_OF containment</text>
-    <line class="edge" x1="390" y1="660" x2="390" y2="704" marker-end="url(#ah6)"/>
+    <line class="edge" x1="390" y1="660" x2="390" y2="704" marker-end="url(#ah8)"/>
     <text class="elbl" x="398" y="686">containment edges</text>
     <rect class="n" x="230" y="706" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="728" text-anchor="middle">Insert into ONE global adjacency</text>
     <text class="sub" x="390" y="744" text-anchor="middle">claim_id is a node/edge property, not a partition</text>
-    <line class="edge" x1="390" y1="756" x2="390" y2="800" marker-end="url(#ah6)"/>
+    <line class="edge" x1="390" y1="756" x2="390" y2="800" marker-end="url(#ah8)"/>
     <rect class="obj" x="230" y="802" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="824" text-anchor="middle">global entity graph</text>
     <text class="sub" x="390" y="840" text-anchor="middle">claim scoping happens at query time, as a filter</text>
@@ -603,13 +852,61 @@
 <tr><td class="d-in"><code>predicate: "MENTIONED_IN"</code></td><td class="d-out"><span class='drop'>rejected</span></td><td class="d-note">Provenance-as-edge is refused because every real edge already carries doc_id and span — admitting it would double the graph's size with information it already holds.</td></tr>
 </tbody></table></div>
 </section>
+
+<section id="entity-class">
+  <h2><span class="num">—</span> What entity_class is for, and whether it's the right shape</h2>
+  <div class="goal"><span class="goal-h">what's actually being classified</span>
+    A per-mention label — not a per-entity one, so it can legitimately vary
+    across mentions of the same real person — set once by <code>_classify()</code>
+    in Fig D3, from surface-intrinsic signals first (org suffixes, "Dr."), then
+    context on either side (an internal carrier domain, an external firm name,
+    a "Clmt Atty —" template cue).</div>
+  <p style="max-width:78ch;color:var(--ink-2)">
+    Today it's a closed five-value set: <code>claimant, attorney,
+    medical_provider, repair_shop, adjuster</code>. It does two jobs that
+    deserve different answers.
+  </p>
+  <p style="max-width:78ch;color:var(--ink-2)">
+    <strong>Person vs. organization</strong> is genuinely binary and load-bearing
+    — entity resolution's <code>cannot_link_reason()</code> uses exactly this
+    distinction to refuse merging a person into a repair shop. A closed set is
+    correct here because there are only ever two real values.
+  </p>
+  <p style="max-width:78ch;color:var(--ink-2)">
+    <strong>Role in the claim</strong> is a different question wearing the same
+    field, and it's the same restrictive-box mistake the predicate whitelist
+    was earlier in this project — closed to five roles when a real claim has
+    witnesses, employers, landlords, public adjusters, SIU investigators,
+    family members, opposing counsel. It's not hypothetical: the code's own
+    fallback is <code>LABEL_TO_CLASS.get(label, "claimant")</code> — a generic
+    "person" mention that matches none of the specific signals is silently
+    <em>labeled claimant by default</em>, and a generic "organization" is
+    silently labeled <code>medical_provider</code>. That's not a missing
+    bucket, it's an active mislabel.
+  </p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>surface</th><th>context</th><th>_classify() returns today</th><th>actually is</th></tr></thead>
+    <tbody>
+      <tr><td><code>"Marisol Vega"</code></td><td>no matched cue</td><td><code>claimant</code></td><td>a witness</td></tr>
+      <tr><td><code>"Sunrise Property Mgmt"</code></td><td>no matched cue</td><td><code>medical_provider</code></td><td>the claimant's landlord</td></tr>
+    </tbody>
+  </table></div>
+  <p style="max-width:78ch;color:var(--ink-2)">
+    The fix is the same shape as the predicate fix: split the field.
+    <code>entity_type: person | organization</code> stays closed and keeps
+    doing resolution's structural job. <code>role</code> becomes open
+    vocabulary — a short common list for filtering convenience, normalized
+    toward canonical forms, with no default fallback: an unmatched mention
+    gets <code>role: null</code>, not a guess dressed up as a fact.
+  </p>
+</section>
+
 <section>
   <h2><span class="num">—</span> Out of scope here, and what's queued next</h2>
   <p style="max-width:78ch;color:var(--ink-2)">
-    These six diagrams stop where identity and linkage are established. Query-time
-    retrieval (Layer 4 — claim-filtered chunk search plus cross-claim entity
-    enrichment) is deliberately not drawn: it consumes this output rather than
-    producing it, and mixing the two makes both harder to read.
+    These diagrams stop where identity and linkage are established. Query-time
+    retrieval (Layer 4) is deliberately not drawn: it consumes this output
+    rather than producing it.
   </p>
   <div class="backlog">
     <div class="h">Backlog — agreed, not drawn yet</div>
@@ -625,6 +922,6 @@
   </div>
 </section>
 
-<footer>designs/pipeline-activity-diagrams.html · companion: designs/data-scientist-manual.html, ARCHITECTURE.md</footer>
+<footer>designs/pipeline-activity-diagrams.html · companion: designs/data-scientist-manual.html, ARCHITECTURE.md · mermaid sources: designs/mermaid/</footer>
 </body>
 </html>
