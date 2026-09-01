@@ -12,34 +12,47 @@ flowchart TD
   classDef ex   fill:#FBFCFD,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:3 3,color:#33404F
   classDef warn fill:#FFF6E8,stroke:#B4650A,stroke-width:1.3px,stroke-dasharray:5 3,color:#3A2C16
   classDef term fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
-
+  classDef research fill:#EEE9F5,stroke:#6B5B95,stroke-width:1.2px,stroke-dasharray:5 3,color:#2E2640
+  classDef proposed fill:#E4F2EA,stroke:#2F6B4F,stroke-width:2px,stroke-dasharray:7 3,color:#12301F
 
   E0(["all mentions for the corpus"]):::term
   E1["<b>Build one feature row per mention</b><br/><i>entity_resolution.build_mention_frame</i>"]:::act
-  E2["<b>Null out missing identifiers</b><br/>empty string would block-explode; NULL is excluded by Splink"]:::act
-  E3["<b>mention frame</b><br/>name_sorted, first / last, soundex, email, phone7, npi, address_key"]:::obj
-  E4["<b>Declare blocking rules</b><br/>block_on email … block_on name_sorted, block_on last_name"]:::act
-  E5["<b>Estimate match prior from deterministic rules</b><br/><i>estimate_probability_two_random_records_match</i>"]:::act
-  E6["<b>Estimate u by random sampling</b><br/><i>estimate_u_using_random_sampling</i>"]:::act
-  E7["<b>Train m by expectation-maximisation</b><br/>one pass per blocking rule; sparse blocks skipped"]:::act
-  E8["<b>Score every blocked candidate pair</b><br/><i>linker.inference.predict</i>"]:::act
-  E9["<b>same_as_edges rows</b><br/>mention_a, mention_b, probability, match_weight"]:::obj
-  E10{"structural conflict?"}:::dec
-  E11["<b>Edge suppressed before clustering</b><br/><i>cannot_link_reason</i> — person vs org, Jr/Sr, conflicting NPI"]:::bad
-  E12["<b>Union-find over edges ≥ threshold</b><br/><i>entity_resolution.cluster_at</i> over edges, ids, T"]:::act
-  E13["<b>entity_snapshot / entities / entity_members</b><br/>identity is a VIEW at T, never a destructive merge"]:::key
-  E14["<b>Sweep T to plot the operating curve</b><br/><i>threshold_sweep</i> → B³ precision / recall per T"]:::act
-  E15(["to graph assembly"]):::term
+  E2["<b>Derive the blocking keys from the surface</b><br/>full_name · name_sorted = sorted tokens<br/>first_name = toks[0] · last_name = toks[-1] · soundex(last)"]:::key
+  E3["<b>Null out missing identifiers</b><br/>empty string would block-explode; NULL is excluded by Splink"]:::act
+  E4["<b>mention frame</b><br/>name keys + email, phone7, npi, tin, dob, address_key"]:::obj
+  E5["<b>Declare blocking rules</b><br/>email · npi · tin · phone7 · address_key<br/>full_name · name_sorted · soundex+first_name · last_name"]:::act
+  E6["<b>Estimate match prior from deterministic rules</b>"]:::act
+  E7["<b>Estimate u by random sampling</b>"]:::act
+  E8["<b>Train m by expectation-maximisation</b><br/>one pass per blocking rule; sparse blocks skipped"]:::act
+  E9["<b>Score every blocked candidate pair</b><br/><i>linker.inference.predict</i>"]:::act
+  E10["<b>same_as_edges rows</b><br/>mention_a, mention_b, probability, match_weight"]:::obj
+  E11{"structural conflict?"}:::dec
+  E12["<b>Edge suppressed before clustering</b><br/><i>cannot_link_reason</i> — person vs org, Jr/Sr, conflicting NPI"]:::bad
+  E13["<b>Union-find over edges ≥ threshold</b><br/><i>entity_resolution.cluster_at</i>"]:::act
+  E14["<b>entity_snapshot / entities / entity_members</b><br/>identity is a VIEW at T, never a destructive merge"]:::key
+  E15["<b>Sweep T to plot the operating curve</b><br/>B³ precision / recall per threshold"]:::act
+  E16(["to graph assembly — diagram 08"]):::term
 
-  E0 --> E1 --> E2 --> E3 --> E4 --> E5 --> E6 --> E7 --> E8 --> E9 --> E10
-  E10 -->|"yes"| E11
-  E10 -->|"no"| E12 --> E13 --> E14 --> E15
+  E0 --> E1 --> E2 --> E3 --> E4 --> E5 --> E6 --> E7 --> E8 --> E9 --> E10 --> E11
+  E11 -->|"yes"| E12
+  E11 -->|"no"| E13 --> E14 --> E15 --> E16
 
   EX1["<b>in</b> — mention pair m0000153 'Robert Miller' and m0000891 'R. Miller', same phone last-7<br/><b>out</b> — same_as_edges probability=0.94, match_weight=+6.2<br/><i>The pair is scored, not merged. A number survives into storage where a yes/no decision would have destroyed the evidence.</i>"]:::ex
-  E9 -.->|"example"| EX1
+  E10 -.->|"example"| EX1
 
-  EX2["<b>in</b> — all edges, threshold T=0.90<br/><b>out</b> — entity_snapshot rows grouping m0000153 + m0000891 under one entity_id at that T<br/><i>Identity is recomputed per threshold, so raising or lowering T re-partitions the corpus without re-running resolution.</i>"]:::ex
-  E13 -.->|"example"| EX2
+  EX2["<b>in</b> — all edges, threshold T=0.90<br/><b>out</b> — entity_snapshot rows grouping both mentions under one entity_id at that T<br/><i>Identity is recomputed per threshold, so raising or lowering T re-partitions the corpus without re-running resolution.</i>"]:::ex
+  E14 -.->|"example"| EX2
 
-  EX3["<b>in</b> — 'Miller Auto Body' (organization) and 'Robert Miller' (person), high name similarity<br/><b>out</b> — edge suppressed, never reaches clustering<br/><i>A hard structural constraint, applied as edge suppression rather than a permanent veto — this is the bug class that used to fragment one person into ten entities.</i>"]:::ex
-  E11 -.->|"example"| EX3
+  EX3["<b>in</b> — 'Miller Auto Body' (organization) and 'Robert Miller' (person), high name similarity<br/><b>out</b> — edge suppressed, never reaches clustering<br/><i>A hard structural constraint applied as edge suppression rather than a permanent veto. Note this is the ONE place entity_class is load-bearing — see the proposal in diagram 06, which keeps person/organization closed precisely so this keeps working.</i>"]:::ex
+  E12 -.->|"example"| EX3
+
+  %% ---------------- PROPOSED CHANGE 2 -------------------------------
+  PROP2["<b>PROPOSED — normalize the mention surface before deriving keys</b><br/>Not yet built. This node inserts between E1 and E2.<br/><br/>Strip leading role and title tokens from the surface used for BLOCKING, while the stored mention surface and its char offsets stay exactly as extracted.<br/><br/><i>Model-agnostic, and it belongs here rather than in an extractor: the retired regex scanner had a version of this (_LEADING_NOISE), but as a corpus-fitted denylist inside extraction. The need was real; the location and the shape were wrong.</i>"]:::proposed
+  E1 -.->|"proposed insertion point"| PROP2
+  PROP2 -.-> E2
+
+  PROP2B["<b>Measured evidence for it, this machine, GLiNER multi-v2.1</b><br/>Exact span-boundary agreement across casing regimes: <b>24/31 = 77%</b>. Recall was 100% in every regime — casing does not cost detections, it moves <b>boundaries</b>.<br/><br/>Observed disagreements:<br/>· 'adjuster Karen Wu' vs 'Karen Wu'<br/>· 'Claimant Deborah Fitzgerald' vs 'Deborah Fitzgerald'<br/>· 'SIU' found in mixed case, lost in BOTH ALL CAPS and lowercase<br/><br/><i>Role-word absorption also happens in MIXED case — 'Claimant Deborah Fitzgerald' was the normally-cased output — so this is not a casing bug. Casing only changes which words get absorbed.</i>"]:::ex
+  PROP2 -.->|"why"| PROP2B
+
+  PROP2C["<b>What it actually costs today</b><br/>Not invisibility. last_name = toks[-1], and role words are LEADING, so 'adjuster Karen Wu' and 'Karen Wu' both key to 'wu' and still meet under block_on(last_name).<br/><br/>But <b>three of eight blocking rules miss</b>:<br/>· full_name — 'adjuster karen wu' ≠ 'karen wu'<br/>· name_sorted — 'adjuster karen wu' ≠ 'karen wu'<br/>· soundex+first_name — first_name 'adjuster' vs 'karen'<br/><br/>and when the pair does meet, <b>ForenameSurnameComparison(first_name, last_name) scores it DOWN</b> because first_name disagrees.<br/><br/><i>So the real cost is a depressed match probability on true pairs, not a missing pair. That is a subtler failure than it first looked, and it degrades the calibration the whole threshold story rests on.</i>"]:::warn
+  PROP2B -.-> PROP2C

@@ -12,46 +12,51 @@ flowchart TD
   classDef ex   fill:#FBFCFD,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:3 3,color:#33404F
   classDef warn fill:#FFF6E8,stroke:#B4650A,stroke-width:1.3px,stroke-dasharray:5 3,color:#3A2C16
   classDef term fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
-
+  classDef research fill:#EEE9F5,stroke:#6B5B95,stroke-width:1.2px,stroke-dasharray:5 3,color:#2E2640
+  classDef proposed fill:#E4F2EA,stroke:#2F6B4F,stroke-width:2px,stroke-dasharray:7 3,color:#12301F
 
   D0(["one chunk — text + absolute offsets"]):::term
   FORK["<b>fork</b> — three independent extractors read the same chunk text"]:::bar
   D0 --> FORK
 
-  subgraph LANE1["Lane 1 · Token-NER — deterministic name shapes"]
+  subgraph LANE1["Lane 1 · Token-NER — GLiNER, REQUIRED"]
     direction TB
-    L1["<b>Regex name-shape scan</b><br/><i>DeterministicTokenNER._RE_SEQ / _RE_FLIP / _RE_TITLED</i>"]:::act
-    L2["<b>Trim sentence-opener words</b><br/>strip _LEADING_NOISE; offsets stay byte-exact"]:::act
-    L3["<b>Reject all-stopword spans</b><br/>surface ⊆ _STOP → discarded"]:::act
+    L1["<b>Load the production backend</b><br/><i>ner_ensemble.get_token_ner</i> → GlinerBackend"]:::act
+    L1E["<b>NERBackendUnavailable</b><br/>raised if the weights cannot load — the run STOPS"]:::bad
+    L2["<b>Zero-shot span scan over every token</b><br/>GLINER_THRESHOLD 0.35, recall-first"]:::act
+    L3["<b>Drop pronouns / vague descriptors</b><br/><i>coref.is_anaphor</i>"]:::act
     L4["<b>Emit SpanCandidate</b><br/>extractors = token_ner"]:::act
-    L1 --> L2 --> L3 --> L4
+    L1 -->|"cannot load"| L1E
+    L1 -->|"loaded"| L2 --> L3 --> L4
   end
 
-  subgraph LANE2["Lane 2 · Gazetteer — patterns with structural validation"]
+  subgraph LANE2["Lane 2 · Gazetteer — patterns, with honest validation strength"]
     direction TB
-    M1["<b>Pattern scan</b><br/><i>gazetteers.scan</i> — phone / email / npi / claim_id / …"]:::act
-    M2["<b>Validation — strength varies by label</b><br/>checksum: npi only · format: email, phone, icd10, cpt · none: the rest"]:::act
-    M3["<b>Keep only valid hits</b><br/>invalid checksum → discarded here, not downstream"]:::act
-    M4["<b>Emit SpanCandidate</b><br/>extractors = gazetteer; score 1.0 valid / 0.5 unvalidated"]:::act
-    M1 --> M2 --> M3 --> M4
+    M1["<b>Pattern scan</b><br/><i>gazetteers.scan</i> — phone / email / npi / ssn / tin / address / …"]:::act
+    M2["<b>Record validation STRENGTH, not a bare boolean</b><br/>checksum: npi only · format: email, phone, icd10, cpt · none: the rest"]:::key
+    M3["<b>Emit SpanCandidate</b><br/>extractors = gazetteer; score 1.0 / 0.8 / 0.6 by strength"]:::act
+    M1 --> M2 --> M3
   end
 
   subgraph LANE3["Lane 3 · LLM semantic pass — what no pattern encodes"]
     direction TB
+    R0{"API key present?"}:::dec
+    R0E["<b>LLMExtractorUnavailable</b><br/>raised when offline was FALLEN INTO rather than chosen"]:::bad
     R1["<b>Build extraction prompt</b><br/>chunk text + allowed label enum"]:::act
     R2["<b>Constrained JSON generation</b><br/><i>genai.generate_json with _llm_ner_schema</i>"]:::act
-    R3["<b>Drop pronouns / vague descriptors</b><br/><i>coref.is_anaphor</i> filter; clip offsets to chunk"]:::act
+    R3["<b>Drop pronouns / clip offsets to chunk</b>"]:::act
     R4["<b>Emit SpanCandidate</b><br/>extractors = llm; carries a free-text description"]:::act
-    R1 --> R2 --> R3 --> R4
+    R0 -->|"no, and GENAI_MODE unset"| R0E
+    R0 -->|"yes"| R1 --> R2 --> R3 --> R4
   end
 
   FORK --> L1
   FORK --> M1
-  FORK --> R1
+  FORK --> R0
 
-  JOIN["<b>join</b> — union_spans · see diagram 05 for the merge rule itself"]:::bar
+  JOIN["<b>join</b> — union_spans · see diagram 05 for the merge rule"]:::bar
   L4 --> JOIN
-  M4 --> JOIN
+  M3 --> JOIN
   R4 --> JOIN
 
   P1["<b>per-chunk candidate list</b><br/>post first union"]:::obj
@@ -64,10 +69,10 @@ flowchart TD
   S1["<b>Find text spans no candidate covers</b><br/><i>sweep.uncovered_candidates</i>"]:::act
   S2["<b>Differential-audit prompt: 'what is missing?'</b><br/>shown its own extraction list, asked only for the gaps"]:::key
   S3["<b>Second constrained LLM pass</b><br/>low-salience recall net — paralegals, codes, secondary providers"]:::act
-  S4["<b>Union sweep results into the pool</b><br/><i>union_spans over spans + extra</i>"]:::act
+  S4["<b>Union sweep results into the pool</b>"]:::act
   SW -->|"yes"| S1 --> S2 --> S3 --> S4
 
-  P2["<b>final per-chunk candidate dataset</b><br/>repeats for every chunk in the note"]:::obj
+  P2["<b>final per-chunk candidate dataset</b>"]:::obj
   S4 --> P2
   SKIP --> P2
   MERGE["<b>Merge every chunk's candidates for this document</b><br/>second union_spans call — cross-chunk overlaps collapse too"]:::act
@@ -75,32 +80,18 @@ flowchart TD
   P3["<b>per-document candidate pool</b><br/>→ continues in diagram 06"]:::obj
   MERGE --> P3 --> D9(["to filter / classify / persist"]):::term
 
-  LX1["<b>in</b> — '…transfer note. Contacted James Moore per yesterday's…'<br/><b>out</b> — raw regex hit 'Contacted James Moore' at 800:823<br/><i>The capitalized-run pattern matches greedily and swallows the sentence-opening verb.</i>"]:::ex
-  L1 -.->|"example"| LX1
-  LX2["<b>in</b> — 'Contacted James Moore' at 800:823<br/><b>out</b> — 'James Moore' at 812:823<br/><i>The leading token is a known sentence-opener, so it is stripped; the offset shifts but stays byte-exact.</i>"]:::ex
-  L2 -.->|"example"| LX2
-  LX3["<b>in</b> — 'Claims Department' at 40:58<br/><b>out</b> — discarded<br/><i>Every token in the span is a structural stopword, so it is rejected before it can become a candidate.</i>"]:::ex
-  L3 -.->|"example"| LX3
-  LX4["<b>in</b> — 'James Moore' at 812:823<br/><b>out</b> — SpanCandidate start=812, end=823, text='James Moore', label='person', extractors=token_ner, score=0.75<br/><i>A surviving span is packaged into the common candidate type every lane emits.</i>"]:::ex
-  L4 -.->|"example"| LX4
+  RESEARCH["<b>src/research/ — NOT reachable from this path</b><br/>DeterministicTokenNER (capitalized-run regex) and the salience LLM stub.<br/>Entered only by naming them: NER_BACKEND=deterministic, GENAI_MODE=offline.<br/><i>There is no automatic route into this box. Both were previously silent fallbacks, which is why every recall number measured before that change described a regex rather than a model, and why the three-way union was really two-way.</i>"]:::research
+  L1E -.->|"opt-in only"| RESEARCH
+  R0E -.->|"opt-in only"| RESEARCH
 
-  MX1["<b>in</b> — '…callback left at (312) 555-0148, no name given…'<br/><b>out</b> — raw pattern hit '(312) 555-0148' at 918:932, label='phone'<br/><i>The identifier shape matches on its own, independent of any nearby name.</i>"]:::ex
-  M1 -.->|"example"| MX1
-  MX2["<b>in</b> — 'NPI 1568291037'<br/><b>out</b> — valid=True, validation='checksum'<br/><i>A real Luhn check over '80840' + the first 9 digits, the NPPES standard. A random 10-digit string passes with p≈0.1, so this genuinely discriminates. <b>npi is the only label with a real check digit.</b></i>"]:::ex
+  MEAS["<b>Measured on this machine, GLiNER multi-v2.1</b><br/>Recall was <b>identical</b> across casing regimes — mixed 9/9, ALL CAPS 9/9, lowercase 9/9.<br/>The retired regex scanner on the same sentences: 9/9, then 5/9 with <b>11 spurious spans</b>, then <b>0/9</b>.<br/><i>Capitalization fragility was a property of that backend, not of the architecture. Small sample (7 sentences), but the gap is not subtle. What casing DOES move is span boundaries — see diagram 07.</i>"]:::ex
+  L2 -.->|"casing probe"| MEAS
+
+  MX1["<b>in</b> — 'NPI 1568291037'<br/><b>out</b> — valid=True, validation='checksum'<br/><i>A real Luhn check over '80840' plus the first 9 digits (the NPPES standard). A random 10-digit string passes with p≈0.1, so this genuinely discriminates.</i>"]:::ex
+  M2 -.->|"example"| MX1
+
+  MX2["<b>in</b> — 'SSN 123-45-6789'<br/><b>out</b> — valid=True, validation='none'<br/><i>Nothing beyond the pattern was checked. This previously re-ran the identical regex that had already matched and called the result validation — tautological, and it read in code and in this diagram as though a real check had occurred. Of 14 patterns exactly one carries a check digit; 7 have none.</i>"]:::ex
   M2 -.->|"example"| MX2
-  MX3["<b>in</b> — 'SSN 123-45-6789'<br/><b>out</b> — valid=True, validation='none'<br/><i>Nothing beyond the pattern was checked. This previously re-ran the identical regex that had already matched and called the result validation — tautological, and it read in code and in this diagram as though a real check had occurred. ssn and tin now report validation='none' honestly, and the ensemble scores them lower than a checksum-verified hit.</i>"]:::ex
-  M3 -.->|"example"| MX3
-  MX4["<b>in</b> — GazetteerHit start=918, end=932, text='(312) 555-0148', label='phone', valid=true<br/><b>out</b> — SpanCandidate with extractors=gazetteer, score=1.0<br/><i>A validated hit converts 1:1 into a candidate at full confidence.</i>"]:::ex
-  M4 -.->|"example"| MX4
 
-  RX1["<b>in</b> — chunk text, 190 words<br/><b>out</b> — 'Extract every entity mention… Labels: person, organization, …' followed by the chunk between delimiters, including '…Lakeshore Imaging Center performed the follow-up scan…'<br/><i>The whole chunk is embedded in one instruction asking for every mention, not just the ones a pattern would catch.</i>"]:::ex
-  R1 -.->|"example"| RX1
-  RX2["<b>in</b> — the prompt above<br/><b>out</b> — entities: text='Lakeshore Imaging Center', label='organization', start=214, end=238, description='secondary imaging provider, mentioned once', confidence=0.8<br/><i>Output is constrained to this exact JSON shape — the model cannot return free prose instead.</i>"]:::ex
-  R2 -.->|"example"| RX2
-  RX3["<b>in</b> — text='She', label='person', start=260, end=263<br/><b>out</b> — discarded<br/><i>A pronoun slipped past the prompt's instruction; the anaphor filter catches it before it becomes a candidate.</i>"]:::ex
-  R3 -.->|"example"| RX3
-  RX4["<b>in</b> — text='Lakeshore Imaging Center', start=214, end=238 — chunk-relative<br/><b>out</b> — SpanCandidate start=chunk_offset+214, end=chunk_offset+238, label='organization', extractors=llm, description carried through<br/><i>The chunk-relative offset is shifted to the document-absolute offset the other two lanes already use.</i>"]:::ex
-  R4 -.->|"example"| RX4
-
-  SX["<b>in</b> — the chunk plus the candidate list already found<br/><b>out</b> — only the mentions absent from that list<br/><i>This is a differential audit, not a repeat of the first pass: the model is shown its own answer and asked what it missed, which is why it surfaces low-salience mentions the first pass skimmed over.</i>"]:::ex
+  SX["<b>in</b> — the chunk plus the candidate list already found<br/><b>out</b> — only the mentions absent from that list<br/><i>A differential audit, not a repeat of the first pass: the model is shown its own answer and asked what it missed.</i>"]:::ex
   S2 -.->|"example"| SX

@@ -22,6 +22,30 @@ below are generated copies so they render on GitHub — regenerate with
 | rectangle, red fill | data discarded here |
 | rectangle, amber fill | a path worth noticing |
 | dashed box, dotted edge | worked data example, or a design caveat |
+| **green, thick dashed** | **PROPOSED — designed, not built.** Shown at the point in the flow where it would land, so it can be reviewed in place. |
+| purple, dashed | `src/research/` — corpus-fitted, unimported by the pipeline, entered only by naming it |
+
+## Proposed changes currently on the board
+
+Both are drawn into the diagram at their insertion point rather than described
+separately, so the review question is "does this belong here?" and not "where
+would this go?".
+
+| # | change | where | status |
+|---|---|---|---|
+| 1 | Split `entity_class` into a closed `entity_type` (person / organization) and an **open** `role` defaulting to `NULL` | [diagram 06](06-filter-classify-persist.mermaid), replacing the *Classify entity_class* node | designed, not built |
+| 2 | Normalize the mention surface (strip leading role/title tokens) before deriving ER blocking keys | [diagram 07](07-entity-resolution.mermaid), inserted between *build_mention_frame* and *derive blocking keys* | designed, not built |
+
+Proposal 1 fixes a live defect: `_classify` falls back to
+`LABEL_TO_CLASS.get(label, "claimant")`, so an unmatched person is silently
+stored as a claimant and an unmatched organization as a medical provider — a
+guess written into a field readers treat as a fact.
+
+Proposal 2 is backed by measurement rather than intuition: on this machine
+GLiNER's recall was identical across casing regimes (9/9 mixed, ALL CAPS and
+lowercase), but exact span-boundary agreement was only 24/31 = 77%, and the
+disagreements were leading role words (`adjuster Karen Wu` vs `Karen Wu`).
+Role-word absorption happens in mixed case too, so it is not a casing bug.
 
 Two notational compromises, since Mermaid's flowchart grammar is not UML:
 
@@ -77,13 +101,13 @@ flowchart TD
   A2 -.->|"example"| AX1
 ```
 
-### B — Source claim identity, then segment the note
+### B — Source claim identity, then segment and score the note
 
 Source: [`02-claim-identity-and-segmentation.mermaid`](02-claim-identity-and-segmentation.mermaid)
 
 ```mermaid
 ---
-title: "B — Source claim identity, then segment the note"
+title: "B — Source claim identity, then segment and score the note"
 ---
 flowchart TD
   classDef act  fill:#EDF0F4,stroke:#4A5666,stroke-width:1.2px,color:#10151C
@@ -96,40 +120,48 @@ flowchart TD
   classDef ex   fill:#FBFCFD,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:3 3,color:#33404F
   classDef warn fill:#FFF6E8,stroke:#B4650A,stroke-width:1.3px,stroke-dasharray:5 3,color:#3A2C16
   classDef term fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
-
+  classDef research fill:#EEE9F5,stroke:#6B5B95,stroke-width:1.2px,stroke-dasharray:5 3,color:#2E2640
+  classDef proposed fill:#E4F2EA,stroke:#2F6B4F,stroke-width:2px,stroke-dasharray:7 3,color:#12301F
 
   B0(["frozen note file"]):::term
   B1["<b>Parse claim_number + note_id from filename</b><br/>filename pattern: ClaimNumber_NoteID.txt"]:::act
   B2["<b>Join against the client's occurrence table</b><br/>Occurrence Number · Claim Number · Note ID<br/>client-provided, never extracted from text"]:::key
   B3["<b>doc_id → claim_id + occurrence_id</b><br/>structural metadata, known before any text is read"]:::obj
   B4["<b>Split note into physical lines</b><br/><i>profiling._line_spans</i>"]:::act
-  B5["<b>Classify each line by shape</b><br/><i>profiling._classify_line</i> — 5 regexes + a signature latch"]:::act
-  B6["<b>Group runs of like lines into segments</b><br/><i>profiling.segment_document</i>"]:::act
-  B7{"segment kind?"}:::dec
-  B8["<b>Marked as excluded range</b><br/>the NAME lane in D3 drops candidates inside it"]:::muted
-  B9["<b>Fingerprint template blocks</b><br/><i>profiling.template_fingerprint</i> — hash of the label sequence"]:::act
-  B10["<b>MinHash shingles → near-dup groups</b><br/><i>profiling._minhash + assign_dup_groups</i>"]:::act
-  B11["<b>segments rows</b><br/>kind, char_start, char_end, dup_group_id"]:::obj
-  B12(["ready for chunking"]):::term
+  B5{"line begins a quoted chain?"}:::dec
+  B6["<b>kind = quoted</b><br/>a re-sent chain; a mention inside it is not a new sighting"]:::act
+  B7["<b>kind = body</b><br/>everything else"]:::act
+  B8["<b>Group runs of like lines into segments</b><br/><i>profiling.segment_document</i> — stateless, no latch"]:::act
+  B9["<b>Score each segment; never gate on it</b><br/><i>boilerplate_score</i> over a disclaimer cue bundle<br/><i>casing.profile</i> → regime + case_informative"]:::key
+  B10["<b>Fingerprint form-like segments</b><br/><i>profiling.template_fingerprint</i> — hash of the label sequence"]:::act
+  B11["<b>MinHash shingles → near-dup groups</b><br/><i>profiling._minhash + assign_dup_groups</i><br/>content-based; the part of Layer 0 that generalizes cleanly"]:::act
+  B12["<b>segments rows</b><br/>kind, char_start, char_end, dup_group_id,<br/>boilerplate_score, casing_regime, case_informative"]:::obj
+  B13(["ready for chunking"]):::term
 
-  B0 --> B1 --> B2 --> B3 --> B4 --> B5 --> B6 --> B7
-  B7 -->|"boilerplate"| B8
-  B7 -->|"narrative / template / email"| B9 --> B10 --> B11 --> B12
+  B0 --> B1 --> B2 --> B3 --> B4 --> B5
+  B5 -->|"yes"| B6
+  B5 -->|"no"| B7
+  B6 --> B8
+  B7 --> B8
+  B8 --> B9 --> B10 --> B11 --> B12 --> B13
 
   BX1["<b>in</b> — CLM00182_0734.txt, the filename as delivered<br/><b>out</b> — claim_number='CLM00182', note_id='0734'<br/><i>Parsed directly from the name; no text has been read yet.</i>"]:::ex
   B1 -.->|"example"| BX1
 
-  BX2["<b>in</b> — join row: OCC0091 · CLM00182 · 0734<br/><b>out</b> — doc_id='note_0734' → claim_id='CLM00182', occurrence_id='OCC0091'<br/><i>A join on claim_number + note_id resolves the occurrence. Structural metadata established before extraction runs — not a claim about what the text says.</i>"]:::ex
+  BX2["<b>in</b> — join row: OCC0091 · CLM00182 · 0734<br/><b>out</b> — doc_id='note_0734' → claim_id='CLM00182', occurrence_id='OCC0091'<br/><i>Structural metadata established before extraction runs — not a claim about what the text says. The old CLM-plus-4-digits text fallback is gone: it only ever matched our own synthetic corpus, and on real data would mint an identity from any four digits following those letters.</i>"]:::ex
   B2 -.->|"example"| BX2
 
-  BX3["<b>in</b> — 'Claimant: Jones' / 'D.O.B 04/11/1979' / blank / 'Spoke with Robert Miller regarding…'<br/><b>out</b> — kind='template_block' chars 0–41; kind='narrative' chars 43–512<br/><i>Runs of similarly-shaped lines become one typed segment each, so the label-value header and the prose below it are handled by different logic downstream.</i>"]:::ex
-  B6 -.->|"example"| BX3
+  BX3["<b>in</b> — 'This e-mail and any attachments are confidential and may be legally privileged. If you are not the intended recipient, any dissemination is unauthorized.'<br/><b>out</b> — boilerplate_score = 1.00<br/><i>Wording our generator never produced. The previous rule was three literal phrases and would have scored this 0, leaving every name inside a real disclaimer exposed to the name filter.</i>"]:::ex
+  B9 -.->|"example"| BX3
 
-  BX4["<b>in</b> — 'CONFIDENTIALITY NOTICE: This message is intended…'<br/><b>out</b> — kind='boilerplate' → excluded character range<br/><i>Legal footer text is typed as boilerplate and its range excluded, so names inside it never reach the name-shape filter.</i>"]:::ex
-  B8 -.->|"example"| BX4
+  BX4["<b>in</b> — 'Counsel asserted attorney-client privilege over the file notes.'<br/><b>out</b> — boilerplate_score = 0.48, below the 0.5 flag<br/><i>Narrative that merely mentions privilege is not a disclaimer. And because the score is advisory, being wrong here costs a flag, never a deleted name.</i>"]:::ex
+  B9 -.->|"example"| BX4
 
-  BW["<b>Known limitation of this classifier</b><br/>It is 5 regexes over a single line plus one stateful flag — not a learned model.<br/>· <b>SIG_MARK_RE</b> matches only a bare '--' line, the Usenet signature convention. Outlook rarely emits it, and the in_sig flag is a <b>one-way latch</b>: once set it is never cleared, so one stray '--' turns the whole rest of the note into email_signature.<br/>· <b>BOILER_RE</b> is three hardcoded English phrases; a disclaimer worded differently is not excluded, and its names reach the name filter.<br/>· <b>LABEL_RE</b> fires on any line starting 'Word:', so narrative openers like 'Update: spoke with counsel' are typed template_block.<br/><i>These labels are a hard gate today — D3 drops name candidates inside a boilerplate range — so a miss costs precision and a false positive silently deletes real names. Measure on real client notes before trusting it; prefer making the label advisory over widening the regexes.</i>"]:::warn
-  B5 -.->|"caveat"| BW
+  BX5["<b>in</b> — an ALL CAPS header block above a normally-cased body<br/><b>out</b> — header: regime='upper', case_informative=0 · body: regime='mixed', case_informative=1<br/><i>Profiled per segment, because the common legacy shape is a case-degenerate header sitting on a clean narrative. Recorded for measurement — it no longer routes anything, see diagram 04.</i>"]:::ex
+  B9 -.->|"example"| BX5
+
+  BW["<b>What was removed here, and why</b><br/>Seven segment kinds became two. template_block, narrative, email_header, email_body and email_signature had <b>no consumer</b> in the production path, and were produced by the module's most fragile rules.<br/>· The signature rule matched only a bare double-hyphen line — the Usenet convention, which Outlook does not emit — and drove a latch that was <b>never cleared</b>, so one stray divider retyped the whole rest of a note as signature.<br/>· Boilerplate was a <b>hard kind</b>: a misclassification silently deleted every real name inside the segment, and a differently-worded disclaimer excluded nothing at all.<br/>Retired rules live in <i>src/research/corpus_heuristics.py</i>, unimported by the pipeline."]:::warn
+  B8 -.->|"design note"| BW
 ```
 
 ### C — Cut the note into overlapping chunks
@@ -193,46 +225,51 @@ flowchart TD
   classDef ex   fill:#FBFCFD,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:3 3,color:#33404F
   classDef warn fill:#FFF6E8,stroke:#B4650A,stroke-width:1.3px,stroke-dasharray:5 3,color:#3A2C16
   classDef term fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
-
+  classDef research fill:#EEE9F5,stroke:#6B5B95,stroke-width:1.2px,stroke-dasharray:5 3,color:#2E2640
+  classDef proposed fill:#E4F2EA,stroke:#2F6B4F,stroke-width:2px,stroke-dasharray:7 3,color:#12301F
 
   D0(["one chunk — text + absolute offsets"]):::term
   FORK["<b>fork</b> — three independent extractors read the same chunk text"]:::bar
   D0 --> FORK
 
-  subgraph LANE1["Lane 1 · Token-NER — deterministic name shapes"]
+  subgraph LANE1["Lane 1 · Token-NER — GLiNER, REQUIRED"]
     direction TB
-    L1["<b>Regex name-shape scan</b><br/><i>DeterministicTokenNER._RE_SEQ / _RE_FLIP / _RE_TITLED</i>"]:::act
-    L2["<b>Trim sentence-opener words</b><br/>strip _LEADING_NOISE; offsets stay byte-exact"]:::act
-    L3["<b>Reject all-stopword spans</b><br/>surface ⊆ _STOP → discarded"]:::act
+    L1["<b>Load the production backend</b><br/><i>ner_ensemble.get_token_ner</i> → GlinerBackend"]:::act
+    L1E["<b>NERBackendUnavailable</b><br/>raised if the weights cannot load — the run STOPS"]:::bad
+    L2["<b>Zero-shot span scan over every token</b><br/>GLINER_THRESHOLD 0.35, recall-first"]:::act
+    L3["<b>Drop pronouns / vague descriptors</b><br/><i>coref.is_anaphor</i>"]:::act
     L4["<b>Emit SpanCandidate</b><br/>extractors = token_ner"]:::act
-    L1 --> L2 --> L3 --> L4
+    L1 -->|"cannot load"| L1E
+    L1 -->|"loaded"| L2 --> L3 --> L4
   end
 
-  subgraph LANE2["Lane 2 · Gazetteer — patterns with structural validation"]
+  subgraph LANE2["Lane 2 · Gazetteer — patterns, with honest validation strength"]
     direction TB
-    M1["<b>Pattern scan</b><br/><i>gazetteers.scan</i> — phone / email / npi / claim_id / …"]:::act
-    M2["<b>Validation — strength varies by label</b><br/>checksum: npi only · format: email, phone, icd10, cpt · none: the rest"]:::act
-    M3["<b>Keep only valid hits</b><br/>invalid checksum → discarded here, not downstream"]:::act
-    M4["<b>Emit SpanCandidate</b><br/>extractors = gazetteer; score 1.0 valid / 0.5 unvalidated"]:::act
-    M1 --> M2 --> M3 --> M4
+    M1["<b>Pattern scan</b><br/><i>gazetteers.scan</i> — phone / email / npi / ssn / tin / address / …"]:::act
+    M2["<b>Record validation STRENGTH, not a bare boolean</b><br/>checksum: npi only · format: email, phone, icd10, cpt · none: the rest"]:::key
+    M3["<b>Emit SpanCandidate</b><br/>extractors = gazetteer; score 1.0 / 0.8 / 0.6 by strength"]:::act
+    M1 --> M2 --> M3
   end
 
   subgraph LANE3["Lane 3 · LLM semantic pass — what no pattern encodes"]
     direction TB
+    R0{"API key present?"}:::dec
+    R0E["<b>LLMExtractorUnavailable</b><br/>raised when offline was FALLEN INTO rather than chosen"]:::bad
     R1["<b>Build extraction prompt</b><br/>chunk text + allowed label enum"]:::act
     R2["<b>Constrained JSON generation</b><br/><i>genai.generate_json with _llm_ner_schema</i>"]:::act
-    R3["<b>Drop pronouns / vague descriptors</b><br/><i>coref.is_anaphor</i> filter; clip offsets to chunk"]:::act
+    R3["<b>Drop pronouns / clip offsets to chunk</b>"]:::act
     R4["<b>Emit SpanCandidate</b><br/>extractors = llm; carries a free-text description"]:::act
-    R1 --> R2 --> R3 --> R4
+    R0 -->|"no, and GENAI_MODE unset"| R0E
+    R0 -->|"yes"| R1 --> R2 --> R3 --> R4
   end
 
   FORK --> L1
   FORK --> M1
-  FORK --> R1
+  FORK --> R0
 
-  JOIN["<b>join</b> — union_spans · see diagram 05 for the merge rule itself"]:::bar
+  JOIN["<b>join</b> — union_spans · see diagram 05 for the merge rule"]:::bar
   L4 --> JOIN
-  M4 --> JOIN
+  M3 --> JOIN
   R4 --> JOIN
 
   P1["<b>per-chunk candidate list</b><br/>post first union"]:::obj
@@ -245,10 +282,10 @@ flowchart TD
   S1["<b>Find text spans no candidate covers</b><br/><i>sweep.uncovered_candidates</i>"]:::act
   S2["<b>Differential-audit prompt: 'what is missing?'</b><br/>shown its own extraction list, asked only for the gaps"]:::key
   S3["<b>Second constrained LLM pass</b><br/>low-salience recall net — paralegals, codes, secondary providers"]:::act
-  S4["<b>Union sweep results into the pool</b><br/><i>union_spans over spans + extra</i>"]:::act
+  S4["<b>Union sweep results into the pool</b>"]:::act
   SW -->|"yes"| S1 --> S2 --> S3 --> S4
 
-  P2["<b>final per-chunk candidate dataset</b><br/>repeats for every chunk in the note"]:::obj
+  P2["<b>final per-chunk candidate dataset</b>"]:::obj
   S4 --> P2
   SKIP --> P2
   MERGE["<b>Merge every chunk's candidates for this document</b><br/>second union_spans call — cross-chunk overlaps collapse too"]:::act
@@ -256,34 +293,20 @@ flowchart TD
   P3["<b>per-document candidate pool</b><br/>→ continues in diagram 06"]:::obj
   MERGE --> P3 --> D9(["to filter / classify / persist"]):::term
 
-  LX1["<b>in</b> — '…transfer note. Contacted James Moore per yesterday's…'<br/><b>out</b> — raw regex hit 'Contacted James Moore' at 800:823<br/><i>The capitalized-run pattern matches greedily and swallows the sentence-opening verb.</i>"]:::ex
-  L1 -.->|"example"| LX1
-  LX2["<b>in</b> — 'Contacted James Moore' at 800:823<br/><b>out</b> — 'James Moore' at 812:823<br/><i>The leading token is a known sentence-opener, so it is stripped; the offset shifts but stays byte-exact.</i>"]:::ex
-  L2 -.->|"example"| LX2
-  LX3["<b>in</b> — 'Claims Department' at 40:58<br/><b>out</b> — discarded<br/><i>Every token in the span is a structural stopword, so it is rejected before it can become a candidate.</i>"]:::ex
-  L3 -.->|"example"| LX3
-  LX4["<b>in</b> — 'James Moore' at 812:823<br/><b>out</b> — SpanCandidate start=812, end=823, text='James Moore', label='person', extractors=token_ner, score=0.75<br/><i>A surviving span is packaged into the common candidate type every lane emits.</i>"]:::ex
-  L4 -.->|"example"| LX4
+  RESEARCH["<b>src/research/ — NOT reachable from this path</b><br/>DeterministicTokenNER (capitalized-run regex) and the salience LLM stub.<br/>Entered only by naming them: NER_BACKEND=deterministic, GENAI_MODE=offline.<br/><i>There is no automatic route into this box. Both were previously silent fallbacks, which is why every recall number measured before that change described a regex rather than a model, and why the three-way union was really two-way.</i>"]:::research
+  L1E -.->|"opt-in only"| RESEARCH
+  R0E -.->|"opt-in only"| RESEARCH
 
-  MX1["<b>in</b> — '…callback left at (312) 555-0148, no name given…'<br/><b>out</b> — raw pattern hit '(312) 555-0148' at 918:932, label='phone'<br/><i>The identifier shape matches on its own, independent of any nearby name.</i>"]:::ex
-  M1 -.->|"example"| MX1
-  MX2["<b>in</b> — 'NPI 1568291037'<br/><b>out</b> — valid=True, validation='checksum'<br/><i>A real Luhn check over '80840' + the first 9 digits, the NPPES standard. A random 10-digit string passes with p≈0.1, so this genuinely discriminates. <b>npi is the only label with a real check digit.</b></i>"]:::ex
+  MEAS["<b>Measured on this machine, GLiNER multi-v2.1</b><br/>Recall was <b>identical</b> across casing regimes — mixed 9/9, ALL CAPS 9/9, lowercase 9/9.<br/>The retired regex scanner on the same sentences: 9/9, then 5/9 with <b>11 spurious spans</b>, then <b>0/9</b>.<br/><i>Capitalization fragility was a property of that backend, not of the architecture. Small sample (7 sentences), but the gap is not subtle. What casing DOES move is span boundaries — see diagram 07.</i>"]:::ex
+  L2 -.->|"casing probe"| MEAS
+
+  MX1["<b>in</b> — 'NPI 1568291037'<br/><b>out</b> — valid=True, validation='checksum'<br/><i>A real Luhn check over '80840' plus the first 9 digits (the NPPES standard). A random 10-digit string passes with p≈0.1, so this genuinely discriminates.</i>"]:::ex
+  M2 -.->|"example"| MX1
+
+  MX2["<b>in</b> — 'SSN 123-45-6789'<br/><b>out</b> — valid=True, validation='none'<br/><i>Nothing beyond the pattern was checked. This previously re-ran the identical regex that had already matched and called the result validation — tautological, and it read in code and in this diagram as though a real check had occurred. Of 14 patterns exactly one carries a check digit; 7 have none.</i>"]:::ex
   M2 -.->|"example"| MX2
-  MX3["<b>in</b> — 'SSN 123-45-6789'<br/><b>out</b> — valid=True, validation='none'<br/><i>Nothing beyond the pattern was checked. This previously re-ran the identical regex that had already matched and called the result validation — tautological, and it read in code and in this diagram as though a real check had occurred. ssn and tin now report validation='none' honestly, and the ensemble scores them lower than a checksum-verified hit.</i>"]:::ex
-  M3 -.->|"example"| MX3
-  MX4["<b>in</b> — GazetteerHit start=918, end=932, text='(312) 555-0148', label='phone', valid=true<br/><b>out</b> — SpanCandidate with extractors=gazetteer, score=1.0<br/><i>A validated hit converts 1:1 into a candidate at full confidence.</i>"]:::ex
-  M4 -.->|"example"| MX4
 
-  RX1["<b>in</b> — chunk text, 190 words<br/><b>out</b> — 'Extract every entity mention… Labels: person, organization, …' followed by the chunk between delimiters, including '…Lakeshore Imaging Center performed the follow-up scan…'<br/><i>The whole chunk is embedded in one instruction asking for every mention, not just the ones a pattern would catch.</i>"]:::ex
-  R1 -.->|"example"| RX1
-  RX2["<b>in</b> — the prompt above<br/><b>out</b> — entities: text='Lakeshore Imaging Center', label='organization', start=214, end=238, description='secondary imaging provider, mentioned once', confidence=0.8<br/><i>Output is constrained to this exact JSON shape — the model cannot return free prose instead.</i>"]:::ex
-  R2 -.->|"example"| RX2
-  RX3["<b>in</b> — text='She', label='person', start=260, end=263<br/><b>out</b> — discarded<br/><i>A pronoun slipped past the prompt's instruction; the anaphor filter catches it before it becomes a candidate.</i>"]:::ex
-  R3 -.->|"example"| RX3
-  RX4["<b>in</b> — text='Lakeshore Imaging Center', start=214, end=238 — chunk-relative<br/><b>out</b> — SpanCandidate start=chunk_offset+214, end=chunk_offset+238, label='organization', extractors=llm, description carried through<br/><i>The chunk-relative offset is shifted to the document-absolute offset the other two lanes already use.</i>"]:::ex
-  R4 -.->|"example"| RX4
-
-  SX["<b>in</b> — the chunk plus the candidate list already found<br/><b>out</b> — only the mentions absent from that list<br/><i>This is a differential audit, not a repeat of the first pass: the model is shown its own answer and asked what it missed, which is why it surfaces low-salience mentions the first pass skimmed over.</i>"]:::ex
+  SX["<b>in</b> — the chunk plus the candidate list already found<br/><b>out</b> — only the mentions absent from that list<br/><i>A differential audit, not a repeat of the first pass: the model is shown its own answer and asked what it missed.</i>"]:::ex
   S2 -.->|"example"| SX
 ```
 
@@ -361,7 +384,8 @@ flowchart TD
   classDef ex   fill:#FBFCFD,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:3 3,color:#33404F
   classDef warn fill:#FFF6E8,stroke:#B4650A,stroke-width:1.3px,stroke-dasharray:5 3,color:#3A2C16
   classDef term fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
-
+  classDef research fill:#EEE9F5,stroke:#6B5B95,stroke-width:1.2px,stroke-dasharray:5 3,color:#2E2640
+  classDef proposed fill:#E4F2EA,stroke:#2F6B4F,stroke-width:2px,stroke-dasharray:7 3,color:#12301F
 
   F0(["per-document candidate pool — from diagram 04"]):::term
   FORK["<b>fork</b> — every candidate is routed by its label"]:::bar
@@ -370,16 +394,13 @@ flowchart TD
   subgraph NAMES["Name lane — a name has to look like a name"]
     direction TB
     N1["<b>label ∈ NAME_LABELS</b><br/>person / organization / attorney / repair_shop / …"]:::act
-    N2{"inside a<br/>boilerplate range?"}:::dec
-    N2D["<b>Dropped</b><br/>n_dropped_boiler += 1"]:::bad
+    N2["<b>Read boilerplate_score for this span</b><br/>ADVISORY — scored, counted, carried onto the row"]:::key
     N3{"passes<br/>_is_plausible_name?"}:::dec
     N3D["<b>Dropped</b><br/>n_dropped_shape += 1"]:::bad
     N4["<b>Classify entity_class</b><br/><i>_classify</i> over surface, label, left context, right context"]:::act
-    N5["<b>Persist mentions row</b><br/>mention_id, surface, char_start, char_end, entity_class"]:::act
+    N5["<b>Persist mentions row</b><br/>mention_id, surface, char_start, char_end,<br/>entity_class, inside_quoted, boilerplate_score"]:::act
     N6["<b>Persist has_name assertion</b><br/>source_span = the mention's OWN span"]:::act
-    N1 --> N2
-    N2 -->|"yes"| N2D
-    N2 -->|"no"| N3
+    N1 --> N2 --> N3
     N3 -->|"no"| N3D
     N3 -->|"yes"| N4 --> N5 --> N6
   end
@@ -405,30 +426,37 @@ flowchart TD
   I5 --> JOIN
   I6 --> JOIN
 
-  G1["<b>Scan raw text for allegation language</b><br/>regex over the SOURCE TEXT directly — not over the candidate pool at all"]:::act
+  G1["<b>Scan raw text for allegation language</b><br/>regex over the SOURCE TEXT directly — not over the candidate pool"]:::act
   G2["<b>Bind to nearest mention, persist allegation assertion</b><br/>polarity 'alleged' — kept separate from asserted fact"]:::act
   G3["<b>Resolve coreference over every mention found above</b><br/><i>coref.RuleBasedCorefResolver.resolve</i> over raw_text + mentions"]:::act
   G4["<b>Persist coref_links row</b><br/>anaphor span + antecedent span + antecedent_mention_id"]:::act
   G5["<b>Record scan_ledger coverage for this document</b>"]:::obj
   G6["<b>Persist mentions, assertions, identifier_observations, coref_links</b><br/>one transaction per corpus run"]:::act
-  G7(["to entity resolution"]):::term
+  G7(["to entity resolution — diagram 07"]):::term
 
   JOIN --> G1 -->|"match"| G2 --> G3 -->|"anaphor found"| G4 --> G5 --> G6 --> G7
 
-  IX1["<b>in</b> — SpanCandidate text='(312) 555-0148', label='phone', with no name on this line or the previous one<br/><b>out</b> — identifier_observations kind='phone', value_norm='3125550148', subject_mention_id=NULL<br/><i>Recorded anyway. An identifier with no name nearby is exactly the case this system exists to catch, not a reason to drop it.</i>"]:::ex
+  NB["<b>in</b> — a name inside a segment scoring boilerplate_score = 1.00<br/><b>out</b> — mention PERSISTED, boilerplate_score = 1.0 stored on the row<br/><i>Previously this was a hard gate and the mention was deleted with no trace. A miss cost precision; a false positive silently erased real names. Now the evidence survives and a consumer discounts it.</i>"]:::ex
+  N2 -.->|"example"| NB
+
+  IX1["<b>in</b> — SpanCandidate text='(312) 555-0148', label='phone', no name on this line or the previous one<br/><b>out</b> — identifier_observations kind='phone', value_norm='3125550148', subject_mention_id=NULL<br/><i>Recorded anyway. An identifier with no name nearby is exactly the case this system exists to catch, not a reason to drop it.</i>"]:::ex
   I6 -.->|"example"| IX1
 
-  IX2["<b>in</b> — subject: mention m0000153, 'Robert Miller', chars 40–52<br/>identifier candidate '(312) 555-0148', chars 918–932, bound via subject_for<br/><b>out</b> — Assertion subject_mention_id='m0000153', predicate='has_phone', object_value_norm='3125550148', source_span_start=918, source_span_end=932<br/><i><b>This is what an evidence span is.</b> The assertion's subject points at the name's location; its evidence span points at the phone number's location — a different place in the text. The fact is ABOUT the subject but PROVEN at the evidence span, and the two are not always the same characters.</i>"]:::ex
+  IX2["<b>in</b> — subject: mention m0000153, 'Robert Miller', chars 40–52<br/>identifier '(312) 555-0148', chars 918–932, bound via subject_for<br/><b>out</b> — Assertion predicate='has_phone', object_value_norm='3125550148', source_span_start=918, source_span_end=932<br/><i><b>This is what an evidence span is.</b> The subject points at the name's location; the evidence span points at the phone number's location — a different place. The fact is ABOUT the subject but PROVEN at the evidence span.</i>"]:::ex
   I5 -.->|"example"| IX2
 
-  CX1["<b>Resolving anaphora to antecedent mentions</b> means finding the specific earlier word or phrase that a pronoun or later reference points back to.<br/><br/>'John gave Mary a present. She loved it.'<br/><b>Antecedents</b> — 'Mary' and 'a present'<br/><b>Anaphors</b> — 'She', referring to Mary, and 'it', referring to the present.<br/><i>Without this step 'She' is either dropped or becomes its own bogus entity; with it, the sentence's second half attaches to the entity named in the first half.</i>"]:::warn
+  CX1["<b>Resolving anaphora to antecedent mentions</b> means finding the specific earlier word or phrase that a pronoun or later reference points back to.<br/><br/>'John gave Mary a present. She loved it.'<br/><b>Antecedents</b> — 'Mary' and 'a present'<br/><b>Anaphors</b> — 'She', referring to Mary, and 'it', referring to the present.<br/><i>Without this step 'She' is either dropped or becomes its own bogus entity.</i>"]:::warn
   G3 -.->|"what this means"| CX1
 
-  CX2["<b>in</b> — '…Spoke with Robert Miller regarding the POA update. He confirmed the demand was served…'<br/>mention m0000153 = 'Robert Miller' at 40:52<br/><b>out</b> — CorefLink surface='He', start=95, end=97, antecedent_surface='Robert Miller', antecedent_start=40, antecedent_end=52, kind='pronoun'<br/><i>The anaphor keeps its own span, so the sentence it appears in stays traceable, while pointing at the antecedent's span and mention id.</i>"]:::ex
+  CX2["<b>in</b> — '…Spoke with Robert Miller regarding the POA update. He confirmed the demand was served…'<br/>mention m0000153 = 'Robert Miller' at 40:52<br/><b>out</b> — CorefLink surface='He', start=95, end=97, antecedent_surface='Robert Miller', antecedent_start=40, antecedent_end=52, kind='pronoun'<br/><i>The anaphor keeps its own span, so the sentence it appears in stays traceable.</i>"]:::ex
   G4 -.->|"example"| CX2
 
-  NW["<b>Open question on entity_class</b><br/>_classify falls back to LABEL_TO_CLASS.get with default 'claimant', so an unmatched 'person' is silently labelled claimant and an unmatched 'organization' is silently labelled medical_provider. That is a guess written into a field readers treat as a fact. See the entity_class section of the HTML companion for the proposed split into a closed entity_type and an open role."]:::warn
-  N4 -.->|"caveat"| NW
+  %% ---------------- PROPOSED CHANGE 1 -------------------------------
+  PROP1["<b>PROPOSED — split entity_class into two fields</b><br/>Not yet built. This node replaces N4.<br/><br/><b>entity_type</b>: person | organization — stays CLOSED. It is a genuine binary and <i>entity_resolution.cannot_link_reason</i> uses it structurally to block person↔org merges.<br/><b>role</b>: OPEN vocabulary, normalized toward canonical forms, defaulting to <b>NULL</b> when unmatched.<br/><br/><i>Why: today ENTITY_CLASSES is a closed 5-tuple (claimant, attorney, medical_provider, repair_shop, adjuster) set PER MENTION, and role-in-claim is not a closed set in reality — witnesses, landlords, employers, public adjusters, SIU investigators and opposing counsel all exist. It is the same restrictive-box problem the predicate vocabulary had before it was opened.</i>"]:::proposed
+  N4 -.->|"proposed replacement"| PROP1
+
+  PROP1B["<b>The concrete defect this fixes</b><br/><i>_classify</i> ends in <b>LABEL_TO_CLASS.get(label, 'claimant')</b>.<br/>An unmatched 'person' is silently written as <b>claimant</b>; an unmatched 'organization' as <b>medical_provider</b>.<br/><br/>· 'Marisol Vega', actually a witness → stored claimant<br/>· 'Sunrise Property Mgmt', actually the landlord → stored medical_provider<br/><br/><i>That is a guess written into a field every downstream reader — and the client — treats as a fact. Under the proposal both become role=NULL, which is honest and is queryable as 'needs a role'.</i>"]:::warn
+  PROP1 -.-> PROP1B
 ```
 
 ### E — Resolve mentions into entities
@@ -450,37 +478,50 @@ flowchart TD
   classDef ex   fill:#FBFCFD,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:3 3,color:#33404F
   classDef warn fill:#FFF6E8,stroke:#B4650A,stroke-width:1.3px,stroke-dasharray:5 3,color:#3A2C16
   classDef term fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
-
+  classDef research fill:#EEE9F5,stroke:#6B5B95,stroke-width:1.2px,stroke-dasharray:5 3,color:#2E2640
+  classDef proposed fill:#E4F2EA,stroke:#2F6B4F,stroke-width:2px,stroke-dasharray:7 3,color:#12301F
 
   E0(["all mentions for the corpus"]):::term
   E1["<b>Build one feature row per mention</b><br/><i>entity_resolution.build_mention_frame</i>"]:::act
-  E2["<b>Null out missing identifiers</b><br/>empty string would block-explode; NULL is excluded by Splink"]:::act
-  E3["<b>mention frame</b><br/>name_sorted, first / last, soundex, email, phone7, npi, address_key"]:::obj
-  E4["<b>Declare blocking rules</b><br/>block_on email … block_on name_sorted, block_on last_name"]:::act
-  E5["<b>Estimate match prior from deterministic rules</b><br/><i>estimate_probability_two_random_records_match</i>"]:::act
-  E6["<b>Estimate u by random sampling</b><br/><i>estimate_u_using_random_sampling</i>"]:::act
-  E7["<b>Train m by expectation-maximisation</b><br/>one pass per blocking rule; sparse blocks skipped"]:::act
-  E8["<b>Score every blocked candidate pair</b><br/><i>linker.inference.predict</i>"]:::act
-  E9["<b>same_as_edges rows</b><br/>mention_a, mention_b, probability, match_weight"]:::obj
-  E10{"structural conflict?"}:::dec
-  E11["<b>Edge suppressed before clustering</b><br/><i>cannot_link_reason</i> — person vs org, Jr/Sr, conflicting NPI"]:::bad
-  E12["<b>Union-find over edges ≥ threshold</b><br/><i>entity_resolution.cluster_at</i> over edges, ids, T"]:::act
-  E13["<b>entity_snapshot / entities / entity_members</b><br/>identity is a VIEW at T, never a destructive merge"]:::key
-  E14["<b>Sweep T to plot the operating curve</b><br/><i>threshold_sweep</i> → B³ precision / recall per T"]:::act
-  E15(["to graph assembly"]):::term
+  E2["<b>Derive the blocking keys from the surface</b><br/>full_name · name_sorted = sorted tokens<br/>first_name = toks[0] · last_name = toks[-1] · soundex(last)"]:::key
+  E3["<b>Null out missing identifiers</b><br/>empty string would block-explode; NULL is excluded by Splink"]:::act
+  E4["<b>mention frame</b><br/>name keys + email, phone7, npi, tin, dob, address_key"]:::obj
+  E5["<b>Declare blocking rules</b><br/>email · npi · tin · phone7 · address_key<br/>full_name · name_sorted · soundex+first_name · last_name"]:::act
+  E6["<b>Estimate match prior from deterministic rules</b>"]:::act
+  E7["<b>Estimate u by random sampling</b>"]:::act
+  E8["<b>Train m by expectation-maximisation</b><br/>one pass per blocking rule; sparse blocks skipped"]:::act
+  E9["<b>Score every blocked candidate pair</b><br/><i>linker.inference.predict</i>"]:::act
+  E10["<b>same_as_edges rows</b><br/>mention_a, mention_b, probability, match_weight"]:::obj
+  E11{"structural conflict?"}:::dec
+  E12["<b>Edge suppressed before clustering</b><br/><i>cannot_link_reason</i> — person vs org, Jr/Sr, conflicting NPI"]:::bad
+  E13["<b>Union-find over edges ≥ threshold</b><br/><i>entity_resolution.cluster_at</i>"]:::act
+  E14["<b>entity_snapshot / entities / entity_members</b><br/>identity is a VIEW at T, never a destructive merge"]:::key
+  E15["<b>Sweep T to plot the operating curve</b><br/>B³ precision / recall per threshold"]:::act
+  E16(["to graph assembly — diagram 08"]):::term
 
-  E0 --> E1 --> E2 --> E3 --> E4 --> E5 --> E6 --> E7 --> E8 --> E9 --> E10
-  E10 -->|"yes"| E11
-  E10 -->|"no"| E12 --> E13 --> E14 --> E15
+  E0 --> E1 --> E2 --> E3 --> E4 --> E5 --> E6 --> E7 --> E8 --> E9 --> E10 --> E11
+  E11 -->|"yes"| E12
+  E11 -->|"no"| E13 --> E14 --> E15 --> E16
 
   EX1["<b>in</b> — mention pair m0000153 'Robert Miller' and m0000891 'R. Miller', same phone last-7<br/><b>out</b> — same_as_edges probability=0.94, match_weight=+6.2<br/><i>The pair is scored, not merged. A number survives into storage where a yes/no decision would have destroyed the evidence.</i>"]:::ex
-  E9 -.->|"example"| EX1
+  E10 -.->|"example"| EX1
 
-  EX2["<b>in</b> — all edges, threshold T=0.90<br/><b>out</b> — entity_snapshot rows grouping m0000153 + m0000891 under one entity_id at that T<br/><i>Identity is recomputed per threshold, so raising or lowering T re-partitions the corpus without re-running resolution.</i>"]:::ex
-  E13 -.->|"example"| EX2
+  EX2["<b>in</b> — all edges, threshold T=0.90<br/><b>out</b> — entity_snapshot rows grouping both mentions under one entity_id at that T<br/><i>Identity is recomputed per threshold, so raising or lowering T re-partitions the corpus without re-running resolution.</i>"]:::ex
+  E14 -.->|"example"| EX2
 
-  EX3["<b>in</b> — 'Miller Auto Body' (organization) and 'Robert Miller' (person), high name similarity<br/><b>out</b> — edge suppressed, never reaches clustering<br/><i>A hard structural constraint, applied as edge suppression rather than a permanent veto — this is the bug class that used to fragment one person into ten entities.</i>"]:::ex
-  E11 -.->|"example"| EX3
+  EX3["<b>in</b> — 'Miller Auto Body' (organization) and 'Robert Miller' (person), high name similarity<br/><b>out</b> — edge suppressed, never reaches clustering<br/><i>A hard structural constraint applied as edge suppression rather than a permanent veto. Note this is the ONE place entity_class is load-bearing — see the proposal in diagram 06, which keeps person/organization closed precisely so this keeps working.</i>"]:::ex
+  E12 -.->|"example"| EX3
+
+  %% ---------------- PROPOSED CHANGE 2 -------------------------------
+  PROP2["<b>PROPOSED — normalize the mention surface before deriving keys</b><br/>Not yet built. This node inserts between E1 and E2.<br/><br/>Strip leading role and title tokens from the surface used for BLOCKING, while the stored mention surface and its char offsets stay exactly as extracted.<br/><br/><i>Model-agnostic, and it belongs here rather than in an extractor: the retired regex scanner had a version of this (_LEADING_NOISE), but as a corpus-fitted denylist inside extraction. The need was real; the location and the shape were wrong.</i>"]:::proposed
+  E1 -.->|"proposed insertion point"| PROP2
+  PROP2 -.-> E2
+
+  PROP2B["<b>Measured evidence for it, this machine, GLiNER multi-v2.1</b><br/>Exact span-boundary agreement across casing regimes: <b>24/31 = 77%</b>. Recall was 100% in every regime — casing does not cost detections, it moves <b>boundaries</b>.<br/><br/>Observed disagreements:<br/>· 'adjuster Karen Wu' vs 'Karen Wu'<br/>· 'Claimant Deborah Fitzgerald' vs 'Deborah Fitzgerald'<br/>· 'SIU' found in mixed case, lost in BOTH ALL CAPS and lowercase<br/><br/><i>Role-word absorption also happens in MIXED case — 'Claimant Deborah Fitzgerald' was the normally-cased output — so this is not a casing bug. Casing only changes which words get absorbed.</i>"]:::ex
+  PROP2 -.->|"why"| PROP2B
+
+  PROP2C["<b>What it actually costs today</b><br/>Not invisibility. last_name = toks[-1], and role words are LEADING, so 'adjuster Karen Wu' and 'Karen Wu' both key to 'wu' and still meet under block_on(last_name).<br/><br/>But <b>three of eight blocking rules miss</b>:<br/>· full_name — 'adjuster karen wu' ≠ 'karen wu'<br/>· name_sorted — 'adjuster karen wu' ≠ 'karen wu'<br/>· soundex+first_name — first_name 'adjuster' vs 'karen'<br/><br/>and when the pair does meet, <b>ForenameSurnameComparison(first_name, last_name) scores it DOWN</b> because first_name disagrees.<br/><br/><i>So the real cost is a depressed match probability on true pairs, not a missing pair. That is a subtler failure than it first looked, and it degrades the calibration the whole threshold story rests on.</i>"]:::warn
+  PROP2B -.-> PROP2C
 ```
 
 ### F — Assemble the global entity graph

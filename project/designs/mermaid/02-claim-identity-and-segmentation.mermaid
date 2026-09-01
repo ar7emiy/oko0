@@ -1,5 +1,5 @@
 ---
-title: "B — Source claim identity, then segment the note"
+title: "B — Source claim identity, then segment and score the note"
 ---
 flowchart TD
   classDef act  fill:#EDF0F4,stroke:#4A5666,stroke-width:1.2px,color:#10151C
@@ -12,37 +12,45 @@ flowchart TD
   classDef ex   fill:#FBFCFD,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:3 3,color:#33404F
   classDef warn fill:#FFF6E8,stroke:#B4650A,stroke-width:1.3px,stroke-dasharray:5 3,color:#3A2C16
   classDef term fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
-
+  classDef research fill:#EEE9F5,stroke:#6B5B95,stroke-width:1.2px,stroke-dasharray:5 3,color:#2E2640
+  classDef proposed fill:#E4F2EA,stroke:#2F6B4F,stroke-width:2px,stroke-dasharray:7 3,color:#12301F
 
   B0(["frozen note file"]):::term
   B1["<b>Parse claim_number + note_id from filename</b><br/>filename pattern: ClaimNumber_NoteID.txt"]:::act
   B2["<b>Join against the client's occurrence table</b><br/>Occurrence Number · Claim Number · Note ID<br/>client-provided, never extracted from text"]:::key
   B3["<b>doc_id → claim_id + occurrence_id</b><br/>structural metadata, known before any text is read"]:::obj
   B4["<b>Split note into physical lines</b><br/><i>profiling._line_spans</i>"]:::act
-  B5["<b>Classify each line by shape</b><br/><i>profiling._classify_line</i> — 5 regexes + a signature latch"]:::act
-  B6["<b>Group runs of like lines into segments</b><br/><i>profiling.segment_document</i>"]:::act
-  B7{"segment kind?"}:::dec
-  B8["<b>Marked as excluded range</b><br/>the NAME lane in D3 drops candidates inside it"]:::muted
-  B9["<b>Fingerprint template blocks</b><br/><i>profiling.template_fingerprint</i> — hash of the label sequence"]:::act
-  B10["<b>MinHash shingles → near-dup groups</b><br/><i>profiling._minhash + assign_dup_groups</i>"]:::act
-  B11["<b>segments rows</b><br/>kind, char_start, char_end, dup_group_id"]:::obj
-  B12(["ready for chunking"]):::term
+  B5{"line begins a quoted chain?"}:::dec
+  B6["<b>kind = quoted</b><br/>a re-sent chain; a mention inside it is not a new sighting"]:::act
+  B7["<b>kind = body</b><br/>everything else"]:::act
+  B8["<b>Group runs of like lines into segments</b><br/><i>profiling.segment_document</i> — stateless, no latch"]:::act
+  B9["<b>Score each segment; never gate on it</b><br/><i>boilerplate_score</i> over a disclaimer cue bundle<br/><i>casing.profile</i> → regime + case_informative"]:::key
+  B10["<b>Fingerprint form-like segments</b><br/><i>profiling.template_fingerprint</i> — hash of the label sequence"]:::act
+  B11["<b>MinHash shingles → near-dup groups</b><br/><i>profiling._minhash + assign_dup_groups</i><br/>content-based; the part of Layer 0 that generalizes cleanly"]:::act
+  B12["<b>segments rows</b><br/>kind, char_start, char_end, dup_group_id,<br/>boilerplate_score, casing_regime, case_informative"]:::obj
+  B13(["ready for chunking"]):::term
 
-  B0 --> B1 --> B2 --> B3 --> B4 --> B5 --> B6 --> B7
-  B7 -->|"boilerplate"| B8
-  B7 -->|"narrative / template / email"| B9 --> B10 --> B11 --> B12
+  B0 --> B1 --> B2 --> B3 --> B4 --> B5
+  B5 -->|"yes"| B6
+  B5 -->|"no"| B7
+  B6 --> B8
+  B7 --> B8
+  B8 --> B9 --> B10 --> B11 --> B12 --> B13
 
   BX1["<b>in</b> — CLM00182_0734.txt, the filename as delivered<br/><b>out</b> — claim_number='CLM00182', note_id='0734'<br/><i>Parsed directly from the name; no text has been read yet.</i>"]:::ex
   B1 -.->|"example"| BX1
 
-  BX2["<b>in</b> — join row: OCC0091 · CLM00182 · 0734<br/><b>out</b> — doc_id='note_0734' → claim_id='CLM00182', occurrence_id='OCC0091'<br/><i>A join on claim_number + note_id resolves the occurrence. Structural metadata established before extraction runs — not a claim about what the text says.</i>"]:::ex
+  BX2["<b>in</b> — join row: OCC0091 · CLM00182 · 0734<br/><b>out</b> — doc_id='note_0734' → claim_id='CLM00182', occurrence_id='OCC0091'<br/><i>Structural metadata established before extraction runs — not a claim about what the text says. The old CLM-plus-4-digits text fallback is gone: it only ever matched our own synthetic corpus, and on real data would mint an identity from any four digits following those letters.</i>"]:::ex
   B2 -.->|"example"| BX2
 
-  BX3["<b>in</b> — 'Claimant: Jones' / 'D.O.B 04/11/1979' / blank / 'Spoke with Robert Miller regarding…'<br/><b>out</b> — kind='template_block' chars 0–41; kind='narrative' chars 43–512<br/><i>Runs of similarly-shaped lines become one typed segment each, so the label-value header and the prose below it are handled by different logic downstream.</i>"]:::ex
-  B6 -.->|"example"| BX3
+  BX3["<b>in</b> — 'This e-mail and any attachments are confidential and may be legally privileged. If you are not the intended recipient, any dissemination is unauthorized.'<br/><b>out</b> — boilerplate_score = 1.00<br/><i>Wording our generator never produced. The previous rule was three literal phrases and would have scored this 0, leaving every name inside a real disclaimer exposed to the name filter.</i>"]:::ex
+  B9 -.->|"example"| BX3
 
-  BX4["<b>in</b> — 'CONFIDENTIALITY NOTICE: This message is intended…'<br/><b>out</b> — kind='boilerplate' → excluded character range<br/><i>Legal footer text is typed as boilerplate and its range excluded, so names inside it never reach the name-shape filter.</i>"]:::ex
-  B8 -.->|"example"| BX4
+  BX4["<b>in</b> — 'Counsel asserted attorney-client privilege over the file notes.'<br/><b>out</b> — boilerplate_score = 0.48, below the 0.5 flag<br/><i>Narrative that merely mentions privilege is not a disclaimer. And because the score is advisory, being wrong here costs a flag, never a deleted name.</i>"]:::ex
+  B9 -.->|"example"| BX4
 
-  BW["<b>Known limitation of this classifier</b><br/>It is 5 regexes over a single line plus one stateful flag — not a learned model.<br/>· <b>SIG_MARK_RE</b> matches only a bare '--' line, the Usenet signature convention. Outlook rarely emits it, and the in_sig flag is a <b>one-way latch</b>: once set it is never cleared, so one stray '--' turns the whole rest of the note into email_signature.<br/>· <b>BOILER_RE</b> is three hardcoded English phrases; a disclaimer worded differently is not excluded, and its names reach the name filter.<br/>· <b>LABEL_RE</b> fires on any line starting 'Word:', so narrative openers like 'Update: spoke with counsel' are typed template_block.<br/><i>These labels are a hard gate today — D3 drops name candidates inside a boilerplate range — so a miss costs precision and a false positive silently deletes real names. Measure on real client notes before trusting it; prefer making the label advisory over widening the regexes.</i>"]:::warn
-  B5 -.->|"caveat"| BW
+  BX5["<b>in</b> — an ALL CAPS header block above a normally-cased body<br/><b>out</b> — header: regime='upper', case_informative=0 · body: regime='mixed', case_informative=1<br/><i>Profiled per segment, because the common legacy shape is a case-degenerate header sitting on a clean narrative. Recorded for measurement — it no longer routes anything, see diagram 04.</i>"]:::ex
+  B9 -.->|"example"| BX5
+
+  BW["<b>What was removed here, and why</b><br/>Seven segment kinds became two. template_block, narrative, email_header, email_body and email_signature had <b>no consumer</b> in the production path, and were produced by the module's most fragile rules.<br/>· The signature rule matched only a bare double-hyphen line — the Usenet convention, which Outlook does not emit — and drove a latch that was <b>never cleared</b>, so one stray divider retyped the whole rest of a note as signature.<br/>· Boilerplate was a <b>hard kind</b>: a misclassification silently deleted every real name inside the segment, and a differently-worded disclaimer excluded nothing at all.<br/>Retired rules live in <i>src/research/corpus_heuristics.py</i>, unimported by the pipeline."]:::warn
+  B8 -.->|"design note"| BW

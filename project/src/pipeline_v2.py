@@ -205,7 +205,8 @@ def run(repo: Repository, limit_docs: int | None = None,
                 char_start=c.start, char_end=c.end,
                 extractor="+".join(sorted(c.extractors)),
                 dup_group_id=seg.get("dup_group_id") if seg else None,
-                inside_quoted=1 if (seg and seg["kind"] == "email_quoted") else 0,
+                inside_quoted=1 if (seg and seg["kind"] == "quoted") else 0,
+                boilerplate_score=boiler_sc,
             ).__dict__
             mentions.append(row)
             doc_mentions.append((c.start, mid))

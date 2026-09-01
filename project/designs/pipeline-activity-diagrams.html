@@ -150,6 +150,26 @@
   </p>
 </header>
 
+<div style="max-width:1180px;margin:26px auto 0;border:2px dashed #A33A2A;border-radius:4px;
+     background:#F6E0DB;padding:16px 18px;color:#10151C">
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;
+       text-transform:uppercase;color:#A33A2A;margin-bottom:8px">Partially superseded &mdash; read the mermaid sources first</div>
+  <p style="margin:0 0 8px;font-size:15px">
+    Stages B, D1, D3 and E on this page describe the architecture <em>before</em> the
+    v0/v1 prune. The current, reviewed architecture lives in
+    <code>designs/mermaid/</code> (see its <code>README.md</code>), which also carries the
+    two open proposals drawn at their insertion points.
+  </p>
+  <p style="margin:0;font-size:14px;color:#4A5666">
+    Specifically out of date here: the token-NER lane is now GLiNER and is required
+    (no silent fallback to the regex scanner); segmentation emits two kinds rather
+    than seven and boilerplate is an advisory score rather than a hard gate; and the
+    gazetteer lane records a validation <em>strength</em> per label &mdash; only <code>npi</code>
+    carries a real check digit. The worked examples and the anaphora and
+    <code>entity_class</code> discussions below remain accurate.
+  </p>
+</div>
+
 <nav class="toc">
   <div class="h">Contents</div>
   <ol>

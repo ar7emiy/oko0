@@ -119,6 +119,7 @@ CREATE TABLE IF NOT EXISTS mentions (
     extractor     TEXT NOT NULL,          -- 'template' | 'genai' | ...
     dup_group_id  TEXT,
     inside_quoted INTEGER DEFAULT 0,
+    boilerplate_score REAL DEFAULT 0.0,   -- advisory; never a reason to drop
     FOREIGN KEY (doc_id) REFERENCES documents(doc_id)
 );
 
@@ -347,6 +348,10 @@ class Mention:
     extractor: str
     dup_group_id: str | None = None
     inside_quoted: int = 0
+    # Disclaimer-likeness of the segment this mention sits in (0..1). ADVISORY:
+    # a high score never removed the mention, so the evidence survives and a
+    # consumer can discount it. Replaces the old hard boilerplate gate.
+    boilerplate_score: float = 0.0
 
 
 @dataclass
