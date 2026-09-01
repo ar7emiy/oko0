@@ -1,0 +1,90 @@
+{
+  "_readme": "Expected relations per note. Predicates are OPEN vocabulary, so 'predicate' here is the expected MEANING; scoring should match loosely (normalized, synonym-tolerant) rather than by exact string. 'outside_closed_vocab' marks relations that the current ENTITY_CLASSES / CANONICAL_PREDICATES sets structurally cannot express - those are the point of this fixture. See README.md for the ground-truth caveat.",
+
+  "HW0001_0001.txt": {
+    "relations": [
+      {"subject": "Deborah Fitzgerald", "predicate": "treated_by", "object": "Alicia Reyes", "polarity": "asserted"},
+      {"subject": "Alicia Reyes", "predicate": "affiliated_with", "object": "Lakeshore Imaging Center", "polarity": "asserted"},
+      {"subject": "Deborah Fitzgerald", "predicate": "represented_by", "object": "Whitfield Trial Group", "polarity": "asserted"},
+      {"subject": "Hassan Williams", "predicate": "affiliated_with", "object": "Whitfield Trial Group", "polarity": "asserted"},
+      {"subject": "Hassan Williams", "predicate": "represents", "object": "Deborah Fitzgerald", "polarity": "asserted"},
+      {"subject": "Karen Wu", "predicate": "adjuster_on", "object": "claim", "polarity": "asserted"},
+      {"subject": "Marisol Vega", "predicate": "witness_to", "object": "incident", "polarity": "asserted", "outside_closed_vocab": true}
+    ],
+    "identifiers": [
+      {"subject": "Deborah Fitzgerald", "kind": "phone", "value": "(312) 555-0148"}
+    ],
+    "notes": "Marisol Vega is a witness - no ENTITY_CLASSES value fits. _classify would currently label her 'claimant' by fallback."
+  },
+
+  "HW0001_0002.txt": {
+    "relations": [
+      {"subject": "Alicia Reyes", "predicate": "referred_to", "object": "Northside Orthopaedic Associates", "polarity": "asserted", "outside_closed_vocab": true},
+      {"subject": "Priya Raghunathan", "predicate": "performed_ime_for", "object": "claim", "polarity": "asserted", "outside_closed_vocab": true},
+      {"subject": "Priya Raghunathan", "predicate": "affiliated_with", "object": "Northside Orthopaedic Associates", "polarity": "asserted"},
+      {"subject": "Deborah Fitzgerald", "predicate": "employed_by", "object": "Sunrise Property Management", "polarity": "asserted", "outside_closed_vocab": true},
+      {"subject": "Tomas Ferreira", "predicate": "supervises", "object": "Deborah Fitzgerald", "polarity": "asserted", "outside_closed_vocab": true},
+      {"subject": "Sunrise Property Management", "predicate": "landlord_of", "object": "incident location", "polarity": "asserted", "outside_closed_vocab": true}
+    ],
+    "identifiers": [
+      {"subject": "Lakeshore Imaging Center", "kind": "npi", "value": "1568291037", "checksum_valid": true}
+    ],
+    "notes": "Six relations, five of which have no CANONICAL_PREDICATES entry. Sunrise Property Management holds TWO distinct roles (employer AND landlord) - a per-entity single role field cannot represent this."
+  },
+
+  "HW0002_0003.txt": {
+    "casing": "upper",
+    "relations": [
+      {"subject": "Robert Miller", "predicate": "represented_by", "object": "Okafor & Bright LLP", "polarity": "asserted"},
+      {"subject": "Robert Miller", "predicate": "vehicle_repaired_by", "object": "Mendez Collision Repair", "polarity": "asserted"},
+      {"subject": "Raymond Okonkwo", "predicate": "investigator_on", "object": "claim", "polarity": "asserted", "outside_closed_vocab": true},
+      {"subject": "Okafor & Bright LLP", "predicate": "co_occurs_with", "object": "Mendez Collision Repair", "polarity": "reported", "outside_closed_vocab": true},
+      {"subject": "Mendez Collision Repair", "predicate": "estimate_inflated", "object": "$14,280.00", "polarity": "alleged"}
+    ],
+    "identifiers": [
+      {"subject": null, "kind": "phone", "value": "(312) 555-0148", "orphan_or_weakly_bound": true}
+    ],
+    "notes": "ALL CAPS. Phone matches HW0001_0001 but belongs to a different claimant here - a genuine cross-claim identifier collision, which is the pattern the system exists to surface. The inflation claim MUST be polarity=alleged, not asserted."
+  },
+
+  "HW0002_0004.txt": {
+    "casing": "lower",
+    "relations": [
+      {"subject": "Angela Miller", "predicate": "daughter_of", "object": "Robert Miller", "polarity": "asserted", "outside_closed_vocab": true},
+      {"subject": "Angela Miller", "predicate": "handles_correspondence_for", "object": "Robert Miller", "polarity": "asserted", "outside_closed_vocab": true},
+      {"subject": "Luis Obando", "predicate": "interpreter_for", "object": "Robert Miller", "polarity": "asserted", "outside_closed_vocab": true},
+      {"subject": "Robert Miller", "predicate": "was_stopped_at_impact", "object": null, "polarity": "retracted"},
+      {"subject": "Robert Miller", "predicate": "was_moving_at_impact", "object": null, "polarity": "asserted"}
+    ],
+    "identifiers": [],
+    "notes": "All lowercase. Tests retraction polarity explicitly - the earlier statement is retracted and replaced. Angela Miller is NOT a named party, so labelling her 'claimant' would be wrong."
+  },
+
+  "HW0003_0005.txt": {
+    "relations": [
+      {"subject": "Hassan Williams", "predicate": "affiliated_with", "object": "Whitfield Trial Group", "polarity": "asserted"},
+      {"subject": "Nadia Chowdhury", "predicate": "paralegal_for", "object": "Whitfield Trial Group", "polarity": "asserted", "outside_closed_vocab": true},
+      {"subject": "Deborah Fitzgerald", "predicate": "has_permanent_impairment", "object": null, "polarity": "negated"},
+      {"subject": "Karen Wu", "predicate": "adjuster_on", "object": "claim", "polarity": "asserted"}
+    ],
+    "identifiers": [
+      {"subject": "Hassan Williams", "kind": "email", "value": "h.williams@whitfield-law.com"},
+      {"subject": "Nadia Chowdhury", "kind": "phone", "value": "312-555-0199"},
+      {"subject": "Whitfield Trial Group", "kind": "tin", "value": "36-4471902"}
+    ],
+    "notes": "Quoted email chain (> prefixed) plus a real disclaimer worded differently from corpus_gen's. The impairment claim is explicitly NEGATED - defaulting it to 'asserted' would invert the meaning, which is the single most consequential polarity error possible here."
+  },
+
+  "HW0003_0006.txt": {
+    "relations": [
+      {"subject": "Gerald Tsai", "predicate": "public_adjuster_for", "object": "insured", "polarity": "asserted", "outside_closed_vocab": true},
+      {"subject": "Gerald Tsai", "predicate": "is_attorney", "object": null, "polarity": "negated"},
+      {"subject": "Mendez Collision Repair", "predicate": "is_preferred_shop", "object": null, "polarity": "negated"}
+    ],
+    "identifiers": [
+      {"subject": "Mendez Collision Repair", "kind": "monetary_amount", "value": "$9,412.55"},
+      {"subject": null, "kind": "phone", "value": "847-555-0113", "orphan_or_weakly_bound": true}
+    ],
+    "notes": "A true orphan identifier: 847-555-0113 has no name on its line or the preceding one. Two explicit negations, one of which is a correction of a prior assertion."
+  }
+}
