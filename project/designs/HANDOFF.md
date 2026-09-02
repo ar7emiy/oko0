@@ -362,3 +362,48 @@ from another path. Worth tracing.
 *using* a capability rather than by reading it. The chunk index, the citations,
 and now this. Reading the code finds design problems; running it finds the ones
 that matter.
+
+### 2026-09-02 (cont.) — T0.3 measured first, and the measurement reversed it
+
+**Do not build the cluster-consistency guard.** The board said to start T0.3 with
+a query rather than a build. That was correct, and it prevented an active
+regression.
+
+Corpus-wide there is exactly **one** violation: `Edward Vance`, 77 mentions, two
+distinct validated NPIs. Traced to ground truth:
+
+- `1141482996` is owned by `gt_prv_0001` **Dr. Anthony Reyes**. Bound correctly
+  once, then bound **again** to "Edward Vance" later in the same document.
+- `7459966595` is owned by `gt_prv_0007` **Dr. Jonathan Vance**. Bound to
+  "Ted Vance" and "Edward Vance" — both of which ground truth says are
+  `gt_clm_0012`, *the claimant*.
+
+**The cluster is fine. The identifiers are mis-bound.** Two providers' NPIs were
+attached to claimant mentions by the line-proximity rule in `subject_for`. A
+consistency guard would have reacted by *splitting a correct cluster* on the
+strength of a wrong identifier.
+
+`subject_for`'s docstring predicted this precisely: *"Those wrong identifiers
+then look like conflicting validated ids and the cluster-consistency rule splits
+one real person into many entities."* The author foresaw the failure mode and
+chose strictness to avoid it. The strictness was not enough — and the guard that
+would have "caught" it would have done the damage the docstring warned about.
+
+**Consequences for the plan:**
+
+1. **T0.3 is blocked on T2.2**, not ready to build. If it is ever built it needs
+   *temporal* awareness — identifiers legitimately change hands, so two values
+   conflict only when their validity windows overlap. v1's blanket rule was too
+   strong; restoring it verbatim would be a second mistake.
+2. **D4 / T2.2 is promoted.** Identifier binding now has a *demonstrated*
+   failure with ground-truth attribution, not a hypothesis. It is the highest
+   priority open item.
+3. A caution for the docs: `ARCHITECTURE.md` cites `Edward Vance` as the success
+   case — "62 mentions, 16 notes, resolves to 1 entity" — as evidence that
+   identifier-corroborated entities resolve well. The *clustering* claim survives
+   this finding, but the entity carries two identifiers that are not its own, so
+   the example should not be used as evidence about identifier quality.
+
+**Fourth time measurement has changed the answer this session.** The pattern is
+now unambiguous enough to state as a rule: for anything tagged `assumed` or
+`reasoned`, run the query before writing the code.

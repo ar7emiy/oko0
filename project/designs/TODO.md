@@ -40,7 +40,7 @@ not authority — each was independently checked.
 | D1 | Graph edges fabricated from `entity_class` + co-presence; relations never reach the graph | A, me | open |
 | D2 | Claim-handling activities discarded as degenerate | B | open |
 | D3 | Policy/claim numbers routed to a lane with no detector — lost entirely | me | open |
-| D4 | LLM identifier bindings discarded | me | open |
+| D4 | Identifier binding is a line-proximity rule and **demonstrably mis-binds**; LLM bindings that would fix it are discarded | me | open — **promoted**, now has a proven failure |
 | D5 | `POLARITIES` conflates polarity + evidentiality + lifecycle | B | open |
 | D6 | Vector-only retrieval; no lexical/exact lane; `who_is_at()` never called | B, me | **partly fixed** — exact lane wired (T3.2); lexical/rerank still open |
 | D7 | Locale model hardcoded, zero external resource loading | me | open |
@@ -49,7 +49,7 @@ not authority — each was independently checked.
 | D10 | Chunking discards the structure profiling computed | me | open |
 | D11 | No per-client config; corrections never feed the system | B, me | open |
 | D12 | `_is_plausible_name` drops single-token names | A, me | open |
-| D13 | Cluster-level consistency guard lost in v1→v2 | B | open |
+| D13 | Cluster-level consistency guard lost in v1→v2 | B | **measured — reframed.** The one violation is caused by D4, not by clustering. Guard would split a correct cluster |
 | D14 | Splink training completeness never checked | B | open |
 | D15 | `who_is_at` normalized differently than the indexer, so phone and address lookup returned `[]` **always** | me, via T3.2 | ✅ **fixed** |
 | D16 | An `identifier_observations` row has `kind=phone, value_raw="voicemail"` — identifier extraction has a precision leak | me, via T3.2 | open |
@@ -91,26 +91,40 @@ actually placed in the prompt**. The fourth catches a fabricated provenance trai
 (a perfect citation to a real document the model was never shown). Verified: 4/4
 fabrications rejected with distinct reasons.
 
-### T0.3 Cluster-level consistency guard *(D13)*
-**Status:** not started · **Confidence:** measured (the absence is a fact)
+### T0.3 Cluster-level consistency guard *(D13)* — ⛔ **DO NOT BUILD YET**
+**Status:** measured, and the measurement inverted the item · **Confidence:** measured
 
-**Current.** `cluster_at` is pure connected components over edges ≥ threshold.
-`cannot_link_reason` is **pairwise only** — it suppresses A–B, but if A–C and C–B
-both survive, A and B land in one cluster with no check.
+**The measurement ran first, and it was right to.** Building this guard would
+have made the system worse.
 
-**Problem.** v1 had a documented cluster-scope identifier-consistency invariant
-("a resolved cluster may never contain two distinct validated values of these"),
-explicitly described as *what stops transitive/embedding chains from
-over-merging*. The v2 Splink move dropped it. This matters **more** now, not
-less, because the embedding blocking lane is precisely that chaining risk.
+Corpus-wide, exactly **one** cluster violates the invariant: `Edward Vance`,
+77 mentions, holding two distinct validated NPIs. Tracing both to ground truth:
 
-**Proposed.** Re-introduce as a post-clustering validation: a cluster containing
-two distinct validated identifiers of the same kind is split, or flagged for
-review, with the offending edge recorded. Cheap — it runs over the partition, not
-the pairs.
+| NPI | GT owner | bound to |
+|---|---|---|
+| 1141482996 | `gt_prv_0001` Dr. Anthony Reyes | ✅ "Dr. Anthony Reyes" … **and ❌ "Edward Vance"** later in the same doc |
+| 7459966595 | `gt_prv_0007` Dr. Jonathan Vance | ❌ "Ted Vance" and ❌ "Edward Vance" — both GT `gt_clm_0012`, *the claimant* |
 
-**Falsified if.** Measurement shows zero clusters currently violate it. Run that
-first; it is a query, not a build.
+**The cluster is not over-merged. The identifiers are mis-bound.** Two providers'
+NPIs were attached to claimant mentions by the line-proximity rule in
+`subject_for`. A consistency guard would have responded by **splitting a correct
+cluster** because of a wrong identifier — fixing a symptom by damaging the thing
+that was right.
+
+And `subject_for`'s own docstring predicted exactly this: *"Those wrong
+identifiers then look like conflicting validated ids and the cluster-consistency
+rule splits one real person into many entities."* The author foresaw the failure
+and chose strictness to avoid it. **The strictness was not enough.**
+
+**Revised proposal.** Blocked on T2.2. When binding is trustworthy, revisit —
+and if it is built, the rule needs **temporal awareness**, because identifiers
+legitimately change hands (`IDENTIFIER_REASSIGN_RATIO = 0.10`, and real providers
+hold both Type 1 and Type 2 NPIs). Two values conflict only when their validity
+windows *overlap*. v1's blanket rule was too strong; restoring it verbatim would
+be a second mistake.
+
+**Falsified as originally written.** Kept as a record of an item that
+measurement reversed.
 
 ### T0.4 Splink training completeness check *(D14)*
 **Status:** not started · **Confidence:** measured
