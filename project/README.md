@@ -108,7 +108,84 @@ tests/                  smoke_test.py
 | 10 | ablation | recall lift per extraction layer vs ground truth (GT **reader**) |
 | 11 | lookup app | name search + NL→plan→table answer; clickable-evidence dossier |
 | 20 | relations | open-vocabulary S-P-O extraction, scored against hand-written notes |
+| **30** | **live pipeline** | **the operational path: notes arrive, the dataset updates** |
 | 99 | run all | orchestration + acceptance checklist |
+
+## Two paths through the same engines
+
+The notebooks split into a **research** path and an **operational** path. They
+run the same code over the same tables; what differs is the question.
+
+| | research (01-11, 99) | operational (30) |
+|---|---|---|
+| input | a corpus generated with a sealed ground-truth manifest | notes arriving from a feed |
+| processing | every stage over the whole corpus, every run | only the arriving notes |
+| output | accuracy measured against the manifest | a resolved entity dataset |
+| answers | *how accurate is this system?* | *what does this system do with a note?* |
+
+The leakage guard is what makes "same engines" a checkable claim rather than a
+promise: no pipeline module may reference ground truth, so the manifest the
+research path depends on is genuinely invisible to everything the operational
+path touches.
+
+### The operational path has two phases
+
+```python
+from src import ingest
+from src.repository import Repository
+
+repo = Repository()
+ingest.backfill(repo)                  # onboarding: full pass, trains the model
+ingest.deliver([Path("new_note.txt")]) # a note arrives
+ingest.ingest(repo, ["new_note"])      # processed and folded into the dataset
+```
+
+**Backfill** is the expensive one-time load, and the only place the Splink model
+is trained. **Ingest** costs what the arriving note costs: only those notes are
+segmented, extracted and embedded, and only the pairs their mentions generate
+are scored — against the already-trained model, via Splink's
+`find_matches_to_new_records`.
+
+`ingest()` refuses to run before `backfill()` rather than training a model on
+one note, because that would silently recalibrate every probability already
+stored. Clustering *is* recomputed corpus-wide on every ingest, which is both
+cheap (union-find over stored edges) and correct: identity is a
+threshold-derived view, so an arriving note legitimately merging two previously
+separate entities requires nothing to be un-written.
+
+### Watching it run
+
+Every stage reports what it *decided*, not just that it finished
+(`src/runlog.py`):
+
+```
+20:28:38  [BACKFILL] full historical load
+20:28:38    [profile] segment every note
+20:28:38      documents     54
+20:28:38      segments      102 (11 boilerplate-ish, 14 case-blind)
+20:28:38      duplicates    14 segment(s) are near-copies of text already stored
+20:28:56      [llm lane] 160 chunks, 8 workers
+20:28:56        spans         2054
+```
+
+This is not decoration. Long stages used to run completely silent, and silence
+is indistinguishable from a hang — which is how a pathological loop in
+resolution (`.iterrows()` over 2.9M edges) went unnoticed long enough to look
+like normal slowness.
+
+## Known limits
+
+- **The notes are synthetic.** `corpus_gen` writes them, realistically —
+  email chains, boilerplate, ALL-CAPS blocks, negation, orphan identifiers — but
+  the accuracy figures in `ARCHITECTURE.md` are measured against synthetic data
+  and should not be quoted as if measured on yours.
+- **There is no real-note ingestion entrypoint yet.** Nothing on the operational
+  path reads the manifest, so pointing `Paths.raw_notes` at real files is
+  mechanically close to working; it is not a tested path.
+- **Incremental bucketing can under-merge.** An arriving mention that bridges two
+  existing embedding blocks joins one rather than merging them, because bucket
+  labels are referenced by stored edges. A periodic full re-backfill is where
+  those collapse.
 
 ## Invariants & acceptance
 

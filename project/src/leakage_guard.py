@@ -38,6 +38,10 @@ PIPELINE_MODULES = [
     "src/ner_ensemble.py", "src/sweep.py", "src/pipeline_v2.py",
     "src/graph_store.py", "src/build_graph.py", "src/agent.py",
     "src/entity_resolution.py",
+    # The operational path. These matter MORE than the rest, not less: they are
+    # what runs when there is no ground truth to leak from, so if one of them
+    # ever reads the manifest the demo would be quietly cheating.
+    "src/ingest.py", "src/incremental.py", "src/runlog.py",
 ]
 
 # NOTE ON data/doc_index.json: it maps note -> claim/occurrence. That is

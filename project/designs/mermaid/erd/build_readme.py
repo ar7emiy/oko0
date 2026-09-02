@@ -72,6 +72,15 @@ tighten this is an open question, not a decision made here.
 
 ## Notable shapes, while building this
 
+- **`mention_blocks` exists because blocking keys have to survive between runs.**
+  Every other blocking key is recomputed from the mention surface on demand, so
+  it never needs storing. The embedding bucket cannot be: it is derived from
+  connected components over a k-NN graph, and an arriving note must ATTACH to
+  the blocks an earlier run assigned rather than re-partition them — stored
+  `same_as_edges.blocked_by` values already reference those labels, so
+  re-partitioning would invalidate a written record of how a decision was
+  reached. It is the one piece of resolution state that is genuinely
+  incremental rather than derived.
 - **The vector stores have no schema enforcement whatsoever.** Metadata is a
   JSON blob per row in a parquet sidecar (`FaissVectorStore._meta`), so a
   missing `claim_id` on a chunk vector would not fail at write time — it would

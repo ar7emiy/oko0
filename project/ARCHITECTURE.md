@@ -207,6 +207,60 @@ effect — worth remembering when triaging ER quality: check the surfaces first.
   fragments. Largely downstream of ER under-merging rather than a separate bug,
   but it needs confirming.
 
+### Why over-fragmentation happens: organization names go through a person-name comparison
+
+Found while building the operational ingest path (notebook 30), and it is a
+sharper diagnosis than the earlier "blocking recall 0.73" note. Measured on a
+60-note corpus:
+
+- **7,468 stored edges join mentions whose surface text is byte-identical.**
+- **Only 4.6% of them clear the 0.45 operating threshold.** Median probability
+  **0.384** — and the value is *identical* across most of them, the signature of
+  "the name agrees and every identifier is NULL".
+- Concretely: `Rios Car Care` appears 28 times across 12 notes and resolves to
+  **28 separate entities**. `Whitfield Trial Group`, 26 mentions across 8 notes,
+  resolves to 26. Meanwhile `Edward Vance` (62 mentions, 16 notes) resolves to
+  **1** — because that one has corroborating identifiers.
+
+The mechanism is not blocking and not the threshold. It is the name comparison:
+
+```
+ForenameSurnameComparison("first_name", "last_name")
+    .configure(term_frequency_adjustments=True)
+```
+
+`first_name`/`last_name` are derived as `tokens[0]` and `tokens[-1]`, which is a
+*person* name model. Organizations parse absurdly under it:
+
+```
+'delgado legal partners'  ->  first='delgado'  last='partners'
+'kim spine institute'     ->  first='kim'      last='institute'
+```
+
+The most common "surnames" among organization mentions are `llp` (31), `care`
+(28), `chiropractic` (28), `group` (26) — structural suffixes shared by many
+distinct firms. Term-frequency adjustment, which correctly *down-weights* a
+match on a common surname like Smith, therefore penalises exactly the matches it
+should reward: for an organization the distinguishing token is the **first** one,
+and the suffix carries almost no information.
+
+**Why this is not fixed by moving the threshold.** `ER_LINK_THRESHOLD = 0.45`
+was chosen from a measured B-cubed curve, and lowering it to catch these would
+raise false merges everywhere else. The pairs are not mis-ranked relative to a
+cutoff; they are scored by the wrong model.
+
+**The principled fix** is the `entity_type` / `role` split already proposed
+(diagram 06): once person and organization are distinguishable, organization
+names can use a whole-string comparison with term-frequency on the full name
+rather than a forename/surname split. That is a change to the comparison model
+and would invalidate every B-cubed number measured against the current one, so
+it belongs in its own measured pass rather than as a side effect.
+
+Note also visible above: `entity_class` is itself unreliable here —
+`anthony okonjo` and `deborah lopez` are people carrying organization classes,
+which is the known `_classify` fallback defect (`LABEL_TO_CLASS.get(label,
+"claimant")`) writing a guess into a field readers treat as a fact.
+
 **Environment caveats that affect the numbers:**
 - The figures above were measured in an environment with **no Gemini key and no
   HuggingFace access**, so the LLM extractor and relation extraction ran on

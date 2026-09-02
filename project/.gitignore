@@ -12,3 +12,5 @@ __pycache__/
 store/*.html
 store/*.json
 store/*.pkl
+data/_incoming/
+data/doc_index.json

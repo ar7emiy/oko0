@@ -183,6 +183,17 @@ CREATE TABLE IF NOT EXISTS entity_snapshot (
     threshold  REAL NOT NULL
 );
 
+-- Blocking-key assignment per mention, carried ACROSS runs.
+-- The deterministic keys are recomputed from the surface every time, but the
+-- embedding bucket is derived from connected components over a k-NN graph, so
+-- an arriving note has to be able to attach to the blocks an earlier run
+-- assigned rather than re-partitioning them -- stored edges already reference
+-- those labels through same_as_edges.blocked_by.
+CREATE TABLE IF NOT EXISTS mention_blocks (
+    mention_id TEXT PRIMARY KEY,
+    emb_bucket TEXT                    -- NULL => contributes nothing to the lane
+);
+
 CREATE INDEX IF NOT EXISTS ix_sae_a ON same_as_edges(mention_id_a);
 CREATE INDEX IF NOT EXISTS ix_sae_b ON same_as_edges(mention_id_b);
 CREATE INDEX IF NOT EXISTS ix_snap_ent ON entity_snapshot(entity_id);
@@ -286,6 +297,7 @@ TABLE_NAMES = (
     "documents", "segments", "mentions", "assertions", "scan_ledger", "coref_links", "identifier_observations", "same_as_edges", "entity_snapshot",
     "entities", "entity_members", "entity_versions",
     "entity_attributes", "dossiers",
+    "mention_blocks",
 )
 
 

@@ -729,3 +729,87 @@ flowchart TD
   GAP["<b>Still open</b><br/>Neither index is bitemporal. Re-running Layer 1 after a corpus correction rebuilds both from scratch; there is no incremental upsert path keyed on changed documents, and no record of which model version produced a given vector.<br/><br/><i>At POC scale a rebuild is cheap and exactness is worth more. At production volume both become required, and the EMBED_MODEL string would have to be stored alongside the vectors — comparing cosines across two model versions is meaningless.</i>"]:::warn
   FIX -.-> GAP
 ```
+
+### G — The operational path: notes arrive, the dataset updates
+
+Source: [`10-operational-ingest.mermaid`](10-operational-ingest.mermaid)
+
+```mermaid
+---
+title: "G — The operational path: notes arrive, the dataset updates"
+---
+flowchart TD
+  classDef act  fill:#EDF0F4,stroke:#4A5666,stroke-width:1.2px,color:#10151C
+  classDef obj  fill:#E0E8EF,stroke:#3E5C76,stroke-width:1.3px,color:#10151C
+  classDef dec  fill:#FFFFFF,stroke:#4A5666,stroke-width:1.2px,color:#10151C
+  classDef bad  fill:#F6E0DB,stroke:#A33A2A,stroke-width:1.4px,color:#10151C
+  classDef key  fill:#F6E7CE,stroke:#B4650A,stroke-width:1.6px,color:#10151C
+  classDef muted fill:#FFFFFF,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:4 3,color:#4A5666
+  classDef ex   fill:#FBFCFD,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:3 3,color:#33404F
+  classDef warn fill:#FFF6E8,stroke:#B4650A,stroke-width:1.3px,stroke-dasharray:5 3,color:#3A2C16
+  classDef term fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
+  classDef vec  fill:#DDEEF6,stroke:#1F6F8B,stroke-width:1.6px,color:#0C2430
+  classDef fixed fill:#E4F2EA,stroke:#2F6B4F,stroke-width:1.6px,color:#12301F
+
+  %% ================= PHASE 1 =================
+  subgraph BACKFILL["PHASE 1 — BACKFILL (onboarding, once)"]
+    B0(["the client's note history"]):::term
+    B1["<b>Profile every note</b><br/>segment · boilerplate score · casing regime · near-dup"]:::act
+    B2["<b>Extract, Layer 1</b><br/>chunk -> coref -> union(token-NER u gazetteer u LLM) -> sweep"]:::act
+    B3["<b>Embed every mention</b><br/><i>-> mentions.faiss</i>"]:::vec
+    B4["<b>Resolve: TRAIN by EM, score the corpus</b><br/>10 blocking rules -> Fellegi-Sunter<br/><i>entity_resolution.run</i>"]:::key
+    B5[/"<b>splink_model.json</b><br/>the trained m/u parameters"/]:::key
+    B6[/"<b>mention_blocks</b><br/>emb_bucket per mention"/]:::vec
+    B7["<b>Dossiers, graph, chunk index</b>"]:::act
+    B0 --> B1 --> B2 --> B3 --> B4
+    B4 --> B5
+    B4 --> B6
+    B4 --> B7
+  end
+
+  %% ================= PHASE 2 =================
+  subgraph INGEST["PHASE 2 — INGEST (steady state, per arriving note)"]
+    I0(["a note arrives"]):::term
+    IG{"backfilled?"}:::dec
+    IX["<b>NotBackfilled</b><br/>refuses rather than training a model on one note"]:::bad
+    I1["<b>Profile THIS note</b><br/>dup-checked against stored segments, not just the batch"]:::act
+    I2["<b>Extract THIS note</b><br/>replaces only its own rows -- idempotent re-ingest"]:::act
+    I3["<b>Embed its mentions</b><br/>UPSERT into the existing index"]:::vec
+    I4["<b>Attach to existing blocks</b><br/>k-NN -> adopt a stored emb_bucket<br/><i>blocking.buckets_for_new</i>"]:::vec
+    I5["<b>Score ONLY the new pairs</b><br/>against the ALREADY-TRAINED model<br/><i>find_matches_to_new_records</i>"]:::key
+    I6["<b>Append to same_as_edges</b><br/>nothing rewritten"]:::obj
+    I7["<b>Re-cluster the whole corpus</b><br/>union-find over stored edges<br/><i>cluster_at</i>"]:::act
+    I8["<b>The dataset</b><br/>entities · dossiers · graph"]:::obj
+    I0 --> IG
+    IG -->|"no"| IX
+    IG -->|"yes"| I1 --> I2 --> I3 --> I4 --> I5 --> I6 --> I7 --> I8
+  end
+
+  B5 -.->|"scored against"| I5
+  B6 -.->|"attached to"| I4
+
+  %% ================= NOTES =================
+  WHY["<b>Why the split, and why it is not an optimisation</b><br/>A full resolve is 23k mentions and 2.9M scored pairs, about two minutes. Running that per arriving note is absurd -- and it is also WRONG.<br/><br/>Retraining on every note re-estimates the m/u parameters, so every probability already written down was scored by a different model than the next one will be. Two edges reading 0.62 would not mean the same thing, and a human who reviewed one of them reviewed a number that has since moved.<br/><br/><i>So the model is frozen at backfill by design, not by laziness. Picking up drift is a periodic RE-backfill, which is a deliberate, dated, auditable event.</i>"]:::key
+  I5 -.->|"why"| WHY
+
+  RECLUST["<b>Why re-clustering the whole corpus is still fine</b><br/>Clustering is union-find over stored edges: linear, cheap, and already the design -- identity is a THRESHOLD-DERIVED VIEW, never a stored merge.<br/><br/>That is what lets one arriving note legitimately merge two entities that were previously separate, without anything being un-written. The edges do not change; the partition over them does.<br/><br/><i>The expensive half of resolution is SCORING, and that is the half this path makes incremental.</i>"]:::fixed
+  I7 -.->|"note"| RECLUST
+
+  UNDER["<b>The trade this makes, stated plainly</b><br/>An arriving mention that bridges two existing embedding blocks JOINS one rather than merging them. A full re-partition would have merged them.<br/><br/>Bucket labels are referenced by edges already written down with blocked_by provenance, so silently re-partitioning underneath would invalidate a record of how a stored decision was reached.<br/><br/><i>Under-merging on the ingest path, collapsed by a periodic re-backfill. The alternative -- rewriting history on every note -- is worse.</i>"]:::warn
+  I4 -.->|"limit"| UNDER
+
+  IDEM["<b>Re-ingesting a note is idempotent</b><br/>The extraction pass deletes only the rows belonging to the notes being processed (assertions by source_doc_id, mentions/ledger/coref/identifiers by doc_id) and leaves every other note's extraction -- and the entities built from it -- untouched.<br/><br/>The whole-corpus pass still wipes everything, because there a rebuild really does invalidate the resolution downstream of it.<br/><br/><i>Same function, two delete scopes, chosen by whether doc_ids was passed.</i>"]:::ex
+  I2 -.->|"note"| IDEM
+
+  DUP["<b>Near-duplicate detection has to look backwards</b><br/>A one-note batch contains no duplicates by definition, so batch-local dup detection would never fire on the ingest path -- and a note quoting an email from six weeks ago is exactly the case that matters.<br/><br/>So arriving segments are matched against the MinHash of segments already stored, which join the older dup group and are marked non-canonical (the canonical copy arrived first and is not in this batch).<br/><br/><i>Cost: this is the one part of an ingest that is O(corpus) rather than O(new notes), because segment text is not stored -- only offsets -- so the note files are re-read. Cheap next to NER; a stored minhash column is the fix if the corpus grows.</i>"]:::warn
+  I1 -.->|"note"| DUP
+
+  PERF["<b>What actually made this watchable</b><br/>Three lanes were calling a batch-capable API one item at a time, with the batching primitive sitting right there unused:<br/><br/>· <b>LLM lane</b> -- one blocking Gemini call per chunk while GENAI_MAX_WORKERS=8 idled. 160 chunks: unfinished after 15 min serial, <b>115s</b> batched.<br/>· <b>token-NER lane</b> -- GLiNER one chunk at a time instead of GLiNER.inference over a batch.<br/>· <b>embeddings</b> -- a serial request loop; fine for chunks, not for one call per mention.<br/><br/><i>Same defect three times, in three modules written at different times. The batching primitive existing is not the same as it being used.</i>"]:::fixed
+  B2 -.->|"performance"| PERF
+
+  LOG["<b>Every stage says what it DECIDED</b><br/>src/runlog.py. Not a progress bar: the thing worth watching is what each stage concluded -- how many mentions each extractor found, how many pairs each blocking lane proposed, which entity an arriving note matched.<br/><br/><i>Long stages used to run silent, and silence is indistinguishable from a hang. That is how a pathological .iterrows() over 2.9M edges passed for normal slowness.</i>"]:::fixed
+  I8 -.->|"visibility"| LOG
+
+  SAME["<b>Same engines, different question</b><br/>Both paths call the same profiling, extraction, embedding, resolution and graph code over the same tables. What differs is what is asked:<br/><br/>· research (notebooks 01-11) -- a generated corpus with a sealed manifest, every stage over everything, accuracy measured. <i>How good is this system?</i><br/>· operational (notebook 30) -- notes from a feed, only the new ones processed, no manifest anywhere. <i>What does it do with a note?</i><br/><br/><i>The leakage guard makes 'same engines' checkable rather than asserted: no pipeline module may reference ground truth, so the manifest is genuinely unreachable from this path.</i>"]:::key
+  I0 -.->|"context"| SAME
+```

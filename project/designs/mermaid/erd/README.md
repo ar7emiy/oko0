@@ -59,6 +59,15 @@ tighten this is an open question, not a decision made here.
 
 ## Notable shapes, while building this
 
+- **`mention_blocks` exists because blocking keys have to survive between runs.**
+  Every other blocking key is recomputed from the mention surface on demand, so
+  it never needs storing. The embedding bucket cannot be: it is derived from
+  connected components over a k-NN graph, and an arriving note must ATTACH to
+  the blocks an earlier run assigned rather than re-partition them — stored
+  `same_as_edges.blocked_by` values already reference those labels, so
+  re-partitioning would invalidate a written record of how a decision was
+  reached. It is the one piece of resolution state that is genuinely
+  incremental rather than derived.
 - **The vector stores have no schema enforcement whatsoever.** Metadata is a
   JSON blob per row in a parquet sidecar (`FaissVectorStore._meta`), so a
   missing `claim_id` on a chunk vector would not fail at write time — it would
@@ -258,8 +267,14 @@ erDiagram
     TEXT mention_id_b "logical ref, no FK clause"
     REAL probability "calibrated Splink score, NOT a decision"
     REAL match_weight
-    TEXT backend
+    TEXT backend "splink | splink-incremental -- which path scored it"
+    TEXT blocked_by "the rule that PROPOSED the pair; emb_bucket = the vector lane"
     TEXT suppressed_reason "non-NULL = excluded from clustering"
+  }
+
+  MENTION_BLOCKS {
+    TEXT mention_id PK "logical ref, no FK clause"
+    TEXT emb_bucket "NULL = contributes nothing to the embedding lane"
   }
 
   ENTITY_SNAPSHOT {
@@ -312,6 +327,7 @@ erDiagram
   }
 
   MENTIONS       ||..o{ SAME_AS_EDGES    : "logical mention_id_a / mention_id_b"
+  MENTIONS       ||..|| MENTION_BLOCKS   : "logical mention_id -- blocking key carried ACROSS runs"
   MENTIONS       ||..o{ ENTITY_SNAPSHOT  : "logical mention_id"
   MENTIONS       ||..o{ ENTITY_MEMBERS   : "logical mention_id"
   ENTITIES       ||..o{ ENTITY_SNAPSHOT  : "logical entity_id"

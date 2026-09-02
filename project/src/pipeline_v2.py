@@ -19,12 +19,15 @@ coverage proof survives the architecture change.
 """
 from __future__ import annotations
 
+import hashlib
+
 import difflib
 
 import re
 from collections import defaultdict
 
-from . import chunking, contracts, coref, gazetteers, ner_ensemble, sweep, textnorm
+from . import (chunking, contracts, coref, gazetteers, ner_ensemble, profiling,
+               runlog, sweep, textnorm)
 from .repository import Repository
 from .settings import CFG, Paths
 
@@ -123,11 +126,17 @@ def _boilerplate_score_at(pos: int, ranges: list[tuple[int, int, float]]) -> flo
 
 
 def run(repo: Repository, limit_docs: int | None = None,
-        use_llm: bool = True, use_sweep: bool = True) -> dict:
-    """Run Layer 1 over the corpus and repopulate mentions/assertions/scan_ledger."""
+        use_llm: bool = True, use_sweep: bool = True,
+        doc_ids: list[str] | None = None) -> dict:
+    """Run Layer 1 and populate mentions/assertions/scan_ledger.
+
+    `doc_ids` restricts the pass to named notes (the incremental ingest path);
+    `limit_docs` takes the first N (a research convenience). Without either this
+    is a whole-corpus pass, which is what the backfill wants.
+    """
     docs_df = repo.table("documents")
     claim_of = {r["doc_id"]: r["claim_id"] for _, r in docs_df.iterrows()}
-    files = sorted(Paths.raw_notes.glob("*.txt"))
+    files = profiling.note_files(doc_ids)
     if limit_docs:
         files = files[:limit_docs]
     texts = {f.stem: f.read_text(encoding="utf-8") for f in files}
@@ -148,9 +157,39 @@ def run(repo: Repository, limit_docs: int | None = None,
     spans_by_doc: dict[str, list] = defaultdict(list)
     ledger = []
     n_sweep_added = 0
-    for ch in chunks:
+    # Heartbeat: this loop is the slowest thing in the pipeline (a Gemini call
+    # per chunk in the LLM lane) and it used to run completely silent. Minutes of
+    # no output is indistinguishable from a hang, which is exactly how the
+    # pathological .iterrows() in resolution went unnoticed for so long.
+    runlog.field("chunks", f"{len(chunks)} across {len(texts)} note(s)")
+
+    # The LLM lane runs FIRST, for every chunk, through genai's thread pool.
+    # Calling it inside the per-chunk loop below made it one blocking request at
+    # a time with GENAI_MAX_WORKERS=8 idle -- measured on 54 notes, the
+    # difference between a couple of minutes and fifteen.
+    llm_by_chunk: dict[str, list] = {}
+    if use_llm:
+        with runlog.stage("llm lane", f"{len(chunks)} chunks, "
+                                      f"{CFG.GENAI_MAX_WORKERS} workers"):
+            llm_by_chunk = ner_ensemble.llm_extract_chunks(chunks)
+            runlog.field("spans", sum(len(v) for v in llm_by_chunk.values()))
+
+    # Token-NER lane, also batched. Same reason as the LLM lane: GLiNER is
+    # several times faster over a batch than over one chunk at a time on CPU,
+    # and this loop is the only caller that has all the chunks in hand.
+    ner_by_chunk: dict[str, list] = {}
+    with runlog.stage("token-ner lane", f"{len(chunks)} chunks, {token_ner.name}"):
+        batched = token_ner.extract_many([c.text for c in chunks],
+                                         [c.char_start for c in chunks])
+        ner_by_chunk = {c.chunk_id: sp for c, sp in zip(chunks, batched)}
+        runlog.field("spans", sum(len(v) for v in ner_by_chunk.values()))
+
+    for i, ch in enumerate(chunks):
+        runlog.every(50, i, len(chunks), f"chunks unioned ({ch.doc_id})")
         spans = ner_ensemble.extract_chunk(ch, token_ner, use_llm=use_llm,
-                                           use_gazetteer=True, use_token_ner=True)
+                                           use_gazetteer=True, use_token_ner=True,
+                                           llm_spans=llm_by_chunk.get(ch.chunk_id, []),
+                                           ner_spans=ner_by_chunk.get(ch.chunk_id, []))
         if use_sweep:
             extra = sweep.sweep_chunk(ch, spans)
             n_sweep_added += len(extra)
@@ -160,11 +199,34 @@ def run(repo: Repository, limit_docs: int | None = None,
                                          "layer1_ensemble", CHUNK_PASS).__dict__)
 
     # ---- per doc: merge, coref, filter, persist ---------------------------
-    counter = {"m": 0, "a": 0}
+    # Ids are CONTENT-DERIVED, not sequential.
+    #
+    # A per-run counter restarting at 1 collides the moment a second run inserts
+    # into the same database, which is exactly what the incremental ingest path
+    # does -- it raised UNIQUE constraint failed on the first arriving note.
+    # Seeding the counter past the stored maximum would fix the crash and leave
+    # the worse half of the problem: re-processing a note would mint DIFFERENT
+    # ids for the same mentions, orphaning every same_as_edges row that
+    # referenced the old ones.
+    #
+    # Hashing (doc_id, span, label) instead makes re-ingesting a note produce
+    # byte-identical ids, so a re-ingest is genuinely idempotent and stored
+    # edges stay valid. `used` disambiguates the rare true collision rather than
+    # letting sqlite reject the batch.
+    used: set[str] = set()
 
-    def nid(p):
-        counter[p] += 1
-        return f"{p}{counter[p]:07d}"
+    def sid(prefix: str, *parts) -> str:
+        h = hashlib.sha1("".join(str(x) for x in parts).encode("utf-8")).hexdigest()
+        base = f"{prefix}{h[:12]}"
+        if base not in used:
+            used.add(base)
+            return base
+        for i in range(1, 1000):
+            alt = f"{base}_{i}"
+            if alt not in used:
+                used.add(alt)
+                return alt
+        raise RuntimeError(f"could not mint a unique id for {parts!r}")
 
     mentions, assertions, coref_links, id_obs = [], [], [], []
     n_in_boilerplate = n_dropped_shape = 0
@@ -196,7 +258,7 @@ def run(repo: Repository, limit_docs: int | None = None,
             left = raw[max(0, c.start - 50):c.start]
             right = raw[c.end:min(len(raw), c.end + 70)]
             klass = _classify(c.text, c.label, left, right)
-            mid = nid("m")
+            mid = sid("m", doc_id, c.start, c.end, c.label)
             row = contracts.Mention(
                 mention_id=mid, doc_id=doc_id,
                 segment_id=seg["segment_id"] if seg else None,
@@ -210,9 +272,11 @@ def run(repo: Repository, limit_docs: int | None = None,
             ).__dict__
             mentions.append(row)
             doc_mentions.append((c.start, mid))
-            assertions.append(_assn(nid, mid, "has_name", c.text, c.text, doc_id,
-                                    c.start, c.end, "asserted",
-                                    "+".join(sorted(c.extractors)), raw))
+            assertions.append(_assn(
+                sid("a", doc_id, mid, "has_name", c.start, c.end),
+                mid, "has_name", c.text, c.text, doc_id,
+                c.start, c.end, "asserted",
+                "+".join(sorted(c.extractors)), raw))
 
         doc_mentions.sort()
 
@@ -268,9 +332,11 @@ def run(repo: Repository, limit_docs: int | None = None,
             kind = {"has_email": "email", "has_phone": "phone", "has_npi": "npi",
                     "has_tin": "tin", "has_ssn": "ssn"}.get(pred, "text")
             pol = _polarity(raw, c.start, c.end)
-            assertions.append(_assn(nid, subj, pred, c.text,
-                                    textnorm.normalize_identifier(kind, c.text),
-                                    doc_id, c.start, c.end, pol, "gazetteer", raw))
+            assertions.append(_assn(
+                sid("a", doc_id, subj, pred, c.start, c.end),
+                subj, pred, c.text,
+                textnorm.normalize_identifier(kind, c.text),
+                doc_id, c.start, c.end, pol, "gazetteer", raw))
 
         # 2b) allegation free-text -> assertions (kept separate from facts)
         for am in re.finditer(r"(suspect[^.;\n]*|alleg[^.;\n]*)", raw, re.I):
@@ -278,9 +344,11 @@ def run(repo: Repository, limit_docs: int | None = None,
             if subj is None:
                 continue
             txt = am.group(0).strip()
-            assertions.append(_assn(nid, subj, "allegation", txt, txt.lower(), doc_id,
-                                    am.start(), am.start() + len(txt), "alleged",
-                                    "layer1_ensemble", raw))
+            assertions.append(_assn(
+                sid("a", doc_id, subj, "allegation", am.start()),
+                subj, "allegation", txt, txt.lower(), doc_id,
+                am.start(), am.start() + len(txt), "alleged",
+                "layer1_ensemble", raw))
 
         # 3) coreference: anaphora -> antecedent (links, not nodes)
         ment_dicts = [{"start": m["char_start"], "end": m["char_end"],
@@ -303,11 +371,41 @@ def run(repo: Repository, limit_docs: int | None = None,
 
     # ---- persist ----------------------------------------------------------
     repo.conn.execute("PRAGMA foreign_keys=OFF")
-    for t in ("assertions", "mentions", "scan_ledger", "coref_links",
-              "identifier_observations",
-              "entity_members", "entity_versions",
-              "entity_attributes", "dossiers", "entities"):
-        repo.conn.execute(f"DELETE FROM {t}")
+    if doc_ids is None:
+        # Whole-corpus pass: extraction output is rebuilt, and every resolution
+        # artifact downstream of it is invalidated with it.
+        for t in ("assertions", "mentions", "scan_ledger", "coref_links",
+                  "identifier_observations",
+                  "entity_members", "entity_versions",
+                  "entity_attributes", "dossiers", "entities"):
+            repo.conn.execute(f"DELETE FROM {t}")
+    else:
+        # Incremental pass: replace only the rows belonging to these notes, so
+        # re-ingesting a note is idempotent, and leave every other note's
+        # extraction -- and the resolved entities built from it -- untouched.
+        # Resolution is updated incrementally instead (entity_resolution
+        # .resolve_incremental), not thrown away and rebuilt.
+        marks = ",".join("?" for _ in doc_ids)
+        repo.conn.execute(
+            f"DELETE FROM assertions WHERE source_doc_id IN ({marks})", doc_ids)
+        # same_as_edges reference mentions by id. Ids are content-derived, so a
+        # re-extraction of the same text reproduces them exactly and the edges
+        # stay valid -- but if the extractors changed their minds (a model
+        # upgrade, a threshold change), a mention can genuinely disappear, and
+        # an edge pointing at a row that no longer exists is worse than no edge.
+        # Drop those, and only those.
+        # ORDER MATTERS: everything keyed by mention_id has to go before the
+        # mentions themselves, or the subquery finds nothing to match against.
+        sub = f"SELECT mention_id FROM mentions WHERE doc_id IN ({marks})"
+        repo.conn.execute(
+            f"DELETE FROM same_as_edges "
+            f"WHERE mention_id_a IN ({sub}) OR mention_id_b IN ({sub})",
+            list(doc_ids) + list(doc_ids))
+        repo.conn.execute(f"DELETE FROM mention_blocks WHERE mention_id IN ({sub})",
+                          doc_ids)
+        for t in ("mentions", "scan_ledger", "coref_links",
+                  "identifier_observations"):
+            repo.conn.execute(f"DELETE FROM {t} WHERE doc_id IN ({marks})", doc_ids)
     repo.conn.commit()
     repo.conn.execute("PRAGMA foreign_keys=ON")
 
@@ -389,9 +487,9 @@ def _polarity(raw: str, s: int, e: int) -> str:
     return "asserted"
 
 
-def _assn(nid, subj, pred, raw_v, norm_v, doc_id, s, e, pol, extractor, raw_text):
+def _assn(assertion_id, subj, pred, raw_v, norm_v, doc_id, s, e, pol, extractor, raw_text):
     return contracts.Assertion(
-        assertion_id=nid("a"), subject_mention_id=subj, predicate=pred,
+        assertion_id=assertion_id, subject_mention_id=subj, predicate=pred,
         object_value_raw=raw_v, object_value_norm=norm_v, polarity=pol,
         source_doc_id=doc_id, source_span_start=s, source_span_end=e,
         extractor=extractor, pass_id=CHUNK_PASS,

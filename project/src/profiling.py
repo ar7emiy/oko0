@@ -54,10 +54,24 @@ def _doc_index() -> dict:
     return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
 
 
-def ingest_documents(repo: Repository) -> int:
+def note_files(doc_ids: list[str] | None = None) -> list:
+    """The note files to process: all of them, or just the named ones.
+
+    Doc scoping is what makes an incremental ingest possible at all -- every
+    stage used to glob the whole corpus, so adding one note meant reprocessing
+    every note. See src/ingest.py.
+    """
+    if doc_ids is None:
+        return sorted(Paths.raw_notes.glob("*.txt"))
+    want = list(dict.fromkeys(doc_ids))       # de-dup, keep arrival order
+    return [Paths.raw_notes / f"{d}.txt" for d in want
+            if (Paths.raw_notes / f"{d}.txt").exists()]
+
+
+def ingest_documents(repo: Repository, doc_ids: list[str] | None = None) -> int:
     idx = _doc_index()
     rows = []
-    for f in sorted(Paths.raw_notes.glob("*.txt")):
+    for f in note_files(doc_ids):
         text = f.read_text(encoding="utf-8")
         doc_id = f.stem
         meta = idx.get(doc_id, {})
@@ -200,14 +214,35 @@ def _minhash(text: str) -> MinHash:
     return m
 
 
-def assign_dup_groups(seg_records: list[dict], texts: dict[str, str]) -> None:
+def assign_dup_groups(seg_records: list[dict], texts: dict[str, str],
+                      prior: list[dict] | None = None) -> None:
     """Mutates seg_records adding dup_group_id + is_canonical_dup.
 
     seg_records: list of {segment_id, doc_id, kind, char_start, char_end, order}
+
+    `prior` is already-stored segments as {segment_id, dup_group_id, text}. They
+    are indexed for matching but never re-assigned, which is what lets an
+    incrementally ingested note be recognised as quoting a note that arrived
+    weeks earlier. Without it, dup detection would only ever see inside the
+    current batch, and a one-note batch can contain no duplicates by definition.
+
+    Cost note: the caller has to supply prior text, so this is O(corpus) hashing
+    per ingest. That is cheap next to NER and the LLM lane, but it is the one
+    part of an incremental ingest that is not O(new notes) -- worth revisiting
+    with a stored minhash column if the corpus gets large.
     """
     lsh = MinHashLSH(threshold=CFG.MINHASH_JACCARD_THRESHOLD, num_perm=CFG.MINHASH_NUM_PERM)
     mh_by_id = {}
     eligible = []
+
+    prior_group: dict[str, str] = {}
+    for pr in (prior or []):
+        toks = re.findall(r"\w+", pr["text"])
+        if len(toks) < CFG.MINHASH_SHINGLE_WORDS:
+            continue
+        key = f"PRIOR::{pr['segment_id']}"
+        lsh.insert(key, _minhash(pr["text"]))
+        prior_group[key] = pr.get("dup_group_id") or pr["segment_id"]
     for r in seg_records:
         seg_text = texts[r["doc_id"]][r["char_start"]:r["char_end"]]
         toks = re.findall(r"\w+", seg_text)
@@ -234,9 +269,14 @@ def assign_dup_groups(seg_records: list[dict], texts: dict[str, str]) -> None:
         if ra != rb:
             parent[ra] = rb
 
+    hit_prior: dict[str, str] = {}      # new segment_id -> existing dup_group_id
     for r in eligible:
         for nb in lsh.query(mh_by_id[r["segment_id"]]):
-            if nb != r["segment_id"]:
+            if nb == r["segment_id"]:
+                continue
+            if nb.startswith("PRIOR::"):
+                hit_prior.setdefault(r["segment_id"], prior_group[nb])
+            else:
                 union(r["segment_id"], nb)
 
     groups: dict[str, list[dict]] = {}
@@ -244,16 +284,73 @@ def assign_dup_groups(seg_records: list[dict], texts: dict[str, str]) -> None:
         groups.setdefault(find(r["segment_id"]), []).append(r)
     for _, members in groups.items():
         members.sort(key=lambda r: (r["order"], r["char_start"]))
-        gid = members[0]["segment_id"]
+        # If any member matched a segment that was already stored, the whole
+        # group belongs to that older group and none of it is canonical -- the
+        # canonical copy is the one that arrived first, which is not in this
+        # batch.
+        adopted = next((hit_prior[m["segment_id"]] for m in members
+                        if m["segment_id"] in hit_prior), None)
+        gid = adopted or members[0]["segment_id"]
         for i, r in enumerate(members):
             r["dup_group_id"] = gid
-            r["is_canonical_dup"] = 1 if i == 0 else 0
+            r["is_canonical_dup"] = 0 if adopted else (1 if i == 0 else 0)
 
 
-def run(repo: Repository) -> dict:
-    """Full profiling pass -> populates documents + segments tables."""
-    n_docs = ingest_documents(repo)
-    texts = {f.stem: f.read_text(encoding="utf-8") for f in Paths.raw_notes.glob("*.txt")}
+def _prior_segments(repo: Repository, exclude_docs: set) -> list[dict]:
+    """Already-stored segments, with their text, for cross-batch dup matching.
+
+    Re-reads the note files because the segment text itself is not stored -- only
+    its offsets. Cheap relative to extraction, and the alternative is a stored
+    minhash column.
+    """
+    try:
+        segs = repo.table("segments")
+    except Exception:
+        return []
+    if segs.empty:
+        return []
+    cache: dict[str, str] = {}
+    out = []
+    for _, r in segs.iterrows():
+        doc = r["doc_id"]
+        if doc in exclude_docs:
+            continue
+        if doc not in cache:
+            f = Paths.raw_notes / f"{doc}.txt"
+            cache[doc] = f.read_text(encoding="utf-8") if f.exists() else ""
+        text = cache[doc][int(r["char_start"]):int(r["char_end"])]
+        if text:
+            out.append({"segment_id": r["segment_id"],
+                        "dup_group_id": r["dup_group_id"], "text": text})
+    return out
+
+
+def run(repo: Repository, doc_ids: list[str] | None = None) -> dict:
+    """Profiling pass -> populates documents + segments.
+
+    `doc_ids=None` profiles the whole corpus (the backfill path). Passing ids
+    profiles only those notes, which is what an arriving note needs.
+    """
+    if doc_ids is not None:
+        # Re-ingesting a note must replace its rows, not collide with them.
+        # The whole-corpus path does not need this because backfill resets the
+        # database first; the incremental path has no such clean slate.
+        # Segments reference documents, so they go first.
+        marks = ",".join("?" for _ in doc_ids)
+        repo.conn.execute("PRAGMA foreign_keys=OFF")
+        repo.conn.execute(f"DELETE FROM segments WHERE doc_id IN ({marks})", doc_ids)
+        repo.conn.execute(f"DELETE FROM documents WHERE doc_id IN ({marks})", doc_ids)
+        repo.conn.commit()
+        repo.conn.execute("PRAGMA foreign_keys=ON")
+
+    n_docs = ingest_documents(repo, doc_ids)
+    texts = {f.stem: f.read_text(encoding="utf-8") for f in note_files(doc_ids)}
+
+    # Incremental ingest compares against what is already stored, so a note that
+    # quotes an older note is still recognised as a duplicate of it.
+    prior = None
+    if doc_ids is not None:
+        prior = _prior_segments(repo, exclude_docs=set(texts))
 
     seg_records = []
     order = 0
@@ -272,7 +369,7 @@ def run(repo: Repository) -> dict:
             })
             order += 1
 
-    assign_dup_groups(seg_records, texts)
+    assign_dup_groups(seg_records, texts, prior=prior)
 
     rows = [{k: r[k] for k in ("segment_id", "doc_id", "kind", "char_start",
                                "char_end", "template_fingerprint", "dup_group_id",

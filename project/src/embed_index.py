@@ -37,6 +37,19 @@ from __future__ import annotations
 from . import genai
 from .repository import Repository
 from .settings import CFG, Paths, genai_mode
+
+
+class MentionIndexUnavailable(RuntimeError):
+    """The mention vector index is missing or unreadable.
+
+    Defined here because this module owns that index. `blocking` re-exports it,
+    so `except blocking.MentionIndexUnavailable` keeps working -- they must stay
+    the SAME class object, or a caller catching one would sail past the other.
+
+    Raised rather than skipping: silently resolving without the embedding recall
+    net produces a smaller entity count that looks like a clean run, and nothing
+    downstream can tell the difference.
+    """
 from .vectorstore import FaissVectorStore, VectorStore
 
 
@@ -47,9 +60,11 @@ def build_node_text(norm_surface: str, entity_class: str, context: str) -> str:
     return f"{head} | ctx: {ctx}" if ctx else head
 
 
-def build_nodes(repo: Repository) -> list[dict]:
+def build_nodes(repo: Repository, doc_ids: list[str] | None = None) -> list[dict]:
     win = CFG.EMB_BLOCK_CONTEXT_CHARS
     mentions = repo.table("mentions")
+    if doc_ids is not None:
+        mentions = mentions[mentions["doc_id"].isin(set(doc_ids))]
     docs = repo.table("documents").set_index("doc_id")["claim_id"].to_dict()
     texts = {f.stem: f.read_text(encoding="utf-8") for f in Paths.raw_notes.glob("*.txt")}
     nodes = []
@@ -78,12 +93,31 @@ def open_store() -> FaissVectorStore:
     return FaissVectorStore(CFG.EMBED_DIM, Paths.mention_index, Paths.mention_meta)
 
 
-def run(repo: Repository, store: VectorStore | None = None) -> dict:
-    nodes = build_nodes(repo)
+def run(repo: Repository, store: VectorStore | None = None,
+        doc_ids: list[str] | None = None) -> dict:
+    """Embed mentions and index them.
+
+    With `doc_ids` this embeds only those notes' mentions and UPSERTS them into
+    the existing index, which is what an arriving note needs -- the store keys on
+    mention_id and replaces in place, so re-ingesting a note re-embeds only it.
+    Without it, the whole corpus is embedded into a fresh index.
+    """
+    nodes = build_nodes(repo, doc_ids)
     if not nodes:
         return {"n_nodes": 0}
     vecs = genai.embed([n["node_text"] for n in nodes])
     store = store or open_store()
+    if doc_ids is not None:
+        # Load what is already indexed so the upsert adds to it rather than
+        # replacing it. A missing index on the incremental path is a real error
+        # -- it means the backfill never ran.
+        try:
+            store.load()
+        except FileNotFoundError as e:
+            raise MentionIndexUnavailable(
+                "incremental embed asked to add to " + str(Paths.mention_index) +
+                ", which does not exist. Run the backfill first."
+            ) from e
     ids = [n["mention_id"] for n in nodes]
     meta = [{"entity_class": n["entity_class"], "doc_id": n["doc_id"],
              "claim_id": n["claim_id"], "norm_surface": n["norm_surface"]} for n in nodes]

@@ -162,6 +162,9 @@ def _rule_name(match_key) -> str | None:
     return BLOCKING_RULE_NAMES[k] if 0 <= k < len(BLOCKING_RULE_NAMES) else f"rule_{k}"
 
 
+MODEL_PATH = Paths.store / "splink_model.json"
+
+
 def lane_provenance(edges: pd.DataFrame) -> dict:
     """How many scored pairs each blocking rule was responsible for.
 
@@ -303,7 +306,7 @@ class SplinkResolver(ERBackend):
         # computed lazily per click instead of serialized for every one of
         # the (possibly millions of) scored edges up front.
         try:
-            linker.misc.save_model_to_json(str(Paths.store / "splink_model.json"), overwrite=True)
+            linker.misc.save_model_to_json(str(MODEL_PATH), overwrite=True)
         except Exception:
             pass
 
@@ -414,6 +417,11 @@ def run(repo: Repository, threshold: float | None = None,
     # block on it. Raises if the mention index is missing rather than quietly
     # resolving with less recall than the configuration promises.
     frame, block_stats = blocking.attach_buckets(frame)
+    # Persist the assignments so an arriving note can attach to these blocks
+    # instead of starting from nothing. See incremental.persist_blocks.
+    if "emb_bucket" in frame.columns:
+        from .incremental import persist_blocks
+        persist_blocks(repo, dict(zip(frame["mention_id"], frame["emb_bucket"])))
 
     edges = backend.resolve(frame)
     lanes = lane_provenance(edges)

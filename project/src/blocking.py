@@ -85,14 +85,11 @@ class EmbeddingThresholdMiscalibrated(RuntimeError):
     """
 
 
-class MentionIndexUnavailable(RuntimeError):
-    """The mention vector index is missing or unreadable.
-
-    Raised rather than skipping the lane. Silently resolving without the recall
-    net produces a smaller entity count that looks like a clean run, and nothing
-    downstream can tell the difference -- exactly the failure mode this codebase
-    removed everywhere else.
-    """
+# Defined in embed_index, which owns the index, and re-exported here so that
+# `blocking.MentionIndexUnavailable` keeps working for existing callers. Same
+# class object, deliberately -- two classes sharing a name is a bug waiting to
+# happen, since catching one would not catch the other.
+from .embed_index import MentionIndexUnavailable  # noqa: E402,F401
 
 
 def connected_components(pairs, nodes) -> dict:
@@ -272,3 +269,106 @@ def attach_buckets(frame: pd.DataFrame, store=None) -> tuple:
     buckets, stats = embedding_buckets(mention_ids, classes, store=store)
     frame["emb_bucket"] = frame["mention_id"].map(buckets)
     return frame, stats
+
+
+def buckets_for_new(new_ids: list[str], classes: dict,
+                    existing_buckets: dict, store=None) -> tuple:
+    """Assign emb_bucket to arriving mentions against an index that already has them.
+
+    The batch form (`embedding_buckets`) computes components over the whole k-NN
+    graph at once. That is not available incrementally: the existing mentions
+    already carry bucket labels that other stored rows and edges refer to, so a
+    new note must JOIN the existing structure rather than re-partition it.
+
+    Rules, in order:
+      1. A new mention whose nearest qualifying neighbour already has a bucket
+         adopts that bucket. This is the case that matters -- it is how an
+         arriving "R. Miller" lands in the same block as a stored "Bob Miller".
+      2. New mentions with no bucketed neighbour but with qualifying neighbours
+         among THEMSELVES form a fresh bucket together.
+      3. Everything else gets NULL and is covered by the deterministic rules.
+
+    This can under-merge relative to a full re-partition: if an arriving mention
+    bridges two previously separate buckets, the batch form would have merged
+    them and this does not -- it joins one. That is the deliberate trade. Bucket
+    labels are referenced by stored edges, so silently re-partitioning them
+    underneath would invalidate provenance already written down. A periodic full
+    re-resolve is the place to collapse those, not the ingest path.
+    """
+    from .embed_index import open_store
+
+    store = store or open_store()
+    try:
+        store.load()
+    except FileNotFoundError as e:
+        raise MentionIndexUnavailable(
+            "mention vector index not found at " + str(Paths.mention_index) +
+            ". The backfill must run before notes can be ingested incrementally."
+        ) from e
+
+    if not CFG.EMB_BLOCK_ENABLED:
+        return {m: None for m in new_ids}, {"enabled": False,
+                                            "reason": "EMB_BLOCK_ENABLED=False"}
+    if genai_mode() == "offline":
+        raise EmbeddingBackendUnsuitable(
+            "incremental bucketing needs real embeddings; the offline stub's "
+            "true and false similarity distributions overlap. Set "
+            "EMB_BLOCK_ENABLED=False to ingest on deterministic blocking alone."
+        )
+
+    new_set = set(new_ids)
+    out: dict[str, str | None] = {}
+    n_joined = n_created = 0
+
+    # Search each arriving mention against its whole class -- stored and new --
+    # so it can attach to an existing block or to a sibling in this batch.
+    by_class: dict[str, list[str]] = defaultdict(list)
+    for mid in new_ids:
+        by_class[classes.get(mid, "")].append(mid)
+
+    all_by_class: dict[str, list[str]] = defaultdict(list)
+    for mid, cls in classes.items():
+        all_by_class[cls].append(mid)
+
+    pairs_among_new = []
+    for cls, members in by_class.items():
+        pool = all_by_class.get(cls, [])
+        if len(pool) < 2:
+            continue
+        for mid, other, sim in store.knn_within(pool, CFG.EMB_BLOCK_TOPK + 1):
+            if mid not in new_set or sim < CFG.EMB_BLOCK_SIM:
+                continue
+            if other in new_set:
+                pairs_among_new.append((mid, other))
+            elif existing_buckets.get(other) and mid not in out:
+                out[mid] = existing_buckets[other]
+                n_joined += 1
+
+    # Rule 2: arriving mentions that found each other but no stored block.
+    unplaced = [m for m in new_ids if m not in out]
+    if unplaced:
+        roots = connected_components(
+            [(a, b) for a, b in pairs_among_new if a in set(unplaced) and b in set(unplaced)],
+            unplaced)
+        members: dict[str, list[str]] = defaultdict(list)
+        for m, root in roots.items():
+            members[root].append(m)
+        for root, mem in members.items():
+            if len(mem) < 2 or len(mem) > CFG.EMB_BLOCK_MAX_BUCKET:
+                for m in mem:
+                    out[m] = None
+            else:
+                label = "EB" + str(root)
+                n_created += 1
+                for m in mem:
+                    out[m] = label
+
+    stats = {
+        "enabled": True,
+        "n_new": len(new_ids),
+        "n_joined_existing_bucket": n_joined,
+        "n_new_buckets_formed": n_created,
+        "n_unbucketed": sum(1 for v in out.values() if v is None),
+        "sim_threshold": CFG.EMB_BLOCK_SIM,
+    }
+    return out, stats
