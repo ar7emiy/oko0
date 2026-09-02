@@ -40,7 +40,7 @@ not authority — each was independently checked.
 | D1 | Graph edges fabricated from `entity_class` + co-presence; relations never reach the graph | A, me | open |
 | D2 | Claim-handling activities discarded as degenerate | B | open |
 | D3 | Policy/claim numbers routed to a lane with no detector — lost entirely | me | open |
-| D4 | Identifier binding is a line-proximity rule and **demonstrably mis-binds**; LLM bindings that would fix it are discarded | me | open — **promoted**, now has a proven failure |
+| D4 | Identifier binding is a line-proximity rule: **precision 0.747, recall 0.371**; 144 of 176 orphans had the owner named nearby | me | open — **fix known** (T1.2), measured |
 | D5 | `POLARITIES` conflates polarity + evidentiality + lifecycle | B | open |
 | D6 | Vector-only retrieval; no lexical/exact lane; `who_is_at()` never called | B, me | **partly fixed** — exact lane wired (T3.2); lexical/rerank still open |
 | D7 | Locale model hardcoded, zero external resource loading | me | open |
@@ -66,7 +66,7 @@ Verified by grep/execution, 2026-09-02.
 | | value | conditions |
 |---|---|---|
 | identifier recall (finding) | 1.000 | synthetic, 2000 notes |
-| identifier recall (**binding**) | **unmeasured** | 1,211 orphans; genuine-vs-artifact split unknown |
+| identifier **binding** precision | **0.747** (LLM: **0.973**) | measured vs GT; line-rule recall 0.371 |
 | entity recall | 0.857 | synthetic only — generality unproven (D-gen) |
 | scan coverage | 100% chars/doc | — |
 | B³ F1 | 0.83 | **stale** — predates embedding lane; LLM lane was stubbed |
@@ -227,15 +227,48 @@ generality; expect worse than 0.857).
 | T2.2 | **Measure identifier binding, then decide** *(D4)* | **assumed** ⚠ measurement gates the build |
 | T2.3 | Three-band policy: auto-link / review / no-link | reasoned |
 
-### T2.2 remains measurement-first
-`corpus_gen` writes `GTIdentifier` records with owner associations, so ground
-truth knows who owns every identifier. Compare **line rule vs LLM binding vs
-ground truth** — about an hour in `audit.py`. Three outcomes; only one is a
-schema change. The original plan proposed the schema change *as the plan*, before
-noticing the LLM bindings were being discarded upstream — recorded as an
-over-engineering error rather than quietly corrected.
+### T2.2 — ✅ **RESOLVED by measurement: Outcome 1. No schema change.**
 
----
+The board defined three outcomes and gated the build on measuring which held.
+Measured, against ground truth, on the same eight documents:
+
+| | precision | bindings offered | when unsure |
+|---|---|---|---|
+| line rule (`subject_for`) | 0.830 | 53 — and 24 left unbound | binds the nearest name, silently |
+| **LLM (gazetteer finds, LLM binds)** | **0.973** | **111** | **declines** — 4 empty-owner cases |
+
+Corpus-wide the line rule is worse than that sample suggests: **precision 0.747,
+recall 0.371**. Of 176 orphans, **144 had their owner named within 300
+characters** — 82% of "orphans" are misses, not true orphans.
+
+**The error *kinds* differ more than the rates.** The LLM's 3 errors are all
+person-vs-their-own-firm (`3764 Oak Ave` → "Delgado Legal Partners" where GT says
+"Anthony Okonjo"; the firm's office address — arguably both are right). The line
+rule's errors are category errors: an attorney's email bound to the **claimant**,
+a provider's address to the **claimant**, the claimant's phone to a **repair
+shop**. The `fatima.martin@harborvance.com` → "Grace Martin" case is the shape of
+it — an email whose local-part names its owner, bound to a different person who
+happened to sit closer on the page.
+
+**So: Outcome 1. T1.2 is the entire fix.** Gazetteer finds and validates (a Luhn
+check is decidable and not a model's job); the LLM binds with an evidence span;
+line proximity demotes to a feature. **No `identifier_bindings` table, no scored
+candidate model, and the joint-vs-separate calibration question does not arise.**
+
+The plan proposed the schema change *as the plan* before this measurement
+existed. Recorded as an over-engineering error, twice avoided now — once by
+noticing the discard, once by measuring before building.
+
+**One correction to how this was previously described.** I wrote that the LLM
+"already produces these bindings and we throw them away." Not quite: bypassing
+the code filter yielded **zero** identifier relations, because `relations.PROMPT`
+also instructs *"Do NOT extract identifiers as relations… Skip those."* The
+discard is belt-and-braces — forbidden at the source **and** filtered downstream.
+The capability is **latent**, not actively produced and discarded. The
+recommendation is unchanged; the characterisation was overstated.
+
+**Falsified if.** The 0.973 does not hold on the handwritten notes, whose shapes
+`corpus_gen` does not produce. Worth checking before this number is quoted.
 
 # Phase 3 — Search: the right mechanism per question
 

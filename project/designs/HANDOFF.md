@@ -407,3 +407,48 @@ would have "caught" it would have done the damage the docstring warned about.
 **Fourth time measurement has changed the answer this session.** The pattern is
 now unambiguous enough to state as a rule: for anything tagged `assumed` or
 `reasoned`, run the query before writing the code.
+
+### 2026-09-02 (cont.) — T2.2 measured and RESOLVED. No schema change needed.
+
+The item that was going to be a new table is now a prompt change.
+
+**Line rule, corpus-wide, against ground truth:** precision **0.747**, recall
+**0.371**. Of 176 orphans, **144 had their owner named within 300 characters** —
+so 82% of "orphans" are misses, not true orphans. One binding in four that the
+system makes is wrong.
+
+**LLM (gazetteer finds + validates, LLM binds), same 8 documents:**
+
+| | precision | offered | when unsure |
+|---|---|---|---|
+| line rule | 0.830 | 53, 24 unbound | binds nearest name silently |
+| LLM | **0.973** | **111** | **declines** (4 empty-owner) |
+
+The error *kinds* matter more than the rates. All 3 LLM errors are
+person-vs-their-own-firm (an office address attributed to the firm rather than
+the attorney — arguably correct). The line rule's errors are category errors: an
+attorney's email on the claimant, a provider's address on the claimant, the
+claimant's phone on a repair shop.
+
+**Verdict: Outcome 1. T1.2 is the whole fix.** No `identifier_bindings` table, no
+scored candidate model, and the joint-vs-separate calibration question never
+arises. Second time measurement has *removed* work this session.
+
+**A correction I owe the record.** I wrote in commits and docs that the LLM
+"already produces these bindings and we throw them away." Bypassing the code
+filter returned **zero** identifier relations — because `relations.PROMPT` also
+says *"Do NOT extract identifiers as relations… Skip those."* The suppression is
+belt-and-braces: forbidden at the source and filtered downstream. The capability
+is **latent**, not produced-and-discarded. Recommendation unchanged, but the
+earlier phrasing was stronger than the evidence.
+
+**Next**, and now well-specified:
+
+1. **T1.2** — implement it. Prompt change (ask for identifier ownership with an
+   evidence span) + remove the filter + persist as bindings. The 0.973 is the
+   target to reproduce in-pipeline.
+2. **Check 0.973 holds on the handwritten notes** before quoting it — they
+   contain shapes `corpus_gen` does not produce, and that is the only read on
+   generality.
+3. T0.4 (Splink training completeness) is still open and is a genuine build with
+   no measurement gate.
