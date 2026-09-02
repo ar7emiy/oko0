@@ -29,7 +29,7 @@ flowchart LR
     R2["embedding top-K recall net<br/>find semantically similar aliases / variants<br/><i>proposes pairs only; never merges</i>"]:::live
     R3["Fellegi-Sunter / Splink pair score<br/>per-type comparison evidence + calibration artifact"]:::live
     R4{"auto-link · review · no-link<br/>with calibrated decision bands"}:::target
-    R5[("versioned entity snapshot<br/>stable ID + membership + lineage + evidence") ]:::target
+    R5[("versioned entity snapshot<br/>stable ID + membership + lineage + evidence")]:::target
     N5 --> R0
     R0 --> R1 --> R3
     R0 --> R2 --> R3 --> R4 --> R5
