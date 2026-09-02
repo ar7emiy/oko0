@@ -40,7 +40,7 @@ not authority — each was independently checked.
 | D1 | Graph edges fabricated from `entity_class` + co-presence; relations never reach the graph | A, me | open |
 | D2 | Claim-handling activities discarded as degenerate | B | open |
 | D3 | Policy/claim numbers routed to a lane with no detector — lost entirely | me | open |
-| D4 | Identifier binding is a line-proximity rule: **precision 0.747, recall 0.371**; 144 of 176 orphans had the owner named nearby | me | open — **fix known** (T1.2), measured |
+| D4 | Identifier binding was a line-proximity rule: precision 0.747 → **0.940** with the LLM lane (llm sub-lane 0.969) | me | ✅ **fixed** — binding lane shipped |
 | D5 | `POLARITIES` conflates polarity + evidentiality + lifecycle | B | open |
 | D6 | Vector-only retrieval; no lexical/exact lane; `who_is_at()` never called | B, me | **partly fixed** — exact lane wired (T3.2); lexical/rerank still open |
 | D7 | Locale model hardcoded, zero external resource loading | me | open |
@@ -156,7 +156,7 @@ The spine is `span → mention → assertion → entity → graph`, currently cu
 | item | what | confidence |
 |---|---|---|
 | T1.1 | Split `entity_type` (closed, structural) from `role` (open, claim-scoped, evidence-backed) *(D1, org-name failure)* | measured |
-| T1.2 | Relations onto the operational path **and remove the identifier discard** *(D4)* | measured |
+| T1.2 | Relations onto the operational path; **identifier binding lane ✅ DONE** *(D4)* | measured |
 | T1.2b | **Stop discarding claim activities** *(D2)* | measured |
 | T1.2c | **Detectors for policy/claim numbers** *(D3)* | measured |
 | T1.3 | Make argument resolution visible (`resolution_method` + independent verification) | reasoned |
@@ -269,6 +269,35 @@ recommendation is unchanged; the characterisation was overstated.
 
 **Falsified if.** The 0.973 does not hold on the handwritten notes, whose shapes
 `corpus_gen` does not produce. Worth checking before this number is quoted.
+
+### T1.2 identifier binding — ✅ **DONE**
+
+Shipped as `relations.bind_identifiers` / `bind_identifiers_many`, wired into
+`pipeline_v2` ahead of the line rule. Gazetteer finds and validates; the LLM
+binds with an evidence span; line proximity is the fallback.
+`identifier_observations.binding_method` records which lane decided each row.
+
+Measured in-pipeline over 8 documents against ground truth:
+
+| lane | correct | wrong | precision |
+|---|---|---|---|
+| **llm** | 63 | 2 | **0.969** |
+| line_rule (fallback only) | 0 | 2 | 0.000 |
+| — | | | **overall 0.940**, up from 0.747 |
+
+96 bound by the LLM, 36 by the fallback, 34 left unbound. The lane offered 154
+bindings and **declined 42** — declining is the behaviour that makes it safe.
+
+Both LLM "errors" are the same case: bound to `'Tony Okonjo'` where ground truth
+says `'Anthony Okonjo'` — a nickname variant of the *correct* person. So 0.969
+is a floor, not a ceiling.
+
+**Open question, deliberately not settled: should the line rule be a fallback at
+all?** It runs only where the LLM declined — i.e. on the cases the model judged
+unclear — and scored **0/2** there. An LLM decline is information ("the text does
+not say"), and overriding it with a rule measured at 0.747 corpus-wide may be
+worse than leaving the identifier unbound, which is a supported state. n=2 is far
+too small to act on. Measure over the full corpus before changing it.
 
 # Phase 3 — Search: the right mechanism per question
 

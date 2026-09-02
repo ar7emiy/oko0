@@ -8,6 +8,7 @@ membership changes are new rows in entity_versions / entity_members.
 from __future__ import annotations
 
 import json
+import re
 import sqlite3
 from collections.abc import Iterable
 from dataclasses import asdict, is_dataclass
@@ -31,6 +32,65 @@ class Repository:
     def init_schema(self) -> None:
         self.conn.executescript(contracts.DDL)
         self.conn.commit()
+        self._migrate_added_columns()
+
+    def _migrate_added_columns(self) -> None:
+        """Add columns the DDL declares that an existing table is missing.
+
+        CREATE TABLE IF NOT EXISTS is a no-op on a table that already exists, so
+        adding a column to contracts.DDL leaves every existing database silently
+        behind -- the next insert fails with "table X has no column named Y", and
+        the only remedy was a full reset. On this corpus that is an 11-minute
+        re-extraction to pick up one column, which in practice discourages
+        schema changes that ought to be cheap.
+
+        Deliberately narrow: it only ADDS columns. It never drops, renames or
+        retypes, because each of those loses data and should be an explicit,
+        reviewed migration rather than something that happens on connect.
+        """
+        want = self._declared_columns()
+        cur = self.conn.cursor()
+        added = []
+        for table, cols in want.items():
+            try:
+                have = {r["name"] for r in
+                        cur.execute(f"PRAGMA table_info({table})").fetchall()}
+            except sqlite3.Error:
+                continue
+            if not have:
+                continue                      # table not created yet
+            for name, decl in cols.items():
+                if name not in have:
+                    cur.execute(f"ALTER TABLE {table} ADD COLUMN {name} {decl}")
+                    added.append(f"{table}.{name}")
+        if added:
+            self.conn.commit()
+        self.migrations_applied = added
+
+    @staticmethod
+    def _declared_columns() -> dict:
+        """{table: {column: type-and-default}} parsed from contracts.DDL."""
+        out = {}
+        pattern = r"CREATE TABLE IF NOT EXISTS (\w+)\s*\((.*?)\n\);"
+        for m in re.finditer(pattern, contracts.DDL, re.S):
+            table, body = m.group(1), m.group(2)
+            cols = {}
+            for line in body.splitlines():
+                line = line.split("--")[0].strip().rstrip(",")
+                if not line or line.upper().startswith(
+                        ("FOREIGN KEY", "PRIMARY KEY", "UNIQUE", "CHECK")):
+                    continue
+                parts = line.split()
+                if len(parts) < 2:
+                    continue
+                name, decl = parts[0], " ".join(parts[1:])
+                # ALTER TABLE ADD COLUMN cannot add a PRIMARY KEY or a UNIQUE
+                # column, and an existing table already has its key anyway.
+                if "PRIMARY KEY" in decl.upper() or "UNIQUE" in decl.upper():
+                    continue
+                cols[name] = decl
+            out[table] = cols
+        return out
 
     def reset(self) -> None:
         """Drop all known tables and recreate. Used at the top of a fresh run."""

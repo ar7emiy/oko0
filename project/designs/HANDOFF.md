@@ -468,3 +468,28 @@ nearest name silently.
 
 `designs/mermaid/README.md` was stale again (diagram 15 added without it, same as
 12–14). **If you add a diagram, run `designs/mermaid/build_readme.py`.**
+
+### 2026-09-02 (cont.) — T1.2 shipped: identifier binding lane
+
+`relations.bind_identifiers` / `bind_identifiers_many`, wired into `pipeline_v2`
+ahead of the line rule. Gazetteer finds and validates; LLM binds with an evidence
+span; line proximity demoted to fallback. `identifier_observations.binding_method`
+records which lane decided each row, so the mix stays measurable.
+
+In-pipeline, 8 documents, vs ground truth: **llm 0.969** (63/2), line-rule
+fallback 0.000 (0/2), **overall 0.940** — up from 0.747. 154 bindings offered,
+**42 declined**. Both LLM "errors" bound `'Tony Okonjo'` where GT says
+`'Anthony Okonjo'`: the same person under a nickname, so 0.969 is a floor.
+
+**Open, not settled:** whether the line rule should be a fallback at all. It runs
+only where the LLM declined, and went 0/2 there. A decline is information; n=2 is
+too small to act on. Measure corpus-wide first.
+
+**Also added: additive schema migration** (`Repository._migrate_added_columns`).
+`CREATE TABLE IF NOT EXISTS` is a no-op on an existing table, so adding a column
+to `contracts.DDL` left every existing database behind with
+"table X has no column named Y" and no remedy but a full reset — an 11-minute
+re-extraction to pick up one column, which discourages cheap schema changes.
+Deliberately narrow: it only ADDS. Drops, renames and retypes lose data and
+should stay explicit, reviewed migrations rather than something that happens on
+connect.

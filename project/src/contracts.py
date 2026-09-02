@@ -257,6 +257,13 @@ CREATE TABLE IF NOT EXISTS identifier_observations (
     value_raw         TEXT NOT NULL,
     value_norm        TEXT,
     subject_mention_id TEXT,              -- NULL => orphan, resolvable only via the id
+    -- Which lane decided the owner: 'llm' | 'line_rule' | 'unbound'.
+    -- Measured against ground truth, the line rule binds one identifier in four
+    -- to the WRONG party (precision 0.747, recall 0.371) while the LLM reaches
+    -- 0.973 and declines rather than guessing. Recording the lane per row keeps
+    -- the mix measurable instead of assumed, and lets a consumer discount a
+    -- proximity-derived binding without discarding it.
+    binding_method    TEXT,
     validated         INTEGER DEFAULT 0,
     extractor         TEXT
 );
