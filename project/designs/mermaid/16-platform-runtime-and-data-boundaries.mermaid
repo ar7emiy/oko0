@@ -1,0 +1,124 @@
+%% Lucid-ready Mermaid: paste the full file into Lucid's Mermaid import.
+%% Solid green = committed current capability. Purple dashed = agreed target capability.
+flowchart TB
+  classDef source fill:#E8EEF8,stroke:#315A8A,stroke-width:1.6px,color:#102A43
+  classDef store fill:#E7F5F7,stroke:#27717A,stroke-width:1.7px,color:#123A40
+  classDef model fill:#FFF2D9,stroke:#A06416,stroke-width:1.7px,color:#5A3300
+  classDef service fill:#F7F7F4,stroke:#535B61,stroke-width:1.4px,color:#20252A
+  classDef live fill:#E4F2EA,stroke:#2F6B4F,stroke-width:1.7px,color:#12301F
+  classDef target fill:#F3E8FF,stroke:#7048A8,stroke-width:1.7px,stroke-dasharray:7 4,color:#32195A
+  classDef guard fill:#FFF0F0,stroke:#A33A3A,stroke-width:1.5px,stroke-dasharray:5 3,color:#5C1616
+  classDef note fill:#FFF8C9,stroke:#8A6A00,stroke-width:1.4px,color:#493800
+  classDef terminal fill:#263238,stroke:#263238,color:#FFFFFF
+
+  LEGEND["<b>Runtime map — which technology is used where, and why</b><br/>Green = current; purple dashed = target. ‘Text’ means original characters/tokens. ‘Vector’ means a numeric embedding; it is never treated as a fact."]:::note
+
+  subgraph INTAKE["1. Intake and authoritative evidence"]
+    direction LR
+    S0(["client note export<br/>text file/API payload + claim ID<br/>optional: note type, author, timestamp"]):::source
+    S1[("immutable source store<br/>object/file storage: original note bytes + SHA-256")]:::store
+    S2[("RELATIONAL evidence store<br/>SQLite today → PostgreSQL-class RDBMS target<br/>documents, spans, identifiers, assertions, runs, entity snapshots")]:::store
+    S0 -->|raw note text + source metadata| S1
+    S1 -->|document version + source metadata| S2
+  end
+
+  subgraph EXTRACT["2. Extraction — locate evidence before interpreting it"]
+    direction LR
+    X0["read raw text chunks<br/>from immutable source store"]:::service
+    X1["GLiNER NER<br/><b>input:</b> raw text tokens<br/><b>output:</b> named-entity spans + labels<br/><b>why:</b> broad recall across casing / phrasing"]:::live
+    X2["identifier detectors + validators<br/><b>input:</b> raw text characters<br/><b>output:</b> phone/email/NPI candidates + validation<br/><b>why:</b> exact structured values need deterministic checks"]:::live
+    X3["LLM relation + activity extraction<br/><b>input:</b> raw chunk text + allowed context, never vectors<br/><b>output:</b> constrained JSON: arguments, raw predicate/action, evidence offsets<br/><b>why:</b> recover open-ended semantics patterns cannot enumerate"]:::target
+    X4["span and schema verifier<br/>raw[start:end] must equal cited surface;<br/>reject unsupported model output"]:::target
+    X5[("RELATIONAL write<br/>candidate ledger + mentions + identifier observations + grounded assertions<br/><b>why:</b> transactionality, joins, versioning, auditability")]:::store
+    X0 --> X1 --> X5
+    X0 --> X2 --> X5
+    X0 --> X3 --> X4 --> X5
+  end
+
+  S1 --> X0
+  S2 -.->|document metadata / claim scope| X0
+
+  subgraph RESOLUTION["3. Entity resolution — embeddings propose; probabilistic linkage decides"]
+    direction LR
+    R0["RELATIONAL read<br/>mention surfaces + validated IDs + source/reference facts"]:::service
+    R1["deterministic candidate blocks<br/>exact IDs, normalized name keys, client reference keys<br/><b>why:</b> cheap, explainable high-precision candidates"]:::live
+    R2["embedding model<br/><b>input:</b> normalized mention text, not the full note<br/><b>output:</b> numeric vector"]:::live
+    R3[("ER vector candidate index<br/>FAISS today; vector-store abstraction later<br/><b>operation:</b> top-K nearest mention candidates<br/><b>why:</b> catch alias/variant pairs blocking misses")]:::live
+    R4["Splink / Fellegi-Sunter scorer<br/><b>input:</b> candidate pair features from relational store<br/><b>output:</b> pair probability + feature explanation<br/><b>why:</b> the decision is measured, not semantic similarity"]:::live
+    R5["binding + cluster policy<br/>auto-link / review / no-link; temporal identifier conflicts<br/><b>why:</b> do not repair a wrong binding by splitting a correct entity"]:::target
+    R6[("RELATIONAL entity view<br/>versioned membership, stable identity/lineage, decision provenance")]:::target
+    X5 --> R0
+    R0 --> R1 --> R4
+    R0 --> R2 --> R3 -->|candidate mention IDs only| R4
+    R4 --> R5 --> R6
+  end
+
+  subgraph PUBLISH["4. Build purpose-specific read models from evidence"]
+    direction LR
+    P0[("RELATIONAL / exact index<br/><b>operation:</b> key lookup and metadata filters<br/><b>used for:</b> validated identifiers, claim scope, dates, entity IDs<br/><b>why:</b> exact answers and filtering"]:::live
+    P1[("full-text lexical index<br/><b>operation:</b> BM25 / phrase / rare token match<br/><b>used for:</b> names, codes, jargon, quoted language<br/><b>why:</b> literal wording is not a vector-similarity problem")]:::target
+    P2[("chunk vector index<br/>FAISS today<br/><b>operation:</b> nearest-neighbor passage search<br/><b>used for:</b> paraphrase / concept recall<br/><b>why:</b> find meaning when wording changes")]:::live
+    P3[("GRAPH DATABASE / property graph projection<br/>igraph today; graph DB target at scale<br/><b>operation:</b> bounded typed traversal<br/><b>used for:</b> entity-to-entity paths and identifier adjacency<br/><b>why:</b> relationships, not keyword search")]:::target
+    P4[("temporal event read model<br/><b>operation:</b> ordered / as-of event query<br/><b>used for:</b> claim chronology and corrections")]:::target
+    X5 --> P0
+    X5 --> P1
+    X5 --> P2
+    X5 --> P3
+    X5 --> P4
+    R6 --> P0
+    R6 --> P3
+  end
+
+  subgraph SEARCH["5. Search — query each representation for the question it can answer"]
+    direction TB
+    Q0(["authorized analyst question + claim/time scope"]):::source
+    Q1["deterministic query analysis<br/>extract exact values, terms, concepts, date/path intent<br/><b>no LLM required to route the POC</b>"]:::service
+    Q2{{"run every applicable lane;<br/>apply authorization and claim filters first"}}:::target
+    Q0 --> Q1 --> Q2
+    Q3["exact lookup<br/>query tokens → normalized identifier / metadata key"]:::live
+    Q4["lexical retrieval<br/>query words → BM25 / phrase hits"]:::target
+    Q5["query embedding<br/><b>input:</b> question text<br/><b>output:</b> numeric query vector → k-NN chunks"]:::live
+    Q6["temporal query<br/>time language → ordered events / assertions"]:::target
+    Q7["graph traversal<br/>resolved seed ID → bounded factual paths"]:::target
+    Q2 --> Q3 --> P0
+    Q2 --> Q4 --> P1
+    Q2 --> Q5 --> P2
+    Q2 --> Q6 --> P4
+    Q2 --> Q7 --> P3
+    Q8["retain lane, rank, raw score, evidence ID, filters"]:::target
+    Q9["deduplicate then fuse ranked evidence<br/>RRF + optional reranker"]:::target
+    Q10[("EvidencePack in relational form<br/>only selected raw spans, assertions, entity snapshots, chronology")]:::store
+    P0 --> Q8
+    P1 --> Q8
+    P2 --> Q8
+    P3 --> Q8
+    P4 --> Q8
+    Q8 --> Q9 --> Q10
+  end
+
+  subgraph ANSWER["6. Answer and verify"]
+    direction LR
+    A0["LLM synthesis<br/><b>input:</b> retrieved raw text + structured triples; target input is an EvidencePack<br/>never vectors and never the whole database<br/><b>output:</b> answer claims + requested citations<br/><b>why:</b> readable explanation, not fact discovery"]:::live
+    A1["mechanical citation verifier<br/>check document exists, span bounds, and cited span was in EvidencePack"]:::live
+    A2(["answer, clickable source spans,<br/>and retrieval / resolution trace"]):::terminal
+    A3["reject unsupported claim;<br/>qualify or abstain"]:::guard
+    Q10 --> A0 --> A1
+    A1 -->|supported| A2
+    A1 -->|unsupported| A3
+  end
+
+  LEGEND -.-> S0
+  LEGEND -.-> Q0
+
+  subgraph BOUNDARIES["Non-negotiable boundaries"]
+    direction LR
+    B1["<b>Relational database = system of record</b><br/>facts, evidence spans, decisions, versions, and joins"]:::note
+    B2["<b>Vector index = recall accelerator</b><br/>returns candidates/passages; it never establishes identity or truth"]:::note
+    B3["<b>Graph database = relationship navigation</b><br/>answers bounded paths only after edges are evidence-grounded"]:::note
+    B4["<b>LLM = constrained interpretation and presentation</b><br/>raw text in; structured JSON or cited prose out; never an untraceable store"]:::note
+  end
+  S2 -.-> B1
+  R3 -.-> B2
+  P3 -.-> B3
+  X3 -.-> B4
+  A0 -.-> B4
