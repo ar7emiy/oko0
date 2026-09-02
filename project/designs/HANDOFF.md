@@ -79,7 +79,10 @@ These were given explicitly and apply to all future work.
 | `mermaid/12,13,14-*.mermaid` | agent B's target architecture + breakpoints | agent B |
 | `HANDOFF.md` | this file | me |
 
-**These are not yet reconciled.** That is the task in flight. See §6.
+**Reconciled 2026-09-02.** `TODO.md` is the single authoritative board;
+`development-plan.md` is the reasoning; both audits are untouched primary
+sources; agent B's `mermaid/12`+`13` are the adopted target state. Phase
+numbering is aligned across both docs (0–7).
 
 ---
 
@@ -106,6 +109,8 @@ grep or by execution.
 | D10 | Chunking ignores computed structure | fixed word windows; `segments`, casing, boilerplate all discarded at chunk time |
 | D11 | No per-client config; no learning loop | config is one global module; corrections patch the *manifest*, never the system |
 | D12 | Precision gate in the recall path | `_is_plausible_name` **drops** single-token names — measured 100% miss on `variant:short` |
+| D13 | **Cluster-level consistency guard was lost in the v1→v2 move** | `cluster_at` is pure connected components. `cannot_link_reason` is *pairwise* — it suppresses A–B, but if A–C and C–B survive, A and B still merge unchecked. v1 had a documented cluster-scope identifier-consistency invariant, described as "what stops transitive/embedding chains from over-merging"; v2 dropped it. Matters **more** now, because the embedding blocking lane is exactly that transitive-chaining risk |
+| D14 | **Splink training completeness is never checked** | zero guards. Splink prints *"Your model is not yet fully trained… will use default values"* on every run; nothing reads it. An untrained comparison silently falls back to defaults, so probabilities it touches are uncalibrated while still being reported as calibrated — which undercuts the system's headline claim |
 
 **Open, scaling (not correctness):** `filter_fn` is an O(total-chunks) metadata
 scan per query; `entities_in_chunks` iterates every mention per query.
@@ -133,21 +138,25 @@ scan per query; `entities_in_chunks` iterates every mention per query.
 
 ## 6. Next actions, in order
 
-1. **Reconcile the four planning docs into one plan.** ← *in flight*
-   Two audits + my plan + my TODO currently overlap and occasionally disagree.
-   Target: `TODO.md` remains the single status board (its evidence/confidence/
-   falsifiability format is the one to keep); agent B's reference architecture
-   becomes the stated *target state*; `development-plan.md` becomes the path
-   between them. Audits stay as-is — they are dated primary sources, do not edit.
-2. **D6 hybrid retrieval + wire `who_is_at` into `answer()`.** Highest value per
-   unit of work. There is currently a whole class of query (identifier lookup)
-   the system cannot serve.
-3. **D7 lexicons become loadable resources with coverage instrumentation.**
-   Converts a silent recall failure into a visible, tunable one.
-4. **D1/D2/D4 — the evidence path.** Relations reach the graph; activities stop
-   being discarded; LLM identifier bindings stop being thrown away.
-5. **T2.2 measurement** (`TODO.md`) — binding accuracy vs ground truth. Roughly
-   an hour in `audit.py`, and it decides whether a schema change is needed at all.
+~~1. Reconcile the planning docs.~~ ✅ **done** — see §3.
+
+1. **T3.2 — wire `who_is_at()` into `answer()`.** The cheapest item on the board.
+   A working identifier→entity lookup exists and the agent never calls it, so
+   identifier questions go through an embedding path that cannot serve them.
+2. **T0.3 / T0.4 — the two open correctness bugs.** Cluster-consistency guard
+   (a regression the embedding lane makes worse) and Splink training
+   completeness. Start T0.3 with a *query*, not a build: count how many current
+   clusters actually violate the invariant. That may falsify the item outright.
+3. **T3.1 — hybrid retrieval.** Exact + lexical + vector + temporal + graph,
+   fused by RRF. Decide the routing question explicitly (§ agent B leaves it
+   open); run-all-and-fuse is the robust default at this scale.
+4. **T4.1 — lexicons as loadable resources + coverage instrumentation.** The
+   single change that most serves "tunable object". Instrumentation matters as
+   much as the resources: it converts a silent gap into a visible one.
+5. **T1.2 / T1.2b / T1.2c / T1.5 — the evidence path.** Relations reach the
+   graph; activities and policy numbers stop being discarded.
+6. **T2.2 measurement** — binding accuracy vs ground truth. ~1h in `audit.py`,
+   and it decides whether a schema change is needed at all.
 
 ---
 
@@ -246,3 +255,72 @@ citations are rejected. The chunk-index bug existed because nothing tested it.
 `notebooks/30_live_pipeline.py` still leaves a stale graph for the single-note
 demo. It now announces itself in the log. Decide whether the demo should just
 always rebuild.
+
+### 2026-09-02 (cont.) — verifying agent B's audit before merging it
+
+Checked its claims against source rather than accepting them. **Six were real
+and I had missed all six**, three of them in code I wrote or reviewed the same
+day:
+
+| claim | verdict |
+|---|---|
+| artifacts at different data versions | ✅ chunk index — fixed above |
+| citations not enforced | ✅ fixed above |
+| activities discarded as degenerate | ✅ `DEGENERATE_PREDICATES` |
+| semantic dimensions conflated | ✅ `POLARITIES` mixes 3 axes |
+| ER can train a partial model | ✅ **D14** — no completeness check |
+| connected components amplify one bad edge | ✅ **D13** — v1 invariant lost |
+
+Two I would **rate differently** than the audit does:
+
+- **Entity ID instability (its C4, my D8)** is real, but the fix conflicts with a
+  property we deliberately built: content-derived ids give idempotent re-ingest
+  and reproducibility. A stable-id registry makes ids depend on processing
+  *history*, so the same corpus in a different order yields different ids.
+  Registry + lineage is probably right, but reproducibility then has to come from
+  the RunSpec and snapshot instead of from id determinism. That trade needs
+  deciding explicitly, not assuming.
+- **H9, "the vector-store abstraction promises portability it cannot provide"** —
+  partially fair. `knn_within` and `get_vector` do assume vector read-back. But
+  the abstraction has held through two real changes (a rename plus a second
+  index) and the faiss-isolation guard is enforced. Treat as design debt, not a
+  critical finding.
+
+Its **reference architecture (mermaid 12/13/14) is the right target** and is
+adopted as such. Its weaknesses as a *plan*: no sequencing or cost, no cold-start
+story (where do out-of-box defaults come from for a client with no labels and no
+reference data — which is the question the user actually asked), query routing
+left unspecified when it is the crux, and no unit-economics for multi-lane LLM
+extraction at carrier volume.
+
+**Reconciliation decision.** Both audits stay untouched as dated primary sources
+— editing them destroys the record. `TODO.md` stays the single status board and
+absorbs their findings in its own evidence/confidence/falsification format, with
+attribution. `development-plan.md` becomes the path from here to agent B's target.
+
+### 2026-09-02 (cont.) — reconciliation complete
+
+Four planning docs → one board. Structure now:
+
+- **`TODO.md`** — the single authoritative status board. Defect register (D0a–D14,
+  each with attribution and verification status), current-state table with
+  measurement conditions, phases 0–7, the routing-decisions verdict table, and
+  an explicit not-doing list.
+- **`development-plan.md`** — reasoning and rejected alternatives only. No
+  parallel item list to drift.
+- **Audits** — untouched. Dated primary sources; superseded by the board, never
+  edited.
+- **`mermaid/12`, `13`** — adopted target state.
+
+**Two phases added**, both from findings neither my plan nor agent A had:
+**Phase 3 (Search)** and **Phase 4 (Tunability)**. Phase 4 is the one that
+directly answers the user's "tunable object" requirement, and its core finding is
+that *every lexicon in the system is a Python constant with no override path* —
+plus no instrumentation, so the gap is silent.
+
+Phase numbering is aligned across both docs. Sequencing table updated: **Phases 0
+and 3 gate on nothing and pay off immediately.**
+
+**Deliberately rejected from agent B's proposal:** microservices. Its
+modular-monolith recommendation is right for this scale; splitting services now
+adds operational surface without solving a single defect in the register.

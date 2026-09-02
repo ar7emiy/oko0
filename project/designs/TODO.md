@@ -1,431 +1,407 @@
 # TODO — status board
 
-Companion to `development-plan.md`. The plan carries the reasoning; this carries
-the state, the evidence, and what would prove each item wrong.
+The single status board. Reconciles two external audits and my own sweep into
+one ordered plan.
+
+- **Target state:** `mermaid/12-client-tunable-reference-architecture.mermaid`
+  and `13-search-and-context-routing.mermaid` (agent B). Adopted.
+- **Reasoning and rejected alternatives:** `development-plan.md`.
+- **Primary sources, unedited:** `first-principles-claim-note-audit.md` (agent
+  A), `full-system-architecture-audit.md` (agent B). Dated evidence — do not
+  revise them; supersede them here.
+- **Session state and standing instructions:** `HANDOFF.md`.
 
 ## For a reviewer reading this cold
 
-**Known bias in this document.** The same author wrote the system, the critique
-of it, and this list. An external audit
-(`first-principles-claim-note-audit.md`) was commissioned precisely because of
-that, and several items below originate there. Where this document disagrees
-with that audit, the disagreement is marked. Treat unmarked agreement between
-the two with more suspicion than disagreement.
+**Known bias.** The same author wrote the system, much of its critique, and this
+board. Two external audits were commissioned because of that. Where this board
+disagrees with them, the disagreement is marked with reasoning — treat *unmarked
+agreement* with more suspicion than disagreement.
 
-**Numbering.** `T1.4` here is §1.4 in the plan. Items with a letter suffix
-(`T1.2a`, `T1.3a`) are finer-grained than the plan — they were split out because
-each is a distinct action with its own falsification test, and because `T1.2a`
-records a correction to the plan itself. Phase 4–5 items are listed but not
-expanded; they are gated on Phase 1–2 and their design will change with those
-outcomes.
+**Every item carries:** what the code does now (with `file:line`), the problem
+tagged **measured** / **unmeasured**, the proposal, a confidence level
+(`measured` · `reasoned` · `assumed`), and what would falsify it. An item at
+`assumed` has no business being built before its falsification test runs.
 
-**Every item separates three things**, because conflating them is how a plan
-becomes unfalsifiable:
+**Numbering.** `T1.4` here is §1.4 in `development-plan.md`. Letter suffixes are
+finer-grained splits. `D*` ids are defects in the register below.
 
-| field | means |
-|---|---|
-| **Current** | what the code does today, with `file:line` evidence you can check |
-| **Problem** | what is wrong with that, tagged **measured** or **unmeasured** |
-| **Proposed** | the change |
-| **Confidence** | `measured` (a number exists) · `reasoned` (argument only) · `assumed` (belief, no evidence) |
-| **Falsified if** | the observation that would kill this item |
+---
 
-**An item at `assumed` confidence has no business being built before its
-falsification test runs.** Two items below are in that state and are marked as
-blocked on measurement rather than scheduled.
+## Defect register
+
+Every row verified against source by grep or execution. "Found by" is attribution,
+not authority — each was independently checked.
+
+| id | defect | found by | status |
+|---|---|---|---|
+| D0a | `ingest()` never added arriving notes to the chunk index — retrieval could only see the backfill corpus, silently | B | ✅ **fixed** `1a1bbe5` |
+| D0b | Citations demanded by prompt, never verified | B | ✅ **fixed** `1a1bbe5` |
+| D1 | Graph edges fabricated from `entity_class` + co-presence; relations never reach the graph | A, me | open |
+| D2 | Claim-handling activities discarded as degenerate | B | open |
+| D3 | Policy/claim numbers routed to a lane with no detector — lost entirely | me | open |
+| D4 | LLM identifier bindings discarded | me | open |
+| D5 | `POLARITIES` conflates polarity + evidentiality + lifecycle | B | open |
+| D6 | Vector-only retrieval; no lexical/exact lane; `who_is_at()` never called | B, me | open |
+| D7 | Locale model hardcoded, zero external resource loading | me | open |
+| D8 | Entity IDs change when mentions arrive | B | open, **contested** |
+| D9 | Two disconnected coref mechanisms | me | open |
+| D10 | Chunking discards the structure profiling computed | me | open |
+| D11 | No per-client config; corrections never feed the system | B, me | open |
+| D12 | `_is_plausible_name` drops single-token names | A, me | open |
+| D13 | Cluster-level consistency guard lost in v1→v2 | B | open |
+| D14 | Splink training completeness never checked | B | open |
+
+**Scaling, not correctness:** `filter_fn` is an O(total-chunks) metadata scan per
+query; `entities_in_chunks` iterates every mention per query.
 
 ---
 
 ## Current state, factually
 
-Verified by grep against source on 2026-09-02, not taken from prose.
-
-**What works and is measured**
+Verified by grep/execution, 2026-09-02.
 
 | | value | conditions |
 |---|---|---|
-| identifier recall (finding them) | 1.000 | synthetic corpus, 2000 notes |
-| entity recall | 0.857 | same |
-| scan coverage | 100% chars/doc, 0 docs short | same |
-| B³ F1 | 0.83 (P 0.82 / R 0.83) | **stale** — predates the embedding lane; measured with LLM lane stubbed |
-| single-note ingest, end to end | 18.5s | 60-note corpus, live models |
-| LLM lane batching | 15min+ → 115s | 160 chunks, 8 workers |
-| GLiNER batching | 1.1x (10.5s vs 11.2s) | 12 chunks, CPU, identical spans |
-
-**What is broken and measured**
-
-- 7,468 edges join mentions with byte-identical surface text; **4.6%** clear the
-  0.45 threshold. `Rios Car Care` — 28 mentions / 12 notes → **28 entities**.
-- `variant:short` 100% miss, `variant:last_only` 88% miss.
-
-**What is broken and unmeasured**
-
-- Identifier *binding* accuracy. We measure whether identifiers are **found**
-  (1.000), never whether they are attached to the **right** entity. 1,211
-  orphans exist in the 2000-note corpus; the split between genuine orphans and
-  artifacts of the binding rule is unknown.
-- Generality. Every number above is against `corpus_gen` output, whose shapes we
-  control.
-
-**Structural facts a reviewer should verify independently**
-
-- `build_graph.py` references `assertions` **0 times**. Semantic edges come from
-  `entity_class` + claim co-presence, 5 hardcoded predicates.
-- `extract_relations` / `bind_to_mentions` are called only from
-  `notebooks/20_relation_extraction.py`.
-- `coref_links` is written by `pipeline_v2` and read only by `audit.py` and
-  `qa_viewer.py` — no production consumer.
-- `case_informative` is computed in `profiling.py` and read by nothing.
+| identifier recall (finding) | 1.000 | synthetic, 2000 notes |
+| identifier recall (**binding**) | **unmeasured** | 1,211 orphans; genuine-vs-artifact split unknown |
+| entity recall | 0.857 | synthetic only — generality unproven (D-gen) |
+| scan coverage | 100% chars/doc | — |
+| B³ F1 | 0.83 | **stale** — predates embedding lane; LLM lane was stubbed |
+| identical-surface pairs above threshold | **4.6%** of 7,468 | the D1/D5 org-name failure |
+| single-note ingest | 18.5s | 60-note corpus, live models |
 
 ---
 
-## Phase 1 — Reconnect the evidence path
+# Phase 0 — Correctness. Do first.
 
-### T1.1 — Split `entity_type` from `role`
+Things that are wrong *right now* and cheap to fix.
+
+### T0.1 Chunk index on ingest — ✅ **DONE** (`1a1bbe5`)
+Proof before fix: querying a claim with text copied verbatim from an ingested
+note returned **0 chunks**. `build_chunk_index` gained `doc_ids=`; `ingest()`
+calls it unconditionally, outside `rebuild_graph`. Smoke test now asserts the
+invariant *every document is reachable by retrieval*.
+
+### T0.2 Citation verification — ✅ **DONE** (`1a1bbe5`)
+Four checks: parses → doc exists → span in bounds → **span inside evidence
+actually placed in the prompt**. The fourth catches a fabricated provenance trail
+(a perfect citation to a real document the model was never shown). Verified: 4/4
+fabrications rejected with distinct reasons.
+
+### T0.3 Cluster-level consistency guard *(D13)*
+**Status:** not started · **Confidence:** measured (the absence is a fact)
+
+**Current.** `cluster_at` is pure connected components over edges ≥ threshold.
+`cannot_link_reason` is **pairwise only** — it suppresses A–B, but if A–C and C–B
+both survive, A and B land in one cluster with no check.
+
+**Problem.** v1 had a documented cluster-scope identifier-consistency invariant
+("a resolved cluster may never contain two distinct validated values of these"),
+explicitly described as *what stops transitive/embedding chains from
+over-merging*. The v2 Splink move dropped it. This matters **more** now, not
+less, because the embedding blocking lane is precisely that chaining risk.
+
+**Proposed.** Re-introduce as a post-clustering validation: a cluster containing
+two distinct validated identifiers of the same kind is split, or flagged for
+review, with the offending edge recorded. Cheap — it runs over the partition, not
+the pairs.
+
+**Falsified if.** Measurement shows zero clusters currently violate it. Run that
+first; it is a query, not a build.
+
+### T0.4 Splink training completeness check *(D14)*
 **Status:** not started · **Confidence:** measured
 
-**Current.** `ENTITY_CLASSES` is a closed 5-value set doing two unrelated jobs:
-structural kind (drives `cannot_link_reason` and the name comparison) and
-claim-scoped role. `_classify` falls back to `LABEL_TO_CLASS.get(label,
-"claimant")`, writing a guess into a field readers treat as fact.
+**Current.** Splink prints *"Your model is not yet fully trained. Missing
+estimates for: email (some u values are not trained, some m values are not
+trained)"* and *"will use default values"* on essentially every run. Nothing
+reads it. I watched these scroll past repeatedly and treated them as noise.
 
-**Problem (measured).** Organizations pass through
-`ForenameSurnameComparison(first_name, last_name)` where those fields are
-`tokens[0]`/`tokens[-1]`. `'delgado legal partners'` → first=`delgado`,
-last=`partners`. The commonest org "surnames" are `llp` (31), `care` (28),
-`chiropractic` (28), `group` (26), so term-frequency adjustment *penalises* the
-matches it should reward. This is the 4.6% figure above.
+**Problem.** An untrained comparison silently falls back to Splink defaults, so
+every probability that comparison touches is uncalibrated — while still being
+reported as a calibrated probability. That undercuts the system's headline claim
+directly.
 
-**Proposed.** `entity_type` closed and structural (`person` / `organization` /
-`asset` / `unknown`); `role` open, claim-scoped, expressed as assertions with
-evidence spans, polarity and confidence.
-
-**Falsified if.** Per-type comparison strategies (T2.1) fail to move the
-identical-surface merge rate materially above 4.6%. That would mean the name
-comparison was not the binding constraint and something else is.
-
-**Touches.** `contracts.py`, `pipeline_v2.py`, `entity_resolution.py`,
-`build_graph.py`. Invalidates all prior B³ numbers by design.
+**Proposed.** After training, inspect the settings for untrained m/u values.
+Either raise, or record the untrained set in the run output and on affected
+edges. Consistent with the no-silent-fallback policy already in force everywhere
+else.
 
 ---
 
-### T1.2 — Put relation extraction on the operational path
-**Status:** not started · **Confidence:** measured (the disconnect is a fact)
+# Phase 1 — Reconnect the evidence path
 
-**Current.** `relations.py` produces span-grounded, open-vocabulary triples with
-polarity and evidence. Nothing in the operational path calls it.
+The spine is `span → mention → assertion → entity → graph`, currently cut between
+`assertion` and `graph` with a bypass wire across the gap. This phase is a
+**deletion**: it removes the fabricated pathway. Full reasoning in
+`development-plan.md` §1.
 
-**Proposed.** `pipeline_v2` and the ingest path call `extract_relations` →
-`bind_to_mentions` → persist as assertions. Unbound candidates go to a review
-queue table, never dropped.
+| item | what | confidence |
+|---|---|---|
+| T1.1 | Split `entity_type` (closed, structural) from `role` (open, claim-scoped, evidence-backed) *(D1, org-name failure)* | measured |
+| T1.2 | Relations onto the operational path **and remove the identifier discard** *(D4)* | measured |
+| T1.2b | **Stop discarding claim activities** *(D2)* | measured |
+| T1.2c | **Detectors for policy/claim numbers** *(D3)* | measured |
+| T1.3 | Make argument resolution visible (`resolution_method` + independent verification) | reasoned |
+| T1.3a | Collapse the two coref mechanisms into one *(D9)* — removes a stage | reasoned |
+| T1.4 | Roster carries entity ids, not just names — retires `_partial_surface_match` | reasoned |
+| T1.5 | Assertion-led graph, open predicate vocabulary *(D1)* | measured |
+| T1.6 | Name-shape filter becomes a flag, not a drop *(D12)* | measured |
+| T1.7 | Generic structured-token detector *(D7 partial)* | **assumed** ⚠ gated on seeing real data |
+| T1.8 | Kill the coref silent fallback | measured |
+| T1.10 | **Split `POLARITIES` into three axes** *(D5)* | measured |
 
-**Falsified if.** Relation precision on the handwritten set is low enough that
-persisting the output degrades the graph rather than grounding it. This is
-genuinely possible and unmeasured — `expected_relations.json` is one person's
-reading, not an adjudicated gold set.
+### T1.2b — Stop discarding claim activities *(D2)*
+**Confidence:** measured
 
----
+**Current.** `DEGENERATE_PREDICATES` contains `FILED`, `RECEIVED`, `SENT`,
+`CONTACTED`, `PROVIDED`, `ARRANGED`, `PERFORMED`, `MADE`.
 
-### T1.2a — Stop discarding LLM identifier bindings ⚠ **corrects an error in this plan**
-**Status:** not started · **Confidence:** reasoned
+**Problem.** This is a **domain-modeling error, not a code bug**. The stated
+reasoning — these "carry no relational semantics on their own" — is correct for a
+static entity-relationship graph and wrong for a claim file, where the temporal
+activity log *is* the primary artifact. `CONTACTED(adjuster, claimant, 05/02)` is
+not a vague edge; it is the diary.
 
-**Current.** `relations.py:202` instructs the model to skip identifiers
-(*"handled elsewhere"*), and `relations.py:272` drops any that arrive:
+**Proposed.** Activities become a first-class kind alongside relations, with
+`activity_type_raw` preserved, `activity_type_normalized` optional, and
+`activity_family` **nullable**. Normalization is a layer, never an extraction
+gate. Agent B's rule holds: *close only structural mechanics; keep domain meaning
+open.*
 
-```python
-if IDENTIFIER_PREDICATE_RE.match(pred):
-    # Belongs to the gazetteer/identifier lane, which validates it.
-    rejected["identifier_binding"] += 1
-    continue
-```
+### T1.2c — Policy and claim numbers *(D3)*
+**Confidence:** measured
 
-The LLM reads the note, correctly determines who a phone number belongs to, with
-an evidence span — and the output is thrown away. Binding then falls to
-`pipeline_v2.subject_for`: same line, or previous line within 120 chars.
+`IDENTIFIER_PREDICATE_RE` routes LLM-extracted `POLICY_NUMBER` and `CLAIM_NUMBER`
+away to "the gazetteer lane, which owns them." The gazetteer has **no detector
+for either**. They are extracted, routed, and lost — arguably the most important
+identifiers in an insurance file. Concrete instance of the closed-vocabulary gap
+producing *total* loss rather than degraded quality.
 
-**Problem.** The comment conflates two different jobs. *Validating* an NPI is a
-checksum — decidable, and correctly the gazetteer's. *Binding* it to a person is
-local semantic reading — the LLM's strength, and what the line rule crudely
-approximates.
+### T1.10 — Split the polarity enum *(D5)*
+**Confidence:** measured
 
-**Proposed.** Gazetteer finds and validates; LLM binds with an evidence span;
-line proximity demotes to a feature. Confidence comes from **lane agreement**,
-the pattern extraction already uses (`found_by: gliner+llm`) — agree → high;
-disagree → review queue.
+`POLARITIES = (asserted, negated, alleged, reported, retracted)` collapses three
+orthogonal axes:
 
-**Why this is flagged.** The first version of this plan (commit `2b5c2c4`) did
-not contain this item. It wired relations in at T1.2 while leaving the discard
-filter intact, then proposed at T2.2 building a feature model to approximate the
-evidence being discarded upstream. A reviewer should read that as evidence that
-the codebase's routing comments are load-bearing in the wrong way — they read as
-settled decisions and were treated as boundaries rather than claims.
+| axis | values | question |
+|---|---|---|
+| polarity | asserted / negated | is it claimed true or false? |
+| evidentiality | direct / reported / alleged / inferred | who says so, how strongly? |
+| lifecycle | active / corrected / retracted / superseded | does it still stand? |
 
-**Falsified if.** T2.2's measurement shows the line rule already matches ground
-truth closely and LLM bindings add nothing.
-
----
-
-### T1.3 — Make argument resolution visible
-**Status:** not started · **Confidence:** reasoned
-
-**Current.** `relations.py` already instructs the model to resolve pronouns and
-role descriptors using chunk text plus a claim roster. Successful resolution
-leaves **no trace** — when "the claimant" becomes "Edward Vance", the output
-records the name and nothing marks it as inferred. Flags fire only on failure.
-
-**Problem.** An inferred binding is indistinguishable from a directly-named one
-in the evidence ledger.
-
-**Proposed.** Two redundant mechanisms: `resolution_method` (`explicit` /
-`within_chunk_coref` / `claim_roster` / `unresolved`) reported by the model, plus
-an independent deterministic check of whether the argument string appears in the
-chunk. Disagreement between them is itself a flag.
-
-**Why both.** Self-report is the model describing its own behaviour, which models
-misreport. Verification alone cannot distinguish coref types.
-
----
-
-### T1.3a — Collapse two coreference mechanisms into one
-**Status:** not started · **Confidence:** reasoned
-
-**Current.** Two mechanisms exist and do not talk.
-`coref.py` (FastCoref, or a naive fallback measured at **43%** accuracy) writes
-`coref_links` — consumed only by `audit.py` and `qa_viewer.py`, never by a
-production path. Separately, `relations.py` performs implicit coref via the
-roster; its own docstring calls the roster *"the cheap form of the coreference
-context that `coref.py` and the `coref_links` table exist to provide."*
-
-**Problem.** The better mechanism is unmeasured and unrecorded; the worse one is
-measured, recorded, and unused.
-
-**Proposed.** One mechanism. LLM resolution becomes the coref record — written to
-`coref_links` with `resolution_method` from T1.3 — and `coref.py` either feeds
-the roster or is deleted. This **removes** a stage rather than adding one.
-
-**Falsified if.** Argument-binding accuracy (T1.9) comes in below FastCoref's
-measured accuracy on comparable cases.
-
----
-
-### T1.4 — Roster carries ids, not just names
-**Status:** not started · **Confidence:** reasoned
-
-**Current.** Roster is a list of name strings; binding happens afterward by
-surface match, including `_partial_surface_match` — substring containment with a
-12-character length tolerance.
-
-**Proposed.** Claim-scoped candidates with entity ids, aliases, supporting
-mention ids and confidence. LLM selection is a proposal, never authority. Turns
-binding into constrained selection and retires the substring heuristic.
-
-**Guards.** Keep an open-world escape hatch (a party not on the roster must
-still be expressible as free text, or the closed-vocabulary failure returns).
-Snapshot the roster per call for reproducibility. Source it with confidence
-values so a bad upstream resolution cannot silently poison extraction.
-
----
-
-### T1.5 — Assertion-led graph, open predicates
-**Status:** not started · **Confidence:** measured (the fabrication is a fact)
-
-**Current.** `build_graph.py` reads `assertions` zero times. Role edges come from
-`ROLE_PREDICATE[entity_class]` plus co-presence on a claim — so opposing counsel
-and the claimant's attorney are indistinguishable.
-
-**Proposed.** Only grounded assertions become semantic edges. Co-presence edges
-become an explicitly typed `inferred_from_co_presence` layer, off by default in
-factual views. The 5-predicate whitelist goes; `BANNED_PREDICATES`
-(provenance-as-edge) stays.
-
----
-
-### T1.6 — Move the name-shape filter out of the recall path
-**Status:** not started · **Confidence:** measured
-
-**Current.** `_is_plausible_name` requires two capitalized tokens and **drops**
-the rest, after the union.
-
-**Problem (measured).** `variant:short` 100% miss, `variant:last_only` 88% miss.
-A bare "Jones" on second reference is discarded before anything can score it.
-
-**Proposed.** Flag, not drop. Cheapest item in Phase 1.
-
-**Falsified if.** Precision collapses far enough that downstream resolution
-degrades. Measurable directly.
-
----
-
-### T1.7 — Open the identifier vocabulary
-**Status:** not started · **Confidence:** assumed ⚠
-
-**Current.** The gazetteer knows a fixed kind list. Anything else is invisible.
-
-**Problem (assumed, not measured).** Real claim data is believed to carry policy
-numbers, other carriers' claim numbers, adjuster codes, DOT numbers, provider ids
-in unlisted formats. **We have not seen real claim data.** The synthetic corpus
-only contains kinds we chose to generate, so this gap cannot be observed in any
-measurement we currently have.
-
-**Proposed.** Generic structured-token detector; unclassified identifier-shaped
-strings stored with their spans. Classification deferred, observation preserved.
-Binding follows T1.2a — the LLM can bind an identifier whose *kind* is unknown.
-
-**Falsified if.** A sample of real notes shows the existing kind list already
-covers what appears. **This item should not be built before real notes or a
-client schema are seen.**
-
----
-
-### T1.8 — Kill the coref silent fallback
-**Status:** not started · **Confidence:** measured
-
-`coref.py`'s `auto` backend falls back silently to a rule measured at 43%.
-Raise, matching the GenAI and NER lanes. Subsumed by T1.3a if that lands first.
-
----
+*"The claimant states she was **not** driving"* is **reported AND negated** —
+currently unrepresentable. A fact asserted then retracted needs two axes too.
 
 ### T1.9 — Re-measure
-**Status:** not started · **Confidence:** n/a
-
-The type split invalidates prior B³ numbers by design. Two new measurements:
-
-- **Argument-binding accuracy** on ground-truth relations whose arguments are
-  pronominal or descriptor-form. Report alongside — *not as* — coref accuracy:
-  implicit resolution only surfaces where a relation exists, so the denominator
-  differs from a dedicated coref pass. Comparing it directly to FastCoref's 43%
-  would be an apples-to-oranges number.
-- **Recall on the handwritten notes.** The only read on generality. Expect worse
-  than 0.857.
+The type split invalidates prior B³ by design. Two measurements that do not yet
+exist: **argument-binding accuracy** (on ground-truth relations with pronominal
+or descriptor arguments — report alongside, *not as*, coref accuracy; the
+denominators differ), and **recall on the handwritten notes** (the only read on
+generality; expect worse than 0.857).
 
 ---
 
-## Phase 2 — Probabilistic linking everywhere
+# Phase 2 — Probabilistic linking everywhere
 
-### T2.1 — Per-type comparison strategies
-**Status:** blocked on T1.1 · **Confidence:** measured
+| item | what | confidence |
+|---|---|---|
+| T2.1 | Per-type comparison strategies; re-run B³ sweep; finally measure the embedding lane's GT contribution | measured |
+| T2.2 | **Measure identifier binding, then decide** *(D4)* | **assumed** ⚠ measurement gates the build |
+| T2.3 | Three-band policy: auto-link / review / no-link | reasoned |
 
-Organizations get whole-string comparison with term frequency over the full name.
-Re-run the B³ sweep. Also finally measure the embedding lane's ground-truth
-contribution via `same_as_edges.blocked_by` — currently marked "not yet
-measured" in `ARCHITECTURE.md`.
-
----
-
-### T2.2 — Measure identifier binding, then decide
-**Status:** **measurement first, build gated** · **Confidence:** assumed ⚠
-
-**Current.** Binding is `subject_for`: same line, or previous line within 120
-chars, taking the last qualifying mention. Binary, decided in the extractor, no
-probability. Its docstring defends the strictness — a looser rule mis-binds
-across email headers, and wrong identifiers then look like conflicting validated
-ids and split one person into many entities. That reasoning is sound.
-
-**Problem.** The rule pays a global recall cost to avoid one identifiable failure
-mode. A signature block with a title line between name and contact
-(`Karen Wu` / `Senior Adjuster` / `kwu@...`) yields an orphan. Two names on one
-line bind to the last silently, with no record it was ambiguous.
-
-**But the size of the problem is unknown.** 1,211 orphans exist; how many
-*should* have bound is unmeasured.
-
-**The measurement, which comes first.** `corpus_gen` writes `GTIdentifier`
-records with owner associations and validity windows. So for every identifier
-found, ground truth says who owns it. Compare three ways: line rule vs. LLM
-binding (T1.2a) vs. ground truth. Yields binding precision, binding recall, and
-the genuine-vs-artifact orphan split. Roughly an hour in `audit.py`.
-
-**Then, and only then, one of three outcomes:**
-
-1. LLM binding matches ground truth closely → T1.2a is the whole fix; no schema
-   change; this item closes.
-2. Both lanes are individually weak but disagree informatively → keep both,
-   confidence from agreement.
-3. Both are weak and agree on the wrong answer → the scored
-   `identifier_bindings` table becomes justified.
-
-**Note on the earlier plan.** Outcome 3 was originally proposed as the *plan*,
-before the measurement and before noticing the LLM bindings were being
-discarded. That was an over-engineering error, and it is recorded here rather
-than quietly corrected.
-
-**If outcome 3.** `identifier_bindings` as scored candidates;
-`identifier_observations.subject_mention_id` becomes the materialized winner
-above threshold — the same shape as `entity_snapshot` over `same_as_edges`.
-Open question then: joint vs. separate calibration, since identifier agreement
-already feeds the Splink mention comparison and would create a feedback path.
-Likely resolution is to use entity state **as of backfill** (frozen), matching
-what the operational path already does for the model and for `emb_bucket`.
+### T2.2 remains measurement-first
+`corpus_gen` writes `GTIdentifier` records with owner associations, so ground
+truth knows who owns every identifier. Compare **line rule vs LLM binding vs
+ground truth** — about an hour in `audit.py`. Three outcomes; only one is a
+schema change. The original plan proposed the schema change *as the plan*, before
+noticing the LLM bindings were being discarded upstream — recorded as an
+over-engineering error rather than quietly corrected.
 
 ---
 
-### T2.3 — Three-band operating policy
-**Status:** not started · **Confidence:** reasoned
+# Phase 3 — Search: the right mechanism per question
 
-`auto-link` / `review` / `no-link` instead of one threshold.
+**New phase.** Neither my original plan nor agent A covered this; agent B is
+right that it is critical. Target: `mermaid/13-search-and-context-routing.mermaid`.
+
+### T3.1 Hybrid retrieval *(D6)*
+**Confidence:** measured (the absence is a fact — no BM25/lexical/rerank anywhere)
+
+**Problem.** `retrieve_chunks` is one embed call and one dense top-k. The
+highest-value claim queries are exact-match — *"who is NPI 1568291037"*, *"find
+the note citing policy ABC-123"*. A dense vector of `1568291037` is close to
+meaningless; dense retrieval is structurally weak on rare literal tokens.
+
+**Proposed.** Lanes fused by RRF: **exact** (identifiers, claim numbers),
+**lexical** (names, codes, jargon, quoted wording), **vector** (concepts,
+paraphrase), **temporal** (chronology, as-of), **graph** (relationships,
+networks).
+
+**Open design question, flagged not answered:** how a query is routed. LLM
+classifier, query-shape rules, or always-run-all-and-fuse. Agent B's proposal
+leaves this unspecified and it is the crux — the three differ sharply in cost,
+latency and failure mode. Run-all-plus-RRF is the robust default and probably
+right for a POC.
+
+### T3.2 Wire `who_is_at()` into `answer()` *(D6)*
+**Confidence:** measured · **Cheapest item on the board**
+
+A working identifier→entity graph lookup exists and `answer()` never calls it.
+Identifier questions currently go through the embedding path that cannot serve
+them.
+
+### T3.3 Reranking
+Dense top-k feeds the LLM directly. A cross-encoder rerank over the fused
+candidate set is the standard next lift.
+
+### T3.4 Structural chunking *(D10)*
+`profiling` computes segments, casing regime and boilerplate score; chunking
+discards all of it and slices by word count. A chunk can straddle a quoted email
+chain and the adjuster's own narrative — two voices, two time contexts, one
+embedding. 50% overlap doubles the index to mitigate a boundary problem that
+structural chunking solves properly.
 
 ---
 
-## Phase 3 — Masking and provenance
+# Phase 4 — Tunability: the client-configurable object
 
-### T3.1 — Masking as a deactivatable stage
-**Status:** not started · **Confidence:** reasoned
+**New phase, and the one that most directly serves the stated goal.** The system
+must adapt to client data through configuration, never code changes.
 
-`src/masking.py`, deterministic pseudonymization behind `MASKING_ENABLED=False`.
+### T4.1 Lexicons become loadable resources *(D7)*
+**Confidence:** measured
 
-**Hard requirement:** surrogates must be **length-preserving**, so every
-`char_start`/`char_end` survives unchanged. Verifiable mechanically — round-trip
-a masked corpus and assert every span check still passes. Deterministic mapping
-also preserves ER behaviour, so it can be toggled live.
+**Current.** `_NICKNAME_GROUPS` (30 groups, all Anglo), `_TITLES` (8 English),
+`_SUFFIXES`, `_STREET_ABBR` (20 US types), US-only `PHONE_RE`, `soundex` (1918
+US census, English surnames — and it is one of ten blocking rules). **Zero
+external resource loading anywhere in `src/`.** Every lexicon is a Python
+constant.
+
+**Problem.** A Miami/LA/NYC book gets *zero* nickname matching on Hispanic names
+— no José/Pepe, Francisco/Paco. Medical notes are full of `RN`, `DO`, `PA-C`,
+`LCSW`, none of which are titles, so they contaminate name tokens and therefore
+`first_name`/`last_name` and therefore blocking *and* the comparison model. Any
+international exposure loses every non-US phone.
+
+**And it fails silently.** No counter for "names that matched no nickname group",
+no report of "phone-shaped strings that did not match `PHONE_RE`". The client
+experiences it as *"your recall is mediocre on our data"* with no diagnostic
+pointing at the cause — **exactly the systematic-change request the user wants to
+avoid.**
+
+**Proposed.** Versioned resource files per deployment; **coverage
+instrumentation** as a first-class metric (what fraction of tokens hit each
+lexicon); a bootstrap that mines candidate alias pairs from the client's own
+resolved clusters. Auto-detect language/script/locale, apply compatible packs,
+**record which pack interpreted a value and with what confidence**, leave
+ambiguous values unclassified rather than guessing.
+
+### T4.2 ClientProfile *(D11)*
+**Confidence:** reasoned
+
+A versioned per-client object: source-data mappings, approved models, locale
+packs, reference data, ER thresholds, search and retention policy. Every run
+records the exact profile, code, model, prompt and reference-data versions used.
+
+**Cold start is the unanswered question** — and it is the one the user actually
+asked. Where do out-of-box defaults come from for a client with no labels and no
+reference data? Agent B's proposal does not address it. Provisional answer:
+defaults ship from the synthetic corpus, and the first weeks of a deployment are
+a calibration period with the coverage instrumentation from T4.1 as the signal.
+
+### T4.3 Correction feedback loop *(D11)*
+**Confidence:** reasoned
+
+`qa_viewer` collects corrections; `audit._apply_corrections` uses them to patch
+the **ground-truth manifest** for scoring. Nothing updates a lexicon, threshold,
+gazetteer or model. The only path from human judgment to system behaviour is a
+developer editing Python.
+
+Corrections should become versioned labels feeding calibration and lexicon
+enrichment — **not** truth injected directly into production.
+
+### T4.4 Stable entity IDs *(D8)* — **contested**
+**Confidence:** reasoned, with an explicit trade to settle
+
+Agent B rates this critical. It is real: a consumer holding an `entity_id` has a
+dangling reference after any ingest, because ids are content-derived uuid5 over
+sorted members.
+
+**But the fix conflicts with a property we deliberately built.** Content-derived
+ids give *same input → same output* and idempotent re-ingest. A stable-id
+registry makes ids depend on processing **history**, so the same corpus in a
+different order yields different ids.
+
+**Proposed resolution:** registry + explicit merge/split lineage, with
+reproducibility provided by the RunSpec and snapshot rather than by id
+determinism. That is a trade to decide deliberately, not a bullet to adopt.
+
+### T4.5 Reference data as optional evidence
+Client-supplied entity lists (employees, vendors, counsel, providers) enter as
+`ReferenceEntity` records that **participate in resolution rather than bypassing
+it**. Two distinctions that must hold: a client employee or vendor is a
+persistent client-wide entity; *claimant* or *attorney-for-claimant* is a
+**claim-specific role** and must never become a global property. An authoritative
+client domain list helps identify the organization; it does **not** prove someone
+is an employee — a claimant may use a corporate address, and quoted messages
+carry foreign domains. Exact roster match is far stronger evidence.
+
+---
+
+# Phase 5 — Masking and provenance
+
+| item | what |
+|---|---|
+| T5.1 | `src/masking.py`, deterministic, behind `MASKING_ENABLED=False`. **Surrogates must be length-preserving** so every char offset survives — verifiable by round-tripping a masked corpus and asserting span checks still pass. Toggleable live in the demo. |
+| T5.2 | Intake validation and immutable run records (config, model, prompt, input hashes). Quarantine, never `UNKNOWN`. Prerequisite for any cached derived artifact. |
 
 Not built: encryption, RBAC, retention. Designed only, gated on real data.
 
-### T3.2 — Intake validation and run records
-**Status:** not started · **Confidence:** reasoned
-
-Validate a manifest on `deliver()`; quarantine rather than `UNKNOWN`. One
-immutable run record per execution: config, model and prompt versions, input
-hashes. Prerequisite for any cached derived artifact.
-
 ---
 
-## Phase 4 — Demonstration
+# Phase 6 — Demonstration
 
-- **T4.1** one note traced source → span → mention → assertion → entity → edge →
-  dossier. Most rendering exists.
-- **T4.2** entity-level retrieval **only if** chunk-only proves insufficient, and
-  the deterministic dossier gets embedded before any generated summary is
+- **T6.1** one note traced source → span → mention → assertion → entity → edge →
+  dossier, every fact clickable.
+- **T6.2** entity-level retrieval only if chunk-only proves insufficient, and the
+  **deterministic dossier** gets embedded before any generated summary is
   considered. Blocked on Phase 1 — today's dossier inherits class-derived roles
   and would propagate the fabrications Phase 1 removes.
-- **T4.3** metrics pack, each figure with its measurement conditions attached.
+- **T6.3** metrics pack, each figure with its measurement conditions attached.
 
 ---
 
-## Phase 5 — Client data
+# Phase 7 — Client data
 
-- **T5.1** revise `archive/ground-truth-plan.html` rather than replace it. Its
-  central premise holds: the client entity list is a **precision oracle, not a
-  recall oracle**. Draft in parallel with Phases 1–2, since the client
-  conversation has lead time.
-- **T5.2** the entity list is also the first reference-data adapter; NPPES
-  lookup for NPIs is the natural second (checksum-valid ≠ registry-real).
+- **T7.1** revise `archive/ground-truth-plan.html` rather than replace it. Its
+  premise holds: the client entity list is a **precision oracle, not a recall
+  oracle**. Draft in parallel with Phases 1–2; the client conversation has lead
+  time.
+- **T7.2** the entity list is the first reference-data adapter; NPPES lookup for
+  NPIs the natural second (checksum-valid ≠ registry-real).
 
 ---
 
 ## Routing decisions questioned
 
-Standing practice, prompted by T1.2a. Comments asserting a boundary
-(*"handled elsewhere"*, *"belongs to the X lane"*) read as settled and get
-treated as constraints. Each is a claim.
+Standing practice. Comments asserting a boundary (*"handled elsewhere"*,
+*"belongs to the X lane"*) read as settled and get treated as constraints. Each
+is a claim, and the failure they produce is specific: **the system discards
+evidence it already has, then builds a mechanism to approximate what it
+discarded.**
 
 | location | claim | verdict |
 |---|---|---|
-| `relations.py:202,272` | identifiers "handled elsewhere" | **Wrong.** Conflates validate (gazetteer) with bind (LLM). → T1.2a |
-| `coref.py` / `relations.py` roster | coref is a separate stage | **Wrong.** Two mechanisms; the unused one is measured, the used one is not. → T1.3a |
-| `pipeline_v2.subject_for` | "no name → no assertion, rather than a wrong one" | **Under-examined.** Correct instinct, wrong stage — precision decided at candidate generation. → T2.2 |
+| `relations.py:202,272` | identifiers "handled elsewhere" | **Wrong.** Conflates *validate* (gazetteer, checksums) with *bind* (LLM). → T1.2 |
+| `relations.py` `DEGENERATE_PREDICATES` | activity verbs "carry no relational semantics" | **Wrong for this domain.** The diary is the artifact. → T1.2b |
+| `IDENTIFIER_PREDICATE_RE` | policy/claim numbers belong to the gazetteer | **Wrong.** It has no detector for them. → T1.2c |
+| `coref.py` / roster | coref is a separate stage | **Wrong.** Two mechanisms; the unused one is measured, the used one is not. → T1.3a |
+| `subject_for` | "no name → no assertion, rather than a wrong one" | **Under-examined.** Right instinct, wrong stage. → T2.2 |
 | `build_graph` `ROLE_PREDICATE` | class implies relationship | **Wrong.** → T1.5 |
-| `embed_index` two indices | mention vs. chunk vectors serve opposed objectives | **Holds.** Different keys, different consumers. |
-| `vectorstore` faiss isolation | one module may import faiss | **Holds.** Guard-enforced, swappable. |
+| `embed_index` two indices | mention vs chunk vectors serve opposed objectives | **Holds.** |
+| `vectorstore` faiss isolation | one module may import faiss | **Holds.** Guard-enforced; survived two real changes. |
 
 ---
 
@@ -433,7 +409,8 @@ treated as constraints. Each is a claim.
 
 - Generated entity/community summaries — until the assertion→graph path exists.
 - Free LLM graph traversal on the factual path — unauditable.
-- Bitemporal completion — gap stated honestly in `DECISIONS.md`.
-- Enterprise privacy controls — designed Phase 3, built on real data.
-- Removing `case_informative` — dead weight, not a defect. Delete when something
-  else touches `profiling.py`.
+- Bitemporal completion — stated honestly in `DECISIONS.md`.
+- Enterprise privacy controls — designed Phase 5, built on real data.
+- Microservices. Agent B's modular-monolith recommendation is right for this
+  scale; splitting services now would add operational surface without solving a
+  single defect above.

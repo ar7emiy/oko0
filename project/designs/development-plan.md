@@ -1,9 +1,31 @@
 # Development plan
 
-Written after the first-principles audit
-(`first-principles-claim-note-audit.md`), a contextual review of it, and a
-verification pass over the claims both made. This is the plan of record; where
-it disagrees with the audit, the disagreement is stated and reasoned.
+The **reasoning** behind the plan. `TODO.md` is the status board and the
+authoritative item list; this document explains why each item is shaped the way
+it is, and records what was rejected.
+
+**Reconciled 2026-09-02** against two external audits:
+
+- `first-principles-claim-note-audit.md` (agent A) — narrower, evidence-first.
+- `full-system-architecture-audit.md` (agent B) — broader, and the source of six
+  defects this plan had missed, three of them in code written the same day. Its
+  reference architecture (`mermaid/12`, `mermaid/13`) is **adopted as the target
+  state**.
+
+Both audits are dated primary sources and are not edited. Where this plan
+disagrees with either, the disagreement is stated and reasoned.
+
+**Two phases were added as a result**, and both serve the tunability requirement
+more directly than anything that was here before:
+
+- **Phase 3 — Search.** Neither this plan nor agent A covered it. The system has
+  no lexical or exact-match lane at all, which is the wrong mechanism for the
+  highest-value claim queries.
+- **Phase 4 — Tunability.** Lexicons as loadable resources, ClientProfile, a
+  correction feedback loop. This is the phase that answers *"tunable object, not
+  a bespoke pipeline."*
+
+Plus a **Phase 0** of outright correctness bugs, two of which are already fixed.
 
 ## The objective, stated as the thing to be proven
 
@@ -86,6 +108,36 @@ Each was checked against source, not taken from the audit on trust.
 | F9 | `case_informative` is computed and read by nothing | grep: written in `profiling`, no production consumer |
 
 ---
+
+# Phase 0 — Correctness
+
+Outright bugs, found by agent B's audit after my own sweep of the same code
+missed them. Status in `TODO.md` §Phase 0.
+
+**Two are fixed** (`1a1bbe5`): `ingest()` never added arriving notes to the chunk
+index, so retrieval could only ever see the backfill corpus — proven by querying
+a claim with text copied verbatim from an ingested note and getting **zero
+chunks** back. And citations were demanded by the synthesis prompt but never
+checked, so a fabricated provenance trail would have passed straight through.
+Both now have regression guards in `smoke_test`, because both existed precisely
+because nothing tested them.
+
+**Two remain, and both are ER correctness rather than polish:**
+
+The **cluster-consistency guard was lost in the v1→v2 move**. `cluster_at` is
+pure connected components; `cannot_link_reason` is *pairwise*, so it suppresses
+A–B while A–C and C–B still merge A and B unchecked. v1 had a cluster-scope
+identifier-consistency invariant explicitly described as *what stops
+transitive/embedding chains from over-merging*. Dropping it mattered less in v1
+than it does now — the embedding blocking lane I added is exactly that chaining
+risk.
+
+**Splink training completeness is never checked.** Splink prints *"Your model is
+not yet fully trained… will use default values"* on essentially every run and
+nothing reads it. An untrained comparison silently falls back to defaults, so
+probabilities it touches are uncalibrated while still being reported as
+calibrated. That contradicts the no-silent-fallback policy in force everywhere
+else, and it undercuts the single strongest claim the resolution layer makes.
 
 # Phase 1 — Reconnect the spine
 
@@ -331,9 +383,53 @@ it is the answer to the inevitable "what about wrong merges?" question.
 
 ---
 
-# Phase 3 — Masking boundary and provenance
+# Phase 3 — Search: the right mechanism per question
 
-### 3.1 Masking as a deactivatable stage
+Added from agent B's audit. Detail and status in `TODO.md` §Phase 3; target shape
+in `mermaid/13-search-and-context-routing.mermaid`.
+
+The reasoning worth recording here: retrieval is currently **one embed call and
+one dense top-k**, and there is no BM25, lexical lane, or reranking anywhere in
+the codebase. For claim notes the highest-value queries are exact-match — an NPI,
+a policy number, a name, a quoted phrase. A dense vector of `1568291037` is close
+to meaningless, because dense retrieval is structurally weak on rare literal
+tokens. This is not a tuning problem; it is the wrong mechanism for a whole class
+of question.
+
+Cheapest item on the entire board lives here: `who_is_at()` is a working
+identifier→entity graph lookup that `answer()` never calls.
+
+**One thing agent B leaves open and this plan will not pretend to settle:** how a
+query gets routed across lanes. LLM classifier, query-shape rules, or
+always-run-all-and-fuse differ sharply in cost, latency and failure mode.
+Run-all-plus-RRF is the robust default and probably right at POC scale.
+
+# Phase 4 — Tunability: the client-configurable object
+
+Added from the user's stated constraint, and the phase that most directly serves
+it. Detail in `TODO.md` §Phase 4; target in
+`mermaid/12-client-tunable-reference-architecture.mermaid`.
+
+The finding that motivates it: **every lexicon in the system is a Python constant
+and there is no external resource loading anywhere in `src/`.** Nickname groups
+(30, all Anglo), titles (8, English), street abbreviations (20, US), a US-only
+phone regex, and soundex — an algorithm built for English surnames in the 1918
+US census, currently serving as one of ten blocking rules.
+
+A client with a Miami or LA book gets zero nickname matching. Medical notes are
+full of `RN`, `DO`, `PA-C`, `LCSW`, none recognised as titles, so they contaminate
+`first_name`/`last_name` and therefore blocking *and* the comparison model.
+
+**The compounding problem is silence.** Nothing counts names that matched no
+nickname group, or phone-shaped strings that failed the regex. The client
+experiences a systematic gap as "your recall is mediocre on our data," with no
+diagnostic pointing at the cause — which is precisely the outcome the tunability
+requirement exists to prevent. Coverage instrumentation is therefore not
+optional polish; it is what converts a silent failure into a tunable one.
+
+# Phase 5 — Masking boundary and provenance
+
+### 5.1 Masking as a deactivatable stage
 
 `src/masking.py`. Deterministic pseudonymization of names and identifiers at a
 configurable boundary, behind `MASKING_ENABLED = False`.
@@ -353,7 +449,7 @@ answer to "what about PII?" is a switch, not a slide.
 Not built now: encryption, RBAC, retention, provider-path controls. Those are a
 one-page design doc, gated on real data.
 
-### 3.2 Intake hardening and run records
+### 5.2 Intake hardening and run records
 
 Validate a manifest on `deliver()`; quarantine rather than `UNKNOWN`. Write one
 immutable **run record** per execution: config, model versions, prompt versions,
@@ -364,15 +460,15 @@ without version tracking, derived text silently rots.
 
 ---
 
-# Phase 4 — The demonstration
+# Phase 6 — The demonstration
 
-### 4.1 One note, end to end
+### 6.1 One note, end to end
 
 Source → version → mentions → assertions → resolved entity → graph edge →
 dossier, every fact clickable to its raw span. Most rendering already exists
 (`export_dossier_html`, the QA viewer).
 
-### 4.2 Entity-level retrieval, if chunk-only proves insufficient
+### 6.2 Entity-level retrieval, if chunk-only proves insufficient
 
 GraphRAG-style **generated** entity summaries stay deferred. When they enter, it
 is as a clearly-typed derived layer that cites the assertion ids it summarizes,
@@ -387,7 +483,7 @@ Sequencing note: this only works *after* Phase 1. Today's dossier inherits
 class-derived roles and links, so embedding it now would propagate exactly the
 fabrications Phase 1 removes.
 
-### 4.3 Metrics pack
+### 6.3 Metrics pack
 
 Stratified recall/precision, B³ curve, orphan-identifier recall, argument-binding
 accuracy, generality delta (synthetic vs. handwritten) — each with its caveat
@@ -395,9 +491,9 @@ stated. For this audience the honesty is the differentiator.
 
 ---
 
-# Phase 5 — Client-data readiness
+# Phase 7 — Client-data readiness
 
-### 5.1 Revise the archived ground-truth plan
+### 7.1 Revise the archived ground-truth plan
 
 `designs/archive/ground-truth-plan.html` is a complete, costed six-week plan
 built around the client's actual data, and its central premise is right: **their
@@ -414,7 +510,7 @@ tooling that now exists in a different form than the plan assumes.
 code, and the client conversation it feeds has lead time — the ask should
 already be on the table when the demo lands.
 
-### 5.2 Client entity list as the first reference-data adapter
+### 7.2 Client entity list as the first reference-data adapter
 
 The list is not only evaluation input; it is reference data, and its
 category/duty field can seed the open role vocabulary. NPPES registry lookup for
@@ -427,14 +523,23 @@ the same as registry-real.
 
 | Phase | Gates on | Delivers |
 |---|---|---|
-| 1 | nothing — build now | evidence-grounded graph, open vocabularies, visible inference |
+| **0** | nothing — **do first** | correctness. Two done; cluster-consistency and training-completeness open |
+| 1 | nothing | evidence-grounded graph, open vocabularies, visible inference |
 | 2 | Phase 1 | probabilistic linking of metadata; ER that resolves organizations |
-| 3 | independent of 1–2 | demonstrable privacy boundary; auditable run records |
-| 4 | Phases 1–3 | the stakeholder trace and the metrics pack |
-| 5 | client data contract | defensible numbers on real notes |
+| 3 | nothing | search that uses the right mechanism per question |
+| 4 | Phase 3 for instrumentation | the client-tunable object; silent gaps become visible |
+| 5 | independent | demonstrable privacy boundary; auditable run records |
+| 6 | Phases 1–5 | the stakeholder trace and the metrics pack |
+| 7 | client data contract | defensible numbers on real notes |
 
-The audit proposed gating implementation on a data contract and a relation
-evaluation set. **Rejected for Phases 1–4.** Those gates govern *claims about
+**Phases 0 and 3 do not gate on anything and pay off immediately.** T3.2 (wire
+`who_is_at` into `answer`) is the cheapest item on the board and closes a whole
+class of query the system currently cannot serve. Phase 0's two open items are
+ER *correctness*, not polish — an uncalibrated probability reported as calibrated
+is worse than no probability.
+
+Agent A proposed gating implementation on a data contract and a relation
+evaluation set. **Rejected for Phases 0–6.** Those gates govern *claims about
 real notes*, not *mechanism construction*. The handwritten notes with
 `expected_relations.json` are sufficient to build and smoke-test the evidence
 path now, and blocking on client deliverables you do not control would stall the
