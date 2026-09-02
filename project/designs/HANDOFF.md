@@ -452,3 +452,19 @@ earlier phrasing was stronger than the evidence.
    generality.
 3. T0.4 (Splink training completeness) is still open and is a genuine build with
    no measurement gate.
+
+### Note — parallel work on this branch
+
+Commits `77b531b` / `fba15c5` (not mine) added
+`mermaid/15-resolution-and-hybrid-search-architecture.mermaid`, a Lucid-ready
+view of resolution plus the five retrieval lanes. No file collision.
+
+It is **consistent with this board**: exact lane marked "working now" (accurate
+as of `7a3b4b6`), lexical/temporal/graph as targets, embeddings "propose pairs
+only; never merges", decision bands. Its binding node — *"binding evidence
+sufficient? → retain as unbound evidence, no guessed owner"* — is exactly the
+behaviour T2.2 measured: the LLM declines when unsure; the line rule binds the
+nearest name silently.
+
+`designs/mermaid/README.md` was stale again (diagram 15 added without it, same as
+12–14). **If you add a diagram, run `designs/mermaid/build_readme.py`.**
