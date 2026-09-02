@@ -813,3 +813,75 @@ flowchart TD
   SAME["<b>Same engines, different question</b><br/>Both paths call the same profiling, extraction, embedding, resolution and graph code over the same tables. What differs is what is asked:<br/><br/>· research (notebooks 01-11) -- a generated corpus with a sealed manifest, every stage over everything, accuracy measured. <i>How good is this system?</i><br/>· operational (notebook 30) -- notes from a feed, only the new ones processed, no manifest anywhere. <i>What does it do with a note?</i><br/><br/><i>The leakage guard makes 'same engines' checkable rather than asserted: no pipeline module may reference ground truth, so the manifest is genuinely unreachable from this path.</i>"]:::key
   I0 -.->|"context"| SAME
 ```
+
+### H — Proposed evidence-first target: a real claim note becomes a traceable fact
+
+Source: [`11-evidence-first-target.mermaid`](11-evidence-first-target.mermaid)
+
+```mermaid
+---
+title: "H — Proposed evidence-first target: a real claim note becomes a traceable fact"
+---
+flowchart TD
+  classDef act fill:#EDF0F4,stroke:#4A5666,stroke-width:1.2px,color:#10151C
+  classDef obj fill:#E0E8EF,stroke:#3E5C76,stroke-width:1.3px,color:#10151C
+  classDef key fill:#F6E7CE,stroke:#B4650A,stroke-width:1.6px,color:#10151C
+  classDef bad fill:#F6E0DB,stroke:#A33A2A,stroke-width:1.4px,color:#10151C
+  classDef proposed fill:#E4F2EA,stroke:#2F6B4F,stroke-width:1.6px,stroke-dasharray:6 3,color:#12301F
+  classDef review fill:#F3E9F7,stroke:#72508F,stroke-width:1.3px,stroke-dasharray:5 3,color:#2D153D
+  classDef term fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
+
+  subgraph INTAKE["1 — Source intake: structural facts stay outside prose"]
+    S0(["claim-system export: note/document + authoritative metadata manifest"]):::term
+    S1{"required source identity and version present?"}:::act
+    S2["quarantine with an explicit reason<br/>never write claim_id = UNKNOWN"]:::bad
+    S3["immutable source record<br/>source_note_id · claim · occurrence · note/document type<br/>author/actor · timestamps · source system · content hash/version"]:::obj
+    S0 --> S1
+    S1 -->|"no"| S2
+    S1 -->|"yes"| S3
+  end
+
+  subgraph EVIDENCE["2 — Candidate evidence: extract before interpreting"]
+    E1["full-text candidate pass<br/>NER + structurally-scoped parsers + optional LLM sweep"]:::act
+    E2["candidate ledger<br/>raw span · surface · extractor/version · confidence<br/>no candidate is silently erased by a role guess"]:::obj
+    E3["type evidence separately<br/>person | organization | asset | event | identifier | unknown"]:::proposed
+    E4["role and relation candidates<br/>open vocabulary · modality/polarity · verbatim evidence span"]:::proposed
+    E1 --> E2 --> E3 --> E4
+  end
+
+  subgraph IDENTITY["3 — Identity: propose, score, then decide by policy"]
+    I1["candidate pairs<br/>verified identifiers + type-specific string rules + embedding recall net"]:::act
+    I2["probabilistic score + explanation<br/>model/version · features · blocking source"]:::obj
+    I3{"calibrated operating band"}:::act
+    I4["auto-link<br/>only high-confidence, type-compatible evidence"]:::proposed
+    I5["human review queue<br/>ambiguous links, cluster conflicts, unbound relations"]:::review
+    I6["leave unlinked<br/>absence of proof is not a merge"]:::act
+    I1 --> I2 --> I3
+    I3 -->|"high"| I4
+    I3 -->|"review"| I5
+    I3 -->|"low"| I6
+  end
+
+  subgraph KNOWLEDGE["4 — Evidence graph and retrieval"]
+    K1["assertion ledger<br/>subject/object binding may be pending; raw evidence is immutable"]:::obj
+    K2["evidence graph<br/>only grounded assertions become factual edges<br/>derived navigation edges are visibly separate"]:::proposed
+    K3["claim-scoped retrieval<br/>vector search returns source chunks, never facts by itself"]:::act
+    K4(["stakeholder view: every entity, relation, and answer opens its source span"]):::term
+    K1 --> K2 --> K4
+    K3 --> K4
+  end
+
+  S3 --> E1
+  E4 --> K1
+  E3 --> I1
+  I4 --> K1
+  I5 --> K1
+
+  BAD1["CURRENT GAP — graph role edges are created from a closed entity_class + co-presence, while the open relation extractor is notebook-only"]:::bad
+  BAD1 -.-> K2
+
+  MEASURE["Continuous measurement<br/>representative held-out notes · errors by source/LOB/note type<br/>NER span · relation · polarity · binding · pair/cluster ER<br/>human corrections and change control"]:::key
+  MEASURE -.-> E1
+  MEASURE -.-> I3
+  MEASURE -.-> K4
+```
