@@ -1,0 +1,116 @@
+---
+title: "Current — Executable flow and architectural breakpoints"
+---
+flowchart TB
+  classDef current fill:#F7F7F4,stroke:#535B61,stroke-width:1.4px,color:#20252A
+  classDef data fill:#E8EEF8,stroke:#315A8A,stroke-width:1.6px,color:#102A43
+  classDef good fill:#E4F2EA,stroke:#2F6B4F,stroke-width:1.7px,color:#12301F
+  classDef bad fill:#FFF0F0,stroke:#A33A3A,stroke-width:2px,color:#5C1616
+  classDef stale fill:#FFF2D9,stroke:#A06416,stroke-width:1.8px,stroke-dasharray:6 3,color:#5A3300
+  classDef disconnected fill:#F3E8FF,stroke:#7048A8,stroke-width:2px,stroke-dasharray:7 3,color:#32195A
+  classDef term fill:#263238,stroke:#263238,color:#FFFFFF
+
+  GLOBAL["<b>ONE GLOBAL RUNTIME</b><br/>CFG · SQLite DB · Splink model · graph pickle<br/>Gemini cache · mentions.faiss · chunks.faiss<br/><i>no client_id, RunSpec, artifact manifest, or watermark</i>"]:::bad
+
+  subgraph INPUT["1 — Input"]
+    I0([".txt files + mutable doc_index.json"]):::data
+    I1["deliver()<br/>copyfile may overwrite same name<br/>claim mapping is optional"]:::current
+    I2[/"documents<br/>doc_id · claim_id · occurrence_id · n_chars"/]:::data
+    I0 --> I1 --> I2
+  end
+  GLOBAL -.-> I1
+
+  subgraph PREP["2 — Profiling and chunks"]
+    P1["body / quoted segmentation<br/>boilerplate and casing scores"]:::current
+    P2["fixed word-based chunks<br/>300-token approximation · 50% overlap"]:::current
+    P3[/"segments + Chunk objects"/]:::data
+    I2 --> P1 --> P2 --> P3
+  end
+
+  subgraph EXTRACT["3 — Candidate extraction and persistence"]
+    E0{{"three lanes"}}:::current
+    E1["required GLiNER<br/>fixed label set"]:::current
+    E2["regex / checksum gazetteer<br/>fixed identifier families"]:::current
+    E3["Gemini entity spans<br/>model text + clamped offsets accepted"]:::stale
+    E4["union every overlap<br/>longest span wins"]:::stale
+    E5["capitalized two-token name gate<br/>failed candidate is deleted"]:::bad
+    E6["entity_class guess<br/>person→claimant; organization→medical_provider<br/>ourinsco.com and role cues in code"]:::bad
+    E7[/"mentions + has_name assertions"/]:::data
+    E8["identifier subject_for()<br/>same line or previous line"]:::stale
+    E9[/"identifier_observations<br/>+ bound attribute assertions"/]:::data
+    E10["coref.py resolver"]:::current
+    E11[/"coref_links<br/>stored but not used by factual pipeline"/]:::disconnected
+    P3 --> E0
+    E0 --> E1 --> E4
+    E0 --> E2 --> E4
+    E0 --> E3 --> E4
+    E4 --> E5 --> E6 --> E7
+    E4 --> E8 --> E9
+    E7 --> E10 --> E11
+  end
+
+  subgraph REL["DISCONNECTED RESEARCH PATH"]
+    R1["relations.extract_relations()<br/>open S-P-O candidates"]:::disconnected
+    R2["drops CONTACTED / SENT / RECEIVED / FILED...<br/>drops identifier ownership relations<br/>invalid polarity becomes asserted"]:::bad
+    R3["bind_to_mentions()<br/>surface / substring matching"]:::stale
+    R4(["not persisted; never reaches operational graph"]):::bad
+    P3 -.->|"notebook 20 only"| R1 --> R2 --> R3 --> R4
+  end
+
+  subgraph ER["4 — Entity resolution"]
+    D1["mention vectors<br/>name + guessed class"]:::current
+    D2[/"mentions.faiss"/]:::data
+    D3["deterministic blocks + embedding buckets<br/>embedding lane proposes candidates"]:::good
+    D4["one global Splink person-name model<br/>training blocks may fail silently"]:::bad
+    D5[/"same_as_edges<br/>probability + blocked_by"/]:::good
+    D6["connected components<br/>one bad bridge can join a cluster"]:::stale
+    D7["entity_id = hash(all member mention_ids)<br/>ID changes whenever membership changes"]:::bad
+    D8[/"entities + current snapshot<br/>entity_versions is cleared / unused"/]:::data
+    E7 --> D1 --> D2 --> D3 --> D4 --> D5 --> D6 --> D7 --> D8
+    E9 --> D3
+  end
+
+  subgraph PROFILE["5 — Profiles and graph"]
+    F1["profiles.run()<br/>role derived from entity_class<br/>normalized identifiers labeled validated"]:::bad
+    F2[/"entity_attributes appended<br/>dossiers upserted by unstable entity_id"/]:::stale
+    F3["build_graph()<br/>does not read semantic assertions"]:::bad
+    F4["fabricate role edge from class + co-presence<br/>first claimant becomes arbitrary anchor"]:::bad
+    F5[/"igraph pickle<br/>party / claim / occurrence / raw identifier nodes"/]:::data
+    D8 --> F1 --> F2 --> F3 --> F4 --> F5
+    E9 --> F3
+    R4 -.->|"no route"| F3
+  end
+
+  subgraph INDEX["6 — Search projections"]
+    S1["backfill: chunk every note + embed"]:::current
+    S2[/"chunks.faiss + raw-text Parquet metadata"/]:::data
+    S3["incremental ingest refreshes graph<br/><b>but does not refresh chunks.faiss</b>"]:::bad
+    P3 --> S1 --> S2
+    I1 -.->|"later note"| S3
+    S3 -.->|"stale after ingest"| S2
+  end
+
+  subgraph QUERY["7 — Two divergent query products"]
+    Q1["app.py<br/>closed dossier-filter query plan<br/>in-memory exact/fuzzy lookups"]:::stale
+    Q2["agent.py<br/>every question starts vector-only<br/>then claim-filtered graph expansion"]:::stale
+    Q3["LLM synthesis accepts citation strings<br/>without support validation"]:::bad
+    Q4["cross_claim_network passes an argument<br/>the graph method no longer accepts"]:::bad
+    OUT(["answers can differ by entry point<br/>and can read different data watermarks"]):::term
+    F2 --> Q1 --> OUT
+    S2 --> Q2
+    F5 --> Q2 --> Q3 --> OUT
+    Q2 --> Q4
+  end
+
+  GLOBAL -.-> D4
+  GLOBAL -.-> F5
+  GLOBAL -.-> S2
+  GLOBAL -.-> Q1
+  GLOBAL -.-> Q2
+
+  INC["<b>Incremental consistency failure</b><br/>new SQL evidence + rebuilt graph + stale chunk index<br/>old attributes/dossiers can survive entity-ID churn<br/><i>there is no atomic published snapshot</i>"]:::bad
+  S3 --> INC
+  F2 --> INC
+  D7 --> INC
+
+  LEGEND["<b>Reading this diagram</b><br/><span style='color:#2F6B4F'>green</span> = principle worth retaining · <span style='color:#A06416'>amber</span> = weak/partial mechanism<br/><span style='color:#A33A3A'>red</span> = correctness or semantic break · purple dashed = disconnected path"]:::good

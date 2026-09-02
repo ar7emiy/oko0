@@ -1,0 +1,158 @@
+---
+title: "Target — Search, context assembly, and answer verification"
+---
+flowchart TD
+  classDef input fill:#E8EEF8,stroke:#315A8A,stroke-width:1.6px,color:#102A43
+  classDef act fill:#F7F7F4,stroke:#535B61,stroke-width:1.4px,color:#20252A
+  classDef decide fill:#FFF2D9,stroke:#A06416,stroke-width:1.6px,color:#5A3300
+  classDef lane fill:#E7F5F7,stroke:#27717A,stroke-width:1.6px,color:#123A40
+  classDef data fill:#E4F2EA,stroke:#2F6B4F,stroke-width:1.7px,color:#12301F
+  classDef warn fill:#FFF0F0,stroke:#A33A3A,stroke-width:1.6px,stroke-dasharray:6 3,color:#5C1616
+  classDef note fill:#FFF8C9,stroke:#8A6A00,stroke-width:1.6px,color:#493800
+  classDef terminal fill:#263238,stroke:#263238,color:#FFFFFF
+
+  Q0(["question + authenticated user + client context"]):::input
+  Q1["<b>authorize first</b><br/>permitted clients · claims · occurrences · fields · cross-claim purpose"]:::act
+  Q2{"authorized?"}:::decide
+  DENY(["deny + audit event"]):::warn
+  Q3["<b>parse a typed query plan</b><br/>intent · entities · exact values · time constraints<br/>relation/path need · requested output · confidence"]:::act
+  Q4["mechanically validate plan<br/>allowed operators · bounded graph hops · safe filters · context budget"]:::act
+  Q5{"plan valid and sufficiently specific?"}:::decide
+  CLARIFY["ask for clarification or use a declared conservative default"]:::warn
+  Q0 --> Q1 --> Q2
+  Q2 -->|no| DENY
+  Q2 -->|yes| Q3 --> Q4 --> Q5
+  Q5 -->|no| CLARIFY
+
+  subgraph ANCHORS["A — Extract anchors and separate hard filters from ranking signals"]
+    direction LR
+    A1[/"authorization filters<br/>client_id · allowed claim set · sensitive-field policy"/]:::data
+    A2[/"relevance filters<br/>claim · occurrence · source · note type · author · date range"/]:::data
+    A3[/"exact anchors<br/>claim/policy id · NPI · phone · email · date · quoted phrase · code"/]:::data
+    A4[/"semantic concepts<br/>'delayed treatment' · 'coverage concern' · 'prior similar activity'"/]:::data
+    A5[/"relationship needs<br/>who represented whom · shared identifier · path · neighborhood"/]:::data
+    Q5 -->|yes| A1
+    Q5 -->|yes| A2
+    Q5 -->|yes| A3
+    Q5 -->|yes| A4
+    Q5 -->|yes| A5
+  end
+
+  ROUTE{{"route to every lane that can add independent recall"}}:::decide
+  A1 --> ROUTE
+  A2 --> ROUTE
+  A3 --> ROUTE
+  A4 --> ROUTE
+  A5 --> ROUTE
+
+  subgraph L1["LANE 1 — Structured / exact"]
+    direction TB
+    E1["SQL / key-value lookup<br/>document metadata · claim ids · entity ids · validated identifiers"]:::lane
+    E2["exact normalized matching<br/>names · phones · emails · registry ids · source-native ids"]:::lane
+    E3[/"ranked exact hits<br/>match field · normalization · source row · certainty"/]:::data
+    E1 --> E2 --> E3
+  end
+
+  subgraph L2["LANE 2 — Lexical"]
+    direction TB
+    L21["full-text / BM25 query<br/>names · codes · jargon · quoted language · rare tokens"]:::lane
+    L22["field boosts<br/>title/name > body; exact phrase > token match"]:::lane
+    L23[/"ranked lexical passages<br/>score · matched terms · source span"/]:::data
+    L21 --> L22 --> L23
+  end
+
+  subgraph L3["LANE 3 — Semantic vector"]
+    direction TB
+    V1["embed query with retrieval-specific model/task<br/>model version must match index manifest"]:::lane
+    V2["pre-filtered k-NN<br/>authorization and required scope applied before ranking"]:::lane
+    V3[/"ranked semantic passages / entities<br/>cosine score · model version · source span"/]:::data
+    V1 --> V2 --> V3
+  end
+
+  subgraph L4["LANE 4 — Temporal"]
+    direction TB
+    T1["normalize event time vs record time<br/>before/after/as-of/range/sequence"]:::lane
+    T2["query claim activities and assertion lifecycle<br/>include corrections/retractions by policy"]:::lane
+    T3[/"ordered event/assertion hits<br/>time basis · uncertainty · source span"/]:::data
+    T1 --> T2 --> T3
+  end
+
+  subgraph L5["LANE 5 — Graph"]
+    direction TB
+    G1["resolve seed IDs from exact/ER evidence<br/>never start traversal from an unverified surface alone"]:::lane
+    G2["bounded typed traversal<br/>factual assertions · identity · containment · optional derived signals"]:::lane
+    G3["apply edge policy<br/>polarity/status · confidence · as-of snapshot · hub penalty"]:::lane
+    G4[/"ranked paths / neighborhoods<br/>every edge has assertion or derivation provenance"/]:::data
+    G1 --> G2 --> G3 --> G4
+  end
+
+  ROUTE -->|id / metadata / count| E1
+  ROUTE -->|name / code / exact language| L21
+  ROUTE -->|concept / paraphrase| V1
+  ROUTE -->|chronology / as-of| T1
+  ROUTE -->|relationship / network| G1
+
+  F0["<b>normalize lane scores without erasing origin</b><br/>retain rank · raw score · lane · filters · index/artifact version"]:::act
+  E3 --> F0
+  L23 --> F0
+  V3 --> F0
+  T3 --> F0
+  G4 --> F0
+  F1["candidate deduplication<br/>same evidence ID merges lane provenance; raw spans remain distinct"]:::act
+  F2["rank fusion<br/>RRF or client-evaluated fusion policy"]:::act
+  F3["cross-encoder / rule reranking where justified<br/>question-to-evidence relevance; no factual invention"]:::act
+  F4{"minimum evidence and confidence met?"}:::decide
+  F0 --> F1 --> F2 --> F3 --> F4
+
+  NONE["return no-supported-answer<br/>show searched scopes and lanes; do not fill from model memory"]:::warn
+  F4 -->|no| NONE
+
+  subgraph PACK["B — Context assembler: construct the smallest complete evidence packet"]
+    direction TB
+    C1[/"selected raw passages<br/>document_version_id · exact span · note/source metadata"/]:::data
+    C2[/"selected assertions/events<br/>orthogonal status axes · argument-resolution method"/]:::data
+    C3[/"selected entity snapshots / paths<br/>stable IDs · membership version · edge provenance"/]:::data
+    C4[/"chronology + authoritative context<br/>claim/occurrence metadata · roster/reference versions"/]:::data
+    C5["budget + coverage check<br/>remove redundant overlap; preserve counterevidence and corrections"]:::act
+    C6[/"<b>EvidencePack</b><br/>immutable ids only · explicit as-of watermark · complete manifest"/]:::data
+    F4 -->|yes| C1
+    F4 -->|yes| C2
+    F4 -->|yes| C3
+    F4 -->|yes| C4
+    C1 --> C5
+    C2 --> C5
+    C3 --> C5
+    C4 --> C5
+    C5 --> C6
+  end
+
+  S1["structured synthesis<br/>each answer_claim = text + selected evidence_ids + uncertainty"]:::act
+  S2{"mechanical citation validation<br/>known evidence id? allowed scope? exact span still matches?"}:::decide
+  BAD1["reject claim<br/>unknown or unauthorized citation"]:::warn
+  S3{"semantic support check<br/>does cited evidence entail or explicitly qualify this claim?"}:::decide
+  BAD2["drop / qualify claim or abstain<br/>persist verification failure for evaluation"]:::warn
+  S4(["answer + clickable evidence + query/retrieval/verification trace"]):::terminal
+  C6 --> S1 --> S2
+  S2 -->|no| BAD1
+  S2 -->|yes| S3
+  S3 -->|no| BAD2
+  S3 -->|yes| S4
+
+  TRACE[/"<b>search_run</b><br/>plan · authorization result · filters · lane candidates · ranks<br/>fusion/reranker versions · selected evidence · answer claims · verification"/]:::data
+  Q3 -.-> TRACE
+  F0 -.-> TRACE
+  C6 -.-> TRACE
+  S4 -.-> TRACE
+  NONE -.-> TRACE
+  BAD1 -.-> TRACE
+  BAD2 -.-> TRACE
+
+  EX1["<b>Example 1 — 'Find NPI 1234567893'</b><br/>exact identifier lane is authoritative for retrieval;<br/>lexical can recover raw formatting; vector adds little and need not run."]:::note
+  EX2["<b>Example 2 — 'What delayed treatment?'</b><br/>semantic + lexical + temporal lanes retrieve passages/events;<br/>graph connects providers only after seed identity is grounded."]:::note
+  EX3["<b>Example 3 — 'Who else used this phone across claims?'</b><br/>exact phone normalization seeds graph traversal;<br/>authorization controls cross-claim scope; hub/ownership signals qualify results."]:::note
+  E3 -.-> EX1
+  V3 -.-> EX2
+  G4 -.-> EX3
+
+  WHY["<b>Why vector-only is wrong</b><br/>semantic similarity finds paraphrases, but exact identifiers, names, dates, codes,<br/>and quoted wording often need lexical or structured retrieval. Graph traversal answers<br/>connectivity, not passage relevance. The router composes mechanisms instead of forcing<br/>every question through one representation."]:::note
+  ROUTE -.-> WHY
