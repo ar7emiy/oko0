@@ -199,6 +199,32 @@ def main(full: bool = True):
     hits = a.retrieve_chunks(claim, "who treated the claimant")
     assert hits, "scoped vector retrieval returned nothing"
     assert all(h["claim_id"] == claim for h in hits), "claim scope leaked"
+
+    # INVARIANT: every document in the database is reachable by retrieval.
+    #
+    # This guards a bug that shipped and was invisible: ingest() never called
+    # build_chunk_index, so notes arriving after backfill were resolved into
+    # entities and added to the graph while their text never entered
+    # chunks.faiss. Querying a claim with text copied verbatim out of one of
+    # those notes returned zero chunks. Nothing failed -- the agent still
+    # answered, from the backfill corpus only.
+    indexed = {m.get("doc_id") for m in a.chunks._meta.values()}
+    stored = set(repo.table("documents")["doc_id"])
+    orphaned = stored - indexed
+    assert not orphaned, (
+        f"{len(orphaned)} document(s) exist but are absent from the chunk "
+        f"index, so retrieval cannot reach them: {sorted(orphaned)[:5]}")
+
+    # And citations must be checked, not trusted. The synthesis prompt demands
+    # doc_id:span for every statement; before this, the returned strings were
+    # passed through unverified and presented as provenance.
+    fake = ["NO_SUCH_DOC:0-10", "banana", f"{hits[0]['doc_id']}:999999-1000000"]
+    ok = [f"{hits[0]['doc_id']}:{hits[0]['char_start']}-{hits[0]['char_end']}"]
+    verified, rejected = a._verify_citations(fake + ok, hits, [])
+    assert verified == ok, f"a valid citation was rejected: {verified}"
+    assert len(rejected) == len(fake), (
+        f"fabricated citations passed verification: {rejected}")
+    print(f"      citation check: {len(rejected)}/{len(fake)} fabrications caught")
     print(f"      {ci['n_chunks']} chunks; {len(hits)} retrieved in scope")
 
     repo.close()

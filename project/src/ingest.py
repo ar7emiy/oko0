@@ -183,11 +183,30 @@ def ingest(repo: Repository, doc_ids: list[str], rebuild_graph: bool = True) -> 
             out["profiles"] = profiles.run(repo)
             _log_profiles(out["profiles"])
 
+        # The chunk index is NOT optional and is NOT behind rebuild_graph.
+        #
+        # This call was missing entirely. An arriving note was profiled,
+        # extracted, embedded into mentions.faiss, resolved and added to the
+        # graph -- but its chunks never entered chunks.faiss, so Layer 4
+        # retrieval could only ever see the backfill corpus. It failed silently:
+        # the agent still returned chunks, just never the new ones.
+        #
+        # Doc-scoped, so the cost is the arriving notes rather than the corpus.
+        with runlog.stage("index", "add the arriving notes to the retrieval index"):
+            out["chunks"] = build_graph.build_chunk_index(repo, doc_ids=doc_ids)
+            runlog.field("chunks", f"{out['chunks'].get('n_chunks')} upserted "
+                                   f"into {Paths.chunk_index.name}")
+
         if rebuild_graph:
-            with runlog.stage("store", "refresh graph and retrieval index"):
+            with runlog.stage("store", "refresh the graph"):
                 out["graph"] = build_graph.build_graph(repo)
                 runlog.field("graph", f"{out['graph'].get('n_nodes')} nodes, "
                                       f"{out['graph'].get('n_edges')} edges")
+        else:
+            # Say so. A stale graph is a real consequence, not a detail -- the
+            # entities exist but nothing new points at them.
+            runlog.note("graph NOT rebuilt (rebuild_graph=False): the graph is "
+                        "now stale with respect to these notes")
     out["elapsed_s"] = round(time.perf_counter() - t0, 2)
     return out
 

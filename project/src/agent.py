@@ -32,6 +32,10 @@ from .settings import CFG, Paths
 from .vectorstore import FaissVectorStore
 
 
+# doc_id:start-end -- the citation format the synthesis prompt demands.
+_CITE_RE = re.compile(r"^\[?([A-Za-z0-9_\-]+):(\d+)\s*-\s*(\d+)\]?$")
+
+
 class AgentStoreUnavailable(RuntimeError):
     """A store Layer 4 retrieval depends on has not been built."""
 
@@ -180,6 +184,7 @@ class ClaimScopedAgent:
             "triples": triples,
             "answer": synthesis["answer"],
             "citations": synthesis["citations"],
+            "citation_check": synthesis.get("citation_check", {}),
         }
 
     def _synthesize(self, claim_id, question, chunks, triples, eids) -> dict:
@@ -202,9 +207,62 @@ class ClaimScopedAgent:
 
         data = genai.generate_json(prompt, _answer_schema(), task="agent_answer",
                                    offline_handler=offline)
-        cites = data.get("citations") or [
+        raw_cites = data.get("citations") or [
             f"{c['doc_id']}:{c['char_start']}-{c['char_end']}" for c in chunks]
-        return {"answer": data.get("answer", ""), "citations": cites}
+        verified, rejected = self._verify_citations(raw_cites, chunks, triples)
+        return {"answer": data.get("answer", ""),
+                "citations": verified,
+                "citation_check": {
+                    "n_claimed": len(raw_cites),
+                    "n_verified": len(verified),
+                    "n_rejected": len(rejected),
+                    "rejected": rejected,
+                    "grounded": bool(verified) and not rejected,
+                }}
+
+    def _verify_citations(self, cites: list[str], chunks: list[dict],
+                          triples: list[dict]) -> tuple[list[str], list[dict]]:
+        """Check every citation against the evidence that was actually retrieved.
+
+        The prompt DEMANDS a doc_id and char span for each statement. Nothing
+        checked that the model complied -- the returned strings were passed
+        through untouched and presented as provenance. For a system whose entire
+        claim is that facts trace to characters, the trace was unverified.
+
+        Four checks, cheapest first. A citation must:
+          1. parse as doc_id:start-end
+          2. name a document that exists
+          3. have a span inside that document's length
+          4. fall within evidence actually placed in the prompt -- a retrieved
+             chunk or a retrieved triple's span. A syntactically perfect
+             citation to a real document the model was never shown is a
+             fabricated provenance trail, which is the failure worth catching.
+        """
+        allowed = [(c["doc_id"], int(c["char_start"]), int(c["char_end"]))
+                   for c in chunks]
+        allowed += [(t["doc_id"], int(t["span"][0]), int(t["span"][1]))
+                    for t in triples if t.get("doc_id") and t.get("span")]
+
+        verified, rejected = [], []
+        for cite in cites:
+            m = _CITE_RE.match(str(cite).strip())
+            if not m:
+                rejected.append({"citation": cite, "reason": "unparseable"})
+                continue
+            doc, s, e = m.group(1), int(m.group(2)), int(m.group(3))
+            text = self._text(doc)
+            if not text:
+                rejected.append({"citation": cite, "reason": "unknown doc_id"})
+                continue
+            if not (0 <= s < e <= len(text)):
+                rejected.append({"citation": cite, "reason": "span out of bounds"})
+                continue
+            if not any(doc == d and s >= ds and e <= de for d, ds, de in allowed):
+                rejected.append({"citation": cite,
+                                 "reason": "span outside retrieved evidence"})
+                continue
+            verified.append(cite)
+        return verified, rejected
 
     # ---- dossier ---------------------------------------------------------
     def dossier(self, claim_id: str) -> dict:
