@@ -225,6 +225,29 @@ def main(full: bool = True):
     assert len(rejected) == len(fake), (
         f"fabricated citations passed verification: {rejected}")
     print(f"      citation check: {len(rejected)}/{len(fake)} fabrications caught")
+
+    # INVARIANT: the exact lane can find what the indexer indexed.
+    #
+    # who_is_at applied its own normalization (phone_last7, address_key) while
+    # build_graph keyed identifier nodes on normalize_identifier. The lookup
+    # asked for ID::phone::7979442 while the index held ID::phone::3237979442,
+    # so it returned [] for every phone and every address, always -- invisible
+    # because answer() never called the exact lane. One shared normalization
+    # function is the fix; this asserts the two sides still agree.
+    obs = repo.table("identifier_observations")
+    bound = obs[obs["subject_mention_id"].notna()]
+    checked = resolved = 0
+    for _, o in bound.iterrows():
+        if checked >= 25:
+            break
+        checked += 1
+        if a.who_is_at(o["kind"], o["value_raw"]):
+            resolved += 1
+    assert checked == 0 or resolved > 0, (
+        "exact identifier lookup resolved none of "
+        f"{checked} bound observations -- index and lookup normalization have "
+        "drifted apart again")
+    print(f"      exact lane: {resolved}/{checked} bound identifiers resolvable")
     print(f"      {ci['n_chunks']} chunks; {len(hits)} retrieved in scope")
 
     repo.close()

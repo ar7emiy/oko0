@@ -42,7 +42,7 @@ not authority — each was independently checked.
 | D3 | Policy/claim numbers routed to a lane with no detector — lost entirely | me | open |
 | D4 | LLM identifier bindings discarded | me | open |
 | D5 | `POLARITIES` conflates polarity + evidentiality + lifecycle | B | open |
-| D6 | Vector-only retrieval; no lexical/exact lane; `who_is_at()` never called | B, me | open |
+| D6 | Vector-only retrieval; no lexical/exact lane; `who_is_at()` never called | B, me | **partly fixed** — exact lane wired (T3.2); lexical/rerank still open |
 | D7 | Locale model hardcoded, zero external resource loading | me | open |
 | D8 | Entity IDs change when mentions arrive | B | open, **contested** |
 | D9 | Two disconnected coref mechanisms | me | open |
@@ -51,6 +51,8 @@ not authority — each was independently checked.
 | D12 | `_is_plausible_name` drops single-token names | A, me | open |
 | D13 | Cluster-level consistency guard lost in v1→v2 | B | open |
 | D14 | Splink training completeness never checked | B | open |
+| D15 | `who_is_at` normalized differently than the indexer, so phone and address lookup returned `[]` **always** | me, via T3.2 | ✅ **fixed** |
+| D16 | An `identifier_observations` row has `kind=phone, value_raw="voicemail"` — identifier extraction has a precision leak | me, via T3.2 | open |
 
 **Scaling, not correctness:** `filter_fn` is an O(total-chunks) metadata scan per
 query; `entities_in_chunks` iterates every mention per query.
@@ -245,12 +247,36 @@ leaves this unspecified and it is the crux — the three differ sharply in cost,
 latency and failure mode. Run-all-plus-RRF is the robust default and probably
 right for a POC.
 
-### T3.2 Wire `who_is_at()` into `answer()` *(D6)*
-**Confidence:** measured · **Cheapest item on the board**
+### T3.2 Wire `who_is_at()` into `answer()` *(D6)* — ✅ **DONE**
 
-A working identifier→entity graph lookup exists and `answer()` never calls it.
-Identifier questions currently go through the embedding path that cannot serve
-them.
+The detector is `gazetteers.scan` — **the same one used on note text**. A query
+is text; reusing the extractor means a query identifier is recognised, normalised
+and validated exactly as the note version was, rather than by a second parser
+free to drift.
+
+`answer()` now runs the exact lane first and unions its entities into graph
+expansion, so an identifier query reaches the graph even when the vector lane
+retrieves nothing relevant.
+
+**Wiring it in immediately exposed D15**, a bug that had been latent since the
+function was written: `who_is_at` applied its own normalization (`phone_last7`,
+`address_key`) while `build_graph` keys identifier nodes on
+`normalize_identifier`. The lookup asked for `ID::phone::7979442` while the index
+held `ID::phone::3237979442`. **Every phone and address lookup returned `[]`,
+always** — invisible because nothing called the function. One shared
+normalization function is the fix; last-7 matching is a *blocking* concern
+(deliberately fuzzy) and never belonged in an exact lookup.
+
+Measured after the fix, on a planted recycled-phone case:
+
+```
+query "who is associated with (323) 797-9442?"
+  VECTOR lane : 5 chunks -> 22 entities   (none of them from the phone)
+  EXACT  lane : 21 graph rows -> A. Martin, Rios Car Care, Yusuf Nguyen
+```
+
+Guarded in `smoke_test`: bound identifier observations must be resolvable
+through `who_is_at`, so index and lookup normalization cannot drift apart again.
 
 ### T3.3 Reranking
 Dense top-k feeds the LLM directly. A cross-encoder rerank over the fused

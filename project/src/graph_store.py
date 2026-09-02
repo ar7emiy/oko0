@@ -264,13 +264,19 @@ class IGraphStore(GraphStore):
     def node(self, node_id: str) -> GraphNode | None:
         return self._nodes.get(node_id)
 
-    def find_by_identifier(self, kind: str, value_norm: str) -> list[dict]:
-        """Everything ever associated with an identifier -- the 'address with no
-        name' query, as a direct lookup."""
+    def find_by_identifier(self, kind: str, value_norm: str,
+                           claim_id: str | None = None) -> list[dict]:
+        """Everything associated with an identifier -- the 'address with no name'
+        query, as a direct lookup.
+
+        `claim_id` scopes the result the same way `neighbors` does elsewhere.
+        Pass None for the cross-claim view (a recycled phone, a phoenix shop),
+        which is the escalated path rather than the default.
+        """
         nid = f"ID::{kind}::{value_norm}"
         if nid not in self._nodes:
             return []
-        return self.neighbors([nid], hops=1)
+        return self.neighbors([nid], hops=1, claim_id=claim_id)
 
     def stats(self) -> dict:
         return {

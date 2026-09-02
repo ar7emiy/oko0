@@ -153,22 +153,80 @@ class ClaimScopedAgent:
             }
         return out
 
-    def who_is_at(self, kind: str, value: str) -> list[dict]:
+    # ---- step 2b: EXACT lane ---------------------------------------------
+    def exact_lookup(self, query: str, claim_id: str | None = None) -> list[dict]:
+        """Resolve identifiers appearing literally in the query.
+
+        Dense retrieval is structurally weak on rare literal tokens: a 768-dim
+        embedding of "1568291037" carries almost no signal, so "who is NPI
+        1568291037" cannot be answered by the vector lane no matter how it is
+        tuned. Yet the graph already indexes every identifier as a node, and
+        `find_by_identifier` has always been able to answer it directly -- the
+        agent simply never called it.
+
+        The detector is `gazetteers.scan`, the SAME one used on note text. A
+        query is text; reusing the extractor means a query identifier is
+        recognised, normalised and validated exactly as the note version was,
+        rather than by a second parser that could drift from it.
+        """
+        from . import gazetteers
+
+        out = []
+        for h in gazetteers.scan(query):
+            if not h.valid:
+                continue
+            rows = self.who_is_at(h.label, h.text, claim_id=claim_id)
+            # Detected-but-unresolved is reported, not dropped. Collapsing it
+            # into "not detected" is what hid the normalization mismatch above:
+            # every phone query looked like a query with no identifier in it.
+            out.append({"kind": h.label, "value": h.text,
+                        "validation": h.validation,
+                        "resolved": bool(rows), "matches": rows})
+        return out
+
+    def who_is_at(self, kind: str, value: str,
+                  claim_id: str | None = None) -> list[dict]:
         """'Who is associated with this address/phone?' -- the unnamed-identifier
-        query, answered by a direct lookup on the identifier node."""
+        query, answered by a direct lookup on the identifier node.
+
+        ONE normalization function, shared with the indexer. This previously
+        applied its own overrides -- `phone_last7` for phones, `address_key` for
+        addresses -- while `build_graph` keys identifier nodes on
+        `normalize_identifier`. So the lookup asked for `ID::phone::7979442`
+        while the index held `ID::phone::3237979442`, and this function returned
+        [] for every phone and every address, always.
+
+        It went unnoticed because nothing called it: `answer()` never used the
+        exact lane. Wiring the lane in surfaced it on the first phone query.
+
+        Last-7 matching is a BLOCKING concern (deliberately fuzzy, see the
+        `phone7` rule) and not an exact-lookup one. Exact lookup must use
+        whatever the index was built with, or it is not a lookup.
+        """
         from . import textnorm
         norm = textnorm.normalize_identifier(kind, value)
-        if kind == "address":
-            norm = textnorm.address_key(value)
-        if kind == "phone":
-            norm = textnorm.phone_last7(value)
-        return (self.graph.find_by_identifier(kind, norm)
+        return (self.graph.find_by_identifier(kind, norm, claim_id=claim_id)
                 if hasattr(self.graph, "find_by_identifier") else [])
 
     # ---- step 4: grounded synthesis --------------------------------------
     def answer(self, claim_id: str, question: str, hops: int | None = None) -> dict:
+        # EXACT lane first. An identifier in the question is a literal lookup,
+        # not a similarity problem, and the entities it resolves seed graph
+        # expansion even when the vector lane surfaces nothing relevant.
+        exact = self.exact_lookup(question, claim_id=claim_id)
         chunks = self.retrieve_chunks(claim_id, question)
         eids = self.entities_in_chunks(claim_id, chunks)
+
+        # Union the two entry points. Without this, an identifier query reaches
+        # the graph only if the vector lane happened to retrieve a chunk
+        # containing that entity -- which is exactly what it is bad at.
+        for hit in exact:
+            for row in hit["matches"]:
+                for key in ("subject_id", "object_id"):
+                    eid = row.get(key)
+                    if eid and eid in self._entities.index and eid not in eids:
+                        eids.append(eid)
+
         triples = self.expand(claim_id, eids, hops)
         synthesis = self._synthesize(claim_id, question, chunks, triples, eids)
         return {
@@ -177,6 +235,7 @@ class ClaimScopedAgent:
                       "chunks_considered": len(chunks),
                       "all_chunks_in_scope": all(c["claim_id"] == claim_id for c in chunks)},
             "retrieved_chunks": chunks,
+            "exact_matches": exact,
             "entities": [{"entity_id": e,
                           "name": self._entities.loc[e]["canonical_name"] if e in self._entities.index else e,
                           "class": self._entities.loc[e]["entity_class"] if e in self._entities.index else "?"}

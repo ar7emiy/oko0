@@ -324,3 +324,41 @@ and 3 gate on nothing and pay off immediately.**
 **Deliberately rejected from agent B's proposal:** microservices. Its
 modular-monolith recommendation is right for this scale; splitting services now
 adds operational surface without solving a single defect in the register.
+
+### 2026-09-02 (cont.) — T3.2 exact lane, and the bug it exposed
+
+**Done.** `answer()` now runs an exact-match lane before the vector lane and
+unions the entities it resolves into graph expansion.
+
+The design choice worth keeping: the detector is `gazetteers.scan`, **the same
+one used on note text**. A query is text. Reusing the extractor means a query
+identifier is recognised, normalised and validated exactly as the note version
+was — rather than a second query parser free to drift from the first. No new
+component.
+
+**Wiring it in exposed D15 within minutes.** `who_is_at` applied its own
+normalization (`phone_last7` for phones, `address_key` for addresses) while
+`build_graph` keys identifier nodes on `normalize_identifier`. Lookup asked for
+`ID::phone::7979442`; the index held `ID::phone::3237979442`. **Every phone and
+every address lookup had always returned `[]`** — and it was invisible because
+`answer()` never called the function. The docstring calls this "precisely the
+case identifier-mediated resolution exists to solve."
+
+Fix: one shared normalization function, no overrides. Last-7 matching is a
+*blocking* concern (deliberately fuzzy — see the `phone7` rule) and has no place
+in an exact lookup. Guarded in `smoke_test` so the two sides cannot drift again.
+
+Also fixed a reporting flaw in my own first draft: `exact_lookup` only reported
+identifiers it *resolved*, so a detected-but-unresolved identifier looked
+identical to a query with no identifier in it — which is exactly what hid D15
+during the first test run. It now reports `resolved: bool` separately.
+
+**New finding, not yet fixed (D16):** an `identifier_observations` row carries
+`kind=phone, value_raw="voicemail"`. Identifier extraction has a precision leak
+somewhere — the gazetteer's `PHONE_RE` does not match that string, so it came
+from another path. Worth tracing.
+
+**Note for whoever continues:** this is the third time a defect has been found by
+*using* a capability rather than by reading it. The chunk index, the citations,
+and now this. Reading the code finds design problems; running it finds the ones
+that matter.
