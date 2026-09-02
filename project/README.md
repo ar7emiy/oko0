@@ -281,10 +281,21 @@ like normal slowness.
   recall path requires two capitalized tokens, which is the measured
   `variant:short` 100% miss.
 
-**Where these are being addressed:** `designs/development-plan.md` — the plan of
-record, written against a first-principles audit
-(`designs/first-principles-claim-note-audit.md`) and a verification pass over
-its claims. Each item there cites the evidence for the defect it fixes.
+**Where these are being addressed:**
+
+- **`designs/TODO.md`** — the status board. Per item: current behaviour with
+  `file:line` evidence, the problem tagged *measured* or *unmeasured*, the
+  proposal, a confidence level, and what observation would falsify it. Written to
+  be read by someone auditing the plan rather than executing it.
+- **`designs/development-plan.md`** — the reasoning behind the same items, and
+  where it disagrees with the audit below.
+- **`designs/first-principles-claim-note-audit.md`** — an external
+  first-principles critique, commissioned because the same author wrote the
+  system and its self-assessment.
+
+Two items are at *assumed* confidence and are explicitly gated on measurement
+rather than scheduled. Two more record boundaries in the code that turned out to
+be wrong on inspection.
 
 ## Invariants & acceptance
 

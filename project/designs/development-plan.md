@@ -43,6 +43,32 @@ extracts open-vocabulary, span-grounded triples — is called only from notebook
 So Phase 1 is a **deletion**. It removes a fabricated pathway and reconnects the
 spine. The result has fewer concepts, not more.
 
+## A standing practice: routing comments are claims, not constraints
+
+Two of the items below (1.2's identifier discard, 1.3a's duplicate coref) were
+missed by the external audit **and** by the first draft of this plan, for the
+same reason. The codebase is full of comments that assert a boundary:
+
+> *"Belongs to the gazetteer/identifier lane, which validates it."*
+> *"Provenance is recorded separately."*
+> *"...is handled elsewhere. Skip those."*
+
+They read as settled decisions, so they get treated as the shape of the system
+rather than as claims about it. Each one is a claim, and several are wrong —
+usually by conflating two jobs that happen to sit near each other. *Validate* and
+*bind* are not the same job. *Find* and *classify* are not the same job.
+
+The failure mode this produces is specific and expensive: the system discards
+evidence it already has, then builds a mechanism to approximate what it
+discarded. That is exactly what F1 is (assertions discarded, graph edges
+fabricated from class) and exactly what the first draft of §2.2 proposed doing
+again.
+
+So: when a comment explains why something is out of scope for the module it sits
+in, check whether the capability exists elsewhere and is being thrown away. A
+table of every such boundary found so far, with verdicts, is in `TODO.md` under
+*Routing decisions questioned*.
+
 ## Verified findings this plan is built on
 
 Each was checked against source, not taken from the audit on trust.
@@ -89,6 +115,29 @@ currently writes a guess into a field readers treat as a fact.
 `bind_to_mentions` → persist as assertions. Unbound candidates go to a **review
 queue table**, never dropped — same principle as orphan identifiers.
 
+**And remove the identifier discard.** `relations.py:202` tells the model to skip
+identifiers (*"handled elsewhere"*) and `:272` drops any that arrive:
+
+```python
+if IDENTIFIER_PREDICATE_RE.match(pred):
+    # Belongs to the gazetteer/identifier lane, which validates it.
+    rejected["identifier_binding"] += 1
+    continue
+```
+
+That comment conflates two jobs. **Validating** an NPI is a checksum —
+decidable, correctly the gazetteer's, and not something to ask a model for.
+**Binding** it to a person is local semantic reading — the LLM's strength, and
+exactly what `subject_for`'s line-distance rule crudely approximates.
+
+So the split is: gazetteer finds and validates, LLM binds with an evidence span,
+line proximity demotes to a feature. Confidence comes from **lane agreement** —
+the pattern extraction already uses (`found_by: gliner+llm`). Agree → high.
+Disagree → review queue.
+
+Without this, wiring relations in delivers extraction that *looks* complete while
+silently dropping a whole predicate family.
+
 ### 1.3 Make argument resolution visible *(new — not in the audit)*
 
 `relations.py` already instructs the model to resolve pronouns and role
@@ -107,6 +156,24 @@ Two mechanisms, deliberately redundant:
 
 Self-report alone is the model describing its own behaviour, which models
 misreport. Verification alone loses the distinction between coref types.
+
+### 1.3a Collapse two coreference mechanisms into one *(new)*
+
+There are currently two, and they do not talk to each other.
+
+`coref.py` runs FastCoref (or a naive fallback measured at **43%** accuracy) and
+writes `coref_links` — a table consumed only by `audit.py` and `qa_viewer.py`,
+never by any production path. Separately, `relations.py` performs implicit coref
+through the roster, and its own docstring calls that roster *"the cheap form of
+the coreference context that `coref.py` and the `coref_links` table exist to
+provide."*
+
+So the better mechanism is unmeasured and unrecorded, and the worse one is
+measured, recorded, and unused.
+
+One mechanism instead: LLM resolution *becomes* the coref record, written to
+`coref_links` carrying `resolution_method` from 1.3. `coref.py` either feeds the
+roster or is deleted. Like 1.5, this **removes** a stage rather than adding one.
 
 ### 1.4 Roster carries ids, not just names *(refinement)*
 
@@ -151,11 +218,20 @@ Add a generic **structured-token detector**: capture identifier-shaped strings
 the gazetteer cannot classify, store as `kind='unclassified'` observations with
 their span.
 
-Real claim data carries policy numbers, other carriers' claim numbers, adjuster
-codes, license plates, DOT numbers, provider ids in formats nobody enumerated.
+Real claim data is *believed* to carry policy numbers, other carriers' claim
+numbers, adjuster codes, DOT numbers, provider ids in formats nobody enumerated.
 Whatever was not listed is currently invisible. This is the orphan-identifier
 principle applied one level up: record the observation, defer the
 classification.
+
+Binding follows 1.2 — the LLM can bind an identifier whose *kind* it cannot
+name, because "this number belongs to Dr. Reyes" does not require knowing
+whether the number is a DEA registration or a provider id.
+
+**Confidence: assumed, not measured.** We have not seen real claim data, and the
+synthetic corpus contains only kinds we chose to generate — so this gap is
+invisible to every measurement we have. **Do not build before real notes or a
+client schema are seen**; the kind list may already cover what appears.
 
 ### 1.8 Kill the coref silent fallback
 
@@ -190,34 +266,63 @@ Finally measure the embedding lane's contribution against ground truth via
 `same_as_edges.blocked_by` — currently marked "not yet measured" in
 `ARCHITECTURE.md`.
 
-### 2.2 Probabilistic identifier binding *(F4 — the schema change)*
+### 2.2 Measure identifier binding, then decide *(F4)*
 
-**The one item that changes a table, and the one that most deserves scrutiny
-before it is built.**
+**Measurement first. The build is gated on its outcome, not scheduled.**
 
 Today, whether an NPI belongs to a provider mention is decided once, in the
-extractor, by a same-line-or-previous-line rule, and stored as a hard
-`subject_mention_id` or NULL. There is no probability anywhere. That directly
-contradicts the requirement that mentions *and metadata* be linked
-probabilistically — and it makes the same mistake as F3: trading recall for
-precision at the candidate stage, which the architecture's own principle
-forbids.
+extractor, by a same-line-or-previous-line rule, stored as a hard
+`subject_mention_id` or NULL. No probability anywhere. `subject_for`'s docstring
+defends the strictness honestly: a looser rule mis-binds across email headers,
+and a wrong identifier then looks like a conflicting validated id and splits one
+person into many entities. That reasoning is sound.
 
-Proposed: `identifier_bindings` as a scored candidate table — features being
-line distance, same-segment, segment kind, signature-block proximity, and
-`entity_type` compatibility. `identifier_observations.subject_mention_id` becomes
-the *materialized winner above threshold*, exactly as `entity_snapshot` is the
-materialized view over `same_as_edges`.
+The objection is that the rule pays a **global recall cost** to avoid **one
+identifiable failure mode**. An ordinary signature block with a title line
+between name and contact yields an orphan. Two names on one line bind to the
+last, silently, with no record that it was ambiguous.
 
-That symmetry is the argument for the design: identity is already a
-threshold-derived view over scored edges, and metadata attachment should be the
-same shape rather than a special case.
+**But the size of that cost is unmeasured.** We measure identifier *recall*
+(1.000 — did we find it) and never binding accuracy (did we attach it to the
+right entity). 1,211 orphans exist in the 2000-note corpus; how many *should*
+have bound is unknown.
 
-**Open question worth settling first:** whether to train this jointly with
-Splink (identifier agreement already feeds the mention comparison, so a scored
-binding creates a feedback path) or as a separate calibrated model. Leaning
-separate, for the same reason the ER model is frozen at backfill — but this
-should be reasoned through, not defaulted.
+**The measurement.** `corpus_gen` writes `GTIdentifier` records with owner
+associations and validity windows, so ground truth knows who owns every
+identifier. Compare three ways — line rule vs. LLM binding (1.2) vs. ground
+truth — for binding precision, binding recall, and the genuine-vs-artifact
+orphan split. About an hour in `audit.py`.
+
+**Three possible outcomes, only one of which is a schema change:**
+
+1. **LLM binding tracks ground truth closely** → 1.2 is the entire fix. No new
+   table. This item closes.
+2. **Both lanes individually weak but disagreeing informatively** → keep both,
+   derive confidence from agreement, no new table.
+3. **Both weak and agreeing wrongly** → the scored table below is justified.
+
+**An error worth recording.** Outcome 3 was the *original plan here*, written
+before the measurement existed and before noticing that 1.2's discard filter was
+throwing away the LLM bindings. The sequence proposed was: discard the evidence,
+build a heuristic to approximate it, then calibrate the heuristic. That is the
+same shape of mistake as F1 — a deterministic proxy standing in for evidence the
+system already extracts — and it survived a full drafting pass because the
+codebase comment justifying the discard read as a settled routing decision
+rather than a claim.
+
+**If outcome 3.** `identifier_bindings` as scored candidates (line distance,
+same-segment, segment kind, signature-block proximity, `entity_type`
+compatibility), with `identifier_observations.subject_mention_id` becoming the
+materialized winner above threshold — the same shape as `entity_snapshot` over
+`same_as_edges`, so a questionable binding is filterable at read time rather than
+baked in.
+
+Then one open question: joint vs. separate calibration. Splink's mention frame
+already uses `email`/`npi`/`tin`/`phone7` as comparison columns, and those values
+come *from* bound identifiers — so an entity-level binding feature creates a
+feedback path. Likely resolution: use entity state **as of backfill** (frozen),
+matching what the operational path already does for the Splink model and
+`emb_bucket`. Non-circular within a run, still gets cross-note signal.
 
 ### 2.3 Three-band operating policy
 
