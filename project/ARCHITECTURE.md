@@ -161,7 +161,46 @@ system metadata, not ground truth. Only entity identity must be inferred.
 
 ---
 
-## 5. Where it stands, honestly
+## 5. The operational path: the same engines, run as a system
+
+The four layers above describe a *batch* pass over a corpus. That is the shape
+that answers "how accurate is this system" and the wrong shape for running one:
+every stage globbed the whole corpus, so adding one note meant reprocessing
+every note.
+
+`src/ingest.py` runs the same engines over the same tables in two phases:
+
+```
+BACKFILL (onboarding, once)          profile -> extract -> embed
+        |                            -> resolve (TRAIN by EM) -> dossiers, graph
+        v
+        splink_model.json + mention_blocks
+        |
+INGEST (steady state, per note)      profile THIS note -> extract THIS note
+                                     -> upsert vectors -> attach to existing blocks
+                                     -> score ONLY the new pairs against the
+                                        already-trained model
+                                     -> append edges -> re-cluster -> dataset
+```
+
+Measured live on a 60-note corpus: backfill 670s, then **a single arriving note
+through every stage in 18.5s**, and a four-note batch in 87s. One arriving note
+matched an existing entity and merged two that had been separate.
+
+The design decisions behind it — why the model is frozen at backfill, why
+re-clustering the whole corpus every time is nonetheless correct, and what
+incremental bucketing deliberately gives up — are in `DECISIONS.md` under
+*Operational path*. The process view is `designs/mermaid/10-operational-ingest.mermaid`.
+
+Three lanes were found calling batch-capable APIs one item at a time while the
+batching primitive sat unused. The LLM lane was the expensive one: 160 chunks
+went from **unfinished after 15 minutes** to **115s** across 8 workers. GLiNER
+batching was measured at only **1.1x** on CPU (10.5s vs 11.2s, identical spans) —
+transformer inference is compute-bound, so there is little per-call overhead to
+amortise. Worth recording because the two look like the same optimisation and
+are not.
+
+## 6. Where it stands, honestly
 
 **Working and measured:**
 - Identifier recall 100%, including 100% of name-less mentions

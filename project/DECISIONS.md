@@ -26,24 +26,39 @@ recorded here.
   is not an importable identifier) loaded via `runpy` by `src/settings.py`. The
   model-isolation guard asserts no other file names a model.
 
-## Offline determinism (important)
+## Backend availability: no silent fallbacks
 
-The system runs against the **real Gemini API when an API key is present**
-(`GEMINI_API_KEY`/`GOOGLE_API_KEY`/Colab secret) and transparently falls back to
-a **deterministic offline stub** when no key is present (or `GENAI_MODE=offline`).
+**This section previously described the opposite policy and was wrong.** It said
+the system "transparently falls back to a deterministic offline stub when no key
+is present." That behaviour was removed, because it is precisely the failure
+mode this codebase exists to demonstrate the absence of: a run that quietly
+substitutes a stand-in produces output shaped exactly like a real run, and
+nothing downstream — including every recall number measured from it — can tell
+the difference.
 
-- Why: the four research invariants (immutability, leakage guard, span grounding,
-  scan coverage) and the whole pipeline must be executable and verifiable without
-  network or credentials (CI, graders, this build). The offline path is honest:
-  extraction/adjudication/query-planning use documented heuristics; embeddings use
-  a deterministic hashing embedding. The **online path uses Gemini's JSON-schema
-  constrained output** for all structured calls and the Gemini embedding endpoint.
-- Consequence: reported extraction precision/recall and B-cubed reflect the
-  **offline heuristic** extractor when run without a key. With Gemini online the
-  extractor is stronger; the invariants and interfaces are identical either way.
-- `genai.py` is transport + a `(model, prompt_hash)` disk cache. Each consumer
-  supplies its own `offline_handler` thunk, so the offline logic sits next to the
-  online prompt.
+Current policy: **a missing backend is a broken environment, not a mode.**
+
+- **No API key** → every LLM lane raises (`LLMExtractorUnavailable`,
+  `RelationExtractorUnavailable`). It does not return an empty list, which would
+  be indistinguishable from "this note contains no relationships."
+- **GLiNER unreachable** → `NERBackendUnavailable`. There is no automatic
+  fallback to the regex scanner; that fallback once tagged regex output with the
+  `llm` provenance label, which made a three-extractor union effectively two and
+  invalidated the ablation silently.
+- **Offline must be chosen, not fallen into.** `GENAI_MODE=offline` runs the
+  labelled research stubs knowingly. `settings.genai_mode_is_forced()` records
+  *which* it was, so a stub run can never be mistaken for a model run after the
+  fact.
+- **The embedding blocking lane refuses offline entirely**
+  (`EmbeddingBackendUnsuitable`). The offline stub hashes character shingles, and
+  its true/false similarity distributions *overlap* (measured: true 0.7708-0.9040,
+  false 0.5180-0.8354), so no threshold separates them. This is not a calibration
+  problem a different constant could fix. `notebooks/99_run_all.py` sets
+  `EMB_BLOCK_ENABLED=0` for an offline run and says so in its output.
+
+`genai.py` remains transport plus a `(model, prompt_hash)` disk cache, and each
+consumer still supplies its own `offline_handler` thunk — but that handler is
+only ever invoked when offline was explicitly requested.
 
 ## Corpus generation
 
@@ -63,18 +78,31 @@ a **deterministic offline stub** when no key is present (or `GENAI_MODE=offline`
   manifest) so the shared-building / phoenix / recycled-phone hard cases are
   actually observable by the pipeline. Without this the manifest would contain
   relationships that never appear in any document.
-- `claim_id` and category are derived by the pipeline **from note text**, never
-  from the manifest, keeping the leakage guard clean. Category is stored on some
-  notes and only implied on others (legacy inconsistency), as required.
+- **`claim_id` comes from the source system, never from note text.** This
+  reverses an earlier decision recorded here, and the reversal matters. The
+  pipeline used to recover `CLM\d{4}`/`OCC\d{4}` from the note body — which kept
+  the leakage guard clean, and only ever worked because our own generator wrote
+  those strings into the text. On real notes that mints an identity out of
+  whatever four digits happen to follow those letters. Structural identity now
+  comes from `data/doc_index.json` (the client's occurrence table), a note with
+  no entry is filed `UNKNOWN` rather than guessed, and the leakage guard stays
+  clean because a claim index is not ground truth. Category *is* still read from
+  the note's optional `[CATEGORY]` header, stored on some notes and only implied
+  on others, as required.
 
 ## Invariants (the point of the research)
 
 - **Immutability:** `data/hashes.json` seals sha256 of every raw note, written
-  once; notebook 09 re-verifies at start AND end and hard-fails on mismatch.
-- **Leakage guard:** `leakage_guard.scan_ground_truth_leakage()` scans notebooks
-  02–06, 08 **and** the pipeline modules they import for the ground-truth token;
-  only the generator (`corpus_gen`) and auditor (`audit`) may reference it. This
-  is stronger than scanning notebooks alone.
+  once; `99_run_all.py` re-verifies at start AND end and hard-fails on mismatch.
+- **Leakage guard:** `leakage_guard.scan_ground_truth_leakage()` scans every
+  pipeline notebook **and** the `src/` modules they import for the ground-truth
+  token. Exactly three files may reference it — `01_generate_corpus` (writer),
+  `07_audit_vs_ground_truth` and `10_recall_ablation` (readers) — plus
+  `corpus_gen`, `audit` and `ablation` behind them. It fails on a *missing*
+  expected file too, since a guard that silently vouches for a file it never
+  read is worse than no guard. The operational modules (`ingest`, `incremental`,
+  `runlog`) are scanned as well: they are what runs when there is no ground truth
+  to leak from, so a reference there would mean the demo was quietly cheating.
 - **Span grounding:** every extracted assertion's value must fuzzy-locate inside
   its claimed span (`SPAN_FIDELITY_MIN_RATIO`); failures are `grounded=0` and
   excluded downstream but retained for audit.
@@ -94,10 +122,66 @@ a **deterministic offline stub** when no key is present (or `GENAI_MODE=offline`
   filter). The class docstring specifies exactly what a managed
   `AzureAISearchVectorStore` must implement to swap in. The faiss-isolation guard
   asserts `faiss` is imported nowhere else.
+- **Two vector indices, not one**, because they answer different questions and
+  are keyed differently. `mentions.faiss` — "which other mentions might be this
+  same party?", keyed by mention, name-dominant, class-filtered, read once per
+  resolution run. `chunks.faiss` — "which passages bear on this question?", keyed
+  by chunk, prose-dominant, claim-filtered, read once per user question.
+  Collapsing them would force one text representation to serve two opposed
+  objectives. See `designs/mermaid/09-vector-layer.mermaid` for what was wrong
+  with each before the rewiring.
 - **Repository** wraps SQLite (+ parquet bulk dumps). Mentions and assertions are
   insert-only (immutable by convention); entity membership changes are new rows in
   `entity_versions`/`entity_members`. The storage-isolation guard asserts `sqlite3`
   is imported nowhere else.
+- **`mention_blocks` is the one piece of resolution state that is stored rather
+  than derived.** Every deterministic blocking key is recomputed from the mention
+  surface on demand, so it never needs persisting. The embedding bucket cannot
+  be: it comes from connected components over a k-NN graph, and an arriving note
+  must *attach* to the blocks an earlier run assigned rather than re-partition
+  them — stored `same_as_edges.blocked_by` values already reference those labels,
+  so re-partitioning underneath would invalidate a written record of how a
+  decision was reached.
+
+## Operational path (backfill / ingest)
+
+The pipeline was batch-only: every stage globbed the whole corpus and
+`repo.reset()` cleared the database first, so adding one note meant reprocessing
+every note. That is right for measuring accuracy and wrong for running a system.
+`src/ingest.py` adds the operational shape alongside it — same engines, same
+tables, different question.
+
+- **Two phases, as a production linkage system has.** `backfill(repo)` is
+  onboarding: a full pass that trains the Splink model by EM. `ingest(repo,
+  doc_ids)` is steady state: only the arriving notes are segmented, extracted and
+  embedded, and only the pairs *their* mentions generate are scored, via Splink's
+  `find_matches_to_new_records`. Cost is proportional to the note, not the corpus.
+- **The model is frozen at backfill, deliberately.** Retraining per note
+  re-estimates m/u, so every probability already written down would have been
+  scored by a different model than the next one — two edges reading 0.62 would
+  not mean the same thing, and a human who reviewed one reviewed a number that
+  has since moved. Picking up drift is a periodic *re*-backfill: a dated,
+  auditable event. `ingest()` raises `NotBackfilled` rather than training on one
+  note.
+- **Clustering is still recomputed corpus-wide on every ingest, and that is
+  correct.** Union-find over stored edges is linear and cheap, and identity is a
+  threshold-derived view rather than a stored merge — which is exactly what lets
+  one arriving note legitimately merge two previously separate entities without
+  anything being un-written.
+- **Re-ingesting a note is idempotent.** Mention and assertion ids are
+  content-derived (hashed over doc id, span and label), not sequential. A per-run
+  counter restarting at 1 collided on the first arriving note; seeding it past
+  the stored maximum would have fixed the crash and left the worse half, where
+  re-processing a note mints different ids and orphans every edge referencing the
+  old ones.
+- **Incremental bucketing under-merges by design.** An arriving mention that
+  bridges two existing embedding blocks joins one rather than merging them, for
+  the `mention_blocks` reason above. A periodic re-backfill is where those
+  collapse; rewriting history on every note is the worse alternative.
+- **Arriving notes are scored against each other, not only against the corpus.**
+  `find_matches_to_new_records` compares new records to the indexed dataset only,
+  so a party appearing twice within one batch was never scored — it surfaced as
+  one organization split across three entities, one per note.
 
 ## Resolution decisions
 
@@ -228,10 +312,24 @@ ambiguous band, greedy correlation clustering — is gone, along with the
   Online adds Gemini latency, bounded by batching, caching, and the adjudication
   cap.
 
-## Representative offline results (SEED=20260826, no API key)
+## Measured results
 
-- Corpus: 180 GT entities, ~2.2k notes, ~6.4k planted placements (byte-accurate).
-- Coverage: 100% of characters per doc; 0 docs under 100%.
-- Mentions: recall ≈ 0.89, precision ≈ 0.70.
-- Clusters: 180 GT vs ~198 system; B-cubed P/R ≈ 0.92/0.94 (F1 ≈ 0.93);
-  ~8 GT entities never recovered (itemized in the audit).
+**Removed from this file rather than updated.** The numbers that stood here
+(180 GT entities, B-cubed F1 ≈ 0.93) predated corpus v2, the Splink resolver and
+the embedding blocking lane, and contradicted the figures in `ARCHITECTURE.md`
+by a wide margin — two documents in one repo reporting different accuracy for
+the same system is worse than one document reporting none.
+
+`ARCHITECTURE.md` is the single place measured results live. It carries the
+figures **with the conditions they were measured under**, which is the part that
+made the old numbers here misleading: they were taken with no API key, meaning
+the LLM lane was a stub, and were reported without saying so.
+
+Read there, in this order:
+
+- §6 *Where it stands, honestly* — current entity/identifier recall, B-cubed,
+  and what is not good enough yet.
+- §6 *Why over-fragmentation happens* — the organization-name diagnosis, and why
+  lowering the threshold is the wrong fix.
+- The environment caveats immediately following — which backends were live for
+  each figure.
