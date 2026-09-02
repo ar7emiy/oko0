@@ -1374,3 +1374,130 @@ flowchart TB
 
   LEGEND["<b>Reading this diagram</b><br/><span style='color:#2F6B4F'>green</span> = principle worth retaining · <span style='color:#A06416'>amber</span> = weak/partial mechanism<br/><span style='color:#A33A3A'>red</span> = correctness or semantic break · purple dashed = disconnected path"]:::good
 ```
+
+### 15-resolution-and-hybrid-search-architecture
+
+Source: [`15-resolution-and-hybrid-search-architecture.mermaid`](15-resolution-and-hybrid-search-architecture.mermaid)
+
+```mermaid
+%% Lucid-ready Mermaid: paste the full file into Lucid's Mermaid import.
+%% Solid nodes are committed and exercised. Purple dashed nodes are agreed target work.
+flowchart LR
+  classDef source fill:#E8EEF8,stroke:#315A8A,stroke-width:1.6px,color:#102A43
+  classDef live fill:#E4F2EA,stroke:#2F6B4F,stroke-width:1.7px,color:#12301F
+  classDef target fill:#F3E8FF,stroke:#7048A8,stroke-width:1.7px,stroke-dasharray:7 4,color:#32195A
+  classDef evidence fill:#E7F5F7,stroke:#27717A,stroke-width:1.6px,color:#123A40
+  classDef decision fill:#FFF2D9,stroke:#A06416,stroke-width:1.6px,color:#5A3300
+  classDef risk fill:#FFF0F0,stroke:#A33A3A,stroke-width:1.5px,stroke-dasharray:5 3,color:#5C1616
+  classDef note fill:#FFF8C9,stroke:#8A6A00,stroke-width:1.4px,color:#493800
+  classDef terminal fill:#263238,stroke:#263238,color:#FFFFFF
+
+  TITLE["<b>Target — Evidence-first entity resolution and hybrid search</b><br/>Solid = committed and exercised · Purple dashed = agreed target, not yet built"]:::note
+
+  subgraph RESOLVE["A. Entity resolution — decide whether evidence mentions describe the same real-world party"]
+    direction TB
+    N0(["new note + source metadata<br/>claim ID required; note type / author / timestamp optional"]):::source
+    N1["capture span-grounded evidence<br/>mentions + identifier observations are live;<br/>relations + activities are target work"]:::live
+    N2["candidate identifier / relation binding<br/>explicit span · coreference · roster · proximity"]:::target
+    N3{"binding evidence sufficient?"}:::decision
+    N4["retain as unbound evidence<br/>searchable; no guessed owner"]:::risk
+    N5[("validated observations<br/>mention IDs · identifier observations · assertions")]:::evidence
+    N0 --> N1 --> N2 --> N3
+    N3 -->|no / ambiguous| N4
+    N3 -->|yes| N5
+
+    R0{{"union candidate-pair generators"}}:::decision
+    R1["deterministic blocks<br/>exact identifiers · normalized name keys · source/reference keys"]:::live
+    R2["embedding top-K recall net<br/>find semantically similar aliases / variants<br/><i>proposes pairs only; never merges</i>"]:::live
+    R3["Fellegi-Sunter / Splink pair score<br/>per-type comparison evidence + calibration artifact"]:::live
+    R4{"auto-link · review · no-link<br/>with calibrated decision bands"}:::target
+    R5[("versioned entity snapshot<br/>stable ID + membership + lineage + evidence")]:::target
+    N5 --> R0
+    R0 --> R1 --> R3
+    R0 --> R2 --> R3 --> R4 --> R5
+  end
+
+  subgraph PUBLISH["B. Publish the searchable evidence view"]
+    direction TB
+    P0[("claim-scoped evidence graph<br/>only grounded relations / activities / identifiers")]:::target
+    P1[("exact identifier index<br/>normalized validated identifiers<br/><i>working now</i>")]:::live
+    P2[("lexical index<br/>BM25 / phrase / rare-token retrieval")]:::target
+    P3[("vector index<br/>semantic passage retrieval")]:::live
+    P4[("temporal event index<br/>event time, record time, corrections")]:::target
+    P5[("snapshot manifest<br/>one coherent watermark + versions")]:::target
+    R5 --> P0
+    N5 --> P0
+    N5 --> P1
+    N5 --> P2
+    N5 --> P3
+    N5 --> P4
+    P0 --> P5
+    P1 --> P5
+    P2 --> P5
+    P3 --> P5
+    P4 --> P5
+  end
+
+  subgraph SEARCH["C. Search resolution — use the mechanism that matches the question"]
+    direction TB
+    Q0(["authorized stakeholder question<br/>+ claim / time / access scope"]):::source
+    Q1["extract query anchors and needs<br/>exact values · terms · concepts · time · entity/path"]:::live
+    Q2{{"run every applicable retrieval lane<br/>scope filters apply before ranking"}}:::target
+    Q0 --> Q1 --> Q2
+
+    E1["EXACT lane<br/>normalized phone / email / NPI and other validated tokens<br/><i>working now</i>"]:::live
+    L1["LEXICAL lane<br/>names · codes · jargon · quoted language<br/><i>target</i>"]:::target
+    V1["SEMANTIC lane<br/>paraphrases / concepts over note chunks<br/><i>working now</i>"]:::live
+    T1["TEMPORAL lane<br/>before / after / as-of / sequence<br/><i>target</i>"]:::target
+    G1["GRAPH lane<br/>bounded paths over grounded factual edges<br/><i>target until evidence path is connected</i>"]:::target
+    Q2 --> E1
+    Q2 --> L1
+    Q2 --> V1
+    Q2 --> T1
+    Q2 --> G1
+
+    F1["preserve lane provenance<br/>rank · raw score · matched evidence · filters"]:::target
+    F2["deduplicate evidence, then fuse ranks<br/>RRF + optional relevance reranker"]:::target
+    F3[("EvidencePack<br/>raw spans + assertions + entity snapshots + chronology")]:::evidence
+    E1 --> F1
+    L1 --> F1
+    V1 --> F1
+    T1 --> F1
+    G1 --> F1
+    F1 --> F2 --> F3
+  end
+
+  subgraph ANSWER["D. Answer only from retrieved evidence"]
+    direction TB
+    A1["structured synthesis<br/>each answer claim selects evidence IDs<br/><i>target</i>"]:::target
+    A2{"citation parses, is in scope,<br/>and lies inside supplied evidence?"}:::decision
+    A3(["answer + clickable spans<br/>lane / rank / entity-resolution trace"]):::terminal
+    A4["reject / qualify / abstain<br/>show no-supported-answer rather than invent"]:::risk
+    F3 --> A1 --> A2
+    A2 -->|yes| A3
+    A2 -->|no| A4
+  end
+
+  TITLE -.-> N0
+  TITLE -.-> Q0
+  P5 -.-> Q2
+
+  subgraph WHY["Which problem each mechanism solves"]
+    direction TB
+    W1["<b>Missed aliases / variants</b><br/>Embedding finds candidates deterministic keys miss;<br/>Splink still makes the decision."]:::note
+    W2["<b>Wrong identifier ownership</b><br/>Binding is scored before ER. Do not split a correct cluster<br/>to compensate for a mis-bound phone or NPI."]:::note
+    W3["<b>Rare literal tokens</b><br/>Exact and lexical lanes retrieve IDs, names, codes, and quotes;<br/>dense vectors are structurally weak for these."]:::note
+    W4["<b>Paraphrased narrative</b><br/>Vector retrieval finds conceptually similar passages<br/>such as ‘delayed care’ vs ‘treatment was postponed.’"]:::note
+    W5["<b>Chronology and relationships</b><br/>Temporal events answer sequence/as-of questions; a grounded graph<br/>answers bounded relationship paths—not passage relevance."]:::note
+    W6["<b>Fabricated provenance</b><br/>Mechanical citation checks reject spans not actually provided<br/>to synthesis. This is working now."]:::note
+  end
+
+  R2 -.-> W1
+  N2 -.-> W2
+  E1 -.-> W3
+  L1 -.-> W3
+  V1 -.-> W4
+  T1 -.-> W5
+  G1 -.-> W5
+  A2 -.-> W6
+```
