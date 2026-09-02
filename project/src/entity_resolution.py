@@ -31,7 +31,7 @@ from collections import defaultdict
 
 import pandas as pd
 
-from . import textnorm
+from . import blocking, textnorm
 from .repository import Repository
 from .settings import CFG, Paths
 
@@ -131,6 +131,53 @@ def build_mention_frame(repo: Repository) -> pd.DataFrame:
 
 
 # ---------------------------------------------------------------------------
+# Blocking
+# ---------------------------------------------------------------------------
+# ORDER IS LOAD-BEARING. Splink stamps every predicted pair with `match_key`,
+# the index of the blocking rule that generated it, so this list is what makes
+# the embedding lane's contribution measurable instead of asserted: a pair with
+# match_key == the index of "emb_bucket" is one NO deterministic rule proposed.
+# Appending only at the end keeps historical match_keys comparable across runs.
+BLOCKING_RULES = [
+    ("email",),
+    ("npi",),
+    ("tin",),
+    ("phone7",),
+    ("address_key",),
+    ("full_name",),
+    ("name_sorted",),
+    ("name_soundex", "first_name"),
+    ("last_name",),
+    ("emb_bucket",),          # the embedding recall net -- see src/blocking.py
+]
+BLOCKING_RULE_NAMES = ["+".join(r) for r in BLOCKING_RULES]
+EMB_RULE_INDEX = BLOCKING_RULE_NAMES.index("emb_bucket")
+
+
+def _rule_name(match_key) -> str | None:
+    """Splink's match_key (rule index) -> the rule's readable name."""
+    if match_key is None or (isinstance(match_key, float) and pd.isna(match_key)):
+        return None
+    k = int(match_key)
+    return BLOCKING_RULE_NAMES[k] if 0 <= k < len(BLOCKING_RULE_NAMES) else f"rule_{k}"
+
+
+def lane_provenance(edges: pd.DataFrame) -> dict:
+    """How many scored pairs each blocking rule was responsible for.
+
+    `match_key` is the index of the rule that produced the pair; Splink assigns
+    the FIRST rule that fires, so a pair credited to emb_bucket is one that no
+    deterministic rule proposed at all. That count is the recall the embedding
+    lane bought, and it is the number to look at when deciding whether the lane
+    is earning its cost.
+    """
+    if "match_key" not in edges.columns:
+        return {}
+    keys = pd.to_numeric(edges["match_key"], errors="coerce").dropna().astype(int)
+    return {_rule_name(k): int(v) for k, v in sorted(keys.value_counts().items())}
+
+
+# ---------------------------------------------------------------------------
 # Splink backend
 # ---------------------------------------------------------------------------
 def comparison_specs():
@@ -199,18 +246,12 @@ class SplinkResolver(ERBackend):
         return SettingsCreator(
             link_type="dedupe_only",
             unique_id_column_name="mention_id",
-            # Blocking: each rule proposes candidates independently; their union
-            # is what Splink scores. Mirrors the previous multi-pass design.
+            # Blocking: each rule proposes candidates independently; their
+            # union is what Splink scores. Nine deterministic key rules plus
+            # the embedding recall net (src/blocking.py), which proposes the
+            # pairs that share no key at all.
             blocking_rules_to_generate_predictions=[
-                block_on("email"),
-                block_on("npi"),
-                block_on("tin"),
-                block_on("phone7"),
-                block_on("address_key"),
-                block_on("full_name"),
-                block_on("name_sorted"),
-                block_on("name_soundex", "first_name"),
-                block_on("last_name"),
+                block_on(*rule) for rule in BLOCKING_RULES
             ],
             comparisons=[c for _, c, _ in comparison_specs()],
             retain_intermediate_calculation_columns=True,
@@ -251,7 +292,10 @@ class SplinkResolver(ERBackend):
                 continue   # a block too sparse to train on is skipped, not fatal
         preds = linker.inference.predict(threshold_match_probability=0.01)
         df = preds.as_pandas_dataframe()
-        keep = ["mention_id_l", "mention_id_r", "match_probability", "match_weight"]
+        # match_key rides along: it names the blocking rule that proposed the
+        # pair, which is the only way to tell what the embedding lane added.
+        keep = ["mention_id_l", "mention_id_r", "match_probability",
+                "match_weight", "match_key"]
 
         # Persist the trained model (settings + m/u parameters) so the QA
         # viewer can later re-score any specific pair on demand via
@@ -324,31 +368,18 @@ def cluster_at(edges: pd.DataFrame, mention_ids: list[str], threshold: float) ->
     This is a VIEW: changing the threshold re-partitions without rewriting any
     stored edge. Returns {mention_id: entity_id}.
     """
-    parent = {m: m for m in mention_ids}
-
-    def find(x):
-        while parent[x] != x:
-            parent[x] = parent[parent[x]]
-            x = parent[x]
-        return x
-
-    def union(x, y):
-        rx, ry = find(x), find(y)
-        if rx != ry:
-            parent[ry] = rx
-
     sel = edges[edges["match_probability"] >= threshold]
-    # .itertuples()/.to_numpy() rather than .iterrows(): this runs on every
-    # threshold change (interactively, from the QA viewer) as well as once
-    # per point in threshold_sweep, and .iterrows() boxing each row into a
-    # Series made that visibly slow at corpus scale.
-    for a, b in zip(sel["mention_id_l"].to_numpy(), sel["mention_id_r"].to_numpy()):
-        if a in parent and b in parent:
-            union(a, b)
+    # .to_numpy() rather than .iterrows(): this runs on every threshold change
+    # (interactively, from the QA viewer) as well as once per point in
+    # threshold_sweep, and .iterrows() boxing each row into a Series made that
+    # visibly slow at corpus scale.
+    roots = blocking.connected_components(
+        zip(sel["mention_id_l"].to_numpy(), sel["mention_id_r"].to_numpy()),
+        mention_ids)
 
     groups = defaultdict(list)
     for m in mention_ids:
-        groups[find(m)].append(m)
+        groups[roots[m]].append(m)
     out = {}
     for root, members in groups.items():
         eid = f"E{uuid.uuid5(uuid.NAMESPACE_OID, str(sorted(members))).hex[:12]}"
@@ -379,14 +410,25 @@ def run(repo: Repository, threshold: float | None = None,
     if frame.empty:
         return {"error": "no mentions"}
 
-    edges = backend.resolve(frame)
+    # Second candidate generator. Adds one column; the Splink settings already
+    # block on it. Raises if the mention index is missing rather than quietly
+    # resolving with less recall than the configuration promises.
+    frame, block_stats = blocking.attach_buckets(frame)
 
-    # suppress structurally impossible pairs
+    edges = backend.resolve(frame)
+    lanes = lane_provenance(edges)
+
+    # Suppress structurally impossible pairs.
+    #
+    # zip over numpy columns rather than .iterrows(): Splink can score millions
+    # of pairs in seconds, and .iterrows() boxes every one into a Series. That
+    # made this loop, not the record linkage, the slowest step in the pipeline.
     feat = frame.set_index("mention_id").to_dict("index")
     reasons = []
     keep_mask = []
-    for _, e in edges.iterrows():
-        a, b = feat.get(e["mention_id_l"]), feat.get(e["mention_id_r"])
+    for la, rb in zip(edges["mention_id_l"].to_numpy(),
+                      edges["mention_id_r"].to_numpy()):
+        a, b = feat.get(la), feat.get(rb)
         r = cannot_link_reason(a, b) if (a and b) else None
         reasons.append(r)
         keep_mask.append(r is None)
@@ -401,13 +443,25 @@ def run(repo: Repository, threshold: float | None = None,
     repo.conn.commit()
     repo.conn.execute("PRAGMA foreign_keys=ON")
 
+    # Same reason: column-wise, not row-wise. blocked_by is mapped once over the
+    # distinct match_key values rather than per row.
+    n_edges = len(edges)
+    mk = (edges["match_key"].map(_rule_name) if "match_key" in edges.columns
+          else pd.Series([None] * n_edges, index=edges.index))
+    mw = (edges["match_weight"].fillna(0.0).astype(float) if "match_weight" in edges.columns
+          else pd.Series([0.0] * n_edges, index=edges.index))
     repo.add_same_as_edges([
-        {"mention_id_a": r["mention_id_l"], "mention_id_b": r["mention_id_r"],
-         "probability": float(r["match_probability"]),
-         "match_weight": float(r.get("match_weight", 0.0) or 0.0),
-         "backend": backend.name,
-         "suppressed_reason": r["suppressed_reason"]}
-        for _, r in edges.iterrows()
+        {"mention_id_a": a, "mention_id_b": b, "probability": float(p),
+         "match_weight": float(w), "backend": backend.name,
+         "blocked_by": k, "suppressed_reason": sr}
+        for a, b, p, w, k, sr in zip(
+            edges["mention_id_l"].to_numpy(),
+            edges["mention_id_r"].to_numpy(),
+            edges["match_probability"].to_numpy(),
+            mw.to_numpy(),
+            mk.to_numpy(),
+            edges["suppressed_reason"].to_numpy(),
+        )
     ])
 
     mention_ids = frame["mention_id"].tolist()
@@ -447,4 +501,8 @@ def run(repo: Repository, threshold: float | None = None,
         "operating_threshold": threshold,
         "n_entities": len(by_entity),
         "threshold_sweep": sweep,
+        "embedding_blocking": block_stats,
+        # pairs per blocking rule; "emb_bucket" counts the ones no
+        # deterministic rule proposed -- the recall net's actual yield
+        "blocking_lanes": lanes,
     }

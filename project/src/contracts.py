@@ -167,6 +167,12 @@ CREATE TABLE IF NOT EXISTS same_as_edges (
     probability      REAL NOT NULL,
     match_weight     REAL,
     backend          TEXT,
+    -- Which blocking rule proposed this pair (entity_resolution.BLOCKING_RULES).
+    -- "emb_bucket" means no deterministic rule proposed it: the pair exists
+    -- only because the embedding recall net found it. Per-edge, so a reviewer
+    -- can ask of any specific merge "would deterministic blocking have caught
+    -- this?" instead of only seeing the aggregate.
+    blocked_by       TEXT,
     suppressed_reason TEXT               -- non-NULL => excluded from clustering
 );
 

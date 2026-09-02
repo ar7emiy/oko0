@@ -32,6 +32,10 @@ from .settings import CFG, Paths
 from .vectorstore import FaissVectorStore
 
 
+class AgentStoreUnavailable(RuntimeError):
+    """A store Layer 4 retrieval depends on has not been built."""
+
+
 class ClaimScopedAgent:
     """Retrieval agent hard-bound to a single claim."""
 
@@ -41,15 +45,27 @@ class ClaimScopedAgent:
         self.graph = graph or get_graph_store()
         try:
             self.graph.load()
-        except FileNotFoundError:
-            pass
+        except FileNotFoundError as e:
+            raise AgentStoreUnavailable(
+                "graph store not built. Run build_graph.run(repo) (notebook 08) "
+                "before querying the agent."
+            ) from e
         self.chunks = chunk_store or FaissVectorStore(
-            CFG.EMBED_DIM, Paths.store / CFG.CHUNK_INDEX_FILENAME,
-            Paths.store / CFG.CHUNK_META_FILENAME)
+            CFG.EMBED_DIM, Paths.chunk_index, Paths.chunk_meta)
         try:
             self.chunks.load()
-        except FileNotFoundError:
-            pass
+        except FileNotFoundError as e:
+            # This used to `pass`. An agent with an empty chunk index answers
+            # every question from graph expansion alone, returns zero citations,
+            # and reports no error -- Layer 2 of four silently missing, with the
+            # output still shaped like a real answer. Nothing downstream could
+            # detect it, which is precisely why it has to be loud here.
+            raise AgentStoreUnavailable(
+                "chunk vector index not found at " + str(Paths.chunk_index) +
+                ". Run build_graph.build_chunk_index(repo) (notebook 08) before "
+                "querying the agent; without it semantic retrieval returns "
+                "nothing and answers are silently un-grounded."
+            ) from e
         self._entities = repo.table("entities").set_index("entity_id")
         self._members = repo.table("entity_members")
         self._mentions = repo.table("mentions").set_index("mention_id")
@@ -67,7 +83,7 @@ class ClaimScopedAgent:
     def _text(self, doc_id: str) -> str:
         if doc_id not in self._raw:
             p = Paths.raw_notes / f"{doc_id}.txt"
-            self._raw[doc_id] = p.read_text() if p.exists() else ""
+            self._raw[doc_id] = p.read_text(encoding="utf-8") if p.exists() else ""
         return self._raw[doc_id]
 
     # ---- step 1+2: scoped vector entry ------------------------------------

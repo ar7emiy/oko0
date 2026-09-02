@@ -35,12 +35,12 @@ def write_hashes(overwrite: bool = False) -> dict[str, str]:
         )
     hashes = {p.name: sha256_file(p) for p in _raw_files()}
     Paths.hashes_json.parent.mkdir(parents=True, exist_ok=True)
-    Paths.hashes_json.write_text(json.dumps(hashes, indent=2, sort_keys=True))
+    Paths.hashes_json.write_text(json.dumps(hashes, indent=2, sort_keys=True), encoding="utf-8")
     return hashes
 
 
 def load_hashes() -> dict[str, str]:
-    return json.loads(Paths.hashes_json.read_text())
+    return json.loads(Paths.hashes_json.read_text(encoding="utf-8"))
 
 
 def verify_hashes(stage: str = "") -> dict:

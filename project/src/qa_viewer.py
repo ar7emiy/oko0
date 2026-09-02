@@ -139,7 +139,7 @@ def interesting_docs(repo: Repository, manifest: dict, limit: int = 40) -> list[
 
 def doc_overlay(repo: Repository, manifest: dict, doc_id: str) -> dict:
     """TP/FN/FP spans for one document, entities + identifiers + coref."""
-    text = (Paths.raw_notes / f"{doc_id}.txt").read_text()
+    text = (Paths.raw_notes / f"{doc_id}.txt").read_text(encoding="utf-8")
 
     ent_tags = {e["gt_entity_id"]: e["hard_case_tags"] for e in manifest["entities"]}
     gt_ent = [p for p in manifest["placements"] if p["kind"] == "entity" and p["doc_id"] == doc_id]
@@ -524,7 +524,7 @@ def render_token_offsets_html(text: str, start: int = 0, end: int | None = None)
 def load_corrections() -> list[dict]:
     if not CORRECTIONS_PATH.exists():
         return []
-    return json.loads(CORRECTIONS_PATH.read_text())
+    return json.loads(CORRECTIONS_PATH.read_text(encoding="utf-8"))
 
 
 def queue_correction(*, doc_id: str, char_start: int, char_end: int, span_kind: str,
@@ -555,7 +555,7 @@ def queue_correction(*, doc_id: str, char_start: int, char_end: int, span_kind: 
         record["orig_char_end"] = int(orig_char_end)
     records = load_corrections()
     records.append(record)
-    CORRECTIONS_PATH.write_text(json.dumps(records, indent=1))
+    CORRECTIONS_PATH.write_text(json.dumps(records, indent=1), encoding="utf-8")
     return record
 
 
@@ -641,13 +641,13 @@ def build_app(repo: Repository):
     def do_load_doc_for_correction(doc_id):
         if not doc_id:
             return ""
-        text = (Paths.raw_notes / f"{doc_id}.txt").read_text()
+        text = (Paths.raw_notes / f"{doc_id}.txt").read_text(encoding="utf-8")
         return render_token_offsets_html(text)
 
     def do_preview_boundary(doc_id, start, end):
         if not doc_id:
             return ""
-        text = (Paths.raw_notes / f"{doc_id}.txt").read_text()
+        text = (Paths.raw_notes / f"{doc_id}.txt").read_text(encoding="utf-8")
         start, end = int(start or 0), int(end or 0)
         if end <= start or end > len(text):
             return "(invalid range)"

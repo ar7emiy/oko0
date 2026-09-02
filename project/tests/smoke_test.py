@@ -14,11 +14,12 @@ warnings.filterwarnings("ignore")
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from src import (audit, build_graph, corpus_gen, entity_resolution,  # noqa: E402
-                 leakage_guard, pipeline_v2, profiling)
+from src import (agent, audit, blocking, build_graph, corpus_gen,  # noqa: E402
+                 embed_index, entity_resolution, leakage_guard,
+                 pipeline_v2, profiling)
 from src.hashing import verify_hashes, write_hashes  # noqa: E402
 from src.repository import Repository  # noqa: E402
-from src.settings import Paths  # noqa: E402
+from src.settings import CFG, Paths  # noqa: E402
 
 
 def _assert_no_silent_fallback():
@@ -55,7 +56,7 @@ def _assert_no_silent_fallback():
 
 
 def main(full: bool = True):
-    print("[1/7] generate corpus v2 + seal hashes")
+    print("[1/9] generate corpus v2 + seal hashes")
     summ = corpus_gen.generate_corpus()
     write_hashes(overwrite=True)
     assert verify_hashes("smoke")["ok"], "hash verification failed"
@@ -90,12 +91,12 @@ def main(full: bool = True):
     print(f"      {len(orphans)} orphan identifiers, hops up to {max(hops)}, "
           f"{100*len(multi)//len(man['entities'])}% cross-claim entities")
 
-    print("[2/7] guards")
+    print("[2/9] guards")
     _assert_no_silent_fallback()
     g = leakage_guard.run_all_guards()
     assert all(v["ok"] for v in g.values())
 
-    print("[3/7] profiling")
+    print("[3/9] profiling")
     repo = Repository()
     repo.reset()
     profiling.run(repo)
@@ -103,11 +104,11 @@ def main(full: bool = True):
     assert int((docs.claim_id == "UNKNOWN").sum()) == 0, "notes unattributed to a claim"
     assert docs.occurrence_id.nunique() > 1, "occurrence hierarchy missing"
 
-    print("[4/7] layer 1 extraction")
+    print("[4/9] layer 1 extraction")
     r = pipeline_v2.run(repo)
     assert r["n_orphan_identifiers"] > 0, "orphan identifiers not being recorded"
 
-    print("[5/7] audit: extraction quality")
+    print("[5/9] audit: extraction quality")
     m = audit._load_manifest()
     ident = audit.identifier_recall(repo, m)
     assert ident["orphan"]["recall"] > 0.95, (
@@ -125,9 +126,51 @@ def main(full: bool = True):
         print("\nSMOKE TEST PASSED (extraction only; --full for resolution)")
         return
 
-    print("[6/7] entity resolution (Splink)")
+    print("[6/9] mention vector index")
+    idx = embed_index.run(repo)
+    assert idx["n_nodes"] > 0, "no mention vectors indexed"
+    assert Paths.mention_index.exists(), "mention index not written to disk"
+    print(f"      {idx['n_nodes']} mention vectors, dim {idx['dim']}")
+
+    print("[7/9] entity resolution (Splink + embedding recall net)")
+    from src.settings import genai_mode
+
+    if genai_mode() == "offline":
+        # The lane must REFUSE the offline stub rather than emit meaningless
+        # buckets: the stub hashes character shingles, and its true/false pair
+        # distributions overlap, so no threshold separates them. Assert the
+        # refusal, then resolve deterministically for the rest of the run.
+        try:
+            blocking.attach_buckets(entity_resolution.build_mention_frame(repo))
+        except blocking.EmbeddingBackendUnsuitable:
+            print("      lane correctly refuses the offline embedding stub")
+        else:
+            raise AssertionError(
+                "embedding lane accepted the offline stub; it must refuse, "
+                "because lexical-overlap vectors cannot support semantic blocking")
+        CFG.EMB_BLOCK_ENABLED = False
+
     out = entity_resolution.run(repo)
     assert out["n_entities"] > 1, "resolution produced no clusters"
+
+    sae = repo.table("same_as_edges")
+    assert "blocked_by" in sae.columns, "per-edge blocking provenance not stored"
+    lanes = out["blocking_lanes"]
+    assert lanes, "match_key provenance missing; lane contribution unmeasurable"
+    assert sae["blocked_by"].notna().any(), "no edge recorded which rule found it"
+
+    if CFG.EMB_BLOCK_ENABLED:
+        # Online: the lane must actually be running, not silently disabled. A
+        # resolution that quietly loses a whole candidate generator still
+        # produces clusters, still passes every other assertion here, and simply
+        # merges less.
+        blk = out["embedding_blocking"]
+        assert blk.get("enabled"), f"embedding blocking lane did not run: {blk}"
+        assert blk["n_knn_edges"] > 0, "embedding lane proposed no neighbours at all"
+        print(f"      lane yield: {lanes.get('emb_bucket', 0)} pairs no "
+              f"deterministic rule proposed (of {len(sae)} scored)")
+    else:
+        print(f"      deterministic blocking only; {len(sae)} pairs scored")
     gold = audit.entity_precision(repo, m)["_mention_gold"]
     sweep = audit.bcubed_sweep(repo, gold)
     best = sweep["best_by_f1"]
@@ -135,13 +178,28 @@ def main(full: bool = True):
     print(f"      {out['n_entities']} entities @ {out['operating_threshold']}; "
           f"best F1 {best['bcubed_f1']:.3f} @ {best['threshold']}")
 
-    print("[7/7] global graph")
+    print("[8/9] global graph")
     gr = build_graph.build_graph(repo)
     kinds = gr["node_kinds"]
     for required in ("party", "identifier", "claim", "occurrence"):
         assert kinds.get(required, 0) > 0, f"graph missing {required} nodes"
     assert gr["n_orphan_identifier_edges"] > 0, "orphan identifiers absent from graph"
     print(f"      {gr['n_nodes']} nodes / {gr['n_edges']} edges; kinds {kinds}")
+
+    print("[9/9] chunk index + layer 4 agent")
+    ci = build_graph.build_chunk_index(repo)
+    assert ci["n_chunks"] > 0, "no chunks indexed"
+    assert Paths.chunk_index.exists(), "chunk index not written to disk"
+    # Constructing the agent IS the assertion: it raises AgentStoreUnavailable
+    # if either store is missing. This step exists because build_chunk_index was
+    # never on the tested path, so the agent ran against an empty index and
+    # answered from graph expansion alone without saying so.
+    a = agent.ClaimScopedAgent(repo)
+    claim = repo.table("documents")["claim_id"].iloc[0]
+    hits = a.retrieve_chunks(claim, "who treated the claimant")
+    assert hits, "scoped vector retrieval returned nothing"
+    assert all(h["claim_id"] == claim for h in hits), "claim scope leaked"
+    print(f"      {ci['n_chunks']} chunks; {len(hits)} retrieved in scope")
 
     repo.close()
     print("\nSMOKE TEST PASSED")

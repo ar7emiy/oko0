@@ -41,6 +41,7 @@ below are generated copies so they render on GitHub — regenerate with
 | dashed box, dotted edge | worked data example, or a design caveat |
 | **green, thick dashed** | **PROPOSED — designed, not built.** Shown at the point in the flow where it would land, so it can be reviewed in place. |
 | purple, dashed | `src/research/` — corpus-fitted, unimported by the pipeline, entered only by naming it |
+| teal fill | the vector layer — embeddings and the stores that hold them |
 
 ## Proposed changes currently on the board
 
@@ -52,6 +53,15 @@ would this go?".
 |---|---|---|---|
 | 1 | Split `entity_class` into a closed `entity_type` (person / organization) and an **open** `role` defaulting to `NULL` | [diagram 06](06-filter-classify-persist.mermaid), replacing the *Classify entity_class* node | designed, not built |
 | 2 | Normalize the mention surface (strip leading role/title tokens) before deriving ER blocking keys | [diagram 07](07-entity-resolution.mermaid), inserted between *build_mention_frame* and *derive blocking keys* | designed, not built |
+
+A third proposal — the embedding recall net as a second ER blocking lane — has
+since been **built**, and diagrams 07 and 09 now show it as live flow rather
+than as a green proposal box. Its design constraint is worth restating because
+it is what makes the lane acceptable in a regulated setting: embeddings
+**propose** candidate pairs and never **decide** merges. Splink scores an
+embedding-found pair with the same EM-trained model it applies to a
+deterministic one, and `same_as_edges.blocked_by` records per edge which lane
+surfaced it, so the lane's contribution is measured rather than asserted.
 
 Proposal 1 fixes a live defect: `_classify` falls back to
 `LABEL_TO_CLASS.get(label, "claimant")`, so an unmatched person is silently

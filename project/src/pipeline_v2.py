@@ -130,7 +130,7 @@ def run(repo: Repository, limit_docs: int | None = None,
     files = sorted(Paths.raw_notes.glob("*.txt"))
     if limit_docs:
         files = files[:limit_docs]
-    texts = {f.stem: f.read_text() for f in files}
+    texts = {f.stem: f.read_text(encoding="utf-8") for f in files}
     doc_map = {d: (claim_of.get(d, "UNKNOWN"), t) for d, t in texts.items()}
 
     chunks = chunking.chunk_corpus(doc_map)

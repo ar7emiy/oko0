@@ -133,8 +133,92 @@ GENAI_TIMEOUT_S = 90
 GENAI_CACHE_ENABLED = True                  # cache keyed by (model, prompt_hash)
 
 # ---- Vector search ----------------------------------------------------------
-EMBED_TOPK = 50                             # class-filtered embedding candidate pass
 VECTOR_METRIC = "ip"                        # IndexFlatIP (vectors are L2-normalized -> cosine)
+
+# ---- Layer 2 blocking: the embedding recall net -----------------------------
+# Deterministic blocking only proposes a pair when two mentions SHARE A KEY
+# (email, npi, sorted name, soundex last name, ...). Variants that share no key
+# are never scored at all, so they can never be merged no matter how good the
+# comparison model is: "Bob Miller" vs "Robert Miller Jr", "Valley Auto Body"
+# vs "Valley Auto Body & Paint", or an entity whose surface form differs in
+# every note it appears in. Blocking recall is a hard ceiling on ER recall.
+#
+# The embedding lane is a SECOND candidate generator unioned with those rules:
+#   mention vectors -> class-filtered k-NN -> keep edges >= EMB_BLOCK_SIM ->
+#   connected components -> one bucket id per mention, blocked on like any
+#   other column.
+#
+# It only ever PROPOSES. Splink still scores every proposed pair with the same
+# EM-trained Fellegi-Sunter model, so an embedding-found link is exactly as
+# auditable as a deterministic one -- and Splink's match_key records which lane
+# surfaced each pair, so the lane's contribution is measurable rather than
+# asserted.
+EMB_BLOCK_ENABLED = True
+EMB_BLOCK_TOPK = 25          # neighbors retrieved per mention before thresholding
+EMB_BLOCK_SAME_CLASS = True  # a person never blocks with a repair shop
+
+# Cosine floor for a k-NN edge to join two mentions.
+#
+# THIS CONSTANT IS SPECIFIC TO EMBED_MODEL. It is not a portable "how similar is
+# similar" number: embedding models differ enormously in how they use the range.
+# gemini-embedding-001 puts everything in a narrow band near 0.25-0.35, where a
+# sentence-transformer would spread the same pairs over 0.55-0.95. A value
+# carried over from another model does not merely perform worse -- it produces
+# ZERO edges, and a blocking lane that proposes nothing looks exactly like a
+# lane that found nothing to propose.
+#
+# MEASURED, not guessed. On 14 hand-labelled mentions covering the variant
+# classes this lane exists for (Bob Miller / Robert Miller Jr / R. Miller,
+# Valley Auto Body / Valley Auto Body & Paint / Valley Autobody, Dr. Alicia
+# Reyes / Alicia Reyes MD, Karen Wu / adjuster Karen Wu), same-class pairs
+# separated cleanly:
+#
+#     true co-referring pairs : min 0.3000  median 0.3285  max 0.3389
+#     non-co-referring pairs  : min 0.2565  median 0.2709  max 0.2899
+#
+# The hardest false pair is 'Dr. Alicia Reyes' vs 'Dr. Alan Reyes' at 0.2899 --
+# different people, shared surname, same speciality. That pair is exactly what
+# Splink is for, so the floor sits below it deliberately: the lane proposes it
+# and the comparison model rejects it.
+#
+# The margin is thin (0.30 vs 0.29). That is a real property of this embedding
+# model, not a tuning failure, and it is why blocking.py raises rather than
+# shrugs when the threshold falls outside the observed distribution.
+# Re-run the calibration cell in notebook 04 after changing EMBED_MODEL.
+EMB_BLOCK_SIM = 0.29
+EMB_BLOCK_SIM_CALIBRATED_FOR = "gemini-embedding-001"
+# Chars of raw note on each side of the mention folded into its vector.
+# 0 = pure name+class.
+#
+# MEASURED, and the result was not what was assumed. Sweeping 0 / 40 / 120 over
+# the labelled set described under EMB_BLOCK_SIM, separability barely moved:
+#
+#   window   true-pair min   false-pair max   margin
+#        0          0.3000           0.2899   0.0101
+#       40          0.2718           0.2622   0.0096
+#      120          0.2697           0.2596   0.0101
+#
+# Context did NOT help disambiguate the hardest false pair ('Dr. Alicia Reyes'
+# vs 'Dr. Alan Reyes' -- two real people, shared surname, same speciality),
+# which was the main argument for including it. It only shifted the whole
+# distribution down.
+#
+# So the default is 0: it is the simplest configuration, it keeps the highest
+# absolute similarities, and above all it removes a coupling -- with context in
+# the vector, EMB_BLOCK_SIM has to be re-calibrated whenever this number
+# changes, and two knobs that must move together are two chances to move only
+# one. Caveat: 14 hand-labelled mentions is a small sample. Re-measure on real
+# annotated data before treating "context does not help" as settled.
+EMB_BLOCK_CONTEXT_CHARS = 0
+# Components above this size are DROPPED (bucket set to NULL, which Splink
+# excludes from blocking) rather than emitted. A loose threshold lets components
+# chain transitively -- A~B, B~C, C~D with A nothing like D -- and one runaway
+# component of n mentions costs n^2/2 pairs, the same blow-up the empty-string
+# address_key comment in entity_resolution.build_mention_frame describes.
+# Dropping is safe: those mentions keep all nine deterministic rules. A giant
+# component means the embedding signal was not discriminative there, and the
+# honest response is to contribute nothing rather than to contribute noise.
+EMB_BLOCK_MAX_BUCKET = 60
 
 # ---- Layer 2 entity resolution (Splink) --------------------------------------
 # Identity is a THRESHOLD-DERIVED VIEW over probability-weighted SAME_AS edges,
@@ -153,37 +237,11 @@ ER_LINK_THRESHOLD = 0.45
 ER_DETERMINISTIC_RECALL = 0.7
 ER_THRESHOLD_SWEEP = (0.30, 0.40, 0.45, 0.50, 0.55, 0.60, 0.70, 0.80, 0.90)
 
-# ---- Legacy resolver thresholds (superseded by Splink) ----------------------
-RES_LOW_BAND = 0.30                         # below -> auto no-link
-RES_HIGH_BAND = 0.90                        # above -> auto link
-RES_ADJUDICATE_LOW = 0.45                   # [low, high] ambiguous band -> adjudicator
-RES_ADJUDICATE_HIGH = 0.80
-ADJUDICATE_MAX = 3000                       # cap adjudicator calls (online feasibility); most-uncertain first
-HUB_IDENTIFIER_MAX_ENTITIES = 8             # identifier shared by >8 provisional entities -> down-weight
-HUB_DOWNWEIGHT = 0.15                       # multiplier applied to a hub identifier's contribution
-CLUSTER_LINK_THRESHOLD = 0.55              # correlation-clustering positive-edge threshold
-# a resolved cluster may never contain two distinct validated values of these:
-CLUSTER_CONSISTENT_IDS = ("emails", "npis", "tins", "ssns", "dobs")
-
-# ---- Pairwise scoring weights (weighted feature model) ----------------------
-# Feature contributions are combined as a weighted sum then squashed to [0,1].
-RES_WEIGHTS = {
-    "name_jw": 1.6,               # order-insensitive Jaro-Winkler over tokens
-    "nickname": 0.6,              # nickname-table hit bonus
-    "identifier_agree": 3.2,      # validated identifier exact agreement (NPI/TIN/SSN/email)
-    "identifier_partial": 0.8,
-    "identifier_conflict": -4.0,  # hard-ish penalty (also a cannot-link rule)
-    "address_exact": 1.4,
-    "address_partial": 0.5,
-    "phone_agree": 1.1,
-    "dob_agree": 1.2,
-    "dob_conflict": -3.0,
-    "embed_cosine": 0.5,          # banded cosine (recall signal; weak on its own)
-    "dup_group": 2.2,             # same near-duplicate group (quoted copy of same text)
-    "cooccurrence": 0.4,          # dup-deduped claim co-occurrence
-    "bias": -1.1,                 # intercept
-}
-RES_SQUASH_SCALE = 1.0            # logistic scale for squashing weighted sum -> probability
+# The legacy resolver thresholds and the RES_WEIGHTS weighted-feature model
+# that used to sit here are gone with the v1 resolver. Splink learns its own
+# m/u parameters by EM, so hand-tuned feature weights are not just unused --
+# they would be a second, contradictory answer to a question the model now
+# answers from the data.
 
 # ---- Profiling / dedup ------------------------------------------------------
 MINHASH_NUM_PERM = 64
@@ -200,8 +258,11 @@ PLACEHOLDER_BLOCKLIST = (
 
 # ---- Storage artifact names (under store/) ----------------------------------
 DB_FILENAME = "intel.sqlite"
-FAISS_INDEX_FILENAME = "entities.faiss"
-FAISS_META_FILENAME = "entities_faiss_meta.parquet"
+# Mention vectors, one row per mention. Named for what they hold: these are
+# NOT entity vectors -- entities do not exist yet when this index is built,
+# because resolving them is what the index is for.
+MENTION_INDEX_FILENAME = "mentions.faiss"
+MENTION_META_FILENAME = "mentions_faiss_meta.parquet"
 GENAI_CACHE_DIRNAME = "genai_cache"
 
 # ---- Bitemporal survivorship tiers (higher wins) ----------------------------

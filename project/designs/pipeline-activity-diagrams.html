@@ -787,7 +787,7 @@
   <h2><span class="num">E</span> Resolve mentions into entities</h2>
   <div class="goal"><span class="goal-h">single goal of this block</span>Decide which mentions refer to the same real-world entity, as a probability per pair rather than a permanent merge.</div>
   <figure>
-    <div class="figframe"><svg role="img" aria-label="Activity diagram: mentions become calibrated pairwise edges, then identity is derived as connected components at a chosen threshold" viewBox="0 0 780 1420">
+    <div class="figframe"><svg role="img" aria-label="Activity diagram: two blocking lanes propose candidate pairs, one model scores them, then identity is derived as connected components at a chosen threshold" viewBox="-250 0 1030 1420">
     <defs><marker id="ah7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker></defs>
     <circle class="term" cx="390" cy="20" r="10"/>
     <text class="sub" x="410" y="24">all mentions for the corpus</text>
@@ -801,14 +801,33 @@
     <text class="lbl" x="390" y="194" text-anchor="middle">Null out missing identifiers</text>
     <text class="sub" x="390" y="210" text-anchor="middle">'' would block-explode; NULL is excluded by Splink</text>
     <line class="edge" x1="390" y1="222" x2="390" y2="266" marker-end="url(#ah7)"/>
+    <line class="edge" x1="230" y1="293" x2="-38" y2="180" marker-end="url(#ah7)"/>
     <rect class="obj" x="230" y="268" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="290" text-anchor="middle">mention frame</text>
     <text class="sub" x="390" y="306" text-anchor="middle">name_sorted, first/last, soundex, email, phone7, npi, address_key</text>
+    <text class="elbl" x="-236" y="60" style="font-weight:700">lane 2 — the embedding recall net</text>
+    <rect class="obj" x="-240" y="76" width="200" height="50" rx="7"/>
+    <text class="lbl" x="-140" y="98" text-anchor="middle">mentions.faiss</text>
+    <text class="sub" x="-140" y="114" text-anchor="middle">one vector per mention: norm_surface + class</text>
+    <line class="edge" x1="-140" y1="126" x2="-140" y2="170" marker-end="url(#ah7)"/>
+    <rect class="n" x="-240" y="172" width="200" height="50" rx="7"/>
+    <text class="lbl" x="-140" y="194" text-anchor="middle">Class-filtered k-NN</text>
+    <text class="sub" x="-140" y="210" text-anchor="middle">top-25; filter applied inside the index</text>
+    <line class="edge" x1="-140" y1="222" x2="-140" y2="252" marker-end="url(#ah7)"/>
+    <polygon class="d" points="-140,254 -40,283 -140,312 -240,283"/>
+    <text class="lbl" x="-140" y="281" text-anchor="middle">cosine ≥ 0.29?</text>
+    <text class="sub" x="-140" y="295" text-anchor="middle">calibrated per EMBED_MODEL</text>
+    <line class="edge" x1="-140" y1="312" x2="-140" y2="348" marker-end="url(#ah7)"/>
+    <rect class="n" x="-240" y="350" width="200" height="50" rx="7"/>
+    <text class="lbl" x="-140" y="372" text-anchor="middle">Connected components</text>
+    <text class="sub" x="-140" y="388" text-anchor="middle">→ emb_bucket; oversize (&gt;60) dropped</text>
+    <line class="edge" x1="-40" y1="389" x2="228" y2="389" marker-end="url(#ah7)"/>
+    <text class="elbl" x="94" y="382" text-anchor="middle">rule 9</text>
     <line class="edge" x1="390" y1="318" x2="390" y2="362" marker-end="url(#ah7)"/>
     <text class="elbl" x="398" y="344">frame</text>
     <rect class="n" x="230" y="364" width="320" height="50" rx="7"/>
-    <text class="lbl" x="390" y="386" text-anchor="middle">Declare blocking rules</text>
-    <text class="sub" x="390" y="402" text-anchor="middle">block_on(email) … block_on(name_sorted), block_on(last_name)</text>
+    <text class="lbl" x="390" y="386" text-anchor="middle">Declare blocking rules — order is load-bearing</text>
+    <text class="sub" x="390" y="402" text-anchor="middle">0-8 deterministic keys · 9 emb_bucket · match_key records which fired</text>
     <line class="edge" x1="390" y1="414" x2="390" y2="458" marker-end="url(#ah7)"/>
     <rect class="n" x="230" y="460" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="482" text-anchor="middle">Estimate match prior from deterministic rules</text>
@@ -831,7 +850,7 @@
     <line class="edge" x1="390" y1="798" x2="390" y2="842" marker-end="url(#ah7)"/>
     <rect class="obj" x="230" y="844" width="320" height="50" rx="7"/>
     <text class="lbl" x="390" y="866" text-anchor="middle">same_as_edges rows</text>
-    <text class="sub" x="390" y="882" text-anchor="middle">mention_a, mention_b, probability, match_weight</text>
+    <text class="sub" x="390" y="882" text-anchor="middle">mention_a, mention_b, probability, match_weight, blocked_by</text>
     <line class="edge" x1="390" y1="894" x2="390" y2="938" marker-end="url(#ah7)"/>
     <polygon class="d" points="390,940 505,969 390,998 275,969"/>
     <text class="lbl" x="390" y="973" text-anchor="middle">structural conflict?</text>
@@ -859,13 +878,62 @@
     <circle class="term" cx="390" cy="1384" r="6"/>
     <text class="sub" x="412" y="1388">end</text>
 </svg></div>
-    <figcaption><b>Fig E</b> Blocking proposes candidate pairs, EM-trained weights score them, structural conflicts suppress edges, and identity itself is only computed at read time as connected components at a chosen threshold — so a questionable link is filterable rather than baked in.</figcaption>
+    <figcaption><b>Fig E</b> Two lanes propose candidate pairs, one EM-trained model scores all of them, structural conflicts suppress edges, and identity itself is only computed at read time as connected components at a chosen threshold — so a questionable link is filterable rather than baked in.</figcaption>
   </figure>
+
+  <h3>Why there are two blocking lanes</h3>
+  <p>Blocking recall is a <b>hard ceiling</b> on resolution recall. A pair that no
+  blocking rule proposes is never scored, so it can never be merged — no matter how
+  good the comparison model is. The nine deterministic rules only fire when two
+  mentions <b>share a key</b>: the same email, NPI, sorted name, soundex surname.
+  The pairs that costs are the ordinary ones:</p>
+  <ul>
+    <li><code>Bob Miller</code> vs <code>Robert Miller Jr</code> — no shared key</li>
+    <li><code>Valley Auto Body</code> vs <code>Valley Auto Body &amp; Paint</code></li>
+    <li>an entity written differently in every note it appears in</li>
+  </ul>
+  <p>The embedding lane is a second candidate generator unioned with those rules.
+  Its design constraint is the part worth defending to a reviewer: <b>it only ever
+  proposes.</b> Splink scores an embedding-found pair with the same EM-trained
+  Fellegi-Sunter model it applies to a deterministic one, so the pair carries the
+  same calibrated probability and the same per-comparison breakdown. Embeddings buy
+  recall, which is what they are good at, and are kept out of the scoring decision,
+  where “the vectors were close” is not an explanation anyone can audit.</p>
+
+  <p>The lane's contribution is <b>measured, not asserted</b>. Splink stamps each
+  pair with <code>match_key</code> — the index of the first rule that fired — so a
+  pair credited to rule 9 is one no deterministic rule proposed. That is stored per
+  edge as <code>same_as_edges.blocked_by</code>, which lets a reviewer ask of any
+  specific merge whether deterministic blocking would have caught it, rather than
+  seeing only an aggregate.</p>
+
+  <div class="note"><b>The similarity floor is model-specific, and getting it wrong
+  is silent.</b> <code>EMB_BLOCK_SIM = 0.29</code> looks wrong beside the 0.7–0.9
+  one expects from a sentence-transformer, and it is correct for
+  <code>gemini-embedding-001</code>, which compresses everything into a narrow band:
+  co-referring pairs 0.30–0.34, unrelated pairs 0.25–0.29 (measured live on 14
+  hand-labelled mentions). The value was first set to 0.86 by analogy and the lane
+  produced <b>zero edges</b> — resolution still ran, still clustered, still passed
+  every assertion, and merged less, with nothing anywhere saying why. It is now an
+  exception (<code>EmbeddingThresholdMiscalibrated</code>) rather than a silent
+  shrug, and a second one (<code>EmbeddingBackendUnsuitable</code>) refuses the
+  offline embedding stub outright: that stub hashes character shingles, and its
+  true and false similarity distributions <i>overlap</i>, so no threshold separates
+  them and no recalibration could.</div>
+
+  <p><b>Measured yield</b>, live against <code>gemini-embedding-001</code> on a
+  twelve-mention labelled probe: recall 7/7, precision 7/7, three clean buckets.
+  The deterministic name rules propose 1 of those 7 pairs; the lane adds the other
+  6. That is a mechanism check on a small set, not a corpus-level result — whether
+  the lane cuts under-merges without raising over-merges is answerable from
+  <code>blocked_by</code> joined to ground truth, and is not yet measured.</p>
+
   <h3>Worked data example</h3>
   <div class="tablewrap"><table>
 <thead><tr><th>data going in</th><th>data coming out</th><th>what happened</th></tr></thead><tbody>
 <tr><td class="d-in"><code>{mention_id: "m0000153", name_sorted: "ibarra omar", first_name: "omar", last_name: "ibarra", email: NULL}</code><br><code>{mention_id: "m0000166", name_sorted: "ibarra o", first_name: "o", last_name: "ibarra", email: NULL}</code></td><td class="d-out"><code>same_as_edges{mention_a: "m0000153", mention_b: "m0000166", probability: 0.685}</code></td><td class="d-note">Field-by-field agreement — exact surname, initial-consistent forename, no contradicting identifier — is converted into one calibrated probability.</td></tr>
 <tr><td class="d-in"><code>same_as_edges rows for this entity's mentions</code> + threshold T = 0.45</td><td class="d-out"><code>entity_snapshot{entity_id: "E28c3da0d49c8", mention_id: "m0000153", threshold: 0.45}</code></td><td class="d-note">Union-find over every edge at or above the threshold produces the cluster; raising T to 0.90 re-partitions the same stored edges without rewriting any of them.</td></tr>
+<tr><td class="d-in"><code>m1: "Bob Miller"</code><br><code>m2: "Robert Miller Jr"</code><br>no shared identifier, different first token, different soundex bucket</td><td class="d-out"><code>same_as_edges{..., blocked_by: "emb_bucket"}</code></td><td class="d-note">Proposed only by lane 2, then scored by the same model as every other pair. Under deterministic blocking alone this pair is never scored, never merged, and never appears in any report — the failure is invisible rather than wrong, which is what makes it worth a whole lane.</td></tr>
 <tr><td class="d-in"><code>mention A: entity_class "attorney"</code><br><code>mention B: entity_class "repair_shop"</code></td><td class="d-out"><span class='drop'>edge suppressed</span> · <code>suppressed_reason: "person_vs_org"</code></td><td class="d-note">A structural impossibility removes the edge before clustering rather than vetoing the entity forever — the suppression is recorded and auditable.</td></tr>
 </tbody></table></div>
 </section>

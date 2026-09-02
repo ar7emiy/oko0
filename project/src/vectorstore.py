@@ -29,6 +29,10 @@ class VectorStore(ABC):
         result must still contain the true top-k *among the filtered set* (not a
         best-effort post-filter that can drop real matches).
       - persist() / load(): round-trip the index + metadata to/from disk.
+      - get_vector(id): return a stored vector (the blocking lane queries the
+        index with vectors that are already in it).
+      - knn_within(ids, k): all-pairs top-k restricted to `ids`. Has a correct
+        default here; override it if the backend can batch.
 
     ---------------------------------------------------------------------------
     To swap in a managed store (e.g. AzureAISearchVectorStore) implement a
@@ -58,6 +62,39 @@ class VectorStore(ABC):
 
     @abstractmethod
     def load(self) -> None: ...
+
+    def knn_within(self, ids: list[str], k: int) -> list[tuple[str, str, float]]:
+        """For each id in `ids`, its top-k neighbours drawn from `ids` itself.
+
+        Returns (query_id, neighbour_id, similarity), self-pairs excluded. This is
+        exactly the operation blocking needs -- "which of these mentions look like
+        each other" -- so it is expressed once here rather than open-coded by the
+        caller, and a backend that can do it in one round trip is free to.
+
+        This default is correct but issues one query per id. FaissVectorStore
+        overrides it with a batched form; a managed store should translate it into
+        a single filtered batch query rather than inheriting this.
+        """
+        out = []
+        for sid in ids:
+            vec = self.get_vector(sid)
+            if vec is None:
+                continue
+            for other, score in self.search(vec, k, allowed_ids=ids):
+                if other != sid:
+                    out.append((sid, other, score))
+        return out
+
+    @abstractmethod
+    def get_vector(self, sid: str) -> "np.ndarray | None":
+        """Return the stored vector for `sid`, or None if it is not indexed.
+
+        Required by the embedding blocking lane (src/blocking.py), which runs
+        k-NN from every indexed mention against the index itself and therefore
+        needs the query vectors back out. A managed store implements this by
+        reading the document's vector field; if a store cannot return vectors,
+        blocking has to re-embed, which is the same money spent twice.
+        """
 
 
 class FaissVectorStore(VectorStore):
@@ -168,6 +205,38 @@ class FaissVectorStore(VectorStore):
             return self._index.reconstruct(int(iid)).astype(np.float32)
         except Exception:
             return None
+
+    def knn_within(self, ids: list[str], k: int) -> list[tuple[str, str, float]]:
+        """Batched all-pairs top-k within `ids`: ONE index query, ONE selector.
+
+        The per-id default costs a fresh IDSelectorBatch per query, which is
+        O(len(ids)) to build -- so O(n^2) selector construction across a class
+        group before a single distance is computed. At 23k mentions that
+        dominates everything else. Here the selector is built once and the whole
+        group is searched as a matrix.
+        """
+        int_ids = [self._str2int[s] for s in ids if s in self._str2int]
+        if len(int_ids) < 2:
+            return []
+        sel = faiss.IDSelectorBatch(np.asarray(int_ids, dtype=np.int64))
+        params = faiss.SearchParameters()
+        params.sel = sel
+        try:
+            Q = np.vstack([self._index.reconstruct(int(i)) for i in int_ids])
+        except Exception:
+            return []
+        Q = np.ascontiguousarray(Q, dtype=np.float32)
+        kk = min(k, len(int_ids))
+        scores, idxs = self._index.search(Q, kk, params=params)
+        out = []
+        for row, qi in enumerate(int_ids):
+            qs = self._int2str[qi]
+            for score, iid in zip(scores[row], idxs[row]):
+                iid = int(iid)
+                if iid == -1 or iid == qi:
+                    continue
+                out.append((qs, self._int2str[iid], float(score)))
+        return out
 
     def get_metadata(self, sid: str) -> dict:
         iid = self._str2int.get(sid)

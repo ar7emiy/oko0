@@ -295,7 +295,7 @@ def _load_notes_for_dossier(dossier: dict) -> dict:
     for d in docs:
         p = Paths.raw_notes / f"{d}.txt"
         if p.exists():
-            notes[d] = p.read_text()
+            notes[d] = p.read_text(encoding="utf-8")
     return notes
 
 
@@ -313,7 +313,7 @@ def export_dossier_html(repo: Repository, entity_id: str, out_path=None) -> str:
     page = _HTML_TEMPLATE.replace("__PAYLOAD__", html.escape(payload, quote=True))
     out_path = out_path or (Paths.store / f"dossier_{entity_id}.html")
     from pathlib import Path
-    Path(out_path).write_text(page)
+    Path(out_path).write_text(page, encoding="utf-8")
     return str(out_path)
 
 
@@ -411,7 +411,7 @@ def build_app(repo: Repository):
         html_path = export_dossier_html(repo, eids[0])
         from pathlib import Path
         return (f"Top match: {index.dossiers[eids[0]]['canonical_name']} "
-                f"(+{len(eids)-1} more)"), Path(html_path).read_text(), "{}"
+                f"(+{len(eids)-1} more)"), Path(html_path).read_text(encoding="utf-8"), "{}"
 
     def do_nl(q):
         out = answer_question(repo, index, q)
@@ -424,7 +424,7 @@ def build_app(repo: Repository):
 
     def export_and_read(repo, eid):
         from pathlib import Path
-        return Path(export_dossier_html(repo, eid)).read_text()
+        return Path(export_dossier_html(repo, eid)).read_text(encoding="utf-8")
 
     with gr.Blocks(title="Entity Intelligence Lookup") as demo:
         gr.Markdown("# Entity Intelligence Lookup\nName search + NL questions (LLM plans, tables answer).")

@@ -39,14 +39,13 @@ def build_chunk_index(repo: Repository, store: FaissVectorStore | None = None) -
     claim_of = {r["doc_id"]: r["claim_id"] for _, r in docs.iterrows()}
     occ_of = ({r["doc_id"]: r.get("occurrence_id") for _, r in docs.iterrows()}
               if "occurrence_id" in docs.columns else {})
-    texts = {f.stem: f.read_text() for f in Paths.raw_notes.glob("*.txt")}
+    texts = {f.stem: f.read_text(encoding="utf-8") for f in Paths.raw_notes.glob("*.txt")}
     doc_map = {d: (claim_of.get(d, "UNKNOWN"), t) for d, t in texts.items()}
     chunks = chunking.chunk_corpus(doc_map)
 
     vecs = genai.embed([c.text for c in chunks])
     store = store or FaissVectorStore(
-        CFG.EMBED_DIM, Paths.store / CFG.CHUNK_INDEX_FILENAME,
-        Paths.store / CFG.CHUNK_META_FILENAME)
+        CFG.EMBED_DIM, Paths.chunk_index, Paths.chunk_meta)
     store.upsert([c.chunk_id for c in chunks], vecs,
                  [{**c.to_meta(), "occurrence_id": occ_of.get(c.doc_id) or "",
                    "text": c.text} for c in chunks])

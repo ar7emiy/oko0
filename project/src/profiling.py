@@ -51,14 +51,14 @@ def _doc_index() -> dict:
     """
     import json
     p = Paths.data / "doc_index.json"
-    return json.loads(p.read_text()) if p.exists() else {}
+    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
 
 
 def ingest_documents(repo: Repository) -> int:
     idx = _doc_index()
     rows = []
     for f in sorted(Paths.raw_notes.glob("*.txt")):
-        text = f.read_text()
+        text = f.read_text(encoding="utf-8")
         doc_id = f.stem
         meta = idx.get(doc_id, {})
         # Structural identity comes from the source system -- the filename
@@ -253,7 +253,7 @@ def assign_dup_groups(seg_records: list[dict], texts: dict[str, str]) -> None:
 def run(repo: Repository) -> dict:
     """Full profiling pass -> populates documents + segments tables."""
     n_docs = ingest_documents(repo)
-    texts = {f.stem: f.read_text() for f in Paths.raw_notes.glob("*.txt")}
+    texts = {f.stem: f.read_text(encoding="utf-8") for f in Paths.raw_notes.glob("*.txt")}
 
     seg_records = []
     order = 0

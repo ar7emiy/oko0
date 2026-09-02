@@ -1,0 +1,50 @@
+---
+title: "ERD 4 — Vector stores: a third storage model, keyed to the SQL layer"
+---
+erDiagram
+  MENTIONS {
+    TEXT mention_id PK "see ERD 1 for full attributes"
+    TEXT entity_class
+    TEXT doc_id
+  }
+
+  MENTION_VECTOR {
+    TEXT str_id PK "= mentions.mention_id"
+    INT int_id "FAISS internal id, from the sidecar parquet"
+    VECTOR vector "768-dim, L2-normalized -> cosine = inner product"
+    TEXT entity_class "filter key: a person never blocks with a repair shop"
+    TEXT doc_id
+    TEXT claim_id
+    TEXT norm_surface
+  }
+
+  CHUNK_VECTOR {
+    TEXT str_id PK "= chunk_id, from chunking.chunk_corpus"
+    INT int_id
+    VECTOR vector "768-dim, L2-normalized"
+    TEXT claim_id "filter key: the Layer 4 scope boundary"
+    TEXT occurrence_id
+    TEXT doc_id
+    INT char_start
+    INT char_end
+    TEXT text "the chunk itself, so retrieval needs no second read"
+  }
+
+  SAME_AS_EDGES {
+    INT edge_id PK
+    TEXT mention_id_a
+    TEXT mention_id_b
+    REAL probability
+    TEXT blocked_by "which rule proposed it; 'emb_bucket' = the vector lane"
+    TEXT suppressed_reason
+  }
+
+  DOCUMENTS {
+    TEXT doc_id PK
+    TEXT claim_id
+  }
+
+  MENTIONS ||..|| MENTION_VECTOR : "one vector per mention (logical, by id)"
+  MENTION_VECTOR }o..o{ MENTION_VECTOR : "k-NN neighbours -> emb_bucket -> candidate pairs"
+  MENTION_VECTOR ||..o{ SAME_AS_EDGES : "proposes pairs Splink then scores"
+  DOCUMENTS ||..o{ CHUNK_VECTOR : "chunked into (logical, by doc_id)"

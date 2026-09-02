@@ -78,6 +78,17 @@ _ner_override = os.environ.get("NER_BACKEND", "").strip().lower()
 if _ner_override:
     CFG.NER_BACKEND = _ner_override
 
+# Same shape of override for the ER embedding blocking lane. Needed because the
+# orchestrator runs each notebook in its own interpreter, so a config mutation
+# in the parent cannot reach them -- the choice has to travel as environment.
+# Turning the lane off is a real decision (resolution recall stops being
+# comparable across runs), so it is spelled out here rather than inferred.
+_emb_override = os.environ.get("EMB_BLOCK_ENABLED", "").strip().lower()
+if _emb_override in ("0", "false", "no", "off"):
+    CFG.EMB_BLOCK_ENABLED = False
+elif _emb_override in ("1", "true", "yes", "on"):
+    CFG.EMB_BLOCK_ENABLED = True
+
 
 # ---- Canonical paths (everything relative to PROJECT_ROOT) -------------------
 class Paths:
@@ -91,8 +102,10 @@ class Paths:
     notebooks = PROJECT_ROOT / "notebooks"
     store = PROJECT_ROOT / "store"
     db = PROJECT_ROOT / "store" / CFG.DB_FILENAME
-    faiss_index = PROJECT_ROOT / "store" / CFG.FAISS_INDEX_FILENAME
-    faiss_meta = PROJECT_ROOT / "store" / CFG.FAISS_META_FILENAME
+    mention_index = PROJECT_ROOT / "store" / CFG.MENTION_INDEX_FILENAME
+    mention_meta = PROJECT_ROOT / "store" / CFG.MENTION_META_FILENAME
+    chunk_index = PROJECT_ROOT / "store" / CFG.CHUNK_INDEX_FILENAME
+    chunk_meta = PROJECT_ROOT / "store" / CFG.CHUNK_META_FILENAME
     genai_cache = PROJECT_ROOT / "store" / CFG.GENAI_CACHE_DIRNAME
 
     @classmethod

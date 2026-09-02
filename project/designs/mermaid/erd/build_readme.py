@@ -15,12 +15,14 @@ PREAMBLE = """# Entity-intelligence schema — ERDs
 
 Structural reference for where data lives and how tables relate. Companion to
 [`../README.md`](../README.md), which shows the *process* (activity diagrams);
-this shows the *shape* (data model). Three diagrams, because one 14-table ERD
-is not readable, and because the graph store genuinely is a different storage
-model, not a 15th table.
+this shows the *shape* (data model). Four diagrams, because one 14-table ERD
+is not readable, and because two of the stores here genuinely are different
+storage models rather than more tables: the graph is in-memory igraph, and the
+vector stores are FAISS indices with parquet sidecars.
 
-Read alongside `src/contracts.py` (the DDL, single source of truth) and
-`src/graph_store.py` (`GraphNode` / `GraphEdge`).
+Read alongside `src/contracts.py` (the DDL, single source of truth),
+`src/graph_store.py` (`GraphNode` / `GraphEdge`) and `src/vectorstore.py`
+(the `VectorStore` interface).
 
 ## Reading these
 
@@ -34,8 +36,10 @@ deliberate repurposing:
 
 That split is the main finding of this pass: **most references in this schema
 are logical, not enforced.** `src/contracts.py` declares exactly **5**
-`FOREIGN KEY` clauses in the whole DDL. Across the 24 relationship lines drawn
-in these three diagrams, 5 are solid and 19 are dashed. This appears to be
+`FOREIGN KEY` clauses in the whole DDL. Across the 28 relationship lines drawn
+in these four diagrams, 5 are solid and 23 are dashed. The vector stores in
+ERD 4 can only ever be dashed — they are not SQL, so the ids joining them to
+`mentions` and `documents` are a convention held up by code alone. This appears to be
 unconsidered rather than deliberate — the module docstring's stated design
 principle is an
 append-only, immutable-by-convention log, which doesn't obviously require
@@ -58,9 +62,22 @@ tighten this is an open question, not a decision made here.
    (`store/claims_graph.pkl`), built by `build_graph.py` by reading FROM the
    tables above. Shown here because it answers the same "where does data
    live" question, not because it belongs in the SQLite ERD.
+4. **[Vector stores](04-vector-stores.mermaid)** — `mentions.faiss` and
+   `chunks.faiss`. **Not SQL either.** FAISS `IndexFlatIP` plus a parquet
+   metadata sidecar, keyed by the SQL layer's own ids (`mention_id`,
+   `chunk_id`), which is the only thing joining them to the tables. Both were
+   missing from this reference until the vector layer was rewired — see
+   [diagram 09](../09-vector-layer.mermaid) for the process view and for what
+   was wrong with them.
 
 ## Notable shapes, while building this
 
+- **The vector stores have no schema enforcement whatsoever.** Metadata is a
+  JSON blob per row in a parquet sidecar (`FaissVectorStore._meta`), so a
+  missing `claim_id` on a chunk vector would not fail at write time — it would
+  fail as a silently unfilterable row at query time, which is how the Layer 4
+  scope guarantee could be undermined without any error. The keys are
+  documented in ERD 4 because nothing in the code declares them.
 - **`entity_snapshot` has no declared primary key at all** — not even a
   composite one. Consistent with its own comment ("materialized view of
   identity at one operating threshold"): it's meant to be recomputed

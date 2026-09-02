@@ -13,9 +13,9 @@ For each resolved entity:
 
 machine_annotation is RENDERED FROM STORED DATA ONLY -- a deterministic template
 over the assertion's predicate/polarity/dates and, for resolution edges, the
-stored gen_passes + feature weights + adjudicator rationale. No free-generated
-prose at display time: the annotation exists to let a user verify WHY an edge or
-fact is present, so it must be reproducible from the tables.
+stored match_probability + blocked_by lane. No free-generated prose at display
+time: the annotation exists to let a user verify WHY an edge or fact is present,
+so it must be reproducible from the tables.
 """
 from __future__ import annotations
 
@@ -92,7 +92,7 @@ def render_link_annotation(shared_key: str, pair_row: dict | None) -> str:
     return ann
 
 def run(repo: Repository) -> dict:
-    texts = {f.stem: f.read_text() for f in Paths.raw_notes.glob("*.txt")}
+    texts = {f.stem: f.read_text(encoding="utf-8") for f in Paths.raw_notes.glob("*.txt")}
     members = repo.table("entity_members")
     entities = repo.table("entities").set_index("entity_id")
     mentions = repo.table("mentions").set_index("mention_id")

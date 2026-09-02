@@ -1,0 +1,82 @@
+---
+title: "F — The vector layer: two indices, two jobs"
+---
+flowchart TD
+  classDef act  fill:#EDF0F4,stroke:#4A5666,stroke-width:1.2px,color:#10151C
+  classDef obj  fill:#E0E8EF,stroke:#3E5C76,stroke-width:1.3px,color:#10151C
+  classDef dec  fill:#FFFFFF,stroke:#4A5666,stroke-width:1.2px,color:#10151C
+  classDef bad  fill:#F6E0DB,stroke:#A33A2A,stroke-width:1.4px,color:#10151C
+  classDef key  fill:#F6E7CE,stroke:#B4650A,stroke-width:1.6px,color:#10151C
+  classDef muted fill:#FFFFFF,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:4 3,color:#4A5666
+  classDef ex   fill:#FBFCFD,stroke:#B9C2CE,stroke-width:1px,stroke-dasharray:3 3,color:#33404F
+  classDef warn fill:#FFF6E8,stroke:#B4650A,stroke-width:1.3px,stroke-dasharray:5 3,color:#3A2C16
+  classDef term fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
+  classDef vec  fill:#DDEEF6,stroke:#1F6F8B,stroke-width:1.6px,color:#0C2430
+  classDef fixed fill:#E4F2EA,stroke:#2F6B4F,stroke-width:1.6px,color:#12301F
+
+  subgraph ABSTRACTION["every vector op goes through one interface"]
+    VS["<b>VectorStore (ABC)</b><br/>upsert · search(filter_fn | allowed_ids) · persist · load<br/><b>get_vector</b> · <b>knn_within(ids, k)</b><br/><i>src/vectorstore.py — the only file permitted to import faiss</i>"]:::key
+    FS["<b>FaissVectorStore</b><br/>IndexFlatIP + IDMap2, sidecar parquet for metadata<br/>exact search — no ANN-recall confound in the evaluation"]:::act
+    MS["<b>a managed store</b><br/>implement the same five methods, change nothing else"]:::muted
+  end
+  VS --> FS
+  VS -.-> MS
+
+  %% ------------------------------------------------------------------
+  subgraph LANE_A["mentions.faiss — identity"]
+    A0(["mentions table, after Layer 1"]):::term
+    A1["<b>Build node text per mention</b><br/>norm_surface | class=… | ctx: ±EMB_BLOCK_CONTEXT_CHARS<br/>default <b>0</b> — name and class only<br/><i>embed_index.build_node_text</i>"]:::act
+    A2["<b>Embed via genai.embed</b><br/>thread pool, cached by (model, text) hash"]:::act
+    A3[/"<b>mentions.faiss</b> + mentions_faiss_meta.parquet<br/>id = mention_id · meta = entity_class, doc_id, claim_id"/]:::vec
+    A4["<b>Consumer: blocking.attach_buckets</b><br/>class-filtered k-NN → components → emb_bucket<br/><i>rule 9 of the Splink blocking list — diagram 07</i>"]:::vec
+    A0 --> A1 --> A2 --> A3 --> A4
+  end
+
+  %% ------------------------------------------------------------------
+  subgraph LANE_B["chunks.faiss — retrieval"]
+    B0(["raw notes"]):::term
+    B1["<b>Overlapping chunking</b><br/><i>chunking.chunk_corpus — diagram 03</i>"]:::act
+    B2["<b>Embed chunk text</b>"]:::act
+    B3[/"<b>chunks.faiss</b> + chunks_meta.parquet<br/>id = chunk_id · meta = claim_id, occurrence_id, doc_id, span, text"/]:::vec
+    B4["<b>Consumer: ClaimScopedAgent.retrieve_chunks</b><br/>Layer 4 step 2 — semantic entry into one claim<br/><i>claim filter applied INSIDE the index</i>"]:::vec
+    B0 --> B1 --> B2 --> B3 --> B4
+  end
+
+  A4 --> OUT1(["entity resolution — diagram 07"]):::term
+  B4 --> OUT2(["graph expansion + synthesis — Layer 4"]):::term
+
+  %% ------------------------------------------------------------------
+  WHYTWO["<b>Why two indices and not one</b><br/>They answer different questions and are keyed differently.<br/><br/>· <b>mentions.faiss</b> — 'which other mentions might be this same party?' Keyed by mention, name-dominant, class-filtered. Read once per resolution run.<br/>· <b>chunks.faiss</b> — 'which passages bear on this question?' Keyed by chunk, prose-dominant, claim-filtered. Read once per user question.<br/><br/><i>Collapsing them would mean one text representation serving two opposed objectives: name-dominant for identity, context-dominant for retrieval.</i>"]:::key
+  VS -.-> WHYTWO
+
+  CTX["<b>Context in the vector: the assumption, and what measurement said</b><br/><b>Assumed</b> — folding surrounding prose in would encode what the mention was DOING, pulling two different people who share a name apart. That was the argument for a non-zero window.<br/><br/><b>Measured</b> (notebook 04, live, 14 labelled mentions):<br/>&nbsp;&nbsp;window&nbsp;&nbsp;&nbsp;true-min&nbsp;&nbsp;false-max&nbsp;&nbsp;margin<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.3000&nbsp;&nbsp;&nbsp;&nbsp;0.2899&nbsp;&nbsp;&nbsp;0.0101<br/>&nbsp;&nbsp;&nbsp;&nbsp;40&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.2718&nbsp;&nbsp;&nbsp;&nbsp;0.2622&nbsp;&nbsp;&nbsp;0.0096<br/>&nbsp;&nbsp;&nbsp;120&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.2697&nbsp;&nbsp;&nbsp;&nbsp;0.2596&nbsp;&nbsp;&nbsp;0.0101<br/><br/>The margin barely moves, and context did <b>not</b> help on the pair the argument rested on — Dr. Alicia Reyes vs Dr. Alan Reyes. It only shifted the whole distribution down.<br/><br/><i>So the default is 0. Not because context is worthless, but because it bought nothing measurable here and it COUPLES two knobs: with context in the vector, EMB_BLOCK_SIM must be re-calibrated whenever the window moves. Caveat: 14 mentions is a small sample.</i>"]:::warn
+  A1 -.->|"tradeoff"| CTX
+
+  %% ---------------- what this diagram exists to record --------------
+  HIST["<b>What this layer looked like before, and why it is worth recording</b><br/>Both indices were mis-wired in opposite directions and neither failure was visible from any output:<br/><br/>· <b>entities.faiss</b> was WRITE-ONLY. embed_index built it every run for a v1 resolution pass ('C1: embedding top-k class-filtered') that was deleted when v2 moved to Splink. The builder was never removed. Nothing in src/ read it.<br/>· <b>chunks.faiss</b> had a real consumer but was never built on the tested path — smoke_test called build_graph.build_graph() directly, not build_graph.run() — and agent.py caught the resulting FileNotFoundError with a bare `pass`.<br/><br/><i>So the index with no consumer was always written, and the index with a consumer was usually absent. The agent answered from graph expansion alone, returned zero citations, and reported no error: one of four retrieval layers silently missing behind output still shaped like a real answer.</i>"]:::bad
+  A3 -.->|"history"| HIST
+  B3 -.-> HIST
+
+  FIX["<b>What changed</b><br/>· entities.faiss → <b>mentions.faiss</b>, named for what it holds — entities do not exist yet when it is built; resolving them is what it is for.<br/>· It now has a live consumer: the embedding blocking lane (rule 9).<br/>· agent.py raises <b>AgentStoreUnavailable</b> instead of `pass`.<br/>· smoke_test now builds both indices and asserts scoped retrieval returns hits, so a regression to either failure mode breaks the test rather than the numbers.<br/>· genai.embed runs on a thread pool — it was a serial loop, tolerable for chunks, not for one call per mention.<br/><br/><i>The rule this restores: an artifact with no consumer is deleted or given one. It is never left being written.</i>"]:::fixed
+  HIST --> FIX
+
+  EXA["<b>in</b> — mention m0000153 'Bob Miller', class claimant<br/><b>out</b> — node text 'bob miller | class=claimant' → 768-dim unit vector<br/><i>Its nearest same-class neighbour is 'Robert Miller Jr' at cosine <b>0.3000</b> (measured, gemini-embedding-001) — above the 0.29 floor, and a pair no deterministic rule proposes. Note how close that is to the floor: this model compresses the whole range, which is the point the calibration note makes.</i>"]:::ex
+  A2 -.->|"example"| EXA
+
+  EXB["<b>in</b> — question 'who treated the claimant?' scoped to CLM0005<br/><b>out</b> — top-5 chunks, every one with claim_id=CLM0005, filter applied by IDSelector before nearest-neighbour selection<br/><i>Scope isolation is structural: there is no code path that returns another claim's chunk and then filters it out.</i>"]:::ex
+  B4 -.->|"example"| EXB
+
+  CALIB["<b>EMB_BLOCK_SIM is model-specific, and getting it wrong is silent</b><br/>Embedding models differ enormously in how they use the cosine range:<br/><br/>· sentence-transformers — co-referring 0.75–0.95, unrelated 0.1–0.4<br/>· <b>gemini-embedding-001 — co-referring 0.30–0.34, unrelated 0.25–0.29</b><br/><br/>The threshold was first set to <b>0.86</b>, a sensible number from the first row. Against gemini-embedding-001 it produced <b>zero edges</b>: resolution still ran, still produced clusters, still passed every assertion, and simply merged less. Nothing said why.<br/><br/><i>Measured, live, on 14 hand-labelled mentions — true pairs min 0.3000, false pairs max 0.2899. The operating value is 0.29, and the margin is ~0.01.</i>"]:::warn
+  A2 -.->|"calibration"| CALIB
+
+  CALIBG["<b>So the miscalibration is now an exception, not a shrug</b><br/><b>EmbeddingThresholdMiscalibrated</b> — raised when EMB_BLOCK_SIM exceeds the highest similarity anywhere in the index. No pair can clear the floor, so the lane is structurally dead, and that is distinguishable from 'found nothing worth proposing'.<br/><br/><b>EmbeddingBackendUnsuitable</b> — raised when the lane is enabled in offline mode. The offline stub hashes character shingles, which measures LEXICAL overlap: exactly what the deterministic name rules already do, better and explainably. Measured offline on the same probe, true pairs 0.7708–0.9040 and false pairs 0.5180–<b>0.8354</b> — the distributions <b>overlap</b>, so no threshold separates them and no recalibration can fix it.<br/><br/><i>Both refuse rather than degrade. The lane's whole value is the pairs nothing else proposes; a lane that silently proposes nothing is worse than no lane, because the numbers still look fine.</i>"]:::fixed
+  CALIB --> CALIBG
+
+  RESULT["<b>Measured yield, live against gemini-embedding-001</b><br/>On a 12-mention labelled probe (notebook 04, final cell):<br/><br/>· <b>recall 7/7, precision 7/7</b> — three clean buckets, zero false pairs<br/>· deterministic name rules propose <b>1 of those 7</b><br/>· the lane adds <b>6</b> true pairs no name rule proposes:<br/>&nbsp;&nbsp;Bob Miller ↔ Robert Miller Jr ↔ R. Miller<br/>&nbsp;&nbsp;Valley Auto Body ↔ &amp; Paint ↔ Autobody<br/>&nbsp;&nbsp;Dr. Alicia Reyes ↔ Alicia Reyes, MD<br/><br/><i>Small labelled set, so read it as a mechanism check rather than a corpus-level result. The corpus-level number is the audit's under-merge count, which is not yet re-measured.</i>"]:::key
+  A4 -.->|"measured"| RESULT
+
+  KNN["<b>knn_within is on the interface for a reason</b><br/>'which of these mentions look like each other' is one operation, so it is named once rather than open-coded by the caller. The ABC carries a correct default (one query per id); FaissVectorStore overrides it with a batched form.<br/><br/>That override is not a micro-optimisation. The default builds a fresh <b>IDSelectorBatch per query</b>, which is O(n) to construct — so O(n²) selector building across a class group before a single distance is computed. Batched, the selector is built once and the group is searched as a matrix.<br/><br/><b>Measured</b> (random unit vectors, dim 768, verified to return identical results):<br/>&nbsp;&nbsp;n=2000&nbsp;&nbsp;batched <b>0.15s</b> vs 3.35s<br/>&nbsp;&nbsp;n=8000&nbsp;&nbsp;batched <b>1.80s</b> vs 13.6s<br/><br/><i>The corpus runs 23k mentions. A managed store should translate knn_within into one filtered batch query rather than inheriting the default.</i>"]:::fixed
+  VS -.->|"contract"| KNN
+
+  GAP["<b>Still open</b><br/>Neither index is bitemporal. Re-running Layer 1 after a corpus correction rebuilds both from scratch; there is no incremental upsert path keyed on changed documents, and no record of which model version produced a given vector.<br/><br/><i>At POC scale a rebuild is cheap and exactness is worth more. At production volume both become required, and the EMBED_MODEL string would have to be stored alongside the vectors — comparing cosines across two model versions is meaningless.</i>"]:::warn
+  FIX -.-> GAP

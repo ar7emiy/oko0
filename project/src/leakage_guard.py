@@ -11,7 +11,6 @@ Notebook 09 runs these and hard-fails the run on any violation.
 """
 from __future__ import annotations
 
-import json
 import re
 from pathlib import Path
 
@@ -31,7 +30,8 @@ GT_ALLOWED_FILES = {
 
 # Pipeline modules that must be ground-truth-free (imported by notebooks 02-06,08).
 PIPELINE_MODULES = [
-    "src/profiling.py", "src/embed_index.py",
+    "src/profiling.py", "src/embed_index.py", "src/blocking.py",
+    "src/relations.py",
     "src/profiles.py", "src/app.py",
     # Layer 1-4 architecture: none of these may see ground truth either
     "src/chunking.py", "src/gazetteers.py", "src/coref.py",
@@ -47,20 +47,20 @@ PIPELINE_MODULES = [
 # polices the manifest, not the doc index.
 
 # Notebook 11 (ablation) is audit-side and legitimately reads ground truth.
-LEAKAGE_NOTEBOOKS = ["02_profiling", "04_embed_index",
-                     "06_profiles_dossiers", "08_lookup_app",
-                     "10_layer1_hybrid_extraction", "12_layer3_scoped_graph",
-                     "13_layer4_agent"]
+LEAKAGE_NOTEBOOKS = ["02_profiling", "03_extraction", "04_embed_index",
+                     "05_resolution", "06_profiles_dossiers",
+                     "08_graph_and_chunk_index", "09_agent",
+                     "20_relation_extraction"]
 
 
 def _notebook_source(nb_path: Path) -> str:
-    nb = json.loads(nb_path.read_text())
-    parts = []
-    for cell in nb.get("cells", []):
-        if cell.get("cell_type") == "code":
-            src = cell.get("source", "")
-            parts.append("".join(src) if isinstance(src, list) else src)
-    return "\n".join(parts)
+    """Notebooks are ``# %%`` cell-format .py files, so the source IS the file.
+
+    They used to be generated .ipynb, and this had to walk the JSON to pull the
+    code cells out. Reading the file is now the whole job. The function is kept
+    so callers read a notebook the same way they always did.
+    """
+    return nb_path.read_text(encoding="utf-8")
 
 
 def scan_ground_truth_leakage() -> dict:
@@ -68,15 +68,17 @@ def scan_ground_truth_leakage() -> dict:
     violations = []
 
     for stem in LEAKAGE_NOTEBOOKS:
-        nb = Paths.notebooks / f"{stem}.ipynb"
-        if nb.exists():
-            src = _notebook_source(nb)
-            if GT_TOKEN in src:
-                violations.append(f"notebook {stem}.ipynb references {GT_TOKEN}")
+        nb = Paths.notebooks / f"{stem}.py"
+        if not nb.exists():
+            violations.append(f"notebook {stem}.py is missing; the guard cannot "
+                              "vouch for a file it never read")
+            continue
+        if GT_TOKEN in _notebook_source(nb):
+            violations.append(f"notebook {stem}.py references {GT_TOKEN}")
 
     for rel in PIPELINE_MODULES:
         f = PROJECT_ROOT / rel
-        if f.exists() and GT_TOKEN in f.read_text():
+        if f.exists() and GT_TOKEN in f.read_text(encoding="utf-8"):
             violations.append(f"module {rel} references {GT_TOKEN}")
 
     ok = not violations
@@ -88,8 +90,8 @@ def scan_ground_truth_leakage() -> dict:
 
 def _iter_source_files():
     for f in (PROJECT_ROOT / "src").glob("*.py"):
-        yield f.relative_to(PROJECT_ROOT).as_posix(), f.read_text()
-    for f in Paths.notebooks.glob("*.ipynb"):
+        yield f.relative_to(PROJECT_ROOT).as_posix(), f.read_text(encoding="utf-8")
+    for f in Paths.notebooks.glob("*.py"):
         yield f"notebooks/{f.name}", _notebook_source(f)
 
 

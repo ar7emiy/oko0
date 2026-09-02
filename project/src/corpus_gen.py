@@ -1371,7 +1371,7 @@ def generate_corpus(seed: int | None = None) -> dict:
             form = _compose_note(nb, rng, roster, ident_by_id,
                                  events_by_claim.get(cid, []), meta)
             text = nb.text()
-            (Paths.raw_notes / f"{doc_id}.txt").write_text(text)
+            (Paths.raw_notes / f"{doc_id}.txt").write_text(text, encoding="utf-8")
             doc_rows.append({
                 "doc_id": doc_id, "claim_id": cid,
                 "occurrence_id": meta["occurrence_id"], "form": form,
@@ -1401,7 +1401,7 @@ def generate_corpus(seed: int | None = None) -> dict:
         "non_entities": all_non_entities,
     }
     Paths.manifest_json.parent.mkdir(parents=True, exist_ok=True)
-    Paths.manifest_json.write_text(json.dumps(manifest, indent=1))
+    Paths.manifest_json.write_text(json.dumps(manifest, indent=1), encoding="utf-8")
 
     # Structural document metadata: which claim/occurrence each note belongs to.
     # This is NOT ground truth and NOT subject to the leakage guard -- every real
@@ -1411,7 +1411,7 @@ def generate_corpus(seed: int | None = None) -> dict:
     doc_index = {d["doc_id"]: {"claim_id": d["claim_id"],
                                "occurrence_id": d["occurrence_id"]}
                  for d in doc_rows}
-    (Paths.data / "doc_index.json").write_text(json.dumps(doc_index, indent=1))
+    (Paths.data / "doc_index.json").write_text(json.dumps(doc_index, indent=1), encoding="utf-8")
 
     words = [d["n_words"] for d in doc_rows]
     kinds = {}

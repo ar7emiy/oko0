@@ -43,7 +43,7 @@ def _cache_get(h: str):
     p = _cache_path(h)
     if CFG.GENAI_CACHE_ENABLED and p.exists():
         try:
-            return json.loads(p.read_text())
+            return json.loads(p.read_text(encoding="utf-8"))
         except Exception:
             return None
     return None
@@ -51,7 +51,7 @@ def _cache_get(h: str):
 
 def _cache_put(h: str, value) -> None:
     if CFG.GENAI_CACHE_ENABLED:
-        _cache_path(h).write_text(json.dumps(value))
+        _cache_path(h).write_text(json.dumps(value), encoding="utf-8")
 
 
 def _get_client():
@@ -180,7 +180,14 @@ def embed(texts: list[str]) -> np.ndarray:
             todo.append((i, t, h))
     if todo:
         client = _get_client()
-        for i, t, h in todo:
+        # Thread pool, mirroring generate_many. This used to be a serial loop,
+        # which was tolerable when the only caller embedded chunks. The
+        # embedding blocking lane embeds every MENTION, so at corpus scale a
+        # serial loop is tens of thousands of sequential round trips.
+        errors: list[Exception] = []
+
+        def _one(job) -> None:
+            i, t, h = job
             last_err = None
             for _ in range(CFG.GENAI_MAX_RETRIES):
                 try:
@@ -194,10 +201,15 @@ def embed(texts: list[str]) -> np.ndarray:
                         vec = z
                     out[i] = vec
                     _cache_put(h, vec.tolist())
-                    last_err = None
-                    break
+                    return
                 except Exception as e:  # noqa: BLE001
                     last_err = e
-            if last_err is not None:
-                raise RuntimeError(f"Gemini embed failed: {last_err}")
+            errors.append(last_err)
+
+        with cf.ThreadPoolExecutor(max_workers=CFG.GENAI_MAX_WORKERS) as ex:
+            list(ex.map(_one, todo))
+        if errors:
+            raise RuntimeError(
+                f"Gemini embed failed for {len(errors)} of {len(todo)} texts; "
+                f"first error: {errors[0]}")
     return out

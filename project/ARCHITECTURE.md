@@ -180,9 +180,16 @@ effect — worth remembering when triaging ER quality: check the surfaces first.
 
 **Not good enough yet:**
 - **Entity resolution: B³ F1 0.83 (P 0.82 / R 0.83), 1,010 entities vs 570
-  ground truth.** Still ~1.8x over-fragmented. The measured bottleneck is
-  blocking recall (0.73): 27% of true co-referring pairs are never scored, which
-  caps B³ recall.
+  ground truth.** Still ~1.8x over-fragmented. The measured bottleneck was
+  blocking recall (0.73): 27% of true co-referring pairs were never scored,
+  which caps B³ recall no matter how good the comparison model is.
+
+  That measurement is what motivated the **embedding recall net** — a second
+  candidate-generation lane that proposes pairs sharing no deterministic key
+  (`src/blocking.py`, diagram 07). It is built and on the tested path. Its
+  effect on this number is **not yet measured against ground truth**; the audit
+  now carries `same_as_edges.blocked_by` so the question is answerable, and the
+  thing to look for is under-merges falling without over-merges rising.
 - **Single-token name variants are missed outright**: `variant:short` 100% miss,
   `variant:last_only` 88% miss. The name-shape filter requires two capitalized
   tokens, so a bare "Jones" or "XYZ" is rejected. That is a deliberate
@@ -201,11 +208,16 @@ effect — worth remembering when triaging ER quality: check the surfaces first.
   but it needs confirming.
 
 **Environment caveats that affect the numbers:**
-- No Gemini key: the LLM extractor, adjudicator and relation extraction run on
-  deterministic stubs. Those figures are lower bounds.
-- No HuggingFace access: GLiNER and FastCoref adapters are implemented and
-  activate when installed, but the measurements here use the deterministic
-  backends.
+- The figures above were measured in an environment with **no Gemini key and no
+  HuggingFace access**, so the LLM extractor and relation extraction ran on
+  deterministic stubs and NER ran on the regex-shape backend. They are lower
+  bounds, and they are the last numbers taken before those fallbacks were
+  removed. A missing key or an unreachable GLiNER now raises
+  (`LLMExtractorUnavailable` / `NERBackendUnavailable`) instead of substituting a
+  stub, precisely because figures like these are indistinguishable from real
+  ones once they are written down.
+- **These numbers therefore predate the embedding blocking lane** and every
+  change made alongside it. Re-measure before quoting them.
 
 **Scan coverage is reported as a hygiene check, not a quality metric.** It proves
 every character was read, not that anything was found — necessary, not

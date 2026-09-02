@@ -34,7 +34,7 @@ STAGE_FLAGS = {
 
 
 def load_manifest() -> dict:
-    return json.loads(Paths.manifest_json.read_text())
+    return json.loads(Paths.manifest_json.read_text(encoding="utf-8"))
 
 
 def _overlaps(s1, e1, s2, e2) -> bool:
@@ -195,7 +195,7 @@ def run(limit_docs: int | None = None, stages: tuple = STAGES) -> dict:
     files = sorted(Paths.raw_notes.glob("*.txt"))
     if limit_docs:
         files = files[:limit_docs]
-    docs = {f.stem: (claim_of.get(f.stem, "UNKNOWN"), f.read_text()) for f in files}
+    docs = {f.stem: (claim_of.get(f.stem, "UNKNOWN"), f.read_text(encoding="utf-8")) for f in files}
 
     keep = set(docs)
     manifest = dict(manifest)

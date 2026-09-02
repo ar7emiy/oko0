@@ -33,7 +33,7 @@ def _load_manifest() -> dict:
     file, never a mutation of the sealed manifest -- so corpus_gen.py + seed
     still regenerates the identical base file. See _apply_corrections.
     """
-    manifest = json.loads(Paths.manifest_json.read_text())
+    manifest = json.loads(Paths.manifest_json.read_text(encoding="utf-8"))
     return _apply_corrections(manifest)
 
 
@@ -41,7 +41,7 @@ def _apply_corrections(manifest: dict) -> dict:
     corrections_path = Paths.data / "gt_corrections.json"
     if not corrections_path.exists():
         return manifest
-    corrections = json.loads(corrections_path.read_text())
+    corrections = json.loads(corrections_path.read_text(encoding="utf-8"))
     if not corrections:
         return manifest
 
