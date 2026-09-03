@@ -306,15 +306,22 @@ where the system actually runs. Fixed as part of T0.4 — the gate now checks th
 entity count at the operating point and the calibration block — but the lesson
 generalises: **assert at the operating point, not at the best point on a curve.**
 
-**Proposed.** Split into tiers. A `--tier=fast` covering the invariants over a
-fixed 60-document subset (minutes, run on every change), and the full-corpus run
-as a deliberate, separately-invoked job whose numbers refresh `ARCHITECTURE.md`.
-The subset must be fixed and named, not "the first N", so its numbers are
-comparable across runs.
+**Done, partly.** `tests/fast_test.py` is the fast tier: the invariants over a
+fixed, named 60-document slice, in about ten minutes. `smoke_test.py` remains
+the full run and is what refreshes the published corpus figures.
 
-**Falsification test.** The fast tier must catch every defect the full run would
-on the scoped corpus — verify by re-introducing the T0.4 prior bug and
-confirming the fast tier fails.
+Every assertion in the fast tier exists because the thing it checks was once
+silently false — span grounding (D25), query vocabulary (D24), the match prior
+(D17), the entity count **at the operating point** rather than at the best point
+on a curve, and the `uncalibrated` column's NULLs (a pandas NaN in a TEXT column
+becomes a REAL and `IS NULL` then misses every calibrated edge).
+
+**Still outstanding:** the full-corpus run has not been executed against any of
+today's changes, so `ARCHITECTURE.md`'s 2,000-note table stays marked stale.
+
+**Falsification test, not yet run.** Re-introduce the T0.4 prior bug and confirm
+the fast tier fails. Until that is done, the fast tier is *believed* to cover
+the full run's defects on this slice rather than *known* to.
 
 ### T0.7 Identifier comparisons: TIN, SSN, VIN and a graded address *(D19–D21)*
 **Status:** ✅ **shipped**, benefit **not demonstrated** · **Confidence:** measured
