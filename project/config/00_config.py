@@ -15,6 +15,32 @@
 # in the repo. src/leakage_guard.py + tests assert no other source file names a
 # model. Change these freely; nothing downstream hardcodes them.
 GENAI_MODEL = "gemini-3.7-flash"                # extraction / adjudication / NL planning / generation
+
+# Per-task model routing. One model for every lane is the wrong default here:
+# the lanes differ by two orders of magnitude in volume and by a lot in how much
+# judgement they need, and paying flagship rates for a high-volume recall net is
+# most of the bill.
+#
+#   gemini-3.7-flash        $0.75 / $3.75 per 1M in/out
+#   gemini-3.1-flash-lite   $0.25 / $1.50   -- 3x cheaper in, 2.5x cheaper out
+#
+# (gemini-2.5-flash-lite is cheaper still at $0.10/$0.40 but is RETIRED on
+# 16 Oct 2026, so it is not a durable choice. Rates for the 3.x line are marked
+# effective to 31 Dec 2026 and then double.)
+#
+# WHAT MAY NOT BE DOWNGRADED WITHOUT RE-MEASURING. Identifier binding measured
+# 0.969 precision in-pipeline (T1.2) and relation extraction is the evidence
+# path -- both quality claims are attached to gemini-3.7-flash specifically.
+# Changing the model under a measured number silently invalidates it, which is
+# the same class of mistake as the ER_LINK_THRESHOLD comment that drifted out of
+# true. Downgrade a lane only after re-running its measurement on the new model.
+#
+# `sweep` is the opposite case: highest call volume in the pipeline (one call
+# per chunk, ~3 per document), and its job is to catch spans the other lanes
+# missed -- a recall net, not a judgement call.
+GENAI_MODEL_BY_TASK = {
+    "sweep": "gemini-3.1-flash-lite",
+}
 EMBED_MODEL = "gemini-embedding-001"       # Gemini embedding endpoint
 EMBED_DIM = 768                            # embedding dimensionality (index is built to this)
 

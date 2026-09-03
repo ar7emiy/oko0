@@ -10,6 +10,10 @@ one ordered plan.
   A), `full-system-architecture-audit.md` (agent B). Dated evidence — do not
   revise them; supersede them here.
 - **Session state and standing instructions:** `HANDOFF.md`.
+- **Auditing this system?** Read `AUDITOR-BRIEF.md`, not this file. This board
+  is the builder's account; read it *last*, after the source, or you will only
+  find the gaps already inside the builder's frame. Write findings to
+  `audits/YYYY-MM-DD-<slug>.md` and never edit this file or `HANDOFF.md`.
 
 ## For a reviewer reading this cold
 

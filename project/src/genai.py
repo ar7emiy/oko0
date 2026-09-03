@@ -68,6 +68,17 @@ def _get_client():
 # ---------------------------------------------------------------------------
 # Structured generation
 # ---------------------------------------------------------------------------
+def model_for(task: str) -> str:
+    """Which Gemini model serves this task.
+
+    Per-task routing exists because the lanes differ by orders of magnitude in
+    call volume and by a lot in how much judgement they need. See
+    CFG.GENAI_MODEL_BY_TASK for which lanes may be downgraded and which are
+    pinned to a model a quality number was measured on.
+    """
+    return getattr(CFG, "GENAI_MODEL_BY_TASK", {}).get(task, CFG.GENAI_MODEL)
+
+
 def generate_json(
     prompt: str,
     schema: dict,
@@ -86,7 +97,10 @@ def generate_json(
             raise RuntimeError(f"offline mode requires an offline_handler for task={task}")
         return offline_handler()
 
-    h = _prompt_hash(CFG.GENAI_MODEL, task, prompt, system or "")
+    model = model_for(task)
+    # The model is part of the cache key, so switching a lane's model does not
+    # silently serve answers the old model produced.
+    h = _prompt_hash(model, task, prompt, system or "")
     cached = _cache_get(h)
     if cached is not None:
         return cached
@@ -98,7 +112,7 @@ def generate_json(
     for attempt in range(CFG.GENAI_MAX_RETRIES):
         try:
             resp = client.models.generate_content(
-                model=CFG.GENAI_MODEL,
+                model=model,
                 contents=contents,
                 config=types.GenerateContentConfig(
                     response_mime_type="application/json",
