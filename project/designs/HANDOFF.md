@@ -834,3 +834,64 @@ figures were biased in a specific direction:
 
 If recall does *not* rise, the diagnosis is wrong and D25 is not what was
 costing accuracy. Stated here first so the reading cannot be fitted afterwards.
+
+### 2026-09-02 (cont.) — the prediction held, and the chain kept going
+
+**D25 re-measured. Every prediction confirmed.**
+
+| | before | after |
+|---|---|---|
+| span grounding | 33.2% | **100%** |
+| mention precision | 0.502 | **0.863** |
+| entity recall (scoped) | 0.857 | **0.883** |
+| best B³ F1 | 0.814 @ 0.8 | **0.889 @ 0.8** |
+| B³ @ 0.45 | 0.773 | **0.843** |
+
+Mention count fell 1051 → 672, which is the union merging correctly now that
+overlapping spans actually overlap — not lost recall, since recall rose.
+
+**D28, found by taking one alarming number seriously.** The run reported
+**entity recall 0.027**, which read as catastrophic. It was not: `entity_recall`
+scores *every placement in the manifest* against whatever mentions the store
+holds, so 60 documents' mentions were graded against 2,000 documents'
+placements. 60/2000 ≈ 3%. Scored in scope, recall is **0.883**. Now scoped to
+the scan ledger, and `n_docs_scored` is returned so the scope can never be
+implicit again. **This was the number quoted on the board and in the README.**
+
+**D29 — the biggest single accuracy win of the session, from the queued veto
+check.** `person_vs_org` suppressed 1,335 edges; of the 1,291 with both sides
+labelled, **898 (69.6%) joined two mentions of the SAME entity**, including
+identical surfaces at p=1.000.
+
+It vetoed on `entity_class` — and `comparison_specs` already refuses to *score*
+with that field because it is *"a noisy derived label from our own classifier,
+not identity evidence."* The codebase had concluded the label was too unreliable
+to weigh, then used it as an absolute veto no probability could outweigh.
+
+Removed: **best F1 0.889 → 0.920, recall@0.45 0.885 → 0.937**, precision cost
+0.008, entities 59 → 54 against 42 gold. The identifier vetoes stay —
+`conflicting_tin` fired 36 times with **zero** false vetoes. A TIN is observed;
+`entity_class` is our own guess.
+
+**D30 — what is now the largest remaining gap, and it is precisely bounded.**
+Recall by variant kind:
+
+| variant | recall |
+|---|---|
+| canonical / flip / initials / nickname | **1.000** |
+| typo | 0.878 |
+| `last_only` | **0.091** (3/33) |
+| `short` | **0.000** (0/41) |
+
+Those two account for **74 of the 77 missed placements**. `_is_plausible_name`
+requires two capitalised tokens, so a lone surname or a one-word org name is
+dropped in the *recall* path. Fixing D12 would take entity recall from 0.883 to
+roughly **0.995**. That is now the highest-value item on the board.
+
+**A pattern worth naming, because it has now produced four defects.** D25, D29
+and D12 are all the same shape: *a component distrusts a signal, and another
+component relies on it absolutely.* The LLM's offsets were known-unreliable and
+consumed as truth. `entity_class` was too noisy to score with and used as a
+veto. `_is_plausible_name` guards precision inside the lane whose whole job is
+recall. When the codebase says "X is unreliable", grep for every other consumer
+of X before believing the statement is contained.

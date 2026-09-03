@@ -915,10 +915,40 @@ def cannot_link_reason(a: dict, b: dict) -> str | None:
     TINs are shared across a franchise group, say -- is changing a policy, not
     fixing a bug. That is what this list being explicit is for.
     """
-    persons = {"claimant", "attorney", "adjuster"}
-    ca, cb = _val(a, "entity_class"), _val(b, "entity_class")
-    if (ca in persons and cb == "repair_shop") or (cb in persons and ca == "repair_shop"):
-        return "person_vs_org"
+    # person_vs_org WAS HERE AND IS DELETED. Measured against ground truth on a
+    # 60-document run:
+    #
+    #     1,335 edges suppressed as person_vs_org
+    #     of the 1,291 with both sides labelled, 898 (69.6%) joined two mentions
+    #     of the SAME ground-truth entity
+    #
+    # including pairs at p=1.000 and p=0.997 -- 'Elizabeth Perez' vs
+    # 'Elizabeth Perez', identical surfaces, same entity, permanently
+    # suppressed. It was not protecting against over-merge; it was the largest
+    # single source of under-merge in the system.
+    #
+    # The cause is that it vetoed on `entity_class`, and comparison_specs
+    # already says why that is wrong -- "a noisy derived label from our own
+    # classifier, not identity evidence". The codebase had concluded the label
+    # was too unreliable to SCORE with, then used it in the strongest possible
+    # way: an absolute veto no probability can outweigh. A person misclassified
+    # as a repair shop in one note can never again be linked to themselves.
+    #
+    # Removing it, same run, same edges:
+    #
+    #     best B-cubed F1   0.889 -> 0.920
+    #     at threshold 0.45  F1 0.843 -> 0.861, recall 0.885 -> 0.937
+    #     precision cost     0.804 -> 0.796
+    #     entities vs 42 gold  59 -> 54
+    #
+    # The identifier vetoes below stay: conflicting_tin fired 36 times in the
+    # same run with ZERO false vetoes. The difference is that a TIN is observed
+    # evidence and entity_class is our own guess.
+    #
+    # If a person/organisation constraint is wanted back, it needs a signal that
+    # is not a classifier output -- the entity_type/role split (diagram 06) is
+    # the proposal, and it must be re-measured against this table, not assumed
+    # to be safe because the previous one looked reasonable.
     sa = textnorm.name_suffix(_val(a, "full_name") or "")
     sb = textnorm.name_suffix(_val(b, "full_name") or "")
     ak, bk = _val(a, "address_key"), _val(b, "address_key")

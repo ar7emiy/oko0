@@ -289,7 +289,7 @@ ambiguous band, greedy correlation clustering — is gone, along with the
   that looks like a clean run and that nothing downstream can distinguish from
   one.
 - **Constraints suppress, they do not veto permanently.** `cannot_link_reason`
-  (person vs org, Jr/Sr at one address, conflicting validated ids) removes an
+  (Jr/Sr at one address, conflicting validated ids) removes an
   edge before clustering; the edge is still stored with its reason. The v1
   design wrote merges permanently and enforced constraints as hard vetoes, which
   produced a failure mode where one mis-bound identifier permanently vetoed

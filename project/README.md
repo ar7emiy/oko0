@@ -333,7 +333,10 @@ Measured end to end, offline:
 |---|---|
 | entity mention recall / precision | 85.7% / 81.0% |
 | identifier recall | **100%** (incl. 100% of name-less mentions) |
-| entity resolution (B³ P/R) | 0.82 / 0.83 — 1,010 entities vs 570 GT |
+| mention span grounding | **100%** — every mention locates its own surface (was 33%) |
+| mention precision | **0.863** (was 0.502 before the span fix) |
+| entity recall | **0.883** — 74 of 77 misses are single-token names (D30) |
+| entity resolution (B³ P/R @ 0.45) | **0.796 / 0.937**, best F1 **0.920** — 54 entities vs 42 GT |
 | coreference accuracy | 43% — the weakest component |
 | event extraction | not implemented (GT now exists) |
 | scan coverage (hygiene check) | 100% |

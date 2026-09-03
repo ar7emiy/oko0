@@ -68,6 +68,9 @@ not authority — each was independently checked.
 | D25 | **The LLM and sweep lanes trusted character offsets returned by the model.** `_parse_llm_spans` took `start`/`end` from the model, clamped them so nothing crashed, then took the surface from the model's own `text` field — never checking that `chunk_text[s:t]` was that surface. Measured: **only 349 of 1051 mentions (33%) had a span containing their own surface.** Span grounding is one of the four stated invariants; nothing checked it for mentions, only for manifest placements the generator cannot get wrong. Everything keyed on a span inherited the error — B³ span-overlap matching (mention precision read **0.50**), citations, proximity binding, polarity windows, the QA highlight | me, via T0.7 | ✅ **fixed** — surfaces are located, not trusted; ungroundable ones dropped; smoke test asserts the invariant |
 | D26 | **`sweep` guessed whether an offset was chunk-relative or absolute** (`if s < chunk.char_start: s += chunk.char_start`). For any chunk after the first, a chunk-relative offset larger than `char_start` reads as absolute and is left unshifted — so the further into a document a span sat, the likelier it was misplaced | me, via D25 | ✅ **fixed** — the number is a hint; the surface is located |
 | D27 | **`ssn`/`vin` comparisons were present-but-untrainable**, so Splink substituted its two-level default and they entered the evidence ordering at a fabricated **+10 bits each** — the strongest signals in the model. `_prune_absent` only dropped *empty* columns, and presence is not trainability: ~13 of 1013 mentions carry an SSN, so no blocked pair has one on both sides | me, via T0.7's own falsification test | ✅ **fixed** — two-pass training drops comparisons whose agreement level cannot be trained |
+| D28 | **`audit.entity_recall` scored the whole manifest against whatever mentions the store held.** A 60-document run was graded against all 2,000 documents' placements and reported **recall 0.027** — a number about how many documents were processed, not about extraction. Scored correctly on that same run: **0.883**. It is the figure the board and README quoted | me, via D25's re-measurement | ✅ **fixed** — scoped to the scan ledger; `n_docs_scored` returned so the scope is never implicit again |
+| D29 | **The `person_vs_org` veto was wrong 70% of the time.** It suppressed 1,335 edges; of the 1,291 with both sides labelled, **898 (69.6%) joined two mentions of the SAME entity** — including identical surfaces at p=1.000. It vetoed on `entity_class`, which `comparison_specs` already refuses to SCORE with because it is *"a noisy derived label from our own classifier, not identity evidence"* — then used it as an absolute veto no probability could outweigh | me, via D21's SSN work | ✅ **fixed** — removed. Best B³ F1 **0.889 → 0.920**, recall@0.45 **0.885 → 0.937**, precision cost 0.008 |
+| D30 | **`_is_plausible_name` is now the entire remaining recall gap.** With spans fixed, recall by variant is canonical/flip/initials/nickname **1.000**, typo 0.878 — and **`short` 0/41 = 0.000**, `last_only` 3/33 = 0.091. Those two account for **74 of the 77 missed placements**: fixing D12 would take entity recall from 0.883 to ~0.995 | me, via D25 | open — **the single highest-value item on the board**, and a sharpening of D12 |
 
 **Scaling, not correctness:** `filter_fn` is an O(total-chunks) metadata scan per
 query; `entities_in_chunks` iterates every mention per query.
@@ -76,32 +79,28 @@ query; `entities_in_chunks` iterates every mention per query.
 
 ## Current state, factually
 
-> ### ⚠ Every span-dependent number below is INVALIDATED pending re-measurement.
+> ### Re-measured 2026-09-02 after D25 (span grounding) and D29 (the class veto).
 >
-> **D25**: only 349 of 1051 mentions (33%) had a stored span that actually
-> contained their own surface. `audit.entity_recall` and
-> `audit.entity_precision` both match a mention to ground truth by SPAN
-> OVERLAP (`audit.py:123`), and B-cubed is computed over the mention→gold map
-> that same test produces. So **entity recall, mention precision and every
-> B-cubed figure on this board were measured against spans a third of which
-> were wrong**, including the before/after curve quoted under T0.4.
->
-> A broken span overlaps nothing, so the bias is toward UNDERSTATEMENT — these
-> numbers should rise. That direction was written down before the
-> re-measurement (see `HANDOFF.md`) so the reading cannot be fitted afterwards.
-> Do not quote any row marked ⚠ until it is re-run.
+> The previous figures were computed against spans **a third of which did not
+> contain their own surface**, and `audit.entity_recall` was scoring 2,000
+> documents' placements against 60 documents' mentions (D28). Both are fixed
+> and every row below is re-run. The direction was predicted before the
+> numbers landed — broken spans overlap nothing, so the old figures were
+> **understated** — and that held.
 
 Verified by grep/execution, 2026-09-02.
 
 | | value | conditions |
 |---|---|---|
 | identifier recall (finding) | 1.000 | synthetic, 2000 notes |
+| **mention precision** | **0.863** | was **0.502** — the difference is D25, not extraction |
+| **span grounding** | **100%** of mentions locate their own surface | was **33.2%** (D25). Asserted by the smoke test now |
 | identifier **binding** precision | **0.940** (LLM lane **0.969**) | in-pipeline vs GT, 8 docs; was 0.747 under the line rule. **Not yet checked on the handwritten notes** — the only read on generality |
-| ⚠ entity recall | 0.857 | synthetic only — generality unproven (D-gen) |
+| entity recall | **0.883** | 60-doc scope, stated. Was reported as 0.027 by D28's bug and 0.857 before that. **74 of 77 misses are D30** |
 | scan coverage | 100% chars/doc | — |
-| ⚠ **B³ F1 at the operating threshold (0.45)** | **0.800** (P 0.888 / R 0.728) | 60-doc subset, post-T0.4. Was **0.604** (P 0.973 / R 0.438) |
-| ⚠ **entities vs ground truth @ 0.45** | **81 vs 42 = 1.9×** | same subset. Was **515 = 12.3×**. Residual over-split is D18 |
-| ⚠ **B³ F1 floor across 0.20–0.95** | **0.783** | the curve is flat post-T0.4; was **0.185** |
+| **B³ F1 at the operating threshold (0.45)** | **0.861** (P 0.796 / R 0.937) | 60-doc subset. 0.604 pre-T0.4 → 0.773 pre-span-fix → 0.843 → **0.861** without the class veto |
+| **entities vs ground truth @ 0.45** | **54 vs 42 = 1.29×** | was 515 = 12.3× before T0.4; 59 = 1.40× before D29 |
+| **best B³ F1** | **0.920 @ 0.80** | was 0.814 before the span fix, 0.889 after it, 0.920 without the class veto |
 | **match prior λ** | **0.026** | estimated 0.0264 against a measured 0.0121; was 0.000764 |
 | identical-surface pairs above threshold | **4.6%** of 7,468 | the D1/D5 org-name failure |
 | single-note ingest | 18.5s | 60-note corpus, live models |

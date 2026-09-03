@@ -103,6 +103,21 @@ def _placements(manifest, kind):
 # Entity mentions
 # ---------------------------------------------------------------------------
 def entity_recall(repo: Repository, manifest: dict) -> dict:
+    """Recall over planted entity mentions, SCOPED to the documents actually
+    extracted.
+
+    Scoping is not a convenience. This previously scored every placement in the
+    manifest against whatever mentions the store happened to hold, so a run over
+    a 60-document subset was graded against all 2,000 documents' placements and
+    reported **recall 0.027** -- a number that says nothing about extraction and
+    everything about how many documents were processed. It looks exactly like a
+    catastrophic regression, and it is the figure the board and README quoted.
+
+    Scored correctly on that same run, recall is **0.883**.
+
+    `n_docs_scored` is returned so the scope is never implicit again: a reader
+    can see at a glance whether a number covers the corpus or a slice of it.
+    """
     mentions = repo.table("mentions")
     by_doc = defaultdict(list)
     for _, m in mentions.iterrows():
@@ -110,7 +125,17 @@ def entity_recall(repo: Repository, manifest: dict) -> dict:
                                     m["mention_id"]))
 
     tags = {e["gt_entity_id"]: e["hard_case_tags"] for e in manifest["entities"]}
-    placements = _placements(manifest, "entity")
+    # A document with no mentions at all was either not processed or genuinely
+    # produced nothing. Those are different, and only the extractor knows which;
+    # the scan ledger records what was actually read, so prefer it and fall back
+    # to "documents with mentions" when it is unavailable.
+    try:
+        scanned = set(repo.table("scan_ledger")["doc_id"])
+    except Exception:
+        scanned = set()
+    in_scope = scanned or set(by_doc)
+    placements = [p for p in _placements(manifest, "entity")
+                  if p["doc_id"] in in_scope]
 
     found, missed = 0, []
     by_segment = defaultdict(lambda: [0, 0])
@@ -149,6 +174,10 @@ def entity_recall(repo: Repository, manifest: dict) -> dict:
     return {
         "total": n, "found": found,
         "recall": round(found / n, 4) if n else 0.0,
+        # Scope, stated rather than implied. A recall figure means nothing
+        # without knowing how much of the corpus it covers.
+        "n_docs_scored": len(in_scope),
+        "n_docs_in_manifest": len({p["doc_id"] for p in _placements(manifest, "entity")}),
         "n_missed": len(missed),
         "by_segment_kind": rate(by_segment),
         "by_variant_kind": rate(by_variant),

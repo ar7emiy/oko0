@@ -121,21 +121,25 @@ edges *before* clustering rather than vetoing permanently.
 | 0.90 | 16,766 | 0.997 | 0.106 | 0.192 |
 
 > **Stale — kept for the shape, not the numbers.** This table was measured on a
-> 16,766-mention corpus state that no longer exists, and it predates the match
-> prior fix (2026-09-02). It has not been re-measured at that scale. The current
+> 16,766-mention corpus state that no longer exists and predates three fixes made
+> on 2026-09-02. It has not been re-measured at that scale. The current
 > 60-document store measures as follows, and *is* current:
 >
 > | threshold | entities | B³ P | B³ R | B³ F1 |
 > |---|---|---|---|---|
-> | 0.20 (F1 max) | 76 | 0.836 | 0.788 | **0.811** |
-> | **0.45** (operating) | **81** | **0.888** | **0.728** | **0.800** |
-> | 0.60 | 84 | 0.895 | 0.726 | 0.802 |
-> | 0.90 | 95 | 0.907 | 0.710 | 0.797 |
+> | 0.20 | 52 | 0.793 | 0.945 | 0.862 |
+> | **0.45** (operating) | **54** | **0.796** | **0.937** | **0.861** |
+> | 0.60 | 55 | 0.796 | 0.931 | 0.858 |
+> | 0.80 (F1 max) | 66 | 0.932 | 0.908 | **0.920** |
+> | 0.95 | 86 | 0.997 | 0.841 | 0.912 |
 >
-> Ground truth is 42 entities for this subset. Before the prior fix the same store gave 515
-> entities at 0.45 (F1 0.604, recall 0.438) and the curve collapsed to F1 0.185
-> at the top; it is now flat (worst F1 0.783 across 0.20–0.95). **Re-measuring
-> the full corpus is outstanding.**
+> Ground truth is 42 entities in that scope. The curve moved three times in one
+> day and each move is traceable to a named defect: the match prior 16x too low
+> (T0.4/D17), a third of mention spans not containing their own surface (D25),
+> and a class-based veto that was suppressing correct merges 70% of the time
+> (D29). At 0.45 that is F1 0.604 → 0.773 → 0.843 → **0.861**.
+>
+> **Re-measuring the full corpus is outstanding** (T0.6).
 
 Ground truth is 570 entities. F1 is flat across 0.30–0.60; we operate at **0.45**
 rather than the marginal F1 max at 0.60, favouring recall since the product goal
