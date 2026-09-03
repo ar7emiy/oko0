@@ -76,17 +76,32 @@ query; `entities_in_chunks` iterates every mention per query.
 
 ## Current state, factually
 
+> ### ⚠ Every span-dependent number below is INVALIDATED pending re-measurement.
+>
+> **D25**: only 349 of 1051 mentions (33%) had a stored span that actually
+> contained their own surface. `audit.entity_recall` and
+> `audit.entity_precision` both match a mention to ground truth by SPAN
+> OVERLAP (`audit.py:123`), and B-cubed is computed over the mention→gold map
+> that same test produces. So **entity recall, mention precision and every
+> B-cubed figure on this board were measured against spans a third of which
+> were wrong**, including the before/after curve quoted under T0.4.
+>
+> A broken span overlaps nothing, so the bias is toward UNDERSTATEMENT — these
+> numbers should rise. That direction was written down before the
+> re-measurement (see `HANDOFF.md`) so the reading cannot be fitted afterwards.
+> Do not quote any row marked ⚠ until it is re-run.
+
 Verified by grep/execution, 2026-09-02.
 
 | | value | conditions |
 |---|---|---|
 | identifier recall (finding) | 1.000 | synthetic, 2000 notes |
 | identifier **binding** precision | **0.940** (LLM lane **0.969**) | in-pipeline vs GT, 8 docs; was 0.747 under the line rule. **Not yet checked on the handwritten notes** — the only read on generality |
-| entity recall | 0.857 | synthetic only — generality unproven (D-gen) |
+| ⚠ entity recall | 0.857 | synthetic only — generality unproven (D-gen) |
 | scan coverage | 100% chars/doc | — |
-| **B³ F1 at the operating threshold (0.45)** | **0.800** (P 0.888 / R 0.728) | 60-doc subset, post-T0.4. Was **0.604** (P 0.973 / R 0.438) |
-| **entities vs ground truth @ 0.45** | **81 vs 42 = 1.9×** | same subset. Was **515 = 12.3×**. Residual over-split is D18 |
-| **B³ F1 floor across 0.20–0.95** | **0.783** | the curve is flat post-T0.4; was **0.185** |
+| ⚠ **B³ F1 at the operating threshold (0.45)** | **0.800** (P 0.888 / R 0.728) | 60-doc subset, post-T0.4. Was **0.604** (P 0.973 / R 0.438) |
+| ⚠ **entities vs ground truth @ 0.45** | **81 vs 42 = 1.9×** | same subset. Was **515 = 12.3×**. Residual over-split is D18 |
+| ⚠ **B³ F1 floor across 0.20–0.95** | **0.783** | the curve is flat post-T0.4; was **0.185** |
 | **match prior λ** | **0.026** | estimated 0.0264 against a measured 0.0121; was 0.000764 |
 | identical-surface pairs above threshold | **4.6%** of 7,468 | the D1/D5 org-name failure |
 | single-note ingest | 18.5s | 60-note corpus, live models |

@@ -816,3 +816,21 @@ asserts every stored mention's span contains its own surface. Note what this
 says about the numbers: every accuracy figure measured before this — entity
 recall, B-cubed, the T0.4 calibration curve — was computed against spans a third
 of which were wrong. **Re-measure before quoting any of them.**
+
+**A prediction, written before the re-measurement lands.** `audit.entity_recall`
+and `audit.entity_precision` both match a mention to ground truth by SPAN
+OVERLAP (`audit.py:123`). A mention whose offsets are 60 characters adrift
+overlaps nothing, so a broken span reads as a MISS. That means the published
+figures were biased in a specific direction:
+
+- **entity recall 0.857 was understated** — the fix should raise it.
+- **mention precision 0.50 was understated** for the same reason: correctly
+  extracted names sat outside their planted spans and counted as false
+  positives.
+- **B-cubed is harder to call.** Cluster membership is unaffected by spans, but
+  the mention→gold map that B-cubed is computed over comes from the same
+  overlap test, so a third of mentions were being scored against the wrong gold
+  entity or dropped from the comparison entirely.
+
+If recall does *not* rise, the diagnosis is wrong and D25 is not what was
+costing accuracy. Stated here first so the reading cannot be fitted afterwards.

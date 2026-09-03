@@ -214,10 +214,29 @@ def get_token_ner(backend: str | None = None) -> TokenNERBackend:
 # LLM extractor (semantic pass)
 # ---------------------------------------------------------------------------
 def _llm_prompt(chunk_text: str) -> str:
+    """Ask for the STRING, and treat the offsets as a hint.
+
+    Measured over 873 entities from 20 documents: **100% of the surfaces the
+    model returned were present verbatim in the chunk, and its offsets were
+    wrong two times in three.** That is exactly what tokenisation predicts --
+    the model copies text reliably and cannot count characters at all.
+
+    So the prompt now asks for the exact substring and says plainly that
+    approximate offsets are acceptable. `_parse_llm_spans` locates the surface
+    itself (D25). The offsets are still requested because they disambiguate a
+    name that occurs more than once in a chunk, which is the one thing they are
+    genuinely good for.
+    """
     return (
-        "Extract every entity mention from this insurance claim note chunk. "
-        "Return character offsets WITHIN the chunk. Never return pronouns or "
-        f"vague descriptors. Labels: {list(CFG.NER_LABELS)}.\n\n"
+        "Extract every entity mention from this insurance claim note chunk.\n"
+        "For each, return `text` as the EXACT substring as it appears -- copy "
+        "it character for character, do not normalise spelling, spacing, "
+        "punctuation or case. This field is what locates the mention.\n"
+        "Also return approximate character offsets within the chunk. These are "
+        "used only to tell repeated occurrences apart, so an approximate "
+        "position is fine; the exact substring is what matters.\n"
+        "Never return pronouns or vague descriptors. "
+        f"Labels: {list(CFG.NER_LABELS)}.\n\n"
         f"CHUNK:\n<<<\n{chunk_text}\n>>>"
     )
 
@@ -264,11 +283,25 @@ def _locate(chunk_text: str, surface: str, hint: int) -> int:
     i = low.find(ls)
     if i >= 0:
         return i
+    # Whitespace differs (a name broken across a line, say). Scan candidate
+    # starts and accept only one whose region collapses to the same string.
+    #
+    # An earlier version returned the position of the surface's FIRST WORD
+    # wherever it occurred, ignoring the hint entirely. That is worse than
+    # dropping the mention: it produces a span that looks grounded, sits in the
+    # wrong place, and passes any check that only asks whether an offset exists.
     collapsed = " ".join(ls.split())
-    i = " ".join(low.split()).find(collapsed)
-    if i >= 0 and collapsed:                     # only safe when spacing matched
-        j = low.find(collapsed.split()[0])
-        return j
+    if not collapsed:
+        return -1
+    first = collapsed.split()[0]
+    starts, i = [], low.find(first)
+    while i >= 0:
+        starts.append(i)
+        i = low.find(first, i + 1)
+    for j in sorted(starts, key=lambda x: abs(x - hint)):
+        window = chunk_text[j:j + len(surface) + 8]
+        if " ".join(window.lower().split()).startswith(collapsed):
+            return j
     return -1
 
 
