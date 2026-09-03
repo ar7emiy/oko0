@@ -524,7 +524,7 @@ flowchart TD
   E9["<b>Score every blocked candidate pair</b><br/>ONE model scores both lanes<br/><i>linker.inference.predict</i>"]:::act
   E10["<b>same_as_edges rows</b><br/>mention_a, mention_b, probability, match_weight,<br/><b>blocked_by</b> = the rule that proposed it<br/><b>uncalibrated</b> = substituted comparisons this edge used"]:::obj
   E11{"structural conflict?"}:::dec
-  E12["<b>Edge suppressed before clustering</b><br/><i>cannot_link_reason</i> — person vs org, Jr/Sr, conflicting NPI"]:::bad
+  E12["<b>Edge suppressed before clustering</b><br/><i>cannot_link_reason</i> — person vs org, Jr/Sr,<br/>conflicting <b>npi / tin / ssn</b> — see VETO"]:::bad
   E13["<b>Union-find over edges ≥ threshold</b><br/><i>entity_resolution.cluster_at</i>"]:::act
   E14["<b>entity_snapshot / entities / entity_members</b><br/>identity is a VIEW at T, never a destructive merge"]:::key
   E15["<b>Sweep T to plot the operating curve</b><br/>B³ precision / recall per threshold"]:::act
@@ -578,6 +578,9 @@ flowchart TD
 
   EX2["<b>in</b> — all edges, threshold T=0.90<br/><b>out</b> — entity_snapshot rows grouping both mentions under one entity_id at that T<br/><i>Identity is recomputed per threshold, so raising or lowering T re-partitions the corpus without re-running resolution.</i>"]:::ex
   E14 -.->|"example"| EX2
+
+  VETO["<b>Which identifiers may VETO a merge, and why the others may not</b><br/>The test is not how strong an identifier is. It is: <b>can one entity legitimately hold two of these at once?</b><br/><br/>&nbsp;&nbsp;<b>ssn</b> — no. One per person, by construction. Vetoes.<br/>&nbsp;&nbsp;<b>npi / tin</b> — mostly not, though a provider can hold both a Type 1 and a Type 2 NPI. Vetoes, narrowly.<br/>&nbsp;&nbsp;<b>vin</b> — YES, a claimant owns two cars and a shop touches hundreds. <b>Scores but never vetoes.</b><br/>&nbsp;&nbsp;<b>address · phone · email</b> — yes: people move, hold a desk and a mobile, have work and personal mail.<br/><br/><b>dob is the interesting omission.</b> A person has exactly one, so it looks like it belongs. It is deliberately absent: dob binding accuracy has never been measured, real DOBs carry transcription errors, and T0.3 measured what happens when a consistency rule meets a mis-bound identifier — it splits a CORRECT cluster.<br/><br/><i>A client whose TINs are shared across a franchise group is changing a POLICY here, not fixing a bug. That is what making this list explicit is for.</i>"]:::key
+  E12 -.->|"veto policy"| VETO
 
   EX3["<b>in</b> — 'Miller Auto Body' (organization) and 'Robert Miller' (person), high name similarity<br/><b>out</b> — edge suppressed, never reaches clustering<br/><i>A hard structural constraint applied as edge suppression rather than a permanent veto. Note this is the ONE place entity_class is load-bearing — see the proposal in diagram 06, which keeps person/organization closed precisely so this keeps working.</i>"]:::ex
   E12 -.->|"example"| EX3

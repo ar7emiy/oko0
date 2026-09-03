@@ -785,3 +785,11 @@ discarded.**
 - Microservices. Agent B's modular-monolith recommendation is right for this
   scale; splitting services now would add operational surface without solving a
   single defect above.
+- **A `dob` conflict veto.** A person has exactly one date of birth, so a differing
+  DOB looks like it belongs in `cannot_link_reason` alongside npi/tin/ssn. Held
+  back on purpose: DOB binding accuracy has never been measured, real DOBs carry
+  transcription errors, and **T0.3 measured what a consistency rule does when it
+  meets a mis-bound identifier — it splits a correct cluster.** Revisit after
+  measuring dob binding, not before. The full veto policy, including why `vin`
+  scores but must never veto (a claimant owns two cars; a shop touches hundreds),
+  is documented on `cannot_link_reason` and in diagram 07.

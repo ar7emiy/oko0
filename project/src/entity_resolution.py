@@ -800,6 +800,34 @@ def cannot_link_reason(a: dict, b: dict) -> str | None:
     anything. Identifier conflicts are otherwise deliberately narrow -- a single
     mis-bound identifier should lower a pair's probability, not permanently
     partition an entity.
+
+    WHICH IDENTIFIERS VETO, AND WHY THE OTHERS DO NOT
+    -------------------------------------------------
+    Only npi, tin and ssn. The test is not "how strong is this identifier" but
+    **can one entity legitimately hold two of these at once**:
+
+        ssn      no  -- one per person, by construction
+        npi/tin  mostly -- a provider can hold both a Type 1 and a Type 2 NPI,
+                 which is why the corpus models IDENTIFIER_REASSIGN_RATIO and
+                 why this rule stays narrow rather than becoming a cluster-scope
+                 invariant (see TODO T0.3)
+        vin      YES  -- a claimant can own two vehicles and a shop touches
+                 hundreds. Two VINs are not a contradiction, so vin SCORES but
+                 must never veto
+        address  YES  -- people move, firms have branch offices
+        phone    YES  -- desk, mobile, and reassignment
+        email    YES  -- personal and work
+
+    dob is the interesting omission. A person has exactly one, so it looks like
+    it belongs here. It is deliberately absent: DOB binding accuracy has never
+    been measured, real DOBs carry transcription errors, and T0.3 measured what
+    happens when a consistency rule meets a mis-bound identifier -- the rule
+    splits a CORRECT cluster, damaging the thing that was right. Adding a dob
+    veto is a change to make after measuring dob binding, not before.
+
+    A client whose data makes one of these judgements wrong -- an insurer whose
+    TINs are shared across a franchise group, say -- is changing a policy, not
+    fixing a bug. That is what this list being explicit is for.
     """
     persons = {"claimant", "attorney", "adjuster"}
     ca, cb = _val(a, "entity_class"), _val(b, "entity_class")
