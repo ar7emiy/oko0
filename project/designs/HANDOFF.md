@@ -106,9 +106,19 @@ numbering is aligned across both docs (0–7).
 Consolidated from both audits plus my own sweep. Everything here was checked by
 grep or by execution.
 
+> **This table has gone stale and is kept only as the session's starting point.**
+> Fourteen of the defects listed across this file are now fixed, and eleven more
+> (D15–D30) were found after it was written. **`TODO.md`'s defect register is the
+> current one** — it carries status per row. Use this table to see what was
+> believed at the start of 2026-09-02, not what is true now.
+>
+> Rows below that are definitely FIXED: D3 (partly — `policy_number` has a
+> detector, the predicate routing is still missing), D4, D6 (exact lane), D12.
+> D13 was measured and reframed rather than fixed.
+
 **Fixed this session** — see the work log.
 
-**Open, severe:**
+**Open, severe (AS OF THE START OF THE SESSION — see the banner above):**
 
 | id | defect | evidence |
 |---|---|---|
