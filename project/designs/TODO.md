@@ -71,6 +71,8 @@ not authority — each was independently checked.
 | D28 | **`audit.entity_recall` scored the whole manifest against whatever mentions the store held.** A 60-document run was graded against all 2,000 documents' placements and reported **recall 0.027** — a number about how many documents were processed, not about extraction. Scored correctly on that same run: **0.883**. It is the figure the board and README quoted | me, via D25's re-measurement | ✅ **fixed** — scoped to the scan ledger; `n_docs_scored` returned so the scope is never implicit again |
 | D29 | **The `person_vs_org` veto was wrong 70% of the time.** It suppressed 1,335 edges; of the 1,291 with both sides labelled, **898 (69.6%) joined two mentions of the SAME entity** — including identical surfaces at p=1.000. It vetoed on `entity_class`, which `comparison_specs` already refuses to SCORE with because it is *"a noisy derived label from our own classifier, not identity evidence"* — then used it as an absolute veto no probability could outweigh | me, via D21's SSN work | ✅ **fixed** — removed. Best B³ F1 **0.889 → 0.920**, recall@0.45 **0.885 → 0.937**, precision cost 0.008 |
 | D30 | **`_is_plausible_name` is now the entire remaining recall gap.** With spans fixed, recall by variant is canonical/flip/initials/nickname **1.000**, typo 0.878 — and **`short` 0/41 = 0.000**, `last_only` 3/33 = 0.091. Those two account for **74 of the 77 missed placements**: fixing D12 would take entity recall from 0.883 to ~0.995 | me, via D25 | open — **the single highest-value item on the board**, and a sharpening of D12 |
+| D31 | **B-cubed rewards doing less, and the gate was reading it as a system metric.** Three measured instances in one day: precision *rises* under over-splitting (D17); F1 prefers the model that discards hard mentions (0.920 vs 0.887, D30); and F1 is **higher with the 16×-wrong prior re-introduced than without it — 0.905 vs 0.887**. It is a clustering metric. The assertion that actually catches these is **entity count at the operating threshold** against ground truth | me, via T0.6's falsification test | ✅ **mitigated** — the fast tier asserts entity count at the operating point, not best-F1 on a curve |
+| D32 | **A comparison level EM never observes gets a parameter invented for it.** 260 of 9,934 edges are flagged: `name_sorted` "contained, different claim" +3.30 bits with m invented (188 edges), and `address` "same locality" at **−2.99 bits invented** — agreeing on a zip should never be negative evidence. The two-pass prune (D27) drops a whole comparison when its *agreement* level is untrained, deliberately not middle levels | me, via the final verification | open — **T0.9**: collapse an unobserved level into its neighbour rather than inventing a parameter |
 
 **Scaling, not correctness:** `filter_fn` is an O(total-chunks) metadata scan per
 query; `entities_in_chunks` iterates every mention per query.
@@ -250,6 +252,42 @@ blanket flag would have been alarmist and useless for triage.
 agreeing field is worth. If an identifier is ever worth less than a name, that is
 visible without reading the code.
 
+### T0.9 Collapse comparison levels EM never observes *(D32)*
+**Status:** open · **Confidence:** measured
+
+**Current.** A comparison level EM never sees gets a Splink-invented parameter.
+Measured on the final verification run — **260 of 9,934 edges flagged**:
+
+| comparison | level | weight | |
+|---|---|---|---|
+| `name_sorted` | contained, **same claim** | **+5.64 bits** | trained — the strongest level in the comparison, above exact match |
+| `name_sorted` | contained, different claim | +3.30 bits | **m invented**, 188 edges |
+| `address` | same locality (zip, or city+state) | **−2.99 bits** | **m invented** |
+| `phone7`, `tin` | All other comparisons | negative | m invented |
+
+Two readings. The containment split (T0.7/D30) **worked**: the same-claim half
+trained to +5.64 bits and the cross-claim half is precisely the one EM never
+observed — the flag identifies which half is fabricated. But `address`'s "same
+locality" at **−2.99 invented is indefensible**: agreeing on a zip is never
+negative evidence. It fires on one edge here, so impact is negligible and the
+direction is wrong.
+
+**Why the existing prune does not cover it.** D27's two-pass training drops a
+whole comparison when its *agreement* level is untrainable. It deliberately does
+not act on middle levels — `email` has invented middle levels and is still one
+of the better signals, and dropping the comparison would lose a trained top
+level to save an untrained middle one.
+
+**Proposed.** Collapse an unobserved level into its neighbour rather than
+inventing a parameter for it. Levels partition the space, so a level cannot
+simply be deleted; merging its SQL condition into the adjacent level keeps the
+partition intact and lets EM price the union.
+
+**Falsification test.** Collapse the unobserved levels and require the flagged-
+edge count to fall to approximately zero **with no B-cubed regression**. If
+B-cubed falls, the invented parameters were carrying real signal by luck and the
+item needs rethinking rather than shipping.
+
 ### T0.5 Correct `u` for match contamination — the remaining calibration gap
 **Status:** open · **Confidence:** measured (ceiling quantified, no label-free
 implementation yet)
@@ -319,9 +357,18 @@ becomes a REAL and `IS NULL` then misses every calibrated edge).
 **Still outstanding:** the full-corpus run has not been executed against any of
 today's changes, so `ARCHITECTURE.md`'s 2,000-note table stays marked stale.
 
-**Falsification test, not yet run.** Re-introduce the T0.4 prior bug and confirm
-the fast tier fails. Until that is done, the fast tier is *believed* to cover
-the full run's defects on this slice rather than *known* to.
+**Falsification test — RUN, and passed.** Re-introduced the T0.4 prior bug:
+
+| assertion | verdict |
+|---|---|
+| `lam != 0.0001` | passes — the broken estimate is not literally the default |
+| `1e-4 < lam < 0.5` | passes — 0.0012 is inside any defensible band |
+| `best F1 >= 0.75` | **passes at 0.905** |
+| `ratio < 2.5` | **FAILS at 7.07× — the only assertion that catches it** |
+
+**B-cubed F1 was HIGHER with the bug than without: 0.905 against 0.887.** A gate
+asserting on B-cubed alone would not merely miss the defect, it would *prefer*
+the broken system. Third instance today of the same pathology — see D31.
 
 ### T0.7 Identifier comparisons: TIN, SSN, VIN and a graded address *(D19–D21)*
 **Status:** ✅ **shipped**, benefit **not demonstrated** · **Confidence:** measured

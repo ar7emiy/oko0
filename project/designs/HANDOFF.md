@@ -967,3 +967,67 @@ precision/recall balance, not a defect, so it is recorded rather than decided.
 The 0.45 comment previously described a **flat** region — 0.45 vs 0.60 differed
 by 0.011 recall. It is no longer flat: 0.45 vs 0.80 is 0.973 vs 0.934 recall for
 0.688 vs 0.844 precision. **Whoever picks should pick knowing that.**
+
+### 2026-09-03 — the fast tier falsified, and B-cubed caught preferring the bug
+
+Re-introduced the T0.4 prior bug and asked which fast-tier assertions fire:
+
+```
+lambda            0.001195      (correct: 0.0208)
+entities          297 vs 42 gold = 7.07x
+best B-cubed F1   0.905
+```
+
+| assertion | verdict |
+|---|---|
+| `lam != 0.0001` | passes — the broken estimate is not literally the default |
+| `1e-4 < lam < 0.5` | passes — 0.0012 sits inside any defensible band |
+| `best F1 >= 0.75` | **passes at 0.905** |
+| `ratio < 2.5` | **FAILS at 7.07× — the only assertion that catches it** |
+
+**B-cubed F1 is HIGHER with the bug than without it: 0.905 against 0.887.** A
+gate asserting on B-cubed alone would not merely miss this defect — it would
+*prefer* the broken system, and a well-meaning engineer optimising that metric
+would reintroduce the bug on purpose.
+
+That is the **third** instance today of the same pathology: B-cubed precision
+rises under over-splitting (D17), B-cubed prefers not extracting hard mentions
+(D30), and now B-cubed prefers a 16x-wrong prior. **It is a clustering metric
+being read as a system metric, and it rewards doing less.** The assertion that
+works is entity count *at the operating threshold* against ground truth.
+
+T0.6's falsification test is therefore **done and passed**: the fast tier is now
+*known* to catch the defect it was built for, not believed to.
+
+### Next item found while verifying: T0.9, invented middle levels
+
+The final run flags **260 of 9,934 edges** as uncalibrated. Reading which levels
+drive it:
+
+```
+name_sorted  contained, same claim        +5.64 bits   trained -- the strongest
+                                                        level in the comparison
+name_sorted  contained, different claim   +3.30 bits   m INVENTED  (188 edges)
+address      same locality (zip/city)     -2.99 bits   m INVENTED
+phone7 / tin "All other comparisons"      negative     m INVENTED
+```
+
+Two readings, both worth having:
+
+**The containment split was right.** Same-claim containment trained to +5.64
+bits — stronger than exact match on the whole name — while the cross-claim half
+is the one EM never observed. That is exactly the distinction it was built to
+separate, and the flag identifies which half is fabricated.
+
+**But `address`'s "same locality" at −2.99 invented is actively wrong**:
+agreeing on a zip should never be negative evidence. It fires on 1 edge here, so
+the impact is negligible, but the direction is indefensible and I introduced it
+today with the graded address comparison.
+
+**T0.9, proposed:** a level EM never observes should COLLAPSE INTO ITS NEIGHBOUR
+rather than have a parameter invented for it. The two-pass prune drops a whole
+comparison when its *agreement* level is untrained (D27); it deliberately does
+not act on middle levels, because email has invented middle levels and is still
+one of the better signals. Collapsing is the finer-grained fix. **Falsification
+test:** collapse the unobserved levels and require the flagged-edge count to
+fall to ~0 with no B-cubed regression.
