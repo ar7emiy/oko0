@@ -225,16 +225,29 @@ EMB_BLOCK_MAX_BUCKET = 60
 # not a stored merge. This is the operating point; the audit reports the whole
 # precision/recall curve across thresholds rather than this single number.
 # Chosen FROM THE MEASURED B-cubed CURVE (audit.bcubed_sweep), not assumed.
-# The curve is flat across 0.30-0.60 (F1 0.813-0.837); we operate at 0.45
-# (P 0.818 / R 0.833, F1 0.825) rather than the F1 max at 0.60 (F1 0.837)
-# because the product goal is not missing connections, and the lower threshold
-# yields an entity count closer to truth. At the intuitive 0.90 precision is
-# 0.997 but recall collapses to 0.106 -- the true-match probability mass sits
-# in 0.5-0.9, which is exactly why identity is a threshold-derived view.
+# The curve is flat across 0.30-0.60; we operate at 0.45 rather than at the F1
+# max because the product goal is not missing connections, and the lower
+# threshold yields an entity count closer to truth.
+#
+# 2026-09-02: this comment previously quoted "F1 0.813-0.837, 0.45 -> F1 0.825".
+# Those numbers had silently become false -- measured, the curve at 0.45 was
+# P 0.973 / R 0.438 / F1 0.604, splitting 42 entities into 515. The cause was
+# ER_LAMBDA_RULES below, not this threshold: with the prior corrected, 0.45
+# measures F1 0.800 and the curve is flat again (min F1 0.783 across 0.20-0.95),
+# so this value survives unchanged. The lesson is in ER_REQUIRE_FULLY_TRAINED:
+# a calibration claim that lives only in a comment will drift out of true and
+# nothing will notice.
 ER_LINK_THRESHOLD = 0.45
 # Assumed recall of the deterministic rules used to estimate the match prior.
 # Splink's 1e-4 default is far off for a corpus where entities recur heavily.
 ER_DETERMINISTIC_RECALL = 0.7
+# Fail the run when Splink could not estimate every m/u parameter, instead of
+# letting it substitute invented defaults. Default False because this corpus
+# genuinely cannot train the npi comparison -- 7 of 922 mentions carry an NPI --
+# and refusing to run would be worse than running with that one comparison
+# flagged. Set True in an environment where uncalibrated evidence is
+# unacceptable; the untrained set is reported either way, per-run and per-edge.
+ER_REQUIRE_FULLY_TRAINED = False
 ER_THRESHOLD_SWEEP = (0.30, 0.40, 0.45, 0.50, 0.55, 0.60, 0.70, 0.80, 0.90)
 
 # The legacy resolver thresholds and the RES_WEIGHTS weighted-feature model

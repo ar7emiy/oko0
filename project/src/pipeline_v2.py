@@ -46,7 +46,7 @@ LABEL_TO_CLASS = {
 }
 IDENTIFIER_LABEL_TO_PREDICATE = {
     "email": "has_email", "phone": "has_phone", "npi": "has_npi",
-    "tin": "has_tin", "ssn": "has_ssn", "date": "has_dob",
+    "tin": "has_tin", "ssn": "has_ssn", "vin": "has_vin", "date": "has_dob",
     "date_written": "has_dob", "address": "has_address",
 }
 NAME_LABELS = set(LABEL_TO_CLASS)
@@ -371,7 +371,8 @@ def run(repo: Repository, limit_docs: int | None = None,
             if not pred:
                 continue
             kind_i = {"has_email": "email", "has_phone": "phone", "has_npi": "npi",
-                      "has_tin": "tin", "has_ssn": "ssn", "has_address": "address",
+                      "has_tin": "tin", "has_ssn": "ssn", "has_vin": "vin",
+                      "has_address": "address",
                       "has_dob": "dob"}.get(pred, c.label)
 
             # Binding precedence: LLM first, line rule as fallback.

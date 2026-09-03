@@ -103,8 +103,68 @@ if len(bucketed):
 # %%
 res = er.run(repo)
 for k, v in res.items():
-    if k not in ("threshold_sweep", "embedding_blocking", "blocking_lanes"):
+    if k not in ("threshold_sweep", "embedding_blocking", "blocking_lanes",
+                 "calibration"):
         print(f"  {k:24s} {v}")
+
+# %% [markdown]
+# ## Is this model actually calibrated?
+#
+# The layer's headline claim is *calibrated probabilities*, so the calibration
+# itself has to be inspectable rather than assumed. Two things decide it.
+#
+# **The prior.** `probability_two_random_records_match` is the chance two
+# randomly drawn mentions co-refer, and it multiplies every posterior. It is
+# estimated from high-precision deterministic rules. Choosing those rules by
+# *which fields you trust* rather than *which rules actually fire on the data*
+# put it 16x too low — roughly 4 bits removed from every edge, which split ~80
+# entities into 515 while precision still read 0.97. Nothing caught it for weeks
+# because no run output named the prior. Now every run does.
+#
+# **The evidence ordering.** What one agreeing field is worth, in bits. This is
+# the sanity check with no statistics in it: a globally unique identifier must
+# outrank a name. If `npi` or `email` ever sits below `name_sorted`, the model is
+# telling you something is wrong with its inputs, not with your intuition.
+
+# %%
+cal = res["calibration"]
+lam = cal["probability_two_random_records_match"]
+print(f"match prior: {lam:.6f}   (1 in {1/lam:,.0f} random mention pairs co-refer)")
+print(f"estimated from {cal['n_lambda_rules']} deterministic rules")
+print()
+print("what one agreeing field is worth:")
+for name, w in sorted(cal["agreement_weights_bits"].items(),
+                      key=lambda kv: -kv[1]["match_weight_bits"]):
+    print(f"  {w['match_weight_bits']:+7.2f} bits   {name}")
+
+# %% [markdown]
+# ## Parameters EM could not estimate
+#
+# Splink logs *"your model is not yet fully trained ... will use default values"*
+# and carries on. The substituted value is not neutral: for a two-level
+# comparison the invented `m` for agreement is 0.95 whatever the field is, so an
+# exact NPI match — a nationally unique identifier — was scoring +2.73 bits,
+# **less than an exact name match**.
+#
+# It cannot always be fixed by training harder. Only 7 of 922 mentions carry an
+# NPI at all, so there is genuinely nothing to learn from. The honest response is
+# to name it, flag the edges it touched, and let the operator decide — which is
+# what `CFG.ER_REQUIRE_FULLY_TRAINED` is for.
+
+# %%
+print(f"fully trained: {cal['fully_trained']}"
+      f"   ({cal['n_untrained_parameters']} substituted parameters)")
+for r in cal["untrained"]:
+    print(f"  {r['comparison']:14s} {r['parameter']}  "
+          f"{str(r['level'])[:40]:42s} {r['reason']:24s} -> "
+          f"{r['substituted_default']}")
+
+# The per-edge flag is deliberately narrow: an edge is only affected if its
+# gamma for that comparison IS one of the substituted levels. A pair where both
+# npi values were null used no npi parameter and is perfectly calibrated.
+print()
+print(f"edges flagged uncalibrated: {res['n_edges_uncalibrated']} of "
+      f"{res['n_edges_scored']}")
 
 # %% [markdown]
 # ## What each lane contributed

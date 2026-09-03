@@ -269,6 +269,141 @@ TIN_RE = re.compile(r"\b\d{2}-\d{7}\b")
 # ---------------------------------------------------------------------------
 # Identifier validation
 # ---------------------------------------------------------------------------
+_ZIP_RE = re.compile(r"\b(\d{5})(?:-\d{4})?\b")
+# A closed set, because half of these are also ordinary words ("in", "or",
+# "me", "la", "pa") and a bare two-letter-token rule mislabels them. US-only and
+# therefore a LOCALE ASSUMPTION -- this is one of the lexicons T4.1 makes
+# loadable per client rather than compiled in.
+US_STATES = frozenset("""
+al ak az ar ca co ct de fl ga hi id il in ia ks ky la me md ma mi mn ms mo mt
+ne nv nh nj nm ny nc nd oh ok or pa ri sc sd tn tx ut vt va wa wv wi wy dc pr
+""".split())
+# Notes are written by people, so both forms turn up. Spelled-out names are
+# folded to the abbreviation before parsing rather than treated as a city.
+US_STATE_NAMES = {
+    "alabama": "al", "alaska": "ak", "arizona": "az", "arkansas": "ar",
+    "california": "ca", "colorado": "co", "connecticut": "ct", "delaware": "de",
+    "florida": "fl", "georgia": "ga", "hawaii": "hi", "idaho": "id",
+    "illinois": "il", "indiana": "in", "iowa": "ia", "kansas": "ks",
+    "kentucky": "ky", "louisiana": "la", "maine": "me", "maryland": "md",
+    "massachusetts": "ma", "michigan": "mi", "minnesota": "mn",
+    "mississippi": "ms", "missouri": "mo", "montana": "mt", "nebraska": "ne",
+    "nevada": "nv", "ohio": "oh", "oklahoma": "ok", "oregon": "or",
+    "pennsylvania": "pa", "tennessee": "tn", "texas": "tx", "utah": "ut",
+    "vermont": "vt", "virginia": "va", "washington": "wa", "wisconsin": "wi",
+    "wyoming": "wy",
+}
+
+
+def address_parts(s: str) -> dict:
+    """Split an address into independently comparable components.
+
+    WHY THIS EXISTS
+    ---------------
+    `address_key` collapses an address to one opaque composite
+    (number|street|zip) which was then compared by ExactMatch only. Measured,
+    that means agreement is all-or-nothing:
+
+        "1420 Maple Street, Springfield, IL 62704"  -> 1420|maple|62704
+        "1420 Maple Street, Springfield, IL"        -> 1420|maple
+
+    Drop the zip and the pair earns NOT weaker evidence but *none*. And a
+    city-only address collapses to "springfield|62704", which exact-matches
+    every other address in that zip -- so the same mechanism carries a
+    false-negative and a false-positive risk at once.
+
+    Components let a graded comparison give partial credit for partial
+    agreement, which is what a client with imperfect address data actually has.
+    Correlation between the parts (same street implies same city) is handled by
+    keeping them ONE comparison with ordered levels rather than several
+    independent ones -- see entity_resolution.address_comparison.
+
+    Returns {"street": ..., "city": ..., "state": ..., "zip": ...}; any
+    component that is not present is "" rather than guessed.
+    """
+    raw = (s or "").strip()
+    if not raw:
+        return {"street": "", "city": "", "state": "", "zip": ""}
+
+    zip_m = _ZIP_RE.search(raw)
+    zip_code = zip_m.group(1) if zip_m else ""
+
+    # Work on a token stream so punctuated and unpunctuated addresses take the
+    # same path -- "220 W Adams St Chicago IL 60606" is as common in these notes
+    # as the comma-separated form, and an earlier version parsed only the latter,
+    # leaving "chicago il" glued onto the street.
+    toks = [US_STATE_NAMES.get(t, t) for t in normalize_address(raw).split()]
+    while toks and toks[-1] == zip_code:
+        toks.pop()
+    state = ""
+    if toks and toks[-1] in US_STATES:
+        state = toks.pop()
+
+    # City is what sits between the street and the state. With commas, take the
+    # field before the state; without, take the trailing non-street tokens.
+    city = ""
+    fields = [" ".join(US_STATE_NAMES.get(t, t) for t in normalize_address(f).split())
+              for f in raw.split(",")]
+    fields = [f for f in fields if f]
+    if len(fields) >= 2:
+        for i, f in enumerate(fields):
+            if f.split() and f.split()[0] == state and i > 0:
+                city = fields[i - 1]
+                break
+        else:
+            tail = fields[-1].split()
+            # "…, Springfield IL 62704" -- city and state share the last field
+            if state and tail and tail[-1] in (zip_code, state):
+                city = " ".join(t for t in tail
+                                if t not in (zip_code, state)) or fields[-2]
+    elif state and len(toks) > 1:
+        # Unpunctuated: everything after the last street-type token is the city.
+        types = set(_STREET_ABBR.values())
+        last_type = max((i for i, t in enumerate(toks) if t in types), default=-1)
+        if last_type >= 0 and last_type + 1 < len(toks):
+            city = " ".join(toks[last_type + 1:])
+            toks = toks[: last_type + 1]
+
+    street = " ".join(toks)
+    if city and street.endswith(city):
+        street = street[: -len(city)].strip()
+    if street and not re.match(r"^\d", street):
+        street = ""              # "Springfield IL 62704" carries no street
+    return {"street": street, "city": city, "state": state, "zip": zip_code}
+
+
+# A VIN is 17 characters, excluding I, O and Q so they cannot be confused with
+# 1 and 0. Position 9 is a check digit over the other 16 -- a real check, which
+# is why VIN sits alongside NPI as "checksum" rather than "format".
+VIN_RE = re.compile(r"\b[A-HJ-NPR-Z0-9]{17}\b")
+_VIN_TRANSLIT = {**{str(d): d for d in range(10)},
+                 **{c: v for c, v in zip("ABCDEFGH", range(1, 9))},
+                 **{c: v for c, v in zip("JKLMN", range(1, 6))},
+                 "P": 7, "R": 9,
+                 **{c: v for c, v in zip("STUVWXYZ", range(2, 10))}}
+_VIN_WEIGHTS = (8, 7, 6, 5, 4, 3, 2, 10, 0, 9, 8, 7, 6, 5, 4, 3, 2)
+
+
+def vin_is_valid(vin: str) -> bool:
+    """ISO 3779 check digit at position 9.
+
+    Real validation, not a shape test: a random 17-character string passes the
+    pattern about 1 in 11 times by luck, so without the check digit the VIN
+    detector would be a false-positive generator over part numbers and claim
+    references.
+    """
+    v = (vin or "").strip().upper()
+    if len(v) != 17 or not VIN_RE.fullmatch(v):
+        return False
+    total = 0
+    for ch, w in zip(v, _VIN_WEIGHTS):
+        if ch not in _VIN_TRANSLIT:
+            return False
+        total += _VIN_TRANSLIT[ch] * w
+    r = total % 11
+    return v[8] == ("X" if r == 10 else str(r))
+
+
 def npi_is_valid(npi: str) -> bool:
     """NPI = 10 digits with Luhn check over '80840' + first 9 digits."""
     npi = re.sub(r"\D", "", npi or "")

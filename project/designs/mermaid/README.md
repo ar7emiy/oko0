@@ -500,7 +500,7 @@ flowchart TD
   E1["<b>Build one feature row per mention</b><br/><i>entity_resolution.build_mention_frame</i>"]:::act
   E2["<b>Derive the blocking keys from the surface</b><br/>full_name · name_sorted = sorted tokens<br/>first_name = toks[0] · last_name = toks[-1] · soundex(last)"]:::key
   E3["<b>Null out missing identifiers</b><br/>empty string would block-explode; NULL is excluded by Splink"]:::act
-  E4["<b>mention frame</b><br/>name keys + email, phone7, npi, tin, dob, address_key"]:::obj
+  E4["<b>mention frame</b><br/>name keys + email, phone7, npi, tin, ssn, vin, dob<br/>address_key (blocking) + street · city · state · zip (scoring)"]:::obj
 
   %% ---------------- LANE 2: the embedding recall net ----------------
   V0[/"<b>mentions.faiss</b><br/>one vector per mention: norm_surface + class<br/><i>embed_index.run — diagram 09</i>"/]:::vec
@@ -515,11 +515,14 @@ flowchart TD
   V9["<b>emb_bucket = NULL</b><br/>oversize — transitive chaining, dropped on purpose"]:::warn
 
   E5["<b>Declare blocking rules — ORDER IS LOAD-BEARING</b><br/>0 email · 1 npi · 2 tin · 3 phone7 · 4 address_key<br/>5 full_name · 6 name_sorted · 7 soundex+first_name · 8 last_name<br/><b>9 emb_bucket</b> ← the recall net<br/><i>entity_resolution.BLOCKING_RULES</i>"]:::key
-  E6["<b>Estimate match prior from deterministic rules</b>"]:::act
+  E6["<b>Estimate the match prior λ from deterministic rules</b><br/>rules chosen for what FIRES on the data, not what is trustworthy<br/><i>entity_resolution.lambda_rules — raises if it fails</i>"]:::key
   E7["<b>Estimate u by random sampling</b>"]:::act
-  E8["<b>Train m by expectation-maximisation</b><br/>one pass per blocking rule; sparse blocks skipped"]:::act
+  E8["<b>Train m by expectation-maximisation</b><br/>one pass per blocking rule; sparse blocks skipped<br/>u stays FIXED — see NOU"]:::act
+  E8B["<b>Report the calibration</b><br/>λ · bits per agreeing field · every m/u EM could not estimate<br/><i>entity_resolution.calibration_report / training_completeness</i>"]:::key
+  E8C{"fully trained?"}:::dec
+  E8D["<b>Raise ModelNotFullyTrained</b><br/>only when CFG.ER_REQUIRE_FULLY_TRAINED"]:::bad
   E9["<b>Score every blocked candidate pair</b><br/>ONE model scores both lanes<br/><i>linker.inference.predict</i>"]:::act
-  E10["<b>same_as_edges rows</b><br/>mention_a, mention_b, probability, match_weight,<br/><b>blocked_by</b> = the rule that proposed it"]:::obj
+  E10["<b>same_as_edges rows</b><br/>mention_a, mention_b, probability, match_weight,<br/><b>blocked_by</b> = the rule that proposed it<br/><b>uncalibrated</b> = substituted comparisons this edge used"]:::obj
   E11{"structural conflict?"}:::dec
   E12["<b>Edge suppressed before clustering</b><br/><i>cannot_link_reason</i> — person vs org, Jr/Sr, conflicting NPI"]:::bad
   E13["<b>Union-find over edges ≥ threshold</b><br/><i>entity_resolution.cluster_at</i>"]:::act
@@ -538,7 +541,10 @@ flowchart TD
   V7 --> E5
   V8 -.-> E5
   V9 -.-> E5
-  E5 --> E6 --> E7 --> E8 --> E9 --> E10 --> E11
+  E5 --> E6 --> E7 --> E8 --> E8B --> E8C
+  E8C -->|"no, and required"| E8D
+  E8C -->|"otherwise, flagged"| E9
+  E9 --> E10 --> E11
   E11 -->|"yes"| E12
   E11 -->|"no"| E13 --> E14 --> E15 --> E16
 
@@ -592,6 +598,38 @@ flowchart TD
 
   PROP2D["<b>Rule 9 partly compensates — but does not replace this</b><br/>'adjuster Karen Wu' and 'Karen Wu' embed close together, so the lane proposes the pair even when three deterministic rules miss it. That recovers the CANDIDATE.<br/><br/>It does not recover the SCORE: ForenameSurnameComparison still sees first_name 'adjuster' vs 'karen' and scores the pair down whichever lane proposed it.<br/><br/><i>Blocking and comparison are separate failures. The recall net fixes the first and cannot touch the second, which is exactly why PROP2 is still open.</i>"]:::warn
   PROP2C -.-> PROP2D
+
+  %% ---------------- calibration: measured 2026-09-02 -----------------
+  LAM["<b>The prior multiplies every posterior, and it was 16× too low</b><br/>λ = probability_two_random_records_match: the chance two randomly drawn mentions co-refer. Splink's 1e-4 default assumes a corpus where entities barely recur; a claim file is the opposite.<br/><br/>The first rule set was <b>[email, npi, full_name AND dob]</b> — the textbook choice, and on this corpus the fields that are almost always ABSENT: email is non-null on 55 of 922 mentions, npi on <b>7</b>. The rules barely fired.<br/><br/>&nbsp;&nbsp;λ estimated <b>0.000764</b> · λ in truth <b>0.012097</b><br/><br/><i>Nothing compensates for a wrong prior. EM re-fits m against whatever u it is handed, so u errors partly wash out — λ is applied at the end and simply shifts the whole distribution down ~4 bits.</i>"]:::bad
+  E6 -.->|"why these rules"| LAM
+
+  LAMFIX["<b>What it cost, and what fixing it bought</b><br/>Measured end-to-end through the shipped path, B-cubed vs ground truth at the operating threshold <b>0.45</b>:<br/><br/>&nbsp;&nbsp;before — F1 <b>0.604</b> · P 0.973 · R 0.438 · <b>515 entities</b><br/>&nbsp;&nbsp;after &nbsp;— F1 <b>0.800</b> · P 0.888 · R 0.728 · <b>81 entities</b><br/>&nbsp;&nbsp;<i>(42 is the truth for this subset: ~12x over-split becomes ~1.9x)</i><br/><br/>The curve also stops being a cliff: worst F1 anywhere in 0.20–0.95 rises from <b>0.185</b> to <b>0.783</b>.<br/><br/><i>ER_LINK_THRESHOLD = 0.45 needed no change — it was never the bug, it was downstream of it. The system was splitting one entity into twelve while reporting 0.97 precision, and no run output named the prior, so nothing caught it.</i>"]:::key
+  LAM -.-> LAMFIX
+
+  ORDER["<b>The sanity check with no statistics in it</b><br/>What one agreeing field is worth, in bits. A globally unique identifier MUST outrank a name.<br/><br/>Before the fix, on this corpus:<br/>&nbsp;&nbsp;exact name <b>+4.96</b> · exact phone +3.07 · exact address +2.95<br/>&nbsp;&nbsp;<b>exact NPI +2.73</b> · exact email +2.57<br/><br/>A nationally unique provider identifier counted for barely half a name match.<br/><br/><i>Printed every run by calibration_report. If npi or email ever sits below name_sorted again, the model is reporting that something is wrong with its inputs — no ground truth needed to see it.</i>"]:::key
+  E8B -.->|"evidence ordering"| ORDER
+
+  UNTR["<b>Untrained parameters are named, not swallowed</b><br/>Splink logs 'your model is not yet fully trained … will use default values' and carries on. The substitute is not neutral: for a two-level comparison the invented m for agreement is <b>0.95 whatever the field is</b>.<br/><br/>Currently 7 parameters: three email levels (username / Jaro-Winkler variants) and <b>npi's exact-match m</b>. Training harder cannot fix npi — only 7 of 922 mentions carry one, so there is genuinely nothing to learn from.<br/><br/><i>same_as_edges.uncalibrated names the substituted comparisons an edge ACTUALLY used — 2 of 14,895 edges, both npi. An edge whose npi values were both null used no npi parameter and is perfectly calibrated, so a blanket flag would be alarmist and useless for triage.</i>"]:::warn
+  E8B -.->|"completeness"| UNTR
+
+  NOU["<b>Rejected: letting EM train u as well</b><br/>fix_u_probabilities=False is the obvious lever and it is <b>wrong here</b>. Measured: B-cubed F1 <b>0.80 → 0.64</b>, with name_sorted m=0.0 and −44-bit weights.<br/><br/>EM sees only the <b>blocked</b> population, which is not remotely representative of random pairs.<br/><br/><i>Also rejected: Splink's populate_…_from_trained_values, which returns λ = 0.619 — it claims 62% of random mention pairs co-refer. It scores acceptably at 0.45 by accident and peaks at 0.99, destroying the threshold's meaning. A prior nobody can defend out loud is not a calibration.</i>"]:::bad
+  E8 -.->|"why u stays fixed"| NOU
+
+  UOPEN["<b>OPEN (T0.5) — u is inflated 3–37× and the fix is not obvious</b><br/>estimate_u_using_random_sampling estimates P(agree GIVEN non-match) by sampling random pairs and treating them ALL as non-matches. Valid when λ≈1e-4; here λ≈1.2e-2, so ~1.2% of the sample are true matches and they inflate u.<br/><br/>Measured against ground truth: phone <b>36.9×</b> · address 18.3× · name 13.8× · dob 4.2× · email 2.6×.<br/><br/>Ceiling, with u oracle-corrected: <b>+0.026 F1</b>, and the 0.99 cliff disappears (F1 0.80 instead of 0.29).<br/><br/><i>The textbook remedy — estimate u on a DEDUPLICATED frame — fails here: that frame is 42 rows and contains no identifier pairs at all, so Splink cannot observe the columns that need it most. Candidate: two-pass, computing u analytically over cross-cluster pairs. Unsolved: choosing the pass-1 threshold without labels.</i>"]:::proposed
+  E7 -.->|"known bias"| UOPEN
+
+  %% ---------------- T0.7: what counted as evidence at all -----------
+  EVID["<b>What the model was allowed to count as evidence</b><br/>Found by reading the bits-per-field report and asking why NPI was there and TIN, SSN and VIN were not.<br/><br/>&nbsp;&nbsp;<b>VIN</b> — no detector anywhere; a declared identifier kind that nothing produced<br/>&nbsp;&nbsp;<b>SSN</b> — in the frame, never blocked, never compared: it could only VETO a merge, never support one<br/>&nbsp;&nbsp;<b>TIN</b> — blocked, so it proposed candidates, then contributed ZERO to their score<br/>&nbsp;&nbsp;<b>NPI</b> — compared, and the RAREST identifier kind in the corpus<br/><br/><i>None of it was a decision. comparison_specs documents why entity_class is excluded and is silent on TIN and SSN — the gap was invisible until a run printed what each field was worth.</i>"]:::bad
+  E8B -.->|"T0.7"| EVID
+
+  EVIDFIX["<b>Fixed, and the benefit reported honestly</b><br/>Added tin/ssn/vin comparisons, a VIN detector with a real ISO 3779 check digit, and a graded address comparison over decomposed street·city·state·zip.<br/><br/><b>Measured: B-cubed F1 0.810 -&gt; 0.812. That is noise.</b> TIN was the only genuinely new trained signal (+2.21 bits over 25 mentions); the address regrade moved its top level ~+3.1 -&gt; +4.56 bits.<br/><br/><b>The first attempt made things worse in a way only the report could see:</b> ssn and vin landed at the TOP of the ordering at +10.00 bits each, entirely fabricated — neither column holds a single value in this corpus, so EM trained nothing and Splink substituted m=0.95 / u=0.0009.<br/><br/><i>_prune_absent now drops an all-NULL comparison rather than training on nothing. That is also the tunable behaviour: a client whose notes carry SSNs gets it trained on their data; one whose notes do not is never shown an invented weight.</i>"]:::key
+  EVID -.-> EVIDFIX
+
+  ADDR["<b>Why address is ONE comparison and not four</b><br/>Street, city, state and zip are heavily correlated — agreeing on a street almost guarantees agreeing on the city. Fellegi-Sunter assumes comparisons are conditionally independent given match status, so four separate comparisons would count one piece of evidence four times, inflating the weight on exactly the pairs that need care.<br/><br/>Ordered, mutually exclusive levels price the combination once:<br/>&nbsp;&nbsp;same street + (zip or city) &gt; same street &gt; same locality &gt; else<br/><br/>The old model compared one opaque number|street|zip composite by ExactMatch, so dropping a zip earned <b>no</b> evidence rather than less — while a city-only address exact-matched every address in its zip.<br/><br/><i>Four levels, not eight: any level EM cannot reach becomes a Splink-invented default, and address components are sparse enough that a finer ladder would buy resolution nobody trained.</i>"]:::key
+  EVIDFIX -.-> ADDR
+
+  D21["<b>BLOCKED (D21) — two of the three lanes cannot be tested</b><br/>The ground-truth manifest declares <b>125 SSNs and 140 VINs</b>, and <b>zero appear in any of the 2,000 notes</b>. corpus_gen mints them as entity attributes and never places them into note text; its VIN values also fail their own ISO check digit.<br/><br/><i>So the SSN and VIN comparisons are correct-by-construction and unexercised. They are pruned automatically here, and must not be counted as coverage until the generator plants them.</i>"]:::proposed
+  ADDR -.-> D21
 ```
 
 ### F — Assemble the global entity graph
@@ -1500,4 +1538,135 @@ flowchart LR
   T1 -.-> W5
   G1 -.-> W5
   A2 -.-> W6
+```
+
+### 16-platform-runtime-and-data-boundaries
+
+Source: [`16-platform-runtime-and-data-boundaries.mermaid`](16-platform-runtime-and-data-boundaries.mermaid)
+
+```mermaid
+%% Lucid-ready Mermaid: paste the full file into Lucid's Mermaid import.
+%% Solid green = committed current capability. Purple dashed = agreed target capability.
+flowchart TB
+  classDef source fill:#E8EEF8,stroke:#315A8A,stroke-width:1.6px,color:#102A43
+  classDef store fill:#E7F5F7,stroke:#27717A,stroke-width:1.7px,color:#123A40
+  classDef model fill:#FFF2D9,stroke:#A06416,stroke-width:1.7px,color:#5A3300
+  classDef service fill:#F7F7F4,stroke:#535B61,stroke-width:1.4px,color:#20252A
+  classDef live fill:#E4F2EA,stroke:#2F6B4F,stroke-width:1.7px,color:#12301F
+  classDef target fill:#F3E8FF,stroke:#7048A8,stroke-width:1.7px,stroke-dasharray:7 4,color:#32195A
+  classDef guard fill:#FFF0F0,stroke:#A33A3A,stroke-width:1.5px,stroke-dasharray:5 3,color:#5C1616
+  classDef note fill:#FFF8C9,stroke:#8A6A00,stroke-width:1.4px,color:#493800
+  classDef terminal fill:#263238,stroke:#263238,color:#FFFFFF
+
+  LEGEND["<b>Runtime map — which technology is used where, and why</b><br/>Green = current; purple dashed = target. ‘Text’ means original characters/tokens. ‘Vector’ means a numeric embedding; it is never treated as a fact."]:::note
+
+  subgraph INTAKE["1. Intake and authoritative evidence"]
+    direction LR
+    S0(["client note export<br/>text file/API payload + claim ID<br/>optional: note type, author, timestamp"]):::source
+    S1["immutable source store<br/>object/file storage: original note bytes + SHA-256"]:::store
+    S2["RELATIONAL evidence store<br/>SQLite today → PostgreSQL-class RDBMS target<br/>documents, spans, identifiers, assertions, runs, entity snapshots"]:::store
+    S0 -->|raw note text + source metadata| S1
+    S1 -->|document version + source metadata| S2
+  end
+
+  subgraph EXTRACT["2. Extraction — locate evidence before interpreting it"]
+    direction LR
+    X0["read raw text chunks<br/>from immutable source store"]:::service
+    X1["GLiNER NER<br/><b>input:</b> raw text tokens<br/><b>output:</b> named-entity spans + labels<br/><b>why:</b> broad recall across casing / phrasing"]:::live
+    X2["identifier detectors + validators<br/><b>input:</b> raw text characters<br/><b>output:</b> phone/email/NPI candidates + validation<br/><b>why:</b> exact structured values need deterministic checks"]:::live
+    X3["LLM relation + activity extraction<br/><b>input:</b> raw chunk text + allowed context, never vectors<br/><b>output:</b> constrained JSON: arguments, raw predicate/action, evidence offsets<br/><b>why:</b> recover open-ended semantics patterns cannot enumerate"]:::target
+    X4["span and schema verifier<br/>raw[start:end] must equal cited surface;<br/>reject unsupported model output"]:::target
+    X5["RELATIONAL write<br/>candidate ledger + mentions + identifier observations + grounded assertions<br/><b>why:</b> transactionality, joins, versioning, auditability"]:::store
+    X0 --> X1 --> X5
+    X0 --> X2 --> X5
+    X0 --> X3 --> X4 --> X5
+  end
+
+  S1 --> X0
+  S2 -.->|document metadata / claim scope| X0
+
+  subgraph RESOLUTION["3. Entity resolution — embeddings propose; probabilistic linkage decides"]
+    direction LR
+    R0["RELATIONAL read<br/>mention surfaces + validated IDs + source/reference facts"]:::service
+    R1["deterministic candidate blocks<br/>exact IDs, normalized name keys, client reference keys<br/><b>why:</b> cheap, explainable high-precision candidates"]:::live
+    R2["embedding model<br/><b>input:</b> normalized mention text, not the full note<br/><b>output:</b> numeric vector"]:::live
+    R3["ER vector candidate index<br/>FAISS today; vector-store abstraction later<br/><b>operation:</b> top-K nearest mention candidates<br/><b>why:</b> catch alias/variant pairs blocking misses"]:::live
+    R4["Splink / Fellegi-Sunter scorer<br/><b>input:</b> candidate pair features from relational store<br/><b>output:</b> pair probability + feature explanation<br/><b>why:</b> the decision is measured, not semantic similarity"]:::live
+    R5["binding + cluster policy<br/>auto-link / review / no-link; temporal identifier conflicts<br/><b>why:</b> do not repair a wrong binding by splitting a correct entity"]:::target
+    R6["RELATIONAL entity view<br/>versioned membership, stable identity/lineage, decision provenance"]:::target
+    X5 --> R0
+    R0 --> R1 --> R4
+    R0 --> R2 --> R3 -->|candidate mention IDs only| R4
+    R4 --> R5 --> R6
+  end
+
+  subgraph PUBLISH["4. Build purpose-specific read models from evidence"]
+    direction LR
+    P0["RELATIONAL / exact index<br/><b>operation:</b> key lookup and metadata filters<br/><b>used for:</b> validated identifiers, claim scope, dates, entity IDs<br/><b>why:</b> exact answers and filtering"]:::live
+    P1["full-text lexical index<br/><b>operation:</b> BM25 / phrase / rare token match<br/><b>used for:</b> names, codes, jargon, quoted language<br/><b>why:</b> literal wording is not a vector-similarity problem"]:::target
+    P2["chunk vector index<br/>FAISS today<br/><b>operation:</b> nearest-neighbor passage search<br/><b>used for:</b> paraphrase / concept recall<br/><b>why:</b> find meaning when wording changes"]:::live
+    P3["GRAPH DATABASE / property graph projection<br/>igraph today; graph DB target at scale<br/><b>operation:</b> bounded typed traversal<br/><b>used for:</b> entity-to-entity paths and identifier adjacency<br/><b>why:</b> relationships, not keyword search"]:::target
+    P4["temporal event read model<br/><b>operation:</b> ordered / as-of event query<br/><b>used for:</b> claim chronology and corrections"]:::target
+    X5 --> P0
+    X5 --> P1
+    X5 --> P2
+    X5 --> P3
+    X5 --> P4
+    R6 --> P0
+    R6 --> P3
+  end
+
+  subgraph SEARCH["5. Search — query each representation for the question it can answer"]
+    direction TB
+    Q0(["authorized analyst question + claim/time scope"]):::source
+    Q1["deterministic query analysis<br/>extract exact values, terms, concepts, date/path intent<br/><b>no LLM required to route the POC</b>"]:::service
+    Q2{{"run every applicable lane;<br/>apply authorization and claim filters first"}}:::target
+    Q0 --> Q1 --> Q2
+    Q3["exact lookup<br/>query tokens → normalized identifier / metadata key"]:::live
+    Q4["lexical retrieval<br/>query words → BM25 / phrase hits"]:::target
+    Q5["query embedding<br/><b>input:</b> question text<br/><b>output:</b> numeric query vector → k-NN chunks"]:::live
+    Q6["temporal query<br/>time language → ordered events / assertions"]:::target
+    Q7["graph traversal<br/>resolved seed ID → bounded factual paths"]:::target
+    Q2 --> Q3 --> P0
+    Q2 --> Q4 --> P1
+    Q2 --> Q5 --> P2
+    Q2 --> Q6 --> P4
+    Q2 --> Q7 --> P3
+    Q8["retain lane, rank, raw score, evidence ID, filters"]:::target
+    Q9["deduplicate then fuse ranked evidence<br/>RRF + optional reranker"]:::target
+    Q10["EvidencePack in relational form<br/>only selected raw spans, assertions, entity snapshots, chronology"]:::store
+    P0 --> Q8
+    P1 --> Q8
+    P2 --> Q8
+    P3 --> Q8
+    P4 --> Q8
+    Q8 --> Q9 --> Q10
+  end
+
+  subgraph ANSWER["6. Answer and verify"]
+    direction LR
+    A0["LLM synthesis<br/><b>input:</b> retrieved raw text + structured triples; target input is an EvidencePack<br/>never vectors and never the whole database<br/><b>output:</b> answer claims + requested citations<br/><b>why:</b> readable explanation, not fact discovery"]:::live
+    A1["mechanical citation verifier<br/>check document exists, span bounds, and cited span was in EvidencePack"]:::live
+    A2(["answer, clickable source spans,<br/>and retrieval / resolution trace"]):::terminal
+    A3["reject unsupported claim;<br/>qualify or abstain"]:::guard
+    Q10 --> A0 --> A1
+    A1 -->|supported| A2
+    A1 -->|unsupported| A3
+  end
+
+  LEGEND -.-> S0
+  LEGEND -.-> Q0
+
+  subgraph BOUNDARIES["Non-negotiable boundaries"]
+    direction LR
+    B1["<b>Relational database = system of record</b><br/>facts, evidence spans, decisions, versions, and joins"]:::note
+    B2["<b>Vector index = recall accelerator</b><br/>returns candidates/passages; it never establishes identity or truth"]:::note
+    B3["<b>Graph database = relationship navigation</b><br/>answers bounded paths only after edges are evidence-grounded"]:::note
+    B4["<b>LLM = constrained interpretation and presentation</b><br/>raw text in; structured JSON or cited prose out; never an untraceable store"]:::note
+  end
+  S2 -.-> B1
+  R3 -.-> B2
+  P3 -.-> B3
+  X3 -.-> B4
+  A0 -.-> B4
 ```

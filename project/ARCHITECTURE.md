@@ -89,6 +89,21 @@ Two structural changes:
 rules rather than accepting Splink's 1e-4 default, which is badly wrong for a
 corpus where entities recur heavily.
 
+*Calibration is now reported, not assumed.* Every run prints the prior and what
+each agreeing field is worth in bits, and the run output carries a `calibration`
+block naming any m/u parameter EM could not estimate. This exists because the
+first version of that prior was estimated from rules requiring `email` or `npi`
+— fields present on 6% of mentions. It came out **16× too low**, subtracting ~4
+bits from every edge and splitting 42 entities into 515, while the system went
+on reporting 0.97 precision. Nothing in any run output named the prior, so
+nothing caught it. See `entity_resolution.lambda_rules()`; the rule-selection
+principle is *which high-precision rules actually fire on the data in hand*, not
+which fields are most trustworthy in the abstract.
+
+Edges that used a substituted parameter are flagged individually in
+`same_as_edges.uncalibrated`, so an uncalibrated merge is distinguishable from a
+calibrated one at read time rather than only in aggregate.
+
 **Identity is a threshold-derived view.** Output is a `same_as_edges` table;
 resolved identity is connected components at a chosen threshold, materialized
 into `entity_snapshot`. Nothing is written as "same forever", so a questionable
@@ -104,6 +119,23 @@ edges *before* clustering rather than vetoing permanently.
 | 0.60 (F1 max) | 1,113 | 0.853 | 0.822 | **0.837** |
 | 0.70 | 9,855 | 0.934 | 0.569 | 0.707 |
 | 0.90 | 16,766 | 0.997 | 0.106 | 0.192 |
+
+> **Stale — kept for the shape, not the numbers.** This table was measured on a
+> 16,766-mention corpus state that no longer exists, and it predates the match
+> prior fix (2026-09-02). It has not been re-measured at that scale. The current
+> 60-document store measures as follows, and *is* current:
+>
+> | threshold | entities | B³ P | B³ R | B³ F1 |
+> |---|---|---|---|---|
+> | 0.20 (F1 max) | 76 | 0.836 | 0.788 | **0.811** |
+> | **0.45** (operating) | **81** | **0.888** | **0.728** | **0.800** |
+> | 0.60 | 84 | 0.895 | 0.726 | 0.802 |
+> | 0.90 | 95 | 0.907 | 0.710 | 0.797 |
+>
+> Ground truth is 42 entities for this subset. Before the prior fix the same store gave 515
+> entities at 0.45 (F1 0.604, recall 0.438) and the curve collapsed to F1 0.185
+> at the top; it is now flat (worst F1 0.783 across 0.20–0.95). **Re-measuring
+> the full corpus is outstanding.**
 
 Ground truth is 570 entities. F1 is flat across 0.30–0.60; we operate at **0.45**
 rather than the marginal F1 max at 0.60, favouring recall since the product goal

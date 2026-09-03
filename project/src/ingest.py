@@ -257,6 +257,12 @@ def _log_resolve(r: dict) -> None:
         emb = lanes.get("emb_bucket", 0)
         runlog.field("blocking", f"{sum(lanes.values()):,} pairs; "
                                  f"{emb:,} from the embedding lane alone")
+    # SplinkResolver already logged the prior and the evidence ordering during
+    # training; what belongs here is the consequence for what got stored.
+    if r.get("n_edges_uncalibrated"):
+        runlog.field("uncalibrated", f"{r['n_edges_uncalibrated']:,} of "
+                                     f"{r.get('n_edges_scored'):,} edges used a "
+                                     "substituted m/u value")
 
 
 def _log_incremental(r: dict) -> None:

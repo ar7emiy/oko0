@@ -50,9 +50,14 @@ not authority — each was independently checked.
 | D11 | No per-client config; corrections never feed the system | B, me | open |
 | D12 | `_is_plausible_name` drops single-token names | A, me | open |
 | D13 | Cluster-level consistency guard lost in v1→v2 | B | **measured — reframed.** The one violation is caused by D4, not by clustering. Guard would split a correct cluster |
-| D14 | Splink training completeness never checked | B | open |
+| D14 | Splink training completeness never checked | B | ✅ **fixed** — reported per-run and per-edge; 7 untrained parameters named |
 | D15 | `who_is_at` normalized differently than the indexer, so phone and address lookup returned `[]` **always** | me, via T3.2 | ✅ **fixed** |
 | D16 | An `identifier_observations` row has `kind=phone, value_raw="voicemail"` — identifier extraction has a precision leak | me, via T3.2 | open |
+| D17 | **The match prior was 16× too low**, so every edge lost ~4 bits and 42 entities were split into 515 | me, via T0.4 | ✅ **fixed** — B-cubed F1 at the operating threshold 0.604 → 0.800 |
+| D18 | `u` is inflated 3–37× by match contamination in the random-pair sample | me, via T0.4 | open — ceiling measured (+0.026 F1), no label-free estimator yet (T0.5) |
+| D19 | **TIN was blocked but never compared** — it proposed candidates and then contributed zero evidence to their score | user, via T0.4's evidence report | ✅ **fixed** — now +2.21 bits |
+| D20 | **`address_key` compared by ExactMatch only** — one opaque `number|street|zip` composite, so a missing zip earned *no* evidence rather than less, while a city-only address exact-matched every address in its zip | user, via T0.4 | ✅ **fixed** — graded four-level comparison over decomposed components |
+| D21 | **SSN and VIN are declared in the ground-truth manifest but never written into any note** — 125 and 140 respectively, zero occurrences across all 2,000 notes. `corpus_gen` mints them as entity attributes and never places them. The VIN values also fail their own ISO check digit | me, via D19 | open — corpus defect; makes two identifier lanes untestable |
 
 **Scaling, not correctness:** `filter_fn` is an O(total-chunks) metadata scan per
 query; `entities_in_chunks` iterates every mention per query.
@@ -66,12 +71,16 @@ Verified by grep/execution, 2026-09-02.
 | | value | conditions |
 |---|---|---|
 | identifier recall (finding) | 1.000 | synthetic, 2000 notes |
-| identifier **binding** precision | **0.747** (LLM: **0.973**) | measured vs GT; line-rule recall 0.371 |
+| identifier **binding** precision | **0.940** (LLM lane **0.969**) | in-pipeline vs GT, 8 docs; was 0.747 under the line rule. **Not yet checked on the handwritten notes** — the only read on generality |
 | entity recall | 0.857 | synthetic only — generality unproven (D-gen) |
 | scan coverage | 100% chars/doc | — |
-| B³ F1 | 0.83 | **stale** — predates embedding lane; LLM lane was stubbed |
+| **B³ F1 at the operating threshold (0.45)** | **0.800** (P 0.888 / R 0.728) | 60-doc subset, post-T0.4. Was **0.604** (P 0.973 / R 0.438) |
+| **entities vs ground truth @ 0.45** | **81 vs 42 = 1.9×** | same subset. Was **515 = 12.3×**. Residual over-split is D18 |
+| **B³ F1 floor across 0.20–0.95** | **0.783** | the curve is flat post-T0.4; was **0.185** |
+| **match prior λ** | **0.026** | estimated 0.0264 against a measured 0.0121; was 0.000764 |
 | identical-surface pairs above threshold | **4.6%** of 7,468 | the D1/D5 org-name failure |
 | single-note ingest | 18.5s | 60-note corpus, live models |
+| full-corpus (2,000-note) figures | **not re-measured** | the full run is hours (T0.6); every row above the ingest line is the 60-doc subset |
 
 ---
 
@@ -126,25 +135,235 @@ be a second mistake.
 **Falsified as originally written.** Kept as a record of an item that
 measurement reversed.
 
-### T0.4 Splink training completeness check *(D14)*
-**Status:** not started · **Confidence:** measured
+### T0.4 Splink calibration *(D14 — and D17, which the investigation found)*
+**Status:** ✅ **shipped** · **Confidence:** measured end-to-end
 
-**Current.** Splink prints *"Your model is not yet fully trained. Missing
-estimates for: email (some u values are not trained, some m values are not
-trained)"* and *"will use default values"* on essentially every run. Nothing
-reads it. I watched these scroll past repeatedly and treated them as noise.
+Started as the small item the heading says: read the *"your model is not yet
+fully trained"* warning instead of letting it scroll past. Measuring first — the
+standing rule — turned up **a much larger defect sitting behind it**, and the
+original item turned out to be the minor half.
 
-**Problem.** An untrained comparison silently falls back to Splink defaults, so
-every probability that comparison touches is uncalibrated — while still being
-reported as a calibrated probability. That undercuts the system's headline claim
-directly.
+#### What was measured
 
-**Proposed.** After training, inspect the settings for untrained m/u values.
-Either raise, or record the untrained set in the run output and on affected
-edges. Consistent with the no-silent-fallback policy already in force everywhere
-else.
+Persisted model inspected parameter by parameter, then every candidate fix run
+end-to-end and scored with B-cubed against ground truth. In evidence terms:
+
+| agreeing field | was worth | should be worth |
+|---|---|---|
+| exact name | +4.96 bits | +8.22 |
+| exact phone | +3.07 bits | +8.26 |
+| exact address | +2.95 bits | +7.54 |
+| **exact NPI** | **+2.73 bits** | — (m never estimated) |
+| exact email | +2.57 bits | +4.11 |
+
+An exact match on a **nationally unique provider identifier** counted for
+*little more than half* an exact match on a name. The ordering was inverted
+against every intuition about what identifies a person.
+
+#### Root cause — **D17, the match prior**
+
+`probability_two_random_records_match` (λ) is estimated from deterministic rules
+and then applied to every posterior. The shipped rules were
+`[email, npi, full_name AND dob]` — the textbook choice, and on this corpus
+**the fields that are nearly always absent**: email is non-null on 55 of 922
+mentions, npi on 7. The rules barely fired.
+
+    λ estimated  0.000764        λ in truth  0.012097          16x low
+
+Nothing compensates for a wrong prior. EM re-fits `m` against whatever `u` it is
+handed, so `u` errors partly wash out; λ is applied at the end and simply shifts
+the entire distribution down ~4 bits.
+
+#### Result, through the shipped code path
+
+| | at threshold 0.45 | entities | flatness (min F1, 0.20–0.95) |
+|---|---|---|---|
+| before | F1 **0.604**, P 0.973, R 0.438 | **515** | **0.185** |
+| after | F1 **0.800**, P 0.888, R 0.728 | **81** | **0.783** |
+
+42 is the truth for this 60-document subset, so the system was splitting one
+entity into **twelve** while reporting 0.97 precision for it — because B-cubed
+precision *rises* under over-splitting, which is exactly why a precision number
+alone cannot be trusted as a health check. It is still ~1.9× over-split after
+the fix; that residue is T0.5.
+
+The curve also stops being a cliff, which is what lets a shipped threshold
+survive contact with a client's data.
+
+**`ER_LINK_THRESHOLD = 0.45` needed no change** — it was never the bug, it was
+downstream of it. Its config comment had drifted into describing a curve the
+system no longer produced; that comment now carries the correction.
+
+#### Rejected, with reasons
+
+- **Let EM train `u` too** (`fix_u_probabilities=False`). Measured F1 0.80 →
+  **0.64**; produces `name_sorted` m=0.0 and −44-bit weights. EM sees only the
+  *blocked* population, which is not remotely representative. `u` stays fixed.
+- **Splink's `populate_probability_two_random_records_match_from_trained_values`.**
+  Returns λ = **0.619** — it claims 62% of random mention pairs co-refer. Scores
+  acceptably at 0.45 by accident and peaks at 0.99, destroying the threshold's
+  meaning. A prior nobody can defend out loud is not a calibration.
+- **Estimate `u` on a deduplicated frame** (the textbook remedy for
+  match-contaminated `u`). Not viable here: the deduplicated frame is 42 rows and
+  contains no identifier pairs at all, so Splink cannot observe the
+  email/phone/npi/address levels. **The remedy fails precisely on the columns
+  that need it.**
+
+#### Shipped
+
+`entity_resolution.lambda_rules()` (name-led rules that actually fire, with the
+measurement in the docstring) · `training_completeness()` · `calibration_report()`
+· λ and the evidence ordering logged **every run** · `calibration` block in the
+run output · `same_as_edges.uncalibrated` naming the untrained comparisons an
+edge actually used · `CFG.ER_REQUIRE_FULLY_TRAINED` to make it fatal · a failed
+λ estimate now **raises** instead of falling through to Splink's 1e-4.
+
+The per-edge flag is selective by design: **2 of 14,895 edges**, both `npi`. A
+blanket flag would have been alarmist and useless for triage.
+
+**Falsification test that now exists:** the run output states λ and the bits each
+agreeing field is worth. If an identifier is ever worth less than a name, that is
+visible without reading the code.
+
+### T0.5 Correct `u` for match contamination — the remaining calibration gap
+**Status:** open · **Confidence:** measured (ceiling quantified, no label-free
+implementation yet)
+
+**Current.** `estimate_u_using_random_sampling` estimates *P(agree | non-match)*
+by sampling random pairs and treating them all as non-matches. Valid when λ ≈
+1e-4; here λ ≈ 1.2e-2, so the sample is ~1.2% true matches and those inflate `u`.
+Measured against ground truth: **phone 36.9× too high, address 18.3×, name
+13.8×, dob 4.2×, email 2.6×.**
+
+**Why it is second-order, not first.** EM re-fits `m` under whatever `u` it is
+given, so the *ratio* partly survives. With λ fixed and `u` oracle-corrected
+(override verified to survive training):
+
+    λ corrected only        best F1 0.8109   @0.45 0.8002
+    λ + u corrected         best F1 0.8387   @0.45 0.8064
+
+**+0.026 F1** — and, more usefully, the 0.99 cliff disappears (F1 0.80 instead of
+0.29), because the mass of true pairs stops being crushed below the top of the
+scale.
+
+**Blocked on:** no label-free estimator yet. Dedup-frame sampling is out (see
+above). The open candidate is a two-pass scheme — cluster once, then compute `u`
+analytically over cross-cluster pairs (424k pairs on this corpus, exact, no
+sampling) — but the pass-1 threshold has to be chosen without labels, and a naive
+fixed-point iteration is bistable: started from the shipped λ it converges to the
+broken value.
+
+**Falsification test.** Compare the two-pass `u` against the GT-derived `u` on
+this corpus; require within 3× on every column, and require F1 ≥ 0.83.
 
 ---
+
+### T0.6 The regression gate takes hours, so it does not get run
+**Status:** open · **Confidence:** measured
+
+**Current.** `tests/smoke_test.py` regenerates the full 2,000-note corpus and
+re-extracts all of it through the LLM lanes. Measured during T0.4: **~46 model
+calls per minute**, and the run was still inside Layer 1 after 50 minutes with
+zero mentions committed. It was abandoned, and T0.4 shipped behind a **scoped**
+regression over 60 documents instead.
+
+**Problem.** A gate nobody can afford to run is not a gate. This gets *worse*
+with every LLM lane added — the identifier binding lane (T1.2) added one call
+per chunk containing identifiers, and the relation lane will add more. The
+failure mode is not that the test breaks, it is that it stops being run and
+changes ship on scoped checks whose coverage nobody has audited.
+
+**Also measured, and worse:** the assertions themselves were insensitive to the
+defect T0.4 found. `assert best["bcubed_f1"] > 0.6` passed at **0.79** while the
+operating threshold was splitting 42 entities into 515, because B-cubed
+precision *rises* under over-splitting and the sweep's best point sat far from
+where the system actually runs. Fixed as part of T0.4 — the gate now checks the
+entity count at the operating point and the calibration block — but the lesson
+generalises: **assert at the operating point, not at the best point on a curve.**
+
+**Proposed.** Split into tiers. A `--tier=fast` covering the invariants over a
+fixed 60-document subset (minutes, run on every change), and the full-corpus run
+as a deliberate, separately-invoked job whose numbers refresh `ARCHITECTURE.md`.
+The subset must be fixed and named, not "the first N", so its numbers are
+comparable across runs.
+
+**Falsification test.** The fast tier must catch every defect the full run would
+on the scoped corpus — verify by re-introducing the T0.4 prior bug and
+confirming the fast tier fails.
+
+### T0.7 Identifier comparisons: TIN, SSN, VIN and a graded address *(D19–D21)*
+**Status:** ✅ **shipped**, benefit **not demonstrated** · **Confidence:** measured
+
+**Found by the user**, reading T0.4's new evidence report and asking *"why NPI
+only? where is SSN, TIN, address, city, state, zip?"* — which is exactly the
+question that report exists to provoke.
+
+**Current, before.** `comparison_specs` scored name, email, phone, npi,
+address_key and dob. Checked against the schema and the corpus:
+
+| kind | detected | blocks | **scores** | can veto |
+|---|---|---|---|---|
+| phone | ✓ | ✓ | ✓ | – |
+| address | ✓ | ✓ | ✓ *(exact only)* | – |
+| email | ✓ | ✓ | ✓ | – |
+| VIN | **✗ no detector** | ✗ | **✗** | ✗ |
+| SSN | ✓ | ✗ | **✗** | ✓ |
+| NPI | ✓ | ✓ | ✓ | ✓ |
+| TIN | ✓ | ✓ | **✗** | ✓ |
+
+SSN could only ever *veto* a merge, never support one. TIN proposed candidates
+and then contributed nothing to their score. NPI — scored — is the rarest kind
+in the corpus. None of this was a decision: `comparison_specs` documents why
+`entity_class` is excluded and is silent on TIN and SSN.
+
+**Shipped.** `tin`, `ssn`, `vin` comparisons; a VIN detector with a real ISO 3779
+check digit; `textnorm.address_parts` decomposing street/city/state/zip; and a
+graded four-level address comparison replacing the all-or-nothing ExactMatch.
+One comparison with ordered levels, **not four independent ones** — the
+components are heavily correlated and Fellegi-Sunter assumes conditional
+independence, so four would price one piece of evidence four times.
+
+**Measured, and the honest answer is: barely anything.**
+
+| | before | after |
+|---|---|---|
+| B³ F1 @ 0.45 | 0.810 | **0.812** |
+| best B³ F1 | 0.861 @ 0.8 | **0.863 @ 0.8** |
+| entities vs 43 gold | 1.35× | 1.37× |
+
+**+0.002 is noise.** TIN was the only genuinely new trained signal (+2.21 bits,
+25 mentions) and the address regrade moved its top level from ~+3.1 to +4.56
+bits. Report it as shipped, not as an improvement.
+
+**The interesting failure.** The first attempt put `ssn` and `vin` at the TOP of
+the evidence ordering at **+10.00 bits each** — and both were entirely fabricated.
+Neither column has a single value in this corpus, so EM could train nothing and
+Splink substituted its two-level default (m=0.95, u=0.0009 → +10 bits). A change
+meant to add evidence instead added *the strongest signal in the model, invented*.
+**T0.4's own instrumentation caught it within one run**, which is the clearest
+argument yet for reporting bits-per-field.
+
+Fixed by `_prune_absent`: a comparison whose columns are entirely NULL in this
+corpus is dropped rather than trained on nothing. Substituted parameters went
+18 → 10. This is also the tunable-object behaviour — a client whose notes carry
+SSNs gets that comparison trained on their data; one whose notes do not is never
+shown a fabricated weight for it.
+
+**Blocked on D21.** SSN and VIN cannot be measured at all: the manifest declares
+125 and 140, and **zero appear in any of the 2,000 notes**. `corpus_gen` mints
+them as entity attributes and never places them, and its VIN values fail their
+own check digit. Until that is fixed, both lanes are correct-by-construction and
+untested — say so rather than counting them as coverage.
+
+**Falsification test.** Fix D21, re-extract, and require the SSN lane to
+measurably raise recall on the entities that carry one. If it does not, the lane
+is decoration and should be removed rather than kept for completeness.
+
+**Also shipped alongside:** `model_signature` / `check_model_current`. Changing
+`comparison_specs` invalidates the frozen model the ingest path scores arriving
+notes with, and nothing detected that — the store would have accumulated edges
+calibrated two different ways with no way to tell them apart. Ingest now refuses
+a stale model instead.
 
 # Phase 1 — Reconnect the evidence path
 

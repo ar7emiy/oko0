@@ -171,12 +171,68 @@ def main(full: bool = True):
               f"deterministic rule proposed (of {len(sae)} scored)")
     else:
         print(f"      deterministic blocking only; {len(sae)} pairs scored")
+    # ---- calibration ------------------------------------------------------
+    # These exist because the match prior was 16x too low for as long as this
+    # resolver had existed, and NOTHING here caught it: the B-cubed assertion
+    # below passed at 0.79 while the operating point was splitting 42 entities
+    # into 515. A gate insensitive to a 0.20 F1 defect is not a gate.
+    cal = out["calibration"]
+    lam = cal["probability_two_random_records_match"]
+    assert lam != 0.0001, ("match prior is Splink's untouched 1e-4 default; the "
+                           "deterministic estimate silently failed")
+    assert 1e-4 < lam < 0.5, (
+        f"match prior {lam} is outside any defensible band -- it claims "
+        f"1 in {1 / lam:.0f} random mention pairs co-refer")
+
+    # The label-free check: a globally unique identifier must outrank a name.
+    # Comparisons with a substituted parameter are exempt -- npi's m cannot be
+    # trained from 7 non-null values, and pretending otherwise is the failure
+    # this whole block exists to prevent.
+    weights = cal["agreement_weights_bits"]
+    substituted = set(cal["by_comparison"])
+    name_bits = weights.get("name_sorted", {}).get("match_weight_bits", 0.0)
+    inverted = [(k, w["match_weight_bits"]) for k, w in weights.items()
+                if k in ("npi", "email", "phone7", "dob")
+                and k not in substituted
+                and w["match_weight_bits"] < name_bits]
+    if inverted:
+        # KNOWN-FAILING, tracked as T0.5: u is inflated 3-37x because Splink's
+        # random-pair sample is contaminated with true matches, which costs the
+        # identifier comparisons more than the dense name ones. Reported rather
+        # than asserted until a label-free u estimator exists; promote this to
+        # an assert when T0.5 lands.
+        print(f"      [T0.5] {len(inverted)} identifier comparisons still score "
+              f"below name ({name_bits:+.1f}b): "
+              + ", ".join(f"{k} {v:+.1f}b" for k, v in inverted))
+
     gold = audit.entity_precision(repo, m)["_mention_gold"]
     sweep = audit.bcubed_sweep(repo, gold)
     best = sweep["best_by_f1"]
     assert best["bcubed_f1"] > 0.6, f"B-cubed F1 regressed to {best['bcubed_f1']}"
-    print(f"      {out['n_entities']} entities @ {out['operating_threshold']}; "
-          f"best F1 {best['bcubed_f1']:.3f} @ {best['threshold']}")
+
+    # Entity COUNT at the operating point, not just F1. B-cubed precision RISES
+    # under over-splitting, so a badly fragmented run can post 0.97 precision and
+    # a respectable best-F1 somewhere on the curve while the shipped threshold
+    # produces six times too many entities. That is exactly what happened.
+    # 4x is deliberately loose. The defect it exists to catch measured 12.3x
+    # (515 entities against 42) on a 60-document subset, and a tight bound here
+    # would be a fragile gate that fires on ordinary corpus variation instead of
+    # on a broken prior. Tighten it once T0.5 lands and the residual ~1.9x
+    # over-split closes.
+    n_gold = len(set(gold.values()))
+    ratio = out["n_entities"] / max(n_gold, 1)
+    assert ratio < 4.0, (
+        f"{out['n_entities']} entities at the operating threshold "
+        f"{out['operating_threshold']} against {n_gold} in ground truth "
+        f"({ratio:.1f}x) -- the corpus is being over-split. Check the match "
+        f"prior (currently {lam:.6f}) before touching the threshold.")
+
+    print(f"      {out['n_entities']} entities @ {out['operating_threshold']} "
+          f"vs {n_gold} gold ({ratio:.2f}x); best F1 {best['bcubed_f1']:.3f} "
+          f"@ {best['threshold']}")
+    print(f"      match prior {lam:.6f}; "
+          f"{cal['n_untrained_parameters']} substituted m/u parameters; "
+          f"{out['n_edges_uncalibrated']} edges flagged")
 
     print("[8/9] global graph")
     gr = build_graph.build_graph(repo)

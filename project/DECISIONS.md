@@ -212,6 +212,35 @@ ambiguous band, greedy correlation clustering — is gone, along with the
   structurally rather than as a scoring weight: there is now no code path by
   which vector proximity contributes to a match probability at all. "The vectors
   were close" is not an explanation that survives review.
+- **Calibration is reported every run, not asserted once in a comment.**
+  `entity_resolution.calibration_report()` puts the match prior, what each
+  agreeing field is worth in bits, and every m/u parameter EM could not estimate
+  into the run output; `same_as_edges.uncalibrated` names the substituted
+  comparisons an individual edge actually used.
+
+  This is a direct response to being wrong. The prior was estimated from rules
+  requiring `email` or `npi` — fields present on 6% of mentions — and came out
+  **16× too low** (0.000764 against a true 0.012097), removing ~4 bits from
+  every edge. At the operating threshold that split 42 entities into **515**
+  while B-cubed precision still read 0.97, because precision *rises* under
+  over-splitting. Nothing in any run output named the prior, so nothing caught
+  it, and the `ER_LINK_THRESHOLD` comment went on describing a curve the system
+  had stopped producing. Fixing the rules moved F1 at 0.45 from **0.604 to
+  0.800** and turned a cliff-edged curve flat (worst F1 across 0.20–0.95: 0.185
+  → 0.783). The threshold itself needed no change.
+
+  The rule-selection principle that came out of it: choose λ rules by **which
+  high-precision rules actually fire on the data in hand**, not by which fields
+  are most trustworthy in the abstract. A rule over a field that is 94% null is
+  not a conservative choice, it is a broken one.
+
+  Two related decisions, both measured: `u` stays **fixed** during EM (letting
+  EM train it drops F1 to 0.64 — EM sees only the blocked population), and
+  Splink's `populate_probability_two_random_records_match_from_trained_values`
+  is **rejected** (it returns λ = 0.619, i.e. 62% of random mention pairs
+  co-refer). A known residual: `u` is inflated 3–37× by true matches
+  contaminating the random-pair sample, worth a further +0.026 F1 — open as
+  T0.5, with no label-free estimator yet.
 - **The lane is measured, not asserted.** `BLOCKING_RULES` order is
   load-bearing: Splink stamps each pair with `match_key`, the index of the first
   rule that fired, so a pair credited to `emb_bucket` is one no deterministic

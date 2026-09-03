@@ -19,7 +19,9 @@ from __future__ import annotations
 import concurrent.futures as cf
 import hashlib
 import json
+import random
 import threading
+import time
 from collections.abc import Callable
 
 import numpy as np
@@ -109,6 +111,16 @@ def generate_json(
             return data
         except Exception as e:  # noqa: BLE001
             last_err = e
+            # Backoff, because the retries were previously back-to-back with no
+            # delay at all -- which means four attempts inside a few
+            # milliseconds, all failing for the same transient reason. Measured
+            # consequence: one `[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE]` killed a
+            # 60-document extraction eight minutes in, discarding the work.
+            # Transient TLS resets and 429s are the common case on this path and
+            # they clear in seconds, so an instant retry is the one strategy
+            # guaranteed not to help.
+            if attempt < CFG.GENAI_MAX_RETRIES - 1:
+                time.sleep(min(8.0, 0.5 * 2 ** attempt) * (1 + random.random()))
     raise RuntimeError(f"Gemini generate_json failed for task={task}: {last_err}")
 
 

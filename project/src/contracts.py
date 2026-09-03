@@ -64,6 +64,7 @@ CANONICAL_PREDICATES = (
     "has_npi",
     "has_tin",
     "has_ssn",
+    "has_vin",           # vehicle: the natural join key for shop/vehicle entities
     "has_dob",
     "has_firm",            # attorney firm / org affiliation
     "has_title",
@@ -73,7 +74,8 @@ CANONICAL_PREDICATES = (
     "allegation",          # free allegation text (object_value_raw)
 )
 
-IDENTIFIER_PREDICATES = ("has_email", "has_phone", "has_npi", "has_tin", "has_ssn")
+IDENTIFIER_PREDICATES = ("has_email", "has_phone", "has_npi", "has_tin",
+                         "has_ssn", "has_vin")
 
 # ---------------------------------------------------------------------------
 # Relational schema (SQLite).  All tables are append/immutable-by-convention:
@@ -173,6 +175,13 @@ CREATE TABLE IF NOT EXISTS same_as_edges (
     -- can ask of any specific merge "would deterministic blocking have caught
     -- this?" instead of only seeing the aggregate.
     blocked_by       TEXT,
+    -- Comparisons whose m or u this edge actually USED but which EM never
+    -- estimated, so Splink substituted an invented default (see
+    -- entity_resolution.training_completeness). Non-NULL means this edge's
+    -- probability is partly uncalibrated -- and the point of naming it per-edge
+    -- is that a reviewer can tell an uncalibrated merge from a calibrated one
+    -- instead of learning from the run summary that "some" edges are affected.
+    uncalibrated     TEXT,
     suppressed_reason TEXT               -- non-NULL => excluded from clustering
 );
 

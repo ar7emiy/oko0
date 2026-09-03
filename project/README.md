@@ -275,8 +275,17 @@ like normal slowness.
   only wired into notebook 20. This is the largest open gap and the first item in
   the development plan.
 - **Metadata binding is not probabilistic.** Whether an identifier belongs to a
-  mention is decided once, in the extractor, by a line-proximity rule — unlike
-  mention-to-mention linking, which is fully calibrated.
+  mention is decided once, in the extractor — now by an LLM binding lane with a
+  line-proximity fallback (measured precision 0.940, LLM sub-lane 0.969), but
+  still a decision rather than a score, unlike mention-to-mention linking.
+- **Mention-to-mention linking is calibrated, and the calibration is now
+  reported rather than assumed.** It was wrong for a long time and nothing
+  noticed: the match prior was estimated from rules requiring fields present on
+  6% of mentions, came out 16× too low, and split 42 entities into 515 while
+  reporting 0.97 precision. Every run now prints the prior and what each
+  agreeing field is worth in bits — an identifier scoring below a name is
+  visible without ground truth. A known residual (`u` inflated 3–37× by match
+  contamination, worth ~+0.03 F1) is open as T0.5.
 - **Single-token names are dropped, not scored.** A name-shape filter in the
   recall path requires two capitalized tokens, which is the measured
   `variant:short` 100% miss.
