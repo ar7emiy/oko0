@@ -56,7 +56,7 @@ not authority — each was independently checked.
 | D13 | Cluster-level consistency guard lost in v1→v2 | B | **measured — reframed.** The one violation is caused by D4, not by clustering. Guard would split a correct cluster |
 | D14 | Splink training completeness never checked | B | ✅ **fixed** — reported per-run and per-edge; 7 untrained parameters named |
 | D15 | `who_is_at` normalized differently than the indexer, so phone and address lookup returned `[]` **always** | me, via T3.2 | ✅ **fixed** |
-| D16 | An `identifier_observations` row has `kind=phone, value_raw="voicemail"` — identifier extraction has a precision leak | me, via T3.2 | open |
+| D16 | An `identifier_observations` row had `kind=phone, value_raw="voicemail"`. Root cause: **validation lived in one lane, not at the write.** The gazetteer checks what it finds (Luhn, check digits, format); the LLM lane may label any span `phone`/`email`/`address`/`date` and `pipeline_v2` turned every one into an identifier row unchecked | me, via T3.2; root-caused via D25 | ✅ **fixed** — `gazetteers.identifier_shape_ok` applied at the write. Unit-verified; end-to-end count pending the next run |
 | D17 | **The match prior was 16× too low**, so every edge lost ~4 bits and 42 entities were split into 515 | me, via T0.4 | ✅ **fixed** — B-cubed F1 at the operating threshold 0.604 → 0.800 |
 | D18 | `u` is inflated 3–37× by match contamination in the random-pair sample | me, via T0.4 | open — ceiling measured (+0.026 F1), no label-free estimator yet (T0.5) |
 | D19 | **TIN was blocked but never compared** — it proposed candidates and then contributed zero evidence to their score | user, via T0.4's evidence report | ✅ **fixed** — now +2.21 bits |

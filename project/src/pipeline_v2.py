@@ -59,20 +59,61 @@ _HEADER_LABEL = re.compile(
     re.I)
 
 
-def _is_plausible_name(surface: str) -> bool:
-    s = surface.strip()
+def _name_tokens(surface: str) -> list[str]:
+    return [t for t in re.split(r"[\s,]+", (surface or "").strip()) if t]
+
+
+def _is_plausible_name(surface: str, known_tokens: set | None = None,
+                       n_extractors: int = 1) -> bool:
+    """Shape filter for a name mention, with two context-based escapes.
+
+    THE MEASURED PROBLEM. Requiring two capitalised tokens is a PRECISION gate
+    sitting inside the RECALL path -- it discards spans that GLiNER, the LLM and
+    the gazetteer already agreed on. Recall by variant kind, measured against
+    ground truth once span grounding was fixed:
+
+        canonical / flip / initials / nickname   1.000
+        typo                                     0.878
+        last_only  ("Wilson" for Marge Wilson)   0.091   3 of 33
+        short      ("Ibarra" for Ibarra Neurology Associates)   0.000   0 of 41
+
+    Those two variants were **74 of the 77 missed placements in the corpus**.
+    Nothing else was materially wrong with extraction.
+
+    THE ESCAPES, and why they are narrow. A bare token is admitted only when the
+    DOCUMENT already supports it:
+
+      * `known_tokens` holds the first and last tokens of the multi-token names
+        accepted earlier in the same document. "Wilson" beside an accepted
+        "Marge Wilson", or "Ibarra" beside "Ibarra Neurology Associates", is
+        the entity the note has already introduced. A bare token with no such
+        anchor stays dropped, so this does not open the gate to every
+        capitalised word.
+      * two or more independent extractors agreeing is evidence in its own
+        right -- that is what the union's provenance is FOR, and it was being
+        thrown away here.
+
+    Deliberately still rejected: legalese headers, template labels, and anything
+    under three characters. Those were never the problem.
+    """
+    s = (surface or "").strip()
     if len(s) < 3 or "\n" in s:
         return False
     if _ALLCAPS_LEGALESE.match(s):        # CONFIDENTIALITY NOTICE, etc.
         return False
     if _HEADER_LABEL.match(s):            # template/email header labels
         return False
-    toks = [t for t in re.split(r"[\s,]+", s) if t]
-    if len(toks) < 2 and not s.lower().startswith("dr"):
-        return False
-    # must contain at least two capitalized alphabetic tokens
+    toks = _name_tokens(s)
     caps = [t for t in toks if t[:1].isupper() and t.strip(".").isalpha()]
-    return len(caps) >= 2 or s.lower().startswith("dr")
+    if len(caps) >= 2 or s.lower().startswith("dr"):
+        return True
+    # Single capitalised token: admit only on document evidence.
+    if len(caps) == 1:
+        if known_tokens and caps[0].strip(".").lower() in known_tokens:
+            return True
+        if n_extractors >= 2:
+            return True
+    return False
 
 
 def span_grounded(raw_text: str, span_start: int, span_end: int, value: str) -> int:
@@ -257,7 +298,7 @@ def run(repo: Repository, limit_docs: int | None = None,
 
     mentions, assertions, coref_links, id_obs = [], [], [], []
     binding_methods = Counter()
-    n_in_boilerplate = n_dropped_shape = 0
+    n_in_boilerplate = n_dropped_shape = n_bad_identifier_shape = 0
 
     for doc_id in sorted(spans_by_doc):
         raw = texts[doc_id]
@@ -272,6 +313,22 @@ def run(repo: Repository, limit_docs: int | None = None,
             return None
 
         # 1) name mentions
+        #
+        # TWO PASSES over the document's candidates. The first accepts names
+        # that stand on their own shape and records their first and last tokens;
+        # the second reconsiders bare tokens against that vocabulary, so
+        # "Wilson" is admitted beside an accepted "Marge Wilson" and rejected
+        # where the document never introduced a Wilson. Single-pass order would
+        # otherwise decide the same surface differently depending on whether the
+        # full name happened to appear before or after it.
+        known_tokens: set[str] = set()
+        for c in merged:
+            if c.label in NAME_LABELS and _is_plausible_name(c.text):
+                tk = [t.strip(".").lower() for t in _name_tokens(c.text)
+                      if t[:1].isupper() and t.strip(".").isalpha()]
+                if len(tk) >= 2:
+                    known_tokens.update({tk[0], tk[-1]})
+
         doc_mentions = []
         mention_surface: dict[str, str] = {}   # for the binding-lane resolver
         for c in merged:
@@ -280,7 +337,7 @@ def run(repo: Repository, limit_docs: int | None = None,
             boiler_sc = _boilerplate_score_at(c.start, bl)
             if boiler_sc >= 0.5:
                 n_in_boilerplate += 1        # counted, NOT dropped
-            if not _is_plausible_name(c.text):
+            if not _is_plausible_name(c.text, known_tokens, len(c.extractors)):
                 n_dropped_shape += 1
                 continue
             seg = seg_for(c.start)
@@ -374,6 +431,17 @@ def run(repo: Repository, limit_docs: int | None = None,
                       "has_tin": "tin", "has_ssn": "ssn", "has_vin": "vin",
                       "has_address": "address",
                       "has_dob": "dob"}.get(pred, c.label)
+
+            # Validate at the WRITE, not per lane. The gazetteer checks what it
+            # finds; the LLM lane may label any span `phone`/`email`/`address`/
+            # `date` and every one of those became an identifier row unchecked.
+            # That is how `kind=phone, value_raw="voicemail"` reached the store
+            # (D16). A floor, not the gazetteer's full test -- an LLM-found
+            # phone in a format the regex misses is the recall this lane exists
+            # to add.
+            if not gazetteers.identifier_shape_ok(kind_i, c.text):
+                n_bad_identifier_shape += 1
+                continue
 
             # Binding precedence: LLM first, line rule as fallback.
             #
@@ -499,6 +567,9 @@ def run(repo: Repository, limit_docs: int | None = None,
         # kept and flagged, never dropped -- see _boilerplate_ranges
         "mentions_in_boilerplate": n_in_boilerplate,
         "dropped_shape": n_dropped_shape,
+        # identifier-labelled spans whose value cannot be that kind of
+        # identifier at all -- see gazetteers.identifier_shape_ok (D16)
+        "dropped_identifier_shape": n_bad_identifier_shape,
         "token_ner_backend": token_ner.name, "coref_backend": resolver.name,
         "coref_sample": coref_links[:3],
     }

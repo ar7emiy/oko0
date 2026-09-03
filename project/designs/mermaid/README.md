@@ -410,12 +410,16 @@ flowchart TD
     N1["<b>label ∈ NAME_LABELS</b><br/>person / organization / attorney / repair_shop / …"]:::act
     N2["<b>Read boilerplate_score for this span</b><br/>ADVISORY — scored, counted, carried onto the row"]:::key
     N3{"passes<br/>_is_plausible_name?"}:::dec
+    N3B{"single capitalised token?"}:::dec
+    N3C["<b>Admitted on DOCUMENT evidence</b><br/>its token anchors an accepted multi-token name<br/>in this note, OR ≥ 2 extractors agreed"]:::key
     N3D["<b>Dropped</b><br/>n_dropped_shape += 1"]:::bad
     N4["<b>Classify entity_class</b><br/><i>_classify</i> over surface, label, left context, right context"]:::act
     N5["<b>Persist mentions row</b><br/>mention_id, surface, char_start, char_end,<br/>entity_class, inside_quoted, boilerplate_score"]:::act
     N6["<b>Persist has_name assertion</b><br/>source_span = the mention's OWN span"]:::act
     N1 --> N2 --> N3
-    N3 -->|"no"| N3D
+    N3 -->|"no"| N3B
+    N3B -->|"no"| N3D
+    N3B -->|"yes"| N3C --> N4
     N3 -->|"yes"| N4 --> N5 --> N6
   end
 
@@ -471,6 +475,9 @@ flowchart TD
 
   PROP1B["<b>The concrete defect this fixes</b><br/><i>_classify</i> ends in <b>LABEL_TO_CLASS.get(label, 'claimant')</b>.<br/>An unmatched 'person' is silently written as <b>claimant</b>; an unmatched 'organization' as <b>medical_provider</b>.<br/><br/>· 'Marisol Vega', actually a witness → stored claimant<br/>· 'Sunrise Property Mgmt', actually the landlord → stored medical_provider<br/><br/><i>That is a guess written into a field every downstream reader — and the client — treats as a fact. Under the proposal both become role=NULL, which is honest and is queryable as 'needs a role'.</i>"]:::warn
   PROP1 -.-> PROP1B
+
+  SHORTNAME["<b>A precision gate inside the recall path</b><br/>_is_plausible_name required TWO capitalised tokens, so it discarded spans GLiNER, the LLM and the gazetteer had already agreed on. Measured against ground truth once span grounding was fixed (D25), recall by variant kind:<br/><br/>&nbsp;&nbsp;canonical · flip · initials · nickname &nbsp;<b>1.000</b><br/>&nbsp;&nbsp;typo &nbsp;0.878<br/>&nbsp;&nbsp;<b>last_only</b> ("Wilson" for Marge Wilson) &nbsp;<b>0.091</b> — 3 of 33<br/>&nbsp;&nbsp;<b>short</b> ("Ibarra" for Ibarra Neurology Associates) &nbsp;<b>0.000</b> — 0 of 41<br/><br/>Those two were <b>74 of the 77 missed placements in the corpus</b>. Nothing else about extraction was materially wrong.<br/><br/><i>The escapes are narrow on purpose. A bare token is admitted only where the DOCUMENT already introduced it, or where two independent extractors agreed — which is what the union's provenance is for, and it was being thrown away here. Legalese headers, template labels and sub-three-character tokens are still rejected; those were never the problem.</i>"]:::warn
+  N3B -.->|"why"| SHORTNAME
 ```
 
 ### E — Resolve mentions into entities

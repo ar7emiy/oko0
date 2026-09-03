@@ -104,6 +104,47 @@ VALIDATION_STRENGTH = {
 }
 
 
+def identifier_shape_ok(kind: str, text: str) -> bool:
+    """Minimal shape test for a value about to be stored as an identifier.
+
+    WHY THIS IS NEEDED AT ALL. The gazetteer validates what it finds -- Luhn on
+    an NPI, a check digit on a VIN, format on a phone. The LLM lane does not:
+    it may emit a span labelled `phone`, `email`, `address` or `date`, and
+    pipeline_v2 turns any of those into an `identifier_observations` row
+    unchecked. That is how a row reading `kind=phone, value_raw="voicemail"`
+    got into the store (D16) -- the model labelled a word as a phone and nothing
+    downstream disagreed.
+
+    So validation belongs at the WRITE, not in one lane. This is deliberately a
+    floor and not the gazetteer's full check: an LLM-found phone in a format the
+    regex misses is exactly the recall the lane exists to add, and rejecting it
+    for failing a stricter test would trade a real gain for a cosmetic one. What
+    it rules out is a value that cannot be that kind of identifier at all.
+    """
+    s = (text or "").strip()
+    if not s:
+        return False
+    digits = sum(c.isdigit() for c in s)
+    if kind == "phone":
+        return digits >= 7
+    if kind == "email":
+        return "@" in s and "." in s.split("@")[-1]
+    if kind in ("npi", "ssn", "tin", "vin"):
+        return _validate(kind, s, "")[0] and (digits >= 9 or kind == "vin")
+    if kind == "dob":
+        return digits >= 4
+    if kind == "address":
+        # A street address has a number, or names a street type.
+        return digits >= 1 or any(w.lower().strip(".,") in _STREET_WORDS
+                                  for w in s.split())
+    return True
+
+
+_STREET_WORDS = {"st", "street", "ave", "avenue", "rd", "road", "dr", "drive",
+                 "blvd", "boulevard", "ln", "lane", "ct", "court", "pl",
+                 "place", "pkwy", "parkway", "suite", "ste", "floor", "fl"}
+
+
 def _validate(label: str, text: str, left_context: str) -> tuple[bool, str]:
     """Return (passed, validation_strength).
 
