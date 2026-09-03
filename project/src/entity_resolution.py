@@ -495,7 +495,7 @@ def comparison_specs(frame: pd.DataFrame | None = None, drop: set | None = None)
          cl.ForenameSurnameComparison("first_name", "last_name")
            .configure(term_frequency_adjustments=True),
          ["first_name", "last_name"]),
-        ("name_sorted", cl.JaroWinklerAtThresholds("name_sorted", [0.95, 0.88]), ["name_sorted"]),
+        ("name_sorted", name_sorted_comparison(), ["name_sorted"]),
         ("email", cl.EmailComparison("email"), ["email"]),
         ("phone7", cl.ExactMatch("phone7"), ["phone7"]),
         ("npi", cl.ExactMatch("npi"), ["npi"]),
@@ -552,6 +552,69 @@ def _prune_absent(specs: list, frame: pd.DataFrame | None,
     return kept
 
 
+
+
+def name_sorted_comparison():
+    """Jaro-Winkler on the token-sorted name, plus a CONTAINMENT level.
+
+    WHY CONTAINMENT. `name_sorted` is the space-joined sorted tokens, so a bare
+    surname is a token subset of the full name: "wilson" inside "marge wilson".
+    String similarity cannot see that -- measured, `token_set_jw("wilson",
+    "marge wilson")` is **0.500**, far below the 0.88 level -- so the resolver
+    had no way to link a partial name to its full form at all.
+
+    That did not matter while the extractor was throwing bare surnames away.
+    Fixing D30 admitted them (entity recall 0.883 -> 0.971) and immediately
+    exposed the gap: 60 of 735 mentions are now a single token, and B-cubed F1
+    fell 0.920 -> 0.875 because those mentions floated free into entities of
+    their own. **Better extraction made resolution look worse, because the
+    comparison model had never been asked to handle what it now receives.**
+
+    The level is deliberately below the fuzzy ones. Containment is real
+    evidence but weaker than a near-exact match: "wilson" is contained in both
+    "marge wilson" and "grace wilson", so it should raise a candidate's
+    probability, not settle it. EM prices exactly how much it is worth.
+
+    Padding with spaces makes the test token-wise rather than substring-wise --
+    without it, "son" would match "wilson".
+    """
+    import splink.comparison_level_library as cll
+    from splink.internals.comparison_library import CustomComparison
+
+    L, R = '"name_sorted_l"', '"name_sorted_r"'
+    contained = (f"(' ' || {L} || ' ') LIKE ('%' || ' ' || {R} || ' ' || '%') "
+                 f"OR (' ' || {R} || ' ') LIKE ('%' || ' ' || {L} || ' ' || '%')")
+
+    return CustomComparison(
+        output_column_name="name_sorted",
+        comparison_description="token-sorted name: exact, fuzzy, or contained",
+        comparison_levels=[
+            cll.NullLevel("name_sorted"),
+            cll.ExactMatchLevel("name_sorted"),
+            cll.JaroWinklerLevel("name_sorted", 0.95),
+            cll.JaroWinklerLevel("name_sorted", 0.88),
+            # Containment SPLIT BY CORROBORATION, because measured on its own it
+            # over-merges: "wilson" is contained in both "marge wilson" and
+            # "grace wilson", and a single containment level took B-cubed
+            # precision at 0.45 from 0.777 to 0.684 while fixing the entity
+            # count (58 -> 41 against 42 gold). Both halves of that were real.
+            #
+            # Within one claim a bare surname is almost always the party the
+            # note already introduced. Across claims it is a coincidence of
+            # surname far more often. Two levels let EM price them separately
+            # instead of averaging a strong signal and a weak one into one
+            # number that serves neither.
+            cll.CustomLevel(
+                f'({contained}) AND "claim_id_l" = "claim_id_r"',
+                label_for_charts="name contained in the other, same claim",
+            ),
+            cll.CustomLevel(
+                contained,
+                label_for_charts="name contained in the other, different claim",
+            ),
+            cll.ElseLevel(),
+        ],
+    )
 
 
 def address_comparison():

@@ -63,6 +63,26 @@ def _name_tokens(surface: str) -> list[str]:
     return [t for t in re.split(r"[\s,]+", (surface or "").strip()) if t]
 
 
+# Tokens that must never ANCHOR a bare-token mention, even though they are the
+# first or last word of an accepted multi-token name.
+#
+# ARCHITECTURE.md already measured the problem in the resolver: the most common
+# "surnames" among organization mentions are `llp` (31), `care` (28),
+# `chiropractic` (28), `group` (26) -- structural suffixes shared by many
+# distinct firms. Without this, "Harbor & Vance LLP" would put `llp` into the
+# document's anchor vocabulary and a bare "LLP" would be admitted as a mention
+# of something. The distinguishing token of an organization is the first one;
+# the suffix carries almost no information.
+_STRUCTURAL_TOKENS = {
+    "llp", "llc", "inc", "pc", "pa", "pllc", "ltd", "corp", "co", "group",
+    "associates", "partners", "assoc", "care", "clinic", "center", "centre",
+    "medical", "health", "chiropractic", "therapy", "rehab", "ortho",
+    "orthopedics", "neurology", "imaging", "radiology", "hospital", "law",
+    "legal", "firm", "attorneys", "trial", "injury", "auto", "body", "paint",
+    "collision", "repair", "shop", "service", "services", "insurance",
+}
+
+
 def _is_plausible_name(surface: str, known_tokens: set | None = None,
                        n_extractors: int = 1) -> bool:
     """Shape filter for a name mention, with two context-based escapes.
@@ -327,7 +347,8 @@ def run(repo: Repository, limit_docs: int | None = None,
                 tk = [t.strip(".").lower() for t in _name_tokens(c.text)
                       if t[:1].isupper() and t.strip(".").isalpha()]
                 if len(tk) >= 2:
-                    known_tokens.update({tk[0], tk[-1]})
+                    known_tokens.update({x for x in (tk[0], tk[-1])
+                                         if x not in _STRUCTURAL_TOKENS})
 
         doc_mentions = []
         mention_surface: dict[str, str] = {}   # for the binding-lane resolver

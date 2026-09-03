@@ -895,3 +895,65 @@ consumed as truth. `entity_class` was too noisy to score with and used as a
 veto. `_is_plausible_name` guards precision inside the lane whose whole job is
 recall. When the codebase says "X is unreliable", grep for every other consumer
 of X before believing the statement is contained.
+
+### 2026-09-03 — D30 shipped, and it made B-cubed WORSE. That is the honest headline.
+
+**Extraction improved a lot.**
+
+| | before D30 | after |
+|---|---|---|
+| entity recall | 0.883 | **0.971** |
+| mention precision | 0.863 | **0.868** |
+| `last_only` | 0.091 | **1.000** |
+| `short` | 0.000 | **0.610** |
+| `typo` | 0.878 | 0.939 |
+
+Precision went *up* while recall rose, so the admitted bare tokens are real
+mentions, not noise. 60 of 735 mentions are now a single token.
+
+**Resolution got worse, and the cause is specific.** A single-token mention has
+`first_name == last_name == the whole name`, and `token_set_jw("wilson",
+"marge wilson")` is **0.500** against a 0.88 threshold. The comparison model had
+**no level meaning "one name's tokens are contained in the other's"** — it never
+needed one while the extractor was discarding bare surnames. So they floated
+free into entities of their own.
+
+Added that level, then split it by claim scope after the single-level version
+over-merged (`wilson` matches Marge *and* Grace). At the operating threshold
+0.45:
+
+| configuration | P | R | F1 | entities (42 gold) |
+|---|---|---|---|---|
+| before D30 — bare names dropped | 0.796 | 0.937 | **0.861** | 54 (1.29×) |
+| D30, no containment level | 0.777 | 0.901 | 0.834 | 58 (1.38×) |
+| D30 + one containment level | 0.684 | 0.973 | 0.803 | 41 (0.98×) |
+| **D30 + containment split by claim** | 0.688 | **0.973** | 0.806 | **43 (1.02×)** |
+
+At each configuration's own best point: **0.920 / 0.875 / 0.866 / 0.887**.
+
+**So B-cubed still prefers the version that throws mentions away.** That is a
+measurement pathology worth naming, and it is the second one found today: a
+mention never extracted cannot be mis-clustered, exactly as B-cubed precision
+*rises* under over-splitting (D17). **B-cubed rewards not extracting hard
+mentions.** It is a clustering metric being read as a system metric.
+
+Judged against the stated goal — *find every entity mention in whatever shape it
+arrives* — entity recall 0.883 → 0.971 is the number that matters, and entity
+count 54 → 43 against 42 gold is nearly exact. Shipped.
+
+**An open decision, deliberately NOT taken unilaterally.** The evidence model
+changed, so the curve moved, and `ER_LINK_THRESHOLD = 0.45` is no longer where
+the curve argues for:
+
+| threshold | P | R | F1 | entities |
+|---|---|---|---|---|
+| 0.45 (current) | 0.688 | 0.973 | 0.806 | 43 |
+| **0.80** | **0.844** | 0.934 | **0.887** | 59 |
+
+The config states two rules that now conflict: *"chosen FROM the measured
+B-cubed curve"* argues for 0.80; *"favouring recall since the product goal is
+not missing connections"* argues for 0.45. That is a product judgement about the
+precision/recall balance, not a defect, so it is recorded rather than decided.
+The 0.45 comment previously described a **flat** region — 0.45 vs 0.60 differed
+by 0.011 recall. It is no longer flat: 0.45 vs 0.80 is 0.973 vs 0.934 recall for
+0.688 vs 0.844 precision. **Whoever picks should pick knowing that.**

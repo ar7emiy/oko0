@@ -52,7 +52,7 @@ not authority — each was independently checked.
 | D9 | Two disconnected coref mechanisms | me | open |
 | D10 | Chunking discards the structure profiling computed | me | open |
 | D11 | No per-client config; corrections never feed the system | B, me | open |
-| D12 | `_is_plausible_name` drops single-token names | A, me | open |
+| D12 | `_is_plausible_name` drops single-token names — a **precision gate inside the recall path**, discarding spans all three extractors had agreed on. Quantified under D30: `short` 0/41, `last_only` 3/33, together **74 of the 77 missed placements** | A, me | ✅ **fixed** — a bare token is admitted on document evidence (its token anchors an accepted multi-token name in the same note, or ≥2 extractors agreed). Measurement pending |
 | D13 | Cluster-level consistency guard lost in v1→v2 | B | **measured — reframed.** The one violation is caused by D4, not by clustering. Guard would split a correct cluster |
 | D14 | Splink training completeness never checked | B | ✅ **fixed** — reported per-run and per-edge; 7 untrained parameters named |
 | D15 | `who_is_at` normalized differently than the indexer, so phone and address lookup returned `[]` **always** | me, via T3.2 | ✅ **fixed** |
@@ -93,17 +93,18 @@ Verified by grep/execution, 2026-09-02.
 | | value | conditions |
 |---|---|---|
 | identifier recall (finding) | 1.000 | synthetic, 2000 notes |
-| **mention precision** | **0.863** | was **0.502** — the difference is D25, not extraction |
+| **mention precision** | **0.868** | was 0.502 before D25 and 0.863 before D30 — it rose while recall rose |
 | **span grounding** | **100%** of mentions locate their own surface | was **33.2%** (D25). Asserted by the smoke test now |
 | identifier **binding** precision | **0.940** (LLM lane **0.969**) | in-pipeline vs GT, 8 docs; was 0.747 under the line rule. **Not yet checked on the handwritten notes** — the only read on generality |
-| entity recall | **0.883** | 60-doc scope, stated. Was reported as 0.027 by D28's bug and 0.857 before that. **74 of 77 misses are D30** |
+| entity recall | **0.971** | 60-doc scope. 0.883 before D30; `last_only` 0.091 → **1.000**, `short` 0.000 → 0.610 |
 | scan coverage | 100% chars/doc | — |
-| **B³ F1 at the operating threshold (0.45)** | **0.861** (P 0.796 / R 0.937) | 60-doc subset. 0.604 pre-T0.4 → 0.773 pre-span-fix → 0.843 → **0.861** without the class veto |
-| **entities vs ground truth @ 0.45** | **54 vs 42 = 1.29×** | was 515 = 12.3× before T0.4; 59 = 1.40× before D29 |
-| **best B³ F1** | **0.920 @ 0.80** | was 0.814 before the span fix, 0.889 after it, 0.920 without the class veto |
+| **B³ F1 at the operating threshold (0.45)** | **0.806** (P 0.688 / R 0.973) | ⚠ **lower than the 0.861 before D30 — see below.** B³ rewards not extracting hard mentions |
+| **entities vs ground truth @ 0.45** | **43 vs 42 = 1.02×** | was 515 = 12.3× pre-T0.4, 54 = 1.29× pre-D30 |
+| **best B³ F1** | **0.887 @ 0.80** | 0.920 before D30, but that figure was earned by discarding 88 mentions |
 | **match prior λ** | **0.026** | estimated 0.0264 against a measured 0.0121; was 0.000764 |
 | identical-surface pairs above threshold | **4.6%** of 7,468 | the D1/D5 org-name failure |
 | single-note ingest | 18.5s | 60-note corpus, live models |
+| ⚠ **B³ vs the goal** | the two disagree | B³ F1 prefers the pre-D30 model (0.920 vs 0.887) because **a mention never extracted cannot be mis-clustered** — the same pathology as precision rising under over-splitting. Entity recall (0.883 → 0.971) and entity count (1.29× → 1.02×) are the goal-aligned numbers |
 | full-corpus (2,000-note) figures | **not re-measured** | the full run is hours (T0.6); every row above the ingest line is the 60-doc subset |
 
 ---
