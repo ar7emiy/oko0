@@ -149,6 +149,32 @@ def main(full: bool = True):
     r = pipeline_v2.run(repo)
     assert r["n_orphan_identifiers"] > 0, "orphan identifiers not being recorded"
 
+    # SPAN GROUNDING is one of this project's four stated invariants, and until
+    # now nothing checked it for MENTIONS -- only for the manifest's own
+    # placements, which the generator produces and therefore cannot get wrong.
+    #
+    # Measured before the fix: 349 of 1051 mentions (33%) had a stored span that
+    # actually contained their own surface. The LLM and sweep lanes took
+    # `start`/`end` straight from the model, clamped them so nothing crashed,
+    # and took the surface from the model's own text field without ever
+    # comparing the two. Everything keyed on a span inherited the error --
+    # B-cubed's span-overlap match to ground truth (mention precision read
+    # 0.50), citations, proximity binding, polarity windows, the QA highlight.
+    ments = repo.table("mentions")
+    bad = []
+    for _, mm in ments.iterrows():
+        raw = (Paths.raw_notes / f"{mm['doc_id']}.txt").read_text(encoding="utf-8")
+        got = raw[int(mm["char_start"]):int(mm["char_end"])]
+        if got != mm["surface"]:
+            bad.append((mm["doc_id"], int(mm["char_start"]), mm["surface"], got))
+    rate = 1 - len(bad) / max(len(ments), 1)
+    assert not bad, (
+        f"{len(bad)} of {len(ments)} mentions ({1 - rate:.1%}) have a span that "
+        f"does not contain their surface, e.g. {bad[:3]}. Span grounding is an "
+        "invariant: a mention whose offsets do not locate its own text cannot "
+        "be cited, highlighted, or matched to ground truth by overlap.")
+    print(f"      span grounding: {len(ments)} mentions, all locate their surface")
+
     print("[5/9] audit: extraction quality")
     m = audit._load_manifest()
     ident = audit.identifier_recall(repo, m)

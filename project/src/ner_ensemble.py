@@ -102,13 +102,29 @@ class GlinerBackend(TokenNERBackend):
         self._threshold = threshold if threshold is not None else CFG.GLINER_THRESHOLD
         self._labels = list(CFG.NER_LABELS)
 
-    def _to_spans(self, ents, base_offset: int) -> list[SpanCandidate]:
+    def _to_spans(self, ents, base_offset: int, text: str = "") -> list[SpanCandidate]:
+        """GLiNER's offsets ARE trustworthy -- it is a token classifier, so its
+        spans come from tokenisation rather than from a model guessing integers.
+        They are still verified.
+
+        This is deliberately weaker than the LLM lane's handling. There the
+        offsets are relocated unconditionally because they are known to be
+        unreliable (D25); here they are authoritative, and relocating a correct
+        span would be a regression whenever a name occurs twice in a chunk. So:
+        trust, verify, and relocate only on a mismatch.
+        """
         out = []
         for e in ents:
             if coref.is_anaphor(e["text"]):
                 continue
+            s, t = e["start"], e["end"]
+            if text and text[s:t] != e["text"]:
+                s2 = _locate(text, e["text"], s)
+                if s2 < 0:
+                    continue
+                s, t = s2, s2 + len(e["text"])
             out.append(SpanCandidate(
-                start=base_offset + e["start"], end=base_offset + e["end"],
+                start=base_offset + s, end=base_offset + t,
                 text=e["text"], label=e["label"], extractors={self.name},
                 score=float(e.get("score", 0.0)),
             ))
@@ -116,7 +132,7 @@ class GlinerBackend(TokenNERBackend):
 
     def extract(self, text: str, base_offset: int = 0) -> list[SpanCandidate]:
         ents = self._model.predict_entities(text, self._labels, threshold=self._threshold)
-        return self._to_spans(ents, base_offset)
+        return self._to_spans(ents, base_offset, text)
 
     def extract_many(self, texts: list[str], offsets: list[int]) -> list[list[SpanCandidate]]:
         """Batched inference. Worth ~1.1x on CPU -- see TokenNERBackend.extract_many.
@@ -139,7 +155,8 @@ class GlinerBackend(TokenNERBackend):
                 errors.append(f"{attempt}: {type(e).__name__}: {e}")
                 continue
             runlog.field("ner batching", f"{attempt}() over {len(texts)} chunks")
-            return [self._to_spans(ents, off) for ents, off in zip(batches, offsets)]
+            return [self._to_spans(ents, off, txt)
+                    for ents, off, txt in zip(batches, offsets, texts)]
 
         # Falling back is a REAL event, not a detail. The per-item path is many
         # times slower, so a silent fallback would present as "the model is just
@@ -223,20 +240,86 @@ def _llm_offline_handler(chunk_text: str):
     return lambda: salience_biased_stub(chunk_text)
 
 
+def _locate(chunk_text: str, surface: str, hint: int) -> int:
+    """Where `surface` actually sits in `chunk_text`, nearest to `hint`.
+
+    Returns -1 if it does not appear at all.
+
+    A language model cannot count characters, and this one is asked for `start`
+    and `end` anyway. Its offsets are a HINT -- useful for choosing between
+    repeated occurrences of the same name, useless as ground truth. The surface
+    string it returns is reliable; the integers are not.
+    """
+    if not surface:
+        return -1
+    best, i = -1, chunk_text.find(surface)
+    while i >= 0:
+        if best < 0 or abs(i - hint) < abs(best - hint):
+            best = i
+        i = chunk_text.find(surface, i + 1)
+    if best >= 0:
+        return best
+    # Case and internal whitespace are the two things a model reliably alters.
+    low, ls = chunk_text.lower(), surface.lower()
+    i = low.find(ls)
+    if i >= 0:
+        return i
+    collapsed = " ".join(ls.split())
+    i = " ".join(low.split()).find(collapsed)
+    if i >= 0 and collapsed:                     # only safe when spacing matched
+        j = low.find(collapsed.split()[0])
+        return j
+    return -1
+
+
 def _parse_llm_spans(data: dict, chunk_text: str, base_offset: int) -> list[SpanCandidate]:
+    """Parse the LLM lane's entities, LOCATING each surface rather than trusting
+    the offsets the model reports.
+
+    THE DEFECT THIS REPLACES
+    ------------------------
+    The previous version took `start`/`end` straight from the model, clamped
+    them to the chunk length so nothing crashed, and then took the surface from
+    the model's own `text` field -- never checking that `chunk_text[s:t]` was
+    that surface. It never was, reliably: measured over a 60-document run, only
+    **349 of 1051 mentions (33%)** had a stored span that actually contained
+    their own surface. Shifts of 1, 3, 7, 16, 63 and 145 characters were all
+    common.
+
+    Span grounding is one of this system's four stated invariants, and this
+    silently broke it for a primary mention source. Everything keyed on a span
+    inherited the error: B-cubed's span-overlap match to ground truth (which is
+    why mention precision read 0.50), the citation evidence chain, the
+    line-proximity binding fallback, polarity's window around the span, and the
+    QA viewer's highlight.
+
+    `relations.py` already did this correctly -- it relocates evidence and flags
+    `evidence_ungrounded` when it cannot. The pattern existed; this lane simply
+    did not use it.
+
+    A surface that cannot be found in the chunk at all is DROPPED. For named
+    entity recognition that is the right call: a name the text does not contain
+    is not a mention of anything, and keeping it would put an ungroundable row
+    into a store whose whole claim is that every assertion is locatable.
+    """
     out = []
     for e in (data or {}).get("entities", []):
+        surface = (e.get("text") or "").strip()
         try:
-            s, t = int(e["start"]), int(e["end"])
-        except (KeyError, TypeError, ValueError):
+            hint = int(e.get("start", 0))
+        except (TypeError, ValueError):
+            hint = 0
+        if not surface:
+            # No surface and untrustworthy offsets leaves nothing to ground on.
             continue
-        s = max(0, min(s, len(chunk_text)))
-        t = max(s, min(t, len(chunk_text)))
-        surface = e.get("text") or chunk_text[s:t]
         if coref.is_anaphor(surface):
             continue
+        pos = _locate(chunk_text, surface, max(0, min(hint, len(chunk_text))))
+        if pos < 0:
+            continue
         out.append(SpanCandidate(
-            start=base_offset + s, end=base_offset + t, text=surface,
+            start=base_offset + pos, end=base_offset + pos + len(surface),
+            text=surface,
             label=e.get("label", "person"), extractors={"llm"},
             score=float(e.get("confidence", 0.7)),
             description=e.get("description", ""),

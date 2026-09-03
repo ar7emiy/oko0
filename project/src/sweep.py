@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import re
 
-from . import contracts, coref, gazetteers, genai
+from . import contracts, coref, gazetteers, genai, ner_ensemble
 from .ner_ensemble import SpanCandidate
 from .settings import CFG
 
@@ -150,22 +150,37 @@ def sweep_chunk(chunk, spans: list[SpanCandidate]) -> list[SpanCandidate]:
 
     data = genai.generate_json(prompt, _sweep_schema(), task="sweep",
                                offline_handler=offline)
+    # LOCATE each surface in the chunk instead of trusting the model's offsets.
+    #
+    # Two defects are being replaced here. The first is the one ner_ensemble
+    # had: `start`/`end` came from the model, were clamped so nothing crashed,
+    # and the surface was taken from the model's own `text` field with no check
+    # that the span contained it. A model cannot count characters.
+    #
+    # The second was local and sharper. The line
+    #     if s < chunk.char_start: s += chunk.char_start
+    # tried to GUESS whether an offset was chunk-relative or absolute. For any
+    # chunk after the first, a chunk-relative offset larger than char_start
+    # reads as absolute and is left unshifted -- so the further into a document
+    # a span sat, the more likely it was silently misplaced.
     out = []
     for m in data.get("missed", []):
-        try:
-            s, e = int(m["start"]), int(m["end"])
-        except (KeyError, TypeError, ValueError):
-            continue
-        # online returns chunk-relative offsets; offline already absolute
-        if s < chunk.char_start:
-            s += chunk.char_start
-            e += chunk.char_start
-        s = max(chunk.char_start, min(s, chunk.char_end))
-        e = max(s, min(e, chunk.char_end))
-        surface = m.get("text") or ""
+        surface = (m.get("text") or "").strip()
         if not surface or coref.is_anaphor(surface):
             continue
-        out.append(SpanCandidate(start=s, end=e, text=surface,
+        try:
+            raw = int(m.get("start", 0))
+        except (TypeError, ValueError):
+            raw = 0
+        # Treat the number only as a hint, and normalise it into chunk space
+        # rather than deciding what it "meant".
+        hint = raw - chunk.char_start if raw >= chunk.char_start else raw
+        pos = ner_ensemble._locate(chunk.text, surface,
+                                   max(0, min(hint, len(chunk.text))))
+        if pos < 0:
+            continue                     # not in this chunk: not a mention here
+        s = chunk.char_start + pos
+        out.append(SpanCandidate(start=s, end=s + len(surface), text=surface,
                                  label=m.get("label", "person"),
                                  extractors={"sweep"}, score=0.6,
                                  description=m.get("reason", ""),

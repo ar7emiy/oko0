@@ -186,7 +186,8 @@ class ModelOutOfDate(RuntimeError):
     """The frozen model was trained with a different comparison/blocking set."""
 
 
-def model_signature(frame: pd.DataFrame | None = None) -> dict:
+def model_signature(frame: pd.DataFrame | None = None,
+                    drop: set | None = None) -> dict:
     """What the frozen model must agree with to be safely reusable.
 
     The ingest path scores arriving notes with the model saved at backfill
@@ -201,9 +202,15 @@ def model_signature(frame: pd.DataFrame | None = None) -> dict:
     remedy is the same one used there: make the mismatch loud.
     """
     return {
-        # The PRUNED set, not the declared one: what matters is which
-        # comparisons the frozen model was actually trained with.
-        "comparisons": [n for n, _, _ in comparison_specs(frame)],
+        # DECLARED is what the code offers, independent of any corpus. This
+        # is the only part check_model_current compares, because it is the
+        # only part that changes when a developer edits the evidence model.
+        "declared": [n for n, _, _ in comparison_specs()],
+        # TRAINED is what survived pruning on this corpus. Recorded for the
+        # reader, NOT compared: it is data-dependent, so a client whose
+        # notes carry no SSNs legitimately trains a smaller set than one
+        # whose notes do, and neither is a stale model.
+        "trained": [n for n, _, _ in comparison_specs(frame, drop=drop)],
         "blocking_rules": list(BLOCKING_RULE_NAMES),
     }
 
@@ -218,15 +225,22 @@ def check_model_current(frame: pd.DataFrame | None = None) -> dict:
             "set. Re-run the backfill (ingest.backfill) to retrain."
         )
     have = json.loads(SIGNATURE_PATH.read_text(encoding="utf-8"))
-    if have != want:
-        added = sorted(set(want["comparisons"]) - set(have.get("comparisons", [])))
-        dropped = sorted(set(have.get("comparisons", [])) - set(want["comparisons"]))
+    # Compare the DECLARED set and the blocking rules only. The trained set is
+    # data-dependent -- a corpus with no SSNs legitimately trains a smaller set
+    # than one with them (see _prune_absent) -- so comparing it would report
+    # every ordinary corpus difference as a stale model.
+    drift = {k: (have.get(k), want[k]) for k in ("declared", "blocking_rules")
+             if have.get(k) != want[k]}
+    if drift:
+        added = sorted(set(want["declared"]) - set(have.get("declared", [])))
+        removed = sorted(set(have.get("declared", [])) - set(want["declared"]))
         raise ModelOutOfDate(
-            "The frozen Splink model was trained with a different evidence "
-            f"model: added {added or 'none'}, dropped {dropped or 'none'}, "
-            f"blocking {have.get('blocking_rules')} -> {want['blocking_rules']}. "
-            "Scoring arriving notes with it would put edges calibrated two "
-            "different ways in one store. Re-run the backfill to retrain."
+            "The frozen Splink model was trained against a different evidence "
+            f"model: comparisons added {added or 'none'}, removed "
+            f"{removed or 'none'}; blocking {have.get('blocking_rules')} -> "
+            f"{want['blocking_rules']}. Scoring arriving notes with it would put "
+            "edges calibrated two different ways in one store. Re-run the "
+            "backfill to retrain."
         )
     return have
 
@@ -361,9 +375,27 @@ def training_completeness(linker) -> dict:
                                   "reason": reason,
                                   "substituted_default": round(value, 8)})
                 by_comp[comp.output_column_name].append(cvv)
+    # Comparisons whose AGREEMENT level -- the highest comparison_vector_value,
+    # the one that fires when the two sides match -- carries an invented
+    # parameter. Only that level matters for this purpose: email has an
+    # untrained Jaro-Winkler-on-username level and is still one of the better
+    # signals, but a comparison whose top level is invented contributes pure
+    # fiction whenever it agrees, and Splink's two-level default renders that
+    # fiction as +10 bits.
+    untrainable = set()
+    for comp in linker._settings_obj.comparisons:
+        levels = [lv for lv in comp.comparison_levels if not lv.is_null_level]
+        if not levels:
+            continue
+        top = max(lv.comparison_vector_value for lv in levels)
+        if any(r["comparison"] == comp.output_column_name
+               and r["comparison_vector_value"] == top for r in untrained):
+            untrainable.add(comp.output_column_name)
+
     return {"fully_trained": not untrained,
             "n_untrained_parameters": len(untrained),
             "untrained": untrained,
+            "untrainable_agreement": sorted(untrainable),
             # {comparison: {gamma levels affected}} -- used to flag the edges
             # that actually landed on a substituted level.
             "by_comparison": {k: sorted(set(v)) for k, v in by_comp.items()}}
@@ -421,7 +453,7 @@ def lane_provenance(edges: pd.DataFrame) -> dict:
 # ---------------------------------------------------------------------------
 # Splink backend
 # ---------------------------------------------------------------------------
-def comparison_specs(frame: pd.DataFrame | None = None):
+def comparison_specs(frame: pd.DataFrame | None = None, drop: set | None = None):
     """(name, comparison, raw_value_columns) for every scored comparison.
 
     Pass `frame` to drop comparisons whose columns are entirely absent from the
@@ -473,37 +505,53 @@ def comparison_specs(frame: pd.DataFrame | None = None):
         ("address", address_comparison(),
          ["address_street", "address_city", "address_state", "address_zip"]),
         ("dob", cl.ExactMatch("dob"), ["dob"]),
-    ], frame)
+    ], frame, drop)
 
 
-def _prune_absent(specs: list, frame: pd.DataFrame | None) -> list:
-    """Drop comparisons whose columns hold no values at all in this corpus.
+def _prune_absent(specs: list, frame: pd.DataFrame | None,
+                  drop: set | None = None) -> list:
+    """Drop comparisons this corpus cannot support.
 
-    This is a correctness measure, not an optimisation. A comparison over an
-    all-NULL column cannot be trained, so Splink substitutes a default -- and
-    for a two-level comparison that default is m=0.95 / u=0.0009, which renders
-    as **+10 bits, the strongest signal in the model**.
+    A comparison Splink cannot train is not neutral. It substitutes a default,
+    and for a two-level comparison that default is m=0.95 / u=0.0009 -- which
+    renders as **+10 bits, the strongest signal in the model**, entirely
+    invented. The "else" default is worse: u=1.6, which is not a probability at
+    all, and prices disagreement at -5 bits.
 
-    Measured, on adding ssn and vin: this corpus contains zero of either (the
-    ground-truth manifest declares 125 SSNs and 140 VINs as entity attributes,
-    but corpus_gen never writes them into note text). Both comparisons landed at
-    the TOP of the evidence ordering on entirely invented parameters -- in the
-    very report built to stop invented numbers passing as evidence.
+    Two filters, and the second exists because the first was measured to be
+    insufficient:
 
-    Keeping the comparisons declared and pruning them per-corpus is what makes
-    this a tunable object: a client whose notes DO carry SSNs gets the
-    comparison trained on their data, and a client whose notes do not is never
-    shown a fabricated weight for it.
+    1. **Absent** -- the column holds no value anywhere. First seen when ssn and
+       vin were added while the corpus contained none of either (D21).
+
+    2. **Present but untrainable** -- `drop`, supplied by the caller after a
+       first training pass. PRESENCE IS NOT TRAINABILITY. Once the corpus DID
+       carry SSNs, the columns stopped being empty, survived filter 1, and were
+       still untrainable: ~13 of 1013 mentions carry an SSN, so almost no
+       blocked pair has one on both sides and EM never observes the levels. The
+       fabricated +10 bits came straight back, and B-cubed F1 fell from 0.861 to
+       0.812. The falsification test written for T0.7 falsified T0.7.
+
+    Keeping the comparisons DECLARED and pruning them per-corpus is what makes
+    this a tunable object: a client whose notes carry enough SSNs to train on
+    gets the comparison; one whose notes do not is never shown an invented
+    weight for it. Neither client edits code.
     """
-    if frame is None:
+    if frame is None and not drop:
         return specs
+    drop = drop or set()
     kept = []
     for name, comp, cols in specs:
-        present = [c for c in cols if c in frame.columns]
-        if present and not any(frame[c].notna().any() for c in present):
+        if name in drop:
             continue
+        if frame is not None:
+            present = [c for c in cols if c in frame.columns]
+            if present and not any(frame[c].notna().any() for c in present):
+                continue
         kept.append((name, comp, cols))
     return kept
+
+
 
 
 def address_comparison():
@@ -614,7 +662,7 @@ class SplinkResolver(ERBackend):
         # Populated by resolve(); read by run() for the run output.
         self.calibration: dict = {}
 
-    def _settings(self, frame: pd.DataFrame | None = None):
+    def _settings(self, frame: pd.DataFrame | None = None, drop: set | None = None):
         from splink import SettingsCreator, block_on
 
         return SettingsCreator(
@@ -630,14 +678,45 @@ class SplinkResolver(ERBackend):
             # `frame` prunes comparisons over columns this corpus has no
             # values for at all -- see _prune_absent. Without it Splink
             # invents their parameters and reports the result as evidence.
-            comparisons=[c for _, c, _ in comparison_specs(frame)],
+            comparisons=[c for _, c, _ in comparison_specs(frame, drop=drop)],
             retain_intermediate_calculation_columns=True,
         )
 
     def resolve(self, frame: pd.DataFrame) -> pd.DataFrame:
+        """Train, and if a comparison turns out to be untrainable, train again
+        without it.
+
+        The second pass is not defensive tidiness -- it is measured. A
+        comparison Splink cannot train gets a substituted default, and for a
+        two-level comparison that default renders as +10 bits: the strongest
+        signal in the model, invented. Dropping the column when it is EMPTY is
+        not enough, because presence is not trainability: with SSNs on ~13 of
+        1013 mentions the column is non-empty, survives the emptiness filter,
+        and still has no blocked pair carrying one on both sides. Measured, that
+        cost B-cubed F1 0.861 -> 0.812.
+
+        So the trainability test is the training itself. One extra pass, seconds
+        at this scale, and it is exact rather than a coverage heuristic that
+        would need a threshold nobody could defend on a client's data.
+        """
+        drop = self._train_once(frame)
+        if drop:
+            runlog.note(
+                f"retraining without {sorted(drop)}: this corpus cannot train "
+                "the level that fires when they AGREE, so every positive "
+                "contribution they made would be a Splink default rather than "
+                "an estimate. They stay declared and will be trained on a "
+                "corpus that supports them.")
+            self._dropped = sorted(drop)
+            return self._train_once(frame, drop=drop, final=True)
+        self._dropped = []
+        return self._train_once(frame, final=True)
+
+    def _train_once(self, frame: pd.DataFrame, drop: set | None = None,
+                    final: bool = False):
         from splink import DuckDBAPI, Linker, block_on
 
-        linker = Linker(frame, self._settings(frame), db_api=DuckDBAPI())
+        linker = Linker(frame, self._settings(frame, drop=drop), db_api=DuckDBAPI())
 
         # Prior: the chance two randomly drawn mentions co-refer. Splink defaults
         # to 1e-4, which is badly wrong for this corpus (entities recur heavily),
@@ -678,7 +757,13 @@ class SplinkResolver(ERBackend):
             except Exception:
                 continue   # a block too sparse to train on is skipped, not fatal
 
-        self.calibration = calibration_report(linker)
+        cal = calibration_report(linker)
+        if not final:
+            # First pass exists only to discover what could not be trained.
+            return set(cal["untrainable_agreement"])
+
+        self.calibration = cal
+        self.calibration["dropped_untrainable"] = getattr(self, "_dropped", [])
         self._log_calibration(self.calibration)
         if not self.calibration["fully_trained"] and CFG.ER_REQUIRE_FULLY_TRAINED:
             names = sorted(self.calibration["by_comparison"])
@@ -710,8 +795,9 @@ class SplinkResolver(ERBackend):
         # Written beside the model, not inside it: Splink owns that file's
         # schema. The ingest path checks this before scoring arriving notes --
         # see check_model_current.
-        SIGNATURE_PATH.write_text(json.dumps(model_signature(frame), indent=2),
-                                  encoding="utf-8")
+        SIGNATURE_PATH.write_text(
+            json.dumps(model_signature(frame, set(getattr(self, "_dropped", []))),
+                       indent=2), encoding="utf-8")
 
         return df[[c for c in keep if c in df.columns]]
 

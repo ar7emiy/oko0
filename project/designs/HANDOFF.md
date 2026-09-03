@@ -757,3 +757,62 @@ detection recall over 300 documents against ground truth:
 So the two new lanes detect everything planted, including every VIN through its
 ISO check digit. What remains unproven is whether they help *resolution* — that
 needs the LLM path for binding, and therefore the cap lifted.
+
+### 2026-09-02 (cont.) — T0.7's falsification test worked: it falsified T0.7, and led to D25
+
+Ran the test with SSNs finally in the corpus. **B-cubed got worse**, not better:
+
+| | before SSN/VIN existed | with them present |
+|---|---|---|
+| best F1 | 0.861 @ 0.8 | **0.812 @ 0.8** |
+| @0.45 | 0.810 | **0.766** |
+
+**D27, the immediate cause.** `ssn` and `vin` re-entered the evidence ordering
+at a fabricated **+10 bits each**. `_prune_absent` only dropped columns that
+were *empty*, and **presence is not trainability**: ~13 of 1013 mentions carry
+an SSN, so no blocked pair has one on both sides, EM never observes the levels,
+and Splink substitutes its two-level default (m=0.95 / u=0.0009). Fixed with
+two-pass training — train, ask `training_completeness` which comparisons could
+not train their AGREEMENT level, drop those, train again. The trainability test
+is the training itself, which beats any coverage heuristic whose threshold
+nobody could defend on a client's corpus.
+
+That recovered almost nothing (0.812 → 0.814), which meant the real cause was
+elsewhere. Chasing it found the biggest defect of the day.
+
+**D25 — the LLM and sweep lanes trusted character offsets returned by the
+model.** `_parse_llm_spans` took `start`/`end` from the model, clamped them to
+the chunk so nothing crashed, and took the surface from the model's own `text`
+field — never comparing the two. A model cannot count characters.
+
+Measured: **349 of 1051 mentions (33%) had a stored span that actually contained
+their own surface.** Shifts of 1, 3, 7, 16, 63, 145 characters, all common.
+
+**Span grounding is one of this project's four stated invariants.** Nothing
+checked it for mentions — only for the manifest's own placements, which the
+generator produces and therefore cannot get wrong. Everything keyed on a span
+inherited the error: B-cubed's span-overlap match to ground truth (mention
+precision read **0.50**, and I nearly wrote that up as an extraction-precision
+problem), the citation evidence chain, the line-proximity binding fallback,
+`_polarity`'s window, the QA viewer's highlight.
+
+`relations.py` already did this right — it relocates evidence and flags
+`evidence_ungrounded`. The pattern existed in the codebase; the NER lane did not
+use it.
+
+**D26**, found alongside: `sweep` guessed whether an offset was chunk-relative
+or absolute (`if s < chunk.char_start: s += chunk.char_start`). For any chunk
+after the first, a chunk-relative offset larger than `char_start` reads as
+absolute and is left unshifted — so the deeper into a document a span sat, the
+likelier it was misplaced.
+
+Both now LOCATE the surface (`ner_ensemble._locate`: exact match nearest the
+model's hint, then case- and whitespace-tolerant), and **drop** a surface the
+chunk does not contain. For NER that is right: a name the text does not contain
+is not a mention.
+
+**The durable fix is the invariant, not the two patches.** The smoke test now
+asserts every stored mention's span contains its own surface. Note what this
+says about the numbers: every accuracy figure measured before this — entity
+recall, B-cubed, the T0.4 calibration curve — was computed against spans a third
+of which were wrong. **Re-measure before quoting any of them.**

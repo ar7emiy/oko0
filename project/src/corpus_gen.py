@@ -29,6 +29,7 @@ from __future__ import annotations
 
 import json
 import random
+import re
 from dataclasses import dataclass, field
 
 from . import textnorm
@@ -281,13 +282,71 @@ def name_variants(ent: GTEntity, rng) -> dict:
     return out
 
 
+def identifier_variants(ident, rng) -> dict:
+    """Surface variants for one identifier VALUE: {variant_kind: surface}.
+
+    The fixture planted name variants from the start -- order flips, nicknames,
+    initials, typos -- and 92% of entities appear under more than one surface.
+    It planted NO identifier variants: measured, 0 of 1,341 identifier values
+    was ever written two different ways (D23). Formats differed *between*
+    values, never *within* one.
+
+    That left the identifier half of the system validated only against its best
+    case. `textnorm.normalize_identifier` could not be tested at all -- there
+    was nothing to normalize -- and D15 (`who_is_at` normalising differently
+    from the indexer, so every phone and address lookup returned [], always)
+    survived in exactly that blind spot.
+
+    These are the forms a claim note actually contains. Some of them the system
+    handles by construction (digits-only normalisation folds phone punctuation);
+    at least one it does not (an extension survives \\D stripping and changes
+    the normalised value). Both outcomes are the point: this exists to make the
+    identifier lanes falsifiable, not to be passed.
+    """
+    v = ident.value
+    out = {"canonical": v}
+    k = ident.kind
+    if k == "phone":
+        d = re.sub(r"\D", "", v)
+        if len(d) == 10:
+            out["punct_paren"] = f"({d[:3]}) {d[3:6]}-{d[6:]}"
+            out["punct_dot"] = f"{d[:3]}.{d[3:6]}.{d[6:]}"
+            out["bare"] = d
+            out["extension"] = f"{d[:3]}-{d[3:6]}-{d[6:]} ext. {rng.intr(10, 899)}"
+    elif k == "email":
+        out["mixed_case"] = ".".join(p.capitalize() for p in v.split("@")[0].split(".")) \
+            + "@" + v.split("@")[1]
+        out["upper_domain"] = v.split("@")[0] + "@" + v.split("@")[1].upper()
+    elif k in ("ssn", "tin"):
+        out["bare"] = re.sub(r"\D", "", v)
+    elif k == "vin":
+        out["lowercase"] = v.lower()
+    elif k == "address":
+        long_form = {"St": "Street", "Ave": "Avenue", "Rd": "Road", "Dr": "Drive",
+                     "Blvd": "Boulevard", "Ct": "Court", "Ln": "Lane",
+                     "Pl": "Place", "Pkwy": "Parkway"}
+        spelled = v
+        for short, full in long_form.items():
+            spelled = re.sub(rf"\b{short}\b", full, spelled)
+        if spelled != v:
+            out["spelled_street"] = spelled
+        out["no_zip"] = re.sub(r"\s*\b\d{5}(?:-\d{4})?\b", "", v).rstrip(", ")
+        m = re.match(r"(\d+\s+\S+(?:\s+\S+)?)(,.*)$", v)
+        if m:
+            out["with_suite"] = f"{m.group(1)} Suite {rng.intr(100, 899)}{m.group(2)}"
+    return out
+
+
 # ---------------------------------------------------------------------------
 # NoteBuilder -- byte-accurate assembly + placement recording
 # ---------------------------------------------------------------------------
 class NoteBuilder:
     """Assembles a note and records the exact offsets of everything planted."""
 
-    def __init__(self, doc_id: str, claim_id: str, occurrence_id: str):
+    def __init__(self, doc_id: str, claim_id: str, occurrence_id: str, rng=None):
+        # rng is optional so the builder stays usable without one, but with it
+        # add_identifier plants surface VARIANTS -- see identifier_variants.
+        self.rng = rng
         self.doc_id = doc_id
         self.claim_id = claim_id
         self.occurrence_id = occurrence_id
@@ -333,11 +392,24 @@ class NoteBuilder:
         return s, e
 
     def add_identifier(self, ident: GTIdentifier, orphan: bool = False) -> tuple[int, int]:
-        s, e = self.add(ident.value)
+        # Canonical most of the time, a variant sometimes. Keeping canonical
+        # dominant matters: with ~3 placements per identifier it leaves nearly
+        # every value at least one canonical sighting, so a variant that fails
+        # to normalise shows up as a SPLIT rather than as a value the corpus
+        # never wrote down plainly.
+        surface, vkind = ident.value, "canonical"
+        if self.rng is not None and self.rng.chance(0.40):
+            vs = {k: s for k, s in identifier_variants(ident, self.rng).items()
+                  if k != "canonical" and s and s != ident.value}
+            if vs:
+                vkind = self.rng.pick(sorted(vs))
+                surface = vs[vkind]
+        s, e = self.add(surface)
         self.placements.append({
             "kind": "identifier", "gt_id": ident.gt_identifier_id,
             "doc_id": self.doc_id, "char_start": s, "char_end": e,
-            "surface": ident.value, "identifier_kind": ident.kind,
+            "surface": surface, "variant_kind": vkind,
+            "identifier_kind": ident.kind,
             "orphan": orphan,   # True => no name co-located; must resolve via the id
             "inside_quoted_dup": self._quoted, "segment_kind": self._seg,
         })
@@ -1418,7 +1490,7 @@ def generate_corpus(seed: int | None = None) -> dict:
         for s in range(per_claim[cid]):
             doc_id = f"DOC{doc_n:05d}"
             doc_n += 1
-            nb = NoteBuilder(doc_id, cid, meta["occurrence_id"])
+            nb = NoteBuilder(doc_id, cid, meta["occurrence_id"], rng=rng)
             form = _compose_note(nb, rng, roster, ident_by_id,
                                  events_by_claim.get(cid, []), meta)
             text = nb.text()
