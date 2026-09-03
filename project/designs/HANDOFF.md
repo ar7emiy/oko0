@@ -1031,3 +1031,39 @@ not act on middle levels, because email has invented middle levels and is still
 one of the better signals. Collapsing is the finer-grained fix. **Falsification
 test:** collapse the unobserved levels and require the flagged-edge count to
 fall to ~0 with no B-cubed regression.
+
+### 2026-09-03 — binding on the cheaper model: measured, and the lane stays pinned
+
+The decision rule was written down before the numbers: *move only if precision
+is within 0.02 of flash AND it declines no less often. A cheaper model that
+guesses more is not cheaper.*
+
+**At 8 documents it looked wrong.** flash-lite scored **1.000** against flash's
+0.988 and bound more. The rule said no on the declines clause and I nearly
+overrode it as an artifact of small n.
+
+**At 60 documents, with 635–650 bindings:**
+
+| | precision | bound | declined |
+|---|---|---|---|
+| `gemini-3.7-flash` | **0.989** | 635 | 142 |
+| `gemini-3.1-flash-lite` | 0.982 | 650 | **91** |
+
+The 0.007 precision gap is noise. **The error kinds are not.**
+
+- flash's mistakes are near-misses on the right entity: a person bound to their
+  own firm (arguably correct), and spacing corruptions of the correct name —
+  `'Dr. MichaelJ ackson'` for Dr. Michael Jackson.
+- flash-lite's include `'Claimant'`, `'the insured'` and `'Thomas'` — **role
+  descriptors, which the prompt explicitly forbids.** That is not a near-miss;
+  it is the model ignoring an instruction, and a descriptor then binds to
+  whichever party the resolver maps it to.
+
+Same distinction T2.2 measured between the LLM and the line rule: what matters
+is not the rate but the *kind*. **Lane stays on flash.** `sweep` remains the only
+downgraded lane, and it is the right one — highest volume, and a recall net
+rather than a judgement call.
+
+The methodological point is worth keeping: **the pre-registered rule looked
+wrong at n=8 and was right at n=60.** Had the sample stopped at 8, the cheaper
+model would have shipped on a number that was real and a conclusion that was not.

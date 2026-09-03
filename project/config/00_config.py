@@ -28,12 +28,32 @@ GENAI_MODEL = "gemini-3.7-flash"                # extraction / adjudication / NL
 # 16 Oct 2026, so it is not a durable choice. Rates for the 3.x line are marked
 # effective to 31 Dec 2026 and then double.)
 #
-# WHAT MAY NOT BE DOWNGRADED WITHOUT RE-MEASURING. Identifier binding measured
-# 0.969 precision in-pipeline (T1.2) and relation extraction is the evidence
-# path -- both quality claims are attached to gemini-3.7-flash specifically.
-# Changing the model under a measured number silently invalidates it, which is
-# the same class of mistake as the ER_LINK_THRESHOLD comment that drifted out of
-# true. Downgrade a lane only after re-running its measurement on the new model.
+# identifier_binding WAS MEASURED ON BOTH AND STAYS ON FLASH. Over 60 documents
+# against ground truth:
+#
+#     gemini-3.7-flash        precision 0.989   635 bound   142 declined
+#     gemini-3.1-flash-lite   precision 0.982   650 bound    91 declined
+#
+# The 0.007 precision gap is inside the noise band. The ERROR KINDS are not.
+# flash's mistakes are near-misses on the right entity -- a person bound to
+# their own firm, or a spacing corruption of the correct name ('Dr. MichaelJ
+# ackson' for Dr. Michael Jackson). flash-lite's include 'Claimant', 'the
+# insured' and 'Thomas': role descriptors, which THE PROMPT EXPLICITLY FORBIDS,
+# and which a wrong binding then attaches to whichever party the resolver maps
+# that descriptor to.
+#
+# It also declines far less often (91 vs 142) while being no more accurate, so
+# the extra bindings are guesses rather than knowledge. A wrong owner corrupts
+# the party it lands on; a decline is safe. This is the same distinction T2.2
+# measured between the LLM and the line rule.
+#
+# Worth noting the decision rule was written down BEFORE the numbers, and at an
+# 8-document sample it looked wrong -- flash-lite scored 1.000 there. Only the
+# 60-document sample showed why declining matters.
+#
+# relation_extract is likewise unmeasured on the cheaper model and stays pinned.
+# Changing a model under a measured number silently invalidates it, the same
+# class of mistake as the ER_LINK_THRESHOLD comment that drifted out of true.
 #
 # `sweep` is the opposite case: highest call volume in the pipeline (one call
 # per chunk, ~3 per document), and its job is to catch spans the other lanes
