@@ -217,8 +217,32 @@ def _gen_ssn(rng):
 
 
 def _gen_vin(rng):
+    """A VIN that passes its own ISO 3779 check digit.
+
+    The previous version returned 17 random characters. That is not a VIN: the
+    ninth character is a weighted check digit over the other sixteen, so a
+    random string fails validation about ten times in eleven. Any detector that
+    validates -- as gazetteers now does, deliberately, because the bare
+    17-character shape matches part numbers and claim references -- would have
+    rejected every planted VIN and scored 0% recall on a fixture that looked
+    correct.
+
+    Same principle as _gen_npi: a synthetic identifier that does not satisfy its
+    own checksum tests the wrong thing.
+    """
     chars = "ABCDEFGHJKLMNPRSTUVWXYZ0123456789"
-    return "".join(rng.pick(chars) for _ in range(17))
+    body = [rng.pick(chars) for _ in range(17)]
+    body[8] = "0"                                  # placeholder; replaced below
+    weights = (8, 7, 6, 5, 4, 3, 2, 10, 0, 9, 8, 7, 6, 5, 4, 3, 2)
+    xl = {**{str(d): d for d in range(10)},
+          **{c: v for c, v in zip("ABCDEFGH", range(1, 9))},
+          **{c: v for c, v in zip("JKLMN", range(1, 6))},
+          "P": 7, "R": 9,
+          **{c: v for c, v in zip("STUVWXYZ", range(2, 10))}}
+    total = sum(xl[c] * w for c, w in zip(body, weights))
+    r = total % 11
+    body[8] = "X" if r == 10 else str(r)
+    return "".join(body)
 
 
 def _gen_dob(rng):
@@ -1064,6 +1088,20 @@ class _Composer:
             nb.add("Shop TIN ")
             nb.add_identifier(tin)
             nb.add(" verified against the vendor file. ")
+        # VIN: same defect as SSN -- 140 were generated onto claimants and never
+        # written down. The repair paragraph is where a VIN belongs, and it is
+        # the identifier that legitimately joins a claimant, a vehicle and a
+        # shop, so its absence removed a whole class of cross-entity link from
+        # the fixture.
+        clm_v = self._ent("claimant")
+        vin = self._ident_of(clm_v, "vin") if clm_v else None
+        if vin and rng.chance(0.6):
+            nb.add(rng.pick([
+                "Vehicle VIN ", "Unit VIN ", "VIN on the estimate reads ",
+            ]))
+            nb.add_identifier(vin)
+            nb.add(rng.pick([". ", " per the estimate of record. ",
+                             ", matches the policy vehicle schedule. "]))
         ev = self._pop_event(("estimate_written", "inspection_completed"))
         if ev:
             nb.add("The shop ")
@@ -1088,6 +1126,19 @@ class _Composer:
         nb.add("Investigation notes: reviewed the reported sequence of the ")
         nb.add(self.meta["occ_type"])
         nb.add(" against the recorded statement. ")
+        # SSN: previously generated onto the entity and never written into any
+        # note, so 125 declared SSNs appeared in zero of 2,000 documents and the
+        # SSN lane could not be exercised at all. An SIU/identity-verification
+        # paragraph is where it plausibly appears in a real claim file.
+        ssn = self._ident_of(clm, "ssn") if clm else None
+        if ssn and rng.chance(0.6):
+            nb.add(rng.pick([
+                "Identity verified against the file of record, SSN ",
+                "Claimant identity confirmed; SSN on file ",
+                "Ran the identity check under SSN ",
+            ]))
+            nb.add_identifier(ssn)
+            nb.add(". ")
         if rng.chance(0.5):
             nb.add("There is a suspected inconsistency between the described point of impact and the documented damage pattern. ")
         ev = self._pop_event(("siu_referral", "coverage_denied"))

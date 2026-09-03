@@ -64,7 +64,12 @@ PATTERNS: list[tuple[str, re.Pattern]] = [
     ("vin",             textnorm.VIN_RE),
     ("icd10",           re.compile(r"\b[A-TV-Z][0-9][0-9A-Z](?:\.[0-9A-Z]{1,4})?\b")),
     ("cpt",             re.compile(r"\b\d{5}(?:-[A-Z]{2})?\b")),
-    ("policy_number",   re.compile(r"\b(?:POL|PLC|POLICY)[#\s:-]*([A-Z0-9-]{5,})\b", re.I)),
+    # The captured part must contain a DIGIT. Without that, under re.I this
+    # matched any 5+ letter word after "policy" -- "policy vehicle" and
+    # "policy holder" both scanned as policy numbers, and every one of them was
+    # then sent to the LLM binding lane to have an owner assigned.
+    ("policy_number",   re.compile(
+        r"\b(?:POL|PLC|POLICY)[#\s:-]*((?=[A-Z0-9-]*\d)[A-Z0-9-]{5,})\b", re.I)),
     ("email",           textnorm.EMAIL_RE),
     ("phone",           textnorm.PHONE_RE),
     ("monetary_amount", re.compile(r"\$\s?\d{1,3}(?:,\d{3})*(?:\.\d{2})?\b")),

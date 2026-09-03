@@ -57,7 +57,9 @@ not authority — each was independently checked.
 | D18 | `u` is inflated 3–37× by match contamination in the random-pair sample | me, via T0.4 | open — ceiling measured (+0.026 F1), no label-free estimator yet (T0.5) |
 | D19 | **TIN was blocked but never compared** — it proposed candidates and then contributed zero evidence to their score | user, via T0.4's evidence report | ✅ **fixed** — now +2.21 bits |
 | D20 | **`address_key` compared by ExactMatch only** — one opaque `number|street|zip` composite, so a missing zip earned *no* evidence rather than less, while a city-only address exact-matched every address in its zip | user, via T0.4 | ✅ **fixed** — graded four-level comparison over decomposed components |
-| D21 | **SSN and VIN are declared in the ground-truth manifest but never written into any note** — 125 and 140 respectively, zero occurrences across all 2,000 notes. `corpus_gen` mints them as entity attributes and never places them. The VIN values also fail their own ISO check digit | me, via D19 | open — corpus defect; makes two identifier lanes untestable |
+| D21 | **SSN and VIN were declared in the ground-truth manifest but never written into any note** — zero occurrences across all 2,000 notes; `corpus_gen` minted them as entity attributes and never placed them, and its VIN values failed their own ISO check digit so a validating detector would have scored 0% on a fixture that looked correct | me, via D19 | ✅ **fixed** — 526 notes now carry an SSN, 359 a check-digit-valid VIN |
+| D22 | **`policy_number` matched ordinary prose** — under `re.I` the pattern accepted any 5+ letter word after "policy", so "policy vehicle" and "policy holder" scanned as policy numbers and were sent to the LLM binding lane to have owners assigned | me, via D21 verification | ✅ **fixed** — the captured part must now contain a digit |
+| D23 | **No identifier VALUE is ever written two ways.** Formats do vary across the corpus (phones appear as `(312) 555-0142` 967× and bare 10-digit 395×; dates in both numeric and written form) — but each individual value keeps one spelling everywhere it occurs: 0 of 1,341, against **92% of entities appearing under multiple name surfaces**. So `normalize_identifier`'s actual job, reconciling two spellings of one value, is never exercised | me, via T0.7 | open — **explains T0.7's flat result**; the largest fixture gap on the board |
 
 **Scaling, not correctness:** `filter_fn` is an O(total-chunks) metadata scan per
 query; `entities_in_chunks` iterates every mention per query.
@@ -364,6 +366,50 @@ is decoration and should be removed rather than kept for completeness.
 notes with, and nothing detected that — the store would have accumulated edges
 calibrated two different ways with no way to tell them apart. Ingest now refuses
 a stale model instead.
+
+### T0.8 The fixture never varies an identifier's surface *(D23)*
+**Status:** open · **Confidence:** measured
+
+**Measured, and stated precisely.** Formats *do* vary across the corpus — phones
+appear as `(312) 555-0142` 967 times and as a bare 10-digit run 395 times; dates
+appear both numerically and written out. What never happens is the case that
+matters: **0 of 1,341 identifier values is written two different ways**. Each
+phone, address, email, SSN, VIN, NPI and TIN keeps one spelling everywhere it
+occurs. For contrast, **472 of 512 entities (92%) appear under more than one name
+surface** — order flips, nicknames, initials, titles.
+
+So the corpus has format *diversity* without per-value *variation*, and it is
+per-value variation that identifier matching exists to survive.
+
+**Why it matters more than it sounds.** The fixture was built to stress *name*
+matching and it does that well — which is why the name comparison model is the
+elaborate part and why its numbers move. The identifier half of the system is
+validated only against its best case:
+
+- `textnorm.normalize_identifier` cannot be tested at all. There is nothing to
+  normalize, so every regression in it is invisible. (D15 — `who_is_at`
+  normalizing differently from the indexer, so *every* phone and address lookup
+  returned `[]` — lived undetected in exactly this blind spot.)
+- The graded address comparison (T0.7) has nothing to grade: ExactMatch already
+  catches 100% of these addresses. **This is the explanation for T0.7's +0.002.**
+- On real claim notes, `(312) 555-0142` / `312-555-0142` / `312.555.0142` /
+  `3125550142` are the *same* phone, and addresses vary at least as much. That
+  variation is where identifier matching either works or does not, and this
+  corpus contains none of it.
+
+**Proposed.** Plant surface variants for identifiers the way the fixture already
+plants them for names, from a per-kind variant generator: phone punctuation and
+groupings, `ext.` suffixes, address abbreviation and suite/zip presence, email
+casing, SSN with and without hyphens, VIN with a lowercase run.
+
+**Falsification test.** With variants planted, identifier recall must stay at
+1.000 and the graded address comparison must show a measurable B-cubed gain over
+ExactMatch. If recall drops, `normalize_identifier` has a real defect the current
+fixture cannot see — which is the point of the item.
+
+**Not a bug in the generator so much as an unstated assumption**: whoever built
+the variant machinery applied it to names and stopped. Worth checking whether
+the same is true of dates and monetary amounts.
 
 # Phase 1 — Reconnect the evidence path
 

@@ -653,3 +653,92 @@ ways with nothing to distinguish them. Ingest now refuses a stale model.
 times with **no backoff at all**, so a single `SSL: SSLV3_ALERT_HANDSHAKE_FAILURE`
 killed a 60-document extraction eight minutes in and discarded the work. Now
 exponential backoff with jitter.
+
+### 2026-09-02 (cont.) — D21/D22/D23: the fixture, checked properly
+
+Fixing D21 meant looking hard at `corpus_gen`, and three things fell out.
+
+**D21 — fixed.** SSN and VIN were generated onto entities and never written into
+any note: 0 of 2,000. `para_siu` now emits the claimant's SSN and `para_repair`
+the vehicle VIN. **526 notes carry an SSN, 359 a VIN.** `_gen_vin` also produced
+17 random characters, which is not a VIN — the ninth character is a weighted ISO
+3779 check digit, so a random string fails about ten times in eleven. A
+validating detector would have scored **0% recall on a fixture that looked
+correct**. Now 200/200 generated VINs pass their own checksum.
+
+**D22 — fixed, found while verifying D21.** `policy_number` under `re.I`
+accepted any 5+ letter word after "policy", so *"policy vehicle"* and *"policy
+holder"* scanned as policy numbers — and every one was then sent to the LLM
+binding lane to have an owner assigned. The captured part must now contain a
+digit.
+
+**D23 — open, and the most useful thing found today.** Stated precisely, because
+the first version of this note overstated it: formats *do* vary across the
+corpus (phones appear parenthesised 967× and bare 395×; dates both numerically
+and written out). What never happens is the case that matters — **0 of 1,341
+identifier VALUES is written two different ways**, against **472 of 512 entities
+(92%) appearing under more than one name surface**. Format diversity without
+per-value variation, and per-value variation is what identifier matching exists
+to survive.
+
+That is the explanation for T0.7's flat +0.002: the fixture writes every phone,
+address and email exactly one way, so `ExactMatch` already catches 100% of them
+and a graded comparison has nothing to grade. It also means
+`textnorm.normalize_identifier` **cannot be tested at all** — and D15 (`who_is_at`
+normalising differently from the indexer, so every phone and address lookup
+returned `[]`, always) lived undetected in precisely that blind spot.
+
+The fixture was built to stress NAME matching and does that well. The identifier
+half of the system is validated only against its best case. On real notes
+`(312) 555-0142` and `3125550142` are one phone; here they never both occur.
+Written up as **T0.8** with a falsification test: plant variants, and require
+identifier recall to hold at 1.000 and the graded address comparison to show a
+measurable gain. If recall drops, `normalize_identifier` has a real defect this
+corpus was structurally unable to reveal.
+
+**Address parsing sanity check:** `textnorm.address_parts` decomposes **529/529**
+corpus addresses into all four components. That is a floor, not a result — every
+one of them is in the same canonical form (see D23).
+
+### 2026-09-02 (cont.) — BLOCKED: Gemini spend cap reached
+
+The regression validating the D21 fixture fix died on:
+
+```
+429 RESOURCE_EXHAUSTED
+Your project has exceeded its monthly spending cap.
+https://ai.studio/spend
+```
+
+Not a code failure, and not something backoff can help — all four retries hit
+the same hard cap. **Every LLM lane is blocked until the cap is raised or the
+month rolls over**: extraction, the identifier binding lane, relations, and the
+sweep.
+
+**State to resume from:**
+
+- `e436d4a` is committed and was verified by a full 60-document regression
+  BEFORE the cap was hit. That work is sound.
+- The corpus has been **regenerated** with SSN and VIN planted, and hashes
+  re-sealed. `store/intel.sqlite` holds 2,000 profiled documents and **zero
+  mentions** — extraction died partway. Re-run the scoped regression first thing.
+- **T0.7's falsification test is the outstanding measurement**: with SSNs now in
+  526 notes and VINs in 359, does the SSN comparison measurably raise recall?
+  Until that runs, T0.7 stands as *shipped, benefit not demonstrated*.
+
+**What was verified without the API**, since the gazetteer is pure regex —
+detection recall over 300 documents against ground truth:
+
+| kind | found / planted | recall |
+|---|---|---|
+| phone | 719 / 719 | 1.000 |
+| address | 658 / 658 | 1.000 |
+| email | 340 / 340 | 1.000 |
+| npi | 297 / 297 | 1.000 |
+| tin | 196 / 196 | 1.000 |
+| **ssn** | **98 / 98** | **1.000** |
+| **vin** | **70 / 70** | **1.000** |
+
+So the two new lanes detect everything planted, including every VIN through its
+ISO check digit. What remains unproven is whether they help *resolution* — that
+needs the LLM path for binding, and therefore the cap lifted.
