@@ -346,8 +346,12 @@ Resolution is Splink (Fellegi-Sunter, EM-calibrated); identity is a
 stored merge, so the operating point is chosen from a measured B³ curve and a
 questionable link is filterable rather than structural.
 
-Run `python tests/smoke_test.py` to verify every invariant end to end
-(`--fast` skips resolution).
+**Two test tiers.** `python tests/fast_test.py` checks every invariant over a
+fixed, named 60-document slice in about ten minutes — run it on every change.
+`python tests/smoke_test.py` is the full 2,000-note run: it regenerates the
+corpus and re-extracts all of it, takes hours, and is what refreshes the
+published corpus figures. The split exists because a gate nobody can afford to
+run stops being run.
 
 See **`ARCHITECTURE.md`** for the full evaluation, the bugs the new fixture
 exposed, and what is still not good enough.
