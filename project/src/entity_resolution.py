@@ -392,10 +392,33 @@ def training_completeness(linker) -> dict:
                and r["comparison_vector_value"] == top for r in untrained):
             untrainable.add(comp.output_column_name)
 
+    # Untrained MIDDLE levels, keyed by comparison and label. Distinct from
+    # untrainable_agreement: a comparison whose top level trained is worth
+    # keeping, but a level EM never observed inside it still gets an invented
+    # parameter -- measured, `address`'s "same locality" came out at -2.99 bits,
+    # making agreement on a zip NEGATIVE evidence. Levels partition the space so
+    # one cannot simply be deleted; collapsing it into its neighbour is what
+    # _collapse_unobserved does with this.
+    unobserved = defaultdict(set)
+    for comp in linker._settings_obj.comparisons:
+        levels = [lv for lv in comp.comparison_levels if not lv.is_null_level]
+        if not levels:
+            continue
+        top = max(lv.comparison_vector_value for lv in levels)
+        bottom = min(lv.comparison_vector_value for lv in levels)
+        for lv in levels:
+            if lv.comparison_vector_value in (top, bottom):
+                continue          # agreement and else levels are not collapsible
+            if any(r["comparison"] == comp.output_column_name
+                   and r["comparison_vector_value"] == lv.comparison_vector_value
+                   for r in untrained):
+                unobserved[comp.output_column_name].add(lv.label_for_charts)
+
     return {"fully_trained": not untrained,
             "n_untrained_parameters": len(untrained),
             "untrained": untrained,
             "untrainable_agreement": sorted(untrainable),
+            "unobserved_levels": {k: sorted(v) for k, v in unobserved.items()},
             # {comparison: {gamma levels affected}} -- used to flag the edges
             # that actually landed on a substituted level.
             "by_comparison": {k: sorted(set(v)) for k, v in by_comp.items()}}
@@ -453,7 +476,8 @@ def lane_provenance(edges: pd.DataFrame) -> dict:
 # ---------------------------------------------------------------------------
 # Splink backend
 # ---------------------------------------------------------------------------
-def comparison_specs(frame: pd.DataFrame | None = None, drop: set | None = None):
+def comparison_specs(frame: pd.DataFrame | None = None, drop: set | None = None,
+                     drop_levels: dict | None = None):
     """(name, comparison, raw_value_columns) for every scored comparison.
 
     Pass `frame` to drop comparisons whose columns are entirely absent from the
@@ -495,14 +519,15 @@ def comparison_specs(frame: pd.DataFrame | None = None, drop: set | None = None)
          cl.ForenameSurnameComparison("first_name", "last_name")
            .configure(term_frequency_adjustments=True),
          ["first_name", "last_name"]),
-        ("name_sorted", name_sorted_comparison(), ["name_sorted"]),
+        ("name_sorted", name_sorted_comparison(
+            (drop_levels or {}).get("name_sorted")), ["name_sorted"]),
         ("email", cl.EmailComparison("email"), ["email"]),
         ("phone7", cl.ExactMatch("phone7"), ["phone7"]),
         ("npi", cl.ExactMatch("npi"), ["npi"]),
         ("tin", cl.ExactMatch("tin"), ["tin"]),
         ("ssn", cl.ExactMatch("ssn"), ["ssn"]),
         ("vin", cl.ExactMatch("vin"), ["vin"]),
-        ("address", address_comparison(),
+        ("address", address_comparison((drop_levels or {}).get("address")),
          ["address_street", "address_city", "address_state", "address_zip"]),
         ("dob", cl.ExactMatch("dob"), ["dob"]),
     ], frame, drop)
@@ -554,7 +579,44 @@ def _prune_absent(specs: list, frame: pd.DataFrame | None,
 
 
 
-def name_sorted_comparison():
+# Comparisons this module builds level-by-level, and can therefore collapse.
+COLLAPSIBLE_COMPARISONS = frozenset({"name_sorted", "address"})
+
+
+def _collapse_unobserved(levels: list, collapse: list | None):
+    """Drop levels EM never observed, so their condition falls through.
+
+    Levels PARTITION the comparison space, so an unobserved level cannot simply
+    be deleted from the model -- but it can be removed from the ladder, and the
+    pairs it would have caught then fall into the next level down. That is a
+    collapse, not a deletion, and it is why this is safe.
+
+    Why it is needed: a level EM never reaches gets a Splink-invented parameter.
+    Measured, `address`'s "same locality (zip, or city+state)" came out at
+    **-2.99 bits with m invented** -- agreeing on a zip scored as NEGATIVE
+    evidence. Nothing chose that number; it is what the default happens to be at
+    that position in the ladder.
+
+    Distinct from the whole-comparison prune (see _prune_absent): that drops a
+    comparison whose AGREEMENT level is invented, because then every positive
+    contribution it makes is fiction. This is the finer-grained case, where the
+    top level trained fine and one rung of the ladder did not. `email` is the
+    reason both exist -- it has invented middle levels and is still one of the
+    better signals, so dropping the whole comparison would lose a trained top
+    level to save an untrained middle one.
+    """
+    if not collapse:
+        return levels
+    keep = []
+    for lv in levels:
+        label = getattr(lv, "label_for_charts", None)
+        if label and label in collapse:
+            continue
+        keep.append(lv)
+    return keep
+
+
+def name_sorted_comparison(collapse: list | None = None):
     """Jaro-Winkler on the token-sorted name, plus a CONTAINMENT level.
 
     WHY CONTAINMENT. `name_sorted` is the space-joined sorted tokens, so a bare
@@ -604,20 +666,22 @@ def name_sorted_comparison():
             # surname far more often. Two levels let EM price them separately
             # instead of averaging a strong signal and a weak one into one
             # number that serves neither.
-            cll.CustomLevel(
-                f'({contained}) AND "claim_id_l" = "claim_id_r"',
-                label_for_charts="name contained in the other, same claim",
-            ),
-            cll.CustomLevel(
-                contained,
-                label_for_charts="name contained in the other, different claim",
-            ),
+            *_collapse_unobserved([
+                cll.CustomLevel(
+                    f'({contained}) AND "claim_id_l" = "claim_id_r"',
+                    label_for_charts="name contained in the other, same claim",
+                ),
+                cll.CustomLevel(
+                    contained,
+                    label_for_charts="name contained in the other, different claim",
+                ),
+            ], collapse),
             cll.ElseLevel(),
         ],
     )
 
 
-def address_comparison():
+def address_comparison(collapse: list | None = None):
     """One graded address comparison, not four independent ones.
 
     WHY GRADED. The previous model compared `address_key` -- a single opaque
@@ -679,14 +743,16 @@ def address_comparison():
                 f'{both("street")} AND ({both("zip")} OR {both("city")})',
                 label_for_charts="same street, corroborated by zip or city",
             ),
-            cll.CustomLevel(
-                both("street"),
-                label_for_charts="same street only",
-            ),
-            cll.CustomLevel(
-                f'{both("zip")} OR ({both("city")} AND {both("state")})',
-                label_for_charts="same locality (zip, or city+state)",
-            ),
+            *_collapse_unobserved([
+                cll.CustomLevel(
+                    both("street"),
+                    label_for_charts="same street only",
+                ),
+                cll.CustomLevel(
+                    f'{both("zip")} OR ({both("city")} AND {both("state")})',
+                    label_for_charts="same locality (zip, or city+state)",
+                ),
+            ], collapse),
             cll.ElseLevel(),
         ],
     )
@@ -725,7 +791,8 @@ class SplinkResolver(ERBackend):
         # Populated by resolve(); read by run() for the run output.
         self.calibration: dict = {}
 
-    def _settings(self, frame: pd.DataFrame | None = None, drop: set | None = None):
+    def _settings(self, frame: pd.DataFrame | None = None, drop: set | None = None,
+                  drop_levels: dict | None = None):
         from splink import SettingsCreator, block_on
 
         return SettingsCreator(
@@ -741,7 +808,8 @@ class SplinkResolver(ERBackend):
             # `frame` prunes comparisons over columns this corpus has no
             # values for at all -- see _prune_absent. Without it Splink
             # invents their parameters and reports the result as evidence.
-            comparisons=[c for _, c, _ in comparison_specs(frame, drop=drop)],
+            comparisons=[c for _, c, _ in comparison_specs(frame, drop=drop,
+                                                           drop_levels=drop_levels)],
             retain_intermediate_calculation_columns=True,
         )
 
@@ -762,7 +830,16 @@ class SplinkResolver(ERBackend):
         at this scale, and it is exact rather than a coverage heuristic that
         would need a threshold nobody could defend on a client's data.
         """
-        drop = self._train_once(frame)
+        drop, unobserved = self._train_once(frame)
+        self._dropped = sorted(drop)
+        self._unobserved = {k: v for k, v in (unobserved or {}).items() if v}
+        # Only the comparisons this module builds level-by-level can have a
+        # level collapsed; the library comparisons (EmailComparison and the
+        # rest) own their own ladders. Reporting a collapse we cannot perform
+        # would be the same kind of overclaim this whole calibration block
+        # exists to prevent, so the two are reported separately.
+        self._collapsed = {k: v for k, v in self._unobserved.items()
+                           if k in COLLAPSIBLE_COMPARISONS}
         if drop:
             runlog.note(
                 f"retraining without {sorted(drop)}: this corpus cannot train "
@@ -770,16 +847,22 @@ class SplinkResolver(ERBackend):
                 "contribution they made would be a Splink default rather than "
                 "an estimate. They stay declared and will be trained on a "
                 "corpus that supports them.")
-            self._dropped = sorted(drop)
-            return self._train_once(frame, drop=drop, final=True)
-        self._dropped = []
-        return self._train_once(frame, final=True)
+        if self._collapsed:
+            runlog.note(
+                "collapsing levels EM never observed into their neighbour: "
+                + "; ".join(f"{k}: {', '.join(v)}"
+                            for k, v in sorted(self._collapsed.items()))
+                + ". Their condition falls through to the next level rather "
+                  "than carrying a Splink-invented parameter.")
+        return self._train_once(frame, drop=drop, drop_levels=self._collapsed,
+                                final=True)
 
     def _train_once(self, frame: pd.DataFrame, drop: set | None = None,
-                    final: bool = False):
+                    drop_levels: dict | None = None, final: bool = False):
         from splink import DuckDBAPI, Linker, block_on
 
-        linker = Linker(frame, self._settings(frame, drop=drop), db_api=DuckDBAPI())
+        linker = Linker(frame, self._settings(frame, drop=drop, drop_levels=drop_levels),
+                        db_api=DuckDBAPI())
 
         # Prior: the chance two randomly drawn mentions co-refer. Splink defaults
         # to 1e-4, which is badly wrong for this corpus (entities recur heavily),
@@ -822,11 +905,18 @@ class SplinkResolver(ERBackend):
 
         cal = calibration_report(linker)
         if not final:
-            # First pass exists only to discover what could not be trained.
-            return set(cal["untrainable_agreement"])
+            # First pass exists only to discover what could not be trained:
+            # whole comparisons whose agreement level is invented, and middle
+            # levels EM never observed inside otherwise-good comparisons.
+            return set(cal["untrainable_agreement"]), cal["unobserved_levels"]
 
         self.calibration = cal
         self.calibration["dropped_untrainable"] = getattr(self, "_dropped", [])
+        self.calibration["collapsed_levels"] = getattr(self, "_collapsed", {})
+        # Found but NOT acted on -- a library comparison owns its ladder.
+        self.calibration["unobserved_levels_kept"] = {
+            k: v for k, v in getattr(self, "_unobserved", {}).items()
+            if k not in COLLAPSIBLE_COMPARISONS}
         self._log_calibration(self.calibration)
         if not self.calibration["fully_trained"] and CFG.ER_REQUIRE_FULLY_TRAINED:
             names = sorted(self.calibration["by_comparison"])

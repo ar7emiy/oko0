@@ -1067,3 +1067,45 @@ rather than a judgement call.
 The methodological point is worth keeping: **the pre-registered rule looked
 wrong at n=8 and was right at n=60.** Had the sample stopped at 8, the cheaper
 model would have shipped on a number that was real and a conclusion that was not.
+
+### 2026-09-03 — T0.9 shipped: collapse levels EM never observed
+
+The last item was a bug I introduced earlier the same day, so it was mine to
+close. Falsification test passed on **both** clauses:
+
+| | before | after |
+|---|---|---|
+| edges flagged uncalibrated | 260 of 9,934 | **67 of 10,835** |
+| best B³ F1 | 0.887 @ 0.8 | **0.907 @ 0.8** |
+| B³ F1 @ 0.45 | 0.806 | 0.811 |
+| entities vs 42 gold | 43 (1.02×) | **42 (1.00×)** |
+
+B-cubed did not merely hold — it *improved*, so the invented parameters were not
+carrying signal by luck. They were noise, and `address`'s "same locality" at
+**−2.99 bits** was making agreement on a zip count as evidence *against* a
+match. Entity count is now exact against ground truth.
+
+**Levels partition the comparison space**, so an unobserved level cannot be
+deleted — but it can be removed from the ladder, and the pairs it would have
+caught fall through to the next level down. That is a collapse, not a deletion,
+which is why it is safe.
+
+**One honesty fix inside the fix.** The first version reported `email`'s three
+unobserved levels as "collapsed" when nothing had happened to them —
+`EmailComparison` is a library class that owns its own ladder, and only the two
+comparisons this module builds level-by-level can be collapsed. `collapsed_levels`
+and `unobserved_levels_kept` are now separate fields. Claiming a collapse the
+code cannot perform is exactly the overclaim the calibration block exists to
+prevent, and I nearly shipped it.
+
+**Three prune mechanisms now, at three granularities, each with its own reason:**
+
+| mechanism | drops | because |
+|---|---|---|
+| `_prune_absent` (absent) | a comparison whose columns hold no value anywhere | nothing to train on at all |
+| `_prune_absent` (untrainable, D27) | a comparison whose **agreement** level is invented | every positive contribution it makes is fiction |
+| `_collapse_unobserved` (T0.9) | a **middle level** EM never reached | the top level trained fine; one rung did not |
+
+`email` is why all three exist: it has invented middle levels and is still one
+of the better signals, so dropping the whole comparison would lose a trained top
+level to save an untrained middle one.

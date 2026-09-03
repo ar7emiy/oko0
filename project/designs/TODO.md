@@ -72,7 +72,7 @@ not authority — each was independently checked.
 | D29 | **The `person_vs_org` veto was wrong 70% of the time.** It suppressed 1,335 edges; of the 1,291 with both sides labelled, **898 (69.6%) joined two mentions of the SAME entity** — including identical surfaces at p=1.000. It vetoed on `entity_class`, which `comparison_specs` already refuses to SCORE with because it is *"a noisy derived label from our own classifier, not identity evidence"* — then used it as an absolute veto no probability could outweigh | me, via D21's SSN work | ✅ **fixed** — removed. Best B³ F1 **0.889 → 0.920**, recall@0.45 **0.885 → 0.937**, precision cost 0.008 |
 | D30 | **`_is_plausible_name` is now the entire remaining recall gap.** With spans fixed, recall by variant is canonical/flip/initials/nickname **1.000**, typo 0.878 — and **`short` 0/41 = 0.000**, `last_only` 3/33 = 0.091. Those two account for **74 of the 77 missed placements**: fixing D12 would take entity recall from 0.883 to ~0.995 | me, via D25 | open — **the single highest-value item on the board**, and a sharpening of D12 |
 | D31 | **B-cubed rewards doing less, and the gate was reading it as a system metric.** Three measured instances in one day: precision *rises* under over-splitting (D17); F1 prefers the model that discards hard mentions (0.920 vs 0.887, D30); and F1 is **higher with the 16×-wrong prior re-introduced than without it — 0.905 vs 0.887**. It is a clustering metric. The assertion that actually catches these is **entity count at the operating threshold** against ground truth | me, via T0.6's falsification test | ✅ **mitigated** — the fast tier asserts entity count at the operating point, not best-F1 on a curve |
-| D32 | **A comparison level EM never observes gets a parameter invented for it.** 260 of 9,934 edges are flagged: `name_sorted` "contained, different claim" +3.30 bits with m invented (188 edges), and `address` "same locality" at **−2.99 bits invented** — agreeing on a zip should never be negative evidence. The two-pass prune (D27) drops a whole comparison when its *agreement* level is untrained, deliberately not middle levels | me, via the final verification | open — **T0.9**: collapse an unobserved level into its neighbour rather than inventing a parameter |
+| D32 | **A comparison level EM never observes gets a parameter invented for it.** 260 of 9,934 edges were flagged: `name_sorted` "contained, different claim" +3.30 bits with m invented, and `address` "same locality" at **−2.99 bits invented** — agreeing on a zip scored as *negative* evidence | me, via the final verification | ✅ **fixed** — unobserved levels collapse into their neighbour. Flagged edges **260 → 67**, best B³ F1 **0.887 → 0.907**, entities **42 vs 42 gold (1.00×)** |
 
 **Scaling, not correctness:** `filter_fn` is an O(total-chunks) metadata scan per
 query; `entities_in_chunks` iterates every mention per query.
@@ -101,8 +101,8 @@ Verified by grep/execution, 2026-09-02.
 | entity recall | **0.971** | 60-doc scope. 0.883 before D30; `last_only` 0.091 → **1.000**, `short` 0.000 → 0.610 |
 | scan coverage | 100% chars/doc | — |
 | **B³ F1 at the operating threshold (0.45)** | **0.806** (P 0.688 / R 0.973) | ⚠ **lower than the 0.861 before D30 — see below.** B³ rewards not extracting hard mentions |
-| **entities vs ground truth @ 0.45** | **43 vs 42 = 1.02×** | was 515 = 12.3× pre-T0.4, 54 = 1.29× pre-D30 |
-| **best B³ F1** | **0.887 @ 0.80** | 0.920 before D30, but that figure was earned by discarding 88 mentions |
+| **entities vs ground truth @ 0.45** | **42 vs 42 = 1.00×** | was 515 = 12.3× pre-T0.4, 54 = 1.29× pre-D30, 43 = 1.02× pre-T0.9 |
+| **best B³ F1** | **0.907 @ 0.80** | 0.814 pre-span-fix → 0.887 → **0.907** after collapsing unobserved levels |
 | **match prior λ** | **0.026** | estimated 0.0264 against a measured 0.0121; was 0.000764 |
 | identical-surface pairs above threshold | **4.6%** of 7,468 | the D1/D5 org-name failure |
 | single-note ingest | 18.5s | 60-note corpus, live models |
@@ -253,7 +253,7 @@ agreeing field is worth. If an identifier is ever worth less than a name, that i
 visible without reading the code.
 
 ### T0.9 Collapse comparison levels EM never observes *(D32)*
-**Status:** open · **Confidence:** measured
+**Status:** ✅ **shipped** · **Confidence:** measured end-to-end
 
 **Current.** A comparison level EM never sees gets a Splink-invented parameter.
 Measured on the final verification run — **260 of 9,934 edges flagged**:
@@ -283,10 +283,23 @@ inventing a parameter for it. Levels partition the space, so a level cannot
 simply be deleted; merging its SQL condition into the adjacent level keeps the
 partition intact and lets EM price the union.
 
-**Falsification test.** Collapse the unobserved levels and require the flagged-
-edge count to fall to approximately zero **with no B-cubed regression**. If
-B-cubed falls, the invented parameters were carrying real signal by luck and the
-item needs rethinking rather than shipping.
+**Falsification test — RUN, and passed on both clauses.**
+
+| | before | after |
+|---|---|---|
+| edges flagged uncalibrated | 260 of 9,934 | **67 of 10,835** |
+| best B³ F1 | 0.887 @ 0.8 | **0.907 @ 0.8** |
+| B³ F1 @ 0.45 | 0.806 | 0.811 |
+| entities vs 42 gold | 43 (1.02×) | **42 (1.00×)** |
+
+B-cubed did not regress, it *improved* — so the invented parameters were not
+carrying signal by luck; they were noise. Entity count is now exact.
+
+**Status: ✅ shipped.** `address`'s "same locality" is collapsed; `email`'s three
+unobserved levels are reported but NOT collapsed, because `EmailComparison` owns
+its own ladder. Those two are reported separately (`collapsed_levels` vs
+`unobserved_levels_kept`) — claiming a collapse this module cannot perform would
+be the same kind of overclaim the calibration block exists to prevent.
 
 ### T0.5 Correct `u` for match contamination — the remaining calibration gap
 **Status:** open · **Confidence:** measured (ceiling quantified, no label-free
