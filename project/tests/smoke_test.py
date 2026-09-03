@@ -22,6 +22,46 @@ from src.repository import Repository  # noqa: E402
 from src.settings import CFG, Paths  # noqa: E402
 
 
+def _assert_query_vocabulary_is_served():
+    """Every field offered to the query planner must have an executor branch.
+
+    `ssn` sat in contracts.query_plan_schema for months with nothing in
+    app._apply_filter to answer it, and `dob` alongside it. The planner would
+    emit a valid plan filtering on ssn, the executor's haystack stayed empty,
+    nothing matched, and the user was told there were no such entities -- for an
+    identifier the store held. A capability gap that reads as a factual answer.
+
+    Cheap to check, so it is checked rather than remembered.
+    """
+    from src import app, contracts
+
+    def _field_enum(node):
+        if isinstance(node, dict):
+            if node.get("properties", {}).get("field", {}).get("enum"):
+                return node["properties"]["field"]["enum"]
+            for v in node.values():
+                if (r := _field_enum(v)):
+                    return r
+        if isinstance(node, list):
+            for v in node:
+                if (r := _field_enum(v)):
+                    return r
+        return None
+
+    declared = set(_field_enum(contracts.query_plan_schema()) or [])
+    assert declared, "query_plan_schema exposes no field enum to check"
+    unserved = declared - app._SERVED_FIELDS
+    assert not unserved, (
+        f"query_plan_schema offers {sorted(unserved)} to the planner but "
+        "app._apply_filter has no branch for them; filtering on one would "
+        "silently return nothing and read as 'no such entity'")
+    undeclared = app._SERVED_FIELDS - declared
+    assert not undeclared, (
+        f"app._apply_filter serves {sorted(undeclared)} that the planner is "
+        "never told about, so the capability is unreachable")
+    print(f"      query vocabulary: {len(declared)} fields, all served")
+
+
 def _assert_no_silent_fallback():
     """A run must never quietly substitute a research stand-in for a model.
 
@@ -95,6 +135,7 @@ def main(full: bool = True):
     _assert_no_silent_fallback()
     g = leakage_guard.run_all_guards()
     assert all(v["ok"] for v in g.values())
+    _assert_query_vocabulary_is_served()
 
     print("[3/9] profiling")
     repo = Repository()

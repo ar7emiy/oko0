@@ -64,6 +64,12 @@ class EntityIndex:
                 self.by_identifier[("npi", n)].add(eid)
             for t in idn.get("tins", []):
                 self.by_identifier[("tin", t)].add(eid)
+            for s in idn.get("ssns", []):
+                self.by_identifier[("ssn", s)].add(eid)
+            for v in idn.get("vins", []):
+                self.by_identifier[("vin", v)].add(eid)
+            for b in idn.get("dobs", []):
+                self.by_identifier[("dob", b)].add(eid)
 
     def search_name(self, query: str, k: int = 10):
         q = textnorm.normalize_name(query)
@@ -200,8 +206,33 @@ def execute_plan(index: EntityIndex, plan: dict) -> dict:
     return {"entity_ids": result, "n": len(result), "trace": trace, "plan": plan}
 
 
+class UnservedQueryField(RuntimeError):
+    """The query vocabulary advertises a field this executor cannot answer."""
+
+
+# Every field contracts.query_plan_schema offers the planner must have a branch
+# below. `ssn` was in that enum for months with no branch: the planner would
+# emit a perfectly valid plan filtering on ssn, `hay` stayed empty, nothing
+# matched, and the user was told "no results" for an identifier the store held.
+# Silent, and indistinguishable from a genuine absence.
+_SERVED_FIELDS = {
+    "name", "email", "email_domain", "phone", "phone_last7", "address",
+    "address_key", "npi", "tin", "ssn", "vin", "dob", "role", "claim_id",
+    "allegation_text", "firm",
+}
+
+
 def _apply_filter(index, eids, f):
     field, op, val = f.get("field"), f.get("op", "eq"), (f.get("value") or "")
+    if field not in _SERVED_FIELDS:
+        raise UnservedQueryField(
+            f"the query planner emitted field={field!r}, which this executor "
+            "has no branch for. Filtering on it would match nothing and read as "
+            "'no such entity' rather than 'not implemented'. Either add a branch "
+            "in _apply_filter or remove the field from "
+            "contracts.query_plan_schema -- the vocabulary offered to the model "
+            "and the vocabulary this can answer must be the same set."
+        )
     vlow = val.lower()
     keep = set()
     for e in eids:
@@ -222,6 +253,12 @@ def _apply_filter(index, eids, f):
             hay = idn.get("npis", [])
         elif field == "tin":
             hay = idn.get("tins", [])
+        elif field == "ssn":
+            hay = idn.get("ssns", [])
+        elif field == "vin":
+            hay = idn.get("vins", [])
+        elif field == "dob":
+            hay = idn.get("dobs", [])
         elif field == "role":
             hay = list(d.get("roles_per_claim", {}).values())
         elif field == "claim_id":

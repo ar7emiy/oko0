@@ -341,7 +341,8 @@ def query_plan_schema() -> dict:
                             "type": "string",
                             "enum": [
                                 "name", "email", "email_domain", "phone", "phone_last7",
-                                "address", "address_key", "npi", "tin", "ssn", "dob",
+                                "address", "address_key", "npi", "tin", "ssn",
+                                "vin", "dob",
                                 "firm", "role", "claim_id", "allegation_text",
                             ],
                         },
