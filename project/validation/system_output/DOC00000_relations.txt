@@ -1,0 +1,15 @@
+DOC00000.txt  claim=CLM0000   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Ibarra Neurology Associates' --[MANAGES_CARE_FOR]--> 'Rob Miller'   (asserted)
+      evidence [649:717]: 'Ibarra Neurology Associates continues to manage care for Rob Miller.'
+  'Marge Wilson' --[AFFILIATED_WITH]--> 'Harbor & Vance LLP'   (asserted)
+      evidence [1532:1566]: 'Marge Wilson of Harbor & Vance LLP'
+  'Marge Wilson' --[EMPLOYED_BY]--> 'Harbor & Vance LLP'   (asserted)
+      evidence [1532:1566]: 'Marge Wilson of Harbor & Vance LLP'
+  'Harbor & Vance LLP' --[REPRESENTS]--> 'Robert Miller'   (asserted)
+      evidence [1548:1608]: 'Harbor & Vance LLP regarding representation of Robert Miller'
+  'Ibarra Neurology Associates' --[MANAGES_CARE_FOR]--> 'Robeert Miller'   (asserted)
+      evidence [2172:2243]: 'Ibarra Neurology Associates continues to manage care for Robeert Miller'
+  'Ibarra Neurology Associates' --[MANAGES_CARE_FOR]--> 'Robeert Miller'   (asserted)
+      evidence [2172:2244]: 'Ibarra Neurology Associates continues to manage care for Robeert Miller.'

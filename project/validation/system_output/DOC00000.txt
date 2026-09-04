@@ -1,0 +1,35 @@
+========================================================================================
+DOC00000.txt   claim=CLM0000   occurrence=OCC0000
+========================================================================================
+
+--- NAME MENTIONS (10), in order of appearance ---
+  [   47:61   ] 'Miller, Robert'                   class=claimant         extractor=llm                  -> entity Eb65ffb214306 ('Robert Miller')
+  [  649:676  ] 'Ibarra Neurology Associates'      class=medical_provider extractor=gliner+llm           -> entity E323f28e7288c ('Ibarra Neurology Associates')
+  [  706:716  ] 'Rob Miller'                       class=medical_provider extractor=gliner+llm           -> entity Eb65ffb214306 ('Robert Miller')
+  [ 1122:1145 ] 'Thomas Collision Center'          class=repair_shop      extractor=gliner+llm           -> entity Ee111f61b2921 ('Thomas Collision Center')
+  [ 1267:1280 ] 'Robert Miller'                    class=claimant         extractor=gliner+llm           -> entity Eb65ffb214306 ('Robert Miller')
+  [ 1532:1544 ] 'Marge Wilson'                     class=attorney         extractor=gliner+llm+sweep     -> entity Ed9f72bf52d98 ('Marge Wilson')
+  [ 1548:1566 ] 'Harbor & Vance LLP'               class=attorney         extractor=gliner+llm           -> entity Ea95c700d4919 ('Harbor & Vance LLP')
+  [ 1595:1608 ] 'Robert Miller'                    class=attorney         extractor=gliner+llm           -> entity Eb65ffb214306 ('Robert Miller')
+  [ 2172:2199 ] 'Ibarra Neurology Associates'      class=medical_provider extractor=gliner+llm           -> entity E323f28e7288c ('Ibarra Neurology Associates')
+  [ 2229:2243 ] 'Robeert Miller'                   class=medical_provider extractor=gliner+llm           -> entity Eb65ffb214306 ('Robert Miller')
+
+--- IDENTIFIERS (14), in order of appearance ---
+  [   67:77   ] dob      '10/23/1952'                 owner='Miller, Robert' [47:61]                     method=llm
+  [   85:99   ] phone    '(945) 233-4482'             owner='Miller, Robert' [47:61]                     method=llm
+  [  140:150  ] dob      '2024-07-01'                 owner=UNBOUND (orphan)                             method=unbound
+  [  503:513  ] dob      '2026-06-15'                 owner=UNBOUND (orphan)                             method=unbound
+  [  832:870  ] address  '8058 Lincoln Rd, Springfield, IL 62714' owner='Ibarra Neurology Associates' [649:676]      method=llm
+  [  961:975  ] phone    '(316) 754-8117'             owner=UNBOUND (orphan)                             method=unbound
+  [ 1156:1166 ] tin      '66-1627662'                 owner='Thomas Collision Center' [1122:1145]        method=llm
+  [ 1368:1382 ] phone    '(945) 233-4482'             owner='Robert Miller' [1267:1280]                  method=llm
+  [ 1413:1449 ] address  '202 Sunset Blvd, Northline, OH 44118' owner='Robert Miller' [1267:1280]                  method=llm
+  [ 1708:1718 ] dob      '2024-03-28'                 owner='Robert Miller' [1595:1608]                  method=line_rule
+  [ 1829:1839 ] dob      '2026-08-18'                 owner=UNBOUND (orphan)                             method=unbound
+  [ 2269:2279 ] npi      '7457992890'                 owner='Ibarra Neurology Associates' [2172:2199]    method=llm
+  [ 2304:2342 ] address  '8058 Lincoln Rd, Springfield, IL 62714' owner='Ibarra Neurology Associates' [2172:2199]    method=llm
+  [ 2457:2493 ] address  '202 Sunset Blvd, Northline, OH 44118' owner='Robert Miller' [1595:1608]                  method=llm
+
+--- COREFERENCE LINKS (2) ---
+  [  515:518  ] 'She'                (pronoun) -> 'Miller, Robert' [47:61]
+  [  754:767  ] 'The physician'      (descriptor) -> 'Rob Miller' [706:716]

@@ -1,0 +1,42 @@
+========================================================================================
+DOC00001.txt   claim=CLM0001   occurrence=OCC0001
+========================================================================================
+
+--- NAME MENTIONS (20), in order of appearance ---
+  [   13:21   ] 'P. Brown'                         class=attorney         extractor=llm                  -> entity Ecf7e4f643029 ('Priya Brown')  [also in: DOC00002]
+  [   25:50   ] 'Sterling Injury Attorneys'        class=attorney         extractor=gliner+llm           -> entity Ec42b47e68e39 ('Sterling Injury Attorneys')  [also in: DOC00002]
+  [   79:93   ] 'Margaret Jones'                   class=attorney         extractor=gliner+llm           -> entity E8801ce6ad3e1 ('Margaret Jones')  [also in: DOC00002]
+  [  732:746  ] 'Margaret Jones'                   class=claimant         extractor=gliner+llm           -> entity E8801ce6ad3e1 ('Margaret Jones')  [also in: DOC00002]
+  [  999:1021 ] 'Dr. Christopher Nguyen'           class=medical_provider extractor=gliner+llm           -> entity Ede15f2d275ce ('Dr. Christopher Nguyen')  [also in: DOC00002]
+  [ 1051:1065 ] 'Margaret Jones'                   class=repair_shop      extractor=gliner+llm           -> entity E8801ce6ad3e1 ('Margaret Jones')  [also in: DOC00002]
+  [ 1387:1398 ] 'Priya Brown'                      class=attorney         extractor=gliner+llm           -> entity Ecf7e4f643029 ('Priya Brown')  [also in: DOC00002]
+  [ 1402:1427 ] 'Sterling Injury Attorneys'        class=attorney         extractor=gliner+llm           -> entity Ec42b47e68e39 ('Sterling Injury Attorneys')  [also in: DOC00002]
+  [ 1456:1470 ] 'Margaret Jones'                   class=attorney         extractor=gliner+llm           -> entity E8801ce6ad3e1 ('Margaret Jones')  [also in: DOC00002]
+  [ 1599:1610 ] 'Priya Brown'                      class=attorney         extractor=gliner+llm+sweep     -> entity Ecf7e4f643029 ('Priya Brown')  [also in: DOC00002]
+  [ 1680:1696 ] 'William Anderson'                 class=claimant         extractor=gliner+llm+sweep     -> entity E08f74a479b1b ('William Anderson')
+  [ 1844:1855 ] 'Priya Brown'                      class=attorney         extractor=gliner+llm           -> entity Ecf7e4f643029 ('Priya Brown')  [also in: DOC00002]
+  [ 2177:2193 ] 'William Anderson'                 class=claimant         extractor=gliner+llm           -> entity E08f74a479b1b ('William Anderson')
+  [ 2216:2227 ] 'Priya Brown'                      class=claimant         extractor=gliner+llm           -> entity Ecf7e4f643029 ('Priya Brown')  [also in: DOC00002]
+  [ 2334:2350 ] 'William Anderson'                 class=claimant         extractor=gliner+llm           -> entity E08f74a479b1b ('William Anderson')
+  [ 2375:2386 ] 'Priya Brown'                      class=claimant         extractor=gliner+llm           -> entity Ecf7e4f643029 ('Priya Brown')  [also in: DOC00002]
+  [ 2622:2625 ] 'SIU'                              class=medical_provider extractor=gliner+llm           -> entity Ed9b58a4f196e ('SIU')
+  [ 2871:2886 ] 'Jones, Margaret'                  class=claimant         extractor=gliner+llm           -> entity E8801ce6ad3e1 ('Margaret Jones')  [also in: DOC00002]
+  [ 3077:3099 ] 'Dr. Christopher Nguyen'           class=medical_provider extractor=gliner+llm           -> entity Ede15f2d275ce ('Dr. Christopher Nguyen')  [also in: DOC00002]
+  [ 3129:3144 ] 'Marggaret Jones'                  class=repair_shop      extractor=gliner+llm           -> entity E8801ce6ad3e1 ('Margaret Jones')  [also in: DOC00002]
+
+--- IDENTIFIERS (12), in order of appearance ---
+  [  128:158  ] email    'priya.brown@sterlinginjury.com' owner='P. Brown' [13:21]                           method=llm
+  [  193:203  ] dob      '2024-09-21'                 owner='Margaret Jones' [79:93]                     method=line_rule
+  [  482:492  ] dob      '2024-05-07'                 owner=UNBOUND (orphan)                             method=unbound
+  [  879:910  ] address  '645 Lincoln Ln, Kelso, WA 98685' owner='Margaret Jones' [732:746]                   method=llm
+  [ 1070:1080 ] dob      '2025-12-02'                 owner='Margaret Jones' [1051:1065]                 method=line_rule
+  [ 1505:1535 ] email    'priya.brown@sterlinginjury.com' owner='Priya Brown' [1599:1610]                    method=llm
+  [ 1612:1642 ] email    'priya.brown@sterlinginjury.com' owner='Priya Brown' [1599:1610]                    method=llm
+  [ 1650:1667 ] dob      'Wed, Mar 10, 2026'          owner='Priya Brown' [1599:1610]                    method=line_rule
+  [ 1890:1904 ] phone    '(931) 537-7507'             owner='Priya Brown' [1844:1855]                    method=llm
+  [ 1905:1936 ] address  '1328 Park Rd, Bristol, PA 19061' owner='Priya Brown' [1844:1855]                    method=llm
+  [ 2629:2639 ] dob      '2024-08-11'                 owner='SIU' [2622:2625]                            method=line_rule
+  [ 2974:2988 ] phone    '(375) 690-7643'             owner='Jones, Margaret' [2871:2886]                method=llm
+
+--- COREFERENCE LINKS (1) ---
+  [  205:208  ] 'She'                (pronoun) -> 'Margaret Jones' [79:93]

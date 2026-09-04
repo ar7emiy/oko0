@@ -1,0 +1,29 @@
+========================================================================================
+DOC00002.txt   claim=CLM0001   occurrence=OCC0001
+========================================================================================
+
+--- NAME MENTIONS (11), in order of appearance ---
+  [  183:194  ] 'Priya Brown'                      class=attorney         extractor=gliner+llm           -> entity Ecf7e4f643029 ('Priya Brown')  [also in: DOC00001]
+  [  198:223  ] 'Sterling Injury Attorneys'        class=attorney         extractor=gliner+llm           -> entity Ec42b47e68e39 ('Sterling Injury Attorneys')  [also in: DOC00001]
+  [  252:260  ] 'M. Jones'                         class=attorney         extractor=llm                  -> entity E8801ce6ad3e1 ('Margaret Jones')  [also in: DOC00001]
+  [  393:415  ] 'Dr. Christopher Nguyen'           class=medical_provider extractor=gliner+llm           -> entity Ede15f2d275ce ('Dr. Christopher Nguyen')  [also in: DOC00001]
+  [  445:459  ] 'Margaret Jones'                   class=repair_shop      extractor=gliner+llm           -> entity E8801ce6ad3e1 ('Margaret Jones')  [also in: DOC00001]
+  [  854:868  ] 'Margaret Jones'                   class=claimant         extractor=gliner+llm           -> entity E8801ce6ad3e1 ('Margaret Jones')  [also in: DOC00001]
+  [ 1418:1429 ] 'Priya Brown'                      class=attorney         extractor=gliner+llm           -> entity Ecf7e4f643029 ('Priya Brown')  [also in: DOC00001]
+  [ 1433:1458 ] 'Sterling Injury Attorneys'        class=attorney         extractor=gliner+llm           -> entity Ec42b47e68e39 ('Sterling Injury Attorneys')  [also in: DOC00001]
+  [ 1487:1501 ] 'Margaret Jones'                   class=attorney         extractor=gliner+llm           -> entity E8801ce6ad3e1 ('Margaret Jones')  [also in: DOC00001]
+  [ 1587:1610 ] 'Drr. Christopher Nguyen'          class=medical_provider extractor=gliner+llm           -> entity Ede15f2d275ce ('Dr. Christopher Nguyen')  [also in: DOC00001]
+  [ 1640:1654 ] 'Margaret Jones'                   class=repair_shop      extractor=gliner+llm           -> entity E8801ce6ad3e1 ('Margaret Jones')  [also in: DOC00001]
+
+--- IDENTIFIERS (8), in order of appearance ---
+  [  294:304  ] dob      '2024-09-21'                 owner='M. Jones' [252:260]                         method=line_rule
+  [  464:474  ] dob      '2025-12-02'                 owner='Margaret Jones' [445:459]                   method=line_rule
+  [  531:567  ] address  '2372 Franklin Ln, Lakewood, CO 80228' owner='Dr. Christopher Nguyen' [393:415]           method=llm
+  [  766:776  ] dob      '2024-05-07'                 owner=UNBOUND (orphan)                             method=unbound
+  [  956:970  ] phone    '(375) 690-7643'             owner='Margaret Jones' [854:868]                   method=llm
+  [ 1001:1032 ] address  '645 Lincoln Ln, Kelso, WA 98685' owner='Margaret Jones' [854:868]                   method=llm
+  [ 1715:1751 ] address  '2372 Franklin Ln, Lakewood, CO 80228' owner='Drr. Christopher Nguyen' [1587:1610]        method=llm
+  [ 2061:2071 ] dob      '2024-08-11'                 owner=UNBOUND (orphan)                             method=unbound
+
+--- COREFERENCE LINKS (0) ---
+  (none)
