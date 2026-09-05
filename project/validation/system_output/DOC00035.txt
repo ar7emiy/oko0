@@ -1,0 +1,35 @@
+========================================================================================
+DOC00035.txt   claim=CLM0007   occurrence=OCC0006
+========================================================================================
+
+--- NAME MENTIONS (17), in order of appearance ---
+  [   12:27   ] 'Lucas Whitfield'                  class=claimant         extractor=gliner+llm           -> entity E8ce3f2a3987b ('Tomas Whitfield')  [also in: DOC00015, DOC00016, DOC00017, DOC00018, DOC00036, DOC00037]
+  [  353:365  ] 'Marcus Lopez'                     class=attorney         extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [  369:382  ] 'XYZ Law Group'                    class=attorney         extractor=gliner+llm           -> entity Ecbec8f247b4e ('XYZ Law Group')  [also in: DOC00013, DOC00014, DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026, DOC00036, DOC00037, DOC00047, DOC00048]
+  [  411:426  ] 'Lucas Whitfield'                  class=attorney         extractor=gliner+llm           -> entity E8ce3f2a3987b ('Tomas Whitfield')  [also in: DOC00015, DOC00016, DOC00017, DOC00018, DOC00036, DOC00037]
+  [  886:904  ] 'D.r Richard Okonjo'               class=medical_provider extractor=gliner+llm           -> entity E2d4f9865934f ('D.r Richard Okonjo')  [also in: DOC00036]
+  [  934:949  ] 'Lucas Whitfield'                  class=repair_shop      extractor=gliner+llm+sweep     -> entity E8ce3f2a3987b ('Tomas Whitfield')  [also in: DOC00015, DOC00016, DOC00017, DOC00018, DOC00036, DOC00037]
+  [ 1257:1269 ] 'Marcus Lopez'                     class=attorney         extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 1337:1350 ] 'Ingrid Okafor'                    class=claimant         extractor=gliner+llm           -> entity E9ff441e76bbe ('Ingrid Okafor')  [also in: DOC00036, DOC00047, DOC00048]
+  [ 1498:1510 ] 'Marcus Lopez'                     class=attorney         extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 1511:1524 ] 'XYZ Law Group'                    class=attorney         extractor=gliner+llm           -> entity Ecbec8f247b4e ('XYZ Law Group')  [also in: DOC00013, DOC00014, DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026, DOC00036, DOC00037, DOC00047, DOC00048]
+  [ 1825:1838 ] 'Ingrid Okafor'                    class=claimant         extractor=gliner+llm           -> entity E9ff441e76bbe ('Ingrid Okafor')  [also in: DOC00036, DOC00047, DOC00048]
+  [ 1861:1873 ] 'Marcus Lopez'                     class=claimant         extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 1980:1993 ] 'Ingrid Okafor'                    class=claimant         extractor=gliner+llm           -> entity E9ff441e76bbe ('Ingrid Okafor')  [also in: DOC00036, DOC00047, DOC00048]
+  [ 2018:2030 ] 'Marcus Lopez'                     class=claimant         extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 2139:2152 ] 'Ingrid Okafor'                    class=claimant         extractor=gliner+llm           -> entity E9ff441e76bbe ('Ingrid Okafor')  [also in: DOC00036, DOC00047, DOC00048]
+  [ 2179:2191 ] 'Marcus Lopez'                     class=claimant         extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 2302:2318 ] 'Whitfield, Lucas'                 class=medical_provider extractor=gliner+llm+sweep     -> entity E8ce3f2a3987b ('Tomas Whitfield')  [also in: DOC00015, DOC00016, DOC00017, DOC00018, DOC00036, DOC00037]
+
+--- IDENTIFIERS (8), in order of appearance ---
+  [  120:134  ] phone    '(592) 298-9150'             owner='Lucas Whitfield' [12:27]                    method=llm
+  [  232:271  ] address  '3517 Washington Blvd, Bristol, PA 19023' owner='Lucas Whitfield' [411:426]                  method=llm
+  [ 1099:1109 ] dob      '2025-04-21'                 owner=UNBOUND (orphan)                             method=unbound
+  [ 1271:1299 ] email    'marcus.lopez@xyzlawgroup.com' owner='Marcus Lopez' [1257:1269]                   method=llm
+  [ 1307:1332 ] dob      'Thu, May 5, 2026 10:34 PM'  owner='Marcus Lopez' [1257:1269]                   method=line_rule
+  [ 1533:1547 ] phone    '(803) 291-3432'             owner='Marcus Lopez' [1498:1510]                   method=llm
+  [ 1548:1584 ] address  '1427 Washington Ave, Kelso, WA 98680' owner='Marcus Lopez' [1498:1510]                   method=llm
+  [ 2411:2425 ] phone    '(592) 298-9150'             owner='Whitfield, Lucas' [2302:2318]               method=llm
+
+--- COREFERENCE LINKS (1) ---
+  [  136:139  ] 'She'                (pronoun) -> 'Lucas Whitfield' [12:27]

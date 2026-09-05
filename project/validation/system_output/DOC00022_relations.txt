@@ -1,0 +1,25 @@
+DOC00022.txt  claim=CLM0005   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Dr. Jennifer Garcia' --[MANAGES_CARE_FOR]--> 'James Gonzaelz'   (asserted)
+      evidence [20:83]: 'Dr. Jennifer Garcia continues to manage care for James Gonzaelz'
+  'P. Wilson' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [334:360]: 'P. Wilson of XYZ Law Group'
+  'P. Wilson' --[REPRESENTS]--> 'James Gonzalez'   (asserted)
+      evidence [334:403]: 'P. Wilson of XYZ Law Group regarding representation of James Gonzalez'
+  'Jen Garcia' --[MANAGES_CARE_FOR]--> 'J. Gonzalez'   (asserted)
+      evidence [1356:1407]: 'Jen Garcia continues to manage care for J. Gonzalez'
+  'Patricia Wilson' --[SENT_EMAIL_TO]--> 'Samuel Lee'   (asserted)
+      evidence [1475:1578]: 'From: Patricia Wilson <patricia.wilson@xyzlawgroup.com>\nSent: Mon, Feb 15, 2026 11:29 AM\nTo: Samuel Lee'
+  'Jen Garcia' --[MANAGES_CARE_FOR]--> 'J. Gonzalez'   (asserted)
+      evidence [1356:1408]: 'Jen Garcia continues to manage care for J. Gonzalez.'
+  'Patricia Wilson' --[AFFILIATED_WITH]--> 'XYZ Law Group'   (asserted)
+      evidence [1475:1530]: 'From: Patricia Wilson <patricia.wilson@xyzlawgroup.com>'
+  'Patricia Wilson' --[SENT_EMAIL_TO]--> 'Samuel Lee'   (asserted)
+      evidence [1475:1578]: 'From: Patricia Wilson <patricia.wilson@xyzlawgroup.com>\nSent: Mon, Feb 15, 2026 11:29 AM\nTo: Samuel Lee'
+  'Patricia Wilson' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [2373:2405]: 'Patricia Wilson of XYZ Law Group'
+  'Patricia Wilson' --[REPRESENTS]--> 'James Gonzalez'   (asserted)
+      evidence [2373:2448]: 'Patricia Wilson of XYZ Law Group regarding representation of James Gonzalez'
+  'XYZ Law Group' --[REPRESENTS]--> 'James Gonzalez'   (asserted)
+      evidence [2392:2448]: 'XYZ Law Group regarding representation of James Gonzalez'

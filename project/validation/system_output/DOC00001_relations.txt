@@ -4,22 +4,20 @@ DOC00001.txt  claim=CLM0001   (relations lane -- NOT wired into the operational 
   'P. Brown' --[EMPLOYED_BY]--> 'Sterling Injury Attorneys'   (asserted)
       evidence [13:50]: 'P. Brown of Sterling Injury Attorneys'
   'P. Brown' --[REPRESENTS]--> 'Margaret Jones'   (asserted)
-      evidence [13:93]: 'P. Brown of Sterling Injury Attorneys regarding representation of Margaret Jones'
-  'Dr. Christopher Nguyen' --[MANAGES_CARE_FOR]--> 'Margaret Jones'   (asserted)
-      evidence [999:1065]: 'Dr. Christopher Nguyen continues to manage care for Margaret Jones'
-  'Priya Brown' --[EMPLOYED_BY]--> 'Sterling Injury Attorneys'   (asserted)
-      evidence [1387:1427]: 'Priya Brown of Sterling Injury Attorneys'
-  'Priya Brown' --[REPRESENTS]--> 'Margaret Jones'   (asserted)
-      evidence [1387:1470]: 'Priya Brown of Sterling Injury Attorneys regarding representation of Margaret Jones'
+      evidence [2:94]: 'Spoke with P. Brown of Sterling Injury Attorneys regarding representation of Margaret Jones.'
   'Dr. Christopher Nguyen' --[MANAGES_CARE_FOR]--> 'Margaret Jones'   (asserted)
       evidence [999:1066]: 'Dr. Christopher Nguyen continues to manage care for Margaret Jones.'
   'Priya Brown' --[EMPLOYED_BY]--> 'Sterling Injury Attorneys'   (asserted)
       evidence [1387:1427]: 'Priya Brown of Sterling Injury Attorneys'
   'Priya Brown' --[REPRESENTS]--> 'Margaret Jones'   (asserted)
-      evidence [1387:1470]: 'Priya Brown of Sterling Injury Attorneys regarding representation of Margaret Jones'
+      evidence [1376:1471]: 'Spoke with Priya Brown of Sterling Injury Attorneys regarding representation of Margaret Jones.'
+  'Dr. Christopher Nguyen' --[MANAGES_CARE_FOR]--> 'Margaret Jones'   (asserted)
+      evidence [999:1066]: 'Dr. Christopher Nguyen continues to manage care for Margaret Jones.'
+  'Priya Brown' --[EMPLOYED_BY]--> 'Sterling Injury Attorneys'   (asserted)
+      evidence [1387:1427]: 'Priya Brown of Sterling Injury Attorneys'
+  'Priya Brown' --[REPRESENTS]--> 'Margaret Jones'   (asserted)
+      evidence [1376:1471]: 'Spoke with Priya Brown of Sterling Injury Attorneys regarding representation of Margaret Jones.'
   'Priya Brown' --[EMPLOYED_BY]--> 'Sterling Injury Attorneys'   (asserted)
       evidence [1844:1881]: 'Priya Brown\nSterling Injury Attorneys'
   'Dr. Christopher Nguyen' --[MANAGES_CARE_FOR]--> 'Marggaret Jones'   (asserted)
       evidence [3077:3145]: 'Dr. Christopher Nguyen continues to manage care for Marggaret Jones.'
-  'indemnity reserve' --[SET_AT]--> '$27,000.00'   (asserted)
-      evidence [2705:2751]: 'indemnity reserve currently set at $27,000.00.'

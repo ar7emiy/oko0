@@ -1,0 +1,31 @@
+========================================================================================
+DOC00020.txt   claim=CLM0005   occurrence=OCC0004
+========================================================================================
+
+--- NAME MENTIONS (12), in order of appearance ---
+  [   47:61   ] 'James Gonzalez'                   class=claimant         extractor=gliner+llm           -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00021, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026]
+  [  144:160  ] 'Davis Automotive'                 class=repair_shop      extractor=gliner+llm           -> entity E6a097b663af1 ('Davis Automotive')  [also in: DOC00017, DOC00018, DOC00022, DOC00025, DOC00026]
+  [  521:533  ] 'Jenny Garcia'                     class=medical_provider extractor=gliner+llm           -> entity E212e498517aa ('William Garcia')  [also in: DOC00022, DOC00043, DOC00044, DOC00045, DOC00046]
+  [  563:574  ] 'J. Gonzalez'                      class=repair_shop      extractor=llm                  -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00021, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026]
+  [ 1146:1160 ] 'James Gonzalez'                   class=claimant         extractor=gliner+llm           -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00021, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026]
+  [ 1341:1356 ] 'Patricia Wilson'                  class=attorney         extractor=gliner+llm           -> entity Ee1ca67e9b3b4 ('Patricia Wilson')  [also in: DOC00019, DOC00021, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026]
+  [ 1360:1373 ] 'XYZ Law Group'                    class=attorney         extractor=gliner+llm           -> entity Ecbec8f247b4e ('XYZ Law Group')  [also in: DOC00013, DOC00014, DOC00019, DOC00021, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048]
+  [ 1402:1416 ] 'James Gonzalez'                   class=attorney         extractor=gliner+llm           -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00021, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026]
+  [ 1719:1735 ] 'Davis Automotive'                 class=repair_shop      extractor=gliner+llm           -> entity E6a097b663af1 ('Davis Automotive')  [also in: DOC00017, DOC00018, DOC00022, DOC00025, DOC00026]
+  [ 2014:2034 ] 'Dr. Jenniferr Garcia'             class=medical_provider extractor=gliner+llm           -> entity E02e07676b29d ('Dr. Jennifer Garcia')  [also in: DOC00019, DOC00021, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026]
+  [ 2064:2078 ] 'James Gonzalez'                   class=medical_provider extractor=gliner+llm           -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00021, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026]
+  [ 2525:2539 ] 'James Gonzalez'                   class=claimant         extractor=gliner+llm           -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00021, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026]
+
+--- IDENTIFIERS (9), in order of appearance ---
+  [   67:77   ] dob      '04/15/1981'                 owner='James Gonzalez' [47:61]                     method=llm
+  [  171:181  ] tin      '70-7239688'                 owner='Davis Automotive' [144:160]                 method=llm
+  [  664:678  ] phone    '(940) 533-3473'             owner=UNBOUND (orphan)                             method=unbound
+  [ 1248:1262 ] phone    '(403) 451-2315'             owner='James Gonzalez' [1146:1160]                 method=llm
+  [ 1444:1454 ] dob      '2026-05-10'                 owner='James Gonzalez' [1402:1416]                 method=line_rule
+  [ 1746:1756 ] tin      '70-7239688'                 owner='Davis Automotive' [1719:1735]               method=llm
+  [ 2189:2220 ] email    'patricia.wilson@xyzlawgroup.com' owner='Patricia Wilson' [1341:1356]                method=llm
+  [ 2627:2641 ] phone    '(403) 451-2315'             owner='James Gonzalez' [2525:2539]                 method=llm
+  [ 2672:2706 ] address  '5994 Lincoln Ln, Bristol, PA 19063' owner='James Gonzalez' [2525:2539]                 method=llm
+
+--- COREFERENCE LINKS (1) ---
+  [   89:102  ] 'same as above'      (descriptor) -> 'James Gonzalez' [47:61]

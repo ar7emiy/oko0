@@ -1,0 +1,34 @@
+========================================================================================
+DOC00006.txt   claim=CLM0001   occurrence=OCC0001
+========================================================================================
+
+--- NAME MENTIONS (14), in order of appearance ---
+  [  334:337  ] 'SIU'                              class=medical_provider extractor=gliner+llm           -> entity E8ab10e8230e3 ('SIU')  [also in: DOC00001, DOC00005]
+  [  605:613  ] 'P. Brown'                         class=attorney         extractor=gliner+llm           -> entity E9b6c88110c77 ('Priya Brown')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00007, DOC00008, DOC00047, DOC00048]
+  [  617:642  ] 'Sterling Injury Attorneys'        class=attorney         extractor=gliner+llm           -> entity E19f1198903e9 ('Sterling Injury Attorneys')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00007, DOC00008, DOC00009, DOC00010, DOC00011, DOC00012]
+  [  671:679  ] 'M. Jones'                         class=attorney         extractor=llm                  -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034]
+  [  840:862  ] 'Dr. Christopher Nguyen'           class=medical_provider extractor=gliner+llm           -> entity E6a40153d4f69 ('Dr. Christopher Nguyen')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00007, DOC00008]
+  [  892:906  ] 'Margaret Jones'                   class=repair_shop      extractor=gliner+llm           -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034]
+  [ 1040:1054 ] 'Margaret Jones'                   class=claimant         extractor=gliner+llm           -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034]
+  [ 1546:1549 ] 'SIU'                              class=medical_provider extractor=gliner+llm           -> entity E8ab10e8230e3 ('SIU')  [also in: DOC00001, DOC00005]
+  [ 1798:1809 ] 'Priya rBown'                      class=attorney         extractor=gliner+llm           -> entity E3ea0a1c70f3d ('Priya rBown')
+  [ 1813:1838 ] 'Sterling Injury Attorneys'        class=attorney         extractor=gliner+llm           -> entity E19f1198903e9 ('Sterling Injury Attorneys')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00007, DOC00008, DOC00009, DOC00010, DOC00011, DOC00012]
+  [ 1867:1878 ] 'Peggy Jones'                      class=attorney         extractor=gliner+llm           -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034]
+  [ 1967:1986 ] 'Nguyen, Christopher'              class=medical_provider extractor=gliner+llm           -> entity E6a40153d4f69 ('Dr. Christopher Nguyen')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00007, DOC00008]
+  [ 2016:2030 ] 'Margaret Jones'                   class=repair_shop      extractor=gliner+llm           -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034]
+  [ 2195:2203 ] 'M. Jones'                         class=claimant         extractor=llm                  -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034]
+
+--- IDENTIFIERS (10), in order of appearance ---
+  [  341:351  ] dob      '2024-05-07'                 owner='SIU' [334:337]                              method=line_rule
+  [  713:723  ] dob      '2024-09-21'                 owner='M. Jones' [671:679]                         method=line_rule
+  [  911:921  ] dob      '2025-12-02'                 owner='Margaret Jones' [892:906]                   method=line_rule
+  [ 1142:1156 ] phone    '(375) 690-7643'             owner='Margaret Jones' [1040:1054]                 method=llm
+  [ 1553:1563 ] dob      '2024-08-11'                 owner='SIU' [1546:1549]                            method=line_rule
+  [ 2056:2066 ] npi      '2601768866'                 owner='Nguyen, Christopher' [1967:1986]            method=llm
+  [ 2091:2127 ] address  '2372 Franklin Ln, Lakewood, CO 80228' owner='Nguyen, Christopher' [1967:1986]            method=llm
+  [ 2291:2305 ] phone    '(375) 690-7643'             owner='M. Jones' [2195:2203]                       method=llm
+  [ 2336:2367 ] address  '645 Lincoln Ln, Kelso, WA 98685' owner='M. Jones' [2195:2203]                       method=llm
+  [ 2907:2917 ] dob      '2025-08-28'                 owner=UNBOUND (orphan)                             method=unbound
+
+--- COREFERENCE LINKS (1) ---
+  [  725:733  ] 'The atty'           (descriptor) -> 'M. Jones' [671:679]

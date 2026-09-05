@@ -1,0 +1,9 @@
+DOC00042.txt  claim=CLM0008   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Jon Anderson' --[MANAGES_CARE_FOR]--> 'Elizabeth Perez'   (asserted)
+      evidence [507:565]: 'Jon Anderson continues to manage care for Elizabeth Perez.'
+  'Jonny Anderson' --[MANAGES_CARE_FOR]--> 'Elizabeth Perez'   (asserted)
+      evidence [1868:1928]: 'Jonny Anderson continues to manage care for Elizabeth Perez.'
+  'Jonny Anderson' --[MANAGES_CARE_FOR]--> 'Elizabeth Perez'   (asserted)
+      evidence [1868:1928]: 'Jonny Anderson continues to manage care for Elizabeth Perez.'

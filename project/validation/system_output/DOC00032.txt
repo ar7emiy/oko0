@@ -1,0 +1,43 @@
+========================================================================================
+DOC00032.txt   claim=CLM0006   occurrence=OCC0005
+========================================================================================
+
+--- NAME MENTIONS (20), in order of appearance ---
+  [   40:63   ] 'Thomas Collision Center'          class=repair_shop      extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [  624:634  ] 'Omar Jones'                       class=claimant         extractor=gliner+llm           -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00006, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00033, DOC00034]
+  [  638:651  ] 'Ibarra & Cole'                    class=medical_provider extractor=gliner+llm           -> entity Ec629b65f8c39 ('Ibarra & Cole')  [also in: DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00033, DOC00034]
+  [  680:687  ] 'Delgado'                          class=attorney         extractor=llm                  -> entity E19b868800836 ('Alexander Delgado')  [also in: DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00033, DOC00034]
+  [  812:829  ] 'Alexander Delgado'                class=claimant         extractor=gliner+llm           -> entity E19b868800836 ('Alexander Delgado')  [also in: DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00033, DOC00034]
+  [ 1063:1092 ] 'Reyes Rehabilitation Services'    class=medical_provider extractor=gliner+llm+sweep     -> entity Ea38f5434d6f0 ('Reyes')  [also in: DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00033]
+  [ 1122:1139 ] 'Alexnader Delgado'                class=repair_shop      extractor=gliner+llm           -> entity E19b868800836 ('Alexander Delgado')  [also in: DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00033, DOC00034]
+  [ 1268:1291 ] 'Thomas Collision Center'          class=repair_shop      extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 1834:1844 ] 'Omar Jones'                       class=attorney         extractor=gliner+llm           -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00006, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00033, DOC00034]
+  [ 1908:1923 ] 'Nadia Rodriguez'                  class=claimant         extractor=gliner+llm           -> entity Edf2bec918dcb ('Nadia Rodriguez')  [also in: DOC00027, DOC00029, DOC00034]
+  [ 2071:2081 ] 'Omar Jones'                       class=claimant         extractor=gliner+llm           -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00006, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00033, DOC00034]
+  [ 2082:2095 ] 'Ibarra & Cole'                    class=attorney         extractor=gliner+llm           -> entity Ec629b65f8c39 ('Ibarra & Cole')  [also in: DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00033, DOC00034]
+  [ 2395:2410 ] 'Nadia Rodriguez'                  class=claimant         extractor=gliner+llm           -> entity Edf2bec918dcb ('Nadia Rodriguez')  [also in: DOC00027, DOC00029, DOC00034]
+  [ 2433:2443 ] 'Omar Jones'                       class=claimant         extractor=gliner+llm           -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00006, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00033, DOC00034]
+  [ 2723:2728 ] 'Jones'                            class=claimant         extractor=llm                  -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00006, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00033, DOC00034]
+  [ 2732:2745 ] 'Ibarra & Cole'                    class=attorney         extractor=gliner+llm           -> entity Ec629b65f8c39 ('Ibarra & Cole')  [also in: DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00033, DOC00034]
+  [ 2774:2792 ] 'Delgado, Alexander'               class=claimant         extractor=llm                  -> entity E19b868800836 ('Alexander Delgado')  [also in: DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00033, DOC00034]
+  [ 2873:2890 ] 'Alexander Delgado'                class=medical_provider extractor=gliner+llm+sweep     -> entity E19b868800836 ('Alexander Delgado')  [also in: DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00033, DOC00034]
+  [ 3141:3146 ] 'Reyes'                            class=medical_provider extractor=llm                  -> entity Ea38f5434d6f0 ('Reyes')  [also in: DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00033]
+  [ 3176:3186 ] 'A. Delgado'                       class=repair_shop      extractor=llm                  -> entity E19b868800836 ('Alexander Delgado')  [also in: DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00033, DOC00034]
+
+--- IDENTIFIERS (13), in order of appearance ---
+  [   74:84   ] tin      '66-1627662'                 owner='Thomas Collision Center' [40:63]            method=llm
+  [  465:475  ] dob      '2024-09-06'                 owner=UNBOUND (orphan)                             method=unbound
+  [  722:747  ] email    'omar.jones@ibarracole.com'  owner='Omar Jones' [624:634]                       method=llm
+  [  908:922  ] phone    '(961) 563-7610'             owner='Alexander Delgado' [812:829]                method=llm
+  [  953:988  ] address  '8327 Highland Ct, Bristol, PA 19026' owner='Alexander Delgado' [812:829]                method=llm
+  [ 1846:1871 ] email    'omar.jones@ibarracole.com'  owner='Omar Jones' [1834:1844]                     method=llm
+  [ 1879:1903 ] dob      'Mon, Jun 3, 2026 2:16 PM'   owner='Omar Jones' [1834:1844]                     method=line_rule
+  [ 2104:2118 ] phone    '(655) 652-2130'             owner='Omar Jones' [2071:2081]                     method=llm
+  [ 2119:2154 ] address  '1447 Cedar Blvd, Riverton, NJ 08012' owner='Ibarra & Cole' [2082:2095]                  method=llm
+  [ 2969:2983 ] phone    '(961) 563-7610'             owner='Alexander Delgado' [2873:2890]              method=llm
+  [ 3014:3049 ] address  '8327 Highland Ct, Bristol, PA 19026' owner='Alexander Delgado' [2873:2890]              method=llm
+  [ 3212:3222 ] npi      '5957893782'                 owner='Reyes' [3141:3146]                          method=llm
+  [ 3247:3281 ] address  '1289 Cedar Ave, Lakewood, CO 80274' owner='Reyes' [3141:3146]                          method=llm
+
+--- COREFERENCE LINKS (0) ---
+  (none)

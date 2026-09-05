@@ -1,0 +1,7 @@
+DOC00049.txt  claim=CLM0011   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Dr. Michael Jackson' --[MANAGES_CARE_FOR]--> 'Lopez, Peter'   (asserted)
+      evidence [889:951]: 'Dr. Michael Jackson continues to manage care for Lopez, Peter.'
+  'Dr. Michael Jackson' --[MANAGES_CARE_FOR]--> 'Lopez, Peter'   (asserted)
+      evidence [889:951]: 'Dr. Michael Jackson continues to manage care for Lopez, Peter.'

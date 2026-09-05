@@ -1,0 +1,42 @@
+========================================================================================
+DOC00014.txt   claim=CLM0003   occurrence=OCC0003
+========================================================================================
+
+--- NAME MENTIONS (14), in order of appearance ---
+  [   50:59   ] 'Hernandez'                        class=claimant         extractor=llm                  -> entity Ea5f5d994965f ('Andrew Hernandez')  [also in: DOC00013]
+  [  120:129  ] 'Dr. Reyes'                        class=medical_provider extractor=gliner+llm           -> entity Ecc8d43e80a59 ('Dr. Amara  Reyes')  [also in: DOC00013]
+  [  159:168  ] 'Hernandez'                        class=medical_provider extractor=llm                  -> entity Ea5f5d994965f ('Andrew Hernandez')  [also in: DOC00013]
+  [  664:680  ] 'Andrew Hernandez'                 class=claimant         extractor=gliner+llm           -> entity Ea5f5d994965f ('Andrew Hernandez')  [also in: DOC00013]
+  [ 1446:1455 ] 'O. Ibarra'                        class=attorney         extractor=gliner+llm           -> entity E0f73dd7962e2 ('Omar Ibarra')  [also in: DOC00013, DOC00043, DOC00044, DOC00046]
+  [ 1459:1472 ] 'XYZ Law Group'                    class=attorney         extractor=gliner+llm           -> entity Ecbec8f247b4e ('XYZ Law Group')  [also in: DOC00013, DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048]
+  [ 1501:1517 ] 'Andrew Hernandez'                 class=attorney         extractor=gliner+llm           -> entity Ea5f5d994965f ('Andrew Hernandez')  [also in: DOC00013]
+  [ 1675:1695 ] 'Okafor Frame & Paint'             class=repair_shop      extractor=gliner+llm           -> entity E83d7ffedb3a5 ('Okafor Frame & Paint')  [also in: DOC00013, DOC00038, DOC00040, DOC00041, DOC00042, DOC00048]
+  [ 1838:1853 ] 'Dr. Amara Reyes'                  class=medical_provider extractor=gliner+llm           -> entity Ecc8d43e80a59 ('Dr. Amara  Reyes')  [also in: DOC00013]
+  [ 1883:1899 ] 'Andrew Hernandez'                 class=medical_provider extractor=gliner+llm           -> entity Ea5f5d994965f ('Andrew Hernandez')  [also in: DOC00013]
+  [ 2163:2179 ] 'Andrew Hernandez'                 class=claimant         extractor=gliner+llm           -> entity Ea5f5d994965f ('Andrew Hernandez')  [also in: DOC00013]
+  [ 2880:2891 ] 'Omar Ibarra'                      class=attorney         extractor=gliner+llm           -> entity E0f73dd7962e2 ('Omar Ibarra')  [also in: DOC00013, DOC00043, DOC00044, DOC00046]
+  [ 2895:2908 ] 'XYZ Law Group'                    class=attorney         extractor=gliner+llm           -> entity Ecbec8f247b4e ('XYZ Law Group')  [also in: DOC00013, DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048]
+  [ 2937:2953 ] 'Andrew Hernandez'                 class=attorney         extractor=gliner+llm           -> entity Ea5f5d994965f ('Andrew Hernandez')  [also in: DOC00013]
+
+--- IDENTIFIERS (15), in order of appearance ---
+  [   68:78   ] dob      '06/03/1984'                 owner='Hernandez' [50:59]                          method=llm
+  [   84:98   ] phone    '(470) 949-9376'             owner='Hernandez' [50:59]                          method=llm
+  [  194:204  ] npi      '1351745033'                 owner='Dr. Reyes' [120:129]                        method=llm
+  [  272:282  ] dob      '2024-10-19'                 owner='Hernandez' [159:168]                        method=line_rule
+  [  342:375  ] address  '2679 Grand Ln, Riverton, NJ 08041' owner='Dr. Reyes' [120:129]                        method=llm
+  [  503:517  ] phone    '(850) 455-1279'             owner=UNBOUND (orphan)                             method=unbound
+  [  768:782  ] phone    '(470) 949-9376'             owner='Andrew Hernandez' [664:680]                 method=llm
+  [  862:891  ] address  '1267 Park Ln, Kelso, WA 98628' owner='Andrew Hernandez' [664:680]                 method=llm
+  [ 1552:1579 ] email    'omar.ibarra@xyzlawgroup.com' owner='O. Ibarra' [1446:1455]                      method=llm
+  [ 1702:1716 ] address  'TIN 80-8770781'             owner='Okafor Frame & Paint' [1675:1695]           method=line_rule
+  [ 1925:1935 ] address  '1351745033'                 owner='Dr. Amara Reyes' [1838:1853]                method=llm
+  [ 2025:2039 ] phone    '(682) 375-1358'             owner=UNBOUND (orphan)                             method=unbound
+  [ 2267:2281 ] address  '(470) 949-9376'             owner='Andrew Hernandez' [2163:2179]               method=llm
+  [ 2312:2341 ] address  '1267 Park Ln, Kelso, WA 98628' owner='Andrew Hernandez' [2163:2179]               method=llm
+  [ 2988:3015 ] email    'omar.ibarra@xyzlawgroup.com' owner='Omar Ibarra' [2880:2891]                    method=llm
+
+--- COREFERENCE LINKS (4) ---
+  [  206:219  ] 'The physician'      (descriptor) -> 'Hernandez' [159:168]
+  [  377:379  ] 'He'                 (pronoun) -> 'Hernandez' [159:168]
+  [  784:787  ] 'She'                (pronoun) -> 'Andrew Hernandez' [664:680]
+  [  893:896  ] 'She'                (pronoun) -> 'Andrew Hernandez' [664:680]

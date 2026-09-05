@@ -1,0 +1,27 @@
+DOC00046.txt  claim=CLM0009   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Samuel Anderson' --[EMPLOYED_BY]--> 'Delgado Legal Partners'   (asserted)
+      evidence [13:54]: 'Samuel Anderson of Delgado Legal Partners'
+  'Samuel Anderson' --[REPRESENTS]--> 'Billy Garcia'   (asserted)
+      evidence [13:95]: 'Samuel Anderson of Delgado Legal Partners regarding representation of Billy Garcia'
+  'Delgado Legal Partners' --[REPRESENTS]--> 'Billy Garcia'   (asserted)
+      evidence [32:95]: 'Delgado Legal Partners regarding representation of Billy Garcia'
+  'Ibarra Imaging Center' --[MANAGES_CARE_FOR]--> 'William Garcia'   (asserted)
+      evidence [1101:1166]: 'Ibarra Imaging Center continues to manage care for William Garcia'
+  'Ibarra Imaging Center' --[MANAGES_CARE_FOR]--> 'William Garcia'   (asserted)
+      evidence [1101:1167]: 'Ibarra Imaging Center continues to manage care for William Garcia.'
+  'Samuel Lee' --[AFFILIATED_WITH]--> 'Claims Department'   (asserted)
+      evidence [1579:1607]: 'Samuel Lee\nClaims Department'
+  'Samuel Anderson' --[AFFILIATED_WITH]--> 'Delgado Legal Partners'   (asserted)
+      evidence [2199:2240]: 'Samuel Anderson of Delgado Legal Partners'
+  'Samuel Anderson' --[REPRESENTS]--> 'Williaam Garcia'   (asserted)
+      evidence [2199:2285]: 'Samuel Anderson of Delgado Legal Partners regarding representation of Williaam Garcia.'
+  'Samuel Lee' --[WORKS_IN]--> 'Claims Department'   (asserted)
+      evidence [1579:1607]: 'Samuel Lee\nClaims Department'
+  'Samuel Anderson' --[EMPLOYED_BY]--> 'Delgado Legal Partners'   (asserted)
+      evidence [2199:2240]: 'Samuel Anderson of Delgado Legal Partners'
+  'Samuel Anderson' --[REPRESENTS]--> 'Williaam Garcia'   (asserted)
+      evidence [2199:2284]: 'Samuel Anderson of Delgado Legal Partners regarding representation of Williaam Garcia'
+  'Delgado Legal Partners' --[REPRESENTS]--> 'Williaam Garcia'   (asserted)
+      evidence [2218:2284]: 'Delgado Legal Partners regarding representation of Williaam Garcia'

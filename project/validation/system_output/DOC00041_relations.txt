@@ -1,0 +1,17 @@
+DOC00041.txt  claim=CLM0008   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'J. Anderson' --[MANAGES_CARE_FOR]--> 'Elizabeth Perez'   (asserted)
+      evidence [20:77]: 'J. Anderson continues to manage care for Elizabeth Perez.'
+  'carrier' --[RELEASED_INDEMNITY_PAYMENT_AMOUNT]--> '$5,737.00'   (asserted)
+      evidence [315:391]: 'carrier released indemnity payment on 2024-09-12 in the amount of $5,737.00.'
+  'vehicle' --[LOCATED_AT]--> 'Okafor Frame & Paint'   (asserted)
+      evidence [1172:1213]: 'vehicle currently at Okafor Frame & Paint'
+  'Dr. Joanthan Anderson' --[MANAGES_CARE_FOR]--> 'Elizabeth Perez'   (asserted)
+      evidence [1785:1851]: 'Dr. Joanthan Anderson continues to manage care for Elizabeth Perez'
+  'vehicle' --[LOCATED_AT]--> 'Okafor Frame & Paint'   (asserted)
+      evidence [1172:1213]: 'vehicle currently at Okafor Frame & Paint'
+  'indemnity reserve' --[SET_AT]--> '$41,000.00'   (asserted)
+      evidence [2023:2068]: 'indemnity reserve currently set at $41,000.00'
+  'Dr. Joanthan Anderson' --[MANAGES_CARE_FOR]--> 'Elizabeth Perez'   (asserted)
+      evidence [1785:1851]: 'Dr. Joanthan Anderson continues to manage care for Elizabeth Perez'

@@ -1,0 +1,25 @@
+DOC00018.txt  claim=CLM0004   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Andrew Anderson' --[AFFILIATED_WITH]--> 'Whitfield Trial Group'   (asserted)
+      evidence [129:178]: 'Counsel: Andrew Anderson  (Whitfield Trial Group)'
+  'Drew Anderson' --[REPRESENTS]--> 'Tomas Whitfield'   (asserted)
+      evidence [243:325]: 'Drew Anderson of Whitfield Trial Group regarding representation of Tomas Whitfield'
+  'Davis Automotive' --[PREPARED_REPAIR_ESTIMATE_ON]--> '2024-11-05'   (asserted)
+      evidence [1159:1248]: 'vehicle currently at Davis Automotive. The shop prepared a repair estimate on 2024-11-05.'
+  'Andrew Anderson' --[EMPLOYED_BY]--> 'Whitfield Trial Group'   (asserted)
+      evidence [1643:1694]: 'Spoke with Andrew Anderson of Whitfield Trial Group'
+  'Andrew Anderson' --[REPRESENTS]--> 'Whitfield, Tomas'   (asserted)
+      evidence [1643:1740]: 'Spoke with Andrew Anderson of Whitfield Trial Group regarding representation of Whitfield, Tomas.'
+  'indemnity reserve' --[SET_AT]--> '$50,000.00'   (asserted)
+      evidence [2165:2210]: 'indemnity reserve currently set at $50,000.00'
+  'Andrew Anderson' --[EMPLOYED_BY]--> 'Whitfield Trial Group'   (asserted)
+      evidence [3021:3061]: 'Andrew Anderson of Whitfield Trial Group'
+  'Andrew Anderson' --[REPRESENTS]--> 'Whitfield'   (asserted)
+      evidence [3021:3099]: 'Andrew Anderson of Whitfield Trial Group regarding representation of Whitfield'
+  'Andrew Anderson' --[EMPLOYED_BY]--> 'Whitfield Trial Group'   (asserted)
+      evidence [3021:3061]: 'Andrew Anderson of Whitfield Trial Group'
+  'Andrew Anderson' --[REPRESENTS]--> 'Whitfield'   (asserted)
+      evidence [3021:3099]: 'Andrew Anderson of Whitfield Trial Group regarding representation of Whitfield'
+  'indemnity reserve' --[SET_AT]--> '$48,000.00'   (asserted)
+      evidence [3361:3406]: 'indemnity reserve currently set at $48,000.00'

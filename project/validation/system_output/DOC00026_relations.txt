@@ -1,0 +1,19 @@
+DOC00026.txt  claim=CLM0005   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Patty Wilson' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [367:396]: 'Patty Wilson of XYZ Law Group'
+  'Patty Wilson' --[REPRESENTS]--> 'James Gonzalez'   (asserted)
+      evidence [367:439]: 'Patty Wilson of XYZ Law Group regarding representation of James Gonzalez'
+  'vehicle' --[LOCATED_AT]--> 'Davis Automotive'   (asserted)
+      evidence [688:725]: 'vehicle currently at Davis Automotive'
+  'Garcia, Jennifer' --[MANAGES_CARE_FOR]--> 'Gonzalez, James'   (asserted)
+      evidence [1335:1396]: 'Garcia, Jennifer continues to manage care for Gonzalez, James'
+  'indemnity reserve' --[SET_AT]--> '$14,000.00'   (asserted)
+      evidence [1520:1565]: 'indemnity reserve currently set at $14,000.00'
+  'Garcia, Jennifer' --[MANAGES_CARE_FOR]--> 'Gonzalez, James'   (asserted)
+      evidence [1335:1397]: 'Garcia, Jennifer continues to manage care for Gonzalez, James.'
+  'Patricia Wilson' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [1923:1955]: 'Patricia Wilson of XYZ Law Group'
+  'Patricia Wilson' --[REPRESENTS]--> 'James Gonzalez'   (asserted)
+      evidence [1912:1999]: 'Spoke with Patricia Wilson of XYZ Law Group regarding representation of James Gonzalez.'

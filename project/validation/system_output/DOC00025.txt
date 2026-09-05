@@ -1,0 +1,39 @@
+========================================================================================
+DOC00025.txt   claim=CLM0005   occurrence=OCC0004
+========================================================================================
+
+--- NAME MENTIONS (18), in order of appearance ---
+  [  300:306  ] 'Wilson'                           class=attorney         extractor=llm                  -> entity Ee1ca67e9b3b4 ('Patricia Wilson')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00026]
+  [  310:323  ] 'XYZ Law Group'                    class=attorney         extractor=gliner+llm           -> entity Ecbec8f247b4e ('XYZ Law Group')  [also in: DOC00013, DOC00014, DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00026, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048]
+  [  352:366  ] 'James Gonzalez'                   class=attorney         extractor=gliner+llm           -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00026]
+  [  610:624  ] 'James Gonzalez'                   class=claimant         extractor=gliner+llm           -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00026]
+  [  868:887  ] 'Dr. Jennifer Garcia'              class=medical_provider extractor=gliner+llm           -> entity E02e07676b29d ('Dr. Jennifer Garcia')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00026]
+  [  917:931  ] 'James Gonzalez'                   class=medical_provider extractor=gliner+llm           -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00026]
+  [ 1132:1148 ] 'Davis Automotive'                 class=repair_shop      extractor=gliner+llm+sweep     -> entity E6a097b663af1 ('Davis Automotive')  [also in: DOC00017, DOC00018, DOC00020, DOC00022, DOC00026]
+  [ 1788:1800 ] 'Patty Wilson'                     class=attorney         extractor=gliner+llm           -> entity Ee1ca67e9b3b4 ('Patricia Wilson')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00026]
+  [ 1804:1817 ] 'XYZ Law Group'                    class=attorney         extractor=gliner+llm           -> entity Ecbec8f247b4e ('XYZ Law Group')  [also in: DOC00013, DOC00014, DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00026, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048]
+  [ 1846:1857 ] 'J. Gonzalez'                      class=attorney         extractor=gliner+llm           -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00026]
+  [ 2050:2064 ] 'James Gonzalez'                   class=claimant         extractor=gliner+llm           -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00026]
+  [ 2252:2271 ] 'Dr. Jennifer Garcia'              class=medical_provider extractor=gliner+llm           -> entity E02e07676b29d ('Dr. Jennifer Garcia')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00026]
+  [ 2301:2309 ] 'Gonzalez'                         class=medical_provider extractor=llm                  -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00026]
+  [ 2513:2529 ] 'Davis Automotive'                 class=repair_shop      extractor=gliner+llm+sweep     -> entity E6a097b663af1 ('Davis Automotive')  [also in: DOC00017, DOC00018, DOC00020, DOC00022, DOC00026]
+  [ 2999:3014 ] 'Patricia Wilson'                  class=attorney         extractor=gliner+llm           -> entity Ee1ca67e9b3b4 ('Patricia Wilson')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00026]
+  [ 3018:3031 ] 'XYZ Law Group'                    class=attorney         extractor=gliner+llm           -> entity Ecbec8f247b4e ('XYZ Law Group')  [also in: DOC00013, DOC00014, DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00026, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048]
+  [ 3060:3074 ] 'James Gonzalez'                   class=attorney         extractor=gliner+llm           -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00026]
+  [ 3201:3209 ] 'Gonzalez'                         class=claimant         extractor=llm                  -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00026]
+
+--- IDENTIFIERS (11), in order of appearance ---
+  [  401:432  ] email    'patricia.wilson@xyzlawgroup.com' owner='Wilson' [300:306]                           method=llm
+  [  464:474  ] dob      '2026-05-10'                 owner='James Gonzalez' [352:366]                   method=line_rule
+  [  712:726  ] phone    '(403) 451-2315'             owner='James Gonzalez' [610:624]                   method=llm
+  [  992:1023 ] address  '7731 Elm Rd, Riverton, NJ 08057' owner='Dr. Jennifer Garcia' [868:887]              method=llm
+  [ 1892:1923 ] email    'patricia.wilson@xyzlawgroup.com' owner='Patty Wilson' [1788:1800]                   method=llm
+  [ 1956:1966 ] dob      '2025-08-04'                 owner='J. Gonzalez' [1846:1857]                    method=line_rule
+  [ 2152:2166 ] phone    '(403) 451-2315'             owner='James Gonzalez' [2050:2064]                 method=llm
+  [ 2370:2401 ] address  '7731 Elm Rd, Riverton, NJ 08057' owner='Dr. Jennifer Garcia' [2252:2271]            method=llm
+  [ 3110:3120 ] dob      '2026-06-19'                 owner='James Gonzalez' [3060:3074]                 method=line_rule
+  [ 3297:3311 ] phone    '(403) 451-2315'             owner='Gonzalez' [3201:3209]                       method=llm
+  [ 3342:3376 ] address  '5994 Lincoln Ln, Bristol, PA 19063' owner='Gonzalez' [3201:3209]                       method=llm
+
+--- COREFERENCE LINKS (1) ---
+  [  728:732  ] 'They'               (pronoun) -> 'James Gonzalez' [610:624]

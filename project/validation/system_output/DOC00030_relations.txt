@@ -1,0 +1,23 @@
+DOC00030.txt  claim=CLM0006   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Reyes Rehabilitation Services' --[MANAGES_CARE_FOR]--> 'Al Delgado'   (asserted)
+      evidence [390:460]: 'Reyes Rehabilitation Services continues to manage care for Al Delgado.'
+  'Jones, Omar of Ibarra & Cole' --[REPRESENTS]--> 'Alexander Delgado'   (asserted)
+      evidence [693:779]: 'Spoke with Jones, Omar of Ibarra & Cole regarding representation of Alexander Delgado.'
+  'Reyes' --[MANAGES_CARE_FOR]--> 'Al Delgado'   (asserted)
+      evidence [1783:1829]: 'Reyes continues to manage care for Al Delgado.'
+  'Jones, Omar' --[AFFILIATED_WITH]--> 'Ibarra & Cole'   (asserted)
+      evidence [1969:1997]: 'Jones, Omar of Ibarra & Cole'
+  'Jones, Omar of Ibarra & Cole' --[REPRESENTS]--> 'Alexander Delgado'   (asserted)
+      evidence [1969:2044]: 'Jones, Omar of Ibarra & Cole regarding representation of Alexander Delgado.'
+  'Reyes' --[MANAGES_CARE_FOR]--> 'Al Delgado'   (asserted)
+      evidence [1783:1829]: 'Reyes continues to manage care for Al Delgado.'
+  'Jones, Omar' --[AFFILIATED_WITH]--> 'Ibarra & Cole'   (asserted)
+      evidence [1969:1997]: 'Jones, Omar of Ibarra & Cole'
+  'Jones, Omar of Ibarra & Cole' --[REPRESENTS]--> 'Alexander Delgado'   (asserted)
+      evidence [1969:2043]: 'Jones, Omar of Ibarra & Cole regarding representation of Alexander Delgado'
+  'indemnity reserve' --[SET_AT]--> '$11,000.00'   (asserted)
+      evidence [2554:2599]: 'indemnity reserve currently set at $11,000.00'
+  'vehicle' --[LOCATED_AT]--> 'Thomas'   (asserted)
+      evidence [2730:2757]: 'vehicle currently at Thomas'

@@ -1,0 +1,41 @@
+========================================================================================
+DOC00005.txt   claim=CLM0001   occurrence=OCC0001
+========================================================================================
+
+--- NAME MENTIONS (17), in order of appearance ---
+  [   12:20   ] 'M. Jones'                         class=claimant         extractor=gliner+llm           -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00006, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034]
+  [  332:354  ] 'Dr. Christopher Nguyen'           class=medical_provider extractor=gliner+llm           -> entity E6a40153d4f69 ('Dr. Christopher Nguyen')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00006, DOC00007, DOC00008]
+  [  384:399  ] 'Jones, Margaret'                  class=repair_shop      extractor=gliner+llm           -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00006, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034]
+  [  876:879  ] 'SIU'                              class=attorney         extractor=gliner+llm+sweep     -> entity E8ab10e8230e3 ('SIU')  [also in: DOC00001, DOC00006]
+  [  975:983  ] 'P. Brown'                         class=attorney         extractor=gliner+llm           -> entity E9b6c88110c77 ('Priya Brown')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00006, DOC00007, DOC00008, DOC00047, DOC00048]
+  [  987:1012 ] 'Sterling Injury Attorneys'        class=attorney         extractor=gliner+llm           -> entity E19f1198903e9 ('Sterling Injury Attorneys')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00006, DOC00007, DOC00008, DOC00009, DOC00010, DOC00011, DOC00012]
+  [ 1041:1055 ] 'Margaret Jnoes'                   class=attorney         extractor=gliner+llm           -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00006, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034]
+  [ 1440:1456 ] 'William Anderson'                 class=adjuster         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00045, DOC00046]
+  [ 1518:1529 ] 'Priya Brown'                      class=claimant         extractor=gliner+llm           -> entity E9b6c88110c77 ('Priya Brown')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00006, DOC00007, DOC00008, DOC00047, DOC00048]
+  [ 1677:1693 ] 'William Anderson'                 class=adjuster         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00045, DOC00046]
+  [ 1694:1711 ] 'Claims Department'                class=medical_provider extractor=llm+sweep            -> entity E3f77c097446c ('Claims Department')  [also in: DOC00019, DOC00021, DOC00029, DOC00034, DOC00046]
+  [ 1975:1986 ] 'Priya Brown'                      class=claimant         extractor=gliner+llm           -> entity E9b6c88110c77 ('Priya Brown')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00006, DOC00007, DOC00008, DOC00047, DOC00048]
+  [ 2009:2025 ] 'William Anderson'                 class=claimant         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00045, DOC00046]
+  [ 2134:2149 ] 'Margaret  Jones'                  class=claimant         extractor=gliner+llm           -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00006, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034]
+  [ 2343:2365 ] 'Dr. Christopher Nguyen'           class=medical_provider extractor=gliner+llm           -> entity E6a40153d4f69 ('Dr. Christopher Nguyen')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00006, DOC00007, DOC00008]
+  [ 2395:2409 ] 'Margaret Jones'                   class=repair_shop      extractor=gliner+llm           -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00006, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034]
+  [ 2852:2855 ] 'SIU'                              class=medical_provider extractor=gliner+llm           -> entity E8ab10e8230e3 ('SIU')  [also in: DOC00001, DOC00006]
+
+--- IDENTIFIERS (13), in order of appearance ---
+  [  108:122  ] phone    '(375) 690-7643'             owner='M. Jones' [12:20]                           method=llm
+  [  440:450  ] dob      '2025-12-02'                 owner='Jones, Margaret' [384:399]                  method=line_rule
+  [  507:543  ] address  '2372 Franklin Ln, Lakewood, CO 80228' owner='Dr. Christopher Nguyen' [332:354]           method=llm
+  [  883:893  ] dob      '2024-05-07'                 owner='SIU' [876:879]                              method=line_rule
+  [ 1090:1120 ] email    'priya.brown@sterlinginjury.com' owner='Priya Brown' [1518:1529]                    method=llm
+  [ 1155:1165 ] dob      '2024-09-21'                 owner='Margaret Jnoes' [1041:1055]                 method=line_rule
+  [ 1458:1480 ] email    'wanderson@ourinsco.com'     owner='William Anderson' [1440:1456]               method=llm
+  [ 1488:1513 ] dob      'Fri, Apr 11, 2026 7:49 AM'  owner='William Anderson' [1440:1456]               method=line_rule
+  [ 1720:1734 ] phone    '(896) 428-8691'             owner='William Anderson' [1677:1693]               method=llm
+  [ 2237:2251 ] phone    '(375) 690-7643'             owner='Margaret  Jones' [2134:2149]                method=llm
+  [ 2435:2445 ] npi      '2601768866'                 owner='Dr. Christopher Nguyen' [2343:2365]         method=llm
+  [ 2470:2506 ] address  '2372 Franklin Ln, Lakewood, CO 80228' owner='Dr. Christopher Nguyen' [2343:2365]         method=llm
+  [ 2859:2869 ] dob      '2024-08-11'                 owner='SIU' [2852:2855]                            method=line_rule
+
+--- COREFERENCE LINKS (2) ---
+  [  124:135  ] 'The insured'        (descriptor) -> 'M. Jones' [12:20]
+  [  181:184  ] 'She'                (pronoun) -> 'M. Jones' [12:20]

@@ -1,0 +1,25 @@
+DOC00013.txt  claim=CLM0003   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Omar Ibarra' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [345:373]: 'Omar Ibarra of XYZ Law Group'
+  'Omar Ibarra' --[REPRESENTS]--> 'Hernandez, Andrew'   (asserted)
+      evidence [345:419]: 'Omar Ibarra of XYZ Law Group regarding representation of Hernandez, Andrew'
+  'Dr. Amara  Reyes' --[MANAGES_CARE_FOR]--> 'Hernandez, Andrew'   (asserted)
+      evidence [641:704]: 'Dr. Amara  Reyes continues to manage care for Hernandez, Andrew'
+  'indemnity reserve' --[SET_AT]--> '$29,000.00'   (asserted)
+      evidence [1019:1064]: 'indemnity reserve currently set at $29,000.00'
+  'Omar Ibarra' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [1823:1851]: 'Omar Ibarra of XYZ Law Group'
+  'Omar Ibarra' --[REPRESENTS]--> 'Andrew Heranndez'   (asserted)
+      evidence [1812:1897]: 'Spoke with Omar Ibarra of XYZ Law Group regarding representation of Andrew Heranndez.'
+  'Dr.A mara Reyes' --[MANAGES_CARE_FOR]--> 'Andrew Hernandez'   (asserted)
+      evidence [2031:2093]: 'Dr.A mara Reyes continues to manage care for Andrew Hernandez.'
+  'Omar Ibarra' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [1823:1851]: 'Omar Ibarra of XYZ Law Group'
+  'Omar Ibarra' --[REPRESENTS]--> 'Andrew Heranndez'   (asserted)
+      evidence [1823:1896]: 'Omar Ibarra of XYZ Law Group regarding representation of Andrew Heranndez'
+  'Dr.A mara Reyes' --[MANAGES_CARE_FOR]--> 'Andrew Hernandez'   (asserted)
+      evidence [2031:2092]: 'Dr.A mara Reyes continues to manage care for Andrew Hernandez'
+  'Omar Ibarra' --[REPRESENTS]--> 'A. Hernandez'   (asserted)
+      evidence [2917:2986]: 'Omar Ibarra of XYZ Law Group regarding representation of A. Hernandez'

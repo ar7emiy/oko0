@@ -1,0 +1,30 @@
+========================================================================================
+DOC00015.txt   claim=CLM0004   occurrence=OCC0004
+========================================================================================
+
+--- NAME MENTIONS (8), in order of appearance ---
+  [   52:68   ] 'Whitfield, Tomas'                 class=claimant         extractor=gliner+llm           -> entity E8ce3f2a3987b ('Tomas Whitfield')  [also in: DOC00016, DOC00017, DOC00018, DOC00035, DOC00036, DOC00037]
+  [  121:137  ] 'Anderson, Andrew'                 class=attorney         extractor=llm                  -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00045, DOC00046]
+  [  140:161  ] 'Whitfield Trial Group'            class=attorney         extractor=gliner+llm           -> entity E093bcb3b31ef ('Whitfield Trial Group')  [also in: DOC00016, DOC00017, DOC00018]
+  [  634:650  ] 'Whitfield, Tomas'                 class=claimant         extractor=gliner+llm           -> entity E8ce3f2a3987b ('Tomas Whitfield')  [also in: DOC00016, DOC00017, DOC00018, DOC00035, DOC00036, DOC00037]
+  [ 1260:1275 ] 'Andrew Anderson'                  class=attorney         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00045, DOC00046]
+  [ 1279:1300 ] 'Whitfield Trial Group'            class=attorney         extractor=gliner+llm           -> entity E093bcb3b31ef ('Whitfield Trial Group')  [also in: DOC00016, DOC00017, DOC00018]
+  [ 1329:1344 ] 'Tomas Whitfield'                  class=attorney         extractor=gliner+llm           -> entity E8ce3f2a3987b ('Tomas Whitfield')  [also in: DOC00016, DOC00017, DOC00018, DOC00035, DOC00036, DOC00037]
+  [ 1959:1971 ] 'T. Whitfield'                     class=claimant         extractor=llm                  -> entity E8ce3f2a3987b ('Tomas Whitfield')  [also in: DOC00016, DOC00017, DOC00018, DOC00035, DOC00036, DOC00037]
+
+--- IDENTIFIERS (12), in order of appearance ---
+  [   80:90   ] dob      '04/26/1953'                 owner='Whitfield, Tomas' [52:68]                   method=llm
+  [   97:111  ] phone    '(212) 366-6484'             owner='Whitfield, Tomas' [52:68]                   method=llm
+  [  172:204  ] address  '1148 Oak Blvd, Bristol, PA 19061' owner='Whitfield, Tomas' [52:68]                   method=llm
+  [  284:294  ] dob      '2024-11-05'                 owner=UNBOUND (orphan)                             method=unbound
+  [  546:556  ] dob      '2026-12-18'                 owner=UNBOUND (orphan)                             method=unbound
+  [  738:752  ] phone    '(212) 366-6484'             owner='Whitfield, Tomas' [634:650]                 method=llm
+  [  783:815  ] address  '1148 Oak Blvd, Bristol, PA 19061' owner='Whitfield, Tomas' [634:650]                 method=llm
+  [ 1379:1413 ] email    'andrew.anderson@whitfieldtrial.com' owner='Andrew Anderson' [1260:1275]                method=llm
+  [ 1446:1456 ] dob      '2025-09-22'                 owner='Tomas Whitfield' [1329:1344]                method=line_rule
+  [ 1550:1560 ] tin      '70-7239688'                 owner=UNBOUND (orphan)                             method=unbound
+  [ 2059:2073 ] phone    '(212) 366-6484'             owner='T. Whitfield' [1959:1971]                   method=llm
+  [ 2104:2136 ] address  '1148 Oak Blvd, Bristol, PA 19061' owner='T. Whitfield' [1959:1971]                   method=llm
+
+--- COREFERENCE LINKS (0) ---
+  (none)

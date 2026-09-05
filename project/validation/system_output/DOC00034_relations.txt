@@ -1,0 +1,27 @@
+DOC00034.txt  claim=CLM0006   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Reyes' --[MANAGES_CARE_FOR]--> 'Alexandre Delgado'   (asserted)
+      evidence [313:366]: 'Reyes continues to manage care for Alexandre Delgado.'
+  'OmarJ ones' --[ASSOCIATED_WITH]--> 'Ibarra & Cole'   (asserted)
+      evidence [986:1013]: 'OmarJ ones of Ibarra & Cole'
+  'Ibarra & Cole' --[REPRESENTS]--> 'Alex Delgado'   (asserted)
+      evidence [986:1055]: 'OmarJ ones of Ibarra & Cole regarding representation of Alex Delgado.'
+  'Reyes' --[MANAGES_CARE_FOR]--> 'A. Delgado'   (asserted)
+      evidence [1433:1479]: 'Reyes continues to manage care for A. Delgado.'
+  'OmarJ ones' --[AFFILIATED_WITH]--> 'Ibarra & Cole'   (asserted)
+      evidence [986:1013]: 'OmarJ ones of Ibarra & Cole'
+  'OmarJ ones' --[REPRESENTS]--> 'Alex Delgado'   (asserted)
+      evidence [986:1054]: 'OmarJ ones of Ibarra & Cole regarding representation of Alex Delgado'
+  'Reyes' --[MANAGES_CARE_FOR]--> 'A. Delgado'   (asserted)
+      evidence [1433:1478]: 'Reyes continues to manage care for A. Delgado'
+  'Nadia Rodriguez' --[WORKS_IN_DEPARTMENT]--> 'Claims Department'   (asserted)
+      evidence [1760:1793]: 'Nadia Rodriguez\nClaims Department'
+  'Nadia Rodriguez' --[WORKS_IN]--> 'Claims Department'   (asserted)
+      evidence [1760:1793]: 'Nadia Rodriguez\nClaims Department'
+  'Omar Jones' --[SENT_MESSAGE_TO]--> 'Nadia Rodriguez'   (asserted)
+      evidence [2365:2423]: 'From: Omar Jones\n>>> Sent: earlier\n>>> To: Nadia Rodriguez'
+  'vehicle' --[CURRENTLY_AT]--> 'Thomas'   (asserted)
+      evidence [2541:2568]: 'vehicle currently at Thomas'
+  'indemnity reserve' --[SET_AT]--> '$50,000.00'   (asserted)
+      evidence [2705:2750]: 'indemnity reserve currently set at $50,000.00'

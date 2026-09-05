@@ -1,0 +1,36 @@
+========================================================================================
+DOC00023.txt   claim=CLM0005   occurrence=OCC0004
+========================================================================================
+
+--- NAME MENTIONS (13), in order of appearance ---
+  [  359:373  ] 'James Gonzalez'                   class=claimant         extractor=gliner+llm           -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00024, DOC00025, DOC00026]
+  [ 1207:1222 ] 'Patricia Wilson'                  class=attorney         extractor=gliner+llm           -> entity Ee1ca67e9b3b4 ('Patricia Wilson')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00024, DOC00025, DOC00026]
+  [ 1292:1302 ] 'Samuel Lee'                       class=claimant         extractor=gliner+llm           -> entity Eb8ff486e9980 ('Samuel Lee')  [also in: DOC00019, DOC00021, DOC00022, DOC00045, DOC00046]
+  [ 1450:1465 ] 'Patricia Wilson'                  class=attorney         extractor=gliner+llm           -> entity Ee1ca67e9b3b4 ('Patricia Wilson')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00024, DOC00025, DOC00026]
+  [ 1466:1479 ] 'XYZ Law Group'                    class=attorney         extractor=gliner+llm           -> entity Ecbec8f247b4e ('XYZ Law Group')  [also in: DOC00013, DOC00014, DOC00019, DOC00020, DOC00021, DOC00022, DOC00024, DOC00025, DOC00026, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048]
+  [ 1781:1791 ] 'Samuel Lee'                       class=claimant         extractor=gliner+llm           -> entity Eb8ff486e9980 ('Samuel Lee')  [also in: DOC00019, DOC00021, DOC00022, DOC00045, DOC00046]
+  [ 1814:1829 ] 'Patricia Wilson'                  class=claimant         extractor=gliner+llm           -> entity Ee1ca67e9b3b4 ('Patricia Wilson')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00024, DOC00025, DOC00026]
+  [ 1946:1965 ] 'Dr. Jennifer Garcia'              class=medical_provider extractor=gliner+llm           -> entity E02e07676b29d ('Dr. Jennifer Garcia')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00024, DOC00025, DOC00026]
+  [ 1995:2010 ] 'Gonzalez, James'                  class=medical_provider extractor=gliner+llm           -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00024, DOC00025, DOC00026]
+  [ 2061:2076 ] 'Patricia Wilson'                  class=attorney         extractor=gliner+llm           -> entity Ee1ca67e9b3b4 ('Patricia Wilson')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00024, DOC00025, DOC00026]
+  [ 2080:2093 ] 'XYZ Law Group'                    class=attorney         extractor=gliner+llm           -> entity Ecbec8f247b4e ('XYZ Law Group')  [also in: DOC00013, DOC00014, DOC00019, DOC00020, DOC00021, DOC00022, DOC00024, DOC00025, DOC00026, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048]
+  [ 2122:2137 ] 'Gonzalez, James'                  class=attorney         extractor=gliner+llm           -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00024, DOC00025, DOC00026]
+  [ 2556:2567 ] 'J. Gonzalez'                      class=claimant         extractor=gliner+llm           -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00020, DOC00021, DOC00022, DOC00024, DOC00025, DOC00026]
+
+--- IDENTIFIERS (12), in order of appearance ---
+  [  461:475  ] phone    '(403) 451-2315'             owner='James Gonzalez' [359:373]                   method=llm
+  [  875:892  ] address  'JE3J9T9P2F12DZEZZ'          owner=UNBOUND (orphan)                             method=unbound
+  [ 1045:1082 ] address  '9416 Maple Ave, Springfield, IL 62790' owner='Patricia Wilson' [1207:1222]                method=llm
+  [ 1224:1255 ] email    'patricia.wilson@xyzlawgroup.com' owner='Patricia Wilson' [1207:1222]                method=llm
+  [ 1263:1287 ] dob      'Wed, Jun 6, 2026 6:14 PM'   owner='Patricia Wilson' [1207:1222]                method=line_rule
+  [ 1488:1502 ] phone    '(940) 533-3473'             owner='Patricia Wilson' [1450:1465]                method=llm
+  [ 1503:1540 ] address  '9416 Maple Ave, Springfield, IL 62790' owner='Patricia Wilson' [1450:1465]                method=llm
+  [ 2172:2203 ] email    'patricia.wilson@xyzlawgroup.com' owner='Patricia Wilson' [2061:2076]                method=llm
+  [ 2235:2245 ] dob      '2026-05-10'                 owner='Gonzalez, James' [2122:2137]                method=line_rule
+  [ 2464:2475 ] ssn      '592-44-3882'                owner=UNBOUND (orphan)                             method=unbound
+  [ 2655:2669 ] phone    '(403) 451-2315'             owner='J. Gonzalez' [2556:2567]                    method=llm
+  [ 2700:2734 ] address  '5994 Lincoln Ln, Bristol, PA 19063' owner='J. Gonzalez' [2556:2567]                    method=llm
+
+--- COREFERENCE LINKS (2) ---
+  [  477:480  ] 'She'                (pronoun) -> 'James Gonzalez' [359:373]
+  [  537:549  ] 'The claimant'       (descriptor) -> 'James Gonzalez' [359:373]

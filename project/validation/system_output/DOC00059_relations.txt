@@ -1,0 +1,13 @@
+DOC00059.txt  claim=CLM0012   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'carrier' --[SET_RESERVE_AMOUNT]--> '$24,772.00'   (asserted)
+      evidence [13:79]: 'carrier set the reserve on 2024-08-15 in the amount of $24,772.00.'
+  'vehicle' --[LOCATED_AT]--> 'Lopez Collision Center'   (asserted)
+      evidence [212:256]: 'vehicle currently at Lopez Collision Center.'
+  'Dr. Robert Harris' --[MANAGES_CARE_FOR]--> 'Sterling, Katherine'   (asserted)
+      evidence [1029:1096]: 'Dr. Robert Harris continues to manage care for Sterling, Katherine.'
+  'indemnity reserve' --[SET_AT]--> '$28,000.00'   (asserted)
+      evidence [1174:1220]: 'indemnity reserve currently set at $28,000.00.'
+  'Dr. Robert Harris' --[MANAGES_CARE_FOR]--> 'Sterling, Katherine'   (asserted)
+      evidence [1029:1096]: 'Dr. Robert Harris continues to manage care for Sterling, Katherine.'

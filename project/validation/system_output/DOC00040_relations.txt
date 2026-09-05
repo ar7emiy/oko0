@@ -1,0 +1,11 @@
+DOC00040.txt  claim=CLM0008   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'vehicle' --[LOCATED_AT]--> 'Okafor'   (asserted)
+      evidence [632:659]: 'vehicle currently at Okafor'
+  'Dr. Jonathan Anderson' --[MANAGES_CARE_FOR]--> 'Elizabeth Perez'   (asserted)
+      evidence [1569:1636]: 'Dr. Jonathan Anderson continues to manage care for Elizabeth Perez.'
+  'indemnity reserve' --[SET_AT]--> '$20,000.00'   (asserted)
+      evidence [1879:1925]: 'indemnity reserve currently set at $20,000.00.'
+  'vehicle' --[LOCATED_AT]--> 'Okafor Frame & Paint'   (asserted)
+      evidence [2180:2222]: 'vehicle currently at Okafor Frame & Paint.'

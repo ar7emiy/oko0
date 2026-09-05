@@ -1,0 +1,43 @@
+========================================================================================
+DOC00048.txt   claim=CLM0010   occurrence=OCC0009
+========================================================================================
+
+--- NAME MENTIONS (20), in order of appearance ---
+  [  168:175  ] 'Johnson'                          class=claimant         extractor=llm                  -> entity E6d3d5dd17f2a ('Fatima Johnson')  [also in: DOC00047]
+  [  617:629  ] 'Marcus Lopez'                     class=attorney         extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [  633:646  ] 'XYZ Law Group'                    class=attorney         extractor=gliner+llm           -> entity Ecbec8f247b4e ('XYZ Law Group')  [also in: DOC00013, DOC00014, DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026, DOC00035, DOC00036, DOC00037, DOC00047]
+  [  675:689  ] 'Fatima Johnson'                   class=attorney         extractor=gliner+llm           -> entity E6d3d5dd17f2a ('Fatima Johnson')  [also in: DOC00047]
+  [  807:819  ] 'Brown, Priya'                     class=attorney         extractor=gliner+llm           -> entity E9b6c88110c77 ('Priya Brown')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00006, DOC00007, DOC00008, DOC00047]
+  [ 1257:1266 ] 'T. Okafor'                        class=medical_provider extractor=gliner+llm           -> entity E83d7ffedb3a5 ('Okafor Frame & Paint')  [also in: DOC00013, DOC00014, DOC00038, DOC00040, DOC00041, DOC00042]
+  [ 1296:1311 ] 'Johnson, Fatima'                  class=repair_shop      extractor=gliner+llm           -> entity E6d3d5dd17f2a ('Fatima Johnson')  [also in: DOC00047]
+  [ 1528:1540 ] 'Marcus Lopez'                     class=attorney         extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 1607:1620 ] 'Ingrid Okafor'                    class=claimant         extractor=gliner+llm           -> entity E9ff441e76bbe ('Ingrid Okafor')  [also in: DOC00035, DOC00036, DOC00047]
+  [ 1768:1780 ] 'Marcus Lopez'                     class=attorney         extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 1781:1794 ] 'XYZ Law Group'                    class=attorney         extractor=gliner+llm           -> entity Ecbec8f247b4e ('XYZ Law Group')  [also in: DOC00013, DOC00014, DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026, DOC00035, DOC00036, DOC00037, DOC00047]
+  [ 2095:2108 ] 'Ingrid Okafor'                    class=claimant         extractor=gliner+llm           -> entity E9ff441e76bbe ('Ingrid Okafor')  [also in: DOC00035, DOC00036, DOC00047]
+  [ 2131:2143 ] 'Marcus Lopez'                     class=claimant         extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 2250:2263 ] 'Ingrid Okafor'                    class=claimant         extractor=gliner+llm           -> entity E9ff441e76bbe ('Ingrid Okafor')  [also in: DOC00035, DOC00036, DOC00047]
+  [ 2288:2300 ] 'Marcus Lopez'                     class=claimant         extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 2410:2420 ] 'F. Johnson'                       class=claimant         extractor=gliner+llm+sweep     -> entity E6d3d5dd17f2a ('Fatima Johnson')  [also in: DOC00047]
+  [ 2866:2878 ] 'Marcus Lopez'                     class=attorney         extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 2882:2895 ] 'XYZ Law Group'                    class=attorney         extractor=gliner+llm           -> entity Ecbec8f247b4e ('XYZ Law Group')  [also in: DOC00013, DOC00014, DOC00019, DOC00020, DOC00021, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026, DOC00035, DOC00036, DOC00037, DOC00047]
+  [ 2924:2938 ] 'Fatima Johnson'                   class=attorney         extractor=gliner+llm           -> entity E6d3d5dd17f2a ('Fatima Johnson')  [also in: DOC00047]
+  [ 3060:3071 ] 'Priya Brown'                      class=attorney         extractor=gliner+llm           -> entity E9b6c88110c77 ('Priya Brown')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00006, DOC00007, DOC00008, DOC00047]
+
+--- IDENTIFIERS (13), in order of appearance ---
+  [  258:272  ] phone    '(276) 230-9638'             owner='Johnson' [168:175]                          method=llm
+  [  303:333  ] address  '473 Park Dr, Ashford, GA 30193' owner='Johnson' [168:175]                          method=llm
+  [  724:752  ] email    'marcus.lopez@xyzlawgroup.com' owner='Marcus Lopez' [617:629]                     method=llm
+  [  784:794  ] dob      '2024-06-17'                 owner='Fatima Johnson' [675:689]                   method=line_rule
+  [ 1161:1171 ] dob      '2025-04-03'                 owner=UNBOUND (orphan)                             method=unbound
+  [ 1542:1570 ] email    'marcus.lopez@xyzlawgroup.com' owner='Marcus Lopez' [1528:1540]                   method=llm
+  [ 1578:1602 ] dob      'Thu, Mar 7, 2026 7:40 AM'   owner='Marcus Lopez' [1528:1540]                   method=line_rule
+  [ 1803:1817 ] phone    '(803) 291-3432'             owner='Marcus Lopez' [1768:1780]                   method=llm
+  [ 1818:1854 ] address  '1427 Washington Ave, Kelso, WA 98680' owner='Marcus Lopez' [1768:1780]                   method=llm
+  [ 2503:2517 ] phone    '(276) 230-9638'             owner='F. Johnson' [2410:2420]                     method=llm
+  [ 2548:2578 ] address  '473 Park Dr, Ashford, GA 30193' owner='F. Johnson' [2410:2420]                     method=llm
+  [ 2973:3001 ] email    'marcus.lopez@xyzlawgroup.com' owner='Marcus Lopez' [2866:2878]                   method=llm
+  [ 3037:3047 ] dob      '2025-05-03'                 owner='Fatima Johnson' [2924:2938]                 method=line_rule
+
+--- COREFERENCE LINKS (0) ---
+  (none)

@@ -1,0 +1,17 @@
+DOC00011.txt  claim=CLM0002   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Marcus Jackson' --[EMPLOYED_BY]--> 'Sterling Injury Attorneys'   (asserted)
+      evidence [13:56]: 'Marcus Jackson of Sterling Injury Attorneys'
+  'Marcus Jackson' --[REPRESENTS]--> 'Lucas  Martinez'   (asserted)
+      evidence [13:100]: 'Marcus Jackson of Sterling Injury Attorneys regarding representation of Lucas  Martinez'
+  'Dr. Robert Harris' --[MANAGES_CARE_FOR]--> 'Martinez'   (asserted)
+      evidence [341:396]: 'Dr. Robert Harris continues to manage care for Martinez'
+  'Jackson' --[EMPLOYED_BY]--> 'Sterling Injury Attorneys'   (asserted)
+      evidence [1556:1603]: 'Spoke with Jackson of Sterling Injury Attorneys'
+  'Sterling Injury Attorneys' --[REPRESENTS]--> 'Lucas Martinez'   (asserted)
+      evidence [1578:1646]: 'Sterling Injury Attorneys regarding representation of Lucas Martinez'
+  'Dr. Robert Harris' --[MANAGES_CARE_FOR]--> 'L. Martinez'   (asserted)
+      evidence [1846:1904]: 'Dr. Robert Harris continues to manage care for L. Martinez'
+  'indemnity reserve' --[SET_AT]--> '$40,000.00'   (asserted)
+      evidence [1986:2031]: 'indemnity reserve currently set at $40,000.00'

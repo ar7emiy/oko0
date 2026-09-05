@@ -1,0 +1,17 @@
+DOC00016.txt  claim=CLM0004   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Andrew Anderson' --[EMPLOYED_BY]--> 'Whitfield Trial Group'   (asserted)
+      evidence [695:735]: 'Andrew Anderson of Whitfield Trial Group'
+  'Andrew Anderson' --[REPRESENTS]--> 'Tomass Whitfield'   (asserted)
+      evidence [695:780]: 'Andrew Anderson of Whitfield Trial Group regarding representation of Tomass Whitfield'
+  'Anderson, Andrew' --[EMPLOYED_BY]--> 'Whitfield Trial Group'   (asserted)
+      evidence [2079:2120]: 'Anderson, Andrew of Whitfield Trial Group'
+  'Anderson, Andrew' --[REPRESENTS]--> 'Whitfield, Tomas'   (asserted)
+      evidence [2079:2165]: 'Anderson, Andrew of Whitfield Trial Group regarding representation of Whitfield, Tomas'
+  'Anderson, Andrew' --[EMPLOYED_BY]--> 'Whitfield Trial Group'   (asserted)
+      evidence [2079:2120]: 'Anderson, Andrew of Whitfield Trial Group'
+  'Anderson, Andrew' --[REPRESENTS]--> 'Whitfield, Tomas'   (asserted)
+      evidence [2079:2165]: 'Anderson, Andrew of Whitfield Trial Group regarding representation of Whitfield, Tomas'
+  'indemnity reserve' --[SET_AT]--> '$35,000.00'   (asserted)
+      evidence [2694:2739]: 'indemnity reserve currently set at $35,000.00'

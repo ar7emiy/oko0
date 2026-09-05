@@ -1,0 +1,15 @@
+DOC00012.txt  claim=CLM0002   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Harris, Robert' --[MANAGES_CARE_FOR]--> 'Lucas Martinez'   (asserted)
+      evidence [149:207]: 'Harris, Robert continues to manage care for Lucas Martinez'
+  'Marcus Jackson' --[EMPLOYED_BY]--> 'Sterling Injury Attorneys'   (asserted)
+      evidence [899:942]: 'Marcus Jackson of Sterling Injury Attorneys'
+  'Marcus Jackson' --[REPRESENTS]--> 'Lucas Martiinez'   (asserted)
+      evidence [899:986]: 'Marcus Jackson of Sterling Injury Attorneys regarding representation of Lucas Martiinez'
+  'Marcus Jackson' --[AFFILIATED_WITH]--> 'Sterling Injury Attorneys'   (asserted)
+      evidence [899:942]: 'Marcus Jackson of Sterling Injury Attorneys'
+  'Marcus Jackson' --[REPRESENTS]--> 'Lucas Martiinez'   (asserted)
+      evidence [899:986]: 'Marcus Jackson of Sterling Injury Attorneys regarding representation of Lucas Martiinez'
+  'Dr. Robert Harris' --[MANAGES_CARE_FOR]--> 'Lucas Martinez'   (asserted)
+      evidence [1835:1896]: 'Dr. Robert Harris continues to manage care for Lucas Martinez'

@@ -1,0 +1,19 @@
+========================================================================================
+DOC00039.txt   claim=CLM0008   occurrence=OCC0007
+========================================================================================
+
+--- NAME MENTIONS (3), in order of appearance ---
+  [  676:681  ] 'Perez'                            class=claimant         extractor=llm                  -> entity E1c8d98a13984 ('Elizabeth Perez')  [also in: DOC00038, DOC00040, DOC00041, DOC00042]
+  [ 1058:1079 ] 'Dr. Jonathan Anderson'            class=medical_provider extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00045, DOC00046]
+  [ 1109:1119 ] 'Beth Perez'                       class=repair_shop      extractor=gliner+llm           -> entity E1c8d98a13984 ('Elizabeth Perez')  [also in: DOC00038, DOC00040, DOC00041, DOC00042]
+
+--- IDENTIFIERS (4), in order of appearance ---
+  [  504:541  ] address  '4002 Highland Ave, Riverton, NJ 08010' owner=UNBOUND (orphan)                             method=unbound
+  [  778:792  ] phone    '(804) 899-9331'             owner='Perez' [676:681]                            method=llm
+  [  883:919  ] address  '3088 Grand Ct, Springfield, IL 62713' owner='Perez' [676:681]                            method=llm
+  [ 1476:1486 ] dob      '2024-09-12'                 owner=UNBOUND (orphan)                             method=unbound
+
+--- COREFERENCE LINKS (3) ---
+  [  794:797  ] 'She'                (pronoun) -> 'Perez' [676:681]
+  [  921:925  ] 'They'               (pronoun) -> 'Perez' [676:681]
+  [ 1157:1169 ] 'The provider'       (descriptor) -> 'Dr. Jonathan Anderson' [1058:1079]

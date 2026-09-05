@@ -1,0 +1,31 @@
+========================================================================================
+DOC00045.txt   claim=CLM0009   occurrence=OCC0008
+========================================================================================
+
+--- NAME MENTIONS (12), in order of appearance ---
+  [   40:55   ] 'Miller Car Care'                  class=repair_shop      extractor=gliner+llm           -> entity E99a4d6a9edc0 ('Miller Car Care')  [also in: DOC00000, DOC00043, DOC00044, DOC00046]
+  [  316:330  ] 'William Garcia'                   class=repair_shop      extractor=gliner+llm           -> entity E212e498517aa ('William Garcia')  [also in: DOC00020, DOC00022, DOC00043, DOC00044, DOC00046]
+  [  541:555  ] 'William Garcia'                   class=claimant         extractor=gliner+llm           -> entity E212e498517aa ('William Garcia')  [also in: DOC00020, DOC00022, DOC00043, DOC00044, DOC00046]
+  [  934:949  ] 'Samuel Anderson'                  class=attorney         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00046]
+  [ 1021:1031 ] 'Samuel Lee'                       class=attorney         extractor=gliner+llm           -> entity Eb8ff486e9980 ('Samuel Lee')  [also in: DOC00019, DOC00021, DOC00022, DOC00023, DOC00046]
+  [ 1179:1194 ] 'Samuel Anderson'                  class=attorney         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00046]
+  [ 1515:1525 ] 'Samuel Lee'                       class=claimant         extractor=gliner+llm           -> entity Eb8ff486e9980 ('Samuel Lee')  [also in: DOC00019, DOC00021, DOC00022, DOC00023, DOC00046]
+  [ 1548:1563 ] 'Samuel Anderson'                  class=claimant         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00046]
+  [ 1670:1680 ] 'Samuel Lee'                       class=claimant         extractor=gliner+llm           -> entity Eb8ff486e9980 ('Samuel Lee')  [also in: DOC00019, DOC00021, DOC00022, DOC00023, DOC00046]
+  [ 1705:1720 ] 'Samuel Anderson'                  class=claimant         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00046]
+  [ 1829:1839 ] 'Samuel Lee'                       class=claimant         extractor=gliner+llm           -> entity Eb8ff486e9980 ('Samuel Lee')  [also in: DOC00019, DOC00021, DOC00022, DOC00023, DOC00046]
+  [ 1866:1881 ] 'Samuel Anderson'                  class=claimant         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00046]
+
+--- IDENTIFIERS (9), in order of appearance ---
+  [  356:366  ] address  '7551279574'                 owner='William Garcia' [316:330]                   method=line_rule
+  [  371:381  ] dob      '2024-06-01'                 owner='William Garcia' [316:330]                   method=line_rule
+  [  444:476  ] address  '7777 Elm Ave, Riverton, NJ 08065' owner='William Garcia' [316:330]                   method=line_rule
+  [  638:652  ] phone    '(948) 407-4023'             owner='William Garcia' [541:555]                   method=llm
+  [  683:715  ] address  '3531 Park Ln, Riverton, NJ 08098' owner='William Garcia' [541:555]                   method=llm
+  [  951:983  ] email    'samuel.anderson@delgadolegal.com' owner='Samuel Anderson' [934:949]                  method=llm
+  [  991:1016 ] dob      'Mon, Jan 20, 2026 4:50 PM'  owner='Samuel Anderson' [934:949]                  method=line_rule
+  [ 1226:1240 ] phone    '(282) 758-8520'             owner='Samuel Anderson' [1179:1194]                method=llm
+  [ 1241:1274 ] address  '3648 Sunset St, Ashford, GA 30132' owner='Samuel Anderson' [1179:1194]                method=llm
+
+--- COREFERENCE LINKS (0) ---
+  (none)

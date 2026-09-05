@@ -1,0 +1,26 @@
+========================================================================================
+DOC00041.txt   claim=CLM0008   occurrence=OCC0007
+========================================================================================
+
+--- NAME MENTIONS (8), in order of appearance ---
+  [   20:31   ] 'J. Anderson'                      class=medical_provider extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00042, DOC00043, DOC00044, DOC00045, DOC00046]
+  [   61:76   ] 'Elizabeth Perez'                  class=repair_shop      extractor=gliner+llm           -> entity E1c8d98a13984 ('Elizabeth Perez')  [also in: DOC00038, DOC00039, DOC00040, DOC00042]
+  [  890:905  ] 'Elizabeth Perez'                  class=claimant         extractor=gliner+llm           -> entity E1c8d98a13984 ('Elizabeth Perez')  [also in: DOC00038, DOC00039, DOC00040, DOC00042]
+  [ 1193:1213 ] 'Okafor Frame & Paint'             class=repair_shop      extractor=gliner+llm           -> entity E83d7ffedb3a5 ('Okafor Frame & Paint')  [also in: DOC00013, DOC00014, DOC00038, DOC00040, DOC00042, DOC00048]
+  [ 1785:1806 ] 'Dr. Joanthan Anderson'            class=medical_provider extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00042, DOC00043, DOC00044, DOC00045, DOC00046]
+  [ 1836:1851 ] 'Elizabeth Perez'                  class=repair_shop      extractor=gliner+llm           -> entity E1c8d98a13984 ('Elizabeth Perez')  [also in: DOC00038, DOC00039, DOC00040, DOC00042]
+  [ 2557:2572 ] 'Elizabeth Perez'                  class=claimant         extractor=gliner+llm           -> entity E1c8d98a13984 ('Elizabeth Perez')  [also in: DOC00038, DOC00039, DOC00040, DOC00042]
+  [ 2860:2880 ] 'Okafor Frame & Paint'             class=repair_shop      extractor=gliner+llm           -> entity E83d7ffedb3a5 ('Okafor Frame & Paint')  [also in: DOC00013, DOC00014, DOC00038, DOC00040, DOC00042, DOC00048]
+
+--- IDENTIFIERS (6), in order of appearance ---
+  [  353:363  ] dob      '2024-09-12'                 owner=UNBOUND (orphan)                             method=unbound
+  [  729:743  ] phone    '(804) 899-9331'             owner='Elizabeth Perez' [890:905]                  method=llm
+  [ 1002:1016 ] phone    '(804) 899-9331'             owner='Elizabeth Perez' [890:905]                  method=llm
+  [ 1912:1944 ] address  '6211 Oak St, Northline, OH 44150' owner='Dr. Joanthan Anderson' [1785:1806]          method=llm
+  [ 2669:2683 ] phone    '(804) 899-9331'             owner='Elizabeth Perez' [2557:2572]                method=llm
+  [ 2714:2750 ] address  '3088 Grand Ct, Springfield, IL 62713' owner='Elizabeth Perez' [2557:2572]                method=llm
+
+--- COREFERENCE LINKS (3) ---
+  [  114:135  ] 'The treating facility' (descriptor) -> 'J. Anderson' [20:31]
+  [  177:180  ] 'She'                (pronoun) -> 'J. Anderson' [20:31]
+  [ 1018:1021 ] 'She'                (pronoun) -> 'Elizabeth Perez' [890:905]

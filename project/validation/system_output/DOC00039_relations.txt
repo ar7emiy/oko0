@@ -1,0 +1,7 @@
+DOC00039.txt  claim=CLM0008   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Dr. Jonathan Anderson' --[MANAGES_CARE_FOR]--> 'Beth Perez'   (asserted)
+      evidence [1058:1120]: 'Dr. Jonathan Anderson continues to manage care for Beth Perez.'
+  'Dr. Jonathan Anderson' --[MANAGES_CARE_FOR]--> 'Beth Perez'   (asserted)
+      evidence [1058:1120]: 'Dr. Jonathan Anderson continues to manage care for Beth Perez.'

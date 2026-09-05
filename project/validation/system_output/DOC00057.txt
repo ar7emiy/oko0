@@ -1,0 +1,24 @@
+========================================================================================
+DOC00057.txt   claim=CLM0012   occurrence=OCC0009
+========================================================================================
+
+--- NAME MENTIONS (6), in order of appearance ---
+  [   40:45   ] 'Lopez'                            class=repair_shop      extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00058, DOC00059]
+  [  430:441  ] 'K. Sterling'                      class=claimant         extractor=llm                  -> entity Ea6d4e23c0987 ('K. Sterling')  [also in: DOC00059]
+  [ 1163:1180 ] 'Dr. Robert Harris'                class=medical_provider extractor=gliner+llm           -> entity E5e9893966f6a ('Dr. Robert Harris')  [also in: DOC00009, DOC00010, DOC00011, DOC00012, DOC00058, DOC00059]
+  [ 1210:1229 ] 'Katherinee Sterling'              class=medical_provider extractor=gliner+llm           -> entity Ead44520ab977 ('Katherine Sterling')  [also in: DOC00058, DOC00059]
+  [ 1630:1652 ] 'Lopez Collision Center'           class=repair_shop      extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00058, DOC00059]
+  [ 1949:1967 ] 'Katherine Sterling'               class=claimant         extractor=llm                  -> entity Ead44520ab977 ('Katherine Sterling')  [also in: DOC00058, DOC00059]
+
+--- IDENTIFIERS (7), in order of appearance ---
+  [   56:66   ] tin      '99-1566069'                 owner='Lopez' [40:45]                              method=llm
+  [  524:538  ] phone    '(689) 672-6682'             owner='K. Sterling' [430:441]                      method=llm
+  [ 1255:1265 ] npi      '1137283788'                 owner='Dr. Robert Harris' [1163:1180]              method=llm
+  [ 1290:1329 ] address  '6203 Franklin Blvd, Northline, OH 44188' owner='Dr. Robert Harris' [1163:1180]              method=llm
+  [ 1443:1453 ] dob      '2024-08-15'                 owner=UNBOUND (orphan)                             method=unbound
+  [ 2050:2064 ] phone    '(689) 672-6682'             owner='Katherine Sterling' [1949:1967]             method=llm
+  [ 2095:2126 ] address  '9261 Elm Ln, Lakewood, CO 80292' owner='Katherine Sterling' [1949:1967]             method=llm
+
+--- COREFERENCE LINKS (2) ---
+  [  101:103  ] 'It'                 (pronoun) -> 'Lopez' [40:45]
+  [  540:544  ] 'They'               (pronoun) -> 'K. Sterling' [430:441]

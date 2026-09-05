@@ -1,0 +1,31 @@
+DOC00032.txt  claim=CLM0006   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Omar Jones' --[EMPLOYED_BY]--> 'Ibarra & Cole'   (asserted)
+      evidence [624:651]: 'Omar Jones of Ibarra & Cole'
+  'Omar Jones' --[REPRESENTS]--> 'Delgado'   (asserted)
+      evidence [624:687]: 'Omar Jones of Ibarra & Cole regarding representation of Delgado'
+  'Reyes Rehabilitation Services' --[MANAGES_CARE_FOR]--> 'Alexnader Delgado'   (asserted)
+      evidence [1063:1139]: 'Reyes Rehabilitation Services continues to manage care for Alexnader Delgado'
+  'carrier' --[ISSUED_PAYMENT_AMOUNT]--> '$5,122.00'   (asserted)
+      evidence [439:502]: 'carrier issued payment on 2024-09-06 in the amount of $5,122.00'
+  'Reyes Rehabilitation Services' --[MANAGES_CARE_FOR]--> 'Alexnader Delgado'   (asserted)
+      evidence [1063:1140]: 'Reyes Rehabilitation Services continues to manage care for Alexnader Delgado.'
+  'E5WPX0J56SC2W9GLJ' --[LOCATED_AT]--> 'Thomas Collision Center'   (asserted)
+      evidence [1247:1319]: 'vehicle currently at Thomas Collision Center. Unit VIN E5WPX0J56SC2W9GLJ'
+  'Omar Jones' --[SENT_EMAIL_TO]--> 'Nadia Rodriguez'   (asserted)
+      evidence [1828:1923]: 'From: Omar Jones <omar.jones@ibarracole.com>\nSent: Mon, Jun 3, 2026 2:16 PM\nTo: Nadia Rodriguez'
+  'Omar Jones' --[AFFILIATED_WITH]--> 'Ibarra & Cole'   (asserted)
+      evidence [2071:2095]: 'Omar Jones\nIbarra & Cole'
+  'Omar Jones' --[EMPLOYED_BY]--> 'Ibarra & Cole'   (asserted)
+      evidence [2071:2095]: 'Omar Jones\nIbarra & Cole'
+  'Omar Jones' --[REPRESENTS]--> 'Delgado, Alexander'   (asserted)
+      evidence [2712:2793]: 'Spoke with Jones of Ibarra & Cole regarding representation of Delgado, Alexander.'
+  'Jones' --[ASSOCIATED_WITH]--> 'Ibarra & Cole'   (asserted)
+      evidence [2723:2745]: 'Jones of Ibarra & Cole'
+  'Jones of Ibarra & Cole' --[REPRESENTS]--> 'Delgado, Alexander'   (asserted)
+      evidence [2712:2793]: 'Spoke with Jones of Ibarra & Cole regarding representation of Delgado, Alexander.'
+  'Reyes' --[MANAGES_CARE_FOR]--> 'A. Delgado'   (asserted)
+      evidence [3141:3187]: 'Reyes continues to manage care for A. Delgado.'
+  'indemnity reserve' --[SET_AT]--> '$11,000.00'   (asserted)
+      evidence [2553:2598]: 'indemnity reserve currently set at $11,000.00'

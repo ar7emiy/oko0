@@ -1,0 +1,39 @@
+========================================================================================
+DOC00034.txt   claim=CLM0006   occurrence=OCC0005
+========================================================================================
+
+--- NAME MENTIONS (19), in order of appearance ---
+  [   12:29   ] 'Alexander Delgado'                class=claimant         extractor=gliner+llm           -> entity E19b868800836 ('Alexander Delgado')  [also in: DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033]
+  [  348:365  ] 'Alexandre Delgado'                class=repair_shop      extractor=gliner+llm           -> entity E19b868800836 ('Alexander Delgado')  [also in: DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033]
+  [  474:497  ] 'Thomas Collision Center'          class=repair_shop      extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 1000:1013 ] 'Ibarra & Cole'                    class=attorney         extractor=gliner+llm           -> entity Ec629b65f8c39 ('Ibarra & Cole')  [also in: DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033]
+  [ 1042:1054 ] 'Alex Delgado'                     class=attorney         extractor=gliner+llm           -> entity E19b868800836 ('Alexander Delgado')  [also in: DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033]
+  [ 1192:1199 ] 'Delgado'                          class=claimant         extractor=llm                  -> entity E19b868800836 ('Alexander Delgado')  [also in: DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033]
+  [ 1468:1478 ] 'A. Delgado'                       class=repair_shop      extractor=llm                  -> entity E19b868800836 ('Alexander Delgado')  [also in: DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033]
+  [ 1524:1539 ] 'Nadia Rodriguez'                  class=adjuster         extractor=gliner+llm           -> entity Edf2bec918dcb ('Nadia Rodriguez')  [also in: DOC00027, DOC00029, DOC00032]
+  [ 1602:1612 ] 'Omar Jones'                       class=claimant         extractor=gliner+llm           -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00006, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033]
+  [ 1760:1775 ] 'Nadia Rodriguez'                  class=adjuster         extractor=gliner+llm           -> entity Edf2bec918dcb ('Nadia Rodriguez')  [also in: DOC00027, DOC00029, DOC00032]
+  [ 1776:1793 ] 'Claims Department'                class=medical_provider extractor=llm+sweep            -> entity E3f77c097446c ('Claims Department')  [also in: DOC00005, DOC00019, DOC00021, DOC00029, DOC00046]
+  [ 2057:2067 ] 'Omar Jones'                       class=claimant         extractor=gliner+llm           -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00006, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033]
+  [ 2090:2105 ] 'Nadia Rodriguez'                  class=claimant         extractor=gliner+llm           -> entity Edf2bec918dcb ('Nadia Rodriguez')  [also in: DOC00027, DOC00029, DOC00032]
+  [ 2212:2222 ] 'Omar Jones'                       class=claimant         extractor=gliner+llm           -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00006, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033]
+  [ 2247:2262 ] 'Nadia Rodriguez'                  class=claimant         extractor=gliner+llm           -> entity Edf2bec918dcb ('Nadia Rodriguez')  [also in: DOC00027, DOC00029, DOC00032]
+  [ 2371:2381 ] 'Omar Jones'                       class=claimant         extractor=gliner+llm           -> entity E1af1a2bda6f4 ('Margaret Jones')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00006, DOC00007, DOC00008, DOC00027, DOC00028, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033]
+  [ 2408:2423 ] 'Nadia Rodriguez'                  class=claimant         extractor=gliner+llm           -> entity Edf2bec918dcb ('Nadia Rodriguez')  [also in: DOC00027, DOC00029, DOC00032]
+  [ 2562:2568 ] 'Thomas'                           class=repair_shop      extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 2570:2589 ] 'Shop TIN 66-1627662'              class=repair_shop      extractor=gazetteer+gliner+llm+sweep -> entity E4562257e5ea1 ('Shop TIN 66-1627662')
+
+--- IDENTIFIERS (9), in order of appearance ---
+  [  108:122  ] phone    '(961) 563-7610'             owner='Alexander Delgado' [12:29]                  method=llm
+  [  508:518  ] tin      '66-1627662'                 owner='Thomas Collision Center' [474:497]          method=llm
+  [  656:666  ] dob      '2024-09-06'                 owner=UNBOUND (orphan)                             method=unbound
+  [ 1089:1114 ] email    'omar.jones@ibarracole.com'  owner='Omar Jones' [1602:1612]                     method=llm
+  [ 1278:1292 ] phone    '(961) 563-7610'             owner='Delgado' [1192:1199]                        method=llm
+  [ 1323:1358 ] address  '8327 Highland Ct, Bristol, PA 19026' owner='Delgado' [1192:1199]                        method=llm
+  [ 1541:1564 ] email    'nrodriguez@ourinsco.com'    owner='Nadia Rodriguez' [1524:1539]                method=llm
+  [ 1572:1594 ] dob      'Wed, Jan 27, 2026 2:33'     owner='Nadia Rodriguez' [1524:1539]                method=line_rule
+  [ 1802:1816 ] phone    '(398) 403-4952'             owner='Nadia Rodriguez' [1760:1775]                method=llm
+
+--- COREFERENCE LINKS (2) ---
+  [  124:126  ] 'He'                 (pronoun) -> 'Alexander Delgado' [12:29]
+  [  175:179  ] 'They'               (pronoun) -> 'Alexander Delgado' [12:29]

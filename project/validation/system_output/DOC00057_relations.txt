@@ -1,0 +1,7 @@
+DOC00057.txt  claim=CLM0012   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Dr. Robert Harris' --[MANAGES_CARE_FOR]--> 'Katherinee Sterling'   (asserted)
+      evidence [1163:1230]: 'Dr. Robert Harris continues to manage care for Katherinee Sterling.'
+  'Dr. Robert Harris' --[MANAGES_CARE_FOR]--> 'Katherinee Sterling'   (asserted)
+      evidence [1163:1230]: 'Dr. Robert Harris continues to manage care for Katherinee Sterling.'

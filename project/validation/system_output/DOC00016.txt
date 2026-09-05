@@ -1,0 +1,34 @@
+========================================================================================
+DOC00016.txt   claim=CLM0004   occurrence=OCC0004
+========================================================================================
+
+--- NAME MENTIONS (9), in order of appearance ---
+  [   12:24   ] 'T. Whitfield'                     class=claimant         extractor=gliner+llm           -> entity E8ce3f2a3987b ('Tomas Whitfield')  [also in: DOC00015, DOC00017, DOC00018, DOC00035, DOC00036, DOC00037]
+  [  695:710  ] 'Andrew Anderson'                  class=attorney         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00045, DOC00046]
+  [  714:735  ] 'Whitfield Trial Group'            class=attorney         extractor=gliner+llm           -> entity E093bcb3b31ef ('Whitfield Trial Group')  [also in: DOC00015, DOC00017, DOC00018]
+  [  764:780  ] 'Tomass Whitfield'                 class=attorney         extractor=gliner+llm           -> entity E8ce3f2a3987b ('Tomas Whitfield')  [also in: DOC00015, DOC00017, DOC00018, DOC00035, DOC00036, DOC00037]
+  [ 1648:1664 ] 'Tomas WWhitfield'                 class=claimant         extractor=gliner+llm           -> entity E8ce3f2a3987b ('Tomas Whitfield')  [also in: DOC00015, DOC00017, DOC00018, DOC00035, DOC00036, DOC00037]
+  [ 2079:2095 ] 'Anderson, Andrew'                 class=attorney         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00045, DOC00046]
+  [ 2099:2120 ] 'Whitfield Trial Group'            class=attorney         extractor=gliner+llm           -> entity E093bcb3b31ef ('Whitfield Trial Group')  [also in: DOC00015, DOC00017, DOC00018]
+  [ 2149:2165 ] 'Whitfield, Tomas'                 class=attorney         extractor=llm                  -> entity E8ce3f2a3987b ('Tomas Whitfield')  [also in: DOC00015, DOC00017, DOC00018, DOC00035, DOC00036, DOC00037]
+  [ 2849:2864 ] 'Tomas hWitfield'                  class=claimant         extractor=llm                  -> entity E8ce3f2a3987b ('Tomas Whitfield')  [also in: DOC00015, DOC00017, DOC00018, DOC00035, DOC00036, DOC00037]
+
+--- IDENTIFIERS (13), in order of appearance ---
+  [  112:126  ] phone    '(212) 366-6484'             owner='T. Whitfield' [12:24]                       method=llm
+  [  225:257  ] address  '1148 Oak Blvd, Bristol, PA 19061' owner='T. Whitfield' [12:24]                       method=llm
+  [  529:539  ] dob      '2026-12-18'                 owner=UNBOUND (orphan)                             method=unbound
+  [  815:849  ] email    'andrew.anderson@whitfieldtrial.com' owner='Andrew Anderson' [695:710]                  method=llm
+  [  883:893  ] dob      '2025-09-22'                 owner='Tomass Whitfield' [764:780]                 method=line_rule
+  [ 1019:1029 ] tin      '70-7239688'                 owner=UNBOUND (orphan)                             method=unbound
+  [ 1103:1113 ] dob      '2024-11-05'                 owner=UNBOUND (orphan)                             method=unbound
+  [ 1752:1766 ] phone    '(212) 366-6484'             owner='Tomas WWhitfield' [1648:1664]               method=llm
+  [ 1797:1829 ] address  '1148 Oak Blvd, Bristol, PA 19061' owner='Tomas WWhitfield' [1648:1664]               method=llm
+  [ 2200:2234 ] email    'andrew.anderson@whitfieldtrial.com' owner='Anderson, Andrew' [2079:2095]               method=llm
+  [ 2337:2356 ] address  'Shop TIN 70-7239688'        owner=UNBOUND (orphan)                             method=unbound
+  [ 2952:2966 ] phone    '(212) 366-6484'             owner='Tomas hWitfield' [2849:2864]                method=llm
+  [ 2997:3029 ] address  '1148 Oak Blvd, Bristol, PA 19061' owner='Tomas hWitfield' [2849:2864]                method=llm
+
+--- COREFERENCE LINKS (3) ---
+  [  128:132  ] 'They'               (pronoun) -> 'T. Whitfield' [12:24]
+  [  259:263  ] 'They'               (pronoun) -> 'T. Whitfield' [12:24]
+  [  541:545  ] 'They'               (pronoun) -> 'T. Whitfield' [12:24]

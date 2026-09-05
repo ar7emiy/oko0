@@ -1,0 +1,13 @@
+DOC00007.txt  claim=CLM0001   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Dr. Christopher Nguyen' --[MANAGES_CARE_FOR]--> 'Margaret Jones'   (asserted)
+      evidence [379:446]: 'Dr. Christopher Nguyen continues to manage care for Margaret Jones.'
+  'Priay Brown' --[EMPLOYED_BY]--> 'Sterling Injury Attorneys'   (asserted)
+      evidence [718:758]: 'Priay Brown of Sterling Injury Attorneys'
+  'Priay Brown' --[REPRESENTS]--> 'Margaret Jones'   (asserted)
+      evidence [718:793]: 'Priay Brown of Sterling Injury Attorneys regarding representation of Jones.'
+  'Margaret Jones' --[CONTACTED_TO_DISCUSS]--> 'parking lot impact'   (asserted)
+      evidence [1035:1102]: 'Contacted Margaret Jones to discuss the reported parking lot impact'
+  'indemnity reserve' --[SET_AT]--> '$34,000.00'   (asserted)
+      evidence [1584:1629]: 'indemnity reserve currently set at $34,000.00'

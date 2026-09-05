@@ -1,0 +1,13 @@
+DOC00038.txt  claim=CLM0008   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Dr. Jonathan Anderson' --[MANAGES_CARE_FOR]--> 'Perez, Elizabeth'   (asserted)
+      evidence [795:863]: 'Dr. Jonathan Anderson continues to manage care for Perez, Elizabeth.'
+  'Dr. Jonathan Anderson' --[MANAGES_CARE_FOR]--> 'Perez, Elizabeth'   (asserted)
+      evidence [795:863]: 'Dr. Jonathan Anderson continues to manage care for Perez, Elizabeth.'
+  'Dr. Jonathan Anderson' --[MANAGES_CARE_FOR]--> 'Elizabeth Perez'   (asserted)
+      evidence [2012:2079]: 'Dr. Jonathan Anderson continues to manage care for Elizabeth Perez.'
+  'Dr. Jonathan Anderson' --[MANAGES_CARE_FOR]--> 'Elizabeth Perez'   (asserted)
+      evidence [2012:2079]: 'Dr. Jonathan Anderson continues to manage care for Elizabeth Perez.'
+  'vehicle' --[LOCATED_AT]--> 'Okafor Frame & Paint'   (asserted)
+      evidence [2202:2244]: 'vehicle currently at Okafor Frame & Paint.'

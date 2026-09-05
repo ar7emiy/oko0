@@ -1,0 +1,19 @@
+DOC00020.txt  claim=CLM0005   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Jenny Garcia' --[MANAGES_CARE_FOR]--> 'J. Gonzalez'   (asserted)
+      evidence [521:575]: 'Jenny Garcia continues to manage care for J. Gonzalez.'
+  'Patricia Wilson' --[AFFILIATED_WITH]--> 'XYZ Law Group'   (asserted)
+      evidence [1341:1373]: 'Patricia Wilson of XYZ Law Group'
+  'Patricia Wilson' --[REPRESENTS]--> 'James Gonzalez'   (asserted)
+      evidence [1341:1417]: 'Patricia Wilson of XYZ Law Group regarding representation of James Gonzalez.'
+  'Patricia Wilson' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [1341:1373]: 'Patricia Wilson of XYZ Law Group'
+  'Patricia Wilson' --[REPRESENTS]--> 'James Gonzalez'   (asserted)
+      evidence [1341:1416]: 'Patricia Wilson of XYZ Law Group regarding representation of James Gonzalez'
+  'Dr. Jenniferr Garcia' --[MANAGES_CARE_FOR]--> 'James Gonzalez'   (asserted)
+      evidence [2014:2078]: 'Dr. Jenniferr Garcia continues to manage care for James Gonzalez'
+  'vehicle' --[LOCATED_AT]--> 'Davis Automotive'   (asserted)
+      evidence [1698:1735]: 'vehicle currently at Davis Automotive'
+  'Dr. Jenniferr Garcia' --[MANAGES_CARE_FOR]--> 'James Gonzalez'   (asserted)
+      evidence [2014:2078]: 'Dr. Jenniferr Garcia continues to manage care for James Gonzalez'

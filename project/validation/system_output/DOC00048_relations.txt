@@ -1,0 +1,25 @@
+DOC00048.txt  claim=CLM0010   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Marcus Lopez' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [617:646]: 'Marcus Lopez of XYZ Law Group'
+  'Marcus Lopez' --[REPRESENTS]--> 'Fatima Johnson'   (asserted)
+      evidence [617:689]: 'Marcus Lopez of XYZ Law Group regarding representation of Fatima Johnson'
+  'T. Okafor' --[MANAGES_CARE_FOR]--> 'Johnson, Fatima'   (asserted)
+      evidence [1257:1311]: 'T. Okafor continues to manage care for Johnson, Fatima'
+  'T. Okafor' --[MANAGES_CARE_FOR]--> 'Johnson, Fatima'   (asserted)
+      evidence [1257:1312]: 'T. Okafor continues to manage care for Johnson, Fatima.'
+  'Marcus Lopez' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [1768:1794]: 'Marcus Lopez\nXYZ Law Group'
+  'Marcus Lopez' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [2866:2895]: 'Marcus Lopez of XYZ Law Group'
+  'Marcus Lopez' --[REPRESENTS]--> 'Fatima Johnson'   (asserted)
+      evidence [2866:2938]: 'Marcus Lopez of XYZ Law Group regarding representation of Fatima Johnson'
+  'Priya Brown' --[CO_COUNSEL_WITH]--> 'Marcus Lopez'   (asserted)
+      evidence [3003:3071]: 'Counsel filed motion to compel on 2025-05-03. Co-counsel Priya Brown'
+  'Marcus Lopez' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [2855:2895]: 'Spoke with Marcus Lopez of XYZ Law Group'
+  'Marcus Lopez' --[REPRESENTS]--> 'Fatima Johnson'   (asserted)
+      evidence [2855:2939]: 'Spoke with Marcus Lopez of XYZ Law Group regarding representation of Fatima Johnson.'
+  'Priya Brown' --[CO_COUNSEL_WITH]--> 'Marcus Lopez'   (asserted)
+      evidence [3049:3105]: 'Co-counsel Priya Brown is also appearing on this matter.'

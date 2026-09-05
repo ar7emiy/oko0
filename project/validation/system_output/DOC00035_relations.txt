@@ -1,0 +1,15 @@
+DOC00035.txt  claim=CLM0007   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Marcus Lopez' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [353:382]: 'Marcus Lopez of XYZ Law Group'
+  'Marcus Lopez' --[REPRESENTS]--> 'Lucas Whitfield'   (asserted)
+      evidence [342:427]: 'Spoke with Marcus Lopez of XYZ Law Group regarding representation of Lucas Whitfield.'
+  'D.r Richard Okonjo' --[MANAGES_CARE_FOR]--> 'Lucas Whitfield'   (asserted)
+      evidence [886:950]: 'D.r Richard Okonjo continues to manage care for Lucas Whitfield.'
+  'D.r Richard Okonjo' --[MANAGES_CARE_FOR]--> 'Lucas Whitfield'   (asserted)
+      evidence [886:950]: 'D.r Richard Okonjo continues to manage care for Lucas Whitfield.'
+  'Marcus Lopez' --[AFFILIATED_WITH]--> 'XYZ Law Group'   (asserted)
+      evidence [1498:1524]: 'Marcus Lopez\nXYZ Law Group'
+  'Ingrid Okafor' --[SENT_DEMAND_PACKAGE_TO]--> 'Marcus Lopez'   (asserted)
+      evidence [1819:1927]: 'From: Ingrid Okafor\n> Sent: earlier\n> To: Marcus Lopez\n> Per our call, attaching the updated demand package.'

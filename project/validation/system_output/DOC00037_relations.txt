@@ -1,0 +1,15 @@
+DOC00037.txt  claim=CLM0007   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'M. Lopez' --[AFFILIATED_WITH]--> 'XYZ Law Group'   (asserted)
+      evidence [342:378]: 'Spoke with M. Lopez of XYZ Law Group'
+  'M. Lopez' --[REPRESENTS]--> 'Lucas Whitfield'   (asserted)
+      evidence [342:423]: 'Spoke with M. Lopez of XYZ Law Group regarding representation of Lucas Whitfield.'
+  'Dr. iRchard Okonjo' --[MANAGES_CARE_FOR]--> 'L. Whitfield'   (asserted)
+      evidence [786:847]: 'Dr. iRchard Okonjo continues to manage care for L. Whitfield.'
+  'Dr. iRchard Okonjo' --[MANAGES_CARE_FOR]--> 'L. Whitfield'   (asserted)
+      evidence [786:847]: 'Dr. iRchard Okonjo continues to manage care for L. Whitfield.'
+  'Marcus Lopez' --[AFFILIATED_WITH]--> 'XYZ Law Group'   (asserted)
+      evidence [2009:2038]: 'Marcus Lopez of XYZ Law Group'
+  'Marcus Lopez' --[REPRESENTS]--> 'Lucas Whitfield'   (asserted)
+      evidence [1998:2083]: 'Spoke with Marcus Lopez of XYZ Law Group regarding representation of Lucas Whitfield.'

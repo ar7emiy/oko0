@@ -1,0 +1,11 @@
+DOC00015.txt  claim=CLM0004   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Andrew Anderson' --[EMPLOYED_BY]--> 'Whitfield Trial Group'   (asserted)
+      evidence [1260:1300]: 'Andrew Anderson of Whitfield Trial Group'
+  'Andrew Anderson' --[REPRESENTS]--> 'Tomas Whitfield'   (asserted)
+      evidence [1311:1344]: 'representation of Tomas Whitfield'
+  'Andrew Anderson' --[AFFILIATED_WITH]--> 'Whitfield Trial Group'   (asserted)
+      evidence [1260:1300]: 'Andrew Anderson of Whitfield Trial Group'
+  'Andrew Anderson' --[REPRESENTS]--> 'Tomas Whitfield'   (asserted)
+      evidence [1249:1345]: 'Spoke with Andrew Anderson of Whitfield Trial Group regarding representation of Tomas Whitfield.'

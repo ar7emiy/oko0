@@ -1,0 +1,40 @@
+========================================================================================
+DOC00046.txt   claim=CLM0009   occurrence=OCC0008
+========================================================================================
+
+--- NAME MENTIONS (18), in order of appearance ---
+  [   13:28   ] 'Samuel Anderson'                  class=attorney         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00045]
+  [   32:54   ] 'Delgado Legal Partners'           class=attorney         extractor=gliner+llm           -> entity Ec5ccaeb906fe ('Delgado Legal Partners')  [also in: DOC00043, DOC00044]
+  [   83:95   ] 'Billy Garcia'                     class=attorney         extractor=gliner+llm           -> entity E212e498517aa ('William Garcia')  [also in: DOC00020, DOC00022, DOC00043, DOC00044, DOC00045]
+  [  267:283  ] 'Anderson, Andrew'                 class=attorney         extractor=llm                  -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00045]
+  [  648:663  ] 'Miller Car Care'                  class=repair_shop      extractor=gliner+llm           -> entity E99a4d6a9edc0 ('Miller Car Care')  [also in: DOC00000, DOC00043, DOC00044, DOC00045]
+  [  730:739  ] 'W. Garcia'                        class=claimant         extractor=llm                  -> entity E212e498517aa ('William Garcia')  [also in: DOC00020, DOC00022, DOC00043, DOC00044, DOC00045]
+  [ 1101:1122 ] 'Ibarra Imaging Center'            class=medical_provider extractor=gliner+llm+sweep     -> entity E0f73dd7962e2 ('Omar Ibarra')  [also in: DOC00013, DOC00014, DOC00043, DOC00044]
+  [ 1152:1166 ] 'William Garcia'                   class=medical_provider extractor=gliner+llm           -> entity E212e498517aa ('William Garcia')  [also in: DOC00020, DOC00022, DOC00043, DOC00044, DOC00045]
+  [ 1350:1360 ] 'Samuel Lee'                       class=adjuster         extractor=gliner+llm           -> entity Eb8ff486e9980 ('Samuel Lee')  [also in: DOC00019, DOC00021, DOC00022, DOC00023, DOC00045]
+  [ 1416:1431 ] 'Samuel Anderson'                  class=adjuster         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00045]
+  [ 1579:1589 ] 'Samuel Lee'                       class=adjuster         extractor=gliner+llm           -> entity Eb8ff486e9980 ('Samuel Lee')  [also in: DOC00019, DOC00021, DOC00022, DOC00023, DOC00045]
+  [ 1590:1607 ] 'Claims Department'                class=medical_provider extractor=llm+sweep            -> entity E3f77c097446c ('Claims Department')  [also in: DOC00005, DOC00019, DOC00021, DOC00029, DOC00034]
+  [ 1871:1886 ] 'Samuel Anderson'                  class=claimant         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00045]
+  [ 1909:1919 ] 'Samuel Lee'                       class=claimant         extractor=gliner+llm           -> entity Eb8ff486e9980 ('Samuel Lee')  [also in: DOC00019, DOC00021, DOC00022, DOC00023, DOC00045]
+  [ 2199:2214 ] 'Samuel Anderson'                  class=attorney         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00045]
+  [ 2218:2240 ] 'Delgado Legal Partners'           class=attorney         extractor=gliner+llm           -> entity Ec5ccaeb906fe ('Delgado Legal Partners')  [also in: DOC00043, DOC00044]
+  [ 2269:2284 ] 'Williaam Garcia'                  class=attorney         extractor=gliner+llm           -> entity E212e498517aa ('William Garcia')  [also in: DOC00020, DOC00022, DOC00043, DOC00044, DOC00045]
+  [ 2410:2425 ] 'Andrew Anderson'                  class=attorney         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00045]
+
+--- IDENTIFIERS (11), in order of appearance ---
+  [  130:162  ] email    'samuel.anderson@delgadolegal.com' owner='Samuel Anderson' [13:28]                    method=llm
+  [  190:200  ] dob      '2024-12-14'                 owner='Billy Garcia' [83:95]                       method=line_rule
+  [  822:836  ] phone    '(948) 407-4023'             owner='W. Garcia' [730:739]                        method=llm
+  [  926:961  ] address  '3673 Park Blvd, Northline, OH 44161' owner=UNBOUND (orphan)                             method=unbound
+  [ 1171:1181 ] dob      '2024-06-01'                 owner='William Garcia' [1152:1166]                 method=line_rule
+  [ 1238:1270 ] address  '7777 Elm Ave, Riverton, NJ 08065' owner='Ibarra Imaging Center' [1101:1122]          method=llm
+  [ 1362:1379 ] email    'slee@ourinsco.com'          owner='Samuel Lee' [1350:1360]                     method=llm
+  [ 1387:1411 ] dob      'Mon, Mar 4, 2026 9:29 AM'   owner='Samuel Lee' [1350:1360]                     method=line_rule
+  [ 1616:1630 ] phone    '(579) 319-5827'             owner='Samuel Lee' [1579:1589]                     method=llm
+  [ 2319:2351 ] email    'samuel.anderson@delgadolegal.com' owner='Samuel Anderson' [2199:2214]                method=llm
+  [ 2387:2397 ] dob      '2024-08-22'                 owner='Williaam Garcia' [2269:2284]                method=line_rule
+
+--- COREFERENCE LINKS (2) ---
+  [  202:205  ] 'She'                (pronoun) -> 'Billy Garcia' [83:95]
+  [  493:497  ] 'They'               (pronoun) -> 'Anderson, Andrew' [267:283]

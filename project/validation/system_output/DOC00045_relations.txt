@@ -1,0 +1,9 @@
+DOC00045.txt  claim=CLM0009   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Ibarra' --[MANAGES_CARE_FOR]--> 'William Garcia'   (asserted)
+      evidence [280:331]: 'Ibarra continues to manage care for William Garcia.'
+  'Samuel Anderson' --[EMPLOYED_BY]--> 'Delgado Legal Partners'   (asserted)
+      evidence [1179:1217]: 'Samuel Anderson\nDelgado Legal Partners'
+  'Samuel Anderson' --[EMPLOYED_BY]--> 'Delgado Legal Partners'   (asserted)
+      evidence [1179:1217]: 'Samuel Anderson\nDelgado Legal Partners'

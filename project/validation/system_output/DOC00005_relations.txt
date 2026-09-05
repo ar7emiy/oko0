@@ -1,0 +1,23 @@
+DOC00005.txt  claim=CLM0001   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Dr. Christopher Nguyen' --[MANAGES_CARE_FOR]--> 'Jones, Margaret'   (asserted)
+      evidence [332:400]: 'Dr. Christopher Nguyen continues to manage care for Jones, Margaret.'
+  'P. Brown' --[EMPLOYED_BY]--> 'Sterling Injury Attorneys'   (asserted)
+      evidence [975:1012]: 'P. Brown of Sterling Injury Attorneys'
+  'P. Brown' --[REPRESENTS]--> 'Margaret Jnoes'   (asserted)
+      evidence [975:1056]: 'P. Brown of Sterling Injury Attorneys regarding representation of Margaret Jnoes.'
+  'P. Brown of Sterling Injury Attorneys' --[REPRESENTS]--> 'Margaret Jnoes'   (asserted)
+      evidence [964:1056]: 'Spoke with P. Brown of Sterling Injury Attorneys regarding representation of Margaret Jnoes.'
+  'P. Brown' --[ASSOCIATED_WITH]--> 'Sterling Injury Attorneys'   (asserted)
+      evidence [975:1012]: 'P. Brown of Sterling Injury Attorneys'
+  'William Anderson' --[WORKS_IN_DEPARTMENT]--> 'Claims Department'   (asserted)
+      evidence [1677:1711]: 'William Anderson\nClaims Department'
+  'William Anderson' --[SENT_EMAIL_TO]--> 'Priya Brown'   (asserted)
+      evidence [1434:1529]: 'From: William Anderson <wanderson@ourinsco.com>\nSent: Fri, Apr 11, 2026 7:49 AM\nTo: Priya Brown'
+  'Dr. Christopher Nguyen' --[MANAGES_CARE_FOR]--> 'Margaret Jones'   (asserted)
+      evidence [2343:2410]: 'Dr. Christopher Nguyen continues to manage care for Margaret Jones.'
+  'William Anderson' --[EMPLOYED_IN_DEPARTMENT]--> 'Claims Department'   (asserted)
+      evidence [1677:1711]: 'William Anderson\nClaims Department'
+  'Priya Brown' --[SENT_COMMUNICATION_TO]--> 'William Anderson'   (asserted)
+      evidence [1969:2025]: 'From: Priya Brown\n> Sent: earlier\n> To: William Anderson'

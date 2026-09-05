@@ -1,0 +1,23 @@
+DOC00031.txt  claim=CLM0006   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Omar Jones' --[EMPLOYED_BY]--> 'Ibarra & Cole'   (asserted)
+      evidence [169:196]: 'Omar Jones of Ibarra & Cole'
+  'Omar Jones' --[REPRESENTS]--> 'Delgado'   (asserted)
+      evidence [169:232]: 'Omar Jones of Ibarra & Cole regarding representation of Delgado'
+  'Reyes' --[MANAGES_CARE_FOR]--> 'Delgado'   (asserted)
+      evidence [1195:1237]: 'Reyes continues to manage care for Delgado'
+  'Reyes' --[MANAGES_CARE_FOR]--> 'Delgado'   (asserted)
+      evidence [1195:1238]: 'Reyes continues to manage care for Delgado.'
+  'Omar Jones' --[EMPLOYED_BY]--> 'Ibarra & Cole'   (asserted)
+      evidence [1597:1624]: 'Omar Jones of Ibarra & Cole'
+  'Omar Jones' --[REPRESENTS]--> 'Alex Delgado'   (asserted)
+      evidence [1586:1666]: 'Spoke with Omar Jones of Ibarra & Cole regarding representation of Alex Delgado.'
+  'Omar Jones' --[EMPLOYED_BY]--> 'Ibarra & Cole'   (asserted)
+      evidence [1597:1624]: 'Omar Jones of Ibarra & Cole'
+  'Omar Jones' --[REPRESENTS]--> 'Alex Delgado'   (asserted)
+      evidence [1597:1665]: 'Omar Jones of Ibarra & Cole regarding representation of Alex Delgado'
+  'indemnity reserve' --[SET_AT]--> '$10,000.00'   (asserted)
+      evidence [1794:1839]: 'indemnity reserve currently set at $10,000.00'
+  'vehicle' --[LOCATED_AT]--> 'Thomas'   (asserted)
+      evidence [1973:2000]: 'vehicle currently at Thomas'

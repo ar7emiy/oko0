@@ -1109,3 +1109,70 @@ prevent, and I nearly shipped it.
 `email` is why all three exist: it has invented middle levels and is still one
 of the better signals, so dropping the whole comparison would lose a trained top
 level to save an untrained middle one.
+
+### 2026-09-05 — D34: the resolution numbers I reported yesterday do not hold
+
+The user opened `DOC00047` during manual validation, saw entity classes
+flip-flopping within one document, and asked whether entities were also being
+matched to the wrong entity across the corpus. They were right, and the answer
+is worse than the question implied.
+
+**Measured on the 60-doc slice:**
+
+| | |
+|---|---|
+| predicted entities | 40 |
+| ...fusing **more than one real entity** | **9** |
+| ...with conflicting `entity_class` labels | **24** |
+| labeled mentions inside an over-merged entity | **293 / 638 = 45.9%** |
+
+One entity contains `Marcus Lopez` (attorney) + `Peter Lopez` (claimant) +
+`Thomas Collision Center` + `Lopez Collision Center`. Another fuses four
+different Andersons — William, Andrew, Samuel and Dr. Jonathan. Others:
+`Robert Miller` + `Miller Car Care`; `Dr. Tomas Okafor` + `Okafor Frame &
+Paint`; `Omar Jones` + `Margaret Jones`.
+
+**The driver is pre-existing and already documented.** `first_name`/`last_name`
+are `tokens[0]`/`tokens[-1]` — a person-name model applied to organizations. So
+`Thomas Collision Center` and `Lopez Collision Center` both block on
+`last_name="center"` and then score **p=0.80** because Jaro-Winkler over
+token-sorted names sees the shared `"center collision "` prefix. ARCHITECTURE.md
+already describes exactly this and names the `entity_type`/`role` split (T1.1)
+as the principled fix. Connected components then chains people in through
+shared surnames (D13).
+
+**I first blamed my own changes and was wrong.** Removing yesterday's
+containment level and restoring the `person_vs_org` veto barely moves it:
+
+| configuration | over-merged entities | mentions affected | B³ @0.45 |
+|---|---|---|---|
+| as shipped | 9 | 45.9% | P 0.745 R 0.961 F1 0.839 |
+| containment removed | 10 | 42.6% | P 0.777 R 0.901 F1 0.834 |
+| + person_vs_org restored | 10 | 40.4% | P 0.784 R 0.854 F1 0.818 |
+
+So this is structural, not a regression I introduced — though yesterday's work
+made it modestly worse.
+
+**Two claims of mine are retracted.**
+
+*"42 entities vs 42 gold (1.00×)"* was a **coincidence**. Over-merges reduce the
+count while fragmentation raises it, and they happened to cancel. The
+composition was wrong the whole time. The count also drifts 42→49 between runs,
+so quoting a single figure was wrong twice over.
+
+*B-cubed F1 0.907* did not reveal a corpus where **46% of mentions sit in a
+fused entity**. That is the **fourth** instance of the same pathology in two
+days — precision rises under over-splitting (D17), F1 prefers discarding hard
+mentions (D30), F1 preferred the 16×-wrong prior (D31), and now F1 stays near
+0.84 through a 46% over-merge. The B³ *precision* term at the operating
+threshold (0.745) was the signal and I read it as an acceptable trade instead of
+investigating what was actually merging.
+
+**What this costs.** No headline resolution claim survives this. Extraction
+figures (span grounding, mention precision, entity recall) are unaffected —
+they don't depend on clustering. The resolution layer needs T1.1 before any
+number from it is quotable.
+
+**Method note.** This was found by a human reading one document and asking why
+the classes looked wrong — not by any metric, gate, or automated check in the
+repo. Every automated signal said the system was fine.

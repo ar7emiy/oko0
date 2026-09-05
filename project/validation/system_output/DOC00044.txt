@@ -1,0 +1,37 @@
+========================================================================================
+DOC00044.txt   claim=CLM0009   occurrence=OCC0008
+========================================================================================
+
+--- NAME MENTIONS (16), in order of appearance ---
+  [   13:28   ] 'Samuel Andesron'                  class=attorney         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00045, DOC00046]
+  [   32:54   ] 'Delgado Legal Partners'           class=attorney         extractor=gliner+llm           -> entity Ec5ccaeb906fe ('Delgado Legal Partners')  [also in: DOC00043, DOC00046]
+  [   83:97   ] 'William Garcia'                   class=attorney         extractor=gliner+llm           -> entity E212e498517aa ('William Garcia')  [also in: DOC00020, DOC00022, DOC00043, DOC00045, DOC00046]
+  [  202:217  ] 'Andrew Adnerson'                  class=attorney         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00045, DOC00046]
+  [  323:344  ] 'Ibarra Imaging Center'            class=medical_provider extractor=gliner+llm+sweep     -> entity E0f73dd7962e2 ('Omar Ibarra')  [also in: DOC00013, DOC00014, DOC00043, DOC00046]
+  [  374:389  ] 'Garcia, William'                  class=medical_provider extractor=gliner+llm           -> entity E212e498517aa ('William Garcia')  [also in: DOC00020, DOC00022, DOC00043, DOC00045, DOC00046]
+  [  767:781  ] 'William Garcia'                   class=claimant         extractor=gliner+llm           -> entity E212e498517aa ('William Garcia')  [also in: DOC00020, DOC00022, DOC00043, DOC00045, DOC00046]
+  [ 1208:1214 ] 'Miller'                           class=repair_shop      extractor=llm                  -> entity E99a4d6a9edc0 ('Miller Car Care')  [also in: DOC00000, DOC00043, DOC00045, DOC00046]
+  [ 1347:1355 ] 'Anderson'                         class=attorney         extractor=llm                  -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00045, DOC00046]
+  [ 1359:1381 ] 'Delgado Legal Partners'           class=attorney         extractor=gliner+llm           -> entity Ec5ccaeb906fe ('Delgado Legal Partners')  [also in: DOC00043, DOC00046]
+  [ 1410:1425 ] 'Garcia, William'                  class=attorney         extractor=gliner+llm           -> entity E212e498517aa ('William Garcia')  [also in: DOC00020, DOC00022, DOC00043, DOC00045, DOC00046]
+  [ 1551:1564 ] 'Drew Anderson'                    class=medical_provider extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00045, DOC00046]
+  [ 1686:1692 ] 'Ibarra'                           class=medical_provider extractor=gliner+llm           -> entity E0f73dd7962e2 ('Omar Ibarra')  [also in: DOC00013, DOC00014, DOC00043, DOC00046]
+  [ 1722:1736 ] 'William Garcia'                   class=repair_shop      extractor=gliner+llm           -> entity E212e498517aa ('William Garcia')  [also in: DOC00020, DOC00022, DOC00043, DOC00045, DOC00046]
+  [ 2024:2033 ] 'W. Garcia'                        class=claimant         extractor=gliner+llm           -> entity E212e498517aa ('William Garcia')  [also in: DOC00020, DOC00022, DOC00043, DOC00045, DOC00046]
+  [ 2474:2489 ] 'Miller Car Care'                  class=repair_shop      extractor=gliner+llm           -> entity E99a4d6a9edc0 ('Miller Car Care')  [also in: DOC00000, DOC00043, DOC00045, DOC00046]
+
+--- IDENTIFIERS (11), in order of appearance ---
+  [  125:135  ] dob      '2024-12-14'                 owner='William Garcia' [83:97]                     method=line_rule
+  [  430:440  ] dob      '2024-06-01'                 owner='Garcia, William' [374:389]                  method=line_rule
+  [  497:529  ] address  '7777 Elm Ave, Riverton, NJ 08065' owner='Ibarra Imaging Center' [323:344]            method=llm
+  [  864:878  ] phone    '(948) 407-4023'             owner='William Garcia' [767:781]                   method=llm
+  [  909:941  ] address  '3531 Park Ln, Riverton, NJ 08098' owner='William Garcia' [767:781]                   method=llm
+  [ 1225:1235 ] tin      '62-9241199'                 owner='Miller' [1208:1214]                         method=llm
+  [ 1460:1492 ] email    'samuel.anderson@delgadolegal.com' owner='Drew Anderson' [1551:1564]                  method=llm
+  [ 1528:1538 ] dob      '2024-08-22'                 owner='Garcia, William' [1410:1425]                method=line_rule
+  [ 1762:1772 ] address  '7551279574'                 owner='Ibarra' [1686:1692]                         method=llm
+  [ 2116:2130 ] phone    '(948) 407-4023'             owner='W. Garcia' [2024:2033]                      method=llm
+  [ 2161:2193 ] address  '3531 Park Ln, Riverton, NJ 08098' owner='W. Garcia' [2024:2033]                      method=llm
+
+--- COREFERENCE LINKS (1) ---
+  [  137:140  ] 'She'                (pronoun) -> 'William Garcia' [83:97]
