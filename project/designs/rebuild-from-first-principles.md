@@ -293,6 +293,161 @@ recall cost, because the model's *surfaces* were always right even when its
 
 ---
 
+## 5.6 External data (NPPES, PECOS, LEIE, PACER) — measured, and mostly not for resolution
+
+The intuition is that public registries should improve linking. **Measured on
+this corpus, they would not.**
+
+**Who is actually in a claim corpus:**
+
+| class | share | registry coverage |
+|---|---|---|
+| claimant | **59%** | none exists |
+| medical_provider | 13% | NPPES / PECOS / LEIE |
+| attorney | 12% | PACER, partial |
+| repair_shop | 8% | none |
+| adjuster | 8% | none |
+
+**And the linking gap is precisely the uncovered part.** Of the 44 entities that
+in-corpus identifiers cannot link across claims:
+
+| | |
+|---|---|
+| claimants | 31 |
+| adjusters | 9 |
+| attorneys | 3 |
+| repair shops | 1 |
+| **carrying an NPI or TIN a registry could key on** | **1 of 44 (2%)** |
+
+So registry integration could bridge **at most one** of the forty-four. The
+entities registries cover — providers with NPIs — are already the *easiest* to
+link, because they carry the identifier that auto-links them anyway. **Registries
+are strongest exactly where the system is already strong, and absent exactly
+where it is weak.**
+
+This is structural, not an artifact of the fixture: NPPES will never contain a
+claimant, and a claim corpus is mostly claimants.
+
+**Where external data IS worth the integration:**
+
+1. **Validating identifier bindings.** If a note binds NPI `1141482996` to a
+   claimant and NPPES says it belongs to Dr. Anthony Reyes, that binding is
+   wrong. T0.3 found exactly this failure by hand — two providers' NPIs bound to
+   claimant mentions. A registry check makes it automatic.
+2. **Canonical organization names.** "Ibarra Neurology Associates" vs "Ibarra
+   Neuro Assoc" is the org-name problem that broke resolution. Matching each to a
+   registry canonical legal name is far safer than fuzzy-matching them to each
+   other.
+3. **Authoritative type.** NPPES Type 1 vs Type 2 gives individual vs
+   organization from an authority rather than a string heuristic.
+4. **Investigator signal, not resolution signal.** LEIE exclusion status and
+   PACER litigation history are high-value *dossier content*. They answer
+   "should I care about this provider," not "are these two mentions the same
+   provider." Keep the two roles separate.
+
+**The rule, and it is the same rule as everywhere else:** join to a registry on
+**identifier**, never on name. Matching a corpus name against 8M NPPES records
+by similarity reintroduces the Anderson failure against a far larger haystack,
+where coincidental collisions are much more likely.
+
+**Provenance requirement.** Registry facts are not corpus facts. Every row needs
+`source` — `corpus` vs `registry:NPPES@2026-08` — and an as-of date. A dossier
+that mixes "the note says this" with "a registry said this last year" without
+distinguishing them has broken its own traceability guarantee.
+
+---
+
+## 5.7 The reviewer is a component, not a UI afterthought
+
+The design sends **19% of cross-claim links to review**. That makes a human a
+load-bearing part of the system, which has three architectural consequences —
+none of them cosmetic.
+
+**1. Reviewer decisions must survive re-runs.** If a reviewer rejects a link and
+the next pipeline run proposes it again, they will stop reviewing. Human
+decisions live in a layer the pipeline may *propose into* but never overwrite:
+
+```
+identity_link(..., status, decided_by, decided_at, reason)
+   status: auto | review | accepted | rejected
+```
+
+A re-run may add `review` rows. It may never change an `accepted` or `rejected`
+one. This is the concrete form of the standing "corrections must feed the
+system, not patch the manifest" complaint (D11).
+
+**2. Reviewer decisions are the best calibration data the system will ever
+have.** If reviewers reject 80% of links proposed on a given basis, that basis is
+miscalibrated — and the system can measure that against itself without ground
+truth. This is the learning loop the current architecture lacks entirely.
+
+**3. The user questions define the data model.** An investigator asks exactly
+four things, and each is a structural requirement rather than a screen:
+
+| the question they ask | what the architecture must therefore store |
+|---|---|
+| "show me everything about this person" | dossier as a traversal, not a stored blob |
+| "why do you think these are the same?" | `identity_link.basis` + evidence span |
+| "that is wrong" | durable, re-run-proof reviewer decision |
+| "where did that come from?" | every row carries `doc_id` + span + source |
+
+Designing these together is not polish. The fourth requirement is why the
+grounding rule exists; the third is why identity is a link rather than a merge.
+**If identity were a merge, "that is wrong" would have no repair short of
+rebuilding the cluster.**
+
+---
+
+## 5.8 Query-time matching: scoring an external record against the corpus
+
+> *"Physician, John Belvita, Address Unknown, California, TIN=123456789"*
+
+Yes — and it falls out of the architecture rather than needing a new subsystem.
+A query like this is structurally identical to a mention record, so it is scored
+against local entities with the same comparison model. The mechanism already
+exists in the incremental ingest path (`find_matches_to_new_records`).
+
+Four requirements, each learned the hard way:
+
+**1. A validated identifier short-circuits.** `TIN=123456789` matching an
+entity validated TIN is a deterministic hit, returned as such — not as a
+probability. Same rule as auto-linking.
+
+**2. Missing fields contribute nothing, not a penalty.** "Address Unknown" must
+land on the null level — no evidence either way. Treating absence as
+disagreement would penalise sparse queries, which are the normal case.
+
+**3. Return evidence, not a bare percentage.** We measured the model absolute
+probabilities to be badly wrong (a 16x prior error) while its *ranking* stayed
+sound. So the honest output is a band plus the breakdown:
+
+```
+John Belvita, TIN 123456789
+  > NEAR-CERTAIN   Dr. John Belvita  (local entity CLM0043-3)
+       TIN exact, validated ........ +8.2 bits
+       name exact .................. +4.6 bits
+       state agrees ................ +0.9 bits
+       address ..................... no evidence (query blank)
+  > POSSIBLE       John Belvedere    (local entity CLM0117-2)
+       name similar (0.91) ......... +4.1 bits      [!] name-only
+       nothing else agrees
+```
+
+The second row is exactly the Anderson failure shape, and labelling it
+*name-only* is what stops a user from trusting it. **A percentage with no
+evidence breakdown would have hidden the 46% over-merge too.**
+
+**4. Rank across local entities, then group by identity link.** Matches are
+scored per local (claim-scoped) entity, then presented grouped by their linked
+identity — so a provider on eleven claims is one result with eleven appearances,
+not eleven results.
+
+This is arguably the highest-value product surface in the system: *"is this
+provider already in our book of business, and what do we know about them?"* is
+the question an SIU investigator actually opens with.
+
+---
+
 ## 6. What this deliberately does not have
 
 | omitted | why |
