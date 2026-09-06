@@ -59,6 +59,25 @@ measurement.
     that gets corrected in the open is what makes the rest of the docs
     trustworthy.
 
+11. **Hardcode closed vocabulary. Learn open vocabulary. Never confuse the
+    two.** A vocabulary is CLOSED when something outside this project fixes its
+    membership — legal forms (`LLP`, `LLC`, `PC`) are defined by statute,
+    personal titles and post-nominals are a short stable set, the predicate
+    schema is our own contract, checksum rules are published standards. Those
+    are safe to write down; they do not grow when a new client arrives.
+    Everything else — business words, medical specialties, role names, job
+    titles, descriptor phrases — is OPEN, and any list of it is a snapshot of
+    one corpus. *Why: the hardcoded business-word list typed 13 of 14 real
+    people as organizations and missed 6 of 6 unlisted specialties. Learning the
+    same vocabulary from the corpus scored 88.7% where the list scored 22%.*
+
+    When you cannot learn it, **shrink the job instead of growing the list**: a
+    cue list that supplies a recall hint survives being incomplete; the same
+    list assigning a label or gating a decision does not. Growing a list by hand
+    or by "spending tokens on a massive library" is not the cheap version of
+    this rule — it is the failure it exists to prevent. See
+    `src/entity_type.learn_head_nouns` for the pattern.
+
 ## Conventions
 
 - **Python only, no `.ipynb`.** Runnable pipeline steps live in `notebooks/` as

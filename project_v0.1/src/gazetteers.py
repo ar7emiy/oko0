@@ -246,6 +246,30 @@ def scan_checksum_verified(text: str, base_offset: int = 0) -> list[GazetteerHit
 # Static gazetteer lists (known-value lookups). In production these come from
 # reference data (provider registries, firm directories, carrier rep rosters).
 # ---------------------------------------------------------------------------
+# ROLE CUES ARE A RECALL HINT. THEY ARE NOT A CLASSIFIER.
+#
+# The review comment on this block was right on the facts: this list does not
+# contain acupuncture, gastroenterology or optometry, and no list I write ever
+# will. Answering it by growing the list -- by hand or by spending tokens on a
+# "massive library" -- loses, because the failure is structural: an open-class
+# vocabulary cannot be enumerated, and the enumeration is stale the day a new
+# client sends notes.
+#
+# So the list is not made bigger. Its JOB is made smaller. It used to name
+# `entity_class`, a field v0.1 deleted for disagreeing with itself on 69% of
+# entities. Now it only answers "is there any evidence of a business role near
+# this token", as ONE recall signal inside a differential audit whose output is
+# filtered downstream anyway.
+#
+# That reframing is what makes the incompleteness survivable. A missing cue costs
+# a hint on one candidate; it can no longer mislabel an entity, and it can no
+# longer veto one. Where an actual organisation-word test is wanted, use the
+# LEARNED lexicon (`entity_type.learn_head_nouns`), which acquires acupuncture
+# from a corpus containing acupuncturists.
+#
+# ROLE PROPER is an assertion -- claim-scoped, evidence-backed, free to differ
+# between claims ("acts as attorney on CLM0010, per this span"). See
+# ARCHITECTURE.md. It is never a property of a mention.
 ROLE_CUES = {
     "attorney": ("atty", "attorney", "counsel", "esq", "law group", "law offices",
                  "llp", "legal", "trial group"),
@@ -257,16 +281,21 @@ ROLE_CUES = {
     "adjuster": ("adjuster", "claims department", "claim rep", "examiner"),
 }
 
-ORG_SUFFIXES = (
-    "LLP", "LLC", "Inc", "PLLC", "PC", "Group", "Associates", "Partners",
-    "Center", "Clinic", "Hospital", "Body", "Collision", "Automotive",
-    "Orthopedics", "Neurology", "Therapy", "Imaging", "Chiropractic",
-)
+# DELETED: `ORG_SUFFIXES`. It was a hardcoded organisation-word list with zero
+# consumers, and it is superseded by `entity_type.learn_head_nouns`, which
+# derives the same vocabulary from the corpus and measured 88.7% against ground
+# truth where the hardcoded approach measured 22%.
 
-#ART: Again this is okay, btu hhow do you know that these hardcoded values will work on real world data? the role cue will break if we have an accupunture, gastrointerologics or optomology in there... short sighted thinking here. Although I undestand that hard coding these values is really practical, and we can probably also just spend a bunch of tokens to build massive libraries, but is that the best solution? if it is lets write this into the plan
 
-def role_from_context(context: str) -> str | None:
-    low = context.lower()
+def role_cue_present(context: str) -> str | None:
+    """Name a role cue found near a candidate, or None. A HINT, never a label.
+
+    Callers must treat the return value as weak evidence that something
+    entity-like is nearby. Do not persist it as a field on a mention, and do not
+    branch on its absence as though absence meant "not an entity" -- an
+    acupuncturist trips no cue here and is still an entity.
+    """
+    low = (context or "").lower()
     for role, cues in ROLE_CUES.items():
         if any(c in low for c in cues):
             return role

@@ -100,6 +100,56 @@ assertion       + evidence_span_id NOT NULL  -- no span, no assertion
 
 Dossiers are **views**, never stored. Corrections are new rows, never mutations.
 
+## Vocabulary: what may be hardcoded, and what must be learned
+
+Every hand-written word list in this system is a bet that the next corpus uses
+the same words. The bet is safe for **closed** vocabulary and unsafe for
+**open** vocabulary, and the two are easy to confuse because they look identical
+in code — both are just a `set` of strings.
+
+| | closed | open |
+|---|---|---|
+| membership fixed by | statute, standard, or our own schema | how people happen to talk |
+| examples | `LLP`/`LLC`/`PC`, `Dr`/`Esq`/`MD`, NPI Luhn, the predicate vocabulary | business words, specialties, role names, descriptor phrases |
+| a new client adds | nothing | acupuncture, gastroenterology, optometry, "resolution manager" |
+| treatment | **hardcode it** | **learn it, or shrink its job** |
+
+> Measured: a hardcoded business-word lexicon typed **13 of 14** realistic
+> people (`Dr. Paul Frame`, `Marcus Law`) as organizations, and missed **6 of 6**
+> specialties nobody had listed. Learning the same vocabulary from the corpus
+> scored **88.7%** against ground truth where the list scored **22%**.
+
+**How open vocabulary is learned.** `entity_type.learn_head_nouns` uses a
+positional signal that carries no domain knowledge: an organisation head noun
+can only ever *end* a name. There is no "Center Thomas". A surname has no such
+restriction — "Anderson Automotive" and "William Anderson" are both fine. So a
+token qualifies as a head noun when it ends ≥3 different names and leads none.
+
+> Recorded error: the first version used recurrence instead of position — "a
+> head noun trails many different names; a surname does not." False. `Anderson`
+> trails William, Samuel and Andrew for exactly the reason `Center` trails
+> Thomas, Lopez and Vance. It learned 52 tokens, mostly surnames, and scored
+> 22%. The strict never-leads form scores 88.7%; "leads at most once" scores
+> 60.9%.
+
+**When it cannot be learned, shrink the job.** `gazetteers.ROLE_CUES` cannot
+enumerate every specialty and never will. It is not being grown; it was demoted
+from naming a class to supplying a recall *hint* inside an audit whose output is
+filtered downstream. An incomplete hint costs one candidate a nudge. The same
+incomplete list assigning a label, or gating a promotion, turns a vocabulary gap
+into a silent correctness bug — which is exactly what it was doing.
+
+**Where this bit us, and what it cost:**
+
+| site | the hardcoded list | now |
+|---|---|---|
+| `entity_type` | business words | learned from trailing position |
+| `coref` antecedents | 9 role names, on the deleted `entity_class` | `entity_type`; mechanics, witnesses and nurses are all `person` |
+| `coref` descriptors | 18 fixed phrases | seed + `the <learned head noun>` |
+| `sweep` promotion | role cue decided promotion | structure decides; cue is a tiebreak only |
+| `relations` | 8 real verbs dropped as "degenerate" | copulas only; `FILED`/`CONTACTED`/`SENT` restored |
+| `gazetteers.ORG_SUFFIXES` | org words, zero consumers | deleted |
+
 ## External data (NPPES, PECOS, LEIE, CourtListener)
 
 Two distinct jobs, easily conflated:

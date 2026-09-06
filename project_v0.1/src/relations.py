@@ -93,12 +93,25 @@ IDENTIFIER_PREDICATE_RE = re.compile(
     r"^(HAS_)?(NPI|TIN|SSN|EIN|PHONE|PHONE_NUMBER|EMAIL|EMAIL_ADDRESS|"
     r"ADDRESS|DOB|DATE_OF_BIRTH|ZIP|POLICY_NUMBER|CLAIM_NUMBER)$")
 
-# Predicates too vague to be a useful edge. "IS", "REPORTS", "USED" carry no
-# relational semantics on their own; keeping them would inflate the graph with
-# edges nobody can query meaningfully.
-DEGENERATE_PREDICATES = {"IS", "IS_ON", "IS_A", "WAS", "HAS", "REPORTS",
-                         "USED", "FILED", "ARRANGED", "PERFORMED", "MADE",
-                         "PROVIDED", "RECEIVED", "SENT", "CONTACTED"}
+# Copulas and bare possessives. These are degenerate in the strict sense: they
+# assert that a relationship exists without saying which one, so the edge cannot
+# be queried and cannot be wrong.
+#
+# CORRECTED (carried over from v0's D2, wrong there and wrong here): this set
+# used to also drop FILED, CONTACTED, SENT, PERFORMED, PROVIDED, ARRANGED,
+# RECEIVED and MADE. Those are not vague -- they are transitive verbs naming a
+# specific act with a specific object, and they are precisely the acts a
+# predictive SIU investigator is hunting:
+#
+#     attorney FILED suit          provider PERFORMED the MRI
+#     adjuster CONTACTED claimant  shop ARRANGED the tow
+#
+# Discarding them threw away the relational signal and kept the structural
+# scaffolding. An edge vocabulary is a schema decision and is allowed to be a
+# fixed list -- but the list must be drawn around what cannot be queried, not
+# around what happened to appear in one fixture.
+DEGENERATE_PREDICATES = {"IS", "IS_ON", "IS_A", "WAS", "HAS", "HAD", "BE",
+                         "BEEN", "ARE", "WERE", "OF", "HAS_A"}
 
 
 def normalize_predicate(predicate: str) -> str:

@@ -96,30 +96,43 @@ def _sweep_schema() -> dict:
 
 
 def _offline_verdicts(candidates, text, base_offset):
-    """Deterministic differential audit.
+    """Deterministic differential audit: is this unmapped token entity-LIKE?
 
-    Promote an unmapped token when it looks like a real entity: a multi-word
-    capitalized name, a title-led name, a validated structured code, or a
-    capitalized token sitting next to a role cue.
+    This decides PROMOTION ONLY. It used to also emit a `label` -- an
+    `entity_class` value taken from `gazetteers.role_from_context` -- which was
+    wrong twice over: v0.1 deleted `entity_class` from the schema, and the value
+    came from a cue list that has no acupuncture, gastroenterology or optometry
+    in it, so an acupuncturist mentioned in a note produced no label and was
+    therefore not promoted at all. A gap in an open-class vocabulary had become
+    a silent recall failure.
+
+    Promotion is now decided on STRUCTURE, which does not vary by specialty: a
+    validated structured code, a multi-word capitalized name, or a title-led
+    name. The role cue survives only as a tiebreak for the weakest case -- a
+    single capitalized token, where structure alone says nothing -- and its
+    absence no longer suppresses anything the other rules accept.
+
+    Type is not decided here. It is `entity_type`'s job, from the name string.
     """
     promoted = []
     for (s, e, surface) in candidates:
         rel_s = s - base_offset
         left = text[max(0, rel_s - 40):rel_s]
-        label = None
         words = surface.split()
         gaz = gazetteers.scan_valid(surface)
         if gaz and gaz[0].end - gaz[0].start == len(surface):
-            label = gaz[0].label
+            why = "validated structured identifier"
         elif len(words) >= 2 and all(w[:1].isupper() for w in words):
-            label = gazetteers.role_from_context(left) or "person"
-        elif surface.lower().startswith("dr"):
-            label = "medical_provider"
-        elif gazetteers.role_from_context(left) and surface[:1].isupper():
-            label = gazetteers.role_from_context(left)
-        if label:
-            promoted.append({"text": surface, "start": s, "end": e,
-                             "label": label, "reason": "unmapped token promoted by sweep"})
+            why = "multi-word capitalized name"
+        elif re.match(r"(?i)^(dr|mr|mrs|ms|prof|rev|hon|atty)\b", surface):
+            why = "title-led name"
+        elif surface[:1].isupper() and gazetteers.role_cue_present(left):
+            why = "capitalized token beside a role cue"
+        else:
+            continue
+        promoted.append({"text": surface, "start": s, "end": e,
+                         "promoted_by": why,
+                         "reason": "unmapped token promoted by sweep"})
     return {"missed": promoted}
 
 

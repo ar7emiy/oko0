@@ -8,7 +8,7 @@ entity node.
 
 DESIGN: resolution is NON-DESTRUCTIVE. We do not rewrite the immutable raw
 corpus. Instead we produce:
-  - `CorefLink` records: (mention_span -> antecedent surface + class), so a
+  - `CorefLink` records: (mention_span -> antecedent surface + type), so a
     relationship extracted at a pronoun's position is re-attached to the real
     entity while the evidence span still points at the true raw characters; and
   - `resolved_view()`: a derived text view with pronouns substituted, PLUS an
@@ -37,7 +37,7 @@ class CorefLink:
     antecedent_surface: str  # resolved canonical mention text
     antecedent_start: int
     antecedent_end: int
-    antecedent_class: str | None
+    antecedent_type: str | None   # 'person'|'organization'|'unknown'; never a role
     kind: str               # 'pronoun' | 'descriptor'
     backend: str
     confidence: float = 1.0
@@ -48,34 +48,84 @@ class CorefLink:
 # ---------------------------------------------------------------------------
 _MASC = {"he", "him", "his"}
 _FEM = {"she", "her", "hers"}
-_PLUR = {"they", "them", "their", "theirs"}
+_PLUR = {"they", "them", "their", "theirs"}   # no type constraint: people or an org
 _NEUT = {"it", "its"}
 
-_PERSON_CLASSES = {"claimant", "attorney", "adjuster", "person", "medical_provider"} 
-#ART: to PERSON classes adjuster might also be called "claim handler","claim adjuster", "resolution manager". 
-#ART:we should honestly have the system perform this behavior at some point take structured dataset of names of claimant, resolution manager on that claim, resolution manager supervisor, the client company who recorded this claim. Maybe this could help somehow?
-#ART: isn't there a problem that persons in the notes are not guaranteed to defined by this list-- there might be a mention in the notes about a mechanic, a witness and their job, or maybe the truck driver of the client -- who isn't a claimant on that claim but is a claimant in the occurence group on another claim. what about a nurse mention?
+# AGREEMENT IS ON TYPE, NOT ROLE.
+#
+# This used to filter antecedents by `entity_class` against two hand-written role
+# lists (`claimant, attorney, adjuster, medical_provider, ...`). That was wrong
+# three ways, and the review comments that prompted this rewrite named all three:
+#
+#  1. It could not be complete. A note mentions a mechanic, a witness, a nurse, a
+#     truck driver. None are on the list, so every one of them was refused as an
+#     antecedent for "he" -- silently, as a correctness bug rather than a gap.
+#  2. The same role has many surface names. An adjuster is a "claim handler", a
+#     "claims examiner", a "resolution manager", depending on the carrier. A list
+#     of role words is a list of one carrier's vocabulary.
+#  3. `entity_class` does not exist in v0.1. It was deleted from the schema for
+#     disagreeing with itself on 69% of entities. This module was still filtering
+#     on it -- a carried-over consumer of a field nobody writes any more.
+#
+# Pronoun agreement never needed role in the first place. "He" requires a PERSON;
+# it does not care whether that person is a claimant or a witness. So the filter
+# is `entity_type` -- two values plus `unknown`, computed from the name string,
+# with no list to maintain. Mechanics, witnesses and nurses are all `person` and
+# resolve correctly without anyone adding a word.
+#
+# `unknown` is deliberately never filtered out: coreference measured ~43%
+# accurate, and a low-accuracy component must not hold a veto over a mention it
+# could not type. See `antecedent_for`.
+_PERSON_PRONOUNS = _MASC | _FEM
+_ORG_PRONOUNS = _NEUT
 
-_ORG_CLASSES = {"repair_shop", "organization", "law_firm", "medical_provider"} 
-
-_DESCRIPTOR_CLASS = {
-    "the physician": "medical_provider", "the doctor": "medical_provider",
-    "the provider": "medical_provider", "the treating facility": "medical_provider",
-    "the facility": "medical_provider", "the clinic": "medical_provider",
-    "the hospital": "medical_provider", "said provider": "medical_provider",
-    "the claimant": "claimant", "the clmt": "claimant", "the insured": "claimant",
-    "the attorney": "attorney", "the atty": "attorney", "the counsel": "attorney",
-    "the shop": "repair_shop",
-    "the adjuster": "adjuster", "the carrier": "adjuster",
+# Descriptors whose head noun settles the TYPE. Kept deliberately short: these
+# are the few common nouns that are decisive on their own, not an attempt to
+# enumerate professions. A descriptor that is not listed simply carries no type
+# constraint -- under-constraining a 43%-accurate component is safe, while a
+# wrong constraint is not. Organisation descriptors are additionally recognised
+# from the LEARNED head-noun lexicon (see `entity_type.learn_head_nouns`), so
+# "the acupuncture clinic" works without anyone listing acupuncture.
+_DESCRIPTOR_TYPE = {
+    "the physician": "person", "the doctor": "person",
+    "the provider": "person", "the treating facility": "organization",
+    "the facility": "organization", "the clinic": "organization",
+    "the hospital": "organization", "said provider": "person",
+    "the claimant": "person", "the clmt": "person", "the insured": "person",
+    "the attorney": "person", "the atty": "person", "the counsel": "person",
+    "the shop": "organization", "the carrier": "organization",
+    "the adjuster": "person",
 }
-#ART: are we supposed to just manually be expanding this list continuously as different notes get added? the persons aren't defined as I mentioned i think. Your argument on this could be that this would captuue most of the relations in the REAL WORLD (YOU CAN'T KEEP TAILORING STUFF TO OUR FAKE NOTES), but how are you sure? if your're certain present a case that this assumption is valid.
+
+
+def descriptor_type(descriptor: str, head_nouns: set[str] | None = None) -> str | None:
+    """Type a definite descriptor, or None when it does not settle one.
+
+    The listed entries above are the closed part. Everything else is decided by
+    the LEARNED lexicon: "the <X>" where X is a known organisation head noun is
+    an organisation. That is what stops the list needing to grow -- a corpus
+    containing acupuncture clinics teaches the lexicon "acupuncture", and "the
+    acupuncture clinic" then types itself.
+
+    Returning None is the normal outcome for an unrecognised descriptor and
+    means "no constraint", not "no antecedent".
+    """
+    key = (descriptor or "").strip().lower()
+    if key in _DESCRIPTOR_TYPE:
+        return _DESCRIPTOR_TYPE[key]
+    if head_nouns:
+        tokens = [t for t in re.findall(r"[A-Za-z]+", key) if t]
+        if tokens and tokens[-1] in head_nouns:
+            return "organization"
+    return None
 
 
 class CorefResolver(ABC):
     """Resolve anaphora to antecedent entity mentions.
 
     Implementations receive the document text plus the entity mentions already
-    detected in it (each a dict with start/end/text/label) and return CorefLinks.
+    detected in it (each a dict with start/end/text/entity_type) and return
+    CorefLinks.
 
     To swap in a neural resolver, implement `resolve()` and return the same
     CorefLink shape with absolute document offsets. Nothing else changes.
@@ -84,7 +134,8 @@ class CorefResolver(ABC):
     name = "abstract"
 
     @abstractmethod
-    def resolve(self, text: str, mentions: list[dict]) -> list[CorefLink]: ...
+    def resolve(self, text: str, mentions: list[dict],
+                head_nouns: set[str] | None = None) -> list[CorefLink]: ...
 
 
 class RuleBasedCorefResolver(CorefResolver):
@@ -92,8 +143,9 @@ class RuleBasedCorefResolver(CorefResolver):
 
     For each pronoun / vague descriptor, walk backwards up to
     COREF_MAX_ANTECEDENT_CHARS and bind to the closest preceding entity mention
-    whose class is compatible (person pronouns -> person mentions; 'it/its' ->
-    organization; descriptors -> their mapped class).
+    whose entity_type does not contradict (person pronouns -> person mentions;
+    'it/its' -> organization; 'they' -> unconstrained). An `unknown` mention is
+    always eligible -- see `antecedent_for`.
     """
 
     name = "rulebased"
@@ -101,55 +153,88 @@ class RuleBasedCorefResolver(CorefResolver):
     def __init__(self):
         pron = sorted(CFG.COREF_PRONOUNS, key=len, reverse=True)
         self._pron_re = re.compile(r"\b(" + "|".join(map(re.escape, pron)) + r")\b", re.I)
-        desc = sorted(CFG.COREF_DESCRIPTORS, key=len, reverse=True)
-        self._desc_re = re.compile(r"(" + "|".join(map(re.escape, desc)) + r")", re.I)
+        self._desc_cache: dict[frozenset[str], re.Pattern] = {}
 
-    def resolve(self, text: str, mentions: list[dict]) -> list[CorefLink]:
+    def _descriptor_re(self, head_nouns: set[str] | None) -> re.Pattern:
+        """Descriptor detector, EXTENDED BY THE CORPUS rather than by hand.
+
+        `CFG.COREF_DESCRIPTORS` is a seed. On its own it has the defect the
+        review called out: a note saying "the acupuncture clinic" is not merely
+        mistyped, it is never detected at all, because the phrase is not on the
+        list -- and the only remedy is a human adding a line.
+
+        So the detector also admits `the|said|this <X>` for every X in the
+        LEARNED head-noun lexicon. A corpus containing acupuncture clinics
+        teaches "acupuncture", and the descriptor becomes visible with no edit.
+        The seed list stays for the phrases whose head noun is not itself an
+        organisation word ("the claimant", "the insured").
+        """
+        key = frozenset(head_nouns or ())
+        cached = self._desc_cache.get(key)
+        if cached is not None:
+            return cached
+
+        seeds = sorted(CFG.COREF_DESCRIPTORS, key=len, reverse=True)
+        parts = [r"\b(?:" + "|".join(map(re.escape, seeds)) + r")\b"]
+        if key:
+            # A run of head nouns, so "the acupuncture clinic" is captured whole
+            # rather than truncated to "the acupuncture". The span must cover the
+            # phrase it claims to cover.
+            noun = r"(?:" + "|".join(map(re.escape, sorted(key))) + r")"
+            parts.append(rf"\b(?:the|said|this)\s+(?:{noun}\s+)*{noun}\b")
+        rx = re.compile("(" + "|".join(parts) + ")", re.I)
+        self._desc_cache[key] = rx
+        return rx
+
+    def resolve(self, text: str, mentions: list[dict],
+                head_nouns: set[str] | None = None) -> list[CorefLink]:
         ms = sorted(mentions, key=lambda m: m["start"])
         links: list[CorefLink] = []
 
-        def antecedent_for(pos: int, allowed: set[str] | None):
+        def antecedent_for(pos: int, want_type: str | None):
+            """Nearest preceding mention whose type does not contradict.
+
+            `unknown` never contradicts. A mention this system could not type is
+            still a candidate -- otherwise a typing miss becomes a coreference
+            miss, and two ~88%-accurate stages multiply into one bad one.
+            """
             best = None
             for m in ms:
                 if m["end"] > pos:
                     break
                 if pos - m["end"] > CFG.COREF_MAX_ANTECEDENT_CHARS:
                     continue
-                cls = (m.get("label") or "").lower()
-                if allowed is not None and cls and cls not in allowed:
+                got = (m.get("entity_type") or "unknown").lower()
+                if want_type and got not in (want_type, "unknown"):
                     continue
                 best = m
             return best
 
         for m in self._pron_re.finditer(text):
             w = m.group(0).lower()
-            if w in _MASC or w in _FEM:
-                allowed = _PERSON_CLASSES
-            elif w in _PLUR:
-                allowed = None            # could be people or an org
-            elif w in _NEUT:
-                allowed = _ORG_CLASSES
+            if w in _PERSON_PRONOUNS:
+                want = "person"
+            elif w in _ORG_PRONOUNS:
+                want = "organization"
             else:
-                allowed = None
-            ant = antecedent_for(m.start(), allowed)
+                want = None               # "they" -- people or an org
+            ant = antecedent_for(m.start(), want)
             if ant:
                 links.append(CorefLink(
                     start=m.start(), end=m.end(), surface=m.group(0),
                     antecedent_surface=ant["text"], antecedent_start=ant["start"],
-                    antecedent_end=ant["end"], antecedent_class=ant.get("label"),
+                    antecedent_end=ant["end"], antecedent_type=ant.get("entity_type"),
                     kind="pronoun", backend=self.name, confidence=0.75,
                 ))
 
-        for m in self._desc_re.finditer(text):
-            key = m.group(0).lower()
-            allowed_cls = _DESCRIPTOR_CLASS.get(key)
-            allowed = {allowed_cls} if allowed_cls else None
-            ant = antecedent_for(m.start(), allowed)
+        for m in self._descriptor_re(head_nouns).finditer(text):
+            ant = antecedent_for(m.start(),
+                                 descriptor_type(m.group(0), head_nouns))
             if ant:
                 links.append(CorefLink(
                     start=m.start(), end=m.end(), surface=m.group(0),
                     antecedent_surface=ant["text"], antecedent_start=ant["start"],
-                    antecedent_end=ant["end"], antecedent_class=ant.get("label"),
+                    antecedent_end=ant["end"], antecedent_type=ant.get("entity_type"),
                     kind="descriptor", backend=self.name, confidence=0.7,
                 ))
         links.sort(key=lambda l: l.start)
@@ -170,7 +255,8 @@ class FastCorefResolver(CorefResolver):
         from fastcoref import FCoref  # noqa: F401  (import error -> caller falls back)
         self._model = FCoref()
 
-    def resolve(self, text: str, mentions: list[dict]) -> list[CorefLink]:
+    def resolve(self, text: str, mentions: list[dict],
+                head_nouns: set[str] | None = None) -> list[CorefLink]:
         preds = self._model.predict(texts=[text])[0]
         links: list[CorefLink] = []
         for cluster in preds.get_clusters(as_strings=False):
@@ -181,7 +267,7 @@ class FastCorefResolver(CorefResolver):
             cls = None
             for m in mentions:
                 if m["start"] <= a_start and m["end"] >= a_end:
-                    cls = m.get("label")
+                    ant_type = m.get("entity_type")
                     break
             for (s, e) in cluster[1:]:
                 surf = text[s:e]
@@ -189,7 +275,7 @@ class FastCorefResolver(CorefResolver):
                 links.append(CorefLink(
                     start=s, end=e, surface=surf, antecedent_surface=antecedent,
                     antecedent_start=a_start, antecedent_end=a_end,
-                    antecedent_class=cls, kind=kind, backend=self.name, confidence=0.9,
+                    antecedent_type=ant_type, kind=kind, backend=self.name, confidence=0.9,
                 ))
         links.sort(key=lambda l: l.start)
         return links
