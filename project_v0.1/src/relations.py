@@ -77,6 +77,8 @@ PREDICATE_NORMALIZATION = {
     "handled_by": "ADJUSTER_ON", "handles": "ADJUSTER_ON",
 }
 
+#ART: Again... hard coded. makes me worry
+
 # Bulk provenance is not a relationship. Mirrors graph_store.BANNED_PREDICATES
 # so a rejected predicate is rejected at extraction time rather than at graph
 # build time, where the evidence span has already been discarded.

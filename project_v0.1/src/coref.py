@@ -51,8 +51,12 @@ _FEM = {"she", "her", "hers"}
 _PLUR = {"they", "them", "their", "theirs"}
 _NEUT = {"it", "its"}
 
-_PERSON_CLASSES = {"claimant", "attorney", "adjuster", "person", "medical_provider"}
-_ORG_CLASSES = {"repair_shop", "organization", "law_firm", "medical_provider"}
+_PERSON_CLASSES = {"claimant", "attorney", "adjuster", "person", "medical_provider"} 
+#ART: to PERSON classes adjuster might also be called "claim handler","claim adjuster", "resolution manager". 
+#ART:we should honestly have the system perform this behavior at some point take structured dataset of names of claimant, resolution manager on that claim, resolution manager supervisor, the client company who recorded this claim. Maybe this could help somehow?
+#ART: isn't there a problem that persons in the notes are not guaranteed to defined by this list-- there might be a mention in the notes about a mechanic, a witness and their job, or maybe the truck driver of the client -- who isn't a claimant on that claim but is a claimant in the occurence group on another claim. what about a nurse mention?
+
+_ORG_CLASSES = {"repair_shop", "organization", "law_firm", "medical_provider"} 
 
 _DESCRIPTOR_CLASS = {
     "the physician": "medical_provider", "the doctor": "medical_provider",
@@ -64,6 +68,7 @@ _DESCRIPTOR_CLASS = {
     "the shop": "repair_shop",
     "the adjuster": "adjuster", "the carrier": "adjuster",
 }
+#ART: are we supposed to just manually be expanding this list continuously as different notes get added? the persons aren't defined as I mentioned i think. Your argument on this could be that this would captuue most of the relations in the REAL WORLD (YOU CAN'T KEEP TAILORING STUFF TO OUR FAKE NOTES), but how are you sure? if your're certain present a case that this assumption is valid.
 
 
 class CorefResolver(ABC):

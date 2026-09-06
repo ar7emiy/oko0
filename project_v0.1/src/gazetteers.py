@@ -69,7 +69,7 @@ PATTERNS: list[tuple[str, re.Pattern]] = [
     # "policy holder" both scanned as policy numbers, and every one of them was
     # then sent to the LLM binding lane to have an owner assigned.
     ("policy_number",   re.compile(
-        r"\b(?:POL|PLC|POLICY)[#\s:-]*((?=[A-Z0-9-]*\d)[A-Z0-9-]{5,})\b", re.I)),
+        r"\b(?:POL|PLC|POLICY)[#\s:-]*((?=[A-Z0-9-]*\d)[A-Z0-9-]{5,})\b", re.I)), 
     ("email",           textnorm.EMAIL_RE),
     ("phone",           textnorm.PHONE_RE),
     ("monetary_amount", re.compile(r"\$\s?\d{1,3}(?:,\d{3})*(?:\.\d{2})?\b")),
@@ -263,6 +263,7 @@ ORG_SUFFIXES = (
     "Orthopedics", "Neurology", "Therapy", "Imaging", "Chiropractic",
 )
 
+#ART: Again this is okay, btu hhow do you know that these hardcoded values will work on real world data? the role cue will break if we have an accupunture, gastrointerologics or optomology in there... short sighted thinking here. Although I undestand that hard coding these values is really practical, and we can probably also just spend a bunch of tokens to build massive libraries, but is that the best solution? if it is lets write this into the plan
 
 def role_from_context(context: str) -> str | None:
     low = context.lower()
