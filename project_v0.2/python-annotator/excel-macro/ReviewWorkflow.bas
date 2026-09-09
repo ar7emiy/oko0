@@ -79,7 +79,7 @@ Private Sub FinishEvidence(ByVal message As String)
     D.Range("C30").ClearContents
     D.Range("C31").ClearContents
     RefreshDesk
-    D.Range("C7").Select
+    D.Range("B8").Select
     MsgBox message, vbInformation, "Saved"
 End Sub
 
@@ -95,7 +95,8 @@ Public Sub NewEntity()
     ws.Cells(rowN, 1).Resize(1, 7).Value = Array(entityRef, D.Range("C4").Value, displayName, D.Range("C17").Value, D.Range("C5").Value, EmptyText, "observed")
     AddMention entityRef, "name", "Reviewer created named entity"
     D.Range("C15").Value = entityRef
-    D.Range("C16:C17").ClearContents
+    D.Range("C16").ClearContents
+    D.Range("C17").ClearContents
     FinishEvidence "Created " & entityRef & " and recorded its first named mention."
     Exit Sub
 Problem:
