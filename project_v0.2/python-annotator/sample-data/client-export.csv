@@ -1,0 +1,5 @@
+claim_number,recordType,entity_category_name,entity_subcategory_name,entity_name,entity_address,entity_city,entity_state,entity_zip_code,entity_phone,entity_TIN,entity_NER_tag,Entity_Watchlist_flag,Exact_search_Note_ID,Exact_search_matched_watchlist_entity_name,GenAI_search_Note_ID,GenAI_entityNameClearned,GenAI_tok_sort_similarity,Watchlist_entity_id,Watchlist_entity_name,watchlist_address,watchlist_city,watchlist_state,watchlist_zip_code,watchlist_phone,watchlist_TIN
+C104,entity,legal,law_firm,Harbor Legal,10 Bay Street,Exampleton,IL,00000,555-0101,TRAINING-001,ORG,1,N02,Harbor Legal,N02,Harbor Legal,100,WL-01,Harbor Legal,10 Bay Street,Exampleton,IL,00000,555-0101,TRAINING-001
+C104,exact_search,legal,law_firm,Harbor Legal,,,,,,,ORG,1,N02,Harbor Legal,,,,WL-01,Harbor Legal,10 Bay Street,Exampleton,IL,00000,555-0101,TRAINING-001
+C104,genai_only,legal,representative,Elena Ruiz,,,,,,,PERSON,0,,,N01,Elena Ruiz,,,,,,,,,
+C104,entity,person,claimant,Maya Chen,77 Hill Road,Exampleton,IL,00001,555-0199,TRAINING-002,PERSON,1,N01,Maya Chen,N01,Maya Chen,100,WL-02,Maya Chen,77 Hill Road,Exampleton,IL,00001,555-0199,TRAINING-003

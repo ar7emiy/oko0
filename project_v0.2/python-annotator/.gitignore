@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.gold-workbench-session.json
+*.log
+*.checks.ndjson
+*.inspect.ndjson
+excel-previews/
+macro-free-preview/
+dist/
+build/
