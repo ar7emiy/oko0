@@ -106,11 +106,11 @@ Public Function CaptureNote(ByVal claim As String, ByVal note As String, ByVal o
         If V(lo, i, "claim_number") = claim And V(lo, i, "note_id") = note And Val(V(lo, i, "version")) = version Then
             src = V(lo, i, "source_id")
             If FullNote(src) = contents Then
-                Put lo, i, "paste_sequence", CStr(NextPasteSequence()): Put lo, i, "note_order", CStr(order)
+                SetV lo, i, "paste_sequence", CStr(NextPasteSequence()): SetV lo, i, "note_order", CStr(order)
                 CaptureNote = src: PruneAnalysis: Exit Function
             End If
             If MsgBox("This note's text changed. Keep the old version and create a new review version?", vbYesNo + vbQuestion) <> vbYes Then Err.Raise vbObjectError + 27, , "Source replacement cancelled."
-            Put lo, i, "status", "superseded"
+            SetV lo, i, "status", "superseded"
         End If
     Next i
     src = NewID("N-")

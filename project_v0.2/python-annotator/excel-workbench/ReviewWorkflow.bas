@@ -226,7 +226,7 @@ Public Sub AttestSave()
     AddRow lo, Array(id, CStr(rev + 1), "accepted", src, F(9), F(10), F(11), ent, F(13), F(14), F(15), F(16), F(17), F(18), F(19), F(20), CStr(startCP), CStr(endCP), State("queue"), F(7), Stamp(), "entry-v1")
     qr = FindRow(T("tQueue"), "queue_id", State("queue"))
     If qr > 0 Then
-        Put T("tQueue"), qr, "status", "accepted": Put T("tQueue"), qr, "entry_id", id
+        SetV T("tQueue"), qr, "status", "accepted": SetV T("tQueue"), qr, "entry_id", id
     End If
     For r = T("tDrafts").ListRows.Count To 1 Step -1
         If V(T("tDrafts"), r, "draft_id") = State("draft") Or V(T("tDrafts"), r, "entry_id") = id Then
@@ -312,7 +312,7 @@ Public Sub DeleteEntry()
         AddRow lo, a
     End If
     qr = FindRow(T("tQueue"), "queue_id", State("queue"))
-    If qr > 0 Then Put T("tQueue"), qr, "status", "dismissed"
+    If qr > 0 Then SetV T("tQueue"), qr, "status", "dismissed"
     r = FindRow(T("tDrafts"), "draft_id", State("draft"))
     If r > 0 Then T("tDrafts").ListRows(r).Delete
     ReopenNote State("source"): RebuildOutputs: BlankEntry: SetF 22, "Entry deleted/dismissed; history retained."
@@ -370,7 +370,7 @@ Public Sub CompleteNote()
     If FindRow(T("tDrafts"), "source_id", src) > 0 Then Err.Raise vbObjectError + 63, , "Resume and resolve saved drafts before completing the note."
     If MsgBox("I have reviewed the entire note, resolved the proposed entries, and added any missing annotations required by the annotation guide.", vbYesNo + vbQuestion, "Note completeness attestation") <> vbYes Then Exit Sub
     BeginWrite
-    Put T("tNotes"), NoteRow(src), "status", "complete"
+    SetV T("tNotes"), NoteRow(src), "status", "complete"
     AddRow T("tDecisions"), Array(NewID("D-"), src, "", "note-complete-v1", F(7), Stamp())
     RememberForm: SetF 22, "Note complete. Watchlist review is now available."
     CommitWrite: Exit Sub

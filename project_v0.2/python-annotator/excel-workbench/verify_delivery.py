@@ -42,8 +42,18 @@ for table in re.findall(r'T\("(t\w+)"\)',source): check(table in known,'Known ta
 columns={h for headers in known.values() for h in headers}
 for module in modules:
     body=re.sub(r"'.*",'',module.read_text(encoding='utf-8-sig'))
-    used={m.group(1) for m in re.finditer(r'\b(?:Put|V)\s*\(?\s*\w+\s*,\s*\w+\s*,\s*"([a-z_]+)"',body)}
+    used={m.group(1) for m in re.finditer(r'\b(?:SetV|V)\s*\(?\s*\w+\s*,\s*\w+\s*,\s*"([a-z_]+)"',body)}
     check(not used-columns,module.name+': column names exist in the schema '+str(sorted(used-columns)))
+# A procedure named after a VBA statement keyword parses as that statement at the call
+# site, not as a call, and fails to compile. This is invisible until Excel runs the code.
+VBA_STATEMENTS={'put','get','close','open','print','write','input','line','name','kill','seek','lock',
+ 'unlock','width','reset','erase','load','unload','beep','chdir','chdrive','mkdir','rmdir','filecopy',
+ 'setattr','randomize','sendkeys','appactivate','deletesetting','savesetting','error','date','time',
+ 'stop','let','set','call','end','exit','next','loop','wend','resume','return','circle','pset','scale',
+ 'option','declare','type','const','dim','redim','static','with','on','goto','gosub','select','case','if'}
+for module in modules:
+    for name in re.findall(r'^\s*(?:Public |Private )?(?:Sub|Function)\s+(\w+)\s*\(',module.read_text(encoding='utf-8-sig'),re.M):
+        check(name.lower() not in VBA_STATEMENTS,module.name+': '+name+' is not a VBA statement keyword')
 for macro in re.findall(r'^\s*Button "[^"]+", "[^"]+", "[^"]+", "([^"]+)"',source,re.M):
     check(macro in procedures,'Wired procedure '+macro)
 for t in ['tEntries','tQueue','tDrafts']:

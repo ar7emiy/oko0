@@ -46,7 +46,7 @@ Public Function V(ByVal lo As ListObject, ByVal r As Long, ByVal key As String) 
     V = CStr(lo.DataBodyRange.Cells(r, lo.ListColumns(key).Index).Value2)
 End Function
 
-Public Sub Put(ByVal lo As ListObject, ByVal r As Long, ByVal key As String, ByVal value As Variant)
+Public Sub SetV(ByVal lo As ListObject, ByVal r As Long, ByVal key As String, ByVal value As Variant)
     With lo.DataBodyRange.Cells(r, lo.ListColumns(key).Index)
         .NumberFormat = "@"
         .Value2 = CStr(value)
@@ -83,7 +83,7 @@ Public Sub SetState(ByVal key As String, ByVal value As String)
     If r = 0 Then
         AddRow lo, Array(key, value)
     Else
-        Put lo, r, "value", value
+        SetV lo, r, "value", value
     End If
 End Sub
 
@@ -186,10 +186,10 @@ End Function
 
 Public Sub ReopenNote(ByVal sourceID As String)
     Dim lo As ListObject, i As Long
-    Put T("tNotes"), NoteRow(sourceID), "status", "in_progress"
+    SetV T("tNotes"), NoteRow(sourceID), "status", "in_progress"
     Set lo = T("tWatch")
     For i = 1 To lo.ListRows.Count
-        If V(lo, i, "source_id") = sourceID Then Put lo, i, "review_status", "recheck"
+        If V(lo, i, "source_id") = sourceID Then SetV lo, i, "review_status", "recheck"
     Next i
 End Sub
 
