@@ -75,7 +75,7 @@ Private Sub ArchiveAnalysis(ByVal run As String, ByVal src As String, ByVal valu
     p = 1
     Do While p <= Len(value)
         part = SafeTake(value, p, 8000): n = n + 1
-        AddRow T("tAnalysis"), Array(run, src, CStr(n), part, "prompt-v1", Stamp())
+        AddRow T("tAnalysis"), Array(run, src, CStr(n), part, "prompt-v2", Stamp())
         p = p + Len(part)
     Loop
 End Sub

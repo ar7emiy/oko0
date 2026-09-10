@@ -49,6 +49,14 @@ for macro in re.findall(r'^\s*Button "[^"]+", "[^"]+", "[^"]+", "([^"]+)"',sourc
 for t in ['tEntries','tQueue','tDrafts']:
     check(known[t][4:16]==['action','source_quote','occurrence','entity_ref' if t!='tQueue' else 'entity_key','display_name','entity_type','reference_form','field_kind','field_value','second_entity_ref' if t!='tQueue' else 'second_entity_key','open_label','reason'],t+' form column contract')
 check(not re.search(r'\.(?:Merge|UnMerge)\b',source),'No VBA merge mutations')
+prompt_text=(ROOT/'COPILOT-PROMPT.md').read_text(encoding='utf-8')
+prompt_version=re.search(r'prompt version (\d+)',prompt_text).group(1)
+check('"prompt-v'+prompt_version+'"' in source,'Archived prompt version matches COPILOT-PROMPT.md (v'+prompt_version+')')
+snapshot_sub=re.search(r'Public Sub SaveQueueSnapshot[\s\S]*?^End Sub',source,re.M).group(0)
+# Scoped to the sentences that name the sheet: the same address on another sheet must not satisfy this.
+analysis_text=' '.join(l for l in prompt_text.splitlines() if 'AI Analysis Input' in l)
+for cell in sorted(set(re.findall(r'ws\.Range\("([A-Z]+\d+)"\)',snapshot_sub))):
+    check(cell in analysis_text,'Prompt names AI Analysis Input cell '+cell+' where it names that sheet')
 check('LastRow' not in re.search(r'Public Function NewID.*?End Function',source,re.S).group(0),'IDs independent of worksheet row')
 
 with zipfile.ZipFile(ROOT/'Entity-Gold-Review-Macro-Free.xlsx') as z:

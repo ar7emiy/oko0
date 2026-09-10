@@ -1,5 +1,5 @@
 {
-  "checks_passed": 302,
+  "checks_passed": 307,
   "scope": "Workbook XML, VBA structure/contracts, independent algorithm references; NOT VBA runtime execution",
   "runtime_status": "Windows Excel and Copilot acceptance pending",
   "checks": [
@@ -239,6 +239,11 @@
     "tQueue form column contract",
     "tDrafts form column contract",
     "No VBA merge mutations",
+    "Archived prompt version matches COPILOT-PROMPT.md (v2)",
+    "Prompt names AI Analysis Input cell C4 where it names that sheet",
+    "Prompt names AI Analysis Input cell C5 where it names that sheet",
+    "Prompt names AI Analysis Input cell C6 where it names that sheet",
+    "Prompt names AI Analysis Input cell C7 where it names that sheet",
     "IDs independent of worksheet row",
     "All backend pages exported",
     "xl/worksheets/sheet1.xml: unmerged",
