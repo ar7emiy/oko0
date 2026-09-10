@@ -1,0 +1,21 @@
+{
+ "Note Register":{"table":"tNotes","headers":["source_id","claim_number","note_id","note_order","version","length_utf16","paste_sequence","status"]},
+ "Note Parts":{"table":"tParts","headers":["source_id","part","note_text"]},
+ "AI Queue":{"table":"tInput","headers":["candidate_key","action","source_quote","occurrence","entity_key","display_name","entity_type","reference_form","field_kind","field_value","second_entity_key","open_label","reason"]},
+ "Queue Store":{"table":"tQueue","headers":["queue_id","run_id","source_id","candidate_key","action","source_quote","occurrence","entity_key","display_name","entity_type","reference_form","field_kind","field_value","second_entity_key","open_label","reason","status","entry_id","start_utf16"]},
+ "Recent AI Analysis":{"table":"tAnalysis","headers":["run_id","source_id","part","analysis_text","prompt_version","captured_at"]},
+ "Runs":{"table":"tRuns","headers":["run_id","source_id","run_label","processed_parts","complete","created_at"]},
+ "Entries":{"table":"tEntries","headers":["entry_id","revision","state","source_id","action","source_quote","occurrence","entity_ref","display_name","entity_type","reference_form","field_kind","field_value","second_entity_ref","open_label","reason","start_character","end_character","queue_id","reviewer","attested_at","attestation_version"]},
+ "Drafts":{"table":"tDrafts","headers":["draft_id","source_id","queue_id","entry_id","action","source_quote","occurrence","entity_ref","display_name","entity_type","reference_form","field_kind","field_value","second_entity_ref","open_label","reason","reviewer"]},
+ "Legacy Archive":{"table":"tLegacy","headers":["import_id","source_sheet","source_row","field_name","original_value","review_status"]},
+ "State":{"table":"tState","headers":["key","value"]},
+ "Decisions":{"table":"tDecisions","headers":["decision_id","source_id","entry_id","decision","reviewer","recorded_at"]},
+ "Entities":{"table":"tEntities","headers":["entity_ref","claim_number","display_label","entity_type","first_note_id","first_source_text","decision"]},
+ "Mentions":{"table":"tMentions","headers":["mention_id","claim_number","note_id","source_text","start_character","end_character","entity_ref","mention_form","reason"]},
+ "Fields":{"table":"tFields","headers":["field_id","claim_number","note_id","entity_ref","field_name","value","source_text","start_character","end_character","decision"]},
+ "Context":{"table":"tContext","headers":["context_id","claim_number","note_id","entity_ref","source_characterization","start_character","end_character","optional_open_label","notes"]},
+ "Statements":{"table":"tStatements","headers":["statement_id","claim_number","note_id","predicate_source_text","start_character","end_character","primary_entity_ref","second_entity_ref","optional_open_label","notes"]},
+ "Uncertain":{"table":"tUncertain","headers":["uncertain_id","claim_number","note_id","source_text","start_character","end_character","reason","candidate_entity_ref"]},
+ "Raw Client Output":{"table":"tClient","headers":["client_row_id","claim_number","recordType","entity_category_name","entity_subcategory_name","entity_name","entity_address","entity_city","entity_state","entity_zip_code","entity_phone","entity_TIN","entity_NER_tag","Entity_Watchlist_flag","Exact_search_Note_ID","Exact_search_matched_watchlist_entity_name","GenAI_search_Note_ID","GenAI_entityNameClearned","GenAI_tok_sort_similarity","Watchlist_entity_id","Watchlist_entity_name","watchlist_address","watchlist_city","watchlist_state","watchlist_zip_code","watchlist_phone","watchlist_TIN"]},
+ "Watchlist Review":{"table":"tWatch","headers":["pair_review_id","client_row_id","claim_number","note_id","identity_decision","source_support","reason","review_status","source_id","reviewer","reviewed_at"]}
+}
