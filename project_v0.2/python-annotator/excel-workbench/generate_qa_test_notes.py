@@ -64,4 +64,24 @@ path.write_text(ambiguous_text, encoding='utf-8')
 print(f"{path.name}: {utf16_len(ambiguous_text)} UTF-16 units. Two distinct "
       f"'John's, one ambiguous 'He'.")
 
-print(f'\n{len(CASES) + 2} files written to {OUT}')
+# Every entry kind on one note: an organization, an address, a TIN whose
+# leading zeros must survive, context, a negated statement and an unresolved
+# pronoun. The 60-note stress packet has none of these together, and its only
+# TIN (STRESS-201) has no leading zeros to lose.
+kinds_text = ('Dr. Ada Monroe called regarding the claim. Dr. Ada Monroe is an orthopedic '
+              'surgeon with Northstar Orthopedics, the medical provider.\n\n'
+              'She confirmed the clinic address as 14 Cedar Lane, Springfield, IL 62704. '
+              'Its TIN is 001234567. The clinic did not schedule surgery.\n\n'
+              'The caller said they would send a report tomorrow. The note does not '
+              'establish who they refers to.')
+path = OUT / 'QA01_N07.txt'
+path.write_text(kinds_text, encoding='utf-8')
+print(f'{path.name}: {utf16_len(kinds_text)} UTF-16 units. Address, TIN 001234567, context, '
+      f'negated statement, ambiguous "they".')
+
+# A note whose entire body looks like a formula, to prove it stays literal text.
+path = OUT / 'QA01_N08.txt'
+path.write_text('=1+1', encoding='utf-8')
+print(f'{path.name}: body is the literal text =1+1')
+
+print(f'\n{len(CASES) + 4} files written to {OUT}')
