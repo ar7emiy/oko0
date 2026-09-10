@@ -2,11 +2,11 @@ Attribute VB_Name = "WorkbenchSetup"
 Option Explicit
 
 Private Sub Button(ByVal sheetName As String, ByVal cell As String, ByVal label As String, ByVal macro As String)
-    Dim ws As Worksheet, shape As Shape, box As Range, sheetName As String
-    Set ws = ThisWorkbook.Worksheets(sheetName): Set box = ws.Range(cell): sheetName = "wb_" & macro
-    On Error Resume Next: ws.Shapes(sheetName).Delete: On Error GoTo 0
+    Dim ws As Worksheet, shape As Shape, box As Range, shapeName As String
+    Set ws = ThisWorkbook.Worksheets(sheetName): Set box = ws.Range(cell): shapeName = "wb_" & macro
+    On Error Resume Next: ws.Shapes(shapeName).Delete: On Error GoTo 0
     Set shape = ws.Shapes.AddShape(msoShapeRoundedRectangle, box.Left, box.Top, box.Width, 27)
-    shape.Name = sheetName: shape.TextFrame2.TextRange.Text = label
+    shape.Name = shapeName: shape.TextFrame2.TextRange.Text = label
     shape.TextFrame2.TextRange.Font.Size = 10: shape.TextFrame2.TextRange.Font.Fill.ForeColor.RGB = RGB(255, 255, 255)
     shape.Fill.ForeColor.RGB = RGB(24, 52, 76): shape.Line.Visible = msoFalse
     shape.OnAction = "'" & Replace(ThisWorkbook.Name, "'", "''") & "'!" & macro

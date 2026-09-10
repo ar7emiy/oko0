@@ -31,9 +31,21 @@ for p in modules:
         name,params,_,block=proc.groups()
         block=re.sub(r'"(?:[^"]|"")*"','""',block)
         block=re.sub(r"'.*",'',block)
-        declared=set(re.findall(r'(?:ByVal |ByRef )?(\w+)\s+As ',params))|globals_|{name}
+        # #If VBA7/#Else/#End If declares the same names in both branches by design
+        # (LongPtr vs Long for 64/32-bit); only one branch ever compiles, so drop the
+        # #Else branch before scanning for real duplicate declarations.
+        block=re.sub(r'#Else\b[\s\S]*?(?=#End If\b)','',block)
+        param_names=re.findall(r'(?:ByVal |ByRef )?(\w+)\s+As ',params)
+        dim_names=[]
         for declaration in re.findall(r'^\s*Dim (.+)$',block,re.M):
-            declared.update(re.findall(r'(?:^|,)\s*(\w+)',declaration))
+            dim_names+=re.findall(r'(?:^|,)\s*(\w+)',declaration)
+        # A parameter and a local Dim sharing a name is a compile error, not shadowing.
+        # This is the mistake a mechanical rename makes: it renames a local into colliding
+        # with a same-scope parameter that legitimately keeps its own name.
+        seen_lower=[n.lower() for n in param_names+dim_names]
+        dupes={n for n in seen_lower if seen_lower.count(n)>1}
+        check(not dupes,p.name+': duplicate declaration in '+name+' '+str(sorted(dupes)))
+        declared=set(param_names)|set(dim_names)|globals_|{name}
         assigned=set(re.findall(r'(?:^|:)\s*(?:Set )?(\w+)\s*=',block,re.M))
         assigned.update(re.findall(r'\bFor (?:Each )?(\w+)\b',block))
         check(not assigned-declared,p.name+': declared assignment targets in '+name+' '+str(assigned-declared))
