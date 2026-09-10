@@ -26,7 +26,8 @@ Public Sub SaveQueueSnapshot()
         End If
     Next i
     If MsgBox("Archive these drafts for " & F(4) & " / " & F(5) & " / version " & F(6) & "? Confirm Copilot has finished and processed parts metadata is correct.", vbYesNo + vbQuestion) <> vbYes Then Exit Sub
-    BeginWrite: runID = NewID("R-")
+    BeginWrite
+    runID = NewID("R-")
     AddRow T("tRuns"), Array(runID, sourceID, CStr(ws.Range("C4").Value2), CStr(ws.Range("C5").Value2), LCase$(CStr(ws.Range("C6").Value2)), Stamp())
     For i = 1 To staging.ListRows.Count
         If V(staging, i, "candidate_key") <> "" Then
@@ -64,7 +65,8 @@ Public Sub SaveQueueSnapshot()
         End If
     Next i
     ArchiveAnalysis runID, sourceID, "Summary: " & CStr(ws.Range("C7").Value2)
-    PruneAnalysis: ReopenNote sourceID: CommitWrite
+    PruneAnalysis
+    ReopenNote sourceID: CommitWrite
     MsgBox "Queue snapshot saved. Load next AI draft on Review Desk. Missing/ambiguous quotes remain reviewable and cannot be accepted without correction.", vbInformation
     Exit Sub
 Failed: AbortWrite Err.Description
@@ -158,7 +160,8 @@ Public Sub LoadNextCandidate()
     End If
     key = F(18): ref = ResolveKey(key, V(lo, best, "run_id"), State("source")): SetF 18, ref
     If key <> "" And ref = "" Then SetF 20, F(20) & vbLf & "Choose second entity for draft key " & key & "."
-    RememberForm: SetF 22, dependencyMessage & "AI draft loaded. Check evidence and values before attesting."
+    RememberForm
+    SetF 22, dependencyMessage & "AI draft loaded. Check evidence and values before attesting."
     ThisWorkbook.Worksheets("Review Desk").Activate
     If bestPos < 1E+15 Then
         SetState "text_page", CStr(IIf(bestPos > 220, bestPos - 220, 1)): ShowTextPage

@@ -28,7 +28,8 @@ Public Sub ImportLegacyWorkbook()
         End If
     Next sheetName
     book.Close False: Set book = Nothing: Application.AutomationSecurity = security
-    BeginWrite: batch = NewID("L-")
+    BeginWrite
+    batch = NewID("L-")
     For Each row In staged
         AddRow T("tLegacy"), Array(batch, row(0), row(1), row(2), row(3), "unverified_legacy")
     Next row

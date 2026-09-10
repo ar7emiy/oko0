@@ -65,14 +65,16 @@ Public Sub ImportClientOutput()
         If Not headers.Exists(lo.ListColumns(c).Name) Then Err.Raise vbObjectError + 116, , "Missing client column: " & lo.ListColumns(c).Name
     Next c
     If MsgBox("Append " & rows.Count - 1 & " client rows as a new import batch? Existing reviews remain linked to their original batch. Do not import the same export twice.", vbYesNo + vbQuestion) <> vbYes Then Exit Sub
-    BeginWrite: batch = NewID("B-")
+    BeginWrite
+    batch = NewID("B-")
     For r = 2 To rows.Count
         If rows(r).Count <> rows(1).Count Then Err.Raise vbObjectError + 117, , "CSV row " & r & " has a different number of fields."
         ReDim a(0 To lo.ListColumns.Count - 1): a(0) = batch & ":" & r - 1
         For c = 2 To lo.ListColumns.Count: a(c - 1) = rows(r)(headers(lo.ListColumns(c).Name)): Next c
         AddRow lo, a
     Next r
-    CommitWrite: MsgBox "Client data imported as literal values. Previous imports and decisions retained.", vbInformation: Exit Sub
+    CommitWrite
+    MsgBox "Client data imported as literal values. Previous imports and decisions retained.", vbInformation: Exit Sub
 Failed:
     Dim message As String
     message = Err.Description
@@ -98,7 +100,8 @@ Public Sub OpenWatchlist()
     If Not CanLeave Then Exit Sub
     If V(T("tNotes"), NoteRow(State("source")), "status") <> "complete" Then Err.Raise vbObjectError + 118, , "Complete the note's source annotations before reviewing watchlist matches."
     ThisWorkbook.Worksheets("Watchlist Desk").Activate
-    LoadWatchlistMatches: Exit Sub
+    LoadWatchlistMatches
+    Exit Sub
 Failed: MsgBox Err.Description, vbExclamation
 End Sub
 

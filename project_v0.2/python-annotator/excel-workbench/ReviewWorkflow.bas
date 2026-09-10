@@ -69,14 +69,16 @@ Public Sub OpenSource(ByVal sourceID As String)
     SetF 4, V(T("tNotes"), n, "claim_number"): SetF 5, V(T("tNotes"), n, "note_id"): SetF 6, V(T("tNotes"), n, "version")
     BlankEntry
     ThisWorkbook.Worksheets("Review Desk").Activate
-    ShowTextPage: RefreshDesk
+    ShowTextPage
+    RefreshDesk
 End Sub
 
 Public Sub NewEntry()
     On Error GoTo Failed
     If Not CanLeave Then Exit Sub
     If State("source") = "" Then Err.Raise vbObjectError + 41, , "Select a note first."
-    BlankEntry: SetF 22, "Manual draft. Nothing accepted yet."
+    BlankEntry
+    SetF 22, "Manual draft. Nothing accepted yet."
     Exit Sub
 Failed: MsgBox Err.Description, vbExclamation
 End Sub
@@ -85,13 +87,15 @@ Public Function StoreDraft() As Boolean
     Dim lo As ListObject, id As String, r As Long
     On Error GoTo Failed
     If State("source") = "" Then Err.Raise vbObjectError + 42, , "Select a note before saving a draft."
-    BeginWrite: Set lo = T("tDrafts"): id = State("draft")
+    BeginWrite
+    Set lo = T("tDrafts"): id = State("draft")
     If id = "" Then id = NewID("D-")
     r = FindRow(lo, "draft_id", id)
-    If r > 0 Then lo.ListRows(r).Delete
+    If r > 0 Then DeleteRow lo, r
     AddRow lo, Array(id, State("source"), State("queue"), State("entry"), F(9), F(10), F(11), F(12), F(13), F(14), F(15), F(16), F(17), F(18), F(19), F(20), F(7))
     SetState "draft", id: RememberForm: SetF 22, "Draft saved; not attested."
-    CommitWrite: StoreDraft = True: Exit Function
+    CommitWrite
+    StoreDraft = True: Exit Function
 Failed: AbortWrite Err.Description
 End Function
 
@@ -230,9 +234,9 @@ Public Sub AttestSave()
     End If
     For r = T("tDrafts").ListRows.Count To 1 Step -1
         If V(T("tDrafts"), r, "draft_id") = State("draft") Or V(T("tDrafts"), r, "entry_id") = id Then
-            T("tDrafts").ListRows(r).Delete
+            DeleteRow T("tDrafts"), r
         ElseIf State("queue") <> "" Then
-            If V(T("tDrafts"), r, "queue_id") = State("queue") Then T("tDrafts").ListRows(r).Delete
+            If V(T("tDrafts"), r, "queue_id") = State("queue") Then DeleteRow T("tDrafts"), r
         End If
     Next r
     ReopenNote src: RebuildOutputs
@@ -251,7 +255,8 @@ Public Sub LoadEntry(ByVal id As String)
     r = items(id): OpenSource V(lo, r, "source_id")
     For j = 9 To 20: SetF j, V(lo, r, lo.ListColumns(j - 4).Name): Next j
     SetState "entry", id: SetState "queue", V(lo, r, "queue_id")
-    RememberForm: SetF 22, "Accepted revision " & V(lo, r, "revision") & ". Edits require a new attestation."
+    RememberForm
+    SetF 22, "Accepted revision " & V(lo, r, "revision") & ". Edits require a new attestation."
 End Sub
 
 Private Sub NavigateEntry(ByVal direction As Long)
@@ -314,9 +319,11 @@ Public Sub DeleteEntry()
     qr = FindRow(T("tQueue"), "queue_id", State("queue"))
     If qr > 0 Then SetV T("tQueue"), qr, "status", "dismissed"
     r = FindRow(T("tDrafts"), "draft_id", State("draft"))
-    If r > 0 Then T("tDrafts").ListRows(r).Delete
+    If r > 0 Then DeleteRow T("tDrafts"), r
     ReopenNote State("source"): RebuildOutputs: BlankEntry: SetF 22, "Entry deleted/dismissed; history retained."
-    CommitWrite: RefreshDesk: Exit Sub
+    CommitWrite
+    RefreshDesk
+    Exit Sub
 Failed: AbortWrite Err.Description
 End Sub
 
@@ -372,7 +379,9 @@ Public Sub CompleteNote()
     BeginWrite
     SetV T("tNotes"), NoteRow(src), "status", "complete"
     AddRow T("tDecisions"), Array(NewID("D-"), src, "", "note-complete-v1", F(7), Stamp())
-    RememberForm: SetF 22, "Note complete. Watchlist review is now available."
-    CommitWrite: Exit Sub
+    RememberForm
+    SetF 22, "Note complete. Watchlist review is now available."
+    CommitWrite
+    Exit Sub
 Failed: AbortWrite Err.Description
 End Sub

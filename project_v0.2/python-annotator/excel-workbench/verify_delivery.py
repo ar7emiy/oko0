@@ -83,6 +83,14 @@ for macro in re.findall(r'^\s*Button "[^"]+", "[^"]+", "[^"]+", "([^"]+)"',sourc
 for t in ['tEntries','tQueue','tDrafts']:
     check(known[t][4:16]==['action','source_quote','occurrence','entity_ref' if t!='tQueue' else 'entity_key','display_name','entity_type','reference_form','field_kind','field_value','second_entity_ref' if t!='tQueue' else 'second_entity_key','open_label','reason'],t+' form column contract')
 check(not re.search(r'\.(?:Merge|UnMerge)\b',source),'No VBA merge mutations')
+# `Name: statement` at the start of a line is a LINE LABEL in VBA, not a call, so
+# the call is silently skipped. This shipped 16 times, including BeginWrite and
+# CommitWrite, meaning writes ran with no rollback and were never saved to disk.
+for module in modules:
+    for lineno,text in enumerate(module.read_text(encoding='utf-8-sig').split('\n'),1):
+        label=re.match(r'^\s*(\w+):(?!=)',text)
+        if label and label.group(1) in procedures:
+            check(False,module.name+':'+str(lineno)+': call to '+label.group(1)+' parses as a line label, not a call')
 prompt_text=(ROOT/'COPILOT-PROMPT.md').read_text(encoding='utf-8')
 prompt_version=re.search(r'prompt version (\d+)',prompt_text).group(1)
 check('"prompt-v'+prompt_version+'"' in source,'Archived prompt version matches COPILOT-PROMPT.md (v'+prompt_version+')')

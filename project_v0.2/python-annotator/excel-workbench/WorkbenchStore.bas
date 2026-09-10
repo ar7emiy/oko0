@@ -53,14 +53,35 @@ Public Sub SetV(ByVal lo As ListObject, ByVal r As Long, ByVal key As String, By
     End With
 End Sub
 
+' Sheet protection blocks ListObject structural changes even with
+' UserInterfaceOnly:=True, and AllowInsertingRows does not lift it. Every add or
+' delete therefore unprotects its own sheet and restores protection immediately.
+Public Function TableUnlock(ByVal lo As ListObject) As Boolean
+    TableUnlock = lo.Parent.ProtectContents
+    If TableUnlock Then lo.Parent.Unprotect
+End Function
+
+Public Sub TableRelock(ByVal lo As ListObject, ByVal wasProtected As Boolean)
+    If wasProtected Then lo.Parent.Protect UserInterfaceOnly:=True, AllowFiltering:=True
+End Sub
+
+Public Sub DeleteRow(ByVal lo As ListObject, ByVal r As Long)
+    Dim locked As Boolean
+    locked = TableUnlock(lo)
+    lo.ListRows(r).Delete
+    TableRelock lo, locked
+End Sub
+
 Public Function AddRow(ByVal lo As ListObject, ByVal values As Variant) As Long
-    Dim r As Long, j As Long
+    Dim r As Long, j As Long, locked As Boolean
     If UBound(values) - LBound(values) + 1 <> lo.ListColumns.Count Then Err.Raise vbObjectError + 3, , "Internal column count mismatch: " & lo.Name
+    locked = TableUnlock(lo)
     r = lo.ListRows.Add.Index
     For j = LBound(values) To UBound(values)
         lo.DataBodyRange.Cells(r, j - LBound(values) + 1).NumberFormat = "@"
         lo.DataBodyRange.Cells(r, j - LBound(values) + 1).Value2 = CStr(values(j))
     Next j
+    TableRelock lo, locked
     AddRow = r
 End Function
 
@@ -135,11 +156,12 @@ Public Sub CommitWrite()
 End Sub
 
 Public Sub AbortWrite(ByVal explanation As String)
-    Dim key As Variant, lo As ListObject, a As Variant, r As Long, c As Long
+    Dim key As Variant, lo As ListObject, a As Variant, r As Long, c As Long, locked As Boolean
     If Busy Then
         On Error Resume Next
         For Each key In Snapshots.Keys
             Set lo = T(CStr(key))
+            locked = TableUnlock(lo)
             If Not lo.DataBodyRange Is Nothing Then lo.DataBodyRange.Delete
             a = Snapshots(key)
             If IsArray(a) Then
@@ -149,6 +171,7 @@ Public Sub AbortWrite(ByVal explanation As String)
                 lo.DataBodyRange.NumberFormat = "@"
                 lo.DataBodyRange.Value2 = a
             End If
+            TableRelock lo, locked
         Next key
         ThisWorkbook.Worksheets("Review Desk").Range("C4:C22").Value2 = FormSnapshot
         Busy = False: Application.EnableEvents = OldEvents: Application.ScreenUpdating = OldScreen
@@ -194,7 +217,10 @@ Public Sub ReopenNote(ByVal sourceID As String)
 End Sub
 
 Public Sub ClearRows(ByVal lo As ListObject)
+    Dim locked As Boolean
+    locked = TableUnlock(lo)
     If Not lo.DataBodyRange Is Nothing Then lo.DataBodyRange.Delete
+    TableRelock lo, locked
 End Sub
 
 Public Sub RebuildOutputs()

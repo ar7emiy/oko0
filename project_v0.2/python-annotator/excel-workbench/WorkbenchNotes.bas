@@ -155,7 +155,7 @@ Public Sub PruneAnalysis()
         src = V(analysis, i, "source_id")
         If src <> "" Then
             nr = NoteRow(src): key = V(notes, nr, "claim_number") & ChrW(30) & V(notes, nr, "note_id")
-            If Not retained.Exists(key) Then analysis.ListRows(i).Delete
+            If Not retained.Exists(key) Then DeleteRow analysis, i
         End If
     Next i
 End Sub
