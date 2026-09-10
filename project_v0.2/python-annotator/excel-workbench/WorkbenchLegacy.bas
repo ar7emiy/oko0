@@ -2,7 +2,7 @@ Attribute VB_Name = "WorkbenchLegacy"
 Option Explicit
 
 Public Sub ImportLegacyWorkbook()
-    Dim picked As Variant, book As Workbook, ws As Worksheet, name As Variant, staged As Collection
+    Dim picked As Variant, book As Workbook, ws As Worksheet, sheetName As Variant, staged As Collection
     Dim header As Long, r As Long, c As Long, lastRow As Long, lastCol As Long, batch As String, row As Variant, security As Long, message As String
     On Error GoTo Failed
     picked = Application.GetOpenFilename("Previous workbook (*.xlsx;*.xlsm),*.xlsx;*.xlsm", , "Archive earlier annotations as unverified source rows")
@@ -11,9 +11,9 @@ Public Sub ImportLegacyWorkbook()
     Set staged = New Collection
     security = Application.AutomationSecurity: Application.AutomationSecurity = 3
     Set book = Workbooks.Open(CStr(picked), UpdateLinks:=0, ReadOnly:=True)
-    For Each name In Array("Entities", "Mentions", "Fields", "Context", "Statements", "Uncertain", "Watchlist Review")
+    For Each sheetName In Array("Entities", "Mentions", "Fields", "Context", "Statements", "Uncertain", "Watchlist Review")
         Set ws = Nothing
-        On Error Resume Next: Set ws = book.Worksheets(CStr(name)): On Error GoTo Failed
+        On Error Resume Next: Set ws = book.Worksheets(CStr(sheetName)): On Error GoTo Failed
         If Not ws Is Nothing Then
             header = 1
             If CStr(ws.Cells(5, 1).Value2) Like "*_id" Or CStr(ws.Cells(5, 1).Value2) = "entity_ref" Then header = 5
@@ -22,11 +22,11 @@ Public Sub ImportLegacyWorkbook()
             For r = header + 1 To lastRow
                 For c = 1 To lastCol
                     If IsError(ws.Cells(r, c).Value2) Then Err.Raise vbObjectError + 161, , "Legacy sheet contains an Excel error."
-                    If CStr(ws.Cells(r, c).Value2) <> "" Then staged.Add Array(CStr(name), CStr(r), CStr(ws.Cells(header, c).Value2), CStr(ws.Cells(r, c).Value2))
+                    If CStr(ws.Cells(r, c).Value2) <> "" Then staged.Add Array(CStr(sheetName), CStr(r), CStr(ws.Cells(header, c).Value2), CStr(ws.Cells(r, c).Value2))
                 Next c
             Next r
         End If
-    Next name
+    Next sheetName
     book.Close False: Set book = Nothing: Application.AutomationSecurity = security
     BeginWrite: batch = NewID("L-")
     For Each row In staged

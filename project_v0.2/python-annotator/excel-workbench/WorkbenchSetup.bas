@@ -2,11 +2,11 @@ Attribute VB_Name = "WorkbenchSetup"
 Option Explicit
 
 Private Sub Button(ByVal sheetName As String, ByVal cell As String, ByVal label As String, ByVal macro As String)
-    Dim ws As Worksheet, shape As Shape, box As Range, name As String
-    Set ws = ThisWorkbook.Worksheets(sheetName): Set box = ws.Range(cell): name = "wb_" & macro
-    On Error Resume Next: ws.Shapes(name).Delete: On Error GoTo 0
+    Dim ws As Worksheet, shape As Shape, box As Range, sheetName As String
+    Set ws = ThisWorkbook.Worksheets(sheetName): Set box = ws.Range(cell): sheetName = "wb_" & macro
+    On Error Resume Next: ws.Shapes(sheetName).Delete: On Error GoTo 0
     Set shape = ws.Shapes.AddShape(msoShapeRoundedRectangle, box.Left, box.Top, box.Width, 27)
-    shape.Name = name: shape.TextFrame2.TextRange.Text = label
+    shape.Name = sheetName: shape.TextFrame2.TextRange.Text = label
     shape.TextFrame2.TextRange.Font.Size = 10: shape.TextFrame2.TextRange.Font.Fill.ForeColor.RGB = RGB(255, 255, 255)
     shape.Fill.ForeColor.RGB = RGB(24, 52, 76): shape.Line.Visible = msoFalse
     shape.OnAction = "'" & Replace(ThisWorkbook.Name, "'", "''") & "'!" & macro
@@ -77,13 +77,13 @@ Failed: MsgBox "Startup check: " & Err.Description, vbExclamation
 End Sub
 
 Public Sub ProtectWorkbench()
-    Dim ws As Worksheet, name As String
+    Dim ws As Worksheet, sheetName As String
     For Each ws In ThisWorkbook.Worksheets
-        name = ws.Name
-        If name <> "Review Desk" And name <> "Notes" And name <> "AI Queue" And name <> "AI Analysis Input" And name <> "Watchlist Desk" And name <> "Instructions" And name <> "AI Instructions" Then
+        sheetName = ws.Name
+        If sheetName <> "Review Desk" And sheetName <> "Notes" And sheetName <> "AI Queue" And sheetName <> "AI Analysis Input" And sheetName <> "Watchlist Desk" And sheetName <> "Instructions" And sheetName <> "AI Instructions" Then
             ws.Unprotect
             ws.Cells.Locked = True
-            If name = "Note Register" Then
+            If sheetName = "Note Register" Then
                 If Not T("tNotes").DataBodyRange Is Nothing Then T("tNotes").ListColumns("note_order").DataBodyRange.Locked = False
             End If
             ws.Protect UserInterfaceOnly:=True, AllowFiltering:=True

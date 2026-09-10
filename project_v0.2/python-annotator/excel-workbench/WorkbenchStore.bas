@@ -198,10 +198,10 @@ Public Sub ClearRows(ByVal lo As ListObject)
 End Sub
 
 Public Sub RebuildOutputs()
-    Dim names As Variant, name As Variant, items As Object, id As Variant, lo As ListObject
+    Dim names As Variant, sheetName As Variant, items As Object, id As Variant, lo As ListObject
     Dim r As Long, src As String, claim As String, note As String, ent As String, quote As String, st As String, en As String
     names = Array("tEntities", "tMentions", "tFields", "tContext", "tStatements", "tUncertain")
-    For Each name In names: ClearRows T(CStr(name)): Next name
+    For Each sheetName In names: ClearRows T(CStr(sheetName)): Next sheetName
     Set items = LatestEntries(): Set lo = T("tEntries")
     For Each id In items.Keys
         r = items(id)

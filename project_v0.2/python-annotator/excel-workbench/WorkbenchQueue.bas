@@ -2,37 +2,37 @@ Attribute VB_Name = "WorkbenchQueue"
 Option Explicit
 
 Public Sub SaveQueueSnapshot()
-    Dim input As ListObject, queue As ListObject, ws As Worksheet, sourceID As String, runID As String
+    Dim staging As ListObject, queue As ListObject, ws As Worksheet, sourceID As String, runID As String
     Dim i As Long, j As Long, p As Long, s As String, keys As Object, a As Variant, row As Long, duplicate As Boolean, text As String, part As String, partN As Long
     On Error GoTo Failed
     If Not CanLeave Then Exit Sub
     sourceID = State("source"): s = FullNote(sourceID)
-    Set input = T("tInput"): Set queue = T("tQueue"): Set ws = ThisWorkbook.Worksheets("AI Analysis Input")
+    Set staging = T("tInput"): Set queue = T("tQueue"): Set ws = ThisWorkbook.Worksheets("AI Analysis Input")
     If Trim$(CStr(ws.Range("C4").Value2)) = "" Then Err.Raise vbObjectError + 70, , "Give this AI run a label on AI Analysis Input."
     If LCase$(CStr(ws.Range("C6").Value2)) <> "yes" And LCase$(CStr(ws.Range("C6").Value2)) <> "no" Then Err.Raise vbObjectError + 71, , "Run complete? must be yes or no."
-    If input.DataBodyRange Is Nothing Then Err.Raise vbObjectError + 72, , "No queue rows."
-    If ContainsFormula(input.DataBodyRange) Then Err.Raise vbObjectError + 73, , "AI Queue contains formulas. Replace them with literal values."
+    If staging.DataBodyRange Is Nothing Then Err.Raise vbObjectError + 72, , "No queue rows."
+    If ContainsFormula(staging.DataBodyRange) Then Err.Raise vbObjectError + 73, , "AI Queue contains formulas. Replace them with literal values."
     Set keys = CreateObject("Scripting.Dictionary")
-    For i = 1 To input.ListRows.Count
-        If V(input, i, "candidate_key") <> "" Then
-            If keys.Exists(V(input, i, "candidate_key")) Then Err.Raise vbObjectError + 74, , "Duplicate candidate key: " & V(input, i, "candidate_key")
-            keys.Add V(input, i, "candidate_key"), True
-            If InStr(1, "|entity|reference|field|context|statement|uncertain|", "|" & V(input, i, "action") & "|", vbBinaryCompare) = 0 Or V(input, i, "action") = "" Then Err.Raise vbObjectError + 75, , "Unknown action at candidate " & V(input, i, "candidate_key")
-            If V(input, i, "source_quote") = "" Then Err.Raise vbObjectError + 76, , "Every proposal needs an exact source quote."
+    For i = 1 To staging.ListRows.Count
+        If V(staging, i, "candidate_key") <> "" Then
+            If keys.Exists(V(staging, i, "candidate_key")) Then Err.Raise vbObjectError + 74, , "Duplicate candidate key: " & V(staging, i, "candidate_key")
+            keys.Add V(staging, i, "candidate_key"), True
+            If InStr(1, "|entity|reference|field|context|statement|uncertain|", "|" & V(staging, i, "action") & "|", vbBinaryCompare) = 0 Or V(staging, i, "action") = "" Then Err.Raise vbObjectError + 75, , "Unknown action at candidate " & V(staging, i, "candidate_key")
+            If V(staging, i, "source_quote") = "" Then Err.Raise vbObjectError + 76, , "Every proposal needs an exact source quote."
         Else
-            For j = 2 To input.ListColumns.Count
-                If V(input, i, input.ListColumns(j).Name) <> "" Then Err.Raise vbObjectError + 77, , "A populated queue row is missing candidate_key."
+            For j = 2 To staging.ListColumns.Count
+                If V(staging, i, staging.ListColumns(j).Name) <> "" Then Err.Raise vbObjectError + 77, , "A populated queue row is missing candidate_key."
             Next j
         End If
     Next i
     If MsgBox("Archive these drafts for " & F(4) & " / " & F(5) & " / version " & F(6) & "? Confirm Copilot has finished and processed parts metadata is correct.", vbYesNo + vbQuestion) <> vbYes Then Exit Sub
     BeginWrite: runID = NewID("R-")
     AddRow T("tRuns"), Array(runID, sourceID, CStr(ws.Range("C4").Value2), CStr(ws.Range("C5").Value2), LCase$(CStr(ws.Range("C6").Value2)), Stamp())
-    For i = 1 To input.ListRows.Count
-        If V(input, i, "candidate_key") <> "" Then
+    For i = 1 To staging.ListRows.Count
+        If V(staging, i, "candidate_key") <> "" Then
             ReDim a(0 To 18)
             a(0) = NewID("Q-"): a(1) = runID: a(2) = sourceID
-            For j = 1 To 13: a(j + 2) = V(input, i, input.ListColumns(j).Name): Next j
+            For j = 1 To 13: a(j + 2) = V(staging, i, staging.ListColumns(j).Name): Next j
             p = 0
             If IsNumeric(a(6)) Then
                 If Val(a(6)) > 0 And Val(a(6)) < 2147483647# And Val(a(6)) = Fix(Val(a(6))) Then p = OccurrenceStart(s, CStr(a(5)), CLng(a(6)))

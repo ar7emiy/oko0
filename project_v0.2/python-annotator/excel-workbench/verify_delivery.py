@@ -51,9 +51,21 @@ VBA_STATEMENTS={'put','get','close','open','print','write','input','line','name'
  'setattr','randomize','sendkeys','appactivate','deletesetting','savesetting','error','date','time',
  'stop','let','set','call','end','exit','next','loop','wend','resume','return','circle','pset','scale',
  'option','declare','type','const','dim','redim','static','with','on','goto','gosub','select','case','if'}
+VBA_RESERVED=VBA_STATEMENTS|{'spc','tab','rem','string','currency','variant','single','double',
+ 'integer','byte','boolean','object','property','event','implements','friend','long'}
 for module in modules:
-    for name in re.findall(r'^\s*(?:Public |Private )?(?:Sub|Function)\s+(\w+)\s*\(',module.read_text(encoding='utf-8-sig'),re.M):
-        check(name.lower() not in VBA_STATEMENTS,module.name+': '+name+' is not a VBA statement keyword')
+    body=re.sub(r"'.*",'',module.read_text(encoding='utf-8-sig'))
+    for name in re.findall(r'^\s*(?:Public |Private )?(?:Sub|Function)\s+(\w+)\s*\(',body,re.M):
+        check(name.lower() not in VBA_STATEMENTS,module.name+': procedure '+name+' is not a VBA statement keyword')
+    # Same failure mode one level down: a variable named after a keyword will not compile either.
+    identifiers=set()
+    for kw in ('Dim','Static','Const'):
+        for decl in re.findall(r'^\s*'+kw+r'\s+(.+)$',body,re.M):
+            identifiers.update(m.group(1) for m in (re.match(r'\s*(\w+)',part) for part in decl.split(',')) if m)
+    for params in re.findall(r'(?:Sub|Function)\s+\w+\s*\(([^\n]*)\)',body):
+        identifiers.update(m.group(1) for m in (re.search(r'(?:ByVal|ByRef|Optional)?\s*(\w+)\s+As\s',part) for part in params.split(',')) if m)
+    for name in sorted(identifiers):
+        check(name.lower() not in VBA_RESERVED,module.name+': identifier '+name+' is not a VBA reserved word')
 for macro in re.findall(r'^\s*Button "[^"]+", "[^"]+", "[^"]+", "([^"]+)"',source,re.M):
     check(macro in procedures,'Wired procedure '+macro)
 for t in ['tEntries','tQueue','tDrafts']:
