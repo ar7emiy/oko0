@@ -194,7 +194,8 @@ ins = page('Instructions', [3, 24, 115])
 title(ins, 'Start here')
 STEPS = [
     'Save a copy as Excel Macro-Enabled Workbook (.xlsm). Keep this original blank template.',
-    'Alt+F11 > File > Import File: import every supplied .bas. Paste ThisWorkbook.txt into the ThisWorkbook code window.',
+    'Alt+F11 > File > Import File: import all eight supplied .bas modules.',
+    'Separately, double-click ThisWorkbook under Microsoft Excel Objects and paste the whole of ThisWorkbook.txt into its empty code pane. This file cannot be imported, only pasted. Skipping it leaves the workbook without its reopen and close guards.',
     'Alt+F8 > SetupWorkbench > Run creates the buttons. No manual shape wiring.',
     'Notes: enter IDs, copy the full note, then Paste whole note. Or import UTF-8 TXT files named CLAIM_NOTE.txt.',
     'Review Desk: choose entry kind, paste exact evidence, select occurrence and fill relevant fields. Choose entity lists accepted entities.',
