@@ -1,6 +1,28 @@
 # Workbench delivery status
 
-Verified 2026-09-10 (America/Chicago).
+Verified 2026-09-11 (America/Chicago).
+
+## Undo, practice and analysis export increment
+
+- Persisted Undo for annotation/entity mutations and draft accept/dismiss, with
+  compensating revisions, source guards and reviewer isolation. Ctrl+Z preserves
+  native text editing. Frozen answer keys remain unchanged; no redo is provided.
+- Added an independent second fictional practice claim and five sample firm rows.
+- Added explicit comparison completion tied to saved answers; changes reopen it.
+- Browser exports default to three joinable analysis CSVs, with detailed audit
+  export available and practice included only when explicitly selected.
+- Corrected missed-detail counting to require a matching value and use unique
+  gold entity/kind/value denominators. Unsupported reported details on rows marked
+  not-in-notes now contribute to the reported-detail denominator.
+- Documented KPI datasets, formulas, limits and joins in `KPI-DATA-GUIDE.md`.
+
+Validation: **83 Python tests passed**, **35 headless Edge checks passed**, and
+JavaScript syntax passed. Browser checks cover saved and native text Undo,
+comparison completion, practice export opt-in and the second practice note.
+Completion and new-practice screenshots inspected. All test data was synthetic;
+the user's saved annotations and real claim files were not modified.
+
+Earlier delivery checks below are retained as history.
 
 ## Claim-level evidence review increment
 

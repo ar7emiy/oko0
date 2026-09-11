@@ -16,7 +16,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
-from . import PROMPT_VERSION, ai_import, copilot, export, firm, notes, scoring, review
+from . import PROMPT_VERSION, ai_import, copilot, export, firm, notes, scoring, review, undo, completion
 from .store import Store, UserError, now
 
 STATIC = Path(__file__).resolve().parent.parent / "static"
@@ -40,6 +40,11 @@ class App:
         self.store = store
         self.config = config
         self.store.db.executescript(review.SCHEMA)
+        had_undo = self.store.one("SELECT name FROM sqlite_master WHERE type='table' AND name='undo_actions'")
+        self.store.db.executescript(undo.SCHEMA)
+        self.store.db.executescript(completion.SCHEMA)
+        if not had_undo:
+            undo.seed_legacy(self)
         self.reload()
 
     # -- setup ---------------------------------------------------------------
@@ -202,6 +207,7 @@ class App:
                 e["details"] = [{"field": r["field"], "value": r["value"]} for r in e["records"] if r["kind"] == "detail"]
                 e["descriptions"] = [r["quote"] for r in e["records"] if r["kind"] == "description"]
         return {"claim": claim, "rows": rows, "entities": entities, "independent": bool(frozen),
+                "comparison": completion.status(self.store, claim, reviewer),
                 "categories": self.config.categories,
                 "notes": [n["note"] for n in self.store.q("SELECT note FROM notes WHERE claim=?", (claim,))]}
 
@@ -210,6 +216,7 @@ class App:
         return scoring.score(self.store, reviewer, include_practice=q.get("practice") == "1")
 
     # -- write endpoints -------------------------------------------------------
+    @undo.journal
     def entity_create(self, d: dict) -> dict:
         reviewer = self.reviewer(d)
         text = self.checked_text(d["claim"], d["note"], reviewer)
@@ -220,14 +227,17 @@ class App:
                                                   type=d.get("type") or "unknown")
         return {"entity_id": entity_id, "uid": uid}
 
+    @undo.journal
     def entity_update(self, d: dict) -> dict:
         self.store.update_entity(d["id"], self.reviewer(d), d.get("label", ""), d.get("type", ""))
         return {"ok": True}
 
+    @undo.journal
     def entity_delete(self, d: dict) -> dict:
         self.store.delete_entity(d["id"], self.reviewer(d))
         return {"ok": True}
 
+    @undo.journal
     def record_create(self, d: dict) -> dict:
         reviewer = self.reviewer(d)
         text = self.checked_text(d["claim"], d["note"], reviewer)
@@ -235,6 +245,7 @@ class App:
                                     start=int(d["start"]), end=int(d["end"]), fields=d.get("fields") or {})
         return {"uid": uid}
 
+    @undo.journal
     def record_update(self, d: dict) -> dict:
         reviewer = self.reviewer(d)
         row = self.store.record(d["uid"])
@@ -244,6 +255,7 @@ class App:
         self.store.update_record(d["uid"], reviewer, text, d.get("fields") or {}, start, end)
         return {"uid": d["uid"]}
 
+    @undo.journal
     def record_delete(self, d: dict) -> dict:
         self.store.delete_record(d["uid"], self.reviewer(d))
         return {"ok": True}
@@ -309,6 +321,7 @@ class App:
                                 problems=problems, status="needs_attention" if problems else "ready")
         return {"ok": True}
 
+    @undo.journal
     def draft_dismiss(self, d: dict) -> dict:
         reviewer = self.reviewer(d)
         draft = self.store.draft(d["id"])
@@ -318,6 +331,7 @@ class App:
         self.store.log(reviewer, "draft.dismiss", {"draft": d["id"]})
         return {"ok": True}
 
+    @undo.journal
     def draft_accept(self, d: dict) -> dict:
         reviewer = self.reviewer(d)
         draft = self.store.draft(d["id"])
@@ -422,6 +436,12 @@ class App:
     def category_save(self, d: dict) -> dict:
         return review.save(self, d)
 
+    def annotation_undo(self, d: dict) -> dict:
+        return undo.perform(self, d)
+
+    def comparison_finish(self, d: dict) -> dict:
+        return completion.finish(self, d)
+
     def pairing(self, d: dict) -> dict:
         reviewer = self.reviewer(d)
         row = self.store.one("SELECT claim FROM firm_rows WHERE id=?", (d["firm_row_id"],))
@@ -438,6 +458,7 @@ class App:
         if entity_id and d.get("not_in_notes"):
             raise UserError("Choose an entity or not in the notes, not both.")
         self.store.save_pairing(d["firm_row_id"], reviewer, entity_id=entity_id,
+                                allow_retired=bool(frozen),
                                 not_in_notes=bool(d.get("not_in_notes")),
                                 category_verdict=None if frozen else d.get("category_verdict") or None,
                                 correct_category=None if frozen else d.get("correct_category") or None)
@@ -458,6 +479,8 @@ GET_ROUTES = {"/api/bootstrap": "bootstrap", "/api/claims": "claims", "/api/note
               "/api/record/history": "history", "/api/ai/message": "ai_message",
               "/api/ai/instructions": "instructions", "/api/compare": "compare", "/api/scores": "scores"}
 POST_ROUTES = {"/api/entity/create": "entity_create", "/api/entity/update": "entity_update",
+               "/api/comparison/finish": "comparison_finish",
+               "/api/annotation/undo": "annotation_undo",
                "/api/category/save": "category_save",
                "/api/entity/delete": "entity_delete", "/api/record/create": "record_create",
                "/api/record/update": "record_update", "/api/record/delete": "record_delete",
@@ -513,7 +536,7 @@ def make_handler(app: App):
             if url.path == "/api/export":
                 try:
                     q = {k: v[0] for k, v in parse_qs(url.query).items()}
-                    data = export.build(app.store, app.reviewer(q))
+                    data = export.build(app.store, app.reviewer(q), q.get("practice") == "1", q.get("layout", "analysis"))
                 except UserError as exc:
                     return self._json(400, {"error": str(exc)})
                 except Exception:  # noqa: BLE001

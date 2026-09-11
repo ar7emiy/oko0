@@ -117,6 +117,28 @@ try {
     await b.key("Enter");
     await b.waitFor(`document.querySelector("#count-people").textContent === "2"`, "two entities");
   });
+  const ctrlZ = async () => {
+    await b.send("Input.dispatchKeyEvent", {type:"keyDown",key:"z",code:"KeyZ",windowsVirtualKeyCode:90,modifiers:2});
+    await b.send("Input.dispatchKeyEvent", {type:"keyUp",key:"z",code:"KeyZ",windowsVirtualKeyCode:90,modifiers:0});
+  };
+  await check("ctrl-z-undo-saved-annotation", async () => {
+    await b.selectInNote("called regarding the claim",0);await b.key("6");
+    await b.fill("#modal-body textarea", "Temporary mistake");
+    await b.clickText("#modal-foot .btn","Save");
+    await b.waitFor(`document.querySelector('#count-records').textContent==='3'`, "temporary record");
+    await b.eval(`document.activeElement.blur()`); await ctrlZ();
+    await b.waitFor(`document.querySelector('#count-records').textContent==='2'`, "undo restored record count");
+  });
+  await check("undo-button-and-native-text-undo", async () => {
+    await b.selectInNote("called regarding the claim",0);await b.key("6");
+    await b.fill("#modal-body textarea", "Typing test");await ctrlZ();
+    if (await b.eval(`document.querySelector('#count-records').textContent !== '2'`)) throw new Error("text undo changed saved annotations");
+    await b.fill("#modal-body textarea", "Temporary mistake again");
+    await b.clickText("#modal-foot .btn","Save");
+    await b.waitFor(`document.querySelector('#count-records').textContent==='3'`, "temporary record again");
+    await b.click("#btn-undo");
+    await b.waitFor(`document.querySelector('#count-records').textContent==='2'`, "button undo");
+  });
   await check("pronoun-mention-form", async () => {
     await b.selectInNote("She", 0);
     await b.key("2");
@@ -280,6 +302,21 @@ try {
     const lake = saved.rows.find((r) => r.data.entity_name === "Lakeview Imaging");
     if (!(lake.pairing || {}).not_in_notes) throw new Error("'not in these notes' not stored");
   });
+  await check("explicit-comparison-completion", async () => {
+    await b.click("#finish-comparison");
+    await b.waitFor(`document.querySelector('#finish-comparison').textContent==='Comparison completed'`, "completed stage");
+  });
+  await check("practice-export-opt-in-and-three-tables", async () => {
+    await b.click("#btn-export");
+    await b.waitFor(visible("#modal"),"export dialog");
+    if (!(await b.eval(`document.querySelector('#export-scope').textContent.includes('practice data')`))) throw new Error("practice exclusion should be explained");
+    await b.click("#export-practice");
+    const href = await b.eval(`document.querySelector('#download-export').href`);
+    if (!href.includes('practice=1') || !href.includes('layout=analysis')) throw new Error("wrong export scope");
+    const ok = await b.eval(`fetch(document.querySelector('#download-export').href).then(async r => r.ok && (await r.arrayBuffer()).byteLength > 1000)`);
+    if (!ok) throw new Error("analysis export failed");
+    await b.key("Escape");
+  });
   await check("scores", async () => {
     await b.click("#btn-scores", "Scores");
     await b.waitFor(visible("#view-scores"), "scores view");
@@ -294,6 +331,10 @@ try {
     const rows = await b.eval(`document.querySelectorAll("#modal-body .guide-table tr").length`);
     if (rows !== 7) throw new Error("guide should list 6 record kinds");
     await b.key("Escape");
+  });
+  await check("second-practice-note-available", async () => {
+    await b.click('.claim[data-claim="PRACTICE2"] .note-link');
+    await b.waitFor(`document.querySelector('#note-text').textContent.includes('Elena Rivera')`, "second practice note");
   });
   await check("accessible-names", async () => {
     const unnamed = await b.eval(`Array.from(document.querySelectorAll("button, input, select, textarea")).filter(e => e.offsetParent && !(e.getAttribute("aria-label") || e.textContent.trim() || e.labels?.length || e.placeholder || e.title)).map(e => e.outerHTML.slice(0, 80))`);

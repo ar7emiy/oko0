@@ -2,3 +2,8 @@ claim_number,recordType,entity_category_name,entity_subcategory_name,entity_name
 PRACTICE,entity,medical provider,,Northstar Orthopedics,14 Cedar Lane,Springfield,IL,62704,,001234567,ORG,0,,,N01,Northstar Orthopedics,,,,,,,,,
 PRACTICE,genai_only,medical provider,,Dr. Ada Monroe,,,,,,,PERSON,1,,,N01,Dr. Ada Monroe,96,WL-PRACTICE-1,Dr. Ada Monroe,,,,,,
 PRACTICE,entity,repair shop,,Lakeview Imaging,,Lakeview,,,,,ORG,0,,,,,,,,,,,,,
+PRACTICE2,entity,claimant,,Elena Rivera,,,,,,,PERSON,0,,,,,,,,,,,,,
+PRACTICE2,genai_only,medical provider,,Dr. Samuel Ortiz,,,,,,,PERSON,1,,,N01,Samuel Ortiz,93,WL-PRACTICE-2,Samuel Ortiz,,,,,,
+PRACTICE2,entity,medical provider,,Cedar Grove Rehabilitation,82 Willow Street,Fairhaven,IL,60012,555-010-4820,009876543,ORG,0,,,,,,,,,,,,,
+PRACTICE2,entity,legal,,Nina Patel,,,,,,,PERSON,0,,,,,,,,,,,,,
+PRACTICE2,entity,legal,,Harbor Legal,9 Market Lane,Fairhaven,IL,60012,555-999-0000,,ORG,0,,,,,,,,,,,,,

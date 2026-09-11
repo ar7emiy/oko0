@@ -60,7 +60,7 @@ class Workflow(unittest.TestCase):
     # -- discovery ------------------------------------------------------------
     def test_discovery_reports_bad_names_and_includes_practice(self):
         claims = {c["claim"]: c for c in self.app.claims({"reviewer": ME})["claims"]}
-        self.assertEqual(set(claims), {"PRACTICE", "C201"})
+        self.assertEqual(set(claims), {"PRACTICE", "PRACTICE2", "C201"})
         self.assertEqual([n["note"] for n in claims["C201"]["notes"]], ["N01", "N04"])
         self.assertTrue(any("badname" in s for s in self.app.config.skipped))
 

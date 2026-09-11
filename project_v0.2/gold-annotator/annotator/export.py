@@ -1,4 +1,4 @@
-"""Everything a data scientist needs, as CSV files in one zip. The practice claim is left out."""
+"""Consolidated or detailed CSV exports, with practice data explicitly opt-in."""
 from __future__ import annotations
 
 import csv
@@ -7,7 +7,7 @@ import json
 import zipfile
 
 from .firm import COLUMNS
-from .notes import PRACTICE_CLAIM
+from .notes import is_practice
 from .scoring import score
 
 README = """Claim note answer key export
@@ -28,6 +28,7 @@ Files
   actions.csv             what someone did, or how two parties relate
   unclear.csv             words the reviewer couldn't link confidently, with the reason
   record_history.csv      every revision of every record, including deleted ones
+  undo_history.csv        saved undo actions and whether each was reversed
   ai_runs.csv             each pasted Copilot answer, raw text and parse report
   ai_drafts.csv           each AI draft: what it proposed, and whether it was accepted, edited or dismissed
   firm_rows.csv           the firm's export, with the row id used below
@@ -57,10 +58,27 @@ def _csv(rows: list[dict], columns: list[str]) -> bytes:
     return buf.getvalue().encode("utf-8-sig")
 
 
-def build(store, reviewer: str | None = None) -> bytes:
+def build(store, reviewer: str | None = None, include_practice: bool = False, layout: str = "detailed") -> bytes:
     def real(rows):
-        return [r for r in rows if r.get("claim") != PRACTICE_CLAIM and
+        return [r for r in rows if (include_practice or not is_practice(r.get("claim"))) and
                 (reviewer is None or "reviewer" not in r or r["reviewer"] == reviewer)]
+
+    if layout == "analysis":
+        from .analysis_tables import tables
+        bundle = tables(store, reviewer, include_practice)
+        out = io.BytesIO()
+        with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
+            for name, (rows, columns) in bundle.items():
+                z.writestr(name, _csv(rows, columns))
+            z.writestr("README.txt", "Three-table analysis export\nPractice included: " + str(include_practice) + "\n\n"
+                "entity_comparison.csv: one row per firm row plus gold entities without a paired firm row. Count DISTINCT reviewer/claim/entity_id for gold entities; multiple firm rows may refer to one entity.\n"
+                "evidence.csv: one row per annotation in the selected answer-key version. Join using reviewer, claim, entity_id (or entity2_id). Exact source positions and hashes are retained.\n"
+                "kpi_summary.csv: aggregate numerator/denominator rows; scopes and provisional status are explicit. Do not average percentages across reviewers; sum compatible numerators and denominators.\n\n"
+                "Frozen evidence is used where available. Other rows are labeled in_progress or legacy_exposed; do not mix these with frozen gold. Current work after a freeze is available in the detailed audit export.\n"
+                "Practice rows have is_practice=1. Practice is fictional and never establishes performance on real claims. Real-only export will be empty when only practice was annotated.\n"
+                "Firm rows are withheld until the current reviewer unlocks their claim. A no_paired_firm_row row is only a confirmed miss after comparison is complete.\n"
+                "Import CSV identifier, TIN, phone and ZIP columns as TEXT to preserve leading zeros. JSON columns contain one-to-many evidence/detail lists. No Excel workbook or external dataset is required.\n")
+        return out.getvalue()
 
     entities = {e["id"]: e for e in store.q("SELECT * FROM entities")}
     current = real(store.current_records())
@@ -89,7 +107,9 @@ def build(store, reviewer: str | None = None) -> bytes:
 
     out = io.BytesIO()
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
-        z.writestr("README.txt", README)
+        z.writestr("README.txt", "Practice included: " + str(include_practice) + "\n" + README)
+        z.writestr("undo_history.csv", _csv(real(store.q("SELECT * FROM undo_actions ORDER BY id")),
+                                           ["id", "reviewer", "claim", "label", "payload", "undone_at"]))
         z.writestr("category_reviews.csv", _csv(real(store.q("SELECT * FROM category_reviews ORDER BY claim, reviewer, entity_id, revision")),
                                                ["claim", "reviewer", "entity_id", "revision", "payload"]))
         z.writestr("review_checkpoints.json", json.dumps([json.loads(r["payload"]) for r in real(store.q("SELECT * FROM review_checkpoints"))],
@@ -115,11 +135,11 @@ def build(store, reviewer: str | None = None) -> bytes:
                                           "quote", "start", "end", "match", "fields", "problems", "status",
                                           "edited", "outcome_uid", "duplicate_of", "decided_at", "raw"]))
         z.writestr("firm_rows.csv", _csv(firm_flat, ["firm_row_id"] + COLUMNS))
-        z.writestr("pairings.csv", _csv([p for p in pairings if not p["firm_row_id"].startswith(PRACTICE_CLAIM + "#")],
+        z.writestr("pairings.csv", _csv([p for p in pairings if include_practice or not is_practice(p["firm_row_id"].split("#")[0])],
                                         ["firm_row_id", "reviewer", "entity_id", "entity_number", "entity_label",
                                          "not_in_notes", "category_verdict", "correct_category", "updated_at"]))
         z.writestr("watchlist_reviews.csv",
-                   _csv([w for w in store.watchlist(reviewer).values() if not w["firm_row_id"].startswith(PRACTICE_CLAIM + "#")],
+                   _csv([w for w in store.watchlist(reviewer).values() if include_practice or not is_practice(w["firm_row_id"].split("#")[0])],
                         ["firm_row_id", "reviewer", "decision", "note_supports", "reason", "updated_at"]))
-        z.writestr("scores.json", json.dumps({rv: score(store, rv) for rv in reviewers}, indent=2, ensure_ascii=False))
+        z.writestr("scores.json", json.dumps({rv: score(store, rv, include_practice) for rv in reviewers}, indent=2, ensure_ascii=False))
     return out.getvalue()

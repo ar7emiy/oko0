@@ -12,6 +12,12 @@ from dataclasses import dataclass
 from pathlib import Path
 
 PRACTICE_CLAIM = "PRACTICE"
+PRACTICE_CLAIMS = {"PRACTICE", "PRACTICE2"}
+
+
+def is_practice(claim):
+    return claim in PRACTICE_CLAIMS
+
 PRACTICE_DIR = Path(__file__).resolve().parent / "practice"
 
 
@@ -23,7 +29,7 @@ class NoteFile:
 
     @property
     def practice(self) -> bool:
-        return self.claim == PRACTICE_CLAIM
+        return is_practice(self.claim)
 
 
 def parse_name(path: Path) -> tuple[str, str] | None:
@@ -52,7 +58,7 @@ def discover(notes_dir: Path | None) -> tuple[list[NoteFile], list[str]]:
                 skipped.append(f"{path.name}: name must be CLAIM_NOTE.txt")
                 continue
             claim, note = parsed
-            if root != PRACTICE_DIR and claim == PRACTICE_CLAIM:
+            if root != PRACTICE_DIR and is_practice(claim):
                 skipped.append(f"{path.name}: claim {PRACTICE_CLAIM} is reserved for the practice note")
                 continue
             if (claim, note) in seen:

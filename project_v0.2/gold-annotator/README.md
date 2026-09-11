@@ -12,7 +12,7 @@ Python 3.10 or newer.
 python run.py --notes "C:\path\to\notes" --firm "C:\path\to\firm-export.csv"
 ```
 
-Your browser opens at `http://localhost:8765/`. On first use the app asks for your name; every record is saved under it. A practice claim is always included, and it never counts toward the real answer key.
+Your browser opens at `http://localhost:8765/`. On first use the app asks for your name; every record is saved under it. Two fictional practice claims are always included. Practice is excluded from scores and exports unless explicitly included. The second practice claim is independent so completing the first does not prevent another exercise.
 
 | Option | Meaning |
 |---|---|
@@ -44,7 +44,12 @@ One row per person or company the firm's tool reported. The app needs at least `
 4. **Review claim evidence.** When all notes are complete, open the claim review. Select an entity to see its mentions, descriptions, actions and details grouped by original note. Click any quote to inspect the full source with that exact passage highlighted. Use **Open note to correct annotation** to correct ownership, then **Return to claim review**. Unresolved references have their own list.
 5. **Record categories.** For each entity, assign a broad claim role or choose insufficient/conflicting evidence. Mark the records that support, conflict with, or repeat evidence for that conclusion. Give a brief rationale; subcategory is optional and must appear in selected evidence. Save each entity review. The entity list stays beside the evidence; Previous/Next and Jump to category decision reduce scrolling. Unsaved inputs survive navigation within the page, but must be saved before closing it.
 6. **Freeze and compare.** Confirm the claim review before the firm's rows appear. This freezes the entities, exact record revisions, category decisions, source fingerprints and taxonomy. Pair each firm row to an entity and review watchlist flags. Category agreement is calculated from the frozen category; it is no longer a judgment made while looking at the firm's output.
-7. **Scores and export.** **Scores** shows fractions such as "7 ÷ 10 = 70%". Category accuracy uses paired rows with assigned independent categories. Category coverage reports how many paired rows qualify; insufficient/conflicting evidence and legacy labels do not count as accuracy labels. **Export** downloads the current reviewer's CSV files plus `review_checkpoints.json` and category decision history. Firm rows stay out of that download until this reviewer unlocks their claim.
+7. **Finish comparison.** Answer every firm row, including watchlist decisions, note support and reasons, then click **Finish comparison**. The page confirms completion. Changing an answer reopens this stage; scores remain provisional until all scored claims have completed comparisons.
+8. **Scores and export.** **Scores** shows fractions such as "7 ÷ 10 = 70%". **Export results** or **Export** offers three consolidated CSVs: `entity_comparison.csv`, `evidence.csv`, and `kpi_summary.csv`. Choose the detailed format for individual audit tables and frozen checkpoints. Tick **Include practice data (fictional)** to export your practice work; otherwise practice-only work produces empty answer-key tables. Exports include the current reviewer's work, and firm rows remain hidden until that reviewer unlocks the claim. See [KPI-DATA-GUIDE.md](KPI-DATA-GUIDE.md) for input datasets, formulas, denominators and table joins.
+
+Use **Undo** or **Ctrl+Z** (**Cmd+Z** on Mac) to reverse saved annotation/entity changes and AI draft acceptance or dismissal, one action at a time. Inside a text field, the shortcut retains normal text undo. Saved undo history survives a restart; upgrading an older database can recover only its last reconstructible action. Undo does not reverse category/comparison decisions or replace a frozen answer key. Correcting annotation work reopens its note. There is no redo yet.
+
+After updating the app, stop the server with **Ctrl+C**, run the same startup command again, and refresh the browser. Keep the same database and reviewer name to continue saved work.
 
 Press **?** at any time for the guide or the 2-minute tour.
 
@@ -91,7 +96,7 @@ The completed handoff and QA evidence are recorded in [STATE.md](STATE.md).
 
 ```powershell
 python -m unittest discover -s tests     # parsing, evidence, workflow, frozen review, HTTP, sample replies
-node tests/e2e/ui_flow.mjs               # 30 steps in headless Edge or Chrome, with screenshots
+node tests/e2e/ui_flow.mjs               # 35 steps in headless Edge or Chrome, with screenshots
 ```
 
 The browser run needs Node 22 or newer and Microsoft Edge or Google Chrome. It uses the stress packet in `../python-annotator/sample-data/`, fails on any JavaScript error, stray text such as "undefined", or a control covered by something else, and writes screenshots to `tests/e2e/screens/`.
@@ -108,5 +113,5 @@ The browser run needs Node 22 or newer and Microsoft Edge or Google Chrome. It u
 | `annotator/copilot.py` | Builds the message SMEs paste into Copilot. |
 | `annotator/scoring.py`, `export.py` | The EVALUATION.md scores and the data-scientist export. |
 | `annotator/review.py`, `taxonomy.json` | Claim dossiers, evidence-linked category decisions and immutable review checkpoints. |
-| `annotator/practice/` | The practice note and its firm rows. |
+| `annotator/practice/` | Two fictional practice notes and their firm rows. |
 | `static/` | The page. |

@@ -108,12 +108,18 @@ class Store:
         class _Tx:
             def __enter__(self):
                 store.lock.acquire()
-                store.db.execute("BEGIN IMMEDIATE")
+                self.savepoint = "undo_" + uuid.uuid4().hex if store.db.in_transaction else None
+                store.db.execute("SAVEPOINT " + self.savepoint if self.savepoint else "BEGIN IMMEDIATE")
                 return store.db
 
             def __exit__(self, exc_type, *_):
                 try:
-                    store.db.execute("ROLLBACK" if exc_type else "COMMIT")
+                    if self.savepoint:
+                        if exc_type:
+                            store.db.execute("ROLLBACK TO " + self.savepoint)
+                        store.db.execute("RELEASE " + self.savepoint)
+                    else:
+                        store.db.execute("ROLLBACK" if exc_type else "COMMIT")
                 finally:
                     store.lock.release()
                 return False
@@ -469,10 +475,10 @@ class Store:
         return {f"{r['firm_row_id']}|{r['reviewer']}": r for r in rows}
 
     def save_pairing(self, firm_row_id: str, reviewer: str, *, entity_id: str | None, not_in_notes: bool,
-                     category_verdict: str | None, correct_category: str | None) -> None:
+                     category_verdict: str | None, correct_category: str | None, allow_retired: bool = False) -> None:
         if category_verdict and category_verdict not in CATEGORY_VERDICTS:
             raise UserError("Choose right, wrong, or the notes don't say.")
-        if entity_id:
+        if entity_id and not allow_retired:
             self.entity(entity_id)
         with self.tx() as db:
             db.execute("INSERT OR REPLACE INTO pairings(firm_row_id, reviewer, entity_id, not_in_notes, "

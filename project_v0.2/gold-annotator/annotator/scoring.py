@@ -10,8 +10,9 @@ import re
 from collections import defaultdict
 
 from .firm import DETAIL_COLUMNS, NER_TO_TYPE, is_flagged
-from .notes import PRACTICE_CLAIM
+from .notes import is_practice
 from .review import checkpoint
+from .completion import status as comparison_status
 
 _SEPARATORS = re.compile(r"[\s\-\.\(\)/,]+")
 
@@ -37,7 +38,7 @@ def _metric(mid: str, name: str, num: int, den: int, meaning: str, **extra) -> d
 def score(store, reviewer: str, include_practice: bool = False) -> dict:
     claims = sorted({r["claim"] for r in store.q("SELECT claim FROM claim_seal WHERE reviewer=?", (reviewer,))})
     if not include_practice:
-        claims = [c for c in claims if c != PRACTICE_CLAIM]
+        claims = [c for c in claims if not is_practice(c)]
     pairings = store.pairings(reviewer)
     watch = store.watchlist(reviewer)
 
@@ -77,19 +78,19 @@ def score(store, reviewer: str, include_practice: bool = False) -> dict:
                 if ent and gold_type and ent["type"] in {"person", "organization", "location"}:
                     t["type_den"] += 1
                     t["type_num"] += int(gold_type == ent["type"])
-                for col, kind in DETAIL_COLUMNS.items():
-                    reported = data.get(col, "")
-                    if not reported:
-                        continue
-                    nv = norm_value(kind, reported)
-                    t["det_reported"] += 1
-                    if nv in gold_by_entity[p["entity_id"]][kind]:
-                        t["det_correct"] += 1
-                        t["det_right_owner"] += 1
-                    elif nv in gold_claim_kind[kind]:
-                        t["det_correct"] += 1
-                    if nv not in gold_any:
-                        t["det_made_up"] += 1
+            for col, kind in DETAIL_COLUMNS.items():
+                reported = data.get(col, "")
+                if not reported:
+                    continue
+                nv = norm_value(kind, reported)
+                t["det_reported"] += 1
+                if p["entity_id"] and nv in gold_by_entity[p["entity_id"]][kind]:
+                    t["det_correct"] += 1
+                    t["det_right_owner"] += 1
+                elif nv in gold_claim_kind[kind]:
+                    t["det_correct"] += 1
+                if nv not in gold_claim_kind[kind]:
+                    t["det_made_up"] += 1
             if p["entity_id"]:
                 t["cat_eligible"] += 1
                 decision = category_by_entity.get(p["entity_id"])
@@ -128,15 +129,16 @@ def score(store, reviewer: str, include_practice: bool = False) -> dict:
                         b[1] += int(w["decision"] == "same")
                         b[2] += int(w["decision"] == "cant_tell")
 
-        gold_details_comparable = [d for d in details if d["field"] in DETAIL_COLUMNS.values()]
-        for d in gold_details_comparable:
+        gold_details_comparable = {(d["entity_id"], d["field"], norm_value(d["field"], d["value"] or d["quote"]))
+                                   for d in details if d["field"] in DETAIL_COLUMNS.values()}
+        for entity_id, kind, value in gold_details_comparable:
             t["gold_details"] += 1
             reported_on_row = False
             for row in rows:
                 p = pairings.get(f"{row['id']}|{reviewer}")
-                if p and p["entity_id"] == d["entity_id"]:
-                    col = next(c for c, k in DETAIL_COLUMNS.items() if k == d["field"])
-                    if row["data"].get(col):
+                if p and p["entity_id"] == entity_id:
+                    col = next(c for c, k in DETAIL_COLUMNS.items() if k == kind)
+                    if norm_value(kind, row["data"].get(col, "")) == value:
                         reported_on_row = True
             t["det_missed"] += int(not reported_on_row)
 
@@ -146,7 +148,8 @@ def score(store, reviewer: str, include_practice: bool = False) -> dict:
         t["rows_paired"] += c_rows["paired"]
         t["rows_pending"] += pending
         per_claim.append({"claim": claim, "entities": len(entities), "firm_rows": len(rows),
-                          "pending_rows": pending, "found": len(paired_entities)})
+                          "pending_rows": pending, "found": len(paired_entities),
+                          "comparison_complete": comparison_status(store, claim, reviewer)["complete"]})
 
     metrics = [
         _metric("found_rate", "Found rate", t["ent_found"], t["ent_gold"],
@@ -179,6 +182,7 @@ def score(store, reviewer: str, include_practice: bool = False) -> dict:
         "reviewer": reviewer,
         "claims": per_claim,
         "pending_rows": t["rows_pending"],
+        "provisional": any(not c["comparison_complete"] for c in per_claim),
         "metrics": metrics,
         "watchlist_by_method": methods,
         "similarity_bins": [{"range": k, "flags": v[0], "confirmed_same": v[1], "cant_tell": v[2],
@@ -192,7 +196,7 @@ def score(store, reviewer: str, include_practice: bool = False) -> dict:
 def ai_scores(store, reviewer: str, include_practice: bool = False) -> dict:
     drafts = store.q("SELECT * FROM drafts WHERE reviewer=?", (reviewer,))
     if not include_practice:
-        drafts = [d for d in drafts if d["claim"] != PRACTICE_CLAIM]
+        drafts = [d for d in drafts if not is_practice(d["claim"])]
     accepted = [d for d in drafts if d["status"] == "accepted"]
     dismissed = [d for d in drafts if d["status"] == "dismissed"]
     edited = [d for d in accepted if d["edited"]]
@@ -214,7 +218,7 @@ def agreement(store, include_practice: bool = False) -> list[dict]:
     rows = store.current_records()
     by_note = defaultdict(lambda: defaultdict(set))
     for r in rows:
-        if r["claim"] == PRACTICE_CLAIM and not include_practice:
+        if is_practice(r["claim"]) and not include_practice:
             continue
         by_note[(r["claim"], r["note"])][r["reviewer"]].add((r["kind"], r["start"], r["end"], r["field"] or ""))
     out = []

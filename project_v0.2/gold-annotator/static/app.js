@@ -147,7 +147,7 @@ function renderClaims() {
     const notes = c.notes.filter((n) => !term || (c.claim + " " + n.note).toLowerCase().includes(term));
     if (!notes.length) continue;
     const total = c.notes.length;
-    const head = h("div", { class: "claim-head" }, h("span", { class: "claim-name", text: c.practice ? "Practice claim" : `Claim ${c.claim}` }),
+    const head = h("div", { class: "claim-head" }, h("span", { class: "claim-name", text: claimLabel(c.claim) }),
       c.practice ? h("span", { class: "tag", text: "practice" }) : null,
       h("span", { class: "claim-progress", text: `${c.complete}/${total} done` }));
     const bar = h("div", { class: "claim-bar" }, h("span"));
@@ -186,13 +186,13 @@ function showView(name) {
   renderClaims();
 }
 
-const claimLabel = (claim) => (claim === "PRACTICE" ? "Practice claim" : `Claim ${claim}`);
+const claimLabel = (claim) => (claim === "PRACTICE" ? "Practice claim" : claim === "PRACTICE2" ? "Practice claim 2" : `Claim ${claim}`);
 
 function renderCrumbs() {
   const c = $("#crumbs");
   c.replaceChildren();
   const sep = () => h("span", { "aria-hidden": "true", text: "›" });
-  if (S.view === "note" && S.cur) c.append(h("b", { text: S.cur.claim === "PRACTICE" ? "Practice claim" : `Claim ${S.cur.claim}` }), sep(), h("span", { text: `Note ${S.cur.note}` }));
+  if (S.view === "note" && S.cur) c.append(h("b", { text: claimLabel(S.cur.claim) }), sep(), h("span", { text: `Note ${S.cur.note}` }));
   else if (S.view === "compare" && S.compareClaim) c.append(h("b", { text: claimLabel(S.compareClaim) }), sep(), h("span", { text: "Compare with the firm" }));
   else if (S.view === "scores") c.append(h("b", { text: "Scores" }));
   else if (S.view === "review") c.append(h("b", { text: claimLabel(S.claimReview.claim) }), sep(), "Review evidence and categories");
@@ -227,7 +227,7 @@ async function refresh() {
 
 function renderNoteHead() {
   const d = S.data;
-  $("#note-title").textContent = d.claim === "PRACTICE" ? `Practice note ${d.note}` : `Claim ${d.claim} · Note ${d.note}`;
+  $("#note-title").textContent = d.claim === "PRACTICE" ? `Practice note ${d.note}` : `${claimLabel(d.claim)} · Note ${d.note}`;
   const st = $("#note-status");
   st.className = "pill " + d.status;
   st.textContent = { not_started: "Not started", in_progress: "In progress", complete: "Complete" }[d.status] || d.status;
@@ -1247,6 +1247,16 @@ function renderCompare() {
       h("p", {}, h("b", { text: "For each row the firm's tool reported, answer: " }), "which of your people or companies is it; and, if it was flagged against the watchlist, is it really the same person or company. Category agreement uses your frozen review."),
       h("p", { class: "muted small", text: "Answers save as you go. The firm's category matters beyond the label: GenAI only compares a name with watchlist entries of the same category, so a wrong category can switch that check off." })));
   const grid = h("div", { class: "compare-grid" });
+  v.append(h("div", {class:"comparison-finish"}, h("p", {id:"comparison-status",role:"status"}),
+    h("button", {id:"finish-comparison",class:"btn primary",type:"button",onclick:async ev=>{
+      ev.currentTarget.disabled = true;
+      try {
+        await Promise.all(S.compare.rows.map(r=>r.chain));
+        const result = await api("/api/comparison/finish", withMe({claim:data.claim}));
+        S.compare.comparison = result.comparison; updateCompareProgress();
+        toast("Comparison complete. Your saved results are ready to export.");
+      } catch(e) {fail(e);updateCompareProgress();}
+    }}, "Finish comparison"), h("button", {class:"btn",type:"button",onclick:openExport}, "Export results")));
   v.append(h("button", {type:"button",class:"btn small",onclick:()=>openClaimReview(data.claim)}, "View reviewed evidence"));
   const col = h("div", {});
   if (!data.rows.length) col.append(h("div", { class: "empty", text: "The firm's export has no rows for this claim." }));
@@ -1267,11 +1277,20 @@ function updateCompareProgress() {
   if (!pill) return;
   pill.textContent = `${done} of ${rows.length} rows done`;
   pill.className = "pill " + (done === rows.length ? "complete" : "in_progress");
+  const finish = $("#finish-comparison"), status = $("#comparison-status");
+  if (finish) {
+    const complete = S.compare.comparison?.complete;
+    finish.disabled = !!complete || done !== rows.length;
+    finish.textContent = complete ? "Comparison completed" : "Finish comparison";
+    status.textContent = complete ? "Comparison complete — results are ready to export." : done === rows.length ? "All rows answered. Finish comparison to confirm this stage is complete." : "Answer the remaining rows, including watchlist reasons, then finish comparison.";
+  }
 }
 
 // Saves for one row go one at a time and always send the row's latest full answers,
 // so quick successive clicks can never overwrite each other with stale values.
 function queueSave(r, kind, onSaved) {
+  if (S.compare.comparison) S.compare.comparison.complete = false;
+  updateCompareProgress();
   r.chain = r.chain.then(async () => {
     try {
       if (kind === "pairing") {
@@ -1389,7 +1408,7 @@ async function openScores() {
     toggle.addEventListener("change", () => { store.set("scoresPractice", toggle.checked ? "1" : "0"); openScores(); });
     v.replaceChildren(h("div", { class: "note-head" }, h("div", { class: "note-title" }, h("h1", { text: "How the firm's tool scores against your answer key" })),
       h("label", { class: "check-row", for: "sc-practice" }, toggle, h("span", { text: "Include the practice claim" }))),
-      h("p", { class: "muted", text: `Scored on claims you've finished and compared: ${s.claims.map((c) => claimLabel(c.claim)).join(", ") || "none yet"}. ${s.pending_rows ? `${s.pending_rows} firm row(s) still need your answers and aren't counted.` : ""}` }));
+      h("p", { class: "muted", text: `Answer keys used: ${s.claims.map((c) => claimLabel(c.claim)).join(", ") || "none yet"}. ${s.provisional ? "Provisional: finish the remaining comparisons before interpreting these scores." : ""} ${s.pending_rows ? `${s.pending_rows} firm row(s) still need your answers and aren't counted.` : ""}` }));
     const grid = h("div", { class: "score-grid" });
     for (const m of s.metrics) grid.append(h("div", { class: "score" }, h("div", { class: "name", text: m.name }), h("div", { class: "frac" + (m.denominator ? "" : " none"), text: m.text }), h("div", { class: "meaning", text: m.meaning })));
     v.append(grid);
@@ -1399,9 +1418,9 @@ async function openScores() {
       s.similarity_bins.map((b) => h("tr", {}, h("td", { text: b.range }), h("td", { class: "num", text: b.flags }), h("td", { class: "num", text: b.confirmed_same }), h("td", { class: "num", text: b.cant_tell }), h("td", { class: "num", text: b.text })))));
     const ai = s.ai;
     v.append(h("h2", { class: "section", text: "AI drafts" }), h("div", { class: "score-grid" },
-      h("div", { class: "score" }, h("div", { class: "name", text: "Draft precision" }), h("div", { class: "frac", text: ai.draft_precision.text }), h("div", { class: "meaning", text: "Drafts accepted ÷ drafts decided" })),
+      h("div", { class: "score" }, h("div", { class: "name", text: "Draft acceptance rate" }), h("div", { class: "frac", text: ai.draft_precision.text }), h("div", { class: "meaning", text: "Drafts accepted ÷ drafts decided; a review diagnostic, not independent accuracy" })),
       h("div", { class: "score" }, h("div", { class: "name", text: "Correction rate" }), h("div", { class: "frac", text: ai.correction_rate.text }), h("div", { class: "meaning", text: "Accepted drafts you had to edit ÷ drafts accepted" })),
-      h("div", { class: "score" }, h("div", { class: "name", text: "Miss rate" }), h("div", { class: "frac", text: ai.miss_rate.text }), h("div", { class: "meaning", text: "Records you added yourself ÷ all records, in notes that had AI drafts" }))));
+      h("div", { class: "score" }, h("div", { class: "name", text: "Manual-addition share" }), h("div", { class: "frac", text: ai.miss_rate.text }), h("div", { class: "meaning", text: "Records you added yourself ÷ all records, in notes that had AI drafts; not measured recall" }))));
     if (s.agreement.length) {
       v.append(h("h2", { class: "section", text: "Agreement between reviewers" }), h("table", { class: "plain" }, h("tr", {}, ["Note", "Reviewers", "Agreement (same ÷ either recorded)"].map((x) => h("th", { text: x }))),
         s.agreement.map((a) => h("tr", {}, h("td", { text: `${a.claim} ${a.note}` }), h("td", { text: a.reviewers.join(" and ") }), h("td", { class: "num", text: a.text })))));
@@ -1427,7 +1446,9 @@ function openHelp() {
     .map(([k, d]) => h("tr", {}, h("td", { text: k }), h("td", { text: d }))));
   const body = h("div", { class: "form" },
     h("p", { text: "Read the note, select words, choose what they are. Every record keeps the note's exact words and their position, so anyone can check it later." }),
-    table, h("p", {text:"After all notes are complete, review each entity's evidence across the claim. Assign a broad category or an unresolved outcome, mark supporting/conflicting/repeated evidence, and save. Freeze this answer key before comparing with the firm. Repeated text is not automatically independent corroboration."}), h("h2", { class: "section", text: "Keyboard" }), keys);
+    table, h("p", {text:"After all notes are complete, review each entity's evidence across the claim. Assign a broad category or an unresolved outcome, mark supporting/conflicting/repeated evidence, and save. Freeze this answer key before comparing with the firm. Repeated text is not automatically independent corroboration."}),
+    h("p",{text:"Ctrl+Z (Cmd+Z on Mac) or Undo reverses the last saved annotation, entity edit/delete, or AI accept/dismiss. Inside a text field it undoes typing. Frozen answer keys and firm exposure are not undone."}),
+    h("p",{text:"After pairing and watchlist review, click Finish comparison. Use Export and tick Include practice data to download fictional practice work."}), h("h2", { class: "section", text: "Keyboard" }), keys);
   openModal("Quick guide", body, [modalButton("Take the tour", () => { closeModal(); startTour(); }), modalButton("Close", closeModal, "primary")], { wide: true });
 }
 
@@ -1533,7 +1554,50 @@ function askReviewer() {
 // ---------------------------------------------------------------------------
 function typing(el) { return el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.tagName === "SELECT" || el.isContentEditable); }
 
+function openExport() {
+  if (!S.reviewer) return askReviewer();
+  const practice = h("input", {type:"checkbox",id:"export-practice"});
+  const layout = h("select", {id:"export-layout"}, h("option",{value:"analysis",text:"3 analysis tables (recommended)"}), h("option",{value:"detailed",text:"Detailed audit files"}));
+  const practiceCount = S.claims.filter(c=>c.practice).reduce((n,c)=>n+c.notes.reduce((m,x)=>m+x.records,0),0);
+  const realCount = S.claims.filter(c=>!c.practice).reduce((n,c)=>n+c.notes.reduce((m,x)=>m+x.records,0),0);
+  const notice = h("p", {id:"export-scope",role:"status"});
+  const download = h("a", {id:"download-export",class:"btn primary",download:""}, "Download ZIP");
+  const update = () => {
+    notice.textContent = practice.checked ? "Includes fictional practice rows, clearly marked is_practice. These are not real-data performance results." :
+      !realCount && practiceCount ? "Your saved work is practice data. Real-only export will have empty answer-key tables. Tick Include practice data to download your work." : "Real claims only. Practice rows are excluded.";
+    download.href = "/api/export" + qs({reviewer:S.reviewer,practice:practice.checked?"1":"0",layout:layout.value});
+  };
+  practice.addEventListener("change",update);layout.addEventListener("change",update);update();
+  openModal("Export your review", h("div",{class:"form"},
+    h("p",{text:"The analysis export combines your work into entity_comparison.csv, evidence.csv and kpi_summary.csv. Frozen answer keys are used where available; unfinished work is labeled."}),
+    field("Export format",layout),h("label",{},practice," Include practice data (fictional)"),notice,
+    h("p",{class:"muted",text:"Import identifiers and TIN/ZIP columns as text to preserve leading zeros. The detailed option retains revision history and raw AI replies."})),
+    [modalButton("Cancel",closeModal),download]);
+}
+
+async function undoAnnotation() {
+  if (S.undoing || !S.reviewer) return;
+  if (!$("#modal").hidden || !$("#tour").hidden) return fail(new Error("Close the dialog first to undo a saved annotation. Ctrl+Z in a text field undoes typing."));
+  S.undoing = true; $("#btn-undo").disabled = true;
+  try {
+    const result = await api("/api/annotation/undo", withMe({}));
+    hideActionMenu(); hidePopover(); S.sel = null; S.reviewId = null;
+    await loadClaims();
+    if (S.view === "review" && S.claimReview.claim === result.claim) await openClaimReview(result.claim, S.dossierEntity);
+    else if (result.note) await openNote(result.claim, result.note);
+    else if (S.cur?.claim === result.claim) await refresh();
+    toast(result.message);
+  } catch (e) { fail(e); }
+  finally { S.undoing = false; $("#btn-undo").disabled = false; }
+}
+
 document.addEventListener("keydown", (ev) => {
+  if ((ev.ctrlKey || ev.metaKey) && !ev.altKey && !ev.shiftKey && ev.key.toLowerCase() === "z") {
+    if (!typing(document.activeElement) && $("#modal").hidden && $("#tour").hidden) {
+      ev.preventDefault(); if (!ev.repeat) undoAnnotation();
+    }
+    return;
+  }
   if (ev.key === "Escape") {
     if (!$("#tour").hidden) return endTour();
     if (!$("#modal").hidden) return closeModal();
@@ -1578,11 +1642,11 @@ function wire() {
   $("#btn-complete").addEventListener("click", openComplete);
   $("#btn-more").addEventListener("click", openMore);
   $("#btn-help").addEventListener("click", openHelp);
+  $("#btn-undo").addEventListener("click", undoAnnotation);
   $("#btn-scores").addEventListener("click", openScores);
   $("#btn-reviewer").addEventListener("click", askReviewer);
   $("#btn-export").addEventListener("click", ev => {
-    if (!S.reviewer) { ev.preventDefault(); askReviewer(); return; }
-    ev.currentTarget.href = "/api/export" + qs({reviewer:S.reviewer});
+    ev.preventDefault();openExport();
   });
   $("#modal-close").addEventListener("click", closeModal);
   $("#modal").addEventListener("mousedown", (ev) => { if (ev.target.id === "modal") closeModal(); });
