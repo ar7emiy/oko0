@@ -17,6 +17,7 @@ sys.path.insert(0, str(HERE))
 
 from annotator.server import App, Config, serve  # noqa: E402
 from annotator.store import Store  # noqa: E402
+from annotator.review import load_taxonomy  # noqa: E402
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -29,12 +30,14 @@ def main(argv: list[str] | None = None) -> None:
     p.add_argument("--part-size", type=int, default=12000,
                    help="characters per part when a long note is sent to Copilot")
     p.add_argument("--no-browser", action="store_true")
+    p.add_argument("--taxonomy", type=Path, help="versioned study category definitions (JSON)")
     a = p.parse_args(argv)
 
     if a.notes and not a.notes.exists():
         p.error(f"notes folder not found: {a.notes}")
     store = Store(a.db)
-    app = App(store, Config(notes_dir=a.notes, firm_files=a.firm, part_size=a.part_size))
+    app = App(store, Config(notes_dir=a.notes, firm_files=a.firm, part_size=a.part_size,
+                            taxonomy=load_taxonomy(a.taxonomy)))
     httpd = serve(app, a.host, a.port)
     url = f"http://{'localhost' if a.host in ('127.0.0.1', '0.0.0.0') else a.host}:{a.port}/"
     print(f"Claim note annotator running at {url}")

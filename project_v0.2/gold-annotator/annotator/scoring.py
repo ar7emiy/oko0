@@ -11,6 +11,7 @@ from collections import defaultdict
 
 from .firm import DETAIL_COLUMNS, NER_TO_TYPE, is_flagged
 from .notes import PRACTICE_CLAIM
+from .review import checkpoint
 
 _SEPARATORS = re.compile(r"[\s\-\.\(\)/,]+")
 
@@ -46,8 +47,10 @@ def score(store, reviewer: str, include_practice: bool = False) -> dict:
     per_claim = []
 
     for claim in claims:
-        entities = store.entities(claim, reviewer)
-        records = store.current_records(claim=claim, reviewer=reviewer)
+        frozen = checkpoint(store, claim, reviewer)
+        entities = frozen["entities"] if frozen else store.entities(claim, reviewer)
+        records = frozen["records"] if frozen else store.current_records(claim=claim, reviewer=reviewer)
+        category_by_entity = {e["id"]: e["decision"] for e in entities} if frozen else {}
         details = [r for r in records if r["kind"] == "detail"]
         rows = store.firm_rows(claim)
         gold_by_entity = defaultdict(lambda: defaultdict(set))
@@ -87,12 +90,16 @@ def score(store, reviewer: str, include_practice: bool = False) -> dict:
                         t["det_correct"] += 1
                     if nv not in gold_any:
                         t["det_made_up"] += 1
-            if p["category_verdict"] in {"right", "wrong"}:
-                t["cat_den"] += 1
-                t["cat_num"] += int(p["category_verdict"] == "right")
-                t["cat_wrong"] += int(p["category_verdict"] == "wrong")
-            elif p["category_verdict"] == "unknown":
-                t["cat_unknown"] += 1
+            if p["entity_id"]:
+                t["cat_eligible"] += 1
+                decision = category_by_entity.get(p["entity_id"])
+                if decision and decision["status"] == "assigned":
+                    same = decision["category"].strip().casefold() == data.get("entity_category_name", "").strip().casefold()
+                    t["cat_den"] += 1
+                    t["cat_num"] += int(same)
+                    t["cat_wrong"] += int(not same)
+                else:
+                    t["cat_unknown"] += 1
 
             if is_flagged(data):
                 w = watch.get(f"{row['id']}|{reviewer}")
@@ -157,8 +164,10 @@ def score(store, reviewer: str, include_practice: bool = False) -> dict:
         _metric("type_agreement", "Person/organization tag", t["type_num"], t["type_den"],
                 "Firm rows whose PERSON/ORG tag matches the SME's type ÷ rows both label"),
         _metric("category_accuracy", "Category accuracy", t["cat_num"], t["cat_den"],
-                "Firm rows with the right category ÷ firm rows the SME could judge",
+                "Paired firm rows matching a frozen independent category ÷ paired rows with an assigned frozen category",
                 set_aside=t["cat_unknown"], wrong=t["cat_wrong"]),
+        _metric("category_coverage", "Category coverage", t["cat_den"], t["cat_eligible"],
+                "Paired firm rows with an assigned frozen category ÷ all paired firm rows; unresolved and legacy labels are excluded from accuracy"),
         _metric("cant_tell_rate", "Can't-tell rate", t["watch_cant"], t["watch_decided"],
                 "Watchlist flags the SME couldn't decide ÷ all flags reviewed"),
     ]

@@ -86,10 +86,21 @@ class Http(unittest.TestCase):
                                                          "start": 0, "end": 14, "label": "Dr. Ada Monroe",
                                                          "type": "person"})
         self.assertEqual(status, 200, body)
-        status, headers, data = self.get("/api/export")
+        status, headers, data = self.get("/api/export?reviewer=Http%20Tester")
         self.assertEqual(status, 200)
         self.assertEqual(headers["Content-Type"], "application/zip")
         self.assertTrue(data.startswith(b"PK"))
+
+    def test_claim_review_routes_and_blind_export(self):
+        status, _, body = self.get("/api/claim/review?claim=C201&reviewer=Review%20Tester")
+        self.assertEqual(status, 200)
+        self.assertNotIn("firm_rows", json.loads(body))
+        status, body = self.post("/api/category/save", {"claim":"C201", "reviewer":"Review Tester", "entity_id":"fake"})
+        self.assertEqual(status, 400)
+        self.assertIn("Finish every note", body["error"])
+        with self.assertRaises(urllib.error.HTTPError) as ctx:
+            self.get("/api/export")
+        self.assertEqual(ctx.exception.code, 400)
 
 
 if __name__ == "__main__":

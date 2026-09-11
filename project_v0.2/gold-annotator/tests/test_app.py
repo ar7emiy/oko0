@@ -208,6 +208,14 @@ class Workflow(unittest.TestCase):
             self.note(n)
             self.app.note_complete({"claim": "C201", "note": n, "reviewer": ME, "attest": True})
 
+    def review_all(self, category="medical provider"):
+        data = self.app.claim_review({"claim": "C201", "reviewer": ME})
+        for e in data["entities"]:
+            r = e["records"][0]
+            self.app.category_save({"claim": "C201", "reviewer": ME, "entity_id": e["id"], "basis": e["basis"],
+                                    "status": "assigned", "category": category, "rationale": "Synthetic category scoring fixture.",
+                                    "evidence": [{"uid": r["uid"], "revision": r["revision"], "role": "supports"}]})
+
     def test_completion_gates(self):
         self.import_ai()
         with self.assertRaisesRegex(UserError, "still need a decision"):
@@ -232,7 +240,8 @@ class Workflow(unittest.TestCase):
                              ("zip_code", "60101"), ("phone", "555-201-0101"), ("TIN", "STRESS-201")]:
             self.record("detail", quote, {"entity_id": north, "field": field, "value": quote}, note="N04")
         self.complete_all()
-        self.app.claim_seal({"claim": "C201", "reviewer": ME})
+        self.review_all()
+        self.app.claim_seal({"claim": "C201", "reviewer": ME, "attest": True})
         cmp = self.app.compare({"claim": "C201", "reviewer": ME})
         rows = {r["data"]["entity_name"]: r for r in cmp["rows"]}
         self.assertEqual(set(rows), {"Northstar Orthopedics", "Dr. Ada Monroe"})
@@ -268,7 +277,8 @@ class Workflow(unittest.TestCase):
         # SME puts the phone on Ada; the firm has it on Northstar.
         self.record("detail", "555-201-0101", {"entity_id": ada, "field": "phone", "value": "555-201-0101"}, note="N04")
         self.complete_all()
-        self.app.claim_seal({"claim": "C201", "reviewer": ME})
+        self.review_all("legal")
+        self.app.claim_seal({"claim": "C201", "reviewer": ME, "attest": True})
         rows = {r["data"]["entity_name"]: r for r in self.app.compare({"claim": "C201", "reviewer": ME})["rows"]}
         self.app.pairing({"firm_row_id": rows["Northstar Orthopedics"]["id"], "reviewer": ME, "entity_id": north,
                           "category_verdict": "wrong", "correct_category": "legal"})

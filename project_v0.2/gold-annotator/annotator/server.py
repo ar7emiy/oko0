@@ -16,7 +16,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
-from . import PROMPT_VERSION, ai_import, copilot, export, firm, notes, scoring
+from . import PROMPT_VERSION, ai_import, copilot, export, firm, notes, scoring, review
 from .store import Store, UserError, now
 
 STATIC = Path(__file__).resolve().parent.parent / "static"
@@ -32,12 +32,14 @@ class Config:
     skipped: list[str] = field(default_factory=list)
     firm_warnings: list[str] = field(default_factory=list)
     categories: list[str] = field(default_factory=list)
+    taxonomy: dict = field(default_factory=review.load_taxonomy)
 
 
 class App:
     def __init__(self, store: Store, config: Config):
         self.store = store
         self.config = config
+        self.store.db.executescript(review.SCHEMA)
         self.reload()
 
     # -- setup ---------------------------------------------------------------
@@ -49,8 +51,7 @@ class App:
         rows, warnings, source = firm.load([practice_firm, *self.config.firm_files])
         self.store.load_firm_rows(rows, source)
         self.config.firm_warnings = warnings
-        cats = firm.categories(rows)
-        self.config.categories = sorted(set(cats) | set(DEFAULT_CATEGORIES))
+        self.config.categories = [c["name"] for c in self.config.taxonomy["categories"]]
 
     # -- helpers -------------------------------------------------------------
     def text(self, claim: str, note: str) -> notes.NoteText:
@@ -145,7 +146,7 @@ class App:
                 d["suggest_link"] = match["id"] if match else None
             d["resolved"] = self.resolve_keys(d)
         return {
-            "claim": claim, "note": note, "text": nt.text, "length": len(nt.text), "fingerprint_ok": ok,
+            "claim": claim, "note": note, "text": nt.text, "length": len(nt.text), "fingerprint_ok": ok, "source_fingerprint": nt.sha256,
             "status": work["status"], "blind": bool(work["blind"]), "sealed": self.store.sealed(claim, reviewer),
             "entities": ents, "records": self.store.current_records(claim=claim, note=note, reviewer=reviewer),
             "drafts": drafts, "parts": [list(p) for p in ai_import.split_parts(nt.text, self.config.part_size)],
@@ -194,7 +195,13 @@ class App:
                          "cited": sorted(set(cited)),
                          "pairing": pairings.get(f"{r['id']}|{reviewer}"),
                          "watchlist": watch.get(f"{r['id']}|{reviewer}")})
-        return {"claim": claim, "rows": rows, "entities": self.entity_view(claim, reviewer),
+        frozen = review.checkpoint(self.store, claim, reviewer)
+        entities = frozen["entities"] if frozen else self.entity_view(claim, reviewer)
+        if frozen:
+            for e in entities:
+                e["details"] = [{"field": r["field"], "value": r["value"]} for r in e["records"] if r["kind"] == "detail"]
+                e["descriptions"] = [r["quote"] for r in e["records"] if r["kind"] == "description"]
+        return {"claim": claim, "rows": rows, "entities": entities, "independent": bool(frozen),
                 "categories": self.config.categories,
                 "notes": [n["note"] for n in self.store.q("SELECT note FROM notes WHERE claim=?", (claim,))]}
 
@@ -407,9 +414,13 @@ class App:
         unfinished = [r["note"] for r in rows if self.store.work(claim, r["note"], reviewer)["status"] != "complete"]
         if unfinished:
             raise UserError(f"Finish these notes first: {', '.join(unfinished)}.")
-        self.store.seal(claim, reviewer)
-        self.store.log(reviewer, "claim.seal", {"claim": claim})
-        return {"ok": True}
+        return review.freeze(self, d)
+
+    def claim_review(self, q: dict) -> dict:
+        return review.dossier(self, q["claim"], self.reviewer(q))
+
+    def category_save(self, d: dict) -> dict:
+        return review.save(self, d)
 
     def pairing(self, d: dict) -> dict:
         reviewer = self.reviewer(d)
@@ -417,14 +428,19 @@ class App:
         if not row or not self.store.sealed(row["claim"], reviewer):
             raise UserError("Finish the claim before comparing with the firm's output.")
         entity_id = d.get("entity_id") or None
+        frozen = review.checkpoint(self.store, row["claim"], reviewer)
         if entity_id:
-            ent = self.store.entity(entity_id)
+            ent = next((e for e in frozen["entities"] if e["id"] == entity_id), None) if frozen else self.store.entity(entity_id)
+            if not ent:
+                raise UserError("That entity is not in the frozen answer key.")
             if ent["claim"] != row["claim"] or ent["reviewer"] != reviewer:
                 raise UserError("That person or company isn't in this claim's answer key.")
+        if entity_id and d.get("not_in_notes"):
+            raise UserError("Choose an entity or not in the notes, not both.")
         self.store.save_pairing(d["firm_row_id"], reviewer, entity_id=entity_id,
                                 not_in_notes=bool(d.get("not_in_notes")),
-                                category_verdict=d.get("category_verdict") or None,
-                                correct_category=d.get("correct_category") or None)
+                                category_verdict=None if frozen else d.get("category_verdict") or None,
+                                correct_category=None if frozen else d.get("correct_category") or None)
         return {"ok": True}
 
     def watchlist(self, d: dict) -> dict:
@@ -438,9 +454,11 @@ class App:
 
 
 GET_ROUTES = {"/api/bootstrap": "bootstrap", "/api/claims": "claims", "/api/note": "note",
+              "/api/claim/review": "claim_review",
               "/api/record/history": "history", "/api/ai/message": "ai_message",
               "/api/ai/instructions": "instructions", "/api/compare": "compare", "/api/scores": "scores"}
 POST_ROUTES = {"/api/entity/create": "entity_create", "/api/entity/update": "entity_update",
+               "/api/category/save": "category_save",
                "/api/entity/delete": "entity_delete", "/api/record/create": "record_create",
                "/api/record/update": "record_update", "/api/record/delete": "record_delete",
                "/api/ai/preview": "ai_preview", "/api/ai/import": "ai_import", "/api/draft/span": "draft_span",
@@ -494,7 +512,10 @@ def make_handler(app: App):
                 return self._dispatch(GET_ROUTES[url.path], q)
             if url.path == "/api/export":
                 try:
-                    data = export.build(app.store)
+                    q = {k: v[0] for k, v in parse_qs(url.query).items()}
+                    data = export.build(app.store, app.reviewer(q))
+                except UserError as exc:
+                    return self._json(400, {"error": str(exc)})
                 except Exception:  # noqa: BLE001
                     traceback.print_exc()
                     return self._json(500, {"error": "The export failed. Check the server window."})

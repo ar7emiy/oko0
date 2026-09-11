@@ -34,11 +34,17 @@ Files
   pairings.csv            per reviewer: which of their entities each firm row is, and the category judgment
   watchlist_reviews.csv   per reviewer: same / different / cant_tell, and whether the note supports it
   scores.json             the EVALUATION.md scores, per reviewer
+  category_reviews.csv    every category decision revision, with evidence links in its JSON payload
+  review_checkpoints.json frozen independent answer keys (entities, record revisions, taxonomy and source hashes)
 
 Record kinds map to the earlier workbench's names: mention = Mentions, detail =
 Fields, description = Context, action = Statements, unclear = Uncertain.
 
 after_seal = 1 marks work done after the reviewer had seen the firm's output.
+The ordinary annotation CSVs show current work. Independent evaluation uses
+review_checkpoints.json, which later edits never replace. Legacy claims without
+a checkpoint have no independent category accuracy score. Repeated evidence is
+not proof of independent corroboration. Sources remain in their original files.
 """
 
 
@@ -51,9 +57,10 @@ def _csv(rows: list[dict], columns: list[str]) -> bytes:
     return buf.getvalue().encode("utf-8-sig")
 
 
-def build(store) -> bytes:
+def build(store, reviewer: str | None = None) -> bytes:
     def real(rows):
-        return [r for r in rows if r.get("claim") != PRACTICE_CLAIM]
+        return [r for r in rows if r.get("claim") != PRACTICE_CLAIM and
+                (reviewer is None or "reviewer" not in r or r["reviewer"] == reviewer)]
 
     entities = {e["id"]: e for e in store.q("SELECT * FROM entities")}
     current = real(store.current_records())
@@ -72,17 +79,21 @@ def build(store) -> bytes:
     }
     tail = ["source", "draft_id", "after_seal", "created_at"]
 
-    firm = real(store.firm_rows())
+    firm = [r for r in real(store.firm_rows()) if reviewer is None or store.sealed(r["claim"], reviewer)]
     firm_flat = [{"firm_row_id": r["id"], **r["data"]} for r in firm]
     pairings = []
-    for p in store.pairings().values():
+    for p in store.pairings(reviewer).values():
         e = entities.get(p["entity_id"]) or {}
         pairings.append({**p, "entity_label": e.get("label", ""), "entity_number": e.get("number", "")})
-    reviewers = store.reviewers()
+    reviewers = [reviewer] if reviewer else store.reviewers()
 
     out = io.BytesIO()
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
         z.writestr("README.txt", README)
+        z.writestr("category_reviews.csv", _csv(real(store.q("SELECT * FROM category_reviews ORDER BY claim, reviewer, entity_id, revision")),
+                                               ["claim", "reviewer", "entity_id", "revision", "payload"]))
+        z.writestr("review_checkpoints.json", json.dumps([json.loads(r["payload"]) for r in real(store.q("SELECT * FROM review_checkpoints"))],
+                                                       ensure_ascii=False, indent=2))
         z.writestr("notes.csv", _csv(real(store.q("SELECT * FROM notes")), ["claim", "note", "path"]))
         z.writestr("note_work.csv", _csv(real(store.q("SELECT * FROM note_work")),
                                          ["claim", "note", "reviewer", "status", "blind", "fingerprint",
@@ -108,7 +119,7 @@ def build(store) -> bytes:
                                         ["firm_row_id", "reviewer", "entity_id", "entity_number", "entity_label",
                                          "not_in_notes", "category_verdict", "correct_category", "updated_at"]))
         z.writestr("watchlist_reviews.csv",
-                   _csv([w for w in store.watchlist().values() if not w["firm_row_id"].startswith(PRACTICE_CLAIM + "#")],
+                   _csv([w for w in store.watchlist(reviewer).values() if not w["firm_row_id"].startswith(PRACTICE_CLAIM + "#")],
                         ["firm_row_id", "reviewer", "decision", "note_supports", "reason", "updated_at"]))
         z.writestr("scores.json", json.dumps({rv: score(store, rv) for rv in reviewers}, indent=2, ensure_ascii=False))
     return out.getvalue()

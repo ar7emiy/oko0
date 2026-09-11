@@ -163,7 +163,7 @@ function renderClaims() {
     });
     let action = null;
     if (c.sealed) action = h("button", { class: "btn small claim-action", type: "button", onclick: () => openCompare(c.claim) }, "Open firm comparison");
-    else if (c.complete === total && total) action = h("button", { class: "btn primary small claim-action", type: "button", onclick: () => confirmSeal(c.claim) }, "Finish claim and compare");
+    else if (c.complete === total && total) action = h("button", { class: "btn primary small claim-action", type: "button", onclick: () => openClaimReview(c.claim) }, "Review claim evidence");
     box.append(h("div", { class: "claim", data: { claim: c.claim } }, head, bar, ...list, action));
   }
   if (!box.children.length) box.append(h("div", { class: "empty", text: term ? "No claims or notes match." : "No notes found. Ask your coordinator which folder to start the annotator with." }));
@@ -179,7 +179,7 @@ function renderClaims() {
 // ---------------------------------------------------------------------------
 function showView(name) {
   S.view = name;
-  for (const v of ["welcome", "note", "compare", "scores"]) $("#view-" + v).hidden = v !== name;
+  for (const v of ["welcome", "note", "review", "compare", "scores"]) $("#view-" + v).hidden = v !== name;
   $("#panel").hidden = name !== "note";
   $(".shell").style.gridTemplateColumns = name === "note" ? "" : "272px minmax(0, 1fr)";
   renderCrumbs();
@@ -195,6 +195,8 @@ function renderCrumbs() {
   if (S.view === "note" && S.cur) c.append(h("b", { text: S.cur.claim === "PRACTICE" ? "Practice claim" : `Claim ${S.cur.claim}` }), sep(), h("span", { text: `Note ${S.cur.note}` }));
   else if (S.view === "compare" && S.compareClaim) c.append(h("b", { text: claimLabel(S.compareClaim) }), sep(), h("span", { text: "Compare with the firm" }));
   else if (S.view === "scores") c.append(h("b", { text: "Scores" }));
+  else if (S.view === "review") c.append(h("b", { text: claimLabel(S.claimReview.claim) }), sep(), "Review evidence and categories");
+  if (S.view === "note" && S.claimReview?.claim === S.cur?.claim) c.append(h("button", {class: "btn small", type: "button", onclick: () => openClaimReview(S.cur.claim, S.dossierEntity)}, "Return to claim review"));
 }
 
 // ---------------------------------------------------------------------------
@@ -1078,13 +1080,136 @@ function openMore(ev) {
 // Finishing a claim and comparing with the firm's output
 // ---------------------------------------------------------------------------
 function confirmSeal(claim) {
+  if ([...categoryDrafts.entries()].some(([k,d]) => k.startsWith(`${S.reviewer}|${claim}|`) && d.dirty)) return fail(new Error("Save or discard the unsaved entity reviews first."));
   const body = h("div", { class: "form" },
-    h("p", { text: "Every note in this claim is complete. Next you'll see what the firm's tool reported for it, and answer a few questions about each row." }),
-    h("p", { text: "Your answer key was built without seeing the firm's output. That's what makes it a fair test, so once you've seen it, avoid changing your records. If you must, changes are saved and marked as made after seeing it." }));
-  openModal(`Finish claim ${claim}`, body, [modalButton("Not yet", closeModal), modalButton("Finish and compare", async () => {
-    try { await api("/api/claim/seal", withMe({ claim })); closeModal(); await loadClaims(); openCompare(claim); } catch (e) { fail(e); }
-  }, "primary")]);
+    h("p", { text: "Freeze the reviewed entities, category decisions and exact evidence versions. Later annotation edits will not change this evaluated answer key." }));
+  const attest = h("input", {type: "checkbox", id: "freeze-attest"});
+  body.append(h("label", {}, attest, " I reviewed the claim entities, evidence ownership and unresolved references before seeing the firm's output."));
+  const save = modalButton("Freeze and compare", async () => {
+    try { await api("/api/claim/seal", withMe({ claim, attest: attest.checked })); closeModal(); await loadClaims(); openCompare(claim); } catch (e) { fail(e); }
+  }, "primary");
+  save.disabled = true;
+  attest.addEventListener("change", () => { save.disabled = !attest.checked; });
+  openModal(`Freeze claim ${claim}`, body, [modalButton("Not yet", closeModal), save]);
 }
+
+// A dossier retains each note's source record; categories never come from firm rows.
+const categoryDrafts = new Map();
+async function openClaimReview(claim, entityId) {
+  try {
+    S.claimReview = await api("/api/claim/review" + qs(withMe({claim})));
+    for (const [key] of categoryDrafts) {
+      if (key.startsWith(`${S.reviewer}|${claim}|`) && !S.claimReview.entities.some(e => key === `${S.reviewer}|${claim}|${e.id}`)) categoryDrafts.delete(key);
+    }
+    S.dossierEntity = entityId || S.claimReview.entities.find(e => !e.reviewed)?.id || S.claimReview.entities[0]?.id;
+    showView("review"); renderClaimReview();
+  } catch (e) { fail(e); }
+}
+
+async function showEvidence(record) {
+  try {
+    const data = await api("/api/note" + qs(withMe({claim: record.claim, note: record.note})));
+    const chars = Array.from(data.text);
+    const source = S.claimReview.sources.find(s => s.note === record.note);
+    const exact = data.fingerprint_ok && source && source.fingerprint === data.source_fingerprint && chars.slice(record.start, record.end).join("") === record.quote;
+    if (!exact) throw new Error("The source file differs from the reviewed evidence. Restore the original file to inspect this position.");
+    const mark = h("mark", {text: record.quote});
+    const body = h("div", {}, h("p", {text: `Note ${record.note} · characters ${record.start}–${record.end} · revision ${record.revision}`}),
+      h("div", {class: "source-passage"}, chars.slice(0, record.start).join(""), mark, chars.slice(record.end).join("")));
+    openModal("Original note evidence", body, [modalButton("Open note to correct annotation", async () => {
+      closeModal(); await openNote(record.claim, record.note); scrollToCp(record.start);
+      if (!record.is_first) openRecordForm(record.kind, {start: record.start, end: record.end}, {...record});
+    }), modalButton("Back to dossier", closeModal, "primary")], {wide: true});
+    mark.scrollIntoView({block: "center"});
+  } catch (e) { fail(e); }
+}
+
+function renderClaimReview() {
+  const data = S.claimReview, view = $("#view-review");
+  view.replaceChildren();
+  const readOnly = data.frozen || data.legacy;
+  const count = data.entities.filter(e => e.reviewed).length;
+  const unsaved = [...categoryDrafts.entries()].some(([k,d]) => k.startsWith(`${S.reviewer}|${data.claim}|`) && d.dirty);
+  const freeze = h("button", {id: "freeze-review", class: "btn primary", type: "button", disabled: count !== data.entities.length || readOnly || unsaved,
+    onclick: () => confirmSeal(data.claim)}, "Freeze and compare");
+  view.append(h("div", {class: "note-head"}, h("div", {}, h("h1", {text: "Review the claim evidence"}),
+    h("p", {id: "category-progress", text: `${count} of ${data.entities.length} entities reviewed`})), freeze),
+    h("p", {text: data.frozen ? "This is the frozen answer key. Later annotation edits do not change it." : data.legacy ? "This claim was already exposed to firm output. Its categories cannot be backfilled as independent labels." : "Review each entity across all notes, then choose its broad role or an unresolved outcome. The firm's output stays hidden."}),
+    h("details", {}, h("summary", {text: `Category guide · ${data.taxonomy.version}`}), h("p", {text: data.taxonomy.scope}),
+      data.taxonomy.categories.map(c => h("p", {}, h("b", {text: c.name + ": "}), c.definition))));
+  if (data.unresolved.length) view.append(h("details", {class: "unresolved-review"}, h("summary", {text: `${data.unresolved.length} unresolved references — inspect before freezing`}),
+    data.unresolved.map(r => h("p", {}, h("button", {type: "button", class: "link", onclick: () => showEvidence(r), text: `${r.note}: “${r.quote}”`}), " — ", r.reason))));
+  if (!data.entities.length) { view.append(h("p", {text: "No entities were recorded. Check the unresolved references and confirm the supplied packet before freezing."})); return; }
+  const grid = h("div", {class: "dossier-grid"});
+  const nav = h("nav", {class: "dossier-nav", "aria-label": "Claim entities"}, data.entities.map(e => h("button", {
+    type: "button", class: "btn" + (e.id === S.dossierEntity ? " primary" : ""), onclick: () => { S.dossierEntity = e.id; renderClaimReview(); }
+  }, `E${e.number} · ${e.label} · ${e.reviewed ? "Reviewed" : "Needs review"}`)));
+  const e = data.entities.find(e => e.id === S.dossierEntity) || data.entities[0];
+  const key = `${S.reviewer}|${data.claim}|${e.id}`;
+  let draft = categoryDrafts.get(key);
+  if (!draft || draft.basis !== e.basis || readOnly) {
+    const retained = !readOnly && draft?.dirty ? draft : e.decision;
+    draft = {...(retained || {}), basis: e.basis, evidence: structuredClone(retained?.evidence || []).filter(x => e.records.some(r => r.uid === x.uid && r.revision === x.revision)), dirty: !readOnly && !!retained?.dirty};
+    categoryDrafts.set(key, draft);
+  }
+  const content = h("article", {class: "dossier-content"}, h("h2", {text: `E${e.number} · ${e.label}`}),
+    h("p", {class: "muted", text: "Evidence belongs to its original note. Supporting records are not automatically independent; mark copied or repeated evidence explicitly."}));
+  content.append(h("button", {class:"btn small",type:"button",onclick:()=>$(".category-form").scrollIntoView({block:"start"})}, "Jump to category decision"));
+  if (e.decision && !e.reviewed) content.append(h("p", {class: "banner", text: "Evidence or entity details changed since the saved decision. Review and save again."}));
+  let lastNote = null;
+  for (const r of e.records) {
+    if (lastNote !== r.note) { content.append(h("h3", {text: `Note ${r.note}`})); lastNote = r.note; }
+    const role = h("select", {class: "evidence-role", "aria-label": `Evidence role: ${r.note} ${r.quote}`, disabled: readOnly},
+      [["", "Not used for this category"], ["supports", "Supports"], ["conflicts", "Conflicts"], ["repeated", "Repeated / copied"]].map(([v,t]) => h("option", {value:v,text:t})));
+    role.value = draft.evidence.find(x => x.uid === r.uid && x.revision === r.revision)?.role || "";
+    role.addEventListener("change", () => {
+      draft.evidence = draft.evidence.filter(x => x.uid !== r.uid);
+      if (role.value) draft.evidence.push({uid:r.uid, revision:r.revision, role:role.value});
+      changed();
+    });
+    const other = r.entity_id === e.id ? r.entity2_id : r.entity_id;
+    const partner = data.entities.find(x => x.id === other);
+    content.append(h("div", {class: "evidence-card"}, h("div", {class: "muted small", text: `${r.is_first ? "First named" : KINDS[r.kind]?.label || r.kind} · revision ${r.revision}${partner ? ` · linked with ${partner.label}` : ""}`}),
+      h("button", {class: "link evidence-quote", type:"button", onclick: () => showEvidence(r), text: `“${r.quote}”`}),
+      r.field ? h("p", {text: `${FIELD_LABEL[r.field] || r.field}: ${r.value}`}) : null,
+      r.reason || r.label ? h("p", {text:r.reason || r.label}) : null, role));
+  }
+  const form = h("div", {class:"category-form form"});
+  const status = h("select", {id:"category-status", disabled:readOnly}, [["", "Choose outcome…"], ["assigned", "Assign a broad category"], ["insufficient", "Insufficient evidence"], ["conflicting", "Conflicting evidence"]].map(([v,t])=>h("option",{value:v,text:t})));
+  const category = h("select", {id:"category-value", disabled:readOnly}, h("option",{value:"",text:"Choose category…"}), data.taxonomy.categories.map(c=>h("option",{value:c.name,text:c.name})));
+  const subcategory = h("input", {id:"category-sub", type:"text", disabled:readOnly, value:draft.subcategory || ""});
+  const rationale = h("textarea", {id:"category-rationale", disabled:readOnly}); rationale.value = draft.rationale || "";
+  status.value = draft.status || ""; category.value = draft.category || "";
+  const catField = field("Broad claim role", category);
+  catField.hidden = status.value !== "assigned";
+  const message = h("p", {id:"category-save-status", role:"status", text:draft.dirty ? "Unsaved changes" : e.reviewed ? "Saved" : "Not yet reviewed"});
+  function changed() { draft.dirty = true; freeze.disabled = true; message.textContent = "Unsaved changes — retained while navigating this page; save before closing."; }
+  status.addEventListener("change", () => {draft.status = status.value; catField.hidden = status.value !== "assigned"; changed();});
+  category.addEventListener("change", () => {draft.category = category.value; changed();});
+  subcategory.addEventListener("input", () => {draft.subcategory = subcategory.value; changed();});
+  rationale.addEventListener("input", () => {draft.rationale = rationale.value; changed();});
+  const save = h("button", {id:"category-save", type:"button", class:"btn primary", disabled:readOnly, onclick:async () => {
+    save.disabled = true;
+    try {
+      await api("/api/category/save", withMe({claim:data.claim, entity_id:e.id, ...draft}));
+      categoryDrafts.delete(key);
+      await openClaimReview(data.claim, e.id);
+      toast("Category review saved.");
+    } catch(err) { message.textContent = err.message; save.disabled = false; }
+  }}, "Save entity review");
+  form.append(h("h3", {text:"Category decision"}), field("Review outcome", status), catField,
+    field("Subcategory (optional, only when stated)", subcategory), field("Why? Cite the evidence or explain what is missing", rationale), message, save,
+    h("button", {type:"button",class:"btn",disabled:readOnly,onclick:()=>{categoryDrafts.delete(key);renderClaimReview();}}, "Discard unsaved edits"));
+  content.append(form); grid.append(nav, content); view.append(grid);
+  const index = data.entities.findIndex(x=>x.id===e.id);
+  form.append(h("div", {class:"draft-nav"},
+    h("button", {type:"button",class:"btn small",disabled:index===0,onclick:()=>{S.dossierEntity=data.entities[index-1].id;renderClaimReview();$("#view-review").scrollIntoView();}}, "Previous entity"),
+    h("button", {type:"button",class:"btn small",disabled:index===data.entities.length-1,onclick:()=>{S.dossierEntity=data.entities[index+1].id;renderClaimReview();$("#view-review").scrollIntoView();}}, "Next entity")));
+}
+
+window.addEventListener("beforeunload", ev => {
+  if ([...categoryDrafts.values()].some(d => d.dirty)) { ev.preventDefault(); ev.returnValue = ""; }
+});
 
 async function openCompare(claim) {
   try {
@@ -1102,7 +1227,7 @@ const FIRM_FIELDS = [["entity_category_name", "Category"], ["entity_subcategory_
 function rowDone(r) {
   const p = r.pairing, w = r.watchlist;
   const paired = p.entity_id || p.not_in_notes;
-  const cat = p.not_in_notes || p.category_verdict;
+  const cat = S.compare.independent || p.not_in_notes || p.category_verdict;
   const watch = !r.flagged || (w.decision && w.note_supports && w.reason);
   return !!(paired && cat && watch);
 }
@@ -1119,9 +1244,10 @@ function renderCompare() {
     h("div", { class: "note-head" }, h("div", { class: "note-title" }, h("h1", { text: `Compare ${claimLabel(data.claim).replace("Claim", "claim")} with the firm's output` }),
       h("span", { class: "pill", id: "compare-progress" }))),
     h("div", { class: "compare-intro" },
-      h("p", {}, h("b", { text: "For each row the firm's tool reported, answer: " }), "which of your people or companies is it; is the firm's category right; and, if it was flagged against the watchlist, is it really the same person or company."),
+      h("p", {}, h("b", { text: "For each row the firm's tool reported, answer: " }), "which of your people or companies is it; and, if it was flagged against the watchlist, is it really the same person or company. Category agreement uses your frozen review."),
       h("p", { class: "muted small", text: "Answers save as you go. The firm's category matters beyond the label: GenAI only compares a name with watchlist entries of the same category, so a wrong category can switch that check off." })));
   const grid = h("div", { class: "compare-grid" });
+  v.append(h("button", {type:"button",class:"btn small",onclick:()=>openClaimReview(data.claim)}, "View reviewed evidence"));
   const col = h("div", {});
   if (!data.rows.length) col.append(h("div", { class: "empty", text: "The firm's export has no rows for this claim." }));
   for (const r of data.rows) col.append(firmCard(r, data));
@@ -1201,6 +1327,14 @@ function firmCard(r, data) {
     queueSave(r, "pairing");
   });
   catWrap.append(h("span", { class: "label", text: `The firm's category is “${d.entity_category_name || "(none)"}”. Is it right?` }), verdict, correctRow);
+  const showFrozenCategory = () => {
+    if (!data.independent) return;
+    const decision = data.entities.find(e => e.id === p.entity_id)?.decision;
+    catWrap.replaceChildren(h("p", {text: !decision ? "Pair this row to see its frozen category." : decision.status === "assigned" ?
+      `Frozen category: ${decision.category}. ${decision.category.toLowerCase() === (d.entity_category_name || "").trim().toLowerCase() ? "Matches" : "Differs from"} the firm's category.` :
+      `Frozen outcome: ${decision.status === "conflicting" ? "Conflicting" : "Insufficient"} evidence — excluded from category accuracy.`}));
+  };
+  showFrozenCategory();
   catWrap.hidden = !!p.not_in_notes;
   qs_.append(catWrap);
 
@@ -1208,6 +1342,7 @@ function firmCard(r, data) {
     p.not_in_notes = who.value === "__none" ? 1 : 0;
     p.entity_id = who.value && who.value !== "__none" ? who.value : null;
     catWrap.hidden = !!p.not_in_notes;
+    showFrozenCategory();
     refreshStatus();
     queueSave(r, "pairing");
   });
@@ -1292,7 +1427,7 @@ function openHelp() {
     .map(([k, d]) => h("tr", {}, h("td", { text: k }), h("td", { text: d }))));
   const body = h("div", { class: "form" },
     h("p", { text: "Read the note, select words, choose what they are. Every record keeps the note's exact words and their position, so anyone can check it later." }),
-    table, h("h2", { class: "section", text: "Keyboard" }), keys);
+    table, h("p", {text:"After all notes are complete, review each entity's evidence across the claim. Assign a broad category or an unresolved outcome, mark supporting/conflicting/repeated evidence, and save. Freeze this answer key before comparing with the firm. Repeated text is not automatically independent corroboration."}), h("h2", { class: "section", text: "Keyboard" }), keys);
   openModal("Quick guide", body, [modalButton("Take the tour", () => { closeModal(); startTour(); }), modalButton("Close", closeModal, "primary")], { wide: true });
 }
 
@@ -1304,7 +1439,7 @@ const TOUR = [
   { title: "People and companies", target: "#panel", before: "tabPeople", text: ["Everyone you record appears here. Click someone to light up every place they appear in the note."] },
   { title: "Optional: AI drafts", target: "#btn-ai", text: ["Copy the note for Copilot, paste its reply back, then review each draft. You accept, fix or dismiss every one — nothing is accepted automatically."] },
   { title: "Finish the note", target: "#btn-complete", text: ["When you've read every word and recorded everything, mark the note complete."] },
-  { title: "Compare with the firm", target: "#claims", text: ["When every note in a claim is complete, finish the claim. Only then do you see the firm's output, and answer three questions per row: who it is, whether its category is right, and whether a watchlist flag is real."] },
+  { title: "Review the claim, then compare", target: "#claims", text: ["After every note is complete, review each entity's evidence across notes. Assign a broad category or an unresolved outcome, then freeze your answer key. Only then pair the firm's rows and review watchlist flags. Category agreement is calculated from your frozen decisions."] },
   { title: "Help any time", target: "#btn-help", text: ["Press this, or the ? key, for the quick guide or this tour."] },
 ];
 let tourIndex = 0;
@@ -1445,6 +1580,10 @@ function wire() {
   $("#btn-help").addEventListener("click", openHelp);
   $("#btn-scores").addEventListener("click", openScores);
   $("#btn-reviewer").addEventListener("click", askReviewer);
+  $("#btn-export").addEventListener("click", ev => {
+    if (!S.reviewer) { ev.preventDefault(); askReviewer(); return; }
+    ev.currentTarget.href = "/api/export" + qs({reviewer:S.reviewer});
+  });
   $("#modal-close").addEventListener("click", closeModal);
   $("#modal").addEventListener("mousedown", (ev) => { if (ev.target.id === "modal") closeModal(); });
   $("#welcome-tour").addEventListener("click", startTour);

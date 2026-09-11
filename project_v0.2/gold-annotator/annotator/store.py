@@ -159,7 +159,7 @@ class Store:
             if row["status"] == "not_started":
                 db.execute("UPDATE note_work SET status='in_progress' WHERE claim=? AND note=? AND reviewer=?",
                            (claim, note, reviewer))
-            if row["fingerprint"] is None or not has_work:
+            if row["fingerprint"] is None or (not has_work and row["completed_at"] is None):
                 db.execute("UPDATE note_work SET fingerprint=? WHERE claim=? AND note=? AND reviewer=?",
                            (sha, claim, note, reviewer))
                 return True

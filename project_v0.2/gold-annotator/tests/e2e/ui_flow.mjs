@@ -213,10 +213,42 @@ try {
     await b.clickText("#modal-foot .btn", "Mark complete");
     await b.waitFor(`document.querySelector("#note-status").textContent === "Complete"`, "complete");
   });
+  await check("claim-dossier-before-firm-output", async () => {
+    await b.clickText(".claim-action", "Review claim evidence");
+    await b.waitFor(visible("#view-review"), "claim review");
+    if (!(await b.eval(`document.querySelector('#freeze-review').disabled`))) throw new Error("unreviewed entities must block freeze");
+    const gate = await b.eval(`fetch('/api/compare?claim=PRACTICE&reviewer=Pat%20Reviewer').then(r=>r.status)`);
+    if (gate !== 400) throw new Error("firm output visible before review");
+  });
+  await check("dossier-source-navigation-and-save", async () => {
+    await b.eval(`(() => {const s=document.querySelector('#category-status');s.value='assigned';s.dispatchEvent(new Event('change'));})()`);
+    await b.eval(`(() => {const s=document.querySelector('#category-value');s.value='medical provider';s.dispatchEvent(new Event('change'));})()`);
+    await b.fill("#category-rationale", "The note identifies her as an orthopedic surgeon.");
+    await b.clickText(".evidence-quote", "“orthopedic surgeon”");
+    await b.waitFor(visible("#modal"), "source passage");
+    if (!(await b.eval(`document.querySelector('.source-passage mark').textContent.includes('orthopedic surgeon')`))) throw new Error("wrong source highlight");
+    await b.clickText("#modal-foot .btn", "Back to dossier");
+    if (!(await b.eval(`document.querySelector('#category-rationale').value.includes('orthopedic surgeon')`))) throw new Error("source navigation lost draft");
+    await b.eval(`(() => {const card=Array.from(document.querySelectorAll('.evidence-card')).find(c=>c.querySelector('.evidence-quote').textContent==='“orthopedic surgeon”'); const s=card.querySelector('select');s.value='supports';s.dispatchEvent(new Event('change'));})()`);
+    await b.click("#category-save");
+    await b.waitFor(`document.querySelector('#category-progress').textContent.startsWith('1 of 2')`, "first entity reviewed");
+  });
+  await check("second-dossier-category-and-unsaved-freeze-gate", async () => {
+    await b.clickText(".dossier-nav button", "E2");
+    await b.eval(`(() => {const s=document.querySelector('#category-status');s.value='assigned';s.dispatchEvent(new Event('change'));const c=document.querySelector('#category-value');c.value='medical provider';c.dispatchEvent(new Event('change'));})()`);
+    await b.fill("#category-rationale", "The clinic is explicitly the medical provider.");
+    await b.eval(`(() => {const card=Array.from(document.querySelectorAll('.evidence-card')).find(c=>c.querySelector('.evidence-quote').textContent==='“the medical provider”'); const s=card.querySelector('select');s.value='supports';s.dispatchEvent(new Event('change'));})()`);
+    await b.click("#category-save");
+    await b.waitFor(`document.querySelector('#category-progress').textContent.startsWith('2 of 2')`, "both entities reviewed");
+    await b.fill("#category-rationale", "Unsaved change");
+    if (!(await b.eval(`document.querySelector('#freeze-review').disabled`))) throw new Error("unsaved review must block freeze");
+    await b.clickText(".category-form button", "Discard unsaved edits");
+  });
   await check("finish-claim", async () => {
-    await b.clickText(".claim-action", "Finish claim");
+    await b.click("#freeze-review");
     await b.waitFor(visible("#modal"), "seal dialog");
-    await b.clickText("#modal-foot .btn", "Finish and compare");
+    await b.click("#freeze-attest");
+    await b.clickText("#modal-foot .btn", "Freeze and compare");
     await b.waitFor(visible("#view-compare"), "comparison");
     const rows = await b.eval(`document.querySelectorAll(".firm-card").length`);
     if (rows !== 3) throw new Error("practice claim has 3 firm rows, got " + rows);
@@ -230,9 +262,7 @@ try {
     const cited = await b.eval(`document.querySelector(".firm-card:nth-of-type(1) .firm-facts").textContent`);
     if (/object/.test(cited)) throw new Error("a note link rendered as text: " + cited);
     await pick(1, "Northstar");
-    await b.clickText(".firm-card:nth-of-type(1) .choice", "Right");
     await pick(2, "Ada");
-    await b.clickText(".firm-card:nth-of-type(2) .choice", "Right");
     await b.clickText(".firm-card:nth-of-type(2) .watch-box .choice", "Can't tell");
     await b.clickText(".firm-card:nth-of-type(2) .watch-box .choice", "Partly");
     await b.eval(`(() => { const t = document.querySelector(".firm-card:nth-of-type(2) textarea"); t.value = "Name matches but the note gives no identifier to confirm it."; t.dispatchEvent(new Event("blur")); })()`);
@@ -246,7 +276,7 @@ try {
     const w = ada.watchlist || {};
     if (w.decision !== "cant_tell" || w.note_supports !== "partly" || !(w.reason || "").includes("identifier"))
       throw new Error("stored watchlist answers don't match the screen: " + JSON.stringify(w));
-    if ((ada.pairing || {}).category_verdict !== "right") throw new Error("stored category verdict lost");
+    if (!saved.independent || saved.entities.find(e => e.label === 'Dr. Ada Monroe').decision.category !== 'medical provider') throw new Error("frozen category missing");
     const lake = saved.rows.find((r) => r.data.entity_name === "Lakeview Imaging");
     if (!(lake.pairing || {}).not_in_notes) throw new Error("'not in these notes' not stored");
   });

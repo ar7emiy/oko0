@@ -2,6 +2,48 @@
 
 Verified 2026-09-10 (America/Chicago).
 
+## Claim-level evidence review increment
+
+Implemented after the initial Claude handoff: **Review claim evidence** now
+precedes **Freeze and compare**. The dossier shows every entity-linked record
+across notes, including actions, details, and exact source navigation. Existing
+annotation editing can correct ownership without moving the original evidence.
+
+Category decisions have assigned/insufficient/conflicting outcomes, optional
+explicit subcategory, rationale and support/conflict/repeated record references.
+They retain revision history. A versioned, configurable role taxonomy is supplied
+independently of firm exports. Changed evidence or policy requires renewed review.
+An attested checkpoint freezes the complete annotation basis, category decisions,
+taxonomy and source fingerprints. Comparison and core gold metrics use that
+snapshot despite later annotation edits. Category coverage accompanies accuracy.
+Legacy exposed claims are never retrospectively labeled independent.
+
+Browser exports now contain only the current reviewer's answers and withhold
+firm rows for claims that reviewer has not unlocked. CSV exports distinguish
+current annotations from the frozen JSON checkpoint and decision history.
+Full note files remain external; no automatic classifier or independent-source
+corroboration inference was introduced. The starter taxonomy needs study-owner
+alignment before real-data evaluation.
+
+See [the decision card](decisions/001-claim-review.md) for the new gate and its
+unresolved and reversal behavior. The historical checks below describe the
+initial handoff.
+
+Final increment verification:
+
+- **69 Python tests passed**, including exact cross-note provenance, ownership
+  correction, stale evidence/policy rejection, revision history, idempotent
+  saves, concurrent-view conflicts, source changes, unresolved outcomes, legacy
+  claims, export blinding and immutable scoring after later edits.
+- **30 real headless Edge checks passed**, including the source-highlight modal,
+  retained category inputs, both entity reviews, unsaved-change freeze blocking,
+  attestation, automatic frozen category comparison and the original annotation
+  and AI-draft flow.
+- Dossier, category-form and comparison screenshots inspected; entity navigation
+  stays visible during scrolling and the form has a jump control.
+- JavaScript syntax and Git whitespace checks passed. No real claim data,
+  real Copilot tenant or external classification service was used.
+
 ## Handoff trace
 
 The latest UI is this Python server and browser app. It supersedes the Excel
