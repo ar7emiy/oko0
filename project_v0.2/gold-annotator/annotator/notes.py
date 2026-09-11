@@ -1,7 +1,8 @@
 """Finding and reading claim notes.
 
-Notes are UTF-8 .txt files named CLAIM_NOTE.txt, split on the LAST underscore,
-so a claim number must not contain one. Text is read as bytes and decoded
+Notes are UTF-8 .txt files named CLAIM_NOTE.txt, split on the LAST underscore.
+The same note ID can occur in multiple claims; the pair is the lookup key.
+Text is read as bytes and decoded
 without newline translation: CRLF stays two characters, because every stored
 position is a character offset into exactly this text.
 """

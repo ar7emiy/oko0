@@ -17,7 +17,7 @@ Your browser opens at `http://localhost:8765/`. On first use the app asks for yo
 | Option | Meaning |
 |---|---|
 | `--notes` | Folder of claim notes. Subfolders are searched too. |
-| `--firm` | The firm's export CSV. Repeat it for several files. |
+| `--firm` | The firm's CSV or XLSX export. Repeat it for several files. |
 | `--db` | Where annotations are saved. Default: `annotations.sqlite3` next to `run.py`. |
 | `--port` | Default 8765. |
 | `--part-size` | Characters per part when a long note is sent to Copilot. Default 12000. |
@@ -28,6 +28,7 @@ Your browser opens at `http://localhost:8765/`. On first use the app asks for yo
 ## Notes stay where they are
 
 - Name each note `CLAIM_NOTE.txt`, for example `C201_N04.txt`. The claim is everything before the last underscore.
+- Client filenames such as `123456-123456-12-12_1234567890.txt` work directly. The same note ID may occur under several claim prefixes; annotations and entities remain separate for each claim. All supplied note files enter the packet, even if the firm never cites them.
 - Notes are read from disk each time they are opened. They are never copied into the database. The app stores only each note's path, a fingerprint (SHA-256), and the character positions of what the SME marked.
 - If a note file changes after work on it has started, the app stops saving to it and says why. Positions in a changed note can't be trusted.
 - Positions are Unicode characters, counted from 0, with the end excluded. The file is read as UTF-8 and line breaks are kept as they are.
@@ -35,6 +36,34 @@ Your browser opens at `http://localhost:8765/`. On first use the app asks for yo
 ## The firm's export
 
 One row per person or company the firm's tool reported. The app needs at least `claim_number` and `entity_name`. Every other column it uses is listed in `annotator/firm.py` (`COLUMNS`), and missing columns are treated as empty. The firm's rows stay hidden until the SME finishes a claim, so the answer key is built blind.
+
+CSV and XLSX are supported without additional packages. XLSX sheets with matching
+headers are imported in workbook order; each sheet's first nonblank row must be
+its header. Unsupported sheets and ambiguous headers are reported. Formula cells
+need saved calculated values; the app does not run Excel calculations. Store
+identifiers as text where possible; simple all-zero Excel formats are also read
+with their leading zeros. The importer cannot reconstruct digits already lost in Excel.
+
+The client headers are accepted without renaming: matching is case-insensitive,
+with aliases for `entity_category`, `entity_subcategory`, `entity_zip`, `entity_NER`,
+`GenAI_Note_ID`, and `GenAI_entityNameCleaned`. `RecordType` (or the supplied header
+with its parenthesized values) is retained; rows are not merged by cleaned name.
+Missing `Watchlist_City` is treated as unknown and reported as an optional column.
+
+Both Exact and GenAI note-ID cells may contain comma-separated IDs. Citation
+lookup trims tokens, removes only an all-zero decimal suffix (`1234567890.0`
+becomes `1234567890`) and preserves leading zeros. Original citation values remain
+in the imported data and exports. Each link resolves only inside its row's claim;
+missing files appear as "not supplied for this claim" during comparison.
+
+For the client packet, from this app folder (adjust the two paths as needed):
+
+```powershell
+.\.venv\Scripts\python.exe run.py --notes "C:\path\to\oko_gt_notes_data" --firm "C:\path\to\client_entity_data.xlsx"
+```
+
+An XLSX workbook is recognized by its contents, so an accidental `.xslx` filename
+also works. Existing installations must update the app code before using Excel.
 
 ## The SME workflow
 

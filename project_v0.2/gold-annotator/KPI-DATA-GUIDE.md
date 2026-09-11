@@ -1,6 +1,6 @@
 # Where the KPI numbers come from
 
-The app evaluates **the firm's imported CSV against this reviewer's saved answer
+The app evaluates **the firm's imported CSV or Excel workbook against this reviewer's saved answer
 key**, using the reviewer's pairing and watchlist answers. It does not call an
 extraction model, query an outside dataset, or run RapidFuzz.
 
@@ -17,7 +17,7 @@ matching export, supplied at startup. Practice results establish no real-data ac
    SQLite. Claim review freezes these revisions and independent category decisions.
    Later edits do not replace that evaluated version. Legacy exposed claims use
    current annotations and cannot contribute independent category labels.
-3. **Firm output:** the CSV passed with `--firm`, containing extracted names,
+3. **Firm output:** the CSV or XLSX passed with `--firm`, containing extracted names,
    categories, details, watchlist flags, method indicators and similarity scores.
    The app reads the firm's similarity score; it does not recalculate it.
 4. **Review decisions:** firm-row-to-gold-entity pairing (or not in notes), and
@@ -89,3 +89,10 @@ Exports contain only the current reviewer's work. The optional detailed format
 retains audit tables, current annotations, frozen checkpoints and raw AI replies.
 When pooling compatible results, sum numerators and denominators; do not average
 percentages or mix fictional practice with real claims.
+
+Note IDs are not globally unique annotation keys: use `(claim, note)` when joining
+note evidence. A shared note can appear in several claims, with separate SME work.
+Firm citation cells retain their comma-separated values and Excel `.0` artifacts;
+split and normalize those IDs before joining. Missing citations must not fall back
+to another claim. Keep shared source notes in the same train/test partition if
+these exports are later used for modeling; this app does not create those splits.

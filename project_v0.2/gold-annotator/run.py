@@ -23,7 +23,7 @@ from annotator.review import load_taxonomy  # noqa: E402
 def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(description="Claim note annotator")
     p.add_argument("--notes", type=Path, help="folder of CLAIM_NOTE.txt files (searched recursively)")
-    p.add_argument("--firm", type=Path, action="append", default=[], help="the firm's export CSV (repeatable)")
+    p.add_argument("--firm", type=Path, action="append", default=[], help="the firm's export CSV or XLSX workbook (repeatable)")
     p.add_argument("--db", type=Path, default=HERE / "annotations.sqlite3", help="where annotations are saved")
     p.add_argument("--host", default="127.0.0.1", help="127.0.0.1 keeps it on this computer only")
     p.add_argument("--port", type=int, default=8765)

@@ -2,6 +2,23 @@
 
 Verified 2026-09-11 (America/Chicago).
 
+## Client workbook import increment
+
+- Added standard-library XLSX loading and the client's case-insensitive header
+  aliases, while retaining canonical CSV support and original citation values.
+- Split comma-separated Exact/GenAI citations, stripping only numeric all-zero
+  decimal suffixes for lookup. Claim filenames remain the membership source.
+- Shared note IDs retain separate claim annotations; missing cited files are
+  labeled in comparison and never opened under another claim.
+- Added sparse/shared/inline Excel cell decoding, simple zero-padding formats,
+  cached-formula handling and explicit errors for unavailable formula values.
+- Fixed row ID collisions when several imported files contain the same claim.
+
+Validation: **91 Python tests passed** and **35 headless Edge checks passed**.
+New synthetic workbook tests cover client aliases, leading zeros, citation lists,
+shared note IDs, sparse cells, formula errors, duplicate aliases and multi-file
+claims. The actual client workbook has not been supplied or validated.
+
 ## Undo, practice and analysis export increment
 
 - Persisted Undo for annotation/entity mutations and draft accept/dismiss, with

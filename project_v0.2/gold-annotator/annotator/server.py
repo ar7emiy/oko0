@@ -195,7 +195,7 @@ class App:
         rows = []
         for r in self.store.firm_rows(claim):
             d = r["data"]
-            cited = [n for n in (d.get("Exact_search_Note_ID"), d.get("GenAI_search_Note_ID")) if n]
+            cited = firm.cited_notes(d)
             rows.append({"id": r["id"], "data": d, "flagged": firm.is_flagged(d),
                          "cited": sorted(set(cited)),
                          "pairing": pairings.get(f"{r['id']}|{reviewer}"),

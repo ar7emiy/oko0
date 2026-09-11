@@ -1324,7 +1324,7 @@ function firmCard(r, data) {
     h("span", { class: "spacer" }), status));
   const dl = h("dl", {});
   for (const [k, label] of FIRM_FIELDS) if (d[k]) dl.append(h("dt", { text: label }), h("dd", { text: d[k] }));
-  if (r.cited.length) dl.append(h("dt", { text: "Cites note" }), h("dd", {}, r.cited.map((n, i) => [i ? ", " : "", h("button", { class: "link", type: "button", onclick: () => openNote(data.claim, n), text: n })])));
+  if (r.cited.length) dl.append(h("dt", { text: "Cites note" }), h("dd", {}, r.cited.map((n, i) => [i ? ", " : "", data.notes.includes(n) ? h("button", { class: "link", type: "button", onclick: () => openNote(data.claim, n), text: n }) : h("span", {text: `${n} (not supplied for this claim)`})])));
   const facts = h("div", { class: "firm-facts" }, h("div", { class: "label muted small", text: "What the firm reported" }), dl);
   const qs_ = h("div", { class: "firm-qs" });
 
