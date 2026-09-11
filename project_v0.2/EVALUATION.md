@@ -1,6 +1,6 @@
 # How we grade the firm's entity extraction
 
-The firm uses a tool called GenAI that reads claim notes and pulls out the people and companies mentioned, along with details about them: addresses, phone numbers and tax IDs (TINs). The firm also checks those names against a watchlist. This document explains how we find out how often it gets these right.
+The firm uses GenAI that reads claim notes and pulls out the people and companies mentioned, along with details about them: addresses, phone numbers and tax IDs (TINs). The firm also checks those names against a watchlist. This document explains how we find out how often it gets these right.
 
 ## What we want to know
 
@@ -20,7 +20,19 @@ Grading a test needs an answer key. Ours is built by subject-matter experts (SME
 
 That record is the **answer key**. Data scientists call it the *gold data*. We compare the firm's output for the same claim against it, one item at a time.
 
-**One step connects the two: pairing.** The firm's tool and the SME don't always write a name the same way, for example "Dr. Monroe" and "Dr. Ada Monroe". So when an SME finishes a claim, they go through the firm's output row by row and say which person or company on their list each row is, or that it isn't in the notes at all. It takes one decision per row. Most of the scores below depend on it.
+**One step connects the two: pairing.** The firm's GenAI tool and the SME don't always write a name the same way, for example "Dr. Monroe" and "Dr. Ada Monroe". So when an SME finishes a claim, they go through the firm's output row by row and say which person or company on their list each row is, or that it isn't in the notes at all. It takes one decision per row. Most of the scores below depend on it.
+
+## The proposed SME workflow
+
+This proposal gives the SME one focused job at a time. The firm’s output stays hidden until the SME's answer key is complete.
+
+1. The SME reads each note and records only what it says: people and companies, later references, descriptions, actions and details. Each record keeps the exact words and where they came from.
+2. A custom Copilot agent can optionally prepare suggested records from the note. The SME checks, corrects, accepts or dismisses each suggestion. The workflow works just as well when there are no AI suggestions.
+3. After every note in a claim is complete, the SME sees one claim-level evidence card for each person or company. It gathers the evidence already recorded across all of that claim's notes. The SME can open any quote in its original note if they need context.
+4. The SME reviews the complete evidence card and assigns a broad claim role, or chooses **insufficient evidence** or **conflicting evidence**. They identify the records that support, conflict with or merely repeat the conclusion. A short reason is recorded. This review is finished and frozen before the firm's output appears.
+5. Only then does the SME pair the firm's rows and review its watchlist flags. The scores compare the firm with the frozen answer key.
+
+This sequence reduces rework: the SME does not have to make a category decision from one isolated sentence, and they do not need to re-read every note to compare the firm's output later.
 
 ## The scores
 
@@ -36,7 +48,7 @@ Example: an SME finds 10 people and companies on a claim. The firm's output list
 - Found rate = 7 ÷ 10 = **70%**, so it missed 3.
 - Right rate = 7 ÷ 8 = **88%**, so 1 of its 8 was wrong.
 
-You need both. A tool that listed every name in the phone book would find everyone, and be mostly wrong. Data scientists call these two *recall* and *precision*.
+You need both. A tool that listed every name in the phone book would find everyone, and be mostly wrong. These metrics are also known as *recall* and *precision*.
 
 ### 2. Detail accuracy: does it report the details correctly?
 
@@ -57,11 +69,27 @@ Close doesn't count. A TIN of `001234567` reported as `1234567` is wrong.
 
 Example: a note says *"Dr. Monroe works at Northstar Orthopedics, 14 Cedar Lane."* The address belongs to the clinic. If the firm puts it on Dr. Monroe, the address itself is right but the owner is wrong. If 2 of 17 correct details are on the wrong owner, the right-owner rate = 15 ÷ 17 = **88%**.
 
+### Linking and corroborating evidence across a claim
+
+The answer key is built across the whole claim, not one note at a time. An SME creates a person or company once, then links later names, shortened names, pronouns, descriptions, actions and details to that same person or company only when the notes make the link clear.
+
+Every item keeps its original note, exact quote and location. Linking two references is **coreference**: deciding that two ways of referring to someone mean the same person or company. **Corroboration** is different: two or more linked statements can support the same possible fact or category, even when they appear in different notes. Neither one permits guessing. If the notes do not make a link clear, the SME records it as unresolved rather than merging it with another person or company.
+
+Example: Note 001 names *"Dr. Ada Monroe."* Note 002 says *"Dr. Monroe assessed the claimant's injury,"* and another note calls someone *"the orthopedic surgeon."* If the claim makes clear that these references are to Ada, all three are linked to her claim-level entry. The action and description remain evidence from their own notes; they do not become unsourced facts on Ada's record.
+
 ### 4. Category accuracy: is each one in the right category?
 
 - **Category accuracy** = firm rows with the right category ÷ firm rows the SME could judge
 
-When the notes don't say enough to tell, the row is set aside rather than counted as right or wrong. This score matters more than it looks; see [Why category matters](#why-category-matters).
+The SME does **not** assign a category while reading each individual note. Their first job is to record exactly what the notes say: names, references, descriptions, actions and details. That keeps the answer key grounded in evidence rather than an immediate interpretation of a vague sentence.
+
+After the SME completes every note for a claim, they review one claim-level entry for each person or company. That entry shows the exact evidence linked to them across the claim, alongside a short guide defining the study's broad categories. The SME assigns a category, or marks **insufficient evidence** or **conflicting evidence**, and identifies the evidence behind that decision. This happens before the SME sees the firm's output.
+
+For example, *"Dr. Monroe assessed the claimant's injury"* may point toward a medical-provider category, but it does not prove it on its own. The claim-level review may have other evidence, such as *"the orthopedic surgeon."* If the evidence remains too weak or conflicting, the entry is set aside rather than counted as right or wrong.
+
+Subcategories are optional. The answer key preserves a stated description such as *"orthopedic surgeon,"* but does not force the SME to choose a subcategory when the notes do not state one. This score matters more than it looks; see [Why category matters](#why-category-matters).
+
+We also report **category coverage** = paired firm rows with an assigned category ÷ all paired firm rows. It shows how much of the firm's output had enough evidence for a fair category comparison. Rows with insufficient or conflicting evidence are not counted as right or wrong.
 
 ### 5. Watchlist accuracy: are the flags real?
 
@@ -94,9 +122,7 @@ GenAI only calculates a similarity score when the category it gave a person or c
 - If GenAI files a doctor under "legal", that doctor is never compared with the watchlist's doctors. A real match can be missed without anyone noticing.
 - If GenAI files someone under a category that happens to match a watchlist entry, a comparison runs that never should have.
 
-So category accuracy is part of measuring the watchlist, not a side question. We also count **blocked checks**: people and companies the SME says were filed under the wrong category, and so were never compared with the watchlist entries in their real category.
-
-To grade category properly, the SME judges the firm's category during pairing: right, wrong (and what it should be), or the notes don't say.
+So category accuracy is part of measuring the watchlist, not a side question. A wrong-category count is useful, but it is not automatically the number of **blocked checks**. To measure blocked checks, the firm must also supply the complete categorized watchlist and enough search information to reconstruct which comparisons would have run under the correct category. To measure real matches missed because of category, those newly eligible comparisons must then be reviewed.
 
 ## An example: claim C201
 
@@ -111,18 +137,19 @@ The notes describe Dr. Ada Monroe as an orthopedic surgeon with Northstar Orthop
 
 **Dr. Ada Monroe.** The firm found her and flagged a watchlist match also named "Dr. Ada Monroe", with a similarity score of 96. That score was only calculated because GenAI filed her under the same category as the watchlist entry, "medical provider". The notes give her name and her job, but no address, phone number or TIN that would confirm she's the same person. That's exactly the kind of flag an SME may mark **can't tell**. The firm may well be right, but a 96 on a name alone isn't proof. Grading many flags like this one is what shows how much a 96 is worth.
 
-## What we can score today
+## What the proposed workflow will score
 
-*Answer key* means what SMEs record in the annotation workbench. *Today* means with the workbench as it stands now.
+*Answer key* means the evidence and decisions SMEs record through the proposed workflow. A score is only calculated after the claim-level review is frozen and the firm's rows have been paired.
 
-| Question | Does the answer key record it? | Can we score it today? | What's missing |
+| Question | Does the answer key record it? | Can the proposed workflow score it? | What's missing |
 |---|---|---|---|
-| Found rate, right rate | Yes | Roughly, by matching names | Pairing |
-| Detail accuracy, missed-detail rate | Yes | Roughly | Pairing |
+| Found rate, right rate | Yes | Yes | Complete claim, frozen answer key and pairing |
+| Detail accuracy, missed-detail rate | Yes | Yes | Complete claim, frozen answer key and pairing |
 | Made-up rate | Yes | Yes | Nothing |
-| Right-owner rate | Yes | No | Pairing |
-| Category accuracy, blocked checks | No. SMEs record the note's own words ("orthopedic surgeon"), not the firm's category | No | The SME judges the firm's category during pairing |
-| Watchlist accuracy, similarity-score check | Yes | Yes | Whether the note supports each decision. The workbench records a fixed value there today |
+| Right-owner rate | Yes | Yes | Pairing |
+| Category accuracy and category coverage | Yes. The claim-level review records a category or an unresolved outcome, its evidence and a reason | Yes | A study-approved broad-category guide |
+| Wrong-category risk to watchlist checks | Partly. We can identify firm rows that disagree with the frozen category | No | Complete categorized watchlist and a reconstruction of comparisons that should have run |
+| Watchlist accuracy, similarity-score check | Yes | Yes | Each flag needs an SME decision and supporting reason |
 | Real matches never flagged | No | No | SMEs check a random sample of unflagged people and companies |
 
 ## Can we trust the answer key?
@@ -137,4 +164,4 @@ A grade is only as good as its answer key. Three checks:
 
 ## Later
 
-The same answer key can grade any future tool, including the redesigned system in [ARCHITECTURE.md](ARCHITECTURE.md), without SMEs redoing their work. It can also check things the firm's tool doesn't attempt, such as whether a tool understands who "she" or "the clinic" refers to.
+The same answer key can grade any future tool, including the redesigned Entity Intelligence system, without SMEs redoing their work. It can also check things the firm's tool does not attempt today: whether it links *"she"* or *"the clinic"* to the right entity; whether it carries metadata across notes without losing its source; and whether its category conclusion is supported by the linked evidence.
