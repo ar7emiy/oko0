@@ -1,0 +1,4 @@
+claim_number,recordType,entity_category_name,entity_subcategory_name,entity_name,entity_address,entity_city,entity_state,entity_zip_code,entity_phone,entity_TIN,entity_NER_tag,Entity_Watchlist_flag,Exact_search_Note_ID,Exact_search_matched_watchlist_entity_name,GenAI_search_Note_ID,GenAI_entityNameClearned,GenAI_tok_sort_similarity,Watchlist_entity_id,Watchlist_entity_name,watchlist_address,watchlist_city,watchlist_state,watchlist_zip_code,watchlist_phone,watchlist_TIN
+PRACTICE,entity,medical provider,,Northstar Orthopedics,14 Cedar Lane,Springfield,IL,62704,,001234567,ORG,0,,,N01,Northstar Orthopedics,,,,,,,,,
+PRACTICE,genai_only,medical provider,,Dr. Ada Monroe,,,,,,,PERSON,1,,,N01,Dr. Ada Monroe,96,WL-PRACTICE-1,Dr. Ada Monroe,,,,,,
+PRACTICE,entity,repair shop,,Lakeview Imaging,,Lakeview,,,,,ORG,0,,,,,,,,,,,,,

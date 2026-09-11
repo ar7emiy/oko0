@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claim Note Annotator</title>
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="brand-mark" aria-hidden="true"></span>Claim Note Annotator</div>
+  <nav class="crumbs" id="crumbs" aria-label="Where you are"></nav>
+  <div class="top-actions">
+    <button class="btn ghost" id="btn-scores" type="button" title="See how the firm's tool scores against your answer key">Scores</button>
+    <a class="btn ghost" id="btn-export" href="/api/export" title="Download everything as CSV files for data scientists">Export</a>
+    <button class="btn ghost help-btn" id="btn-help" type="button" aria-label="Help and tutorial" title="Help and tutorial (press ?)">?</button>
+    <button class="reviewer-chip" id="btn-reviewer" type="button" title="Change the name your work is saved under"></button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar" aria-label="Claims and notes">
+    <div class="sidebar-head">
+      <input class="search" id="search" type="search" placeholder="Find a claim or note" aria-label="Find a claim or note">
+    </div>
+    <div class="claims" id="claims"></div>
+    <div class="sidebar-foot" id="sidebar-foot"></div>
+  </aside>
+
+  <main class="workspace" id="workspace">
+    <section class="view" id="view-welcome">
+      <div class="welcome">
+        <h1>Build the answer key, one note at a time</h1>
+        <p>You read each claim note and record what it actually says: every person or company, every time they're mentioned, and every detail stated about them. The firm's tool is graded against your answer key.</p>
+        <div class="welcome-actions">
+          <button class="btn primary" id="welcome-tour" type="button">Take the 2-minute tour</button>
+          <button class="btn" id="welcome-practice" type="button">Open the practice note</button>
+        </div>
+        <p class="muted small">Or pick a note on the left. Nothing you do in the practice claim counts toward the real answer key.</p>
+      </div>
+    </section>
+
+    <section class="view" id="view-note" hidden>
+      <div class="note-head">
+        <div class="note-title">
+          <h1 id="note-title"></h1>
+          <span class="pill" id="note-status"></span>
+          <span class="pill subtle" id="note-flags"></span>
+        </div>
+        <div class="note-tools">
+          <button class="btn" id="btn-ai" type="button" title="Get draft records from Copilot, then review each one">Get AI drafts</button>
+          <button class="btn primary" id="btn-complete" type="button">Mark note complete</button>
+          <button class="btn ghost small" id="btn-more" type="button" aria-haspopup="true" aria-label="More note options">More</button>
+        </div>
+      </div>
+      <div class="hint" id="note-hint">Select words in the note to record them. Press <kbd>?</kbd> for help.</div>
+      <div class="legend" aria-label="Highlight colours">
+        <span><i class="l-party"></i>Person or company, and mentions</span>
+        <span><i class="l-detail"></i>Detail</span>
+        <span><i class="l-desc"></i>Description</span>
+        <span><i class="l-action"></i>Action or link</span>
+        <span><i class="l-unclear"></i>Unclear</span>
+        <span><i class="l-draft"></i>AI draft to review</span>
+      </div>
+      <div class="banner" id="note-banner" hidden></div>
+      <article class="note-text" id="note-text" tabindex="0" aria-label="Note text. Select words to record them."></article>
+    </section>
+
+    <section class="view" id="view-compare" hidden></section>
+    <section class="view" id="view-scores" hidden></section>
+  </main>
+
+  <aside class="panel" id="panel" aria-label="Your records">
+    <div class="tabs" role="tablist" id="panel-tabs">
+      <button class="tab active" role="tab" data-tab="people" type="button" aria-selected="true">People &amp; companies <span class="count" id="count-people">0</span></button>
+      <button class="tab" role="tab" data-tab="records" type="button" aria-selected="false">Records <span class="count" id="count-records">0</span></button>
+      <button class="tab" role="tab" data-tab="drafts" type="button" aria-selected="false">AI drafts <span class="count" id="count-drafts">0</span></button>
+    </div>
+    <div class="tab-body" id="tab-people" role="tabpanel"></div>
+    <div class="tab-body" id="tab-records" role="tabpanel" hidden></div>
+    <div class="tab-body" id="tab-drafts" role="tabpanel" hidden></div>
+  </aside>
+</div>
+
+<div class="action-menu" id="action-menu" role="menu" hidden></div>
+<div class="popover" id="popover" hidden></div>
+<div class="modal-backdrop" id="modal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-head"><h2 id="modal-title"></h2><button class="icon-btn" id="modal-close" type="button" aria-label="Close">×</button></div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-foot" id="modal-foot"></div>
+  </div>
+</div>
+<div class="tour" id="tour" hidden>
+  <div class="tour-spot" id="tour-spot"></div>
+  <div class="tour-card" id="tour-card" role="dialog" aria-live="polite">
+    <div class="tour-step" id="tour-step"></div>
+    <h3 id="tour-title"></h3>
+    <div id="tour-text"></div>
+    <div class="tour-nav">
+      <button class="btn ghost small" id="tour-close" type="button">Close tour</button>
+      <span class="spacer"></span>
+      <button class="btn small" id="tour-back" type="button">Back</button>
+      <button class="btn primary small" id="tour-next" type="button">Next</button>
+    </div>
+  </div>
+</div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<script src="/app.js"></script>
+</body>
+</html>

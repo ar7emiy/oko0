@@ -1,0 +1,54 @@
+```
+{"type":"meta","claim":"SELF","note":"N01","part":1,"parts":1,"read_all":true,"summary":"The adjuster and police are mentioned but not named. Who owns the vehicle is reported by Maria, not confirmed."}
+{"type":"description","key":"P1","quote":"claimant","before":"Spoke with"}
+{"type":"entity","key":"P1","quote":"Maria Alvarez","name":"Maria Alvarez","kind":"person"}
+{"type":"detail","key":"P1","quote":"312-555-0187","field":"phone","value":"312-555-0187"}
+{"type":"action","key":"P1","quote":"rear-end collision on 3/9"}
+{"type":"mention","key":"P1","quote":"Maria","before":"collision on 3/9.","form":"alias"}
+{"type":"action","key":"P1","key2":"P2","quote":"states the other driver, Kevin Doyle, ran the red light"}
+{"type":"description","key":"P2","quote":"the other driver"}
+{"type":"entity","key":"P2","quote":"Kevin Doyle","name":"Kevin Doyle","kind":"person"}
+{"type":"entity","key":"L1","quote":"Lake St & 5th Ave","name":"Lake St & 5th Ave","kind":"location"}
+{"type":"mention","key":"P1","quote":"She","form":"pronoun"}
+{"type":"action","key":"P1","quote":"reported neck pain"}
+{"type":"action","key":"P1","key2":"O1","quote":"is treating at Lakeshore Physical Therapy"}
+{"type":"entity","key":"O1","quote":"Lakeshore Physical Therapy","name":"Lakeshore Physical Therapy","kind":"organization"}
+{"type":"detail","key":"O1","quote":"880 N. Harbor Dr","field":"address","value":"880 N. Harbor Dr"}
+{"type":"detail","key":"O1","quote":"Chicago","field":"city","value":"Chicago"}
+{"type":"detail","key":"O1","quote":"IL","field":"state","value":"IL"}
+{"type":"detail","key":"O1","quote":"60611","field":"zip_code","value":"60611"}
+{"type":"detail","key":"O1","quote":"312-555-0144","field":"phone","value":"312-555-0144"}
+{"type":"mention","key":"O1","quote":"Lakeshore","before":"60611 (ph 312-555-0144).","form":"alias"}
+{"type":"action","key":"P3","key2":"O1","quote":"Lakeshore's billing contact is Dana Whitfield"}
+{"type":"description","key":"P3","quote":"billing contact"}
+{"type":"entity","key":"P3","quote":"Dana Whitfield","name":"Dana Whitfield","kind":"person"}
+{"type":"mention","key":"P1","quote":"Maria","before":"Whitfield.\n\nPer","form":"alias"}
+{"type":"mention","key":"P2","quote":"Kevin","before":"Per Maria,","form":"alias"}
+{"type":"action","key":"P2","key2":"O2","quote":"Per Maria, Kevin was driving a vehicle owned by his employer"}
+{"type":"mention","key":"P2","quote":"his","form":"pronoun"}
+{"type":"description","key":"O2","quote":"employer"}
+{"type":"entity","key":"O2","quote":"Doyle Brothers Plumbing LLC","before":"his employer,","name":"Doyle Brothers Plumbing LLC","kind":"organization"}
+{"type":"mention","key":"P1","quote":"she","form":"pronoun"}
+{"type":"action","key":"P1","quote":"has not seen any documents confirming that"}
+{"type":"mention","key":"P1","quote":"Maria","before":"not yet received.","form":"alias"}
+{"type":"action","key":"P4","key2":"P1","quote":"Maria's attorney"}
+{"type":"description","key":"P4","quote":"attorney"}
+{"type":"entity","key":"P4","quote":"Jordan Reyes","name":"Jordan Reyes","kind":"person"}
+{"type":"action","key":"P4","key2":"O3","quote":"of Reyes & Tan LLP"}
+{"type":"entity","key":"O3","quote":"Reyes & Tan LLP","name":"Reyes & Tan LLP","kind":"organization"}
+{"type":"action","key":"P4","quote":"called later and asked that all contact go through him"}
+{"type":"mention","key":"P4","quote":"him","form":"pronoun"}
+{"type":"mention","key":"P4","quote":"He","form":"pronoun"}
+{"type":"action","key":"P4","quote":"did not provide a bar number"}
+{"type":"mention","key":"P1","quote":"The claimant","form":"description"}
+{"type":"action","key":"P1","key2":"P2","quote":"says Kevin apologized at the scene"}
+{"type":"mention","key":"P2","quote":"Kevin","before":"The claimant says","form":"alias"}
+{"type":"mention","key":"P2","quote":"Kevin","before":"at the scene;","form":"alias"}
+{"type":"action","key":"O4","key2":"P2","quote":"Kevin's insurer"}
+{"type":"description","key":"O4","quote":"insurer"}
+{"type":"entity","key":"O4","quote":"Northbridge Mutual","name":"Northbridge Mutual","kind":"organization"}
+{"type":"action","key":"O4","quote":"has not confirmed coverage"}
+{"type":"mention","key":"O2","quote":"Doyle Brothers Plumbing LLC","before":"TIN for","form":"name"}
+{"type":"detail","key":"O2","quote":"36-4412098","field":"TIN","value":"36-4412098"}
+{"type":"mention","key":"P3","quote":"Dana","before":"Follow up with","form":"alias"}
+```

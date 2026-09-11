@@ -1,0 +1,10 @@
+```
+{"type": "meta", "claim": "C201", "note": "N04", "part": 1, "parts": 1, "read_all": true, "summary": "Letterhead details for Northstar Orthopedics."}
+{"type": "mention", "key": "E2", "quote": "Northstar Orthopedics", "form": "name"}
+{"type": "detail", "key": "E2", "quote": "101 Alder Avenue", "field": "address", "value": "101 Alder Avenue"}
+{"type": "detail", "key": "E2", "quote": "Lakeview", "field": "city", "value": "Lakeview"}
+{"type": "detail", "key": "E2", "quote": "IL", "field": "state", "value": "IL"}
+{"type": "detail", "key": "E2", "quote": "60101", "field": "zip_code", "value": "60101"}
+{"type": "detail", "key": "E2", "quote": "555-201-0101", "field": "phone", "value": "555-201-0101"}
+{"type": "detail", "key": "E2", "quote": "STRESS-201", "field": "TIN", "value": "STRESS-201"}
+```

@@ -1,0 +1,7 @@
+```
+{"type": "meta", "claim": "C202", "note": "N03", "part": 1, "parts": 1, "read_all": true, "summary": ""}
+{"type": "entity", "key": "P1", "quote": "Olivia Park", "name": "Olivia Park", "kind": "person"}
+{"type": "action", "key": "P1", "key2": "O1", "quote": "confirmed that she would send the requested documents to Silverline Legal"}
+{"type": "mention", "key": "P1", "quote": "she", "form": "pronoun"}
+{"type": "entity", "key": "O1", "quote": "Silverline Legal", "name": "Silverline Legal", "kind": "organization"}
+```

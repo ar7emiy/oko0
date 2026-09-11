@@ -1,0 +1,6 @@
+```
+{"type": "meta", "claim": "C204", "note": "N05", "part": 1, "parts": 1, "read_all": true, "summary": "'Beacon' is probably Beacon Pharmacy, but the note doesn't say so."}
+{"type": "unclear", "quote": "Beacon", "reason": "Probably Beacon Pharmacy, named in the next sentence, but the note doesn't confirm it."}
+{"type": "entity", "key": "O1", "quote": "Beacon Pharmacy", "name": "Beacon Pharmacy", "kind": "organization"}
+{"type": "action", "key": "O1", "quote": "will provide the next update"}
+```

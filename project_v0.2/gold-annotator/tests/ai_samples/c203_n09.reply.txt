@@ -1,0 +1,6 @@
+```
+{"type": "meta", "claim": "C203", "note": "N09", "part": 1, "parts": 1, "read_all": true, "summary": "'They' could be Lee Patel or Meridian Imaging."}
+{"type": "unclear", "quote": "They", "reason": "Could refer to Lee Patel or Meridian Imaging; the note says the reference is ambiguous."}
+{"type": "mention", "key": "E1", "quote": "Lee Patel", "form": "name"}
+{"type": "mention", "key": "E2", "quote": "Meridian Imaging", "form": "name"}
+```
