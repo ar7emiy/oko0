@@ -1,6 +1,6 @@
 # Claim Note Annotator
 
-A small web app that SMEs use to build the answer key (gold data) for the firm's entity extraction. It then grades the firm's output against that key, as described in [../EVALUATION.md](../EVALUATION.md).
+A small web app that SMEs use to build the answer key (gold data) for GOKO's entity extraction. The [initial evaluation methodology and SME review design proposal](../ENTITY-INTELLIGENCE-EVALUATION-PROPOSAL.md) describes the intended benchmark and proposed extensions. See [identifier and unassigned-detail requirements](REVIEW-AND-IDENTIFIER-REQUIREMENTS.md) for verified implementation gaps; these features have not yet been added.
 
 It uses only the Python standard library: no installs, no internet, and no build step. The page is plain HTML, CSS and JavaScript served by the app itself.
 
@@ -140,7 +140,7 @@ The browser run needs Node 22 or newer and Microsoft Edge or Google Chrome. It u
 | `annotator/store.py` | SQLite storage. Records are append-only: an edit adds a revision, and a delete adds a retired revision. |
 | `annotator/ai_import.py`, `spans.py` | Reading Copilot replies and finding each quote in the note. |
 | `annotator/copilot.py` | Builds the message SMEs paste into Copilot. |
-| `annotator/scoring.py`, `export.py` | The EVALUATION.md scores and the data-scientist export. |
+| `annotator/scoring.py`, `export.py` | Current dashboard calculations and data-scientist export; the proposal describes future changes separately. |
 | `annotator/review.py`, `taxonomy.json` | Claim dossiers, evidence-linked category decisions and immutable review checkpoints. |
 | `annotator/practice/` | Two fictional practice notes and their firm rows. |
 | `static/` | The page. |

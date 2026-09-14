@@ -4,6 +4,15 @@ Verified 2026-09-11 (America/Chicago).
 
 ## Evaluation plan revision — 2026-09-14
 
+Proposal follow-up: canonical client document renamed to
+`../ENTITY-INTELLIGENCE-EVALUATION-PROPOSAL.md`; EVALUATION.md retains a link for
+older references. Added proposed output model (section 2.1), explicit count
+examples and two SVG concept illustrations, rendered and visually inspected.
+`REVIEW-AND-IDENTIFIER-REQUIREMENTS.md` records verified gaps: Detail requires an
+owner in UI and server validation; TIN/Other exist but dedicated SSN/NPI/Bar/VIN
+capture does not. Unclear does not preserve a structured detail type/value.
+No application code changed and no runtime regression tests were rerun.
+
 Calculation follow-up: added a schema-independent formula reference connecting
 gold evidence, GOKO extractions and SME comparison decisions to metric counts.
 Includes worked examples, threshold/sampling calculations and future-task formulas;
