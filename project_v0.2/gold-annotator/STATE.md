@@ -4,6 +4,12 @@ Verified 2026-09-11 (America/Chicago).
 
 ## Evaluation plan revision — 2026-09-14
 
+Calculation follow-up: added a schema-independent formula reference connecting
+gold evidence, GOKO extractions and SME comparison decisions to metric counts.
+Includes worked examples, threshold/sampling calculations and future-task formulas;
+replaced prediction terminology with extraction/matching language. Documentation
+only; checked formulas, terminology and whitespace, with no runtime tests rerun.
+
 Editorial follow-up: rewrote the evaluation as a client-facing methodology
 lightpaper, with standard metric names, an explicit mapping to supplied GOKO
 fields, and a coherent account of the SME experience and technical requirements.

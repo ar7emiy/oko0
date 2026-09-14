@@ -15,7 +15,7 @@ The evaluation will answer four business questions:
 3. How reliably does it recognize the same entity across claims while preserving each claim’s context?
 4. How effectively does watchlist matching distinguish genuine matches from false alerts, and where are genuine matches missed?
 
-The initial comparison will cover capabilities supported by GOKO’s available outputs. Cross-claim identity resolution and more detailed evidence-location measures will be evaluated separately where comparable GOKO predictions are unavailable. Results will explain both performance and the evidence supporting each conclusion.
+The initial comparison will cover capabilities supported by GOKO’s available outputs. Cross-claim identity resolution and more detailed evidence-location measures will be evaluated separately where comparable GOKO results are unavailable. Results will explain both performance and the evidence supporting each conclusion.
 
 ## 1. Establishing a fair and reusable benchmark
 
@@ -46,7 +46,7 @@ The supplied workbook, `client_entity_data.xlsx`, and the `oko_gt_notes_data` fo
 | Evaluation purpose | Available GOKO fields or files | How they will be used |
 |---|---|---|
 | Assemble complete claims | `Claim_Number`; note filenames such as `123456-123456-12-12_1234567890.txt` | Bring together all supplied notes for a claim. The claim prefix determines membership, independently of which notes GOKO cites. |
-| Identify entities and distinguish result types | `Entity_Name`, `GenAI_entityNameCleaned`, `entity_NER`, and `RecordType` values such as `Entity`, `GenAI_only` and `Exact_search` | Compare identified people and organizations with the SME reference. Confirm which result types represent entity extraction and which represent watchlist activity before counting predictions. |
+| Identify entities and distinguish result types | `Entity_Name`, `GenAI_entityNameCleaned`, `entity_NER`, and `RecordType` values such as `Entity`, `GenAI_only` and `Exact_search` | Compare identified people and organizations with the SME reference. Confirm which result types represent entity extraction and which represent watchlist activity before counting extracted entities. |
 | Evaluate details and ownership | `entity_address`, `entity_city`, `entity_state`, `entity_zip`, `entity_phone`, `entity_tin` | Compare each supplied value with the evidence and determine whether it belongs to the entity to which GOKO assigned it. |
 | Evaluate categories | `entity_category`, `entity_subcategory` | Compare with independently reviewed categories under shared definitions, including whether a category describes a claim role or a general occupation. |
 | Trace cited notes | `GenAI_Note_ID`, `exact_search_Note_ID` | Open cited source documents during comparison. An entity’s note list does not, by itself, identify which document supports each individual detail. |
@@ -63,7 +63,7 @@ The supplied fields also need to be supplemented with information about snapshot
 
 ### Build the reference across the complete claim
 
-The first review will be organized by unique claim, with all associated notes available together. GOKO’s predictions will remain hidden while SMEs establish the reference. SMEs will identify entities and attach source-supported details, descriptions and actions to them as they progress through the notes.
+The first review will be organized by unique claim, with all associated notes available together. GOKO’s extraction results will remain hidden while SMEs establish the reference. SMEs will identify entities and attach source-supported details, descriptions and actions to them as they progress through the notes.
 
 This directly addresses information scattered across a claim. If one note introduces a clinic and another supplies its phone number, the SME will select the phone passage and attach it to the existing clinic. The annotator already supports selecting an existing entity from another note within the same claim. Its claim-level evidence view then brings those annotations together for review.
 
@@ -87,19 +87,21 @@ Candidate groups will be reviewed independently of the evaluated systems’ iden
 
 The comparison stage will associate each system-identified entity with the appropriate reference entity, or record an unsupported or unresolved identification. SMEs will then assess watchlist candidates using claim evidence and available watchlist attributes. Similarity and flag status should be hidden during identity judgment where practical, then available for threshold analysis afterward.
 
-This sequence gives SMEs a focused task at each stage: establish claim evidence, assess cross-claim identity, and judge system comparisons. Cross-claim reference decisions will be completed before exposing identity predictions when that capability is being benchmarked. A second reviewer will independently assess a sample of complete claims and identity decisions; disagreements will be resolved with their original judgments preserved.
+This sequence gives SMEs a focused task at each stage: establish claim evidence, assess cross-claim identity, and judge system comparisons. Cross-claim reference decisions will be completed before exposing identity-linking results when that capability is being benchmarked. A second reviewer will independently assess a sample of complete claims and identity decisions; disagreements will be resolved with their original judgments preserved.
 
 ## 4. Measuring entity and detail quality
 
 The evaluation will use standard metric names. **Precision** measures how much of what a system reports is correct; **recall** measures how much of the reference it recovers. Both are necessary: a system can achieve high precision while omitting substantial information. [Metric definitions](https://scikit-learn.org/stable/auto_examples/model_selection/plot_precision_recall.html).
 
+The calculation reference at the end of this paper gives explicit formulas and the information needed from each source. Its quantities are conceptual counts, not a proposed file or database schema.
+
 ### Entity identification
 
-**Entity precision** will be the number of correctly identified entities divided by the number of evaluated entity predictions. **Entity recall** will be the number of reference entities recovered divided by the number of eligible reference entities. These measures will initially operate within each claim.
+**Entity precision** will be the number of correctly identified entities divided by the number of evaluated extracted entities. **Entity recall** will be the number of reference entities recovered divided by the number of eligible reference entities. These measures will initially operate within each claim.
 
-Matching will account for name variants without treating name similarity as identity proof. One-to-one alignment will prevent duplicate predictions from increasing correct-match counts. Repeated presentations of one extraction caused by multiple watchlist candidates will first be separated from genuine duplicate extraction predictions. Merged identities, split identities and unsupported predictions will be reported as distinct error categories.
+Matching will account for name variants without treating name similarity as identity proof. One-to-one alignment will prevent duplicate entity extractions from increasing correct-match counts. Repeated presentations of one extraction caused by multiple watchlist candidates will first be separated from genuine duplicate extractions. Merged identities, split identities and unsupported extractions will be reported as distinct error categories.
 
-**Entity-type accuracy** will compare `entity_NER` with the reviewed type. **Category accuracy** will compare `entity_category` with the independently assigned claim category. Both will identify the population that could be evaluated, including missing predictions and unresolved reference labels. **Category evaluability coverage** will show the proportion of aligned entity predictions with sufficient reference evidence for a category judgment. Subcategory evaluation will be separate and limited to agreed labels supported by the notes.
+**Entity-type accuracy** will compare `entity_NER` with the reviewed type. **Category accuracy** will compare `entity_category` with the independently assigned claim category. Both will identify the population that could be evaluated, including missing system assignments and unresolved reference labels. **Category evaluability coverage** will show the proportion of aligned extracted entities with sufficient reference evidence for a category judgment. Subcategory evaluation will be separate and limited to agreed labels supported by the notes.
 
 ### Details: value, owner and completeness
 
@@ -107,14 +109,14 @@ The primary detail comparison will concern a fact: **which entity has which kind
 
 | Metric | Definition | What it tells the business |
 |---|---|---|
-| Attribute precision | Correct owner–detail-type–value predictions ÷ all eligible detail predictions | How often reported details can be used for the entity to which they were assigned. |
+| Attribute precision | Correct owner–detail-type–value extractions ÷ all eligible extracted details | How often reported details can be used for the entity to which they were assigned. |
 | Attribute recall | Correctly recovered reference facts ÷ all eligible reference facts | How much of the available information the system captures. |
 | Attribute false-negative rate | Missed reference facts ÷ all eligible reference facts; equal to 1 − attribute recall | How much information remains missing, including details of entities the system did not identify. |
-| Value precision | Reported values supported under the same detail type somewhere in the claim ÷ all evaluated detail predictions | Whether values are grounded in the claim, considered separately from their owner. |
+| Value precision | Reported values supported under the same detail type somewhere in the claim ÷ all evaluated extracted details | Whether values are grounded in the claim, considered separately from their owner. |
 | Conditional attribution accuracy | Supported values assigned to the correct entity ÷ supported values with resolved ownership | Whether otherwise valid information has been attached to the right entity. |
-| Unsupported-value rate | Values absent from the reference for that detail type ÷ all evaluated detail predictions | The proportion requiring investigation for transcription, truncation or unsupported generation. This does not establish fabrication. |
+| Unsupported-value rate | Values absent from the reference for that detail type ÷ all evaluated extracted details | The proportion requiring investigation for transcription, truncation or unsupported generation. This does not establish fabrication. |
 
-The reference will allow several valid values for an entity. A blank prediction represents an omission when an eligible reference fact exists; it is not itself a reported false value. Unknown ownership and unresolved conflicting evidence will be identified separately rather than converted into guessed labels. When source material is missing, that limitation will be reported rather than interpreted as system failure.
+The reference will allow several valid values for an entity. An empty extracted-detail field represents an omission when an eligible reference fact exists; it is not itself a reported false value. Unknown ownership and unresolved conflicting evidence will be identified separately rather than converted into guessed labels. When source material is missing, that limitation will be reported rather than interpreted as system failure.
 
 ### Agree equivalence before calculating results
 
@@ -130,7 +132,7 @@ GOKO’s detail fields make component-level comparison possible today. Meaningfu
 
 A comma in an address will not automatically be interpreted as a separator between values. Address components from different locations will not be combined into an apparently correct address. These policies will be versioned and applied equally to GOKO and the proposed system.
 
-The annotator will support this method by showing the predicted value, its proposed owner and the relevant reference evidence together. Reviewers will be able to distinguish wrong value, wrong owner, missing information and insufficient evidence. Its existing detail capture and source navigation provide the foundation; structured treatment of address bundles, temporal qualifications and unresolved ownership remains part of the proposed extension.
+The annotator will support this method by showing the extracted value, its proposed owner and the relevant reference evidence together. Reviewers will be able to distinguish wrong value, wrong owner, missing information and insufficient evidence. Its existing detail capture and source navigation provide the foundation; structured treatment of address bundles, temporal qualifications and unresolved ownership remains part of the proposed extension.
 
 ### Illustrative comparison
 
@@ -179,7 +181,7 @@ The resulting entity view will allow a reviewer to move from a consolidated fact
 
 ## 7. Reporting results and extending the benchmark
 
-Results will combine an overall scorecard with breakdowns by coverage, client, note-taking quality and note volume. Pooled precision and recall will describe performance across all evaluated items; average per-claim results will show whether that performance is consistent across claims. **Claim-level exact-match accuracy**, reported separately for entities and for entities with details, will measure the proportion of completed claims with no in-scope omissions or incorrect predictions.
+Results will combine an overall scorecard with breakdowns by coverage, client, note-taking quality and note volume. Pooled precision and recall will describe performance across all evaluated items; average per-claim results will show whether that performance is consistent across claims. **Claim-level exact-match accuracy**, reported separately for entities and for entities with details, will measure the proportion of completed claims with no in-scope omissions or incorrect extractions.
 
 Every reported fraction will include its counts, scope and unresolved cases. A zero denominator will be unavailable rather than scored as zero. Confidence estimates will account for related claims and shared evidence. Balanced quality-band sampling will support comparisons between bands; a portfolio estimate will require the corresponding population weights.
 
@@ -207,3 +209,159 @@ The next increment will align scoring with the agreed entity and fact definition
 Cross-functional alignment will focus on five decisions: the sampling and quality-band plan; category and detail-comparison definitions; the meaning and completeness of GOKO’s extraction and candidate outputs; the point-in-time snapshot and watchlist requirements; and the SME adjudication process. Business and SME teams will establish meaning and acceptable uncertainty, data teams will establish input completeness and reproducibility, and product and engineering teams will translate those decisions into the review experience.
 
 The intended deliverable is a repeatable benchmark that explains what improved, for which claims and information types, and on what evidence—while giving SMEs a practical way to establish and maintain that evidence.
+
+## Calculation reference: from evidence to metrics
+
+This reference explains how the proposed measures will be calculated. The letters below represent counts or comparison sets, not required field names. The export contracts can evolve while preserving these meanings. All fractions are multiplied by 100 when displayed as percentages. A zero denominator produces “not evaluable,” not 0%.
+
+### A. Information to assemble
+
+The evaluation process will bring together three sources of information:
+
+| Source | Information required | Purpose in the calculation |
+|---|---|---|
+| Gold Annotator: claim reference | Claim and source-note associations; completed review status; reference entities; supported names and types; reference version | Establish the complete population of entities that should have been found within each eligible claim. |
+| Gold Annotator: facts and categories | Detail type, value, owner, supporting evidence and material qualifications; reviewed category or unresolved status | Establish which facts and classifications are supported, including information absent from GOKO’s results. |
+| GOKO: extraction results | Claim association, extracted entity and its details, assigned type/category, and enough information to distinguish repeated presentation from a separate extraction | Establish what GOKO actually returned. The workbook’s entity, detail and category fields supply this content; the meaning of its result types must be agreed. |
+| Gold Annotator: comparison decisions | Association of a GOKO entity with a reference entity, or unsupported/unresolved outcome; any reviewed value-equivalence and ownership decisions | Connect the two sources without requiring identical names or formats. |
+| GOKO and SME watchlist review | Candidate entity pair, method, score, actual alert status and watchlist version; SME same/different/insufficient-evidence judgment | Establish true and false alerts and missed matches within the reviewed candidate population. |
+| Cross-claim review and system results | Accepted reference identity links, system-proposed links and a defined set of assessed entity pairs | Establish correct, incorrect and missed cross-claim identity links. |
+
+The annotator already supplies claim-scoped entities, sourced annotations, category reviews and entity comparison decisions. The fuller qualification, cross-claim and unflagged-candidate requirements describe proposed extensions. Extracting an export from today’s app will not, by itself, supply every input in this reference.
+
+The preparation sequence is: select the same frozen claims; establish eligible reference entities and facts; interpret GOKO’s extraction units; apply agreed normalization; associate extracted entities with the reference; and classify comparison outcomes. Counts are calculated from those outcomes. A source quotation remains available for audit but is not a GOKO matching requirement.
+
+Eligibility is established before totals are calculated. Unresolved cases and missing source packets are reported separately. An unsupported extraction is an error, not an eligibility exclusion. An absent extracted entity leaves its reference entity and eligible facts in the recall denominators. Ambiguous associations require adjudication or an explicitly disclosed exclusion, rather than silently counting potentially correct information as incorrect.
+
+### B. Entities and classifications
+
+For an eligible collection of claims, let:
+
+- **G_E** = number of reference entities, counting an entity separately in each claim where it is established.
+- **S_E** = number of evaluated extracted entities after resolving presentation-level repetition.
+- **M_E** = number of accepted one-to-one matches between those extracted and reference entities.
+
+The formulas are:
+
+```text
+Entity precision = M_E / S_E
+Entity recall    = M_E / G_E
+```
+
+For example, 10 reference entities, 8 extracted entities and 7 correct matches give precision `7 / 8 = 87.5%` and recall `7 / 10 = 70%`. There is one incorrect extraction and three missed reference entities. Genuine duplicate extractions remain in `S_E` but cannot create additional matches; several watchlist candidates for the same extraction do not increase `S_E`.
+
+For classifications, the evaluation uses the aligned entities with a resolved gold label:
+
+```text
+Category accuracy = correct category assignments / aligned entities with a resolved gold category
+Category evaluability coverage = aligned entities with a resolved gold category / all aligned entities
+Entity-type accuracy = correct type assignments / aligned entities with a resolved in-scope gold type
+```
+
+The gold labels come from SME review; GOKO’s assignments come from `entity_category` and `entity_NER`. A missing system label counts as incorrect when the reference label is resolved. An unresolved reference category is excluded from category accuracy but remains visible in category evaluability coverage. Subcategory accuracy, if included, uses the same formula with an agreed subcategory reference. These proposed missing-label rules must be applied consistently even where the current dashboard’s exclusions differ.
+
+### C. Extracted details and ownership
+
+A comparison fact associates an entity with a detail type and value, plus any qualification that the agreed task requires. It is not simply a cell containing text. Gold facts come from SME annotations grouped under their owners; GOKO facts come from its extracted detail values and the entities to which they are assigned. Normalization determines equivalence without overwriting the originals.
+
+Let:
+
+- **G_F** = number of eligible reference facts, with repeated source evidence counted once.
+- **S_F** = number of evaluated extracted facts under the agreed repetition policy.
+- **M_F** = number of one-to-one fact matches agreeing on the aligned owner, detail type, equivalent value and required qualifications.
+
+```text
+Attribute precision           = M_F / S_F
+Attribute recall              = M_F / G_F
+Attribute false-negative rate = (G_F - M_F) / G_F
+```
+
+An address component can be the comparison fact for a component score. A complete address must instead be treated as one associated bundle for a complete-address score. Both systems must use the same unit. A correct value assigned to the wrong entity cannot enter `M_F`.
+
+Separate value and attribution diagnostics use these counts:
+
+- **S_V** = extracted details for which value support can be adjudicated.
+- **V** = those details whose equivalent value is supported under the same detail type somewhere in the permitted claim evidence, regardless of assigned owner.
+- **U** = those details whose value is unsupported under that type in that claim.
+- **V_O** = supported-value details for which ownership can also be adjudicated.
+- **O** = those ownership-decidable details assigned to the correct entity.
+
+```text
+Value precision                  = V / S_V
+Unsupported-value rate           = U / S_V
+Conditional attribution accuracy = O / V_O
+```
+
+When every evaluated value is decidable, `S_V = V + U`; value precision and unsupported-value rate then sum to 100%. If all supported values also have resolved ownership, `V_O = V`. Otherwise the undecidable counts are disclosed. These diagnostics need not share the attribute metrics’ denominator because ownership or qualification can remain unresolved even when a value is visibly present.
+
+In the four-fact example in Section 4, `G_F = 4`, `S_F = 4` and `M_F = 2`. Therefore attribute precision and recall are `2 / 4 = 50%`, and the false-negative rate is `(4 - 2) / 4 = 50%`. For value diagnostics, `S_V = 4`, `V = 3`, `U = 1`, `V_O = 3` and `O = 2`: value precision is 75%, unsupported-value rate is 25%, and conditional attribution accuracy is approximately 67%.
+
+### D. Watchlist decisions
+
+The unit is a particular identified-entity/watchlist-entity pair. GOKO supplies the candidate and alert decision; the SME supplies the identity judgment. Within a declared reviewed candidate population:
+
+```text
+TP = alerted pairs judged to be the same identity
+FP = alerted pairs judged to be different identities
+FN = unalerted pairs judged to be the same identity
+TN = unalerted pairs judged to be different identities
+A  = reviewed pairs judged to have insufficient evidence
+```
+
+```text
+Watchlist precision                       = TP / (TP + FP)
+Candidate-conditional watchlist recall    = TP / (TP + FN)
+Candidate-conditional false-negative rate = FN / (TP + FN)
+Candidate-conditional false-positive rate = FP / (FP + TN)
+Review abstention rate                   = A / (TP + FP + FN + TN + A)
+```
+
+For example, `TP = 18`, `FP = 2`, `FN = 6`, `TN = 24` and `A = 5` produce precision of 90%, candidate-conditional recall of 75%, a false-positive rate of about 7.7%, and abstention of about 9.1%. The six genuine unalerted matches can be found only if review includes unalerted candidates. This example does not establish matches missing from the candidate population itself.
+
+For threshold analysis, replace the historical alert decision with the decision produced by the agreed rule at threshold `t`, keeping SME identity judgments unchanged, and recalculate `TP(t)`, `FP(t)`, `FN(t)` and `TN(t)`. Method and category restrictions remain part of the rule. Missing scores are not automatically below-threshold outcomes. Historical and simulated results are reported separately.
+
+If only a probability sample is reviewed, replace each count by the sum of its items’ sampling weights, commonly `1 / selection probability`. Numerator and denominator must use the same weights and population. Pending reviews are reported separately from abstentions. Overall entity-level watchlist recall requires an independent audit: reference entities with at least one correct alert divided by all audited reference entities confirmed to have a watchlist match. Supplied candidate judgments alone do not establish that denominator.
+
+### E. Cross-claim identity and claim-level results
+
+Within a defined, adjudicated population of cross-claim entity pairs, let **G_L** be the reference set of same-identity links and **S_L** the system’s proposed same-identity links. Each unordered pair counts once; unresolved pairs are disclosed and excluded from the decided population. Group membership can be translated into those pairs without requiring a particular storage model.
+
+```text
+Pairwise identity precision = number of links in both S_L and G_L / number of links in S_L
+Pairwise identity recall    = number of links in both S_L and G_L / number of links in G_L
+```
+
+Gold Annotator’s proposed cross-claim review supplies `G_L`; the evaluated system supplies `S_L`. Recall requires reference links beyond the system’s own suggestions. Claims sharing an address do not enter `G_L` unless identity has actually been established.
+
+```text
+Claim-level exact-match accuracy = fully correct eligible claims / all eligible completed claims
+```
+
+For the entity-only variant, a fully correct claim has no missed or incorrect entity extractions. For the entity-plus-detail variant, it must also have no missed or incorrect eligible facts. Unresolved claims are disclosed separately; marking a claim reviewed does not mean the system was correct.
+
+For any metric with numerator `n_c` and denominator `d_c` for claim `c`:
+
+```text
+Pooled result (micro average) = sum(n_c) / sum(d_c)
+Mean claim result (macro average) = sum(n_c / d_c) / number of claims with d_c > 0
+```
+
+Both use the same eligibility rules. The pooled result weights claims through their item counts; the mean claim result gives each evaluable claim equal weight. Subgroup calculations repeat the formulas within each coverage, client or quality band.
+
+### F. Future evidence measures
+
+The future evaluations in Section 7 follow the same logic, with different comparison units:
+
+```text
+Span precision = matched extracted spans / evaluated extracted spans
+Span recall = matched reference spans / eligible reference spans
+Coreference-link precision = correct system identity links between mentions / evaluated system links
+Coreference-link recall = recovered reference identity links between mentions / eligible reference links
+Evidence-support precision = supported cited assertions / evaluated cited assertions
+Relation/event precision = correctly matched extracted relations or events / evaluated extracted relations or events
+Relation/event recall = recovered reference relations or events / eligible reference relations or events
+```
+
+Each requires the task-specific reference and system information described in Section 7. Matching conventions, roles and qualifications are agreed before counting. These formulas do not turn GOKO’s note citations into spans or imply that GOKO currently provides the required outputs.
+
+For the existing annotation-overlap diagnostic, `Jaccard similarity = annotations shared by both reviewers / annotations recorded by either reviewer`. The current app defines shared annotations by their kind, source positions and detail type within the same claim and note. This requires two reviewers’ annotation sets, not GOKO output, and remains distinct from agreement about entity identity or fact ownership.
