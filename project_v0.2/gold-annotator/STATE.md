@@ -4,6 +4,12 @@ Verified 2026-09-11 (America/Chicago).
 
 ## Evaluation plan revision — 2026-09-14
 
+Editorial follow-up: rewrote the evaluation as a client-facing methodology
+lightpaper, with standard metric names, an explicit mapping to supplied GOKO
+fields, and a coherent account of the SME experience and technical requirements.
+Current and proposed capabilities remain distinguished. Reviewed terminology,
+metric definitions and Git whitespace; documentation only, no runtime changes.
+
 Revised `../EVALUATION.md` after checking annotation selection, claim checkpoints,
 scoring, workbook fields and watchlist completion against the current code. The
 plan now distinguishes claim-only and cross-claim evaluation, provides comparison
