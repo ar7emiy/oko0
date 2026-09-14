@@ -1,167 +1,207 @@
-# How we grade the firm's entity extraction
+# Evaluating GOKO’s entity extraction and watchlist matching
 
-The firm uses GenAI that reads claim notes and pulls out the people and companies mentioned, along with details about them: addresses, phone numbers and tax IDs (TINs). The firm also checks those names against a watchlist. This document explains how we find out how often it gets these right.
+This study will compare GOKO’s results and successive versions of our system against the same independently reviewed claim evidence. Subject-matter experts (SMEs) will establish which people and organizations the evidence identifies, what it states about them, and whether proposed watchlist matches represent the same real-world entity. This reference is the **answer key**, or gold data.
 
-## What we want to know
+We need two complementary reviews: **complete claims first**, then **entities and items across claims**. The first measures what a system can establish within a claim. The second measures whether it joins evidence across claims correctly. Neither should silently change the scope of the other.
 
-1. **Does it find the people and companies in the notes?**
-2. **Does it report their details correctly?** Addresses, phone numbers, TINs.
-3. **Does it attach each detail to the right person or company?**
-4. **Does it put each one in the right category?** For example medical provider, legal, or claimant.
-5. **When it flags a watchlist match, is it really the same person or company?**
+This document separates the proposed benchmark from the current annotation app. It specifies required information without prescribing a database or export layout. A **reported entity** means a person or organization a system says it identified; a **reported detail** means a value it assigns to an entity; a **watchlist candidate** means a proposed pairing between an identified entity and a particular watchlist entry. These are different evaluation units.
 
-## How the grading works
+## 1. Select and freeze the benchmark material
 
-Grading a test needs an answer key. Ours is built by subject-matter experts (SMEs):
+We will endeavor to identify claims for which GOKO has already identified entities, freeze all their notes at a stated cutoff, and capture the corresponding GOKO results. We will also seek newer claims with less overall note volume, drawn from a variety of clients and multiple coverage groups.
 
-1. An SME reads every note on a claim.
-2. They record every person and company the notes mention, and every detail the notes state about them.
-3. For each one, they mark exactly where in the note it appears, so anyone can check it later.
+The final claim count has not been agreed. **At least 100 distinct claims per coverage group is the proposed bare minimum**, with equal representation across agreed note-taking-quality bands. SMEs must recommend how to define those bands and the optimal distribution; any departure from equal allocation should be documented before selection. Quality should consider clarity, completeness, ambiguity and copied text, not just note length. Record client, coverage, claim age, note count and quality band for subgroup analysis.
 
-That record is the **answer key**. Data scientists call it the *gold data*. We compare the firm's output for the same claim against it, one item at a time.
+This is a planning floor, not a guarantee of statistical precision or sufficient watchlist positives. Rare errors and coverage/client subgroups may need more material. Selecting only claims where GOKO found entities conditions the benchmark on GOKO’s success at finding something. Report that selection explicitly; add a separately tracked sample with no GOKO-identified entities before claiming portfolio-wide performance.
 
-**One step connects the two: pairing.** The firm's GenAI tool and the SME don't always write a name the same way, for example "Dr. Monroe" and "Dr. Ada Monroe". So when an SME finishes a claim, they go through the firm's output row by row and say which person or company on their list each row is, or that it isn't in the notes at all. It takes one decision per row. Most of the scores below depend on it.
+Each benchmark release must retain:
 
-## The proposed SME workflow
+- Complete original note contents, claim-to-note associations, source IDs, version fingerprints, dates where available and the exact input cutoff. A repeated note ID across claims does not make their claim contexts identical.
+- An immutable copy of GOKO’s corresponding entity, detail, category and watchlist results, including below-threshold candidates when available, export time, processing cutoff and run/configuration identifiers where available.
+- The relevant watchlist contents and version, matching rules, thresholds and category restrictions. Record missing information rather than reconstructing it from a score alone.
+- The SME answer-key version, review/adjudication history, category definitions, normalization rules, eligibility decisions and evaluation implementation version.
 
-This proposal gives the SME one focused job at a time. The firm’s output stays hidden until the SME's answer key is complete.
+The notes GOKO actually processed must correspond to the frozen note version. An export taken today may reflect a different cutoff. Reconcile that before scoring, rerun GOKO on the frozen material if possible, or mark the comparison non-equivalent; do not present it as a fair head-to-head benchmark.
 
-1. The SME reads each note and records only what it says: people and companies, later references, descriptions, actions and details. Each record keeps the exact words and where they came from.
-2. A custom Copilot agent can optionally prepare suggested records from the note. The SME checks, corrects, accepts or dismisses each suggestion. The workflow works just as well when there are no AI suggestions.
-3. After every note in a claim is complete, the SME sees one claim-level evidence card for each person or company. It gathers the evidence already recorded across all of that claim's notes. The SME can open any quote in its original note if they need context.
-4. The SME reviews the complete evidence card and assigns a broad claim role, or chooses **insufficient evidence** or **conflicting evidence**. They identify the records that support, conflict with or merely repeat the conclusion. A short reason is recorded. This review is finished and frozen before the firm's output appears.
-5. Only then does the SME pair the firm's rows and review its watchlist flags. The scores compare the firm with the frozen answer key.
+Each system version receives the same permitted inputs and cutoff. Claim-only systems are compared on claim-only evidence. Experiments adding other claims, external information or a different watchlist are reported separately. Archive each new system’s predictions before exposing its errors to developers.
 
-This sequence reduces rework: the SME does not have to make a category decision from one isolated sentence, and they do not need to re-read every note to compare the firm's output later.
+Use a development benchmark for iterative improvement and a separate held-out benchmark for final claims of improvement. Repeatedly tuning against the same test answers makes them development data. Shared source notes and confirmed cross-claim identities should be grouped to prevent leakage between partitions; report the resulting number of independent groups. Group-separated evaluation is the relevant principle, not a random split of individual annotations. [Reference: grouped evaluation](https://scikit-learn.org/stable/modules/cross_validation.html#group-k-fold).
 
-## The scores
+Answer-key corrections require a new version and rescoring both GOKO and our system against it. Retain earlier results; never improve only one comparator’s labels after inspecting its mistakes.
 
-Every score is a simple fraction. Each one comes with a small made-up example.
+## 2. Review complete claims, then entities across claims
 
-### 1. Found rate and right rate: does it find the people and companies?
+### First pass: all notes within one distinct claim
 
-- **Found rate** = people and companies both the firm and the SME found ÷ everyone the SME found
-- **Right rate** = firm rows that match someone on the SME's list ÷ all firm rows
+An SME reads every frozen note belonging to the claim, with GOKO’s predictions hidden. They record entities, references, details, descriptions and actions, retaining sources and uncertainty. Notes enter the packet because they belong to the claim, not because GOKO cited them.
 
-Example: an SME finds 10 people and companies on a claim. The firm's output lists 8. Seven of them are on the SME's list; one isn't in the notes at all.
+When information is scattered across notes, the SME adds each new piece to the existing **claim-level entity**. For example, note 1 names a clinic, note 2 gives its address and note 3 reports its phone number. These belong together if the notes establish the same clinic. The SME need not copy evidence into note 1 or create another clinic.
 
-- Found rate = 7 ÷ 10 = **70%**, so it missed 3.
-- Right rate = 7 ÷ 8 = **88%**, so 1 of its 8 was wrong.
+**Already possible in the app:** open the later note, select its source passage, choose Detail, Description, Action or Another mention, and select the entity already created in that claim. The claim evidence review gathers those annotations across notes. The SME then reviews the complete claim, resolves omissions and ownership errors, assigns supported categories or an unresolved outcome, and freezes the answer key.
 
-You need both. A tool that listed every name in the phone book would find everyone, and be mostly wrong. These metrics are also known as *recall* and *precision*.
+Preserve reported speech, negation, disputed facts and time qualifiers. “The claimant denied visiting the clinic” is not a confirmed visit. A clinic’s address is not automatically its doctor’s address. Repeated copied text is not independent corroboration. Distinguish what a note states from independently verified truth.
 
-### 2. Detail accuracy: does it report the details correctly?
+### Second pass: entity and item review across completed claims
 
-- **Detail accuracy** = details the firm got exactly right ÷ details the firm reported
-- **Missed-detail rate** = details in the notes the firm didn't report ÷ details the SME found
-- **Made-up rate** = details the firm reported that no note states ÷ details the firm reported
+We recommend a separate review after claim annotation, using candidate groups of claim-level entities and associated details, addresses, descriptions and actions. This avoids global identity decisions based on partly read claims and preserves the original claim-only benchmark.
 
-Example: the firm reports 20 details. Seventeen match the notes exactly, 2 have a typo, and 1 appears in no note.
+Candidate grouping can use identifier agreement, name variants, address components and combinations of evidence. It proposes comparisons for SMEs; it does not establish identity. Common addresses, phone numbers and categories can be shared by unrelated entities. Conflicting identifiers and temporal changes remain visible. Neither similarity nor a chain of suggested links proves a merge.
 
-- Detail accuracy = 17 ÷ 20 = **85%**
-- Made-up rate = 1 ÷ 20 = **5%**
+For each proposed link the SME chooses **same**, **different** or **cannot determine**, cites evidence and records a reason. Review contradictory links before accepting a group. Preserve original claim identities and accepted, rejected and reversed decisions. Review a sample outside proposed groups to assess identities the algorithm missed; candidate-only review cannot establish overall linking recall.
 
-Close doesn't count. A TIN of `001234567` reported as `1234567` is wrong.
+The combined entity review shows accepted claim associations and their evidence. It must distinguish **supported in this claim** from **known only from another claim**. A phone number in claim B does not mean GOKO should have extracted it from claim A. Cross-claim information cannot retroactively remove a claim-only miss or justify an unsupported claim-only prediction.
 
-### 3. Right-owner rate: is each detail on the right person or company?
+Item review is related but distinct: group equivalent addresses to check normalization and attribution without merging everyone associated with an address. Preserve address bundles so a street from one location cannot be combined with another location’s city or ZIP. Actions retain participants, relationship, source, timing and qualifications rather than becoming an unqualified list of things an entity did.
 
-- **Right-owner rate** = correct details sitting on the correct person or company ÷ all correct details
+**Not yet implemented:** cross-claim review queues, candidate grouping, accepted global identities, relationship adjudication and global-identity scores. These are proposed additions. Gold corrections discovered here follow the answer-key versioning rule above.
 
-Example: a note says *"Dr. Monroe works at Northstar Orthopedics, 14 Cedar Lane."* The address belongs to the clinic. If the firm puts it on Dr. Monroe, the address itself is right but the owner is wrong. If 2 of 17 correct details are on the wrong owner, the right-owner rate = 15 ÷ 17 = **88%**.
+For an independent cross-claim benchmark, complete this identity adjudication before revealing either evaluated system’s identity predictions. Keep candidate-generation provenance and audit unproposed links so the grouping tool does not silently define the answer key. If GOKO does not produce cross-claim identities, report this as a separate capability evaluation of our system, not a missing-output penalty in the common GOKO benchmark.
 
-### Linking and corroborating evidence across a claim
+## 3. Information required for each comparison
 
-The answer key is built across the whole claim, not one note at a time. An SME creates a person or company once, then links later names, shortened names, pronouns, descriptions, actions and details to that same person or company only when the notes make the link clear.
+These are information requirements, not assumed tables. A spreadsheet, relational database or another representation is acceptable if it preserves the associations unambiguously.
 
-Every item keeps its original note, exact quote and location. Linking two references is **coreference**: deciding that two ways of referring to someone mean the same person or company. **Corroboration** is different: two or more linked statements can support the same possible fact or category, even when they appear in different notes. Neither one permits guessing. If the notes do not make a link clear, the SME records it as unresolved rather than merging it with another person or company.
+| Component | GOKO / evaluated system must provide | SME reference must provide |
+|---|---|---|
+| Entity identification | Claim association, each separately asserted identity, names/aliases, type, source-note IDs if available, output version, and a way to distinguish repeated reports from distinct predictions | All in-scope entities in the complete claim, supported aliases, type, evidence, unresolved references and completeness confirmation |
+| Entity alignment | Identity/context information sufficient to distinguish namesakes and duplicates; split or merged predictions must remain visible | Reviewed association to a gold entity, unsupported prediction, ambiguous alignment or explicit split/merge assessment |
+| Details and ownership | Detail kind and raw value, predicted owner, and which components belong together; preserve multiple values | Supported values, kind, owner or unresolved owner, address grouping, source, and temporal, negated, reported or conflicting status |
+| Categories | Predicted category and definitions/version, including whether it means a claim role or occupation | Independently assigned claim role or insufficient/conflicting evidence under the agreed taxonomy |
+| Watchlist identity | Identified entity, particular watchlist entry/ID, method, similarity if available, actual flag decision, cutoff/rules, candidate availability and watchlist version | Same/different/cannot-determine identity decision, evidence and reason for that candidate pair |
+| Cross-claim identity | Proposed links or global group membership and permitted claims/evidence | Adjudicated same/different/unknown links and group membership with supporting and conflicting evidence |
+| Actions and relationships | Participants and roles, action/relation, context, time, negation and attribution if the system claims to extract them | Equivalent sourced statement and qualifications, not merely matching participant names |
 
-Example: Note 001 names *"Dr. Ada Monroe."* Note 002 says *"Dr. Monroe assessed the claimant's injury,"* and another note calls someone *"the orthopedic surgeon."* If the claim makes clear that these references are to Ada, all three are linked to her claim-level entry. The action and description remain evidence from their own notes; they do not become unsourced facts on Ada's record.
+GOKO’s supplied headers provide claim IDs, entity/detail fields, categories, note citations, watchlist entries and similarity values. They do **not** establish stable extraction identity, address-history grouping, complete candidate-search coverage, source/run timing or the complete watchlist. GOKO must clarify these semantics. In particular, confirm whether `Entity`, `GenAI_only` and `Exact_search` are separate extraction assertions, candidate results or repeated representations of one entity. An exact watchlist-name hit must not automatically count as a separate extracted entity.
 
-### 4. Category accuracy: is each one in the right category?
+`GenAI_Note_ID` can cite several notes for a cleaned entity name. It identifies possible source documents, not which note supports each detail or whether the name is globally unique. The importer splits citations and removes numeric `.0` artifacts for lookup while retaining supplied values.
 
-- **Category accuracy** = firm rows with the right category ÷ firm rows the SME could judge
+### When relationships need graph-like meaning
 
-The SME does **not** assign a category while reading each individual note. Their first job is to record exactly what the notes say: names, references, descriptions, actions and details. That keeps the answer key grounded in evidence rather than an immediate interpretation of a vague sentence.
+A list of entities with one address each cannot represent multiple owners, time-qualified addresses, statements about several parties or competing identity links. Those cases require explicit associations carrying participants, roles, provenance, time and decision status. A network view can help SMEs inspect them; graph traversal can support discovery and consistency checks.
 
-After the SME completes every note for a claim, they review one claim-level entry for each person or company. That entry shows the exact evidence linked to them across the claim, alongside a short guide defining the study's broad categories. The SME assigns a category, or marks **insufficient evidence** or **conflicting evidence**, and identifies the evidence behind that decision. This happens before the SME sees the firm's output.
+**No graph database is required by these metrics.** Relational association records can represent the same information, including a statement with several participants and evidence passages. Use a graph representation when it makes the network easier to inspect or query; it supplies no additional truth. Core claim entity/detail metrics need sets, attributes and reviewed alignments. Identity-link and action evaluation need explicit relationships. A storage decision follows those requirements, rather than defining them.
 
-For example, *"Dr. Monroe assessed the claimant's injury"* may point toward a medical-provider category, but it does not prove it on its own. The claim-level review may have other evidence, such as *"the orthopedic surgeon."* If the evidence remains too weak or conflicting, the entry is set aside rather than counted as right or wrong.
+## 4. Turn the available material into a detail benchmark
 
-Subcategories are optional. The answer key preserves a stated description such as *"orthopedic surgeon,"* but does not force the SME to choose a subcategory when the notes do not state one. This score matters more than it looks; see [Why category matters](#why-category-matters).
+1. Freeze the claim packet and GOKO export together; reconcile claim/note associations and missing inputs before interpreting absence as an error.
+2. Build and independently review the complete claim answer key. Agree eligible detail kinds and statement statuses. Do not convert unresolved ownership or conflicting evidence into a guessed answer.
+3. Align reported entities to reference entities, retaining unsupported and ambiguous predictions. Separate extraction assertions from watchlist candidates so several candidates do not multiply one entity or its details.
+4. Retain raw values and derive comparison values using a versioned normalization policy. Identify a gold fact by claim, owner, kind and equivalent value, retaining address grouping or time/status where they change meaning. Five notes repeating one fact do not create five gold facts.
+5. For each reported detail, check whether an equivalent value of the same kind is supported anywhere in the permitted claim evidence, then whether it belongs to the predicted owner. For each eligible gold detail, check whether the system reported it on the correct owner. Track unresolved cases separately.
+6. Produce reproducible counts and fractions by detail kind, claim, coverage, client and quality group, with adjudication reasons. Apply the same procedure to our system.
 
-We also report **category coverage** = paired firm rows with an assigned category ÷ all paired firm rows. It shows how much of the firm's output had enough evidence for a fair category comparison. Rows with insufficient or conflicting evidence are not counted as right or wrong.
+**Comparison policy to agree before scoring:**
 
-### 5. Watchlist accuracy: are the flags real?
+| Detail | Comparison rule and clarification needed |
+|---|---|
+| TIN | Compare identifier digits with leading zeros preserved; remove only agreed presentation separators. Define treatment of masking, missing digits and contradictions. |
+| Phone | Preserve country code and extension semantics. Agree punctuation equivalence; do not infer countries or discard extensions to manufacture equality. |
+| ZIP | Preserve leading zeros. Decide whether five-digit and ZIP+4 values are equivalent for a particular score; otherwise report partial information separately. |
+| Street address | Agree abbreviation, unit/suite and punctuation equivalence. Missing units can distinguish entities. Fuzzy similarity is not automatic correctness. |
+| City/state | Use a fixed equivalence policy for abbreviations and names; different places are not formatting variants. |
+| Complete address | Compare street, unit, city, state and ZIP as one associated location under declared completeness rules. Component scores remain separate. |
+| Historical/disputed details | Specify whether the target is any supported historical value, a value valid at the cutoff, or a qualified statement. Do not credit an unqualified output with temporal meaning it never supplied. |
 
-The firm flags watchlist matches two ways:
+Multiple valid phones or addresses are allowed. A correct value on the wrong owner is a supported-value success but an ownership failure and a missed gold fact for the correct owner. A typo matching no supported value is unsupported under exact comparison, not a separately proven invention. SME error review can distinguish typo, truncation, conflation and unsupported generation; the automated score cannot infer their causes.
 
-- an **exact search** for watchlist names in the notes, and
-- **GenAI**, which compares each name it extracted against the watchlist and gives a similarity score from 0 to 100 (RapidFuzz token sort).
+Agree how GOKO encodes multiple values before splitting them: a comma can separate addresses or be part of one address. Blank predictions are omissions against eligible gold facts, not reported false values. Details with unknown gold ownership need separate evaluability counts, not an automatic attribution failure. If an entire claim packet is missing, exclude it as unavailable input and report that exclusion rather than counting every fact as missed.
 
-For every flag, the SME decides: **same** person or company, **different**, or **can't tell** from the notes.
+**Current app limit:** it compares six components (address, city, state, ZIP, phone and TIN), using case/whitespace normalization and separator removal for phone, TIN and ZIP. It deduplicates gold owner/kind/value combinations but counts supplied predictions separately. It does not implement the complete equivalence, time/status, address-bundle or duplicate-prediction policy above. Unresolved cases and complex addresses need adjudication before treating the dashboard as a final benchmark. Global punctuation removal can hide meaningful structure; retain raw values and approve field-specific rules first.
 
-- **Watchlist accuracy** = flags the SME confirmed as the same ÷ flags the SME could decide, reported separately for exact search and for GenAI
-- **Can't-tell rate** = flags the SME couldn't decide ÷ all flags
+### Worked detail example
 
-**Checking the similarity score.** Group GenAI's flags by score and work out the accuracy of each group:
+A claim supports four facts: clinic address, clinic phone, clinic TIN and lawyer phone. GOKO reports the correct clinic address, the clinic phone attached to the lawyer, a mistyped clinic TIN and the correct lawyer phone. All alignments are decided and each detail counts once.
 
-| Similarity score | Flags | Confirmed same | Accuracy |
-|---|---|---|---|
-| 95–100 | 40 | 36 | 90% |
-| 85–94 | 30 | 18 | 60% |
-| 75–84 | 20 | 6 | 30% |
+- **Detail accuracy (supported-value precision)** = 3 / 4 = 75%.
+- **Right-owner rate (conditional attribution accuracy)** = 2 / 3, about 67%.
+- **Missed-detail rate (owner-aware detail false-negative rate)** = 2 / 4 = 50%: the clinic phone and TIN were not correctly reported on the clinic.
+- **Made-up rate (unsupported-value rate)** = 1 / 4 = 25%. This includes the mistyped TIN; it does not prove fabrication.
 
-*Made-up numbers.* A table like this shows the firm where to set its cut-off score.
+## 5. Metric names, meanings and denominators
 
-**What this can't show.** Checking flags tells us how many flags were wrong. It can't tell us how many real matches were never flagged. To measure that, SMEs also check a random sample of people and companies that weren't flagged.
+Keep familiar metric names followed by their data-science interpretation in parentheses. Precision concerns reported positives; recall concerns gold positives. Their denominators are different. [Reference: precision and recall](https://scikit-learn.org/stable/auto_examples/model_selection/plot_precision_recall.html).
 
-## Why category matters
+| Metric | Numerator / denominator | Interpretation and boundary |
+|---|---|---|
+| Found rate (claim-level entity recall) | Distinct gold entities found / all eligible gold entities in completed claims | Count once per entity within a claim, regardless of mentions or watchlist candidates. |
+| Right rate (entity extraction precision) | Correct distinct entity predictions / all adjudicated distinct entity predictions | Agree duplicate/split/merge policy first. The app currently counts each paired imported entity report; duplicates can inflate its operational score. |
+| Detail accuracy (supported-value precision) | Reported details supported under that kind somewhere in the claim / all adjudicated reported details | Ownership is separate. This is neither classification accuracy nor owner-aware fact precision. |
+| Missed-detail rate (owner-aware detail false-negative rate; 1 − recall) | Eligible gold facts absent from the correct predicted owner / all eligible gold facts | A missed entity also misses its details. Repeated gold evidence counts once. |
+| Made-up rate (unsupported-value rate) | Reported details unsupported under that kind anywhere in the claim / all adjudicated reported details | Not a false-positive rate, which needs a true-negative denominator; not proof of fabrication. It complements Detail accuracy under the current binary value policy. |
+| Right-owner rate (conditional attribution accuracy) | Supported reported details attached to the correct entity / all supported reported details with adjudicated ownership | Report ownership cases set aside. The app lacks a separate unresolved-ownership eligibility mechanism. |
+| Person/organization tag (conditional entity-type accuracy) | Correct type assignments / aligned entities with comparable resolved types | Report missing/unrecognized predicted tags separately; they are currently excluded. |
+| Category accuracy (conditional category classification accuracy) | Correct predicted categories / aligned entity predictions with resolved independent gold categories | Missing predicted categories count as wrong when gold is resolved. Show category confusion counts. |
+| Category coverage (gold-label evaluability coverage) | Aligned entity predictions with resolved independent gold categories / all aligned entity predictions | Label availability, not system confidence or accuracy. |
+| Watchlist accuracy (flag precision / positive predictive value) | Confirmed-same flagged candidate pairs / flagged pairs decided same or different | Separate Exact search and GenAI. This is not all-candidate accuracy or recall. |
+| Can’t-tell rate (review abstention rate) | Candidate pairs judged cannot determine / all reviewed candidate pairs | Report separately for flags, below-threshold candidates and independent audits. |
+| Agreement rate (annotation-set Jaccard similarity, current app) | Exact annotation items shared by two SMEs / items either SME recorded | Current comparison uses kind, note positions and detail kind, not identity, ownership or category agreement. It is insufficient as a gold-quality check. |
 
-GenAI only calculates a similarity score when the category it gave a person or company matches the watchlist entry's category. So a wrong category doesn't just produce a wrong label. It can quietly switch the watchlist check off.
+For headline Right rate, use one-to-one entity alignment and explicitly label duplicates, splits and merged predictions. Do not let repeated correct names improve precision. Retain an operational report-level score separately if repetition matters to workload. This policy needs implementation; it is not the current app’s counting method.
 
-- If GenAI files a doctor under "legal", that doctor is never compared with the watchlist's doctors. A real match can be missed without anyone noticing.
-- If GenAI files someone under a category that happens to match a watchlist entry, a comparison runs that never should have.
+Proposed supplementary measures, separate from existing dashboard scores:
 
-So category accuracy is part of measuring the watchlist, not a side question. A wrong-category count is useful, but it is not automatically the number of **blocked checks**. To measure blocked checks, the firm must also supply the complete categorized watchlist and enough search information to reconstruct which comparisons would have run under the correct category. To measure real matches missed because of category, those newly eligible comparisons must then be reviewed.
+- **Correct-detail rate (owner-aware fact precision):** fully correct owner/kind/value predictions divided by all eligible predicted facts. A correct value on another entity does not count as success.
+- **Claim completion success (claim-level exact-set accuracy):** completed claims without in-scope omissions or incorrect assertions divided by eligible completed claims. Report entity-only and entity-plus-detail variants separately.
+- **Cross-claim linking right rate (pairwise identity precision):** correctly proposed same-identity links divided by adjudicated proposed same-identity links. **Cross-claim linking found rate (pairwise identity recall):** recovered gold same-identity links divided by all such links in a declared adjudicated universe. Candidate-only review cannot supply the full recall denominator. Also report erroneous merges/splits; large groups generate many pairs.
 
-## An example: claim C201
+Report pooled counts (**micro averaging**), the mean of eligible per-claim fractions (**macro averaging**) and subgroup results. Zero denominators mean unavailable, not zero performance. Report pending, unresolved and excluded counts. Uncertainty estimates must respect claim/shared-source clustering; thousands of details from a few claims are not thousands of independent claims. Equal quality-band sampling does not itself produce a prevalence-weighted portfolio estimate.
 
-*Fictional test data.*
+## 6. Review watchlist candidates below 90
 
-The notes describe Dr. Ada Monroe as an orthopedic surgeon with Northstar Orthopedics, and call Northstar "the medical provider". A letterhead in another note gives Northstar's street address, city, state, ZIP code, phone number and TIN.
+**Yes: add these candidates to SME review.** Preserve GOKO’s actual flag decision separately from candidate existence and numeric similarity. A score of 89 is neither a confirmed mismatch nor an 89% probability of identity. Confirm whether the operational rule is `>= 90`, `> 90`, or includes other conditions.
 
-**Northstar Orthopedics.** The firm reported all 6 details. All 6 match the notes, and all 6 are on Northstar, not on Dr. Monroe.
+First freeze the extraction answer key. Then show the identified entity’s evidence alongside the particular watchlist entry, allowing same/different/cannot determine with a reason. Hide similarity and flag status during identity judgment where practical; reveal them for analysis afterward. Preserve method, score and threshold independently. Do not relabel all candidates as flagged to make them eligible for review.
 
-- Detail accuracy = 6 ÷ 6 = **100%**
-- Right-owner rate = 6 ÷ 6 = **100%**
+Review all candidates if feasible. Otherwise use a documented probability sample covering high scores, the vicinity of 90, lower scores and missing scores. Record inclusion probabilities for weighted estimates. Enriching the review near 90 does not produce a representative sample by itself. Use bins exposing the boundary: below 75, 75 to below 85, 85 to below 90, 90 to below 95 and 95–100. Report missing/invalid scores separately.
 
-**Dr. Ada Monroe.** The firm found her and flagged a watchlist match also named "Dr. Ada Monroe", with a similarity score of 96. That score was only calculated because GenAI filed her under the same category as the watchlist entry, "medical provider". The notes give her name and her job, but no address, phone number or TIN that would confirm she's the same person. That's exactly the kind of flag an SME may mark **can't tell**. The firm may well be right, but a 96 on a name alone isn't proof. Grading many flags like this one is what shows how much a 96 is worth.
+For a declared threshold and a fully adjudicated candidate set, or appropriately weighted sample from it:
 
-## What the proposed workflow will score
+| Candidate outcome | Same identity | Different identity |
+|---|---|---|
+| Flagged under that rule | True positive | False positive |
+| Not flagged under that rule | False negative | True negative |
 
-*Answer key* means the evidence and decisions SMEs record through the proposed workflow. A score is only calculated after the claim-level review is frozen and the firm's rows have been paired.
+Keep cannot-determine outside these four counts and report its size. Estimates conditional on decidable cases may be biased if ambiguity is systematic. Distinguish actual historical GOKO flags from simulations of alternative thresholds.
 
-| Question | Does the answer key record it? | Can the proposed workflow score it? | What's missing |
-|---|---|---|---|
-| Found rate, right rate | Yes | Yes | Complete claim, frozen answer key and pairing |
-| Detail accuracy, missed-detail rate | Yes | Yes | Complete claim, frozen answer key and pairing |
-| Made-up rate | Yes | Yes | Nothing |
-| Right-owner rate | Yes | Yes | Pairing |
-| Category accuracy and category coverage | Yes. The claim-level review records a category or an unresolved outcome, its evidence and a reason | Yes | A study-approved broad-category guide |
-| Wrong-category risk to watchlist checks | Partly. We can identify firm rows that disagree with the frozen category | No | Complete categorized watchlist and a reconstruction of comparisons that should have run |
-| Watchlist accuracy, similarity-score check | Yes | Yes | Each flag needs an SME decision and supporting reason |
-| Real matches never flagged | No | No | SMEs check a random sample of unflagged people and companies |
+- **Watchlist accuracy (flag precision)** = true positives / (true positives + false positives).
+- **Missed-match rate (candidate-conditional false-negative rate)** = false negatives / (true positives + false negatives); its complement is candidate-conditional recall.
+- **False-alarm rate (candidate-conditional false-positive rate)** = false positives / (false positives + true negatives). This differs from the fraction of flags that are wrong.
 
-## Can we trust the answer key?
+Below-90 review closes the gap for **true matches present among supplied but unflagged candidates**. It does not identify entities never extracted, candidates never generated, results discarded before export, category-blocked comparisons or missing/outdated watchlist entries. These require an independent sample of gold entities—including missed and unflagged entities—searched against the complete frozen watchlist under an agreed audit procedure. GOKO must explain the completeness of its candidate export. Report pair-level matching separately from whether an entity received at least one correct watchlist match.
 
-A grade is only as good as its answer key. Three checks:
+Wrong-category counts do not equal blocked comparisons. If GOKO’s category filter is confirmed, assessing its effect requires watchlist categories and search rules, reconstructing newly eligible comparisons and SME review of those pairs.
 
-- **Did the SME read every note?** SMEs mark a note complete only after reading all of it. Found rate is only calculated on complete notes. Otherwise a note the SME never finished would look like a miss by the firm.
-- **Would a second SME agree?** Give some notes to two SMEs separately.
-  **Agreement rate** = items both SMEs recorded the same way ÷ items either SME recorded.
-  Low agreement usually means the instructions are unclear, not that SMEs are careless.
-- **Do AI drafts sway the SMEs?** SMEs may get AI-drafted suggestions to check. If they tend to accept whatever is suggested, the answer key starts to look like the AI. Keeping some notes draft-free and comparing the two groups shows whether that's happening.
+**Current app gap:** watchlist controls, completion checks and scores operate on flagged reports only. Its 85–94 bin straddles 90. It associates one review with each imported report rather than independently managing several candidates for one extracted entity. Separate candidate review, sampling, threshold analysis and independent search audit must be added before reporting these measures. GOKO should clarify the similarity method; the app imports scores and does not calculate RapidFuzz or verify its configuration.
 
-## Later
+## 7. Exact spans: future measures, not a prerequisite for GOKO comparison
 
-The same answer key can grade any future tool, including the redesigned Entity Intelligence system, without SMEs redoing their work. It can also check things the firm's tool does not attempt today: whether it links *"she"* or *"the clinic"* to the right entity; whether it carries metadata across notes without losing its source; and whether its category conclusion is supported by the linked evidence.
+GOKO does not capture exact character spans. Today’s common benchmark must compare claim-scoped entities, values, owners, categories and candidate identities. SME quotations verify the answer key but **must not be required for GOKO to receive credit** for a correct fact. Missing spans are not extraction errors in the common benchmark. Note citations are not span predictions.
+
+If per-fact evidence links become available, evaluate source-document attribution separately. GOKO’s entity-level list of note IDs does not demonstrate which note supports a phone or action. Where several notes validly support a fact, any accepted supporting source may be correct; do not require one arbitrarily selected note.
+
+Future span-capable systems can also be evaluated for:
+
+- **Evidence-location right/found rates (span precision/recall):** require exact source versions, IDs, offset units, start/end conventions, labels and gold spans. Define discontinuous/overlapping spans. Report exact-boundary and separately defined overlap scores using one-to-one matching; a whole-note prediction must not earn credit for every gold passage it overlaps.
+- **Reference-link right/found rates (coreference link precision/recall):** require gold mention identities and links, including pronouns and unresolved references, and predicted mentions/links. Separate gold-mention evaluation from end-to-end evaluation that also depends on finding mentions.
+- **Evidence-support rate (claim–evidence support precision):** require predicted factual assertions, cited passages and SME judgments that the passages support the owner, value, relation and qualifications. Overlapping the right words alone does not establish support.
+- **Action/relationship right/found rates (relation or event precision/recall):** require aligned participants, role direction, predicate definitions, scope, negation, attribution and time where material. A denied visit must not match an affirmative visit. Define semantic equivalence before scoring.
+
+These are separate future tracks. No span score enters a combined ranking against GOKO until both systems supply comparable predictions for that task.
+
+## 8. Answer-key quality and implementation priorities
+
+Independently double-review a sample of complete claims and cross-claim identity cases, stratified by coverage and quality. Adjudicate completeness, value, ownership, category and identity disagreements while preserving original decisions. Measure agreement at those semantic levels, not just exact positions. Keep some claims free of AI suggestions and compare error patterns with assisted claims; draft acceptance alone does not establish annotation accuracy.
+
+The app also reports **Draft acceptance rate (review acceptance proportion)** as accepted / (accepted + dismissed), **Correction rate (accepted-draft edit proportion)** as edited accepted drafts / accepted drafts, and **Manual-addition share (manual annotation proportion)** as manual annotations / all annotations on notes with AI drafts. These are workflow diagnostics, not model precision or recall: accepted suggestions can still be wrong and manual work can predate the suggestions. Pending drafts are reported separately.
+
+| Capability | Current status | Next step |
+|---|---|---|
+| Add sourced evidence across notes in a claim | Implemented, with claim dossier and frozen SME checkpoint | Explicit completeness/ownership review guidance for the benchmark |
+| Freeze original notes and GOKO predictions | Not a managed benchmark-release feature; app retains paths/hashes and reloads GOKO inputs | Archive full inputs and output versions under a release manifest |
+| Claim entity/detail/category dashboard | Implemented with counting/equivalence limits above; scores may be provisional | Approve semantic units, duplicate/ambiguity policy and normalization, then align calculations |
+| Cross-claim entity/item review | Proposed | Candidate groups, explicit identity decisions and combined views preserving provenance |
+| Below-threshold watchlist review | Proposed; unflagged candidates are not in the current review workflow | Separate candidates from extraction, retain actual flags, add review and threshold analysis |
+| Missed matches outside supplied candidates | Not measured | Independent gold-entity/watchlist audit and candidate-coverage information |
+| Span/coreference/qualified-action benchmark | Future | Comparable predictions and task-specific labels, separate from GOKO’s present benchmark |
+
+Before implementation, align with SMEs and GOKO on quality bands, coverage allocation, detail eligibility/equivalence, output identity and candidate semantics, watchlist completeness, cutoff consistency and adjudication policy. These decisions make the benchmark reproducible; storage technology can be chosen afterward.

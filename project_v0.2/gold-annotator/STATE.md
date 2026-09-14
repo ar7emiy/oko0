@@ -2,6 +2,19 @@
 
 Verified 2026-09-11 (America/Chicago).
 
+## Evaluation plan revision — 2026-09-14
+
+Revised `../EVALUATION.md` after checking annotation selection, claim checkpoints,
+scoring, workbook fields and watchlist completion against the current code. The
+plan now distinguishes claim-only and cross-claim evaluation, provides comparison
+input requirements and metric denominators, proposes below-threshold candidate
+review, and specifies frozen benchmark inputs and sampling. Exact-span evaluation
+is a separate future track because GOKO does not supply spans.
+
+This is a documentation revision, not an implementation of the proposed features.
+Checked terminology and Git whitespace; no application code changed or runtime
+tests were rerun. Existing implementation checks below remain historical evidence.
+
 ## Client workbook import increment
 
 - Added standard-library XLSX loading and the client's case-insensitive header
