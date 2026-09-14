@@ -92,11 +92,7 @@ Item IDs would serve as primary keys; references such as a detail’s claim ID w
 
 ## 3. The proposed SME review experience
 
-The following conceptual screen illustrates the information an SME needs together. It is a design discussion aid, not a screenshot or a final interface specification. A UX specialist should test whether fewer panels or a different sequence would reduce effort.
-
-![Conceptual SME screen showing note selection, claim entities and an owner-optional detail form](assets/proposal/sme-review-concept.svg)
-
-*Figure 1. Selected words become a sourced detail. The SME can attach it to a claim entity or preserve it without an owner. The claim dossier brings evidence from different notes together; a later review links identities across claims.*
+The following screenshots show the development application running a fictional practice claim. Numbered stages and lettered callouts explain the flow; the underlying application controls and wording are retained. They illustrate the current review experience, not a final UX specification. Unassigned details and the additional identifier types in section 2.1 remain proposed extensions. A UX specialist should assess navigation, ownership selection and review effort before the final design is agreed.
 
 ### Build the reference across the complete claim
 
@@ -104,7 +100,15 @@ The first review will be organized by unique claim, with all associated notes av
 
 This directly addresses information scattered across a claim. If one note introduces a clinic and another supplies its phone number, the SME will select the phone passage and attach it to the existing clinic. The annotator should keep the claim’s entity list available while the SME moves between notes. A consolidated claim view will bring the selected evidence together for review.
 
+![Real application detail form with source, ownership and value callouts](assets/proposal/01-live-detail.png)
+
+*Figure 1a. Capture a sourced detail. A identifies the selected text; B identifies the owner choice; C identifies the original value. In this practice example, the SME selects the clinic rather than the suggested doctor before saving the TIN. The current form requires an owner.*
+
 At the end of the claim, the SME will examine each entity’s consolidated evidence, check completeness and ownership, and assign a category where the evidence supports one. Insufficient or conflicting evidence will remain an explicit outcome. Supporting quotations will open in their source notes, allowing reviewers to inspect context without reconstructing the claim manually. The completed reference will be frozen before comparison with GOKO.
+
+![Real application claim dossier with entity navigation, source evidence and freeze control annotated](assets/proposal/02-live-claim-review.png)
+
+*Figure 1b. Review the claim dossier. A selects an entity; B exposes its linked source evidence; C freezes the reference after required reviews are complete. The disabled freeze control reflects unfinished review in this capture. This practice claim contains one note; the proposed workflow must also be assessed on claims containing many notes.*
 
 The review will preserve distinctions that materially affect correctness. A clinic’s address does not automatically belong to a doctor who works there. A denied visit is different from a confirmed visit. Repeated text is additional occurrence evidence, but not necessarily independent corroboration. Historical or disputed values will retain those qualifications.
 
@@ -123,6 +127,10 @@ Candidate groups will be reviewed independently of the identity results of the s
 ### Compare system results after the reference is established
 
 The comparison stage will associate each system-identified entity with the appropriate reference entity, or record an unsupported or unresolved identification. SMEs will then assess watchlist candidates using claim evidence and available watchlist attributes. Similarity and flag status should be hidden during identity judgment where practical, then available for threshold analysis afterward.
+
+![Real application completed comparison showing completion, entity association and SME reference](assets/proposal/03-live-comparison.png)
+
+*Figure 1c. Complete the comparison. A confirms that the required comparison decisions have been saved; B associates a GOKO result with an SME-established entity; C keeps the reference visible alongside it. Export makes those decisions available for analysis. Completion means the review is finished, not that every GOKO result is correct.*
 
 This sequence gives SMEs a focused task at each stage: establish claim evidence, assess cross-claim identity, and judge system comparisons. Cross-claim reference decisions will be completed before exposing identity-linking results when that capability is being benchmarked. A second reviewer will independently assess a sample of complete claims and identity decisions; disagreements will be resolved with their original judgments preserved.
 
@@ -177,14 +185,6 @@ GOKO’s described detail fields provide the information needed for component-le
 A comma in an address will not automatically be interpreted as a separator between values. Address components from different locations will not be combined into an apparently correct address. These policies will be versioned and applied equally to GOKO and the proposed system.
 
 The annotator will support this method by showing the extracted value, its proposed owner and the relevant reference evidence together. Reviewers will be able to distinguish wrong value, wrong owner, missing information and insufficient evidence. The proposed design will retain address bundles, material time qualifications and unassigned details alongside the source evidence.
-
-### From selected words to a metric
-
-![Illustration linking source notes to SME detail statements, GOKO results and calculated metrics](assets/proposal/evidence-to-metrics.svg)
-
-*Figure 2. Fictional example: three note passages support two distinct clinic details. GOKO’s correct clinic phone contributes one successful comparison; the clinic address assigned to a lawyer does not. Both values appear in the notes, which explains why value precision can exceed attribute precision.*
-
-The data team performs the comparison after SMEs establish the reference and confirm which GOKO entity corresponds to which reference entity. The scoring process checks the entity, detail type and value together. It does not count highlighted words or passages as successful extractions.
 
 ### Illustrative comparison
 

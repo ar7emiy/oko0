@@ -2,7 +2,7 @@
 
 Status: requirements only, 2026-09-14. **No application code changed.**
 
-Client-facing context: [initial methodology and SME review design proposal](../ENTITY-INTELLIGENCE-EVALUATION-PROPOSAL.md), especially sections 2.1, 3 and 4. The illustrations are conceptual UX designs, not screenshots of delivered functionality. UX review with SMEs should establish a simpler interaction sequence before implementation.
+Client-facing context: [initial methodology and SME review design proposal](../ENTITY-INTELLIGENCE-EVALUATION-PROPOSAL.md), especially sections 2.1, 3 and 4. Section 3 now shows annotated captures of the running application with fictional practice data; these do not depict delivery of the requirements below. UX review with SMEs should establish a simpler interaction sequence before implementation.
 
 ## Current implementation findings
 

@@ -4,6 +4,13 @@ Verified 2026-09-11 (America/Chicago).
 
 ## Evaluation plan revision — 2026-09-14
 
+Screenshot follow-up: replaced the conceptual review illustration with three
+annotated live-app captures (detail ownership, claim dossier, completed comparison).
+Removed the redundant section 4 illustration. All 35 browser workflow checks
+passed using temporary fictional data; captures visually inspected. Annotation
+overlays and capture hooks were temporary. No application or permanent test code
+changed; provenance is in `../assets/proposal/README.md`.
+
 Proposal follow-up: canonical client document renamed to
 `../ENTITY-INTELLIGENCE-EVALUATION-PROPOSAL.md`; EVALUATION.md retains a link for
 older references. Added proposed output model (section 2.1), explicit count
