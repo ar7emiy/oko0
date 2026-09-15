@@ -4,6 +4,8 @@
 
 **Status: a proposal to align on, not a finished specification and not a claim that the work is already built.** Where something exists today as a working prototype, this document says so. Where something is proposed and not yet built, it says that too. A UX specialist will review the review experience with subject-matter experts before any interface is finalized.
 
+**Companion document:** [GOKO Entity Extraction: System Development Proposal](GOKO-SYSTEM-DEVELOPMENT-PROPOSAL.md) proposes what to build so that the measurements defined here improve. The two are deliberately separable, and deliberately owned by different people: a benchmark authored by the team it scores stops being evidence.
+
 ---
 
 ## Read this first
@@ -40,7 +42,7 @@ We are asking sponsors to approve three things:
 
 ### What we are NOT asking for
 
-We are not asking for a decision about replacing GOKO, changing a vendor, or funding a new extraction system. This proposal produces the evidence that such a decision would need. It deliberately stops there.
+We are not asking for a decision about replacing GOKO, changing a vendor, or funding a new extraction system. This proposal produces the evidence that such a decision would need. It deliberately stops there. Proposed improvements to the extraction system itself are a separate paper, linked above.
 
 ---
 
