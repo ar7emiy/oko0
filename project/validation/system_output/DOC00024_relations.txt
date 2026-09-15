@@ -1,0 +1,31 @@
+DOC00024.txt  claim=CLM0005   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Wilson, Patricia' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [13:46]: 'Wilson, Patricia of XYZ Law Group'
+  'Wilson, Patricia' --[REPRESENTS]--> 'Gonzalez, James'   (asserted)
+      evidence [13:90]: 'Wilson, Patricia of XYZ Law Group regarding representation of Gonzalez, James'
+  'Garcia, Jennifer' --[MANAGES_CARE_FOR]--> 'Gonzalez, James'   (asserted)
+      evidence [621:682]: 'Garcia, Jennifer continues to manage care for Gonzalez, James'
+  'Patty Wilson' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [1541:1570]: 'Patty Wilson of XYZ Law Group'
+  'Patty Wilson' --[REPRESENTS]--> 'Jamie Gonzalez'   (asserted)
+      evidence [1541:1613]: 'Patty Wilson of XYZ Law Group regarding representation of Jamie Gonzalez'
+  'Dr. Garcia' --[MANAGES_CARE_FOR]--> 'James Gonzalez'   (asserted)
+      evidence [1945:1999]: 'Dr. Garcia continues to manage care for James Gonzalez'
+  'Patty Wilson' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [1541:1570]: 'Patty Wilson of XYZ Law Group'
+  'Patty Wilson' --[REPRESENTS]--> 'Jamie Gonzalez'   (asserted)
+      evidence [1541:1614]: 'Patty Wilson of XYZ Law Group regarding representation of Jamie Gonzalez.'
+  'Dr. Garcia' --[MANAGES_CARE_FOR]--> 'James Gonzalez'   (asserted)
+      evidence [1945:2000]: 'Dr. Garcia continues to manage care for James Gonzalez.'
+  'Patricia Wilson' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [2770:2802]: 'Patricia Wilson of XYZ Law Group'
+  'Patricia Wilson' --[REPRESENTS]--> 'J. Gonzalez'   (asserted)
+      evidence [2770:2843]: 'Patricia Wilson of XYZ Law Group regarding representation of J. Gonzalez.'
+  'Patricia Wilson' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [2770:2802]: 'Patricia Wilson of XYZ Law Group'
+  'Patricia Wilson' --[REPRESENTS]--> 'J. Gonzalez'   (asserted)
+      evidence [2770:2842]: 'Patricia Wilson of XYZ Law Group regarding representation of J. Gonzalez'
+  'Dr. Jnenifer Garcia' --[MANAGES_CARE_FOR]--> 'Jim Gonzalez'   (asserted)
+      evidence [3252:3313]: 'Dr. Jnenifer Garcia continues to manage care for Jim Gonzalez'

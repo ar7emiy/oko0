@@ -1,0 +1,21 @@
+DOC00021.txt  claim=CLM0005   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Patricia Wilson' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [1091:1123]: 'Patricia Wilson of XYZ Law Group'
+  'Patricia Wilson' --[REPRESENTS]--> 'Jimmy Gonzalez'   (asserted)
+      evidence [1091:1166]: 'Patricia Wilson of XYZ Law Group regarding representation of Jimmy Gonzalez'
+  'Dr. Jennifer Garcia' --[MANAGES_CARE_FOR]--> 'James Gonzalez'   (asserted)
+      evidence [1294:1358]: 'Dr. Jennifer Garcia continues to manage care for James Gonzalez.'
+  'Patricia Wilson' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [1091:1123]: 'Patricia Wilson of XYZ Law Group'
+  'Patricia Wilson' --[REPRESENTS]--> 'Jimmy Gonzalez'   (asserted)
+      evidence [1091:1166]: 'Patricia Wilson of XYZ Law Group regarding representation of Jimmy Gonzalez'
+  'Dr. Jennifer Garcia' --[MANAGES_CARE_FOR]--> 'James Gonzalez'   (asserted)
+      evidence [1294:1357]: 'Dr. Jennifer Garcia continues to manage care for James Gonzalez'
+  'Samuel Lee' --[AFFILIATED_WITH]--> 'Claims Department'   (asserted)
+      evidence [1703:1731]: 'Samuel Lee\nClaims Department'
+  'Samuel Lee' --[WORKS_IN]--> 'Claims Department'   (asserted)
+      evidence [1703:1731]: 'Samuel Lee\nClaims Department'
+  'Patricia Wilson' --[SENT_EMAIL_TO]--> 'Samuel Lee'   (asserted)
+      evidence [1989:2043]: 'From: Patricia Wilson\n> Sent: earlier\n> To: Samuel Lee'

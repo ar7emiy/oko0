@@ -1,0 +1,25 @@
+DOC00023.txt  claim=CLM0005   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Patricia Wilson' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [1450:1479]: 'Patricia Wilson\nXYZ Law Group'
+  'Patricia Wilson' --[SENT_EMAIL_TO]--> 'Samuel Lee'   (asserted)
+      evidence [1201:1302]: 'From: Patricia Wilson <patricia.wilson@xyzlawgroup.com>\nSent: Wed, Jun 6, 2026 6:14 PM\nTo: Samuel Lee'
+  'vehicle' --[LOCATED_AT]--> 'Davis'   (asserted)
+      evidence [835:861]: 'vehicle currently at Davis'
+  'indemnity reserve' --[SET_AT]--> '$10,000.00'   (asserted)
+      evidence [675:720]: 'indemnity reserve currently set at $10,000.00'
+  'vehicle' --[LOCATED_AT]--> 'Davis'   (asserted)
+      evidence [835:862]: 'vehicle currently at Davis.'
+  'Dr. Jennifer Garcia' --[MANAGES_CARE_FOR]--> 'Gonzalez, James'   (asserted)
+      evidence [1946:2011]: 'Dr. Jennifer Garcia continues to manage care for Gonzalez, James.'
+  'Patricia Wilson' --[AFFILIATED_WITH]--> 'XYZ Law Group'   (asserted)
+      evidence [2061:2093]: 'Patricia Wilson of XYZ Law Group'
+  'Patricia Wilson' --[REPRESENTS]--> 'Gonzalez, James'   (asserted)
+      evidence [2061:2138]: 'Patricia Wilson of XYZ Law Group regarding representation of Gonzalez, James.'
+  'Dr. Jennifer Garcia' --[MANAGES_CARE_FOR]--> 'Gonzalez, James'   (asserted)
+      evidence [1946:2011]: 'Dr. Jennifer Garcia continues to manage care for Gonzalez, James.'
+  'Patricia Wilson' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [2061:2093]: 'Patricia Wilson of XYZ Law Group'
+  'Patricia Wilson' --[REPRESENTS]--> 'Gonzalez, James'   (asserted)
+      evidence [2061:2138]: 'Patricia Wilson of XYZ Law Group regarding representation of Gonzalez, James.'

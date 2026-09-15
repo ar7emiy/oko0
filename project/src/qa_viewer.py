@@ -389,7 +389,7 @@ def edge_meta(repo: Repository, mention_a: str, mention_b: str) -> dict | None:
     suppressed by a hard constraint before clustering.)
     """
     df = repo.df(
-        "SELECT probability, suppressed_reason FROM same_as_edges "
+        "SELECT probability, suppressed_reason, uncalibrated FROM same_as_edges "
         "WHERE (mention_id_a=? AND mention_id_b=?) OR (mention_id_a=? AND mention_id_b=?)",
         (mention_a, mention_b, mention_b, mention_a),
     )
@@ -495,7 +495,12 @@ def mention_lineage_rows(linker, frame_by_id, mention_a: str, mention_b: str,
     return {"available": True, "rows": out_rows,
             "final_probability": round(match_probability, 4),
             "was_proposed_by_blocking": was_blocked,
-            "suppressed_reason": (meta or {}).get("suppressed_reason")}
+            "suppressed_reason": (meta or {}).get("suppressed_reason"),
+            # Which comparisons contributed a value Splink invented rather than
+            # estimated. This is the screen where a reviewer decides whether to
+            # trust a specific merge, so "part of this number is not calibrated"
+            # belongs next to the number, not only in the run summary.
+            "uncalibrated": (meta or {}).get("uncalibrated")}
 
 
 # ---------------------------------------------------------------------------
@@ -636,6 +641,14 @@ def build_app(repo: Repository):
         elif lineage["suppressed_reason"]:
             rows.append(["SUPPRESSED", "-", "-", lineage["suppressed_reason"],
                         "excluded from clustering regardless of probability"])
+        if lineage.get("uncalibrated"):
+            rows.append(["UNCALIBRATED", "-", "-",
+                        f"{lineage['uncalibrated']} contributed an m or u value "
+                        "Splink INVENTED rather than estimated -- EM never "
+                        "reached that level (e.g. only 7 of 922 mentions carry "
+                        "an NPI, so there is nothing to learn from). The rest "
+                        "of this breakdown is calibrated; this row is not.",
+                        "treat this probability as partly uncalibrated"])
         return rows
 
     def do_load_doc_for_correction(doc_id):

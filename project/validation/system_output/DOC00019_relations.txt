@@ -1,0 +1,25 @@
+DOC00019.txt  claim=CLM0005   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Patricia Wilson' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [13:45]: 'Patricia Wilson of XYZ Law Group'
+  'Patricia Wilson' --[REPRESENTS]--> 'Jim Gonzalez'   (asserted)
+      evidence [13:86]: 'Patricia Wilson of XYZ Law Group regarding representation of Jim Gonzalez'
+  'Dr. Jennifer Garcia' --[MANAGES_CARE_FOR]--> 'J. Gonzalez'   (asserted)
+      evidence [1035:1095]: 'Dr. Jennifer Garcia continues to manage care for J. Gonzalez'
+  'Samuel Lee' --[EMPLOYED_BY]--> 'Claims Department'   (asserted)
+      evidence [1494:1522]: 'Samuel Lee\nClaims Department'
+  'Dr. Jennifer Garcia' --[MANAGES_CARE_FOR]--> 'J. Gonzalez'   (asserted)
+      evidence [1035:1096]: 'Dr. Jennifer Garcia continues to manage care for J. Gonzalez.'
+  'Samuel Lee' --[EMPLOYED_BY]--> 'Claims Department'   (asserted)
+      evidence [1494:1522]: 'Samuel Lee\nClaims Department'
+  'Wilson, Patricia' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [2102:2135]: 'Wilson, Patricia of XYZ Law Group'
+  'Wilson, Patricia' --[REPRESENTS]--> 'James Gonazlez'   (asserted)
+      evidence [2102:2178]: 'Wilson, Patricia of XYZ Law Group regarding representation of James Gonazlez'
+  'Patricia Wilson' --[SENT_DEMAND_PACKAGE_TO]--> 'Samuel Lee'   (asserted)
+      evidence [1780:1888]: 'From: Patricia Wilson\n> Sent: earlier\n> To: Samuel Lee\n> Per our call, attaching the updated demand package.'
+  'Wilson, Patricia' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [2091:2135]: 'Spoke with Wilson, Patricia of XYZ Law Group'
+  'Wilson, Patricia' --[REPRESENTS]--> 'James Gonazlez'   (asserted)
+      evidence [2102:2179]: 'Wilson, Patricia of XYZ Law Group regarding representation of James Gonazlez.'

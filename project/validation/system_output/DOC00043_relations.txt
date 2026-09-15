@@ -1,0 +1,21 @@
+DOC00043.txt  claim=CLM0009   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Anderson' --[EMPLOYED_BY]--> 'Delgado Legal Partners'   (asserted)
+      evidence [13:47]: 'Anderson of Delgado Legal Partners'
+  'Anderson' --[REPRESENTS]--> 'Billy Garcia'   (asserted)
+      evidence [13:88]: 'Anderson of Delgado Legal Partners regarding representation of Billy Garcia'
+  'Ibarra' --[MANAGES_CARE_FOR]--> 'William Garcia'   (asserted)
+      evidence [873:923]: 'Ibarra continues to manage care for William Garcia'
+  'Samuel Anderson' --[EMPLOYED_BY]--> 'Delgado Legal Partners'   (asserted)
+      evidence [1463:1504]: 'Samuel Anderson of Delgado Legal Partners'
+  'Samuel Anderson' --[REPRESENTS]--> 'Billy Garcia'   (asserted)
+      evidence [1463:1545]: 'Samuel Anderson of Delgado Legal Partners regarding representation of Billy Garcia'
+  'Ibarra' --[MANAGES_CARE_FOR]--> 'William Garcia'   (asserted)
+      evidence [873:924]: 'Ibarra continues to manage care for William Garcia.'
+  'Samuel Anderson' --[AFFILIATED_WITH]--> 'Delgado Legal Partners'   (asserted)
+      evidence [1463:1504]: 'Samuel Anderson of Delgado Legal Partners'
+  'Samuel Anderson' --[REPRESENTS]--> 'Billy Garcia'   (asserted)
+      evidence [1463:1546]: 'Samuel Anderson of Delgado Legal Partners regarding representation of Billy Garcia.'
+  'Andrew Anderson' --[SERVES_AS_CO_COUNSEL_FOR]--> 'Billy Garcia'   (asserted)
+      evidence [1585:1645]: 'Co-counsel Andrew Anderson is also appearing on this matter.'

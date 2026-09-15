@@ -1,0 +1,29 @@
+DOC00033.txt  claim=CLM0006   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Reyes' --[MANAGES_CARE_FOR]--> 'Alex Delgado'   (asserted)
+      evidence [262:310]: 'Reyes continues to manage care for Alex Delgado.'
+  'Jones, Omar of Ibarra & Cole' --[REPRESENTS]--> 'Alexander Delgado'   (asserted)
+      evidence [808:894]: 'Spoke with Jones, Omar of Ibarra & Cole regarding representation of Alexander Delgado.'
+  'Reyes' --[MANAGES_CARE_FOR]--> 'Al Delgado'   (asserted)
+      evidence [1264:1310]: 'Reyes continues to manage care for Al Delgado.'
+  'Jones, Omar of Ibarra & Cole' --[REPRESENTS]--> 'Alexander Delgado'   (asserted)
+      evidence [819:893]: 'Jones, Omar of Ibarra & Cole regarding representation of Alexander Delgado'
+  'Jones, Omar' --[AFFILIATED_WITH]--> 'Ibarra & Cole'   (asserted)
+      evidence [819:847]: 'Jones, Omar of Ibarra & Cole'
+  'Reyes' --[MANAGES_CARE_FOR]--> 'Al Delgado'   (asserted)
+      evidence [1264:1309]: 'Reyes continues to manage care for Al Delgado'
+  'Jones, Omar' --[EMPLOYED_BY]--> 'Ibarra & Cole'   (asserted)
+      evidence [1859:1887]: 'Jones, Omar of Ibarra & Cole'
+  'Jones, Omar' --[REPRESENTS]--> 'Alexander Delgado'   (asserted)
+      evidence [1848:1934]: 'Spoke with Jones, Omar of Ibarra & Cole regarding representation of Alexander Delgado.'
+  'Reyes Rehabilitation Services' --[MANAGES_CARE_FOR]--> 'Alexander Delgado'   (asserted)
+      evidence [2376:2453]: 'Reyes Rehabilitation Services continues to manage care for Alexander Delgado.'
+  'Omar Jones' --[EMPLOYED_BY]--> 'Ibarra & Cole'   (asserted)
+      evidence [3051:3078]: 'Omar Jones of Ibarra & Cole'
+  'Omar Jones' --[REPRESENTS]--> 'Alexander Delgado'   (asserted)
+      evidence [3040:3125]: 'Spoke with Omar Jones of Ibarra & Cole regarding representation of Alexander Delgado.'
+  'Omar Jones' --[AFFILIATED_WITH]--> 'Ibarra & Cole'   (asserted)
+      evidence [3051:3078]: 'Omar Jones of Ibarra & Cole'
+  'Omar Jones' --[REPRESENTS]--> 'Alexander Delgado'   (asserted)
+      evidence [3051:3124]: 'Omar Jones of Ibarra & Cole regarding representation of Alexander Delgado'

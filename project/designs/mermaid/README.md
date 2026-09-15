@@ -410,12 +410,16 @@ flowchart TD
     N1["<b>label ∈ NAME_LABELS</b><br/>person / organization / attorney / repair_shop / …"]:::act
     N2["<b>Read boilerplate_score for this span</b><br/>ADVISORY — scored, counted, carried onto the row"]:::key
     N3{"passes<br/>_is_plausible_name?"}:::dec
+    N3B{"single capitalised token?"}:::dec
+    N3C["<b>Admitted on DOCUMENT evidence</b><br/>its token anchors an accepted multi-token name<br/>in this note, OR ≥ 2 extractors agreed"]:::key
     N3D["<b>Dropped</b><br/>n_dropped_shape += 1"]:::bad
     N4["<b>Classify entity_class</b><br/><i>_classify</i> over surface, label, left context, right context"]:::act
     N5["<b>Persist mentions row</b><br/>mention_id, surface, char_start, char_end,<br/>entity_class, inside_quoted, boilerplate_score"]:::act
     N6["<b>Persist has_name assertion</b><br/>source_span = the mention's OWN span"]:::act
     N1 --> N2 --> N3
-    N3 -->|"no"| N3D
+    N3 -->|"no"| N3B
+    N3B -->|"no"| N3D
+    N3B -->|"yes"| N3C --> N4
     N3 -->|"yes"| N4 --> N5 --> N6
   end
 
@@ -471,6 +475,9 @@ flowchart TD
 
   PROP1B["<b>The concrete defect this fixes</b><br/><i>_classify</i> ends in <b>LABEL_TO_CLASS.get(label, 'claimant')</b>.<br/>An unmatched 'person' is silently written as <b>claimant</b>; an unmatched 'organization' as <b>medical_provider</b>.<br/><br/>· 'Marisol Vega', actually a witness → stored claimant<br/>· 'Sunrise Property Mgmt', actually the landlord → stored medical_provider<br/><br/><i>That is a guess written into a field every downstream reader — and the client — treats as a fact. Under the proposal both become role=NULL, which is honest and is queryable as 'needs a role'.</i>"]:::warn
   PROP1 -.-> PROP1B
+
+  SHORTNAME["<b>A precision gate inside the recall path</b><br/>_is_plausible_name required TWO capitalised tokens, so it discarded spans GLiNER, the LLM and the gazetteer had already agreed on. Measured against ground truth once span grounding was fixed (D25), recall by variant kind:<br/><br/>&nbsp;&nbsp;canonical · flip · initials · nickname &nbsp;<b>1.000</b><br/>&nbsp;&nbsp;typo &nbsp;0.878<br/>&nbsp;&nbsp;<b>last_only</b> ("Wilson" for Marge Wilson) &nbsp;<b>0.091</b> — 3 of 33<br/>&nbsp;&nbsp;<b>short</b> ("Ibarra" for Ibarra Neurology Associates) &nbsp;<b>0.000</b> — 0 of 41<br/><br/>Those two were <b>74 of the 77 missed placements in the corpus</b>. Nothing else about extraction was materially wrong.<br/><br/><i>The escapes are narrow on purpose. A bare token is admitted only where the DOCUMENT already introduced it, or where two independent extractors agreed — which is what the union's provenance is for, and it was being thrown away here. Legalese headers, template labels and sub-three-character tokens are still rejected; those were never the problem.</i>"]:::warn
+  N3B -.->|"why"| SHORTNAME
 ```
 
 ### E — Resolve mentions into entities
@@ -500,7 +507,7 @@ flowchart TD
   E1["<b>Build one feature row per mention</b><br/><i>entity_resolution.build_mention_frame</i>"]:::act
   E2["<b>Derive the blocking keys from the surface</b><br/>full_name · name_sorted = sorted tokens<br/>first_name = toks[0] · last_name = toks[-1] · soundex(last)"]:::key
   E3["<b>Null out missing identifiers</b><br/>empty string would block-explode; NULL is excluded by Splink"]:::act
-  E4["<b>mention frame</b><br/>name keys + email, phone7, npi, tin, dob, address_key"]:::obj
+  E4["<b>mention frame</b><br/>name keys + email, phone7, npi, tin, ssn, vin, dob<br/>address_key (blocking) + street · city · state · zip (scoring)"]:::obj
 
   %% ---------------- LANE 2: the embedding recall net ----------------
   V0[/"<b>mentions.faiss</b><br/>one vector per mention: norm_surface + class<br/><i>embed_index.run — diagram 09</i>"/]:::vec
@@ -515,13 +522,16 @@ flowchart TD
   V9["<b>emb_bucket = NULL</b><br/>oversize — transitive chaining, dropped on purpose"]:::warn
 
   E5["<b>Declare blocking rules — ORDER IS LOAD-BEARING</b><br/>0 email · 1 npi · 2 tin · 3 phone7 · 4 address_key<br/>5 full_name · 6 name_sorted · 7 soundex+first_name · 8 last_name<br/><b>9 emb_bucket</b> ← the recall net<br/><i>entity_resolution.BLOCKING_RULES</i>"]:::key
-  E6["<b>Estimate match prior from deterministic rules</b>"]:::act
+  E6["<b>Estimate the match prior λ from deterministic rules</b><br/>rules chosen for what FIRES on the data, not what is trustworthy<br/><i>entity_resolution.lambda_rules — raises if it fails</i>"]:::key
   E7["<b>Estimate u by random sampling</b>"]:::act
-  E8["<b>Train m by expectation-maximisation</b><br/>one pass per blocking rule; sparse blocks skipped"]:::act
+  E8["<b>Train m by expectation-maximisation</b><br/>one pass per blocking rule; sparse blocks skipped<br/>u stays FIXED — see NOU"]:::act
+  E8B["<b>Report the calibration</b><br/>λ · bits per agreeing field · every m/u EM could not estimate<br/><i>entity_resolution.calibration_report / training_completeness</i>"]:::key
+  E8C{"fully trained?"}:::dec
+  E8D["<b>Raise ModelNotFullyTrained</b><br/>only when CFG.ER_REQUIRE_FULLY_TRAINED"]:::bad
   E9["<b>Score every blocked candidate pair</b><br/>ONE model scores both lanes<br/><i>linker.inference.predict</i>"]:::act
-  E10["<b>same_as_edges rows</b><br/>mention_a, mention_b, probability, match_weight,<br/><b>blocked_by</b> = the rule that proposed it"]:::obj
+  E10["<b>same_as_edges rows</b><br/>mention_a, mention_b, probability, match_weight,<br/><b>blocked_by</b> = the rule that proposed it<br/><b>uncalibrated</b> = substituted comparisons this edge used"]:::obj
   E11{"structural conflict?"}:::dec
-  E12["<b>Edge suppressed before clustering</b><br/><i>cannot_link_reason</i> — person vs org, Jr/Sr, conflicting NPI"]:::bad
+  E12["<b>Edge suppressed before clustering</b><br/><i>cannot_link_reason</i> — Jr/Sr at one address,<br/>conflicting <b>npi / tin / ssn</b> — see VETO"]:::bad
   E13["<b>Union-find over edges ≥ threshold</b><br/><i>entity_resolution.cluster_at</i>"]:::act
   E14["<b>entity_snapshot / entities / entity_members</b><br/>identity is a VIEW at T, never a destructive merge"]:::key
   E15["<b>Sweep T to plot the operating curve</b><br/>B³ precision / recall per threshold"]:::act
@@ -538,7 +548,10 @@ flowchart TD
   V7 --> E5
   V8 -.-> E5
   V9 -.-> E5
-  E5 --> E6 --> E7 --> E8 --> E9 --> E10 --> E11
+  E5 --> E6 --> E7 --> E8 --> E8B --> E8C
+  E8C -->|"no, and required"| E8D
+  E8C -->|"otherwise, flagged"| E9
+  E9 --> E10 --> E11
   E11 -->|"yes"| E12
   E11 -->|"no"| E13 --> E14 --> E15 --> E16
 
@@ -573,6 +586,12 @@ flowchart TD
   EX2["<b>in</b> — all edges, threshold T=0.90<br/><b>out</b> — entity_snapshot rows grouping both mentions under one entity_id at that T<br/><i>Identity is recomputed per threshold, so raising or lowering T re-partitions the corpus without re-running resolution.</i>"]:::ex
   E14 -.->|"example"| EX2
 
+  VETO["<b>Which identifiers may VETO a merge, and why the others may not</b><br/>The test is not how strong an identifier is. It is: <b>can one entity legitimately hold two of these at once?</b><br/><br/>&nbsp;&nbsp;<b>ssn</b> — no. One per person, by construction. Vetoes.<br/>&nbsp;&nbsp;<b>npi / tin</b> — mostly not, though a provider can hold both a Type 1 and a Type 2 NPI. Vetoes, narrowly.<br/>&nbsp;&nbsp;<b>vin</b> — YES, a claimant owns two cars and a shop touches hundreds. <b>Scores but never vetoes.</b><br/>&nbsp;&nbsp;<b>address · phone · email</b> — yes: people move, hold a desk and a mobile, have work and personal mail.<br/><br/><b>dob is the interesting omission.</b> A person has exactly one, so it looks like it belongs. It is deliberately absent: dob binding accuracy has never been measured, real DOBs carry transcription errors, and T0.3 measured what happens when a consistency rule meets a mis-bound identifier — it splits a CORRECT cluster.<br/><br/><i>A client whose TINs are shared across a franchise group is changing a POLICY here, not fixing a bug. That is what making this list explicit is for.</i>"]:::key
+  E12 -.->|"veto policy"| VETO
+
+  VETOX["<b>DELETED: the person-vs-organisation veto</b><br/>It suppressed any pair where one side was classed as a person-role and the other as repair_shop. Measured against ground truth on a 60-document run:<br/><br/>&nbsp;&nbsp;<b>1,335 edges suppressed</b>; of the 1,291 with both sides labelled, <b>898 (69.6%) joined two mentions of the SAME entity</b> — including pairs at p=1.000 and p=0.997, identical surfaces.<br/><br/>It was not preventing over-merge. It was the largest single source of <b>under</b>-merge in the system.<br/><br/>The cause: it vetoed on <b>entity_class</b>, and comparison_specs already says why that is wrong — <i>a noisy derived label from our own classifier, not identity evidence</i>. The codebase had concluded the label was too unreliable to SCORE with, then used it as an absolute veto no probability could outweigh.<br/><br/>Removing it: best F1 <b>0.889 -&gt; 0.920</b>, recall at 0.45 <b>0.885 -&gt; 0.937</b>, precision cost 0.008, entities 59 -&gt; 54 against 42 gold.<br/><br/><i>The identifier vetoes stay: conflicting_tin fired 36 times in the same run with ZERO false vetoes. A TIN is observed evidence; entity_class is our own guess.</i>"]:::bad
+  VETO -.->|"and one that was removed"| VETOX
+
   EX3["<b>in</b> — 'Miller Auto Body' (organization) and 'Robert Miller' (person), high name similarity<br/><b>out</b> — edge suppressed, never reaches clustering<br/><i>A hard structural constraint applied as edge suppression rather than a permanent veto. Note this is the ONE place entity_class is load-bearing — see the proposal in diagram 06, which keeps person/organization closed precisely so this keeps working.</i>"]:::ex
   E12 -.->|"example"| EX3
 
@@ -592,6 +611,38 @@ flowchart TD
 
   PROP2D["<b>Rule 9 partly compensates — but does not replace this</b><br/>'adjuster Karen Wu' and 'Karen Wu' embed close together, so the lane proposes the pair even when three deterministic rules miss it. That recovers the CANDIDATE.<br/><br/>It does not recover the SCORE: ForenameSurnameComparison still sees first_name 'adjuster' vs 'karen' and scores the pair down whichever lane proposed it.<br/><br/><i>Blocking and comparison are separate failures. The recall net fixes the first and cannot touch the second, which is exactly why PROP2 is still open.</i>"]:::warn
   PROP2C -.-> PROP2D
+
+  %% ---------------- calibration: measured 2026-09-02 -----------------
+  LAM["<b>The prior multiplies every posterior, and it was 16× too low</b><br/>λ = probability_two_random_records_match: the chance two randomly drawn mentions co-refer. Splink's 1e-4 default assumes a corpus where entities barely recur; a claim file is the opposite.<br/><br/>The first rule set was <b>[email, npi, full_name AND dob]</b> — the textbook choice, and on this corpus the fields that are almost always ABSENT: email is non-null on 55 of 922 mentions, npi on <b>7</b>. The rules barely fired.<br/><br/>&nbsp;&nbsp;λ estimated <b>0.000764</b> · λ in truth <b>0.012097</b><br/><br/><i>Nothing compensates for a wrong prior. EM re-fits m against whatever u it is handed, so u errors partly wash out — λ is applied at the end and simply shifts the whole distribution down ~4 bits.</i>"]:::bad
+  E6 -.->|"why these rules"| LAM
+
+  LAMFIX["<b>What it cost, and what fixing it bought</b><br/>Measured end-to-end through the shipped path, B-cubed vs ground truth at the operating threshold <b>0.45</b>:<br/><br/>&nbsp;&nbsp;before — F1 <b>0.604</b> · P 0.973 · R 0.438 · <b>515 entities</b><br/>&nbsp;&nbsp;after &nbsp;— F1 <b>0.800</b> · P 0.888 · R 0.728 · <b>81 entities</b><br/>&nbsp;&nbsp;<i>(42 is the truth for this subset: ~12x over-split becomes ~1.9x)</i><br/><br/>The curve also stops being a cliff: worst F1 anywhere in 0.20–0.95 rises from <b>0.185</b> to <b>0.783</b>.<br/><br/><i>ER_LINK_THRESHOLD = 0.45 needed no change — it was never the bug, it was downstream of it. The system was splitting one entity into twelve while reporting 0.97 precision, and no run output named the prior, so nothing caught it.</i>"]:::key
+  LAM -.-> LAMFIX
+
+  ORDER["<b>The sanity check with no statistics in it</b><br/>What one agreeing field is worth, in bits. A globally unique identifier MUST outrank a name.<br/><br/>Before the fix, on this corpus:<br/>&nbsp;&nbsp;exact name <b>+4.96</b> · exact phone +3.07 · exact address +2.95<br/>&nbsp;&nbsp;<b>exact NPI +2.73</b> · exact email +2.57<br/><br/>A nationally unique provider identifier counted for barely half a name match.<br/><br/><i>Printed every run by calibration_report. If npi or email ever sits below name_sorted again, the model is reporting that something is wrong with its inputs — no ground truth needed to see it.</i>"]:::key
+  E8B -.->|"evidence ordering"| ORDER
+
+  UNTR["<b>Untrained parameters are named, not swallowed</b><br/>Splink logs 'your model is not yet fully trained … will use default values' and carries on. The substitute is not neutral: for a two-level comparison the invented m for agreement is <b>0.95 whatever the field is</b>.<br/><br/>Currently 7 parameters: three email levels (username / Jaro-Winkler variants) and <b>npi's exact-match m</b>. Training harder cannot fix npi — only 7 of 922 mentions carry one, so there is genuinely nothing to learn from.<br/><br/><i>same_as_edges.uncalibrated names the substituted comparisons an edge ACTUALLY used — 2 of 14,895 edges, both npi. An edge whose npi values were both null used no npi parameter and is perfectly calibrated, so a blanket flag would be alarmist and useless for triage.</i>"]:::warn
+  E8B -.->|"completeness"| UNTR
+
+  NOU["<b>Rejected: letting EM train u as well</b><br/>fix_u_probabilities=False is the obvious lever and it is <b>wrong here</b>. Measured: B-cubed F1 <b>0.80 → 0.64</b>, with name_sorted m=0.0 and −44-bit weights.<br/><br/>EM sees only the <b>blocked</b> population, which is not remotely representative of random pairs.<br/><br/><i>Also rejected: Splink's populate_…_from_trained_values, which returns λ = 0.619 — it claims 62% of random mention pairs co-refer. It scores acceptably at 0.45 by accident and peaks at 0.99, destroying the threshold's meaning. A prior nobody can defend out loud is not a calibration.</i>"]:::bad
+  E8 -.->|"why u stays fixed"| NOU
+
+  UOPEN["<b>OPEN (T0.5) — u is inflated 3–37× and the fix is not obvious</b><br/>estimate_u_using_random_sampling estimates P(agree GIVEN non-match) by sampling random pairs and treating them ALL as non-matches. Valid when λ≈1e-4; here λ≈1.2e-2, so ~1.2% of the sample are true matches and they inflate u.<br/><br/>Measured against ground truth: phone <b>36.9×</b> · address 18.3× · name 13.8× · dob 4.2× · email 2.6×.<br/><br/>Ceiling, with u oracle-corrected: <b>+0.026 F1</b>, and the 0.99 cliff disappears (F1 0.80 instead of 0.29).<br/><br/><i>The textbook remedy — estimate u on a DEDUPLICATED frame — fails here: that frame is 42 rows and contains no identifier pairs at all, so Splink cannot observe the columns that need it most. Candidate: two-pass, computing u analytically over cross-cluster pairs. Unsolved: choosing the pass-1 threshold without labels.</i>"]:::proposed
+  E7 -.->|"known bias"| UOPEN
+
+  %% ---------------- T0.7: what counted as evidence at all -----------
+  EVID["<b>What the model was allowed to count as evidence</b><br/>Found by reading the bits-per-field report and asking why NPI was there and TIN, SSN and VIN were not.<br/><br/>&nbsp;&nbsp;<b>VIN</b> — no detector anywhere; a declared identifier kind that nothing produced<br/>&nbsp;&nbsp;<b>SSN</b> — in the frame, never blocked, never compared: it could only VETO a merge, never support one<br/>&nbsp;&nbsp;<b>TIN</b> — blocked, so it proposed candidates, then contributed ZERO to their score<br/>&nbsp;&nbsp;<b>NPI</b> — compared, and the RAREST identifier kind in the corpus<br/><br/><i>None of it was a decision. comparison_specs documents why entity_class is excluded and is silent on TIN and SSN — the gap was invisible until a run printed what each field was worth.</i>"]:::bad
+  E8B -.->|"T0.7"| EVID
+
+  EVIDFIX["<b>Fixed, and the benefit reported honestly</b><br/>Added tin/ssn/vin comparisons, a VIN detector with a real ISO 3779 check digit, and a graded address comparison over decomposed street·city·state·zip.<br/><br/><b>Measured: B-cubed F1 0.810 -&gt; 0.812. That is noise.</b> TIN was the only genuinely new trained signal (+2.21 bits over 25 mentions); the address regrade moved its top level ~+3.1 -&gt; +4.56 bits.<br/><br/><b>The first attempt made things worse in a way only the report could see:</b> ssn and vin landed at the TOP of the ordering at +10.00 bits each, entirely fabricated — neither column holds a single value in this corpus, so EM trained nothing and Splink substituted m=0.95 / u=0.0009.<br/><br/><i>_prune_absent now drops an all-NULL comparison rather than training on nothing. That is also the tunable behaviour: a client whose notes carry SSNs gets it trained on their data; one whose notes do not is never shown an invented weight.</i>"]:::key
+  EVID -.-> EVIDFIX
+
+  ADDR["<b>Why address is ONE comparison and not four</b><br/>Street, city, state and zip are heavily correlated — agreeing on a street almost guarantees agreeing on the city. Fellegi-Sunter assumes comparisons are conditionally independent given match status, so four separate comparisons would count one piece of evidence four times, inflating the weight on exactly the pairs that need care.<br/><br/>Ordered, mutually exclusive levels price the combination once:<br/>&nbsp;&nbsp;same street + (zip or city) &gt; same street &gt; same locality &gt; else<br/><br/>The old model compared one opaque number|street|zip composite by ExactMatch, so dropping a zip earned <b>no</b> evidence rather than less — while a city-only address exact-matched every address in its zip.<br/><br/><i>Four levels, not eight: any level EM cannot reach becomes a Splink-invented default, and address components are sparse enough that a finer ladder would buy resolution nobody trained.</i>"]:::key
+  EVIDFIX -.-> ADDR
+
+  D21["<b>BLOCKED (D21) — two of the three lanes cannot be tested</b><br/>The ground-truth manifest declares <b>125 SSNs and 140 VINs</b>, and <b>zero appear in any of the 2,000 notes</b>. corpus_gen mints them as entity attributes and never places them into note text; its VIN values also fail their own ISO check digit.<br/><br/><i>So the SSN and VIN comparisons are correct-by-construction and unexercised. They are pruned automatically here, and must not be counted as coverage until the generator plants them.</i>"]:::proposed
+  ADDR -.-> D21
 ```
 
 ### F — Assemble the global entity graph
@@ -812,4 +863,823 @@ flowchart TD
 
   SAME["<b>Same engines, different question</b><br/>Both paths call the same profiling, extraction, embedding, resolution and graph code over the same tables. What differs is what is asked:<br/><br/>· research (notebooks 01-11) -- a generated corpus with a sealed manifest, every stage over everything, accuracy measured. <i>How good is this system?</i><br/>· operational (notebook 30) -- notes from a feed, only the new ones processed, no manifest anywhere. <i>What does it do with a note?</i><br/><br/><i>The leakage guard makes 'same engines' checkable rather than asserted: no pipeline module may reference ground truth, so the manifest is genuinely unreachable from this path.</i>"]:::key
   I0 -.->|"context"| SAME
+```
+
+### H — Proposed evidence-first target: a real claim note becomes a traceable fact
+
+Source: [`11-evidence-first-target.mermaid`](11-evidence-first-target.mermaid)
+
+```mermaid
+---
+title: "H — Proposed evidence-first target: a real claim note becomes a traceable fact"
+---
+flowchart TD
+  classDef act fill:#EDF0F4,stroke:#4A5666,stroke-width:1.2px,color:#10151C
+  classDef obj fill:#E0E8EF,stroke:#3E5C76,stroke-width:1.3px,color:#10151C
+  classDef key fill:#F6E7CE,stroke:#B4650A,stroke-width:1.6px,color:#10151C
+  classDef bad fill:#F6E0DB,stroke:#A33A2A,stroke-width:1.4px,color:#10151C
+  classDef proposed fill:#E4F2EA,stroke:#2F6B4F,stroke-width:1.6px,stroke-dasharray:6 3,color:#12301F
+  classDef review fill:#F3E9F7,stroke:#72508F,stroke-width:1.3px,stroke-dasharray:5 3,color:#2D153D
+  classDef term fill:#4A5666,stroke:#39424E,stroke-width:1px,color:#FFFFFF
+
+  subgraph INTAKE["1 — Source intake: structural facts stay outside prose"]
+    S0(["claim-system export: note/document + authoritative metadata manifest"]):::term
+    S1{"required source identity and version present?"}:::act
+    S2["quarantine with an explicit reason<br/>never write claim_id = UNKNOWN"]:::bad
+    S3["immutable source record<br/>source_note_id · claim · occurrence · note/document type<br/>author/actor · timestamps · source system · content hash/version"]:::obj
+    S0 --> S1
+    S1 -->|"no"| S2
+    S1 -->|"yes"| S3
+  end
+
+  subgraph EVIDENCE["2 — Candidate evidence: extract before interpreting"]
+    E1["full-text candidate pass<br/>NER + structurally-scoped parsers + optional LLM sweep"]:::act
+    E2["candidate ledger<br/>raw span · surface · extractor/version · confidence<br/>no candidate is silently erased by a role guess"]:::obj
+    E3["type evidence separately<br/>person | organization | asset | event | identifier | unknown"]:::proposed
+    E4["role and relation candidates<br/>open vocabulary · modality/polarity · verbatim evidence span"]:::proposed
+    E1 --> E2 --> E3 --> E4
+  end
+
+  subgraph IDENTITY["3 — Identity: propose, score, then decide by policy"]
+    I1["candidate pairs<br/>verified identifiers + type-specific string rules + embedding recall net"]:::act
+    I2["probabilistic score + explanation<br/>model/version · features · blocking source"]:::obj
+    I3{"calibrated operating band"}:::act
+    I4["auto-link<br/>only high-confidence, type-compatible evidence"]:::proposed
+    I5["human review queue<br/>ambiguous links, cluster conflicts, unbound relations"]:::review
+    I6["leave unlinked<br/>absence of proof is not a merge"]:::act
+    I1 --> I2 --> I3
+    I3 -->|"high"| I4
+    I3 -->|"review"| I5
+    I3 -->|"low"| I6
+  end
+
+  subgraph KNOWLEDGE["4 — Evidence graph and retrieval"]
+    K1["assertion ledger<br/>subject/object binding may be pending; raw evidence is immutable"]:::obj
+    K2["evidence graph<br/>only grounded assertions become factual edges<br/>derived navigation edges are visibly separate"]:::proposed
+    K3["claim-scoped retrieval<br/>vector search returns source chunks, never facts by itself"]:::act
+    K4(["stakeholder view: every entity, relation, and answer opens its source span"]):::term
+    K1 --> K2 --> K4
+    K3 --> K4
+  end
+
+  S3 --> E1
+  E4 --> K1
+  E3 --> I1
+  I4 --> K1
+  I5 --> K1
+
+  BAD1["CURRENT GAP — graph role edges are created from a closed entity_class + co-presence, while the open relation extractor is notebook-only"]:::bad
+  BAD1 -.-> K2
+
+  MEASURE["Continuous measurement<br/>representative held-out notes · errors by source/LOB/note type<br/>NER span · relation · polarity · binding · pair/cluster ER<br/>human corrections and change control"]:::key
+  MEASURE -.-> E1
+  MEASURE -.-> I3
+  MEASURE -.-> K4
+```
+
+### Target — Client-tunable claim-note intelligence architecture
+
+Source: [`12-client-tunable-reference-architecture.mermaid`](12-client-tunable-reference-architecture.mermaid)
+
+```mermaid
+---
+title: "Target — Client-tunable claim-note intelligence architecture"
+---
+flowchart TB
+  classDef source fill:#E8EEF8,stroke:#315A8A,stroke-width:1.6px,color:#102A43
+  classDef control fill:#F3E8FF,stroke:#7048A8,stroke-width:1.6px,color:#32195A
+  classDef activity fill:#F7F7F4,stroke:#535B61,stroke-width:1.4px,color:#20252A
+  classDef evidence fill:#E4F2EA,stroke:#2F6B4F,stroke-width:1.8px,color:#12301F
+  classDef decision fill:#FFF2D9,stroke:#A06416,stroke-width:1.6px,color:#5A3300
+  classDef review fill:#FFF0F0,stroke:#A33A3A,stroke-width:1.6px,stroke-dasharray:6 3,color:#5C1616
+  classDef projection fill:#E7F5F7,stroke:#27717A,stroke-width:1.6px,color:#123A40
+  classDef invariant fill:#FFF8C9,stroke:#8A6A00,stroke-width:2px,color:#493800
+  classDef terminal fill:#263238,stroke:#263238,color:#FFFFFF
+
+  subgraph CONTROL["CONTROL PLANE — changes client policy without changing core code"]
+    direction LR
+    CP1["<b>ClientProfile vN</b><br/>client · effective window · locale · jurisdiction · LOB"]:::control
+    CP2["<b>Source contracts</b><br/>adapters · field mappings · required metadata · source ids"]:::control
+    CP3["<b>Extraction policy</b><br/>models · prompts · labels · detector packs · context/chunk rules"]:::control
+    CP4["<b>Identity policy</b><br/>per-type features · blockers · constraints · decision bands"]:::control
+    CP5["<b>Search policy</b><br/>lane routing · filters · fusion · reranker · context budget"]:::control
+    CP6["<b>Governance + evaluation</b><br/>authorization · model boundary · retention · release gates"]:::control
+    RS["<b>Immutable RunSpec</b><br/>resolved profile + code commit + model/prompt/schema hashes<br/>reference-data versions + source watermark"]:::evidence
+    CP1 --> RS
+    CP2 --> RS
+    CP3 --> RS
+    CP4 --> RS
+    CP5 --> RS
+    CP6 --> RS
+  end
+
+  subgraph INTAKE["1 — INTAKE: authoritative source facts, immutable document versions"]
+    direction TB
+    S0(["claim-system export / API / file feed"]):::source
+    S1["<b>SourceAdapter</b><br/>emit source_document_id · claim_id · occurrence_id<br/>note timestamp · author/source · bytes · metadata"]:::activity
+    S2{"contract valid?<br/>required ids · encoding · supported type · authorized client"}:::decision
+    Q0["<b>quarantine record</b><br/>reason · raw receipt id · retry/disposition"]:::review
+    D0[/"<b>source_document_version</b><br/>opaque document_version_id · SHA-256 · source metadata<br/>bytes are immutable; duplicate delivery is idempotent"/]:::evidence
+    S0 --> S1 --> S2
+    S2 -->|no| Q0
+    S2 -->|yes| D0
+  end
+
+  RS -.->|"parameterizes every stage"| S1
+
+  subgraph CONTEXT["2 — CONTEXT PREPARATION: create views, never rewrite evidence"]
+    direction LR
+    X1["layout / line / quoted-block signals<br/>confidence + detector-pack version"]:::activity
+    X2["task-specific text units<br/>sentence/layout-aware boundaries + overlap"]:::activity
+    X3["<b>ContextAssembler</b><br/>document metadata · chronology · neighboring notes<br/>authorized party roster · reference hits"]:::activity
+    XM[/"<b>context_manifest</b><br/>every item supplied to a model call, with id + as-of version"/]:::evidence
+    D0 --> X1 --> X2 --> X3 --> XM
+  end
+
+  subgraph CANDIDATES["3 — CANDIDATE GENERATION: maximize recall, preserve disagreements"]
+    direction TB
+    F0{{"fork by extraction capability"}}:::decision
+    NER["<b>entity span lane</b><br/>GLiNER / approved NER provider<br/>open unknown route; no casing gate"]:::activity
+    IDS["<b>structured-token lane</b><br/>email · phone · NPI · client identifier packs<br/>detection separate from validation"]:::activity
+    REL["<b>relation lane</b><br/>subject · raw predicate · object · evidence<br/>open predicate vocabulary"]:::activity
+    EVT["<b>claim-activity lane</b><br/>actor · action · participants · amount/date/status<br/>CONTACTED / RECEIVED / SENT are retained"]:::activity
+    REF["<b>reference-data lane</b><br/>carrier roster · client entity list · registries<br/>match is a proposal with source/version"]:::activity
+    CL[/"<b>extraction_candidate ledger</b><br/>raw span · raw label/value · lane · score · model/prompt/run<br/>alternatives and overlaps remain separate"/]:::evidence
+    XM --> F0
+    F0 --> NER --> CL
+    F0 --> IDS --> CL
+    F0 --> REL --> CL
+    F0 --> EVT --> CL
+    F0 --> REF --> CL
+  end
+
+  subgraph RECONCILE["4 — EVIDENCE RECONCILIATION: validate before interpreting"]
+    direction TB
+    G1["exact span check<br/>raw[start:end] must equal candidate surface<br/>relocate exactly or reject with reason"]:::activity
+    G2["compatible interval reconciliation<br/>preserve nested entities · multi-label alternatives · lane provenance"]:::activity
+    G3{"enough evidence to normalize?<br/>unknown and ambiguous remain valid states"}:::decision
+    RV["review / unresolved queue<br/>candidate is retained; no guessed fallback"]:::review
+    E1[/"<b>mentions</b><br/>structural entity_type · source span · extraction lineage"/]:::evidence
+    E2[/"<b>identifier observations + validations</b><br/>format · checksum · registry are separate facts"/]:::evidence
+    E3[/"<b>relation / role / event assertions</b><br/>raw + normalized form · orthogonal status axes · evidence"/]:::evidence
+    CL --> G1 --> G2 --> G3
+    G3 -->|ambiguous / unsupported| RV
+    G3 -->|entity observation| E1
+    G3 -->|structured observation| E2
+    G3 -->|semantic assertion| E3
+  end
+
+  subgraph BIND["5 — ARGUMENT + IDENTIFIER BINDING: proposals, not one-time guesses"]
+    direction LR
+    B1["candidate bindings<br/>explicit span · within-note coref · claim roster<br/>proximity · reference-data owner"]:::activity
+    B2["score + compatibility checks<br/>retain competing candidates and method provenance"]:::activity
+    B3{"binding decision band"}:::decision
+    B4[/"bound assertion / identifier<br/>selected mention/entity + probability + method"/]:::evidence
+    B5["binding review queue<br/>unbound observation remains searchable"]:::review
+    E1 --> B1
+    E2 --> B1
+    E3 --> B1
+    B1 --> B2 --> B3
+    B3 -->|auto| B4
+    B3 -->|review| B5
+    B3 -->|no-link| B5
+  end
+
+  subgraph IDENTITY["6 — ENTITY RESOLUTION: propose, score, validate clusters, version identity"]
+    direction TB
+    I0{{"candidate-generation union"}}:::decision
+    I1["deterministic blocks<br/>exact identifiers · normalized names · source/reference keys"]:::activity
+    I2["embedding recall net<br/>task-specific model · per-type compatibility<br/>proposes only; never decides"]:::activity
+    I3["per-entity-type pair models<br/>comparison explanations + calibration artifact"]:::activity
+    I4["cannot-link + cluster consistency<br/>bridge diagnostics · hub/shared-identifier handling"]:::activity
+    I5{"auto-link / review / no-link"}:::decision
+    I6["identity review<br/>decision and rationale are immutable"]:::review
+    I7[/"<b>stable entity_id</b> + versioned entity_snapshot<br/>membership · predecessor lineage · cluster fingerprint"/]:::evidence
+    E1 --> I0
+    B4 --> I0
+    I0 --> I1 --> I3
+    I0 --> I2 --> I3
+    I3 --> I4 --> I5
+    I5 -->|auto-link| I7
+    I5 -->|review| I6 --> I7
+    I5 -->|no-link| I7
+  end
+
+  subgraph PUBLISH["7 — ATOMIC PROJECTION PUBLICATION: one watermark, many read models"]
+    direction LR
+    P0["projection builder<br/>requires one client_id + source_run_id"]:::activity
+    P1[/"evidence graph<br/>factual assertions separate from derived navigation signals"/]:::projection
+    P2[/"entity profiles / dossiers<br/>deterministic summaries with evidence ids"/]:::projection
+    P3[/"exact + lexical indexes<br/>ids · names · codes · raw wording"/]:::projection
+    P4[/"evidence vector indexes<br/>task/model/version declared"/]:::projection
+    P5[/"analytics / timeline views<br/>claim activities ordered by event and record time"/]:::projection
+    AM{"all required projections validated<br/>at the same watermark?"}:::decision
+    BAD["do not publish<br/>retain last complete manifest; emit failed stage run"]:::review
+    GOOD[/"<b>ArtifactManifest</b><br/>checksums · counts · versions · watermarks<br/>atomic pointer to the complete searchable snapshot"/]:::evidence
+    I7 --> P0
+    E1 --> P0
+    E2 --> P0
+    E3 --> P0
+    B4 --> P0
+    P0 --> P1 --> AM
+    P0 --> P2 --> AM
+    P0 --> P3 --> AM
+    P0 --> P4 --> AM
+    P0 --> P5 --> AM
+    AM -->|no| BAD
+    AM -->|yes| GOOD
+  end
+
+  subgraph QUERY["8 — QUERY + ANSWER: retrieve evidence, then verify every claim"]
+    direction LR
+    U0(["authorized stakeholder question"]):::source
+    U1["shared QueryService<br/>authorization scope != relevance scope"]:::activity
+    U2["typed query router<br/>exact · lexical · vector · temporal · graph"]:::activity
+    U3["fusion + reranking<br/>lane attribution and filters preserved"]:::activity
+    U4[/"bounded evidence pack<br/>raw spans · assertions · entities · paths · chronology"/]:::evidence
+    U5["structured synthesis<br/>answer claims select evidence IDs only"]:::activity
+    U6{"citation exists, span matches,<br/>and evidence supports claim?"}:::decision
+    U7(["answer + citations + retrieval trace"]):::terminal
+    U8["abstain / qualify / request review"]:::review
+    GOOD --> U1
+    U0 --> U1 --> U2 --> U3 --> U4 --> U5 --> U6
+    U6 -->|yes| U7
+    U6 -->|no| U8
+  end
+
+  subgraph QUALITY["9 — QUALITY LOOP: tune profiles and learned artifacts, never silently mutate history"]
+    direction LR
+    M1["stage metrics<br/>span · type · binding · polarity axes · pair/cluster ER"]:::activity
+    M2["search metrics<br/>Recall@K · nDCG · citation support · abstention · latency/cost"]:::activity
+    M3["human review + representative labels<br/>stratified by source · LOB · locale · note form"]:::review
+    M4{"release gates passed?"}:::decision
+    M5[/"new calibration / model / ClientProfile version<br/>old RunSpecs remain reproducible"/]:::evidence
+    U7 --> M2
+    RV --> M3
+    B5 --> M3
+    I6 --> M3
+    E1 --> M1
+    E2 --> M1
+    E3 --> M1
+    M1 --> M4
+    M2 --> M4
+    M3 --> M4
+    M4 -->|no| CP6
+    M4 -->|yes| M5 --> CP1
+  end
+
+  INV["<b>Non-tunable invariants</b><br/>no cross-client identity · immutable source versions · exact evidence provenance<br/>no required silent fallback · unknown survives · factual vs inferred stays visible<br/>readers see only a complete published snapshot"]:::invariant
+  INV -.->|"constrains"| RS
+  INV -.->|"constrains"| G1
+  INV -.->|"constrains"| AM
+  INV -.->|"constrains"| U6
+
+  EX["<b>Small data example</b><br/><b>source:</b> '9/2 — claimant says Dr Reyes did not refer her to Apex Imaging.'<br/><b>candidates:</b> person='Dr Reyes'; organization='Apex Imaging'; action='refer'; negation='did not'<br/><b>assertion:</b> Dr Reyes —REFERRED_TO→ Apex Imaging; proposition_status=negated;<br/>evidentiality=reported; source=claimant; evidence=document_version_17[21:68]<br/><b>result:</b> the graph may store the negated assertion, but factual-positive traversal excludes it by policy."]:::invariant
+  E3 -.->|"example"| EX
+```
+
+### Target — Search, context assembly, and answer verification
+
+Source: [`13-search-and-context-routing.mermaid`](13-search-and-context-routing.mermaid)
+
+```mermaid
+---
+title: "Target — Search, context assembly, and answer verification"
+---
+flowchart TD
+  classDef input fill:#E8EEF8,stroke:#315A8A,stroke-width:1.6px,color:#102A43
+  classDef act fill:#F7F7F4,stroke:#535B61,stroke-width:1.4px,color:#20252A
+  classDef decide fill:#FFF2D9,stroke:#A06416,stroke-width:1.6px,color:#5A3300
+  classDef lane fill:#E7F5F7,stroke:#27717A,stroke-width:1.6px,color:#123A40
+  classDef data fill:#E4F2EA,stroke:#2F6B4F,stroke-width:1.7px,color:#12301F
+  classDef warn fill:#FFF0F0,stroke:#A33A3A,stroke-width:1.6px,stroke-dasharray:6 3,color:#5C1616
+  classDef note fill:#FFF8C9,stroke:#8A6A00,stroke-width:1.6px,color:#493800
+  classDef terminal fill:#263238,stroke:#263238,color:#FFFFFF
+
+  Q0(["question + authenticated user + client context"]):::input
+  Q1["<b>authorize first</b><br/>permitted clients · claims · occurrences · fields · cross-claim purpose"]:::act
+  Q2{"authorized?"}:::decide
+  DENY(["deny + audit event"]):::warn
+  Q3["<b>parse a typed query plan</b><br/>intent · entities · exact values · time constraints<br/>relation/path need · requested output · confidence"]:::act
+  Q4["mechanically validate plan<br/>allowed operators · bounded graph hops · safe filters · context budget"]:::act
+  Q5{"plan valid and sufficiently specific?"}:::decide
+  CLARIFY["ask for clarification or use a declared conservative default"]:::warn
+  Q0 --> Q1 --> Q2
+  Q2 -->|no| DENY
+  Q2 -->|yes| Q3 --> Q4 --> Q5
+  Q5 -->|no| CLARIFY
+
+  subgraph ANCHORS["A — Extract anchors and separate hard filters from ranking signals"]
+    direction LR
+    A1[/"authorization filters<br/>client_id · allowed claim set · sensitive-field policy"/]:::data
+    A2[/"relevance filters<br/>claim · occurrence · source · note type · author · date range"/]:::data
+    A3[/"exact anchors<br/>claim/policy id · NPI · phone · email · date · quoted phrase · code"/]:::data
+    A4[/"semantic concepts<br/>'delayed treatment' · 'coverage concern' · 'prior similar activity'"/]:::data
+    A5[/"relationship needs<br/>who represented whom · shared identifier · path · neighborhood"/]:::data
+    Q5 -->|yes| A1
+    Q5 -->|yes| A2
+    Q5 -->|yes| A3
+    Q5 -->|yes| A4
+    Q5 -->|yes| A5
+  end
+
+  ROUTE{{"route to every lane that can add independent recall"}}:::decide
+  A1 --> ROUTE
+  A2 --> ROUTE
+  A3 --> ROUTE
+  A4 --> ROUTE
+  A5 --> ROUTE
+
+  subgraph L1["LANE 1 — Structured / exact"]
+    direction TB
+    E1["SQL / key-value lookup<br/>document metadata · claim ids · entity ids · validated identifiers"]:::lane
+    E2["exact normalized matching<br/>names · phones · emails · registry ids · source-native ids"]:::lane
+    E3[/"ranked exact hits<br/>match field · normalization · source row · certainty"/]:::data
+    E1 --> E2 --> E3
+  end
+
+  subgraph L2["LANE 2 — Lexical"]
+    direction TB
+    L21["full-text / BM25 query<br/>names · codes · jargon · quoted language · rare tokens"]:::lane
+    L22["field boosts<br/>title/name > body; exact phrase > token match"]:::lane
+    L23[/"ranked lexical passages<br/>score · matched terms · source span"/]:::data
+    L21 --> L22 --> L23
+  end
+
+  subgraph L3["LANE 3 — Semantic vector"]
+    direction TB
+    V1["embed query with retrieval-specific model/task<br/>model version must match index manifest"]:::lane
+    V2["pre-filtered k-NN<br/>authorization and required scope applied before ranking"]:::lane
+    V3[/"ranked semantic passages / entities<br/>cosine score · model version · source span"/]:::data
+    V1 --> V2 --> V3
+  end
+
+  subgraph L4["LANE 4 — Temporal"]
+    direction TB
+    T1["normalize event time vs record time<br/>before/after/as-of/range/sequence"]:::lane
+    T2["query claim activities and assertion lifecycle<br/>include corrections/retractions by policy"]:::lane
+    T3[/"ordered event/assertion hits<br/>time basis · uncertainty · source span"/]:::data
+    T1 --> T2 --> T3
+  end
+
+  subgraph L5["LANE 5 — Graph"]
+    direction TB
+    G1["resolve seed IDs from exact/ER evidence<br/>never start traversal from an unverified surface alone"]:::lane
+    G2["bounded typed traversal<br/>factual assertions · identity · containment · optional derived signals"]:::lane
+    G3["apply edge policy<br/>polarity/status · confidence · as-of snapshot · hub penalty"]:::lane
+    G4[/"ranked paths / neighborhoods<br/>every edge has assertion or derivation provenance"/]:::data
+    G1 --> G2 --> G3 --> G4
+  end
+
+  ROUTE -->|id / metadata / count| E1
+  ROUTE -->|name / code / exact language| L21
+  ROUTE -->|concept / paraphrase| V1
+  ROUTE -->|chronology / as-of| T1
+  ROUTE -->|relationship / network| G1
+
+  F0["<b>normalize lane scores without erasing origin</b><br/>retain rank · raw score · lane · filters · index/artifact version"]:::act
+  E3 --> F0
+  L23 --> F0
+  V3 --> F0
+  T3 --> F0
+  G4 --> F0
+  F1["candidate deduplication<br/>same evidence ID merges lane provenance; raw spans remain distinct"]:::act
+  F2["rank fusion<br/>RRF or client-evaluated fusion policy"]:::act
+  F3["cross-encoder / rule reranking where justified<br/>question-to-evidence relevance; no factual invention"]:::act
+  F4{"minimum evidence and confidence met?"}:::decide
+  F0 --> F1 --> F2 --> F3 --> F4
+
+  NONE["return no-supported-answer<br/>show searched scopes and lanes; do not fill from model memory"]:::warn
+  F4 -->|no| NONE
+
+  subgraph PACK["B — Context assembler: construct the smallest complete evidence packet"]
+    direction TB
+    C1[/"selected raw passages<br/>document_version_id · exact span · note/source metadata"/]:::data
+    C2[/"selected assertions/events<br/>orthogonal status axes · argument-resolution method"/]:::data
+    C3[/"selected entity snapshots / paths<br/>stable IDs · membership version · edge provenance"/]:::data
+    C4[/"chronology + authoritative context<br/>claim/occurrence metadata · roster/reference versions"/]:::data
+    C5["budget + coverage check<br/>remove redundant overlap; preserve counterevidence and corrections"]:::act
+    C6[/"<b>EvidencePack</b><br/>immutable ids only · explicit as-of watermark · complete manifest"/]:::data
+    F4 -->|yes| C1
+    F4 -->|yes| C2
+    F4 -->|yes| C3
+    F4 -->|yes| C4
+    C1 --> C5
+    C2 --> C5
+    C3 --> C5
+    C4 --> C5
+    C5 --> C6
+  end
+
+  S1["structured synthesis<br/>each answer_claim = text + selected evidence_ids + uncertainty"]:::act
+  S2{"mechanical citation validation<br/>known evidence id? allowed scope? exact span still matches?"}:::decide
+  BAD1["reject claim<br/>unknown or unauthorized citation"]:::warn
+  S3{"semantic support check<br/>does cited evidence entail or explicitly qualify this claim?"}:::decide
+  BAD2["drop / qualify claim or abstain<br/>persist verification failure for evaluation"]:::warn
+  S4(["answer + clickable evidence + query/retrieval/verification trace"]):::terminal
+  C6 --> S1 --> S2
+  S2 -->|no| BAD1
+  S2 -->|yes| S3
+  S3 -->|no| BAD2
+  S3 -->|yes| S4
+
+  TRACE[/"<b>search_run</b><br/>plan · authorization result · filters · lane candidates · ranks<br/>fusion/reranker versions · selected evidence · answer claims · verification"/]:::data
+  Q3 -.-> TRACE
+  F0 -.-> TRACE
+  C6 -.-> TRACE
+  S4 -.-> TRACE
+  NONE -.-> TRACE
+  BAD1 -.-> TRACE
+  BAD2 -.-> TRACE
+
+  EX1["<b>Example 1 — 'Find NPI 1234567893'</b><br/>exact identifier lane is authoritative for retrieval;<br/>lexical can recover raw formatting; vector adds little and need not run."]:::note
+  EX2["<b>Example 2 — 'What delayed treatment?'</b><br/>semantic + lexical + temporal lanes retrieve passages/events;<br/>graph connects providers only after seed identity is grounded."]:::note
+  EX3["<b>Example 3 — 'Who else used this phone across claims?'</b><br/>exact phone normalization seeds graph traversal;<br/>authorization controls cross-claim scope; hub/ownership signals qualify results."]:::note
+  E3 -.-> EX1
+  V3 -.-> EX2
+  G4 -.-> EX3
+
+  WHY["<b>Why vector-only is wrong</b><br/>semantic similarity finds paraphrases, but exact identifiers, names, dates, codes,<br/>and quoted wording often need lexical or structured retrieval. Graph traversal answers<br/>connectivity, not passage relevance. The router composes mechanisms instead of forcing<br/>every question through one representation."]:::note
+  ROUTE -.-> WHY
+```
+
+### Current — Executable flow and architectural breakpoints
+
+Source: [`14-current-system-breakpoints.mermaid`](14-current-system-breakpoints.mermaid)
+
+```mermaid
+---
+title: "Current — Executable flow and architectural breakpoints"
+---
+flowchart TB
+  classDef current fill:#F7F7F4,stroke:#535B61,stroke-width:1.4px,color:#20252A
+  classDef data fill:#E8EEF8,stroke:#315A8A,stroke-width:1.6px,color:#102A43
+  classDef good fill:#E4F2EA,stroke:#2F6B4F,stroke-width:1.7px,color:#12301F
+  classDef bad fill:#FFF0F0,stroke:#A33A3A,stroke-width:2px,color:#5C1616
+  classDef stale fill:#FFF2D9,stroke:#A06416,stroke-width:1.8px,stroke-dasharray:6 3,color:#5A3300
+  classDef disconnected fill:#F3E8FF,stroke:#7048A8,stroke-width:2px,stroke-dasharray:7 3,color:#32195A
+  classDef term fill:#263238,stroke:#263238,color:#FFFFFF
+
+  GLOBAL["<b>ONE GLOBAL RUNTIME</b><br/>CFG · SQLite DB · Splink model · graph pickle<br/>Gemini cache · mentions.faiss · chunks.faiss<br/><i>no client_id, RunSpec, artifact manifest, or watermark</i>"]:::bad
+
+  subgraph INPUT["1 — Input"]
+    I0([".txt files + mutable doc_index.json"]):::data
+    I1["deliver()<br/>copyfile may overwrite same name<br/>claim mapping is optional"]:::current
+    I2[/"documents<br/>doc_id · claim_id · occurrence_id · n_chars"/]:::data
+    I0 --> I1 --> I2
+  end
+  GLOBAL -.-> I1
+
+  subgraph PREP["2 — Profiling and chunks"]
+    P1["body / quoted segmentation<br/>boilerplate and casing scores"]:::current
+    P2["fixed word-based chunks<br/>300-token approximation · 50% overlap"]:::current
+    P3[/"segments + Chunk objects"/]:::data
+    I2 --> P1 --> P2 --> P3
+  end
+
+  subgraph EXTRACT["3 — Candidate extraction and persistence"]
+    E0{{"three lanes"}}:::current
+    E1["required GLiNER<br/>fixed label set"]:::current
+    E2["regex / checksum gazetteer<br/>fixed identifier families"]:::current
+    E3["Gemini entity spans<br/>model text + clamped offsets accepted"]:::stale
+    E4["union every overlap<br/>longest span wins"]:::stale
+    E5["capitalized two-token name gate<br/>failed candidate is deleted"]:::bad
+    E6["entity_class guess<br/>person→claimant; organization→medical_provider<br/>ourinsco.com and role cues in code"]:::bad
+    E7[/"mentions + has_name assertions"/]:::data
+    E8["identifier subject_for()<br/>same line or previous line"]:::stale
+    E9[/"identifier_observations<br/>+ bound attribute assertions"/]:::data
+    E10["coref.py resolver"]:::current
+    E11[/"coref_links<br/>stored but not used by factual pipeline"/]:::disconnected
+    P3 --> E0
+    E0 --> E1 --> E4
+    E0 --> E2 --> E4
+    E0 --> E3 --> E4
+    E4 --> E5 --> E6 --> E7
+    E4 --> E8 --> E9
+    E7 --> E10 --> E11
+  end
+
+  subgraph REL["DISCONNECTED RESEARCH PATH"]
+    R1["relations.extract_relations()<br/>open S-P-O candidates"]:::disconnected
+    R2["drops CONTACTED / SENT / RECEIVED / FILED...<br/>drops identifier ownership relations<br/>invalid polarity becomes asserted"]:::bad
+    R3["bind_to_mentions()<br/>surface / substring matching"]:::stale
+    R4(["not persisted; never reaches operational graph"]):::bad
+    P3 -.->|"notebook 20 only"| R1 --> R2 --> R3 --> R4
+  end
+
+  subgraph ER["4 — Entity resolution"]
+    D1["mention vectors<br/>name + guessed class"]:::current
+    D2[/"mentions.faiss"/]:::data
+    D3["deterministic blocks + embedding buckets<br/>embedding lane proposes candidates"]:::good
+    D4["one global Splink person-name model<br/>training blocks may fail silently"]:::bad
+    D5[/"same_as_edges<br/>probability + blocked_by"/]:::good
+    D6["connected components<br/>one bad bridge can join a cluster"]:::stale
+    D7["entity_id = hash(all member mention_ids)<br/>ID changes whenever membership changes"]:::bad
+    D8[/"entities + current snapshot<br/>entity_versions is cleared / unused"/]:::data
+    E7 --> D1 --> D2 --> D3 --> D4 --> D5 --> D6 --> D7 --> D8
+    E9 --> D3
+  end
+
+  subgraph PROFILE["5 — Profiles and graph"]
+    F1["profiles.run()<br/>role derived from entity_class<br/>normalized identifiers labeled validated"]:::bad
+    F2[/"entity_attributes appended<br/>dossiers upserted by unstable entity_id"/]:::stale
+    F3["build_graph()<br/>does not read semantic assertions"]:::bad
+    F4["fabricate role edge from class + co-presence<br/>first claimant becomes arbitrary anchor"]:::bad
+    F5[/"igraph pickle<br/>party / claim / occurrence / raw identifier nodes"/]:::data
+    D8 --> F1 --> F2 --> F3 --> F4 --> F5
+    E9 --> F3
+    R4 -.->|"no route"| F3
+  end
+
+  subgraph INDEX["6 — Search projections"]
+    S1["backfill: chunk every note + embed"]:::current
+    S2[/"chunks.faiss + raw-text Parquet metadata"/]:::data
+    S3["incremental ingest refreshes graph<br/><b>but does not refresh chunks.faiss</b>"]:::bad
+    P3 --> S1 --> S2
+    I1 -.->|"later note"| S3
+    S3 -.->|"stale after ingest"| S2
+  end
+
+  subgraph QUERY["7 — Two divergent query products"]
+    Q1["app.py<br/>closed dossier-filter query plan<br/>in-memory exact/fuzzy lookups"]:::stale
+    Q2["agent.py<br/>every question starts vector-only<br/>then claim-filtered graph expansion"]:::stale
+    Q3["LLM synthesis accepts citation strings<br/>without support validation"]:::bad
+    Q4["cross_claim_network passes an argument<br/>the graph method no longer accepts"]:::bad
+    OUT(["answers can differ by entry point<br/>and can read different data watermarks"]):::term
+    F2 --> Q1 --> OUT
+    S2 --> Q2
+    F5 --> Q2 --> Q3 --> OUT
+    Q2 --> Q4
+  end
+
+  GLOBAL -.-> D4
+  GLOBAL -.-> F5
+  GLOBAL -.-> S2
+  GLOBAL -.-> Q1
+  GLOBAL -.-> Q2
+
+  INC["<b>Incremental consistency failure</b><br/>new SQL evidence + rebuilt graph + stale chunk index<br/>old attributes/dossiers can survive entity-ID churn<br/><i>there is no atomic published snapshot</i>"]:::bad
+  S3 --> INC
+  F2 --> INC
+  D7 --> INC
+
+  LEGEND["<b>Reading this diagram</b><br/><span style='color:#2F6B4F'>green</span> = principle worth retaining · <span style='color:#A06416'>amber</span> = weak/partial mechanism<br/><span style='color:#A33A3A'>red</span> = correctness or semantic break · purple dashed = disconnected path"]:::good
+```
+
+### 15-resolution-and-hybrid-search-architecture
+
+Source: [`15-resolution-and-hybrid-search-architecture.mermaid`](15-resolution-and-hybrid-search-architecture.mermaid)
+
+```mermaid
+%% Lucid-ready Mermaid: paste the full file into Lucid's Mermaid import.
+%% Solid nodes are committed and exercised. Purple dashed nodes are agreed target work.
+flowchart LR
+  classDef source fill:#E8EEF8,stroke:#315A8A,stroke-width:1.6px,color:#102A43
+  classDef live fill:#E4F2EA,stroke:#2F6B4F,stroke-width:1.7px,color:#12301F
+  classDef target fill:#F3E8FF,stroke:#7048A8,stroke-width:1.7px,stroke-dasharray:7 4,color:#32195A
+  classDef evidence fill:#E7F5F7,stroke:#27717A,stroke-width:1.6px,color:#123A40
+  classDef decision fill:#FFF2D9,stroke:#A06416,stroke-width:1.6px,color:#5A3300
+  classDef risk fill:#FFF0F0,stroke:#A33A3A,stroke-width:1.5px,stroke-dasharray:5 3,color:#5C1616
+  classDef note fill:#FFF8C9,stroke:#8A6A00,stroke-width:1.4px,color:#493800
+  classDef terminal fill:#263238,stroke:#263238,color:#FFFFFF
+
+  TITLE["<b>Target — Evidence-first entity resolution and hybrid search</b><br/>Solid = committed and exercised · Purple dashed = agreed target, not yet built"]:::note
+
+  subgraph RESOLVE["A. Entity resolution — decide whether evidence mentions describe the same real-world party"]
+    direction TB
+    N0(["new note + source metadata<br/>claim ID required; note type / author / timestamp optional"]):::source
+    N1["capture span-grounded evidence<br/>mentions + identifier observations are live;<br/>relations + activities are target work"]:::live
+    N2["candidate identifier / relation binding<br/>explicit span · coreference · roster · proximity"]:::target
+    N3{"binding evidence sufficient?"}:::decision
+    N4["retain as unbound evidence<br/>searchable; no guessed owner"]:::risk
+    N5[("validated observations<br/>mention IDs · identifier observations · assertions")]:::evidence
+    N0 --> N1 --> N2 --> N3
+    N3 -->|no / ambiguous| N4
+    N3 -->|yes| N5
+
+    R0{{"union candidate-pair generators"}}:::decision
+    R1["deterministic blocks<br/>exact identifiers · normalized name keys · source/reference keys"]:::live
+    R2["embedding top-K recall net<br/>find semantically similar aliases / variants<br/><i>proposes pairs only; never merges</i>"]:::live
+    R3["Fellegi-Sunter / Splink pair score<br/>per-type comparison evidence + calibration artifact"]:::live
+    R4{"auto-link · review · no-link<br/>with calibrated decision bands"}:::target
+    R5[("versioned entity snapshot<br/>stable ID + membership + lineage + evidence")]:::target
+    N5 --> R0
+    R0 --> R1 --> R3
+    R0 --> R2 --> R3 --> R4 --> R5
+  end
+
+  subgraph PUBLISH["B. Publish the searchable evidence view"]
+    direction TB
+    P0[("claim-scoped evidence graph<br/>only grounded relations / activities / identifiers")]:::target
+    P1[("exact identifier index<br/>normalized validated identifiers<br/><i>working now</i>")]:::live
+    P2[("lexical index<br/>BM25 / phrase / rare-token retrieval")]:::target
+    P3[("vector index<br/>semantic passage retrieval")]:::live
+    P4[("temporal event index<br/>event time, record time, corrections")]:::target
+    P5[("snapshot manifest<br/>one coherent watermark + versions")]:::target
+    R5 --> P0
+    N5 --> P0
+    N5 --> P1
+    N5 --> P2
+    N5 --> P3
+    N5 --> P4
+    P0 --> P5
+    P1 --> P5
+    P2 --> P5
+    P3 --> P5
+    P4 --> P5
+  end
+
+  subgraph SEARCH["C. Search resolution — use the mechanism that matches the question"]
+    direction TB
+    Q0(["authorized stakeholder question<br/>+ claim / time / access scope"]):::source
+    Q1["extract query anchors and needs<br/>exact values · terms · concepts · time · entity/path"]:::live
+    Q2{{"run every applicable retrieval lane<br/>scope filters apply before ranking"}}:::target
+    Q0 --> Q1 --> Q2
+
+    E1["EXACT lane<br/>normalized phone / email / NPI and other validated tokens<br/><i>working now</i>"]:::live
+    L1["LEXICAL lane<br/>names · codes · jargon · quoted language<br/><i>target</i>"]:::target
+    V1["SEMANTIC lane<br/>paraphrases / concepts over note chunks<br/><i>working now</i>"]:::live
+    T1["TEMPORAL lane<br/>before / after / as-of / sequence<br/><i>target</i>"]:::target
+    G1["GRAPH lane<br/>bounded paths over grounded factual edges<br/><i>target until evidence path is connected</i>"]:::target
+    Q2 --> E1
+    Q2 --> L1
+    Q2 --> V1
+    Q2 --> T1
+    Q2 --> G1
+
+    F1["preserve lane provenance<br/>rank · raw score · matched evidence · filters"]:::target
+    F2["deduplicate evidence, then fuse ranks<br/>RRF + optional relevance reranker"]:::target
+    F3[("EvidencePack<br/>raw spans + assertions + entity snapshots + chronology")]:::evidence
+    E1 --> F1
+    L1 --> F1
+    V1 --> F1
+    T1 --> F1
+    G1 --> F1
+    F1 --> F2 --> F3
+  end
+
+  subgraph ANSWER["D. Answer only from retrieved evidence"]
+    direction TB
+    A1["structured synthesis<br/>each answer claim selects evidence IDs<br/><i>target</i>"]:::target
+    A2{"citation parses, is in scope,<br/>and lies inside supplied evidence?"}:::decision
+    A3(["answer + clickable spans<br/>lane / rank / entity-resolution trace"]):::terminal
+    A4["reject / qualify / abstain<br/>show no-supported-answer rather than invent"]:::risk
+    F3 --> A1 --> A2
+    A2 -->|yes| A3
+    A2 -->|no| A4
+  end
+
+  TITLE -.-> N0
+  TITLE -.-> Q0
+  P5 -.-> Q2
+
+  subgraph WHY["Which problem each mechanism solves"]
+    direction TB
+    W1["<b>Missed aliases / variants</b><br/>Embedding finds candidates deterministic keys miss;<br/>Splink still makes the decision."]:::note
+    W2["<b>Wrong identifier ownership</b><br/>Binding is scored before ER. Do not split a correct cluster<br/>to compensate for a mis-bound phone or NPI."]:::note
+    W3["<b>Rare literal tokens</b><br/>Exact and lexical lanes retrieve IDs, names, codes, and quotes;<br/>dense vectors are structurally weak for these."]:::note
+    W4["<b>Paraphrased narrative</b><br/>Vector retrieval finds conceptually similar passages<br/>such as ‘delayed care’ vs ‘treatment was postponed.’"]:::note
+    W5["<b>Chronology and relationships</b><br/>Temporal events answer sequence/as-of questions; a grounded graph<br/>answers bounded relationship paths—not passage relevance."]:::note
+    W6["<b>Fabricated provenance</b><br/>Mechanical citation checks reject spans not actually provided<br/>to synthesis. This is working now."]:::note
+  end
+
+  R2 -.-> W1
+  N2 -.-> W2
+  E1 -.-> W3
+  L1 -.-> W3
+  V1 -.-> W4
+  T1 -.-> W5
+  G1 -.-> W5
+  A2 -.-> W6
+```
+
+### 16-platform-runtime-and-data-boundaries
+
+Source: [`16-platform-runtime-and-data-boundaries.mermaid`](16-platform-runtime-and-data-boundaries.mermaid)
+
+```mermaid
+%% Lucid-ready Mermaid: paste the full file into Lucid's Mermaid import.
+%% Solid green = committed current capability. Purple dashed = agreed target capability.
+flowchart TB
+  classDef source fill:#E8EEF8,stroke:#315A8A,stroke-width:1.6px,color:#102A43
+  classDef store fill:#E7F5F7,stroke:#27717A,stroke-width:1.7px,color:#123A40
+  classDef model fill:#FFF2D9,stroke:#A06416,stroke-width:1.7px,color:#5A3300
+  classDef service fill:#F7F7F4,stroke:#535B61,stroke-width:1.4px,color:#20252A
+  classDef live fill:#E4F2EA,stroke:#2F6B4F,stroke-width:1.7px,color:#12301F
+  classDef target fill:#F3E8FF,stroke:#7048A8,stroke-width:1.7px,stroke-dasharray:7 4,color:#32195A
+  classDef guard fill:#FFF0F0,stroke:#A33A3A,stroke-width:1.5px,stroke-dasharray:5 3,color:#5C1616
+  classDef note fill:#FFF8C9,stroke:#8A6A00,stroke-width:1.4px,color:#493800
+  classDef terminal fill:#263238,stroke:#263238,color:#FFFFFF
+
+  LEGEND["<b>Runtime map — which technology is used where, and why</b><br/>Green = current; purple dashed = target. ‘Text’ means original characters/tokens. ‘Vector’ means a numeric embedding; it is never treated as a fact."]:::note
+
+  subgraph INTAKE["1. Intake and authoritative evidence"]
+    direction LR
+    S0(["client note export<br/>text file/API payload + claim ID<br/>optional: note type, author, timestamp"]):::source
+    S1["immutable source store<br/>object/file storage: original note bytes + SHA-256"]:::store
+    S2["RELATIONAL evidence store<br/>SQLite today → PostgreSQL-class RDBMS target<br/>documents, spans, identifiers, assertions, runs, entity snapshots"]:::store
+    S0 -->|raw note text + source metadata| S1
+    S1 -->|document version + source metadata| S2
+  end
+
+  subgraph EXTRACT["2. Extraction — locate evidence before interpreting it"]
+    direction LR
+    X0["read raw text chunks<br/>from immutable source store"]:::service
+    X1["GLiNER NER<br/><b>input:</b> raw text tokens<br/><b>output:</b> named-entity spans + labels<br/><b>why:</b> broad recall across casing / phrasing"]:::live
+    X2["identifier detectors + validators<br/><b>input:</b> raw text characters<br/><b>output:</b> phone/email/NPI candidates + validation<br/><b>why:</b> exact structured values need deterministic checks"]:::live
+    X3["LLM relation + activity extraction<br/><b>input:</b> raw chunk text + allowed context, never vectors<br/><b>output:</b> constrained JSON: arguments, raw predicate/action, evidence offsets<br/><b>why:</b> recover open-ended semantics patterns cannot enumerate"]:::target
+    X4["span and schema verifier<br/>raw[start:end] must equal cited surface;<br/>reject unsupported model output"]:::target
+    X5["RELATIONAL write<br/>candidate ledger + mentions + identifier observations + grounded assertions<br/><b>why:</b> transactionality, joins, versioning, auditability"]:::store
+    X0 --> X1 --> X5
+    X0 --> X2 --> X5
+    X0 --> X3 --> X4 --> X5
+  end
+
+  S1 --> X0
+  S2 -.->|document metadata / claim scope| X0
+
+  subgraph RESOLUTION["3. Entity resolution — embeddings propose; probabilistic linkage decides"]
+    direction LR
+    R0["RELATIONAL read<br/>mention surfaces + validated IDs + source/reference facts"]:::service
+    R1["deterministic candidate blocks<br/>exact IDs, normalized name keys, client reference keys<br/><b>why:</b> cheap, explainable high-precision candidates"]:::live
+    R2["embedding model<br/><b>input:</b> normalized mention text, not the full note<br/><b>output:</b> numeric vector"]:::live
+    R3["ER vector candidate index<br/>FAISS today; vector-store abstraction later<br/><b>operation:</b> top-K nearest mention candidates<br/><b>why:</b> catch alias/variant pairs blocking misses"]:::live
+    R4["Splink / Fellegi-Sunter scorer<br/><b>input:</b> candidate pair features from relational store<br/><b>output:</b> pair probability + feature explanation<br/><b>why:</b> the decision is measured, not semantic similarity"]:::live
+    R5["binding + cluster policy<br/>auto-link / review / no-link; temporal identifier conflicts<br/><b>why:</b> do not repair a wrong binding by splitting a correct entity"]:::target
+    R6["RELATIONAL entity view<br/>versioned membership, stable identity/lineage, decision provenance"]:::target
+    X5 --> R0
+    R0 --> R1 --> R4
+    R0 --> R2 --> R3 -->|candidate mention IDs only| R4
+    R4 --> R5 --> R6
+  end
+
+  subgraph PUBLISH["4. Build purpose-specific read models from evidence"]
+    direction LR
+    P0["RELATIONAL / exact index<br/><b>operation:</b> key lookup and metadata filters<br/><b>used for:</b> validated identifiers, claim scope, dates, entity IDs<br/><b>why:</b> exact answers and filtering"]:::live
+    P1["full-text lexical index<br/><b>operation:</b> BM25 / phrase / rare token match<br/><b>used for:</b> names, codes, jargon, quoted language<br/><b>why:</b> literal wording is not a vector-similarity problem"]:::target
+    P2["chunk vector index<br/>FAISS today<br/><b>operation:</b> nearest-neighbor passage search<br/><b>used for:</b> paraphrase / concept recall<br/><b>why:</b> find meaning when wording changes"]:::live
+    P3["GRAPH DATABASE / property graph projection<br/>igraph today; graph DB target at scale<br/><b>operation:</b> bounded typed traversal<br/><b>used for:</b> entity-to-entity paths and identifier adjacency<br/><b>why:</b> relationships, not keyword search"]:::target
+    P4["temporal event read model<br/><b>operation:</b> ordered / as-of event query<br/><b>used for:</b> claim chronology and corrections"]:::target
+    X5 --> P0
+    X5 --> P1
+    X5 --> P2
+    X5 --> P3
+    X5 --> P4
+    R6 --> P0
+    R6 --> P3
+  end
+
+  subgraph SEARCH["5. Search — query each representation for the question it can answer"]
+    direction TB
+    Q0(["authorized analyst question + claim/time scope"]):::source
+    Q1["deterministic query analysis<br/>extract exact values, terms, concepts, date/path intent<br/><b>no LLM required to route the POC</b>"]:::service
+    Q2{{"run every applicable lane;<br/>apply authorization and claim filters first"}}:::target
+    Q0 --> Q1 --> Q2
+    Q3["exact lookup<br/>query tokens → normalized identifier / metadata key"]:::live
+    Q4["lexical retrieval<br/>query words → BM25 / phrase hits"]:::target
+    Q5["query embedding<br/><b>input:</b> question text<br/><b>output:</b> numeric query vector → k-NN chunks"]:::live
+    Q6["temporal query<br/>time language → ordered events / assertions"]:::target
+    Q7["graph traversal<br/>resolved seed ID → bounded factual paths"]:::target
+    Q2 --> Q3 --> P0
+    Q2 --> Q4 --> P1
+    Q2 --> Q5 --> P2
+    Q2 --> Q6 --> P4
+    Q2 --> Q7 --> P3
+    Q8["retain lane, rank, raw score, evidence ID, filters"]:::target
+    Q9["deduplicate then fuse ranked evidence<br/>RRF + optional reranker"]:::target
+    Q10["EvidencePack in relational form<br/>only selected raw spans, assertions, entity snapshots, chronology"]:::store
+    P0 --> Q8
+    P1 --> Q8
+    P2 --> Q8
+    P3 --> Q8
+    P4 --> Q8
+    Q8 --> Q9 --> Q10
+  end
+
+  subgraph ANSWER["6. Answer and verify"]
+    direction LR
+    A0["LLM synthesis<br/><b>input:</b> retrieved raw text + structured triples; target input is an EvidencePack<br/>never vectors and never the whole database<br/><b>output:</b> answer claims + requested citations<br/><b>why:</b> readable explanation, not fact discovery"]:::live
+    A1["mechanical citation verifier<br/>check document exists, span bounds, and cited span was in EvidencePack"]:::live
+    A2(["answer, clickable source spans,<br/>and retrieval / resolution trace"]):::terminal
+    A3["reject unsupported claim;<br/>qualify or abstain"]:::guard
+    Q10 --> A0 --> A1
+    A1 -->|supported| A2
+    A1 -->|unsupported| A3
+  end
+
+  LEGEND -.-> S0
+  LEGEND -.-> Q0
+
+  subgraph BOUNDARIES["Non-negotiable boundaries"]
+    direction LR
+    B1["<b>Relational database = system of record</b><br/>facts, evidence spans, decisions, versions, and joins"]:::note
+    B2["<b>Vector index = recall accelerator</b><br/>returns candidates/passages; it never establishes identity or truth"]:::note
+    B3["<b>Graph database = relationship navigation</b><br/>answers bounded paths only after edges are evidence-grounded"]:::note
+    B4["<b>LLM = constrained interpretation and presentation</b><br/>raw text in; structured JSON or cited prose out; never an untraceable store"]:::note
+  end
+  S2 -.-> B1
+  R3 -.-> B2
+  P3 -.-> B3
+  X3 -.-> B4
+  A0 -.-> B4
 ```

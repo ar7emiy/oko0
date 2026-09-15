@@ -1,0 +1,15 @@
+DOC00047.txt  claim=CLM0010   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Marcus Lopez' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [200:229]: 'Marcus Lopez of XYZ Law Group'
+  'Marcus Lopez' --[REPRESENTS]--> 'Fatima Johnson'   (asserted)
+      evidence [200:272]: 'Marcus Lopez of XYZ Law Group regarding representation of Fatima Johnson'
+  'Priya Brown' --[REPRESENTS]--> 'Fatima Johnson'   (asserted)
+      evidence [373:429]: 'Co-counsel Priya Brown is also appearing on this matter.'
+  'Marcus Lopez' --[SENT_EMAIL_TO]--> 'Ingrid Okafor'   (asserted)
+      evidence [1143:1242]: 'From: Marcus Lopez <marcus.lopez@xyzlawgroup.com>\nSent: Mon, Apr 24, 2026 1:57 AM\nTo: Ingrid Okafor'
+  'Marcus Lopez' --[AFFILIATED_WITH]--> 'XYZ Law Group'   (asserted)
+      evidence [1390:1416]: 'Marcus Lopez\nXYZ Law Group'
+  'Dr. Tomas Okafor' --[MANAGES_CARE_FOR]--> 'Fatima Johnson'   (asserted)
+      evidence [2196:2257]: 'Dr. Tomas Okafor continues to manage care for Fatima Johnson.'

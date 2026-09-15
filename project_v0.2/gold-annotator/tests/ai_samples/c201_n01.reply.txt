@@ -1,0 +1,10 @@
+```
+{"type": "meta", "claim": "C201", "note": "N01", "part": 1, "parts": 1, "read_all": true, "summary": "Nothing ambiguous."}
+{"type": "entity", "key": "P1", "quote": "Dr. Ada Monroe", "name": "Dr. Ada Monroe", "kind": "person"}
+{"type": "action", "key": "P1", "quote": "called regarding the claim"}
+{"type": "mention", "key": "P1", "quote": "Dr. Ada Monroe", "before": "regarding the claim.", "form": "name"}
+{"type": "description", "key": "P1", "quote": "orthopedic surgeon"}
+{"type": "action", "key": "P1", "key2": "O1", "quote": "with Northstar Orthopedics"}
+{"type": "entity", "key": "O1", "quote": "Northstar Orthopedics", "name": "Northstar Orthopedics", "kind": "organization"}
+{"type": "description", "key": "O1", "quote": "the medical provider"}
+```

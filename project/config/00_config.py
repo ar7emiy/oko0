@@ -15,6 +15,52 @@
 # in the repo. src/leakage_guard.py + tests assert no other source file names a
 # model. Change these freely; nothing downstream hardcodes them.
 GENAI_MODEL = "gemini-3.7-flash"                # extraction / adjudication / NL planning / generation
+
+# Per-task model routing. One model for every lane is the wrong default here:
+# the lanes differ by two orders of magnitude in volume and by a lot in how much
+# judgement they need, and paying flagship rates for a high-volume recall net is
+# most of the bill.
+#
+#   gemini-3.7-flash        $0.75 / $3.75 per 1M in/out
+#   gemini-3.1-flash-lite   $0.25 / $1.50   -- 3x cheaper in, 2.5x cheaper out
+#
+# (gemini-2.5-flash-lite is cheaper still at $0.10/$0.40 but is RETIRED on
+# 16 Oct 2026, so it is not a durable choice. Rates for the 3.x line are marked
+# effective to 31 Dec 2026 and then double.)
+#
+# identifier_binding WAS MEASURED ON BOTH AND STAYS ON FLASH. Over 60 documents
+# against ground truth:
+#
+#     gemini-3.7-flash        precision 0.989   635 bound   142 declined
+#     gemini-3.1-flash-lite   precision 0.982   650 bound    91 declined
+#
+# The 0.007 precision gap is inside the noise band. The ERROR KINDS are not.
+# flash's mistakes are near-misses on the right entity -- a person bound to
+# their own firm, or a spacing corruption of the correct name ('Dr. MichaelJ
+# ackson' for Dr. Michael Jackson). flash-lite's include 'Claimant', 'the
+# insured' and 'Thomas': role descriptors, which THE PROMPT EXPLICITLY FORBIDS,
+# and which a wrong binding then attaches to whichever party the resolver maps
+# that descriptor to.
+#
+# It also declines far less often (91 vs 142) while being no more accurate, so
+# the extra bindings are guesses rather than knowledge. A wrong owner corrupts
+# the party it lands on; a decline is safe. This is the same distinction T2.2
+# measured between the LLM and the line rule.
+#
+# Worth noting the decision rule was written down BEFORE the numbers, and at an
+# 8-document sample it looked wrong -- flash-lite scored 1.000 there. Only the
+# 60-document sample showed why declining matters.
+#
+# relation_extract is likewise unmeasured on the cheaper model and stays pinned.
+# Changing a model under a measured number silently invalidates it, the same
+# class of mistake as the ER_LINK_THRESHOLD comment that drifted out of true.
+#
+# `sweep` is the opposite case: highest call volume in the pipeline (one call
+# per chunk, ~3 per document), and its job is to catch spans the other lanes
+# missed -- a recall net, not a judgement call.
+GENAI_MODEL_BY_TASK = {
+    "sweep": "gemini-3.1-flash-lite",
+}
 EMBED_MODEL = "gemini-embedding-001"       # Gemini embedding endpoint
 EMBED_DIM = 768                            # embedding dimensionality (index is built to this)
 
@@ -225,16 +271,29 @@ EMB_BLOCK_MAX_BUCKET = 60
 # not a stored merge. This is the operating point; the audit reports the whole
 # precision/recall curve across thresholds rather than this single number.
 # Chosen FROM THE MEASURED B-cubed CURVE (audit.bcubed_sweep), not assumed.
-# The curve is flat across 0.30-0.60 (F1 0.813-0.837); we operate at 0.45
-# (P 0.818 / R 0.833, F1 0.825) rather than the F1 max at 0.60 (F1 0.837)
-# because the product goal is not missing connections, and the lower threshold
-# yields an entity count closer to truth. At the intuitive 0.90 precision is
-# 0.997 but recall collapses to 0.106 -- the true-match probability mass sits
-# in 0.5-0.9, which is exactly why identity is a threshold-derived view.
+# The curve is flat across 0.30-0.60; we operate at 0.45 rather than at the F1
+# max because the product goal is not missing connections, and the lower
+# threshold yields an entity count closer to truth.
+#
+# 2026-09-02: this comment previously quoted "F1 0.813-0.837, 0.45 -> F1 0.825".
+# Those numbers had silently become false -- measured, the curve at 0.45 was
+# P 0.973 / R 0.438 / F1 0.604, splitting 42 entities into 515. The cause was
+# ER_LAMBDA_RULES below, not this threshold: with the prior corrected, 0.45
+# measures F1 0.800 and the curve is flat again (min F1 0.783 across 0.20-0.95),
+# so this value survives unchanged. The lesson is in ER_REQUIRE_FULLY_TRAINED:
+# a calibration claim that lives only in a comment will drift out of true and
+# nothing will notice.
 ER_LINK_THRESHOLD = 0.45
 # Assumed recall of the deterministic rules used to estimate the match prior.
 # Splink's 1e-4 default is far off for a corpus where entities recur heavily.
 ER_DETERMINISTIC_RECALL = 0.7
+# Fail the run when Splink could not estimate every m/u parameter, instead of
+# letting it substitute invented defaults. Default False because this corpus
+# genuinely cannot train the npi comparison -- 7 of 922 mentions carry an NPI --
+# and refusing to run would be worse than running with that one comparison
+# flagged. Set True in an environment where uncalibrated evidence is
+# unacceptable; the untrained set is reported either way, per-run and per-edge.
+ER_REQUIRE_FULLY_TRAINED = False
 ER_THRESHOLD_SWEEP = (0.30, 0.40, 0.45, 0.50, 0.55, 0.60, 0.70, 0.80, 0.90)
 
 # The legacy resolver thresholds and the RES_WEIGHTS weighted-feature model

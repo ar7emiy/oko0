@@ -1,0 +1,32 @@
+========================================================================================
+DOC00055.txt   claim=CLM0011   occurrence=OCC0009
+========================================================================================
+
+--- NAME MENTIONS (10), in order of appearance ---
+  [   20:39   ] 'Dr. Michael Jackson'              class=medical_provider extractor=gliner+llm           -> entity E1683b68650cd ('Dr. Michael Jackson')  [also in: DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00056]
+  [   69:81   ] 'Lopez, Peter'                     class=medical_provider extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00056, DOC00057, DOC00058, DOC00059]
+  [  592:600  ] 'P. Lopez'                         class=repair_shop      extractor=llm                  -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00056, DOC00057, DOC00058, DOC00059]
+  [  790:795  ] 'Lopez'                            class=repair_shop      extractor=llm                  -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 1301:1320 ] 'Dr. Michael Jackson'              class=medical_provider extractor=gliner+llm           -> entity E1683b68650cd ('Dr. Michael Jackson')  [also in: DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00056]
+  [ 1350:1361 ] 'Peter Lopez'                      class=medical_provider extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 1825:1836 ] 'Pteer Lopez'                      class=claimant         extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 2109:2131 ] 'Lopez Collision Center'           class=repair_shop      extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 2638:2654 ] 'Jackson, Michael'                 class=medical_provider extractor=gliner+llm           -> entity E1683b68650cd ('Dr. Michael Jackson')  [also in: DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00056]
+  [ 2684:2695 ] 'Peter Lopez'                      class=repair_shop      extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00056, DOC00057, DOC00058, DOC00059]
+
+--- IDENTIFIERS (11), in order of appearance ---
+  [  107:117  ] npi      '1820505612'                 owner='Dr. Michael Jackson' [20:39]                method=llm
+  [  174:184  ] dob      '2024-11-06'                 owner='Lopez, Peter' [69:81]                       method=line_rule
+  [  241:276  ] address  '9363 Highland St, Bristol, PA 19074' owner='Dr. Michael Jackson' [20:39]                method=llm
+  [  683:697  ] phone    '(944) 232-5703'             owner='P. Lopez' [592:600]                         method=llm
+  [  806:816  ] tin      '99-1566069'                 owner='Lopez' [790:795]                            method=llm
+  [ 1366:1376 ] dob      '2024-11-28'                 owner='Peter Lopez' [1350:1361]                    method=line_rule
+  [ 1433:1468 ] address  '9363 Highland St, Bristol, PA 19074' owner='Dr. Michael Jackson' [1301:1320]            method=llm
+  [ 1919:1933 ] phone    '(944) 232-5703'             owner='Pteer Lopez' [1825:1836]                    method=llm
+  [ 1964:2000 ] address  '7157 Highland Ln, Fairview, TX 75027' owner='Pteer Lopez' [1825:1836]                    method=llm
+  [ 2142:2159 ] vin      '4W8H8PB61WUXYFDB2'          owner='Lopez Collision Center' [2109:2131]         method=line_rule
+  [ 2720:2755 ] address  '9363 Highland St, Bristol, PA 19074' owner='Jackson, Michael' [2638:2654]               method=llm
+
+--- COREFERENCE LINKS (2) ---
+  [  119:121  ] 'He'                 (pronoun) -> 'Lopez, Peter' [69:81]
+  [  278:282  ] 'They'               (pronoun) -> 'Lopez, Peter' [69:81]

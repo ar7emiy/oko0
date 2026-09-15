@@ -1,0 +1,8 @@
+```
+{"type": "meta", "claim": "QA01", "note": "N06", "part": 1, "parts": 1, "read_all": true, "summary": "'He' could be either John."}
+{"type": "entity", "key": "P1", "quote": "Mr. John Carter", "name": "John Carter", "kind": "person"}
+{"type": "action", "key": "P1", "quote": "phoned about the claim"}
+{"type": "entity", "key": "P2", "quote": "Mr. John Reyes", "name": "John Reyes", "kind": "person"}
+{"type": "description", "key": "P2", "quote": "the passenger"}
+{"type": "unclear", "quote": "He", "reason": "Could be John Carter or John Reyes; both are men named in the note."}
+```

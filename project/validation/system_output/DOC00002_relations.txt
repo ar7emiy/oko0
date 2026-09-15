@@ -1,0 +1,17 @@
+DOC00002.txt  claim=CLM0001   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Priya Brown' --[EMPLOYED_BY]--> 'Sterling Injury Attorneys'   (asserted)
+      evidence [183:223]: 'Priya Brown of Sterling Injury Attorneys'
+  'Priya Brown' --[REPRESENTS]--> 'M. Jones'   (asserted)
+      evidence [183:260]: 'Priya Brown of Sterling Injury Attorneys regarding representation of M. Jones'
+  'Dr. Christopher Nguyen' --[MANAGES_CARE_FOR]--> 'Margaret Jones'   (asserted)
+      evidence [393:459]: 'Dr. Christopher Nguyen continues to manage care for Margaret Jones'
+  'Priya Brown' --[REPRESENTS]--> 'Margaret Jones'   (asserted)
+      evidence [1418:1501]: 'Priya Brown of Sterling Injury Attorneys regarding representation of Margaret Jones'
+  'Priya Brown' --[EMPLOYED_BY]--> 'Sterling Injury Attorneys'   (asserted)
+      evidence [1418:1458]: 'Priya Brown of Sterling Injury Attorneys'
+  'Priya Brown' --[REPRESENTS]--> 'Margaret Jones'   (asserted)
+      evidence [1418:1501]: 'Priya Brown of Sterling Injury Attorneys regarding representation of Margaret Jones'
+  'Drr. Christopher Nguyen' --[MANAGES_CARE_FOR]--> 'Margaret Jones'   (asserted)
+      evidence [1587:1654]: 'Drr. Christopher Nguyen continues to manage care for Margaret Jones'

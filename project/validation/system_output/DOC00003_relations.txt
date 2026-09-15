@@ -1,0 +1,19 @@
+DOC00003.txt  claim=CLM0001   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Dr. Christopher Nguyen' --[MANAGES_CARE_FOR]--> 'Margaret Jones'   (asserted)
+      evidence [872:939]: 'Dr. Christopher Nguyen continues to manage care for Margaret Jones.'
+  'P. Brown' --[EMPLOYED_BY]--> 'Sterling Injury Attorneys'   (asserted)
+      evidence [1106:1143]: 'P. Brown of Sterling Injury Attorneys'
+  'P. Brown' --[REPRESENTS]--> 'Maggie Jones'   (asserted)
+      evidence [1106:1185]: 'P. Brown of Sterling Injury Attorneys regarding representation of Maggie Jones.'
+  'Dr. Christopher Nguyen' --[MANAGES_CARE_FOR]--> 'Margaret Jones'   (asserted)
+      evidence [872:939]: 'Dr. Christopher Nguyen continues to manage care for Margaret Jones.'
+  'P. Brown' --[EMPLOYED_BY]--> 'Sterling Injury Attorneys'   (asserted)
+      evidence [1106:1143]: 'P. Brown of Sterling Injury Attorneys'
+  'P. Brown' --[REPRESENTS]--> 'Maggie Jones'   (asserted)
+      evidence [1106:1185]: 'P. Brown of Sterling Injury Attorneys regarding representation of Maggie Jones.'
+  'Priya Brown' --[EMPLOYED_BY]--> 'Sterling Injury Attorneys'   (asserted)
+      evidence [1548:1585]: 'Priya Brown\nSterling Injury Attorneys'
+  'William Anderson' --[SENT_UPDATED_DEMAND_PACKAGE_TO]--> 'Priya Brown'   (asserted)
+      evidence [1875:1985]: 'From: William Anderson\n> Sent: earlier\n> To: Priya Brown\n> Per our call, attaching the updated demand package.'

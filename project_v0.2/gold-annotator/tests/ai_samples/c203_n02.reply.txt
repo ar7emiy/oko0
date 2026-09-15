@@ -1,0 +1,8 @@
+```
+{"type": "meta", "claim": "C203", "note": "N02", "part": 1, "parts": 1, "read_all": true, "summary": ""}
+{"type": "entity", "key": "O1", "quote": "Meridian Imaging", "name": "Meridian Imaging", "kind": "organization"}
+{"type": "action", "key": "O1", "quote": "sent an update"}
+{"type": "mention", "key": "O1", "quote": "The organization", "form": "description"}
+{"type": "action", "key": "O1", "quote": "requested records before it could continue the review"}
+{"type": "mention", "key": "O1", "quote": "it", "form": "pronoun"}
+```

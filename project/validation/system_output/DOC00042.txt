@@ -1,0 +1,28 @@
+========================================================================================
+DOC00042.txt   claim=CLM0008   occurrence=OCC0007
+========================================================================================
+
+--- NAME MENTIONS (8), in order of appearance ---
+  [  507:519  ] 'Jon Anderson'                     class=claimant         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00043, DOC00044, DOC00045, DOC00046]
+  [  549:564  ] 'Elizabeth Perez'                  class=repair_shop      extractor=gliner+llm           -> entity E1c8d98a13984 ('Elizabeth Perez')  [also in: DOC00038, DOC00039, DOC00040, DOC00041]
+  [  901:921  ] 'Okafor Frame & Paint'             class=repair_shop      extractor=gliner+llm           -> entity E83d7ffedb3a5 ('Okafor Frame & Paint')  [also in: DOC00013, DOC00014, DOC00038, DOC00040, DOC00041, DOC00048]
+  [ 1085:1101 ] 'Perez, Elizabeth'                 class=claimant         extractor=gliner+llm           -> entity E1c8d98a13984 ('Elizabeth Perez')  [also in: DOC00038, DOC00039, DOC00040, DOC00041]
+  [ 1868:1882 ] 'Jonny Anderson'                   class=medical_provider extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00043, DOC00044, DOC00045, DOC00046]
+  [ 1912:1927 ] 'Elizabeth Perez'                  class=repair_shop      extractor=gliner+llm           -> entity E1c8d98a13984 ('Elizabeth Perez')  [also in: DOC00038, DOC00039, DOC00040, DOC00041]
+  [ 2243:2249 ] 'Okafor'                           class=repair_shop      extractor=gliner+llm           -> entity E83d7ffedb3a5 ('Okafor Frame & Paint')  [also in: DOC00013, DOC00014, DOC00038, DOC00040, DOC00041, DOC00048]
+  [ 2353:2361 ] 'E. Perez'                         class=claimant         extractor=gliner+llm           -> entity E1c8d98a13984 ('Elizabeth Perez')  [also in: DOC00038, DOC00039, DOC00040, DOC00041]
+
+--- IDENTIFIERS (10), in order of appearance ---
+  [   19:33   ] phone    '(804) 899-9331'             owner='Perez, Elizabeth' [1085:1101]               method=llm
+  [  182:192  ] dob      '2024-09-12'                 owner=UNBOUND (orphan)                             method=unbound
+  [  589:621  ] address  '6211 Oak St, Northline, OH 44150' owner='Jon Anderson' [507:519]                     method=llm
+  [  932:942  ] tin      '80-8770781'                 owner='Okafor Frame & Paint' [901:921]             method=llm
+  [ 1198:1212 ] phone    '(804) 899-9331'             owner='Perez, Elizabeth' [1085:1101]               method=llm
+  [ 1243:1279 ] address  '3088 Grand Ct, Springfield, IL 62713' owner='Perez, Elizabeth' [1085:1101]               method=llm
+  [ 1367:1381 ] phone    '(804) 899-9331'             owner='Perez, Elizabeth' [1085:1101]               method=llm
+  [ 2458:2472 ] phone    '(804) 899-9331'             owner='E. Perez' [2353:2361]                       method=llm
+  [ 2503:2539 ] address  '3088 Grand Ct, Springfield, IL 62713' owner='E. Perez' [2353:2361]                       method=llm
+  [ 2650:2686 ] address  '3088 Grand Ct, Springfield, IL 62713' owner='E. Perez' [2353:2361]                       method=llm
+
+--- COREFERENCE LINKS (0) ---
+  (none)

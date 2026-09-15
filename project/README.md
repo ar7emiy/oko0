@@ -39,6 +39,88 @@ mechanically and checked in notebook 99.
   `designs/mermaid/09-vector-layer.mermaid`.
 - **Storage:** SQLite (+ parquet) behind a thin repository layer.
 
+## Input data contract
+
+What the system needs in order to run at all, and what it additionally needs in
+order to be *evaluated*. These are different asks with different owners, and
+conflating them is how an engagement stalls.
+
+### Required to run the pipeline
+
+**1. The notes themselves — `data/raw_notes/<doc_id>.txt`**
+
+| property | requirement |
+|---|---|
+| encoding | UTF-8 plain text. Not PDF, not DOCX — extraction to text happens upstream of this system. |
+| one file | one note. The filename stem **is** the `doc_id` and must be unique and stable across deliveries. |
+| naming | convention is `<ClaimNumber>_<NoteID>.txt`. Any stable scheme works, but the stem must survive re-delivery unchanged — ids derive from it. |
+| content | the note verbatim, including boilerplate, quoted email chains, signature blocks and ALL-CAPS sections. **Do not pre-clean.** Those regions carry adjuster names, direct numbers and firm affiliations; a cleaning step upstream deletes evidence this system is built to recover. |
+| optional first line | `[CATEGORY]` — e.g. `[MEDICAL_MANAGEMENT]`, `[LEGAL_LITIGATION]`. Read if present, ignored if absent. |
+
+**2. The structural index — `data/doc_index.json`**
+
+```json
+{
+  "CLM0042_0007": { "claim_id": "CLM0042", "occurrence_id": "OCC0019" }
+}
+```
+
+One entry per `doc_id`. This is the **only** place claim identity comes from,
+and it must come from the client's claims system — never inferred from note
+text. An earlier version recovered `CLM\d{4}` from the body; on real data that
+mints an identity out of whatever four digits follow those letters. A note with
+no entry is filed as `UNKNOWN` rather than guessed.
+
+`occurrence_id` groups claims arising from the same real-world event (one
+collision, several claimants). Optional — omit it and the occurrence layer is
+simply absent; do not synthesize it.
+
+That is the complete requirement to run. **No labels, no entity list, no
+annotations** — the pipeline never reads ground truth, and the leakage guard
+enforces that mechanically.
+
+### Additionally required to measure quality
+
+Evaluation needs the client's existing entity records. Per
+`designs/archive/ground-truth-plan.html`, these arrive as three assets with very
+different evidential value — and getting that straight determines the cost of
+the whole exercise:
+
+| asset | tells us | does **not** tell us |
+|---|---|---|
+| **entity name + note id** | identity, and that it appears somewhere in this note | *where* in the note; anything about entities not on the list |
+| **entity metadata** (address, category/duty, id citations) | attributes we can independently locate in the text | whether an absence is a real absence |
+| **null metadata** (fields their pipeline left blank) | where their process gave up — a ready-made hard-case pool | whether the fact is in the text at all |
+
+**The asymmetry that shapes everything: their list is a precision oracle, not a
+recall oracle.** A name on it is almost certainly real, so it can be
+auto-located and spot-checked. A name *absent* from it tells you nothing,
+because incompleteness is the complaint that started the engagement. So the
+list makes *known* entities nearly free to label, and the entire human budget
+goes to the *unknown* ones. See "Ground truth on real client data" below.
+
+A minimal useful shape, one row per (entity, note) sighting:
+
+```csv
+note_id,entity_name,entity_role,address,identifier_type,identifier_value
+CLM0042_0007,Whitfield Trial Group,attorney,,tin,36-4471902
+CLM0042_0007,Karen Wu,adjuster,,,
+```
+
+Blank cells are meaningful — they are the null-metadata pool.
+
+### What the system does *not* need
+
+No pre-tokenization, no PII redaction, no de-duplication, no sorting, no
+per-note entity counts, and no schema beyond the two items above.
+
+On redaction specifically: **do not redact before delivery.** Masking belongs
+inside the pipeline at a controlled boundary, where surrogates can be
+length-preserving so every character offset survives and the evidence chain
+still verifies. Redaction applied upstream destroys spans irreversibly and
+takes the audit trail with it. (The masking stage is designed but not yet
+built — see `designs/development-plan.md`, Phase 3.)
+
 ## Run it
 
 In Colab (or locally):
@@ -186,6 +268,43 @@ like normal slowness.
   existing embedding blocks joins one rather than merging them, because bucket
   labels are referenced by stored edges. A periodic full re-backfill is where
   those collapse.
+- **Graph edges are not yet evidence-derived.** `build_graph.py` builds semantic
+  edges from `entity_class` plus claim co-presence, not from extracted
+  assertions — so a role edge asserts a relationship the notes may not state.
+  Relation extraction (`src/relations.py`) produces span-grounded triples but is
+  only wired into notebook 20. This is the largest open gap and the first item in
+  the development plan.
+- **Metadata binding is not probabilistic.** Whether an identifier belongs to a
+  mention is decided once, in the extractor — now by an LLM binding lane with a
+  line-proximity fallback (measured precision 0.940, LLM sub-lane 0.969), but
+  still a decision rather than a score, unlike mention-to-mention linking.
+- **Mention-to-mention linking is calibrated, and the calibration is now
+  reported rather than assumed.** It was wrong for a long time and nothing
+  noticed: the match prior was estimated from rules requiring fields present on
+  6% of mentions, came out 16× too low, and split 42 entities into 515 while
+  reporting 0.97 precision. Every run now prints the prior and what each
+  agreeing field is worth in bits — an identifier scoring below a name is
+  visible without ground truth. A known residual (`u` inflated 3–37× by match
+  contamination, worth ~+0.03 F1) is open as T0.5.
+- **Single-token names are dropped, not scored.** A name-shape filter in the
+  recall path requires two capitalized tokens, which is the measured
+  `variant:short` 100% miss.
+
+**Where these are being addressed:**
+
+- **`designs/TODO.md`** — the status board. Per item: current behaviour with
+  `file:line` evidence, the problem tagged *measured* or *unmeasured*, the
+  proposal, a confidence level, and what observation would falsify it. Written to
+  be read by someone auditing the plan rather than executing it.
+- **`designs/development-plan.md`** — the reasoning behind the same items, and
+  where it disagrees with the audit below.
+- **`designs/first-principles-claim-note-audit.md`** — an external
+  first-principles critique, commissioned because the same author wrote the
+  system and its self-assessment.
+
+Two items are at *assumed* confidence and are explicitly gated on measurement
+rather than scheduled. Two more record boundaries in the code that turned out to
+be wrong on inspection.
 
 ## Invariants & acceptance
 
@@ -214,7 +333,10 @@ Measured end to end, offline:
 |---|---|
 | entity mention recall / precision | 85.7% / 81.0% |
 | identifier recall | **100%** (incl. 100% of name-less mentions) |
-| entity resolution (B³ P/R) | 0.82 / 0.83 — 1,010 entities vs 570 GT |
+| mention span grounding | **100%** — every mention locates its own surface (was 33%) |
+| mention precision | **0.863** (was 0.502 before the span fix) |
+| entity recall | **0.883** — 74 of 77 misses are single-token names (D30) |
+| entity resolution (B³ P/R @ 0.45) | **0.796 / 0.937**, best F1 **0.920** — 54 entities vs 42 GT |
 | coreference accuracy | 43% — the weakest component |
 | event extraction | not implemented (GT now exists) |
 | scan coverage (hygiene check) | 100% |
@@ -224,8 +346,12 @@ Resolution is Splink (Fellegi-Sunter, EM-calibrated); identity is a
 stored merge, so the operating point is chosen from a measured B³ curve and a
 questionable link is filterable rather than structural.
 
-Run `python tests/smoke_test.py` to verify every invariant end to end
-(`--fast` skips resolution).
+**Two test tiers.** `python tests/fast_test.py` checks every invariant over a
+fixed, named 60-document slice in about ten minutes — run it on every change.
+`python tests/smoke_test.py` is the full 2,000-note run: it regenerates the
+corpus and re-extracts all of it, takes hours, and is what refreshes the
+published corpus figures. The split exists because a gate nobody can afford to
+run stops being run.
 
 See **`ARCHITECTURE.md`** for the full evaluation, the bugs the new fixture
 exposed, and what is still not good enough.

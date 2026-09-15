@@ -428,3 +428,180 @@ def _partial_surface_match(text: str, by_surface: dict) -> str | None:
         if surf and (surf in t or t in surf) and abs(len(surf) - len(t)) <= 12:
             return mid
     return None
+
+
+# ---------------------------------------------------------------------------
+# Identifier binding
+# ---------------------------------------------------------------------------
+# WHY THIS IS A SEPARATE LANE, NOT A RELATION
+#
+# The gazetteer FINDS and VALIDATES identifiers -- a Luhn check on an NPI is
+# decidable, and not something to ask a model for. Deciding WHO an identifier
+# belongs to is local semantic reading: the model's strength, and what
+# pipeline_v2.subject_for's line-distance rule crudely approximates.
+#
+# That split was measured before it was built. Against ground truth:
+#
+#     line rule (same line / previous line)   precision 0.747   recall 0.371
+#     LLM (gazetteer finds, LLM binds)        precision 0.973
+#
+# and of 176 identifiers the line rule left unbound, 144 had their owner named
+# within 300 characters -- so 82% of its "orphans" were misses, not orphans.
+#
+# The error KINDS differ more than the rates. The LLM's mistakes are
+# person-vs-their-own-firm (an office address attributed to the firm rather than
+# the attorney, which is arguably correct). The line rule's are category errors:
+# an attorney's email bound to the claimant, a provider's address to the
+# claimant, the claimant's phone to a repair shop. The clearest case is
+# fatima.martin@harborvance.com bound to "Grace Martin" -- an email whose
+# local-part names its owner, attached to a different person who merely sat
+# closer on the page.
+
+
+@dataclass
+class IdentifierBinding:
+    """One identifier attached to one named party, with evidence."""
+    kind: str
+    value: str
+    owner_text: str                  # "" => the model declined to guess
+    evidence_start: int
+    evidence_end: int
+    evidence_text: str
+    confidence: float = 0.7
+    method: str = "llm"              # llm | line_rule | unbound
+    flags: list = field(default_factory=list)
+
+
+def identifier_binding_schema() -> dict:
+    return {
+        "type": "object",
+        "properties": {
+            "bindings": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "identifier": {"type": "string"},
+                        "owner": {"type": "string"},
+                        "evidence": {"type": "string"},
+                        "confidence": {"type": "number"},
+                    },
+                    "required": ["identifier", "owner"],
+                },
+            }
+        },
+        "required": ["bindings"],
+    }
+
+
+BINDING_PROMPT = """For each identifier listed below, say which party in the text it belongs to.
+
+Rules:
+- Use the party's NAME exactly as it appears in the text. Never a role
+  descriptor ("the claimant", "the adjuster") and never a pronoun.
+- An identifier belongs to the party it IDENTIFIES, not the nearest name. An
+  email whose local-part is a person's name belongs to that person even if
+  another name sits closer on the page.
+- In a quoted email chain, a sender's address belongs to the SENDER, not to
+  whoever is being written to.
+- If the text does not make the owner clear, set owner to "" rather than
+  guessing. An unbound identifier is kept and stays searchable; a wrongly bound
+  one corrupts the party it was attached to.
+- evidence: the exact substring of the text that shows the ownership.
+
+IDENTIFIERS FOUND IN THIS TEXT:
+{ids}
+
+TEXT:
+<<<
+{chunk}
+>>>
+"""
+
+
+def _binding_rows(text: str, base_offset: int, hits: list, data: dict) -> list:
+    """Shared parse for the single-chunk and batched forms."""
+    by_value = {h.text.strip().lower(): h for h in hits}
+    out = []
+    for b in (data or {}).get("bindings", []):
+        val = (b.get("identifier") or "").strip()
+        hit = by_value.get(val.lower())
+        if hit is None:
+            continue          # an identifier the gazetteer did not find: ignore
+        owner = (b.get("owner") or "").strip()
+        evidence = (b.get("evidence") or "").strip()
+
+        # Same rule the relation lane applies: an assertion whose evidence
+        # cannot be located is not auditable. Keep it, but say so.
+        flags = []
+        idx = text.find(evidence) if evidence else -1
+        if idx < 0:
+            idx, evidence, reloc = _relocate_evidence(text, evidence or val)
+            flags.extend(reloc)
+            if idx < 0:
+                idx, evidence = max(0, text.find(val)), val
+                flags.append("evidence_ungrounded")
+            else:
+                flags.append("evidence_fuzzy_located")
+
+        out.append(IdentifierBinding(
+            kind=hit.label, value=hit.text, owner_text=owner,
+            evidence_start=base_offset + idx,
+            evidence_end=base_offset + idx + len(evidence),
+            evidence_text=evidence,
+            confidence=float(b.get("confidence") or 0.7),
+            method="llm" if owner else "unbound",
+            flags=flags,
+        ))
+    return out
+
+
+def bind_identifiers(chunk_text: str, base_offset: int,
+                     hits: list) -> list[IdentifierBinding]:
+    """Ask which party each gazetteer-found identifier belongs to.
+
+    A declined owner is returned with method="unbound" rather than dropped, so
+    the decline is visible rather than looking like an absent identifier.
+    """
+    if not hits:
+        return []
+    if genai_mode() == "offline":
+        if not genai_mode_is_forced():
+            raise RelationExtractorUnavailable(
+                "No GenAI API key is set, so identifier binding cannot run. "
+                "Refusing to fall back to line proximity silently: measured "
+                "against ground truth, that rule binds one in four identifiers "
+                "to the WRONG party (precision 0.747), and a wrong identifier "
+                "corrupts the entity it lands on. Set a key, or set "
+                "GENAI_MODE=offline to accept the weaker rule knowingly."
+            )
+        return []
+
+    idlist = "\n".join(f"  - {h.label}: {h.text}" for h in hits)
+    data = genai.generate_json(
+        BINDING_PROMPT.format(ids=idlist, chunk=chunk_text),
+        identifier_binding_schema(), task="identifier_binding")
+    return _binding_rows(chunk_text, base_offset, hits, data)
+
+
+def bind_identifiers_many(chunks, hits_by_chunk: dict) -> dict:
+    """Binding over many chunks through the thread pool.
+
+    Only chunks that actually contain identifiers are sent, so the marginal cost
+    over the existing LLM lane is well below one extra call per chunk.
+    """
+    todo = [c for c in chunks if hits_by_chunk.get(c.chunk_id)]
+    if not todo or genai_mode() == "offline":
+        return {}
+
+    jobs = []
+    for c in todo:
+        idlist = "\n".join(f"  - {h.label}: {h.text}"
+                           for h in hits_by_chunk[c.chunk_id])
+        jobs.append({"prompt": BINDING_PROMPT.format(ids=idlist, chunk=c.text),
+                     "offline_handler": None})
+    results = genai.generate_json_batch(
+        jobs, identifier_binding_schema(), task="identifier_binding")
+    return {c.chunk_id: _binding_rows(c.text, c.char_start,
+                                      hits_by_chunk[c.chunk_id], data)
+            for c, data in zip(todo, results)}

@@ -89,6 +89,21 @@ Two structural changes:
 rules rather than accepting Splink's 1e-4 default, which is badly wrong for a
 corpus where entities recur heavily.
 
+*Calibration is now reported, not assumed.* Every run prints the prior and what
+each agreeing field is worth in bits, and the run output carries a `calibration`
+block naming any m/u parameter EM could not estimate. This exists because the
+first version of that prior was estimated from rules requiring `email` or `npi`
+— fields present on 6% of mentions. It came out **16× too low**, subtracting ~4
+bits from every edge and splitting 42 entities into 515, while the system went
+on reporting 0.97 precision. Nothing in any run output named the prior, so
+nothing caught it. See `entity_resolution.lambda_rules()`; the rule-selection
+principle is *which high-precision rules actually fire on the data in hand*, not
+which fields are most trustworthy in the abstract.
+
+Edges that used a substituted parameter are flagged individually in
+`same_as_edges.uncalibrated`, so an uncalibrated merge is distinguishable from a
+calibrated one at read time rather than only in aggregate.
+
 **Identity is a threshold-derived view.** Output is a `same_as_edges` table;
 resolved identity is connected components at a chosen threshold, materialized
 into `entity_snapshot`. Nothing is written as "same forever", so a questionable
@@ -104,6 +119,27 @@ edges *before* clustering rather than vetoing permanently.
 | 0.60 (F1 max) | 1,113 | 0.853 | 0.822 | **0.837** |
 | 0.70 | 9,855 | 0.934 | 0.569 | 0.707 |
 | 0.90 | 16,766 | 0.997 | 0.106 | 0.192 |
+
+> **Stale — kept for the shape, not the numbers.** This table was measured on a
+> 16,766-mention corpus state that no longer exists and predates three fixes made
+> on 2026-09-02. It has not been re-measured at that scale. The current
+> 60-document store measures as follows, and *is* current:
+>
+> | threshold | entities | B³ P | B³ R | B³ F1 |
+> |---|---|---|---|---|
+> | 0.20 | 52 | 0.793 | 0.945 | 0.862 |
+> | **0.45** (operating) | **54** | **0.796** | **0.937** | **0.861** |
+> | 0.60 | 55 | 0.796 | 0.931 | 0.858 |
+> | 0.80 (F1 max) | 66 | 0.932 | 0.908 | **0.920** |
+> | 0.95 | 86 | 0.997 | 0.841 | 0.912 |
+>
+> Ground truth is 42 entities in that scope. The curve moved three times in one
+> day and each move is traceable to a named defect: the match prior 16x too low
+> (T0.4/D17), a third of mention spans not containing their own surface (D25),
+> and a class-based veto that was suppressing correct merges 70% of the time
+> (D29). At 0.45 that is F1 0.604 → 0.773 → 0.843 → **0.861**.
+>
+> **Re-measuring the full corpus is outstanding** (T0.6).
 
 Ground truth is 570 entities. F1 is flat across 0.30–0.60; we operate at **0.45**
 rather than the marginal F1 max at 0.60, favouring recall since the product goal
@@ -161,7 +197,46 @@ system metadata, not ground truth. Only entity identity must be inferred.
 
 ---
 
-## 5. Where it stands, honestly
+## 5. The operational path: the same engines, run as a system
+
+The four layers above describe a *batch* pass over a corpus. That is the shape
+that answers "how accurate is this system" and the wrong shape for running one:
+every stage globbed the whole corpus, so adding one note meant reprocessing
+every note.
+
+`src/ingest.py` runs the same engines over the same tables in two phases:
+
+```
+BACKFILL (onboarding, once)          profile -> extract -> embed
+        |                            -> resolve (TRAIN by EM) -> dossiers, graph
+        v
+        splink_model.json + mention_blocks
+        |
+INGEST (steady state, per note)      profile THIS note -> extract THIS note
+                                     -> upsert vectors -> attach to existing blocks
+                                     -> score ONLY the new pairs against the
+                                        already-trained model
+                                     -> append edges -> re-cluster -> dataset
+```
+
+Measured live on a 60-note corpus: backfill 670s, then **a single arriving note
+through every stage in 18.5s**, and a four-note batch in 87s. One arriving note
+matched an existing entity and merged two that had been separate.
+
+The design decisions behind it — why the model is frozen at backfill, why
+re-clustering the whole corpus every time is nonetheless correct, and what
+incremental bucketing deliberately gives up — are in `DECISIONS.md` under
+*Operational path*. The process view is `designs/mermaid/10-operational-ingest.mermaid`.
+
+Three lanes were found calling batch-capable APIs one item at a time while the
+batching primitive sat unused. The LLM lane was the expensive one: 160 chunks
+went from **unfinished after 15 minutes** to **115s** across 8 workers. GLiNER
+batching was measured at only **1.1x** on CPU (10.5s vs 11.2s, identical spans) —
+transformer inference is compute-bound, so there is little per-call overhead to
+amortise. Worth recording because the two look like the same optimisation and
+are not.
+
+## 6. Where it stands, honestly
 
 **Working and measured:**
 - Identifier recall 100%, including 100% of name-less mentions

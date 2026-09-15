@@ -1,0 +1,9 @@
+doc_id,identifier_kind,value,owner_entity_name,notes
+DOC00000,dob,10/23/1952,Robert Miller,"WORKED EXAMPLE (complete for this doc). identifier_kind must be one of: phone, email, address, npi, tin, ssn, vin, dob"
+DOC00000,phone,(945) 233-4482,Robert Miller,"WORKED EXAMPLE. stated twice in the note (header, and 'Reached at') -- same fact, one row"
+DOC00000,npi,7457992890,Ibarra Neurology Associates,"WORKED EXAMPLE. stated twice, same fact"
+DOC00000,address,"8058 Lincoln Rd, Springfield, IL 62714",Ibarra Neurology Associates,"WORKED EXAMPLE. billing address, stated twice, same fact"
+DOC00000,phone,(316) 754-8117,,"WORKED EXAMPLE. leave owner_entity_name BLANK when the text genuinely does not say whose it is -- 'caller did not identify themselves', a real orphan on purpose"
+DOC00000,tin,66-1627662,Thomas Collision Center,"WORKED EXAMPLE."
+DOC00000,address,"202 Sunset Blvd, Northline, OH 44118",Robert Miller,"WORKED EXAMPLE. mailing address, stated twice, same fact"
+DOC00000,email,margaret.wilson@harborvance.com,Marge Wilson,"WORKED EXAMPLE."
