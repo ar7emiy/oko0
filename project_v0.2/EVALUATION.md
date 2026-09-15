@@ -1,3 +1,3 @@
 # Document moved
 
-The initial client-facing lightpaper is now [Entity Intelligence: Evaluation Methodology and SME Review Design](ENTITY-INTELLIGENCE-EVALUATION-PROPOSAL.md). It presents a proposal for cross-functional and UX review.
+The initial proposal is now [Entity Intelligence: Evaluation Benchmark and SME Review Platform](ENTITY-INTELLIGENCE-EVALUATION-PROPOSAL.md). It is written for executive sponsors, product and delivery leadership, and the data, engineering and design teams, and presents the method, the business case and the delivery plan for cross-functional and UX review.

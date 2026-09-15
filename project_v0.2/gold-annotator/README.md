@@ -1,6 +1,6 @@
 # Claim Note Annotator
 
-A small web app that SMEs use to build the answer key (gold data) for GOKO's entity extraction. The [initial evaluation methodology and SME review design proposal](../ENTITY-INTELLIGENCE-EVALUATION-PROPOSAL.md) describes the intended benchmark and proposed extensions. See [identifier and unassigned-detail requirements](REVIEW-AND-IDENTIFIER-REQUIREMENTS.md) for verified implementation gaps; these features have not yet been added.
+A small web app that SMEs use to build the answer key (gold data) for GOKO's entity extraction. The [Entity Intelligence evaluation benchmark and SME review platform proposal](../ENTITY-INTELLIGENCE-EVALUATION-PROPOSAL.md) describes the intended benchmark and proposed extensions. See [identifier and unassigned-detail requirements](REVIEW-AND-IDENTIFIER-REQUIREMENTS.md) for verified implementation gaps; these features have not yet been added.
 
 It uses only the Python standard library: no installs, no internet, and no build step. The page is plain HTML, CSS and JavaScript served by the app itself.
 
