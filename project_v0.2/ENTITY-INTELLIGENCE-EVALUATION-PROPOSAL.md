@@ -6,6 +6,8 @@
 
 **Companion document:** [GOKO Entity Extraction: System Development Proposal](GOKO-SYSTEM-DEVELOPMENT-PROPOSAL.md) proposes what to build so that the measurements defined here improve. The two are deliberately separable, and deliberately owned by different people: a benchmark authored by the team it scores stops being evidence.
 
+**Delivery backlog:** [ADO Backlog](ADO-BACKLOG.md) turns Part 3 into work items — descriptions, acceptance criteria traced to the requirement IDs in §10.1, and a sequenced development breakdown.
+
 ---
 
 ## Read this first
