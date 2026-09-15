@@ -36,7 +36,7 @@ We are asking sponsors to approve three things:
 
 1. **The method.** That the evaluation approach described in Part 2 is the right way to measure this, and that its results will be accepted as the basis for decisions about the system.
 2. **The resources.** Engineering and data capacity to build the annotation platform and the scoring pipeline, and — critically — committed SME reviewer time, which is the single hardest constraint in this plan.
-3. **The unblocking.** Sponsor help clearing the two access dependencies that can stall this for months if left to normal channels: a decision on where the data and application will live (Part 3 §11), and access to the watchlist data and the claim note archive under an approved data-handling arrangement.
+3. **The unblocking.** Sponsor help clearing the two access dependencies that can stall this for months if left to normal channels: a decision on where the data and application will live (Part 3 §12), and access to the watchlist data and the claim note archive under an approved data-handling arrangement.
 
 ### What we are NOT asking for
 
@@ -50,16 +50,16 @@ This document is long because it serves six different audiences. **You are not e
 
 | If you are… | Read | Skim | Skip unless curious |
 |---|---|---|---|
-| **Executive sponsor** | Read this first (above), Part 1 | Part 3 §9 (phases), §12 (risks) | Parts 2 and 4 |
-| **Product Owner** | Read this first, Part 1 (all of it, especially §3 and §4) | Part 2 §5–§6, Part 3 §9–§12 | Part 4 |
-| **Business Analyst** | Read this first, Glossary, Part 3 §8–§10 | Part 2 (all) | Part 4 §C–§F |
-| **Project Manager** | Read this first, Part 3 §9, §11, §12, §13 | Part 1, Part 2 §3 | Part 4 |
-| **Web developers (front and back end)** | Glossary, Part 2 §3, Part 3 §8, §10, §11 | Part 2 §2.1, Part 1 | Part 4 §C–§F |
-| **Data engineers** | Part 2 §2, §2.1, Part 3 §10, §11 | Part 2 §7, Part 4 §A | Part 1 |
-| **Data scientists** | Part 2 §4–§7, Part 4 (all) | Part 2 §2.1, Part 3 §10 | Part 1 §4 |
-| **Data architects** | Part 2 §2.1, Part 3 §10, §11, Part 4 §A | Part 2 §2, §6 | Part 1 |
+| **Executive sponsor** | Read this first (above), Part 1 | Part 3 §9 (phases), §13 (risks) | Parts 2 and 4 |
+| **Product Owner** | Read this first, Part 1 (all of it, especially §3 and §4), Part 3 §10.5–§10.6 | Part 2 §5–§6, Part 3 §9–§13 | Part 4 |
+| **Business Analyst** | Read this first, Glossary, Part 3 §8–§11 (§10.1 is a ready-made requirements catalogue) | Part 2 (all) | Part 4 §C–§F |
+| **Project Manager** | Read this first, Part 3 §9, §12, §13, §14 | Part 1, Part 2 §3 | Part 4 |
+| **Web developers (front and back end)** | Glossary, Part 2 §3, Part 3 §8, §10, §11, §12 | Part 2 §2.1, Part 1 | Part 4 §C–§F |
+| **Data engineers** | Part 2 §2, §2.1, Part 3 §11, §12 | Part 2 §7, Part 4 §A | Part 1 |
+| **Data scientists** | Part 2 §4–§7, Part 4 (all) | Part 2 §2.1, Part 3 §11 | Part 1 §4 |
+| **Data architects** | Part 2 §2.1, Part 3 §10.4, §11, §12, Part 4 §A | Part 2 §2, §6 | Part 1 |
 
-**A note for the Product Owner, Business Analyst and Project Manager:** you do not need to understand the statistics in Part 4 to lead this successfully. What you need is in the Glossary below, Part 1, and Part 3. Part 3 §13 gives you the specific questions to ask in a standup that will tell you whether this project is actually healthy, phrased so you can ask them without knowing the underlying mathematics.
+**A note for the Product Owner, Business Analyst and Project Manager:** you do not need to understand the statistics in Part 4 to lead this successfully. What you need is in the Glossary below, Part 1, and Part 3. Part 3 §14 gives you the specific questions to ask in a standup that will tell you whether this project is actually healthy, phrased so you can ask them without knowing the underlying mathematics.
 
 ---
 
@@ -570,8 +570,8 @@ Nine named responsibilities. Every one of them needs an owner before Phase 1 sta
 | Responsibility | Owner | What "owning it" means in practice |
 |---|---|---|
 | **Business value and stakeholder alignment** | Product Owner | Keeps sponsors bought in. Owns scope decisions and the priority order of the backlog. Signs off that the reported metrics answer the questions the business actually has. |
-| **Requirements and acceptance criteria** | Business Analyst | Turns Part 2 into written work items with testable acceptance criteria. Owns the decision log in §13. Facilitates the definition sessions where SMEs and data teams settle the rules. |
-| **Sequencing, blockers, delivery** | Project Manager | Owns the phase plan, dependency tracking, and escalation of the two external dependencies in §12 that will not clear themselves. |
+| **Requirements and acceptance criteria** | Business Analyst | Turns Part 2 into written work items with testable acceptance criteria. Owns the decision log in §14. Facilitates the definition sessions where SMEs and data teams settle the rules. |
+| **Sequencing, blockers, delivery** | Project Manager | Owns the phase plan, dependency tracking, and escalation of the two external dependencies in §13 that will not clear themselves. |
 | **Annotation platform** | Web developers (front and back end) | Build the review experience. Own its data access layer, import, export and audit trail. Collaborate with the Data Architect on the schema and with UX on the interaction design. |
 | **Data intake, snapshots and pipelines** | Data Engineers | Own getting notes and system output into the platform reliably and reproducibly: extract, validation, point-in-time snapshot capture, versioning, and the export feed to the scoring layer. |
 | **Schema and data architecture** | Data Architects | Own the physical model derived from Part 2 §2.1, key and constraint design, environment portability, retention, and how sensitive identifiers are stored and protected. |
@@ -583,7 +583,7 @@ Nine named responsibilities. Every one of them needs an owner before Phase 1 sta
 
 ## 9. Phases
 
-Durations are deliberately omitted. They depend on committed SME hours per week and on when the access decisions in §11 and §12 land, and quoting a week count before those are known would be inventing a number. What is fixed is the **order** and the **exit criteria** — the PM can attach dates once capacity and access are confirmed.
+Durations are deliberately omitted. They depend on committed SME hours per week and on when the access decisions in §12 and §13 land, and quoting a week count before those are known would be inventing a number. What is fixed is the **order** and the **exit criteria** — the PM can attach dates once capacity and access are confirmed.
 
 ### Phase 0 — Align and unblock
 
@@ -595,11 +595,12 @@ Durations are deliberately omitted. They depend on committed SME hours per week 
 | Agree category definitions and the note-quality bands | SME lead + BA |
 | Settle the three data-meaning questions in Part 2 §2 with the data owners: result-type meaning, export completeness, snapshot and watchlist versioning | Data Scientist + DE |
 | Agree the value-equivalence rules in Part 2 §4 | BA + DS + SME lead |
-| Make the environment decision in §11 and, if Azure is chosen, **submit the resource group request on day one of this phase** | PM (escalated by sponsor) |
+| Make the environment decision in §12 and, if Azure is chosen, **submit the resource group request on day one of this phase** | PM (escalated by sponsor) |
 | Start the data-handling and access approvals for notes and watchlist | PM + PO |
 | UX study with SMEs on the current prototype | UX + SME lead |
+| Run the annotation-platform trial in §10.7 and record its outcome | Web devs + SME lead |
 
-**Exit criteria:** written definitions exist for categories, quality bands and equivalence rules; the result-type meanings are confirmed in writing by the data owners; the environment path is chosen and any long-lead request is submitted; SME time is committed in writing.
+**Exit criteria:** written definitions exist for categories, quality bands and equivalence rules; the result-type meanings are confirmed in writing by the data owners; the environment path is chosen and any long-lead request is submitted; the §10 build-or-adopt decision is recorded against the trial's findings; SME time is committed in writing.
 
 ### Phase 1 — Prove the loop on a small sample
 
@@ -645,15 +646,232 @@ Durations are deliberately omitted. They depend on committed SME hours per week 
 
 **Rule for Phase 3:** none of these change the Phase 2 metric definitions or denominators retroactively. A new capability produces a new metric with its own approved scope, not a quiet redefinition of an existing one. This rule is what keeps quarter-over-quarter comparisons honest.
 
-## 10. What each team builds
+## 10. Build or adopt: the annotation platform decision
+
+> **In plain terms:** mature open-source tools already exist for marking up text — labelling names, dates and relationships in documents. Before committing to a purpose-built review application, this section states every requirement the evaluation places on that platform, checks those requirements honestly against the leading tools, and recommends a path. The short answer: the established tools cover the *text-marking* half of the work well, cover the *claim-spanning* and *system-comparison* halves poorly, and the decision turns on two questions that a short hands-on trial can settle.
+
+**A note on currency.** Feature sets, licence tiers and what sits in a paid edition change between releases. Everything below reflects the tools as understood at the time of writing and is intended to frame the evaluation, not to replace it. The team must verify licensing and edition boundaries directly with each vendor or project before any commitment.
+
+### 10.1. What the evaluation requires of the platform
+
+This is the complete requirement set implied by Part 2, stated so it can be checked against any candidate tool and turned directly into work items. Requirements marked **◆** are the discriminating ones — the requirements on which the candidates actually differ. The rest are commodity capabilities that every serious tool provides.
+
+**A. Source evidence**
+
+| | Requirement |
+|---|---|
+| A1 ◆ | Assemble all notes belonging to one claim as a single unit of work; support many notes per claim, and the same note appearing under several claims without merging them. |
+| A2 | Preserve note text exactly; record a content fingerprint; detect and refuse further annotation if a note changes after work on it has begun. |
+| A3 | Record the exact character positions of every selected passage. |
+| A4 ◆ | Bind a claim's evidence to a point-in-time cutoff, so the set of notes under review is fixed and reproducible. |
+| A5 | Include notes the system under evaluation never cited, so omissions are discoverable. |
+
+**B. Claim-level annotation**
+
+| | Requirement |
+|---|---|
+| B1 ◆ | Maintain one running roster of parties for the whole claim, available and editable while reading any of its notes. |
+| B2 | Create and label parties: person, organization, and other subjects including vehicles. |
+| B3 ◆ | Attach a passage found in one note to a party first created while reading a different note. |
+| B4 | Capture typed details: address with components, phone, TIN, SSN, NPI, attorney bar number, VIN, and other identifiers with a named scheme. |
+| B5 | Preserve the original value exactly, including leading zeros and masked or partial forms. |
+| B6 | Record issuer or jurisdiction where it is needed to interpret a value. |
+| B7 ◆ | Record ownership as a decision in its own right — assigned, **owner not established**, or disputed — each with a reason and a reviewer, saveable when no owner is known. |
+| B8 ◆ | Where two owners are supported, hold two separate ownership decisions rather than inferring a merge. |
+| B9 | Retain every repeated passage as separate evidence while linking them to a single fact. |
+| B10 | Distinguish the role each passage plays: support, conflict, or repetition. |
+| B11 | Record a category decision per party against a versioned taxonomy, with its supporting evidence and an explicit unresolved outcome. |
+| B12 | Record actions and relations with two or more participants, their roles, negation, time and attribution. |
+| B13 | Retain qualifications: historical, disputed, denied as distinct from confirmed. |
+| B14 ◆ | Present a consolidated claim dossier — every party with its assembled evidence — and navigate from any fact back to its passage in the source note. |
+| B15 ◆ | Freeze the claim's answer key at an exact revision. |
+
+**C. Workflow state and blind review**
+
+| | Requirement |
+|---|---|
+| C1 ◆ | Keep the evaluated system's output unreachable — by any route in the interface — until the claim is frozen. |
+| C2 ◆ | Reveal that output in a staged way afterwards, for the comparison step only. |
+| C3 | Track per-claim state: in progress, reviewed, frozen, compared. |
+| C4 | Support practice and training material that is excluded from results. |
+
+**D. Cross-claim identity**
+
+| | Requirement |
+|---|---|
+| D1 ◆ | Present candidate groups of parties with their claim associations, names, identifiers, addresses and actions side by side. |
+| D2 ◆ | Record an explicit same / different / insufficient-evidence decision with its evidence and reason. |
+| D3 | Allow a decision to be reversed, with the reason recorded and the original retained. |
+| D4 ◆ | Never overwrite the claim-local party when a cross-claim identity is accepted. |
+| D5 | Support review of a sample drawn from outside the proposed groups, to measure links that were never suggested. |
+| D6 | Provide item-focused views — by address, by identifier — that do not merge the parties sharing a value. |
+
+**E. Comparison against the evaluated system**
+
+| | Requirement |
+|---|---|
+| E1 ◆ | Import the system's structured extract, map its fields, split multi-value citations, and survive spreadsheet formatting artifacts while preserving the original values. |
+| E2 ◆ | Pair each system result with a reference party, or record it as unsupported or unresolved, with a reason. |
+| E3 ◆ | Distinguish a repeated presentation of one result from a genuine duplicate extraction. |
+| E4 ◆ | For each detail, let the reviewer distinguish wrong value, wrong owner, missing information and insufficient evidence. |
+| E5 | Track comparison completion separately from annotation completion. |
+
+**F. Watchlist candidate review**
+
+| | Requirement |
+|---|---|
+| F1 ◆ | Support many candidates per extracted party, each carrying its own identity decision. |
+| F2 ◆ | Show the watchlist entry's own attributes — name, address, state, ZIP, phone, TIN — beside the claim evidence. |
+| F3 ◆ | Hide the similarity score and the alert status while the reviewer judges identity, then make both available for threshold analysis. |
+| F4 | Record same / different / insufficient evidence, with a reason. |
+| F5 | Retain the matching method, the score, the historical alert decision and the watchlist version alongside the judgment. |
+| F6 ◆ | Cover candidates that did not generate an alert, not only those that did. |
+| F7 | Support an independent audit path: sample reference parties, including those the system never found, against the full watchlist. |
+
+**G. Quality control**
+
+| | Requirement |
+|---|---|
+| G1 | Allow several reviewers to work the same claim independently. |
+| G2 ◆ | Adjudicate disagreements with both original judgments preserved, not overwritten. |
+| G3 | Measure agreement between reviewers. |
+| G4 ◆ | Stamp every record with reviewer, timestamp and revision; retain superseded decisions; never destructively overwrite. |
+
+**H. Benchmark packaging and scoring**
+
+| | Requirement |
+|---|---|
+| H1 ◆ | Bind a published benchmark release to exact record revisions, so a later correction cannot silently alter a published score. |
+| H2 | Maintain separate development and held-out collections, grouped so shared notes and shared identities do not span the two. |
+| H3 ◆ | Re-run a release to identical numbers. |
+| H4 ◆ | Apply the counting rules in Part 4, including one-to-one matching and the de-duplication rules. |
+| H5 | Keep excluded populations visible rather than silently dropped. |
+| H6 | Emit every figure with its numerator, denominator, scope and unresolved count. |
+| H7 | Break results down by coverage group, client, note-quality band and note volume. |
+
+**I. Operational**
+
+| | Requirement |
+|---|---|
+| I1 ◆ | Run inside the approved environment, with access control appropriate to notes containing personal data and Social Security numbers. |
+| I2 | Keep storage portable, so the environment decision in §12 does not force a redesign. |
+| I3 | Export everything for downstream analysis. |
+| I4 | Support end-to-end audit: from any published figure back to the decisions and passages behind it. |
+
+### 10.2. The candidate tools
+
+**INCEpTION.** An open-source annotation platform from a university NLP research group, actively maintained. Its strengths are directly relevant: user-definable annotation layers with typed features; linking a marked passage to an entry in a knowledge base; a genuine curation workflow in which several annotators work independently and a curator adjudicates; built-in inter-annotator agreement statistics; and machine-learning recommenders that suggest annotations as the reviewer works. It is a Java server application.
+
+**Label Studio.** An open-source annotation platform from a commercial vendor, with a paid enterprise edition. Its labelling interface is defined by a configuration file, which makes new task types quick to create. It is Python-native with a strong API, which matters for integrating with the rest of this work. Review workflows, agreement metrics and role-based access control sit substantially in the paid edition — a point to verify before planning around them.
+
+**brat.** Your instinct is right, and the lineage is worth knowing because it explains the whole landscape: **brat is the ancestor of INCEpTION, not a parallel alternative to it.** brat came first, a later platform built on its ideas, and INCEpTION succeeded that one from the same research group. So the family resemblance you noticed is real — INCEpTION is what brat became after two generations of development.
+
+That lineage is also the reason to set brat aside. Its last substantial release was well over a decade ago and the project is effectively dormant; it carries a Python 2 heritage that complicates modern deployment. It has no curation workflow, no agreement measurement, no knowledge-base linking and no versioning. **This is a maintenance judgment, not a capability judgment** — brat was excellent and much of the field was annotated with it. But the answer key here is intended as a durable asset re-used against every future system version, and building it on a dormant dependency adds a risk with no offsetting benefit when a maintained descendant exists. Recommend: rule out, and use INCEpTION as the representative of this family.
+
+### 10.3. How the requirements map onto each option
+
+**Native** — provided out of the box or by configuration. **Partial** — achievable, but through a workaround that costs something named in the notes. **Build** — not provided; you write it either way.
+
+| Requirements | INCEpTION | Label Studio | Purpose-built |
+|---|---|---|---|
+| **A. Source evidence** | Partial | Partial | Native |
+| **B. Claim annotation** (B2, B4–B6, B9–B13) | Native | Native | Native |
+| **B1, B3 — claim-spanning roster** ◆ | Partial | Partial | Native |
+| **B7, B8 — ownership as a decision** ◆ | Partial | Partial | Native |
+| **B14, B15 — dossier and freeze** ◆ | Partial | Partial | Native |
+| **C. Blind review and staged reveal** ◆ | Partial | Partial | Native |
+| **D. Cross-claim identity** ◆ | Partial | Partial | Native |
+| **E. System comparison** ◆ | Build | Partial | Native |
+| **F. Watchlist review** ◆ | Build | Partial | Native |
+| **G1, G3 — multi-reviewer, agreement** | Native | Paid edition | Build |
+| **G2 — adjudication** ◆ | **Native** | Paid edition | Build |
+| **G4 — decision provenance** ◆ | Partial | Partial | Native |
+| **H. Benchmark packaging and scoring** | Build | Build | Build |
+| **I. Operational** | Self-hosted, Java | Self-hosted, Python | Portable |
+
+Reading this table honestly, three things stand out.
+
+**The commodity half is genuinely covered.** Marking passages, typed labels, taxonomies, offsets, multiple reviewers — all of it is native in both tools and there is no case for writing it again.
+
+**The discriminating requirements are mostly Partial.** Not absent — achievable — but each through a workaround. The two that matter most:
+
+- **B1/B3, the claim-spanning roster.** Both tools take a *document* as the unit of work. Our unit is a claim of many notes with one shared roster of parties. The usual workaround is to concatenate a claim's notes into one document and carry an offset map back to the source notes. That works, but it becomes permanent complexity: A2's per-note fingerprinting, A5's uncited notes and B14's navigation back to a specific note all have to route through that mapping forever. For a claim with a few notes it is unremarkable. For a claim with two hundred it is a very large document and an unpleasant reviewing experience. INCEpTION's knowledge-base linking offers a different route — make parties knowledge-base entries and link mentions to them across documents — but that makes parties *global* by construction, which collides with D4's requirement that a claim-local party is never overwritten by a cross-claim identity decision. Both routes are viable; both cost something.
+- **B7, ownership as a decision.** Both tools model "this address belongs to that clinic" as a relation between two marked regions. A relation that does not exist and a relation a reviewer deliberately determined could not be established are then the same thing in the data: absence. You can add a feature to carry "owner not established" with its reason, but it remains a bolt-on rather than the model's natural shape, and B8's two-supported-owners case gets awkward.
+
+**INCEpTION's adjudication is the single strongest argument for adopting anything.** G2 — several reviewers working independently, a curator resolving disagreements with both original judgments preserved — is real, well-built, and genuinely tedious to write. Label Studio's equivalent sits in the paid edition. If the decision came down to one feature, this would be it.
+
+### 10.4. Worked example: watchlist candidate review
+
+You asked how a requirement like watchlist matching would actually sit on these tools. It is the most instructive case, because it is the least like annotation: the reviewer is not marking up text at all. They are looking at a party assembled from claim evidence, next to a watchlist entry, and answering one question — same party or not — without seeing the machine's score.
+
+**In INCEpTION.** There is no natural home for this. The reviewer is not annotating a document; there is no document. You would either fabricate a synthetic "document" per candidate pair so the tool has something to display — which is a misuse that fights the tool at every step — or build the step outside INCEpTION entirely. Realistic answer: **build it separately.** INCEpTION would cover Stage 1 only, and the watchlist step becomes a second application with its own store, its own access control and its own audit trail, joined to the first by exported identifiers.
+
+**In Label Studio.** This maps surprisingly well, and it is the strongest argument in its favour. Each candidate pair becomes one task. The task payload carries the claim evidence on one side and the watchlist attributes on the other, both generated from your own store. The labelling configuration presents them side by side with a same / different / insufficient control and a free-text reason. F3's score-hiding is simply a matter of not putting the score in the payload the reviewer sees, while it remains in your store for the threshold analysis afterwards. F1 falls out naturally — many candidates per party is just many tasks. F6 is a matter of which pairs you generate, so unalerted candidates are included by choosing to include them.
+
+The same pattern extends to the comparison stage: one task per system result, showing that result beside the frozen dossier, with a pairing control. **Both non-annotation stages become additional task types in the same tool rather than separate applications.** That collapses the integration seam considerably, and it is the finding that most changes the picture.
+
+**The catch, and it applies to every adopt option.** In that design, Label Studio is the *decision-capture surface*. The claim evidence in the payload, the dossier shown beside the system result, the candidate pairs that exist at all, the versioned release the decisions belong to — all of that comes from a store you own and maintain. The tool renders the question and records the answer. It does not hold the model.
+
+**Which is the conclusion that generalizes.** Under every option, the benchmark system of record is yours: the claim-local party model, ownership decision history, versioned releases, the counting rules, the scorecard. Part 2 §2.1 describes that model and it does not become someone else's responsibility by adopting a tool. **The real question is not "build or buy the platform" — it is "how much of the reviewer-facing surface can a tool provide, and is that worth the integration seam?"**
+
+### 10.5. The three options
+
+| | **Option 1 — Adopt wholesale** | **Option 2 — Purpose-built** | **Option 3 — Hybrid** |
+|---|---|---|---|
+| **Shape** | An established tool is the reviewer's surface for every stage it can reach; everything else is written around it. | One application covers all three stages in a single workflow. | An established tool covers claim annotation and adjudication; the comparison and watchlist stages are purpose-built against a shared store. |
+| **Advantages** | Least code written. Mature span editing, user management, agreement statistics, and — with INCEpTION — real adjudication. An external community maintains the largest component. | One coherent model end to end. Every discriminating requirement is native. No integration seam, no workaround to carry forward. Deploys anywhere, which matters while environment approval is pending (§12). | Keeps the mature adjudication and span editing where they are strongest, and keeps the stages a tool cannot express in a model shaped for them. |
+| **Costs and risks** | The claim-spanning workaround is permanent. Ownership-as-decision stays a bolt-on. A dependency whose roadmap you do not control, plus install and dependency approval. Agreement and review features may sit behind a paid tier. | Adjudication and agreement measurement must be written — the genuinely non-trivial part. No external community. Sole maintenance responsibility. | Two systems and one seam: stable identifiers across re-imports, freeze semantics spanning both, two access-control surfaces, two audit trails to reconcile. |
+| **Best when** | SME hours are dominated by straightforward span marking and the claim-spanning workaround proves cheap in practice. | The claim-spanning roster and ownership decisions prove to be where SME time actually goes, and the workarounds cost real reviewer hours. | Adjudication turns out to be the expensive thing to build, and the seam proves cheaper than that. |
+
+### 10.6. Recommendation
+
+**Evaluate Option 3 first, with Label Studio as the leading candidate, and treat Option 2 as the fallback that a failed trial selects.**
+
+The reasoning, in order of weight:
+
+1. **The non-annotation stages decide more than the annotation stage does.** Requirements E and F are the least tool-shaped part of the work and the most specific to this evaluation. Label Studio's task-generation model expresses them as additional task types in the same tool; INCEpTION does not express them at all. That single difference outweighs INCEpTION's advantages for this particular problem, even though INCEpTION is the more capable annotation platform in the abstract.
+2. **Adjudication is the one thing genuinely worth adopting for.** It is the requirement where writing it yourself is most costly relative to what a tool provides. This argues for adopting *something*, and it is the strongest point in INCEpTION's favour — so confirm what Label Studio's editions actually provide here before settling, because if adjudication proves unavailable without a paid tier, that changes the arithmetic.
+3. **Neither tool natively holds the claim-spanning roster, and that is the make-or-break unknown.** It cannot be settled from documentation. It needs a reviewer to try it on a real multi-note claim.
+4. **The system of record is yours under every option**, so the model in Part 2 §2.1 proceeds regardless. This decision does not block the schema work, the intake pipeline or the scoring implementation.
+
+**Rule out brat** on maintenance grounds, per §10.2.
+
+**A caution worth stating plainly.** Adoption decisions of this kind are usually made from feature lists and usually regretted at the integration seam. The cost that matters is not what the tool does; it is what it costs to keep your model and the tool's model aligned over the years this benchmark is meant to last. That cost is only visible by building something real, which is why the next subsection exists.
+
+### 10.7. The trial that settles it
+
+Time-boxed, in Phase 0, before any platform commitment. Two to three days is enough; more than a week means the answer is already no.
+
+**Build one thing:** a single real multi-note claim, annotated end to end in the candidate tool, plus one watchlist candidate pair reviewed in it.
+
+**Answer these, in priority order:**
+
+1. **Can a reviewer keep one roster of parties across a claim's notes, and attach a passage from note 31 to a party created in note 4?** If the answer needs concatenation, measure the reviewing experience on a claim with realistic note volume — not a three-note example.
+2. **Can an ownership decision carry "owner not established" with a reason and a reviewer, and survive export?** If it only survives as an absent relation, requirement B7 is not met.
+3. **What does adjudication actually provide in the edition available to us**, and what does it cost if it is not available?
+4. **Do the comparison and watchlist stages express as task types, or do they need a separate application?** This is the finding that selects between Option 1 and Option 3.
+5. **What is the install and dependency-approval cost in our environment?** A tool that cannot be approved for months is not a shortcut. Weigh this against §12's environment path.
+6. **What does the export look like**, and how much translation stands between it and the model in Part 2 §2.1?
+
+**Decision rule, agreed in advance so the trial cannot be argued afterwards:**
+
+- Questions 1 and 2 both acceptable → **Option 3**, proceed.
+- Question 1 acceptable, question 2 not → **Option 3 for claim annotation only**, with ownership decisions held in our own store.
+- Question 1 unacceptable at realistic note volume → **Option 2**. The claim-spanning roster is the central interaction of Stage 1, and a tool that makes it awkward will cost more in SME hours than it saves in engineering.
+
+The trial's finding is a Phase 0 decision-log entry (§14) with a written outcome, whichever way it goes.
+
+## 11. What each team builds
 
 *This section is the raw material for the Business Analyst's work items. Each block lists the deliverable, the acceptance criteria that make it testable, and the cross-team dependency that will bite if it is missed.*
 
 ### Web developers — the annotation platform
 
-**What exists today.** A working prototype: a Python web application using only the standard library, serving plain HTML, CSS and JavaScript, storing annotations in SQLite, reading note files from disk without copying them. It supports claim-level annotation, evidence capture with exact character positions, claim review and freeze, system-output comparison, watchlist decisions, undo, and export. It runs locally with no installation and no internet access. That last property is not an accident — it is what makes a local-first pilot possible while approvals are pending (§11).
+**Read §10 first.** How much of this block is written from scratch and how much is configuration around an adopted tool depends on the trial in §10.7. The requirements and acceptance criteria below hold either way — they are what the reviewer-facing surface must do, whoever provides it.
 
-**What is proposed and not built** (specified in detail in the platform's own requirements document):
+**What the working prototype already demonstrates.** The screens in Part 2 §3 are a running application, not a mockup. It covers claim-level annotation across a claim's notes, evidence capture with exact character positions, the claim dossier and freeze, comparison against imported system output, watchlist decisions, undo and export. It installs nothing and needs no network, which is what makes a local-first pilot possible while environment approvals are pending (§12). Treat it as evidence that the workflow is buildable and as the baseline any adopted tool should be measured against — not as a decision already taken.
+
+**What is specified but not yet built:**
 - Typed identifiers beyond TIN and a generic "other": SSN, NPI, attorney bar number, VIN, each with its scheme, issuer or jurisdiction, and explicit masked/partial status.
 - Saving a detail with **no owner** — currently the form requires one. This is the single most-requested change and it touches validation, the ownership decision history, undo, review completion, export and scoring exclusions.
 - Cross-claim identity review (Stage 2 in Part 2 §3).
@@ -671,9 +889,9 @@ Durations are deliberately omitted. They depend on committed SME hours per week 
 8. If a note file changes on disk after annotation has begun, the application stops accepting saves against it and explains why. Positions in a changed file cannot be trusted.
 9. Every stored record carries the reviewer, the timestamp and a revision number. Nothing is destructively overwritten.
 
-**Open technical decisions for the team:** whether to keep the standard-library-only approach (maximum portability, zero install friction, no dependency approvals needed) or adopt a framework such as FastAPI with a modern front end (faster feature development, easier hiring, but requires package approval in a locked-down environment). Recommendation: keep the zero-dependency approach through Phase 1, because it is what lets the pilot run anywhere; revisit for Phase 2 once the environment decision in §11 is settled.
+**Open technical decisions for the team:** first, the §10 outcome, which governs everything else here. Second, and only if building: how many dependencies to take on. A zero-dependency application can be deployed anywhere without a package-approval cycle, which is worth real money in a locked-down environment; a framework buys development speed and easier hiring. Recommendation: minimise dependencies through Phase 1, because that is what lets the pilot run while approvals are pending, and revisit once §12 is settled.
 
-**Dependency that will bite:** the schema. Do not let the platform's storage layer diverge from the Data Architect's model. Agree the physical tables for Part 2 §2.1's records before Phase 1 implementation starts, and treat the annotation platform's SQLite schema as the same logical model expressed in a different engine — not as a separate design.
+**Dependency that will bite:** the schema. Do not let the platform's storage diverge from the Data Architect's model — including when an adopted tool brings its own. Agree the physical tables for Part 2 §2.1's records before Phase 1 implementation starts. Where a tool holds its own annotation store, that store is a working surface, not the system of record, and the mapping between the two is a named deliverable rather than something left to emerge.
 
 ### Data engineers — intake, snapshots and pipelines
 
@@ -724,7 +942,7 @@ Durations are deliberately omitted. They depend on committed SME hours per week 
 **Deliverables:**
 
 1. The physical model derived from Part 2 §2.1: tables, keys, constraints, and the revision and history strategy.
-2. A portability decision: which SQL features are permitted, so the same logical schema can run on SQLite locally and on the eventual target platform without a redesign (§11).
+2. A portability decision: which SQL features are permitted, so the same logical schema can run on SQLite locally and on the eventual target platform without a redesign (§12).
 3. The sensitive-data design: how SSNs, TINs and other identifiers are stored, who can read them, whether any masking applies at rest, and what the retention and deletion rules are.
 4. The relationship model supporting Part 2 §6 — many-to-many associations between parties, facts, evidence and claims, each carrying time, uncertainty and provenance, and each preserving rejected as well as accepted decisions.
 5. Lineage: for any published figure, the ability to trace back to the exact record revisions that produced it.
@@ -739,7 +957,7 @@ Durations are deliberately omitted. They depend on committed SME hours per week 
 
 **Design principle to hold to:** the SME answer key and the system output are stored separately and joined only through explicit comparison decision records. They must never be merged into one table, however convenient that looks — the separation is what makes the answer key independent and re-usable against a second system.
 
-## 11. Where this runs — the environment decision
+## 12. Where this runs — the environment decision
 
 > **Why this section is here:** in many organizations, getting a cloud resource group approved takes longer than building the thing that goes in it. If we sequence the project so that nothing can start until infrastructure is provisioned, the honest schedule is "unknown, plus several months". This section proposes a path that does not have that shape. **This is a decision the sponsor needs to make in Phase 0.**
 
@@ -757,7 +975,7 @@ Durations are deliberately omitted. They depend on committed SME hours per week 
 
 1. **Start on A immediately.** Phase 0 and Phase 1 run entirely local. This gets SME review, guideline development and the first real numbers moving while approvals are in flight. The prototype already supports it, so the marginal cost is zero.
 2. **Submit the Option B request on day one of Phase 0.** Not when Phase 1 finishes. The whole point is to overlap the waiting with the work. This is the specific item where sponsor escalation has the most leverage — every week saved on the approval is a week removed from the critical path.
-3. **Design for portability from the start.** The Data Architect's model (§10) uses portable SQL. The platform's data access layer stays behind a thin abstraction. Migrating from local storage to a managed database then becomes a deployment task rather than a rewrite. This constraint costs very little if adopted on day one and a great deal if retrofitted.
+3. **Design for portability from the start.** The Data Architect's model (§11) uses portable SQL. The platform's data access layer stays behind a thin abstraction. Migrating from local storage to a managed database then becomes a deployment task rather than a rewrite. This constraint costs very little if adopted on day one and a great deal if retrofitted.
 4. **Use C for what it is good at.** Export benchmark releases and scored results into Databricks for the graph and network analysis and for cross-release aggregation. It does not need to be the annotation system of record for that to work.
 
 ### What sponsors need to decide, explicitly
@@ -766,24 +984,25 @@ Durations are deliberately omitted. They depend on committed SME hours per week 
 - **Who funds and owns the Option B resources** once provisioned.
 - **What the retention rule is** for annotations containing sensitive identifiers.
 
-## 12. Risks, dependencies and blockers
+## 13. Risks, dependencies and blockers
 
 Ordered by how likely they are to determine the outcome. The PM should track these as a live register; the first three are the ones that actually decide whether this project succeeds.
 
 | # | Risk or dependency | Impact if unmanaged | Mitigation | Owner |
 |---|---|---|---|---|
 | 1 | **SME capacity is not genuinely committed.** Reviewers are pulled onto claim work; annotation slips indefinitely. | The project produces no answer key, therefore no benchmark, therefore nothing. This is the most common way projects of this shape fail. | Committed hours in writing, from a named manager, before Phase 1. Measure per-claim effort in Phase 1 and re-plan Phase 2 on the measured figure. Report annotation throughput weekly as a headline number, not a footnote. | PO + sponsor |
-| 2 | **Environment or data-access approval takes months.** | Everything queues behind provisioning. | Option A local-first path (§11); Option B request submitted on day one; sponsor escalation path agreed in advance. | PM + sponsor |
+| 2 | **Environment or data-access approval takes months.** | Everything queues behind provisioning. | Option A local-first path (§12); Option B request submitted on day one; sponsor escalation path agreed in advance. | PM + sponsor |
 | 3 | **The meaning of the system's output is not settled before counting logic is written.** | Headline numbers are confidently wrong, discovered late, and all trust in the benchmark is lost at once. | Written confirmation from the data owners on the three questions in Part 2 §2 as a Phase 0 exit criterion. No scoring code merged before it. | DS + DE |
 | 4 | **Snapshot mismatch** between the notes SMEs read and the notes the system read. | Every score is contaminated by the difference and cannot be corrected after the fact. | Reconciliation in the intake pipeline; non-equivalent claims excluded with a recorded reason rather than scored. | DE |
 | 5 | **Watchlist access is not granted.** | The below-threshold analysis and the independent missed-match audit (Part 2 §5) cannot be done. Watchlist precision on supplied candidates is still achievable. | Raise the access request in Phase 0. Scope the watchlist work as separable so its absence does not block the rest. | PM |
 | 6 | **The sample cannot support portfolio-wide claims.** Claims where the system found nothing are excluded by the selection method. | Results get quoted as portfolio-wide and are challenged. | The supplementary sample in Part 2 §1 is in Phase 2 scope. Every publication states its population explicitly. | DS + PO |
 | 7 | **Reviewer disagreement is high**, indicating the guidelines are ambiguous. | The answer key is unreliable and the score inherits that unreliability. | Double annotation from Phase 1; measured agreement; guideline revision cycles; adjudication with both judgments preserved. | SME lead |
 | 8 | **Scope creep into spans, coreference and relation extraction.** | Phase 2 never ships. | These are explicitly out of scope (Part 1 §5, Part 2 §7). Treat any request to add them as a Phase 3 item, in writing. | PO |
-| 9 | **Sensitive data handling.** Notes contain personal data and identifiers. | Compliance exposure; project halted. | Architecture decision in §10 and §11; retention rule agreed in Phase 0; SSN capture designed with access control from the start rather than added afterwards. | DA + PM |
-| 10 | **The schema drifts** between the annotation platform and the architects' model. | Painful migration, or two incompatible sources of truth. | Single logical model agreed before Phase 1 implementation; portability constraint held from day one. | DA + web devs |
+| 9 | **Sensitive data handling.** Notes contain personal data and identifiers. | Compliance exposure; project halted. | Architecture decision in §11 and §12; retention rule agreed in Phase 0; SSN capture designed with access control from the start rather than added afterwards. | DA + PM |
+| 10 | **An adopted tool's model and ours drift apart**, if §10 selects an adopt path. | The integration seam becomes the project's maintenance burden, and the tool's constraints start dictating the evaluation's definitions rather than the reverse. | Decide from the §10.7 trial, not from feature lists. Name the mapping between the tool's store and the system of record as a deliverable with an owner. Keep the benchmark model authoritative: a tool limitation is a reason to change the integration, never a metric definition. | Web devs + DA |
+| 11 | **The schema drifts** between the annotation platform and the architects' model. | Painful migration, or two incompatible sources of truth. | Single logical model agreed before Phase 1 implementation; portability constraint held from day one. | DA + web devs |
 
-## 13. Running this project
+## 14. Running this project
 
 *Written for the Project Manager, Business Analyst and Product Owner.*
 
@@ -793,16 +1012,17 @@ Ten decisions determine everything downstream. The BA should hold these in one r
 
 | # | Decision | Needed by | Decided by |
 |---|---|---|---|
-| 1 | Environment path (§11) | Phase 0 | Sponsor |
+| 1 | Environment path (§12) | Phase 0 | Sponsor |
 | 2 | Whether real notes can be annotated locally, and under what conditions | Phase 0 | Data governance + sponsor |
-| 3 | Category definitions and taxonomy version | Phase 0 | SME lead + PO |
-| 4 | Note-quality band definitions and sample allocation | Phase 0 | SME lead + DS |
-| 5 | Value-equivalence rules per detail type (Part 2 §4) | Phase 0 | BA + DS + SME lead |
-| 6 | Meaning of the system's result types and export completeness (Part 2 §2) | Phase 0 | Data owners + DS |
-| 7 | Final sample size per coverage group | Phase 1 exit | PO + DS |
-| 8 | Which metrics appear on the published scorecard | Phase 1 | PO + DS |
-| 9 | Adjudication process and who arbitrates | Phase 1 | SME lead |
-| 10 | Phase 3 scope and sequencing | Phase 2 exit | PO |
+| 3 | Annotation platform: build, adopt or hybrid (§10) | Phase 0 | PO + web devs + SME lead |
+| 4 | Category definitions and taxonomy version | Phase 0 | SME lead + PO |
+| 5 | Note-quality band definitions and sample allocation | Phase 0 | SME lead + DS |
+| 6 | Value-equivalence rules per detail type (Part 2 §4) | Phase 0 | BA + DS + SME lead |
+| 7 | Meaning of the system's result types and export completeness (Part 2 §2) | Phase 0 | Data owners + DS |
+| 8 | Final sample size per coverage group | Phase 1 exit | PO + DS |
+| 9 | Which metrics appear on the published scorecard | Phase 1 | PO + DS |
+| 10 | Adjudication process and who arbitrates | Phase 1 | SME lead |
+| 11 | Phase 3 scope and sequencing | Phase 2 exit | PO |
 
 ### What to track weekly
 
@@ -819,7 +1039,7 @@ The measures that actually indicate health. The first two are the leading indica
 
 ### Questions worth asking in a standup
 
-*Phrased so they can be asked without knowing the underlying statistics, and chosen because each one surfaces a specific failure mode from §12.*
+*Phrased so they can be asked without knowing the underlying statistics, and chosen because each one surfaces a specific failure mode from §13.*
 
 - "Are we still able to freeze claims, or is something blocking review?"
 - "Has anything changed about which notes we are treating as the frozen set?" — *catches snapshot drift.*
@@ -835,11 +1055,11 @@ The measures that actually indicate health. The first two are the leading indica
 - **Phase 2 is done** when a versioned benchmark release exists that someone outside the project can re-run to identical numbers, and the scorecard is published with counts, scope and unresolved cases on every figure.
 - **Phase 3 is done** per capability, each with its own approved scope and denominators, and with no retroactive change to the Phase 2 metrics.
 
-## 14. Cross-functional alignment
+## 15. Cross-functional alignment
 
 Five decisions carry the most weight, and each needs a different group to lead it: the sampling and quality-band plan; the category and detail-comparison definitions; the meaning and completeness of the system's extraction and candidate output; the point-in-time snapshot and watchlist requirements; and the SME adjudication process.
 
-The division of responsibility is consistent throughout: **business and SME teams establish meaning and acceptable uncertainty. Data teams establish input completeness and reproducibility. Product and engineering teams translate those decisions into the review experience.** No one of the three can settle a question belonging to another, and the failures described in §12 are mostly what happens when one tries.
+The division of responsibility is consistent throughout: **business and SME teams establish meaning and acceptable uncertainty. Data teams establish input completeness and reproducibility. Product and engineering teams translate those decisions into the review experience.** No one of the three can settle a question belonging to another, and the failures described in §13 are mostly what happens when one tries.
 
 Benchmark results are published only after the implemented counting rules have been checked against the agreed method.
 
