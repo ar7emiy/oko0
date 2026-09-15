@@ -18,6 +18,8 @@ We already run a software system that reads those notes and pulls out those peop
 
 We are proposing to build that number, and to build it in a way that can be re-run every time the system changes.
 
+We want to begin more granular KPI tracking, because this will lead us setting more ambitious OKRs towards building more granular, more accurate, and, more importantly, highly traceable competitive knowledge graph.
+
 ### How we get there
 
 We take a fixed set of real claims. We have experienced staff — **subject-matter experts**, or **SMEs** — read the notes for those claims and write down, by hand, every person and organization they find and every detail about them, citing the exact sentence in the note that supports each entry. They do this **without seeing what GOKO produced**, so their answers are genuinely independent.
