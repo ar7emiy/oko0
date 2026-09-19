@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOKO v2 — architecture and data trace</title>
+<style>
+:root {
+  --bg:#faf9f7; --surface:#ffffff; --surface-2:#f3f1ec;
+  --text:#24231f; --text-2:#5f5e5a; --text-3:#8a8880;
+  --border:#e2dfd7; --border-2:#cfccc2;
+  --accent:#534ab7; --accent-bg:#eeedfe;
+  --teal:#0f6e56; --teal-bg:#e1f5ee;
+  --amber:#854f0b; --amber-bg:#faeeda;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#1a1916; --surface:#232220; --surface-2:#2b2a27;
+    --text:#e8e6e0; --text-2:#b0aea6; --text-3:#85837c;
+    --border:#383733; --border-2:#4a4945;
+    --accent:#afa9ec; --accent-bg:#2a2748;
+    --teal:#5dcaa5; --teal-bg:#123329;
+    --amber:#efa027; --amber-bg:#342612;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#1a1916; --surface:#232220; --surface-2:#2b2a27;
+  --text:#e8e6e0; --text-2:#b0aea6; --text-3:#85837c;
+  --border:#383733; --border-2:#4a4945;
+  --accent:#afa9ec; --accent-bg:#2a2748;
+  --teal:#5dcaa5; --teal-bg:#123329;
+  --amber:#efa027; --amber-bg:#342612;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.65;font-size:16px}
+.wrap{max-width:1180px;margin:0 auto;padding:3rem 1.5rem 5rem}
+header{border-bottom:1px solid var(--border);padding-bottom:1.5rem;margin-bottom:2rem}
+h1{font-size:1.75rem;font-weight:500;margin:0 0 .5rem;letter-spacing:-.01em}
+h2{font-size:1.3rem;font-weight:500;margin:3.5rem 0 .4rem;letter-spacing:-.01em}
+h3{font-size:1rem;font-weight:500;margin:0 0 .6rem}
+.sub{color:var(--text-2);margin:0;font-size:.95rem}
+.lede{color:var(--text-2);font-size:.95rem;margin:0 0 1.25rem;max-width:64ch}
+.diagram{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin:1.25rem 0 1rem;overflow-x:auto}
+.diagram .mermaid{min-width:640px}
+.trace{display:grid;grid-template-columns:1fr;gap:0;margin-top:1.5rem}
+@media(min-width:900px){.trace{grid-template-columns:300px 1fr}}
+.step-label{padding:1.1rem 1.25rem 1.1rem 0;border-top:1px solid var(--border)}
+.step-data{padding:1.1rem 0;border-top:1px solid var(--border);min-width:0}
+@media(max-width:899px){.step-label{padding-bottom:.2rem}.step-data{border-top:none;padding-top:.4rem}}
+.badge{display:inline-block;font-family:var(--mono);font-size:.7rem;letter-spacing:.04em;padding:.15rem .45rem;border-radius:4px;background:var(--surface-2);color:var(--text-3);margin-bottom:.45rem}
+.badge.code{background:var(--teal-bg);color:var(--teal)}
+.badge.llm{background:var(--accent-bg);color:var(--accent)}
+.badge.exc{background:var(--amber-bg);color:var(--amber)}
+.step-label p{margin:.2rem 0 0;font-size:.875rem;color:var(--text-2)}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.85rem 1rem;overflow-x:auto;font-family:var(--mono);font-size:.78rem;line-height:1.55;margin:0;color:var(--text)}
+pre+pre{margin-top:.6rem}
+.cap{font-size:.8rem;color:var(--text-3);margin:.5rem 0 0}
+.note{background:var(--surface-2);border-left:3px solid var(--border-2);padding:.8rem 1rem;margin:1.5rem 0 0;font-size:.875rem;color:var(--text-2)}
+.note strong{color:var(--text);font-weight:500}
+code{font-family:var(--mono);font-size:.85em;background:var(--surface-2);padding:.1em .35em;border-radius:4px}
+.legend{display:flex;flex-wrap:wrap;gap:1.25rem;font-size:.8rem;color:var(--text-2);margin:0 0 1.5rem}
+.legend span{display:flex;align-items:center;gap:.4rem}
+.dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+.mermaid g.node.llm rect{stroke:var(--accent)!important;stroke-width:1.5px!important}
+.mermaid g.node.exc rect{stroke:var(--amber)!important;stroke-width:1.5px!important}
+.mermaid g.node.opt rect{stroke-dasharray:4 3!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+<h1>GOKO v2 — architecture and data trace</h1>
+<p class="sub">Whole-note extraction, three detection lanes, claim assembly, category assignment, graph load. Every boundary payload shown in full.</p>
+</header>
+
+<p class="lede">One claim followed end to end. Claim <code>123456-789012-AB-01</code>, notes <code>188213</code> and <code>188219</code>. Dr. Monroe appears in both under different surface forms; a phone number and an NPI attach to him; an address appears with no determinable owner; and the same phone number later turns up in an unrelated claim, which is what creates the cross-claim path.</p>
+
+<div class="legend">
+  <span><span class="dot" style="background:var(--teal)"></span> deterministic code</span>
+  <span><span class="dot" style="background:var(--accent)"></span> LLM invocation</span>
+  <span><span class="dot" style="background:var(--amber)"></span> exception path</span>
+</div>
+
+<h2>0 — Identifiers, occurrence layer, and node keys</h2>
+<p class="lede">Claim ids are structured, and the structure is load-bearing. Parsing it once at ingestion turns three separate lookups into graph edges, and gives cross-claim scoring the context it needs to avoid firing on every claim that shares an incident.</p>
+
+<div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  ID["claim_id string<br/>123456-789012-AB-01"] --> PV{"Matches<br/>6-6-AA-99 pattern?"}
+  PV -- no --> RQ0["Review queue<br/>malformed_claim_id"]
+  PV -- yes --> PC["Parse components<br/>uppercase coverage_code"]
+  PC --> G1["Upsert Client node<br/>client:123456"]
+  G1 --> G2["Upsert Occurrence node<br/>occurrence:123456-789012"]
+  G2 --> G3["Upsert Claim node<br/>claim:123456-789012-AB-01"]
+  G3 --> G4["Edges HAS_OCCURRENCE,<br/>HAS_CLAIM"]
+  G4 --> SC["Relationship distance<br/>available to scoring"]
+
+  class RQ0 exc
+</pre>
+</div>
+
+<div class="trace">
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Parse, do not slice</h3>
+  <p>Validate against the pattern and reject non-conforming ids. Positional slicing on a legacy id produces a silently wrong occurrence grouping.</p>
+</div>
+<div class="step-data">
+<pre>pattern: ^[0-9]{6}-[0-9]{6}-[A-Z]{2}-[0-9]{2}$
+
+{ "claim_id": "123456-789012-AB-01",
+  "client_id": "123456",
+  "occurrence_id": "123456-789012",
+  "occurrence_seq": "789012",
+  "coverage_code": "AB",
+  "claim_seq": "01",
+  "id_format_version": "1" }
+
+rejected:
+{ "raw": "123456-789012-ab-01", "action": "uppercase, accept" }
+{ "raw": "LEGACY-4471902",      "action": "review_queue",
+  "flag": "malformed_claim_id" }</pre>
+<p class="cap">Coverage code is uppercased at ingestion. Left mixed, <code>...-AB-01</code> and <code>...-ab-01</code> become two node keys for one claim, and every count downstream is wrong by an amount nobody notices.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Namespaced node keys</h3>
+  <p>Note ids and watchlist ids are both bare integers in the same range. Namespacing prevents a mistyped MERGE from matching the wrong node.</p>
+</div>
+<div class="step-data">
+<pre>note      188213  ->  "note:188213"
+watchlist 440271  ->  "watchlist:440271"
+client    123456  ->  "client:123456"
+occurrence        ->  "occurrence:123456-789012"
+claim             ->  "claim:123456-789012-AB-01"
+detail            ->  "phone:+13125550101"
+
+raw value kept as a separate property for display
+and for joining back to source systems:
+  (:Note {key: "note:188213", note_id: 188213})</pre>
+<p class="cap">Both id spaces span 99999 to 999999, so an unnamespaced <code>188213</code> is ambiguous between a note and a watchlist. In JSON that is survivable; in a graph <code>MERGE</code> it silently creates or matches the wrong node.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Relationship distance</h3>
+  <p>The single most consequential addition. Two scores, computed separately, from the same shared-detail evidence.</p>
+</div>
+<div class="step-data">
+<pre>distance(a, b):
+  same_claim        -> handled by assembly, not here
+  same_occurrence   -> identity_weight 1.00   suspicion_weight 0.00
+  same_client       -> identity_weight 0.90   suspicion_weight 0.25
+  different_client  -> identity_weight 0.85   suspicion_weight 1.00
+
+{ "entity_a": "123456-789012-AB-01:E1",
+  "entity_b": "123456-789012-CG-01:E2",
+  "distance": "same_occurrence",
+  "shared_details": ["phone:+13125550101"],
+  "identity_score": 0.96,  "outcome": "same",
+  "suspicion_score": 0.00,
+  "note": "expected: one incident, multiple coverages" }</pre>
+<p class="cap">Two claims from one occurrence are one incident. The same claimant, adjuster, clinic and phone numbers appearing in both is structurally expected, so it is strong evidence of identity and no evidence of fraud. Scoring these together is what would otherwise make cross-claim alerts fire constantly on the least interesting pattern in the archive.</p>
+</div>
+
+</div>
+
+<div class="note"><strong>Occurrence is also a free blocking key and a retrieval level.</strong> Candidate pairs within an occurrence are cheap and high-yield for identity resolution. And because <code>Occurrence</code> is a real node rather than a string prefix, "show me everything about this incident" is one hop up from the claim rather than an indexed prefix scan. Ops works per claim by default; the occurrence view is the same dossier query one level higher.</div>
+
+<h2>1 — Note ingestion and three-lane extraction</h2>
+<p class="lede">One LLM call per note. Two deterministic lanes run alongside it: pattern matching with checksums for structured identifiers, and GLiNER for unpatterned name spans. Lanes reconcile before validation. The injection seam from GLiNER into the prompt is drawn but off by default — it lifts recall and destroys per-lane attribution, so it stays closed until each lane's contribution has been measured.</p>
+
+<div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A0["Load raw note"] --> A1["Normalize<br/>non-destructive"]
+  A1 --> A2["Emit offset_map"]
+  A2 --> FK(["Fan out to three lanes"])
+
+  FK --> B1["Lane A: pattern scan"]
+  B1 --> B2["Checksum validate<br/>NPI Luhn, VIN, EIN prefix"]
+  B2 --> RC1
+
+  FK --> C1["Lane B: GLiNER<br/>zero-shot span labels"]
+  C1 --> C2{"Above threshold?"}
+  C2 -- no --> C3["Discard, log"]
+  C2 -- yes --> RC1
+  C1 -. "optional injection<br/>off by default" .-> D1
+
+  FK --> D1["Lane C: whole-note LLM<br/>schema v0.1 + few-shot"]
+  D1 --> D2["Parse JSON<br/>quotes, no offsets"]
+  D2 --> D3["Quote resolution"]
+  D3 --> D4{"Resolved?"}
+  D4 -- no --> RQ["Review queue"]
+  D4 -- yes --> D5["Round-trip check"]
+  D5 --> D6{"Raw slice == quote?"}
+  D6 -- no --> RQ
+  D6 -- yes --> RC1
+
+  RC1["Reconcile lanes"] --> RC2{"Lane agreement"}
+  RC2 -- "all lanes" --> RC5["Load, detected_by all"]
+  RC2 -- "pattern only" --> RC3["Load as UNASSIGNED"]
+  RC2 -- "GLiNER only" --> RC4["Entity candidate<br/>no attribution"]
+  RC2 -- "LLM only" --> RC6["Load, log pattern gap"]
+  RC3 --> V1
+  RC4 --> V1
+  RC5 --> V1
+  RC6 --> V1
+  V1["Validation layer"] --> V5{"All pass?"}
+  V5 -- no --> RQ
+  V5 -- yes --> EV["Emit note_envelope"]
+  EV --> M1{"More notes?"}
+  M1 -- yes --> A0
+  M1 -- no --> OUT["note_envelopes[] for claim"]
+
+  class D1 llm
+  class RQ exc
+  class C1 opt
+</pre>
+</div>
+
+<div class="trace">
+
+<div class="step-label">
+  <span class="badge">input</span>
+  <h3>Raw note</h3>
+  <p>Text exactly as stored. No preprocessing yet.</p>
+</div>
+<div class="step-data">
+<pre>{ "note_id": 188213, "claim_id": "123456-789012-AB-01",
+  "authored_at": "2026-03-17T09:42:00Z", "author": "adj_rlangford",
+  "raw_len": 4980,
+  "raw_text": "...clmt seen 3/14 by Dr. Monroe (NPI 1548392012).\r\n
+     The treating physician noted decreased ROM.  He is reachable\r\n
+     at (312) 555-0101 after 5 pm.  Office at 4410 N Broadway,\r\n
+     Chicago IL 60640.  Referred to Lakeshore PT..." }</pre>
+<p class="cap">Note the CRLF line endings and doubled spaces — these are exactly what cleaning will alter, and therefore what the offset map has to account for.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Normalize and map offsets</h3>
+  <p>Every edit is recorded as a translation entry. The raw text is never discarded.</p>
+</div>
+<div class="step-data">
+<pre>{ "note_id": 188213, "clean_len": 4936,
+  "policy_version": "clean-1.2",
+  "edits": [
+    { "raw_start": 48,   "raw_len": 2, "clean_len": 1, "kind": "crlf_to_lf" },
+    { "raw_start": 131,  "raw_len": 2, "clean_len": 1, "kind": "collapse_ws" },
+    { "raw_start": 1789, "raw_len": 2, "clean_len": 1, "kind": "crlf_to_lf" }
+  ],
+  "offset_map_fn": "clean_to_raw(clean_idx) -> raw_idx" }
+
+clean_to_raw(1730) -> 1789</pre>
+<p class="cap">44 characters disappeared between raw and clean. Without this table every span in the system would point 44 characters off by the end of the note — silently, and only in the investigator's viewer.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Lane A — pattern scan and checksums</h3>
+  <p>High recall on structured identifiers, zero ownership. Spans emitted natively.</p>
+</div>
+<div class="step-data">
+<pre>{ "lane": "pattern", "patterns_version": "1.4", "note_id": 188213,
+  "finds": [
+    { "detail_type": "npi", "raw_value": "1548392012",
+      "clean_span": [1204, 1214], "checksum": "pass" },
+    { "detail_type": "phone", "raw_value": "(312) 555-0101",
+      "clean_span": [1734, 1748], "checksum": "n/a" },
+    { "detail_type": "address", "raw_value": "4410 N Broadway, Chicago IL 60640",
+      "clean_span": [1802, 1835], "parser": "usaddress", "confidence": 0.93 },
+    { "detail_type": "npi", "raw_value": "1548392018",
+      "clean_span": [3301, 3311], "checksum": "FAIL_LUHN" }
+  ] }</pre>
+<p class="cap">The last find is the case only this lane catches: a digit-transposed NPI that looks perfectly well-formed to an LLM. Checksum failure is a data-quality signal, not an extraction error — load it flagged rather than dropping it, since the note genuinely says that.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Lane B — GLiNER spans</h3>
+  <p>Zero-shot, local, CPU. Covers unpatterned names that regex cannot reach.</p>
+</div>
+<div class="step-data">
+<pre>{ "lane": "gliner", "model_version": "gliner_multi-v2.1",
+  "labels": ["person", "organization", "vehicle"],
+  "threshold": 0.60, "note_id": 188213,
+  "finds": [
+    { "label": "person", "text": "Dr. Monroe",
+      "clean_span": [1190, 1200], "score": 0.91, "kept": true },
+    { "label": "organization", "text": "Lakeshore PT",
+      "clean_span": [1878, 1890], "score": 0.83, "kept": true },
+    { "label": "organization", "text": "the shop",
+      "clean_span": [2455, 2463], "score": 0.41, "kept": false }
+  ] }</pre>
+<p class="cap">Spans are native, so GLiNER finds skip quote resolution entirely. The discarded low-score find is still logged — discard volume by label is how you tune the threshold against gold data rather than by guessing.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge llm">llm</span>
+  <h3>Lane C — whole-note extraction</h3>
+  <p>The only per-note LLM call. Emits verbatim quotes, never offsets. Coreference resolved in-context via <code>occurrences</code>.</p>
+</div>
+<div class="step-data">
+<pre>{ "entity_mentions": [
+    { "mention_id": "m1", "quote": "Dr. Monroe", "type": "person",
+      "occurrences": ["The treating physician", "He"] },
+    { "mention_id": "m2", "quote": "Referred to Lakeshore PT",
+      "type": "organization", "occurrences": [] } ],
+  "detail_mentions": [
+    { "detail_id": "d1", "quote": "Dr. Monroe (NPI 1548392012)",
+      "raw_value": "1548392012", "detail_type": "npi", "issuer": null,
+      "owner_ref": "m1", "basis": "stated" },
+    { "detail_id": "d2", "quote": "He is reachable at (312) 555-0101 after 5 pm",
+      "raw_value": "(312) 555-0101", "detail_type": "phone", "issuer": null,
+      "owner_ref": "m1", "basis": "inferred" },
+    { "detail_id": "d3", "quote": "Office at 4410 N Broadway, Chicago IL 60640",
+      "raw_value": "4410 N Broadway, Chicago IL 60640",
+      "detail_type": "address", "issuer": null,
+      "owner_ref": "UNASSIGNED", "basis": "stated" } ],
+  "action_mentions": [
+    { "action_id": "a1", "quote": "clmt seen 3/14 by Dr. Monroe",
+      "action_type": "examined",
+      "participants": [ { "mention_id": "m1", "role": "examiner" } ],
+      "time_qualifier": "3/14", "stance": "asserted", "basis": "stated" } ] }</pre>
+<p class="cap">Three judgments here are the LLM earning its place. <code>occurrences</code> ties "He" to Dr. Monroe — no regex does that. <code>d2</code> is marked <code>inferred</code> because ownership comes from the pronoun, not a direct statement. <code>d3</code> is <code>UNASSIGNED</code>: the office plausibly belongs to Monroe, but the note does not say so, and proximity is not ownership.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Quote resolution</h3>
+  <p>Exact find, then normalized retry, then fuzzy. Multi-hit disambiguates against the anchor mention.</p>
+</div>
+<div class="step-data">
+<pre>m1  "Dr. Monroe"                     -> 1 hit  [1190, 1200]   ok
+d1  "Dr. Monroe (NPI 1548392012)"    -> 1 hit  [1190, 1217]   ok
+d2  "He is reachable at (312) ..."   -> 1 hit  [1719, 1762]   ok
+d3  "Office at 4410 N Broadway, ..." -> 1 hit  [1793, 1835]   ok
+a1  "clmt seen 3/14 by Dr. Monroe"   -> 1 hit  [1162, 1190]   ok
+
+hypothetical multi-hit:
+  quote "60640" -> 4 hits [1830, 2140, 2884, 3610]
+  anchor: owner_ref m1 resolved at 1190
+  distances: 640, 950, 1694, 2420  -> nearest 1830
+  runner-up ratio 950/640 = 1.48  &lt; 3.0 required
+  -> REVIEW, not resolved</pre>
+<p class="cap">Every real quote here resolved on the first attempt because the schema instructs the model to quote a full phrase. The hypothetical shows why that instruction matters: a bare value in a note full of Chicago addresses is unresolvable, and the honest outcome is review rather than a plausible guess.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Round-trip check</h3>
+  <p>Map to raw coordinates, slice the original, compare. The one test that validates the entire chain.</p>
+</div>
+<div class="step-data">
+<pre>d2: clean_span [1719, 1762]
+    clean_to_raw(1719) -> 1776 ; clean_to_raw(1762) -> 1821
+    raw_text[1776:1821]
+      == "He is reachable at (312) 555-0101 after 5 pm"   PASS
+
+failure mode caught:
+{ "detail_id": "d9", "quote": "billed under NPI 1548392099",
+  "exact": 0, "normalized": 0, "fuzzy_best": 0.71,
+  "verdict": "unverifiable_quote", "routed": "review_queue" }</pre>
+<p class="cap">One string comparison catches a hallucinated quote, an off-by-one in the offset map, a stale cleaning version, and a boundary bug. It is the reason a citation in the finished dossier can be trusted.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Reconcile lanes</h3>
+  <p>Match on normalized value plus overlapping span. Four outcomes, each loaded differently.</p>
+</div>
+<div class="step-data">
+<pre>[
+ { "detail_type": "npi", "normalized": "1548392012",
+   "clean_span": [1204, 1214], "owner_ref": "m1", "basis": "stated",
+   "detected_by": ["pattern", "llm"], "checksum": "pass" },
+
+ { "detail_type": "phone", "normalized": "+13125550101",
+   "clean_span": [1734, 1748], "owner_ref": "m1", "basis": "inferred",
+   "detected_by": ["pattern", "llm"] },
+
+ { "detail_type": "address", "normalized": "4410 n broadway|chicago|il|60640",
+   "clean_span": [1802, 1835], "owner_ref": "UNASSIGNED", "basis": "stated",
+   "detected_by": ["pattern", "llm"] },
+
+ { "detail_type": "npi", "normalized": "1548392018",
+   "clean_span": [3301, 3311], "owner_ref": "UNASSIGNED",
+   "detected_by": ["pattern"], "checksum": "FAIL_LUHN",
+   "recall_gap": true },
+
+ { "entity_candidate": true, "type": "organization", "text": "the shop",
+   "detected_by": ["gliner"], "score": 0.41, "loaded": false }
+]</pre>
+<p class="cap">The fourth record is the recall gap this whole lane exists for: the LLM never emitted that NPI, and without the pattern scan it would be lost silently. It loads as <code>UNASSIGNED</code> because a pattern match knows the value and nothing else. The fifth is below threshold and does not load at all — it is logged for threshold tuning only.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Validation</h3>
+  <p>Checks the schema could not express structurally. Separate layer, separate failure mode.</p>
+</div>
+<div class="step-data">
+<pre>enum conformance
+  detail_type in schema_v0_1.enum            -> pass
+  stance in [asserted, denied, disputed, alleged]  -> pass
+referential integrity
+  a1.participants[0].mention_id == "m1" exists in this note  -> pass
+  d1.owner_ref == "m1" exists                -> pass
+format
+  npi matches ^[0-9]{10}$                    -> pass
+  phone normalizes to E.164                  -> pass
+
+result: accept, 0 routed to review</pre>
+<p class="cap">Under constrained decoding, enum conformance should be structurally impossible to violate. It stays because it catches the case where the constraint was not actually in force — a version skew between call and validator, or a fallback to an unconstrained path. If it ever fires, something upstream is broken.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge">output</span>
+  <h3>note_envelope</h3>
+  <p>Everything stamped. Input to assembly.</p>
+</div>
+<div class="step-data">
+<pre>{ "note_id": 188213, "claim_id": "123456-789012-AB-01",
+  "versions": { "schema": "0.1", "model": "claude-sonnet-4-6",
+                "gliner": "gliner_multi-v2.1", "patterns": "1.4",
+                "clean_policy": "clean-1.2", "chunk_policy": "whole_note" },
+  "entity_mentions": [ ... ], "detail_mentions": [ ... ],
+  "action_mentions": [ ... ],
+  "review_items": [
+    { "flag": "checksum_fail", "detail_type": "npi",
+      "raw_value": "1548392018", "clean_span": [3301, 3311] } ] }</pre>
+<p class="cap"><code>chunk_policy</code> is stamped even though it reads <code>whole_note</code> for every record today. When a long document forces the fallback path, or when the policy changes, the only way to tell a policy effect from a model regression is a version tag that was already there.</p>
+</div>
+
+</div>
+
+<div class="note"><strong>Oversized notes.</strong> Not drawn. Split on document structure first — dated entries, adjuster log records, section headers — fall back to sentence packing only inside an oversized structural unit, and overlap by whole sentences rather than characters. Segment results are rebased and overlap-deduplicated before rejoining at the parse step.</div>
+
+<h2>2A — Claim assembly</h2>
+<p class="lede">Whole-note extraction removes span rebasing, overlap dedup and within-note coreference. What remains is the genuinely hard part: resolving the same party across different notes.</p>
+
+<div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  IN["note_envelopes[] for claim"] --> R1["Flatten to mention_pool"]
+  R1 --> R2["Normalize detail values"]
+  R2 --> B1["Compute blocking keys"]
+  B1 --> B2["Emit candidate pairs<br/>across notes only"]
+  B2 --> P1["Score pair"]
+  P1 --> P2{"Band"}
+  P2 -- "high" --> G1["Write link edge"]
+  P2 -- "mid" --> RQ["Flag uncertain_merge<br/>no edge written"]
+  P2 -- "low" --> G2["No edge"]
+  P2 -- "must_not_link" --> G3["Block constraint"]
+  G1 --> U1
+  RQ --> U1
+  G2 --> U1
+  G3 --> U1
+  U1["Union-find<br/>respecting block constraints"] --> U2["Components to entity_ids"]
+  U2 --> M1["Build id_map"]
+  M1 --> M2["Remap detail.owner_ref"]
+  M2 --> M3["Remap action participants"]
+  M3 --> A1["Retry UNASSIGNED details<br/>full-claim context"]
+  A1 --> A2["Detect contradictions"]
+  A2 --> OUT["claim_entity_set"]
+
+  class RQ exc
+  class A1 llm
+</pre>
+</div>
+
+<div class="trace">
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>mention_pool</h3>
+  <p>Flat, fully qualified keys, envelope structure discarded. Two notes, same person, different surface forms.</p>
+</div>
+<div class="step-data">
+<pre>[
+ { "key": "188213:m1", "kind": "entity", "type": "person",
+   "quote": "Dr. Monroe", "clean_span": [1190, 1200],
+   "occurrences": ["The treating physician", "He"] },
+ { "key": "188219:m4", "kind": "entity", "type": "person",
+   "quote": "A. Monroe, MD", "clean_span": [402, 415], "occurrences": [] },
+ { "key": "188219:m1", "kind": "entity", "type": "organization",
+   "quote": "Lakeshore Physical Therapy", "clean_span": [455, 481],
+   "occurrences": [] },
+ { "key": "188213:d1", "kind": "detail", "detail_type": "npi",
+   "normalized": "1548392012", "owner_ref": "188213:m1" },
+ { "key": "188219:d2", "kind": "detail", "detail_type": "npi",
+   "normalized": "1548392012", "owner_ref": "188219:m4" }
+]</pre>
+<p class="cap">Spans are already note-level — nothing to rebase. "Dr. Monroe" and "A. Monroe, MD" are separate rows at this point, and nothing yet knows they are the same person.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Blocking</h3>
+  <p>Only mentions sharing a key are ever compared. This is what stops scoring from being quadratic.</p>
+</div>
+<div class="step-data">
+<pre>{ "188213:m1": ["name_key:monroe", "name_key:monroe|dr",
+                 "detail:npi:1548392012"],
+  "188219:m4": ["name_key:monroe", "name_key:monroe|a",
+                 "detail:npi:1548392012"],
+  "188219:m1": ["name_key:lakeshore", "name_key:lakeshore_physical_therapy"] }
+
+candidate pairs emitted: 1
+{ "a": "188213:m1", "b": "188219:m4",
+  "block_hit": ["name_key:monroe", "detail:npi:1548392012"] }</pre>
+<p class="cap">The shared NPI is doing the work here. Surname alone would also have blocked them together, but it is the identifier that makes the pair worth scoring rather than merely worth looking at.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Score and band</h3>
+  <p>Mid band writes no edge. Under-merge is recoverable and visible; over-merge is a false attribution an investigator may act on.</p>
+</div>
+<div class="step-data">
+<pre>{ "a": "188213:m1", "b": "188219:m4",
+  "features": { "name_sim": 0.78, "detail_agree": 1.0,
+                "detail_rarity": 0.97, "role_compat": 1.0,
+                "type_match": true },
+  "score": 0.94, "band": "high", "action": "write_edge" }
+
+{ "a": "188219:m1", "b": "188221:m3",
+  "features": { "name_sim": 0.74, "detail_agree": null,
+                "detail_rarity": null, "role_compat": 1.0,
+                "type_match": true },
+  "score": 0.71, "band": "mid", "action": "flag_uncertain_merge" }</pre>
+<p class="cap">Name similarity is only 0.78 — "Dr. Monroe" against "A. Monroe, MD" is not a strong string match. The pair clears the high band on the strength of a rare shared identifier, which is exactly the weighting you want: identifiers should outvote names.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>id_map</h3>
+  <p>Connected components over link edges, block constraints honoured.</p>
+</div>
+<div class="step-data">
+<pre>{ "188213:m1": "123456-789012-AB-01:E1",
+  "188219:m4": "123456-789012-AB-01:E1",
+  "188219:m1": "123456-789012-AB-01:E2",
+  "188221:m3": "123456-789012-AB-01:E5" }</pre>
+<p class="cap">E2 and E5 stay separate because the mid-band pair wrote no edge. Both appear in the dossier, both are flagged <code>uncertain_merge</code>, and a human decides.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Remap</h3>
+  <p>The substitution where cross-note relationships materialize. Nothing detected them.</p>
+</div>
+<div class="step-data">
+<pre>before:
+{ "action_id": "188219:a1", "action_type": "referred_to",
+  "participants": [ { "mention_id": "m4", "role": "referrer" },
+                    { "mention_id": "m1", "role": "referee" } ] }
+
+after:
+{ "action_id": "188219:a1", "action_type": "referred_to",
+  "participants": [ { "entity_id": "123456-789012-AB-01:E1", "role": "referrer" },
+                    { "entity_id": "123456-789012-AB-01:E2", "role": "referee" } ],
+  "stance": "asserted", "time_qualifier": "3/14", "evidence": ["EV4"] }</pre>
+<p class="cap">An action extracted from note 88219 and a detail extracted from note 88213 now hang off the same entity. No cross-note reasoning happened — identity resolution did all of it.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge llm">llm</span>
+  <h3>UNASSIGNED retry</h3>
+  <p>One batched call per claim, all unresolved details at once, with full-claim context. Optional in v1.</p>
+</div>
+<div class="step-data">
+<pre>request:
+{ "unassigned": [
+    { "detail_id": "188213:d3", "detail_type": "address",
+      "quote": "Office at 4410 N Broadway, Chicago IL 60640" } ],
+  "entities": [
+    { "entity_id": "123456-789012-AB-01:E1", "surface_forms": ["Dr. Monroe", "A. Monroe, MD"] },
+    { "entity_id": "123456-789012-AB-01:E2", "surface_forms": ["Lakeshore Physical Therapy"] } ],
+  "context_quotes": ["Lakeshore PT, 4410 N Broadway, billed 3/22"] }
+
+response:
+{ "188213:d3": { "owner": "123456-789012-AB-01:E2", "basis": "inferred",
+                  "evidence_ids": ["EV22"] } }</pre>
+<p class="cap">Worth showing because the first guess would have been wrong. In isolation the office looks like Monroe's; a second note reveals the address belongs to Lakeshore. This is the payoff for refusing to guess at extraction time — <code>UNASSIGNED</code> stayed honest until evidence arrived.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge exc">exception</span>
+  <h3>Contradiction detection</h3>
+  <p>One entity, two values of a type that should be singular.</p>
+</div>
+<div class="step-data">
+<pre>{ "entity_id": "123456-789012-AB-01:E1", "detail_type": "npi",
+  "values": [
+    { "normalized": "1548392012", "checksum": "pass",
+      "detected_by": ["pattern", "llm"], "evidence": ["EV1", "EV14"] },
+    { "normalized": "1548392018", "checksum": "FAIL_LUHN",
+      "detected_by": ["pattern"], "evidence": ["EV31"] } ],
+  "flag": "contradictory_singular_detail",
+  "resolution": "prefer_checksum_pass", "routed": "review_queue" }</pre>
+<p class="cap">The checksum turns what would be an unresolvable conflict into an obvious one. Without Lane A this contradiction never surfaces, because the LLM emitted only the valid NPI and the transposed one was never seen at all.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge">output</span>
+  <h3>claim_entity_set</h3>
+  <p>Entities with remapped details and actions, uncategorized. Input to 2B.</p>
+</div>
+<div class="step-data">
+<pre>{ "claim_id": "123456-789012-AB-01",
+  "entities": [
+    { "entity_id": "123456-789012-AB-01:E1", "type": "person",
+      "surface_forms": ["Dr. Monroe", "The treating physician", "He",
+                        "A. Monroe, MD"],
+      "details": [
+        { "detail_type": "npi", "normalized": "1548392012",
+          "owner_status": "assigned", "basis": "stated" },
+        { "detail_type": "phone", "normalized": "+13125550101",
+          "owner_status": "assigned", "basis": "inferred" } ],
+      "merge_provenance": { "merged_mentions": 2, "score": 0.94,
+                            "reviewed": false },
+      "flags": ["contradictory_singular_detail"] },
+    { "entity_id": "123456-789012-AB-01:E2", "type": "organization",
+      "surface_forms": ["Lakeshore PT", "Lakeshore Physical Therapy"],
+      "details": [
+        { "detail_type": "address",
+          "normalized": "4410 n broadway|chicago|il|60640",
+          "owner_status": "assigned", "basis": "inferred" } ],
+      "merge_provenance": { "merged_mentions": 2, "score": 0.88 } } ],
+  "actions": [
+    { "action_id": "188219:a1", "action_type": "referred_to",
+      "participants": [ { "entity_id": "123456-789012-AB-01:E1", "role": "referrer" },
+                        { "entity_id": "123456-789012-AB-01:E2", "role": "referee" } ] },
+    { "action_id": "188213:a1", "action_type": "examined",
+      "participants": [ { "entity_id": "123456-789012-AB-01:E1", "role": "examiner" } ] } ] }</pre>
+</div>
+
+</div>
+
+<div class="note"><strong>Transitivity.</strong> Union-find merges A and C when A–B and B–C both score high, even where A–C scored low directly. A low score is the absence of an edge, not a veto. The <code>must_not_link</code> band is what makes it one, and a cluster-size alarm catches what it misses.</div>
+
+<h2>2B — Category assignment</h2>
+<p class="lede">Six frozen values constrain generation and carry the score: medical, legal, repair shop, witness, financier, other. An open <code>subcategory</code> string rides alongside, unscored, mined later for promotion — the same pattern as <code>action_type</code>.</p>
+
+<div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  CS["claim_entity_set"] --> C0["Iterate entities"]
+  C0 --> C1["Build context_packet"]
+  C1 --> C2["Rule pre-pass"]
+  C2 --> C3{"Rule fires?"}
+  C3 -- yes --> C9["Assign, basis=rule"]
+  C3 -- no --> C4["LLM call<br/>six-value enum + open subcategory"]
+  C4 --> C5["Returns category, subcategory,<br/>evidence_ids"]
+  C5 --> C6{"In taxonomy?"}
+  C6 -- no --> ERR["Raise pipeline fault<br/>version skew or unconstrained path"]
+  C6 -- yes --> C7{"evidence_ids resolve?"}
+  C7 -- no --> C10["insufficient_evidence"]
+  C7 -- yes --> C9
+  C9 --> C11{"More entities?"}
+  C10 --> C11
+  C11 -- yes --> C0
+  C11 -- no --> OUT["categorized entities"]
+
+  class C4 llm
+  class ERR exc
+  class C10 exc
+</pre>
+</div>
+
+<div class="trace">
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>context_packet</h3>
+  <p>Everything known about one entity across the whole claim, flattened for a single call.</p>
+</div>
+<div class="step-data">
+<pre>{ "entity_id": "123456-789012-AB-01:E2", "type": "organization",
+  "surface_forms": ["Lakeshore PT", "Lakeshore Physical Therapy"],
+  "details": [
+    { "detail_type": "address", "raw_value": "4410 N Broadway, Chicago IL 60640" } ],
+  "actions": [ { "action_type": "referred_to", "role": "referee" } ],
+  "evidence_quotes": [
+    { "evidence_id": "EV4", "quote": "Referred to Lakeshore PT" },
+    { "evidence_id": "EV22", "quote": "Lakeshore PT, 4410 N Broadway, billed 3/22" } ],
+  "taxonomy_version": "3" }</pre>
+</div>
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Rule pre-pass — E1</h3>
+  <p>Deterministic, no model call. With six coarse categories these rules carry most of the volume.</p>
+</div>
+<div class="step-data">
+<pre>rules evaluated:
+  npi_present_on_person    -> FIRES
+  bar_number_present       -> no
+  vin_present              -> no
+
+{ "entity_id": "123456-789012-AB-01:E1",
+  "category": { "value": "medical", "basis": "rule",
+                "rule_id": "npi_present_on_person",
+                "taxonomy_version": "3" },
+  "subcategory": null, "llm_invoked": false }</pre>
+<p class="cap">Every entity routed here is one fewer chance for a model to be wrong and one fewer call to pay for. With a vocabulary this coarse, identifier-driven rules are close to conclusive.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge llm">llm</span>
+  <h3>Category call — E2</h3>
+  <p>No rule fires: an organization with an address and no identifier. Only ambiguous entities reach the model.</p>
+</div>
+<div class="step-data">
+<pre>{ "category": "medical",
+  "subcategory": "physical_therapy_clinic",
+  "basis": "inferred",
+  "evidence_ids": ["EV4", "EV22"] }</pre>
+<p class="cap"><code>category</code> is constrained to the six. <code>subcategory</code> is free text and deliberately unscored — it gives investigators something to filter on now, and after a few hundred claims you cluster these values and promote the frequent ones into a versioned level-two enum under each parent.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Validate</h3>
+  <p>Two checks with different meanings. One indicates a bug; the other indicates missing evidence.</p>
+</div>
+<div class="step-data">
+<pre>"medical" in taxonomy_v3.enum              -> pass
+"EV4"  in entity.evidence_ids              -> pass
+"EV22" in entity.evidence_ids              -> pass
+basis in [stated, inferred, rule]          -> pass
+-> accept
+
+contrasting failure:
+{ "category": "medical", "evidence_ids": ["EV99"] }
+  "EV99" not on this entity
+  -> category = insufficient_evidence, flag = unresolved_evidence_citation</pre>
+<p class="cap">The evidence check is the one constrained decoding cannot perform, because valid ids are not known at generation time. A citation that does not resolve is the cheapest available detector for a fabricated justification.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge exc">exception</span>
+  <h3>Three distinct outcomes</h3>
+  <p>Never collapsed into one another.</p>
+</div>
+<div class="step-data">
+<pre>{ "category": "other", "basis": "inferred" }
+  read the evidence, party is none of the five
+
+{ "category": "insufficient_evidence", "basis": "llm" }
+  could not determine; SMEs produce this too, so it is scored
+
+{ "error": "off_taxonomy_value", "returned": "orthopedic_supplier",
+  "taxonomy_version_in_call": "3",
+  "taxonomy_version_in_validator": "4" }
+  RAISE. not a finding.</pre>
+<p class="cap">If an off-taxonomy return quietly became <code>insufficient_evidence</code>, a version-skew bug would appear in your evaluation as a recall problem and cost a week of looking in the wrong place.</p>
+</div>
+
+</div>
+
+<h2>2C — Graph load and cross-claim resolution</h2>
+<p class="lede">Nothing enters the persistent store until the claim dossier is frozen, which keeps the scoreable artifact independent of the graph. Confirmed identity links project into canonical Person nodes without destroying the claim-scoped records beneath them.</p>
+
+<div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  DJ["claim_dossier.json"] --> N1["Normalize identity-bearing details"]
+  N1 --> N2{"Normalizes cleanly?"}
+  N2 -- no --> RQ2["Load raw, do not key on it"]
+  N2 -- yes --> N3["Compute detail node key"]
+  RQ2 --> U0
+  N3 --> U0["Upsert Detail nodes by key"]
+  U0 --> U1["Upsert Entity nodes<br/>claim-scoped, never merged"]
+  U1 --> U2["Upsert Note and Evidence nodes"]
+  U2 --> U3["Edges HAS_DETAIL, PARTICIPATES_IN,<br/>EVIDENCED_BY"]
+  U3 --> X1["Find Entities sharing a Detail<br/>across different claim_id"]
+  X1 --> X2["Score pair, weighted by rarity"]
+  X2 --> X3{"Band"}
+  X3 -- "high" --> X4["IdentityLink same"]
+  X3 -- "mid" --> X5["IdentityLink review"]
+  X3 -- "low" --> X6["IdentityLink different"]
+  X4 --> PR
+  X5 --> PR
+  X6 --> PR
+  PR["Recompute Person projection<br/>from confirmed links"] --> PC{"Cluster size plausible?"}
+  PC -- no --> RQ3["Alarm: over-merge<br/>suspend projection"]
+  PC -- yes --> W1["Watchlist match on Person"]
+  W1 --> W2{"Above threshold?"}
+  W2 -- yes --> W3["Alert + triggering entity<br/>+ evidence trail"]
+  W2 -- no --> W4["Store score, no alert"]
+
+  class RQ2 exc
+  class RQ3 exc
+  class X5 exc
+</pre>
+</div>
+
+<div class="trace">
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Normalize and key</h3>
+  <p>Only identity-bearing types become nodes. Everything else stays a property on the entity.</p>
+</div>
+<div class="step-data">
+<pre>"(312) 555-0101"  -> "phone:+13125550101"
+"312.555.0101"    -> "phone:+13125550101"
+"1548392012"      -> "npi:1548392012"
+"4410 N Broadway, Chicago IL 60640"
+                  -> "address:4410 n broadway|chicago|il|60640"
+
+not keyed:
+{ "detail_type": "phone", "raw_value": "ext. 4471",
+  "normalizes": false, "flag": "unnormalizable",
+  "loaded": true, "keyed": false }</pre>
+<p class="cap">Unnormalizable values still load — the note says it, so the dossier records it — but they are never join keys. Keying on a fragment like an extension would manufacture paths between unrelated claims.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Upsert</h3>
+  <p>Detail nodes are global and shared. Entity nodes are claim-scoped and never merged.</p>
+</div>
+<div class="step-data">
+<pre>MERGE (d:Detail {key: "phone:+13125550101"})
+  ON CREATE SET d.detail_type = "phone", d.first_seen = $now
+SET d.raw_values_seen = apoc.coll.toSet(
+      coalesce(d.raw_values_seen, []) + "(312) 555-0101")
+
+MERGE (e:Entity {claim_id: "123456-789012-AB-01", entity_id: "E1"})
+SET e.type = "person", e.category = "medical",
+    e.subcategory = null, e.taxonomy_version = "3"
+
+MERGE (e)-[r:HAS_DETAIL]->(d)
+SET r.owner_status = "assigned", r.basis = "inferred",
+    r.evidence = ["EV2"]</pre>
+<p class="cap"><code>raw_values_seen</code> accumulating on the Detail node is quietly useful: it is a running census of how one value is written across your archive, which is the evidence base for improving normalization rules.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Cross-claim path</h3>
+  <p>Structural, not inferred. Normalization plus upsert-by-key created it.</p>
+</div>
+<div class="step-data">
+<pre>MATCH (a:Entity)-[:HAS_DETAIL]->(d:Detail)&lt;-[:HAS_DETAIL]-(b:Entity)
+WHERE a.claim_id &lt;&gt; b.claim_id
+RETURN a, b, collect(d.key) AS shared, count(d) AS n
+
+result:
+{ "a": "123456-789012-AB-01:E1", "b": "774100-220945-CG-01:E3",
+  "shared": ["phone:+13125550101"], "n": 1 }</pre>
+<p class="cap">No model was asked whether these two claims are related. Two entities attached to the same node, and the path exists as a consequence.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge exc">exception</span>
+  <h3>IdentityLink</h3>
+  <p>A separate reviewable judgment layered on the structural path. Rarity-weighted.</p>
+</div>
+<div class="step-data">
+<pre>{ "link_id": "IL-00412",
+  "entity_a": "123456-789012-AB-01:E1", "entity_b": "774100-220945-CG-01:E3",
+  "distance": "different_client",
+  "shared_details": ["phone:+13125550101"],
+  "features": { "name_sim": 0.42, "shared_detail_count": 1,
+                "detail_rarity": 0.88, "category_match": false,
+                "temporal_overlap": true },
+  "identity_score": 0.72, "outcome": "review",
+  "suspicion_score": 0.81,
+  "decided_by": null, "decided_at": null }
+
+same evidence, same occurrence:
+{ "distance": "same_occurrence",
+  "identity_score": 0.96, "outcome": "same",
+  "suspicion_score": 0.00 }
+
+contrast, low rarity:
+{ "shared_details": ["address:1100 w lawrence|chicago|il|60640"],
+  "detail_rarity": 0.11,
+  "identity_score": 0.19, "outcome": "different",
+  "suspicion_score": 0.04 }</pre>
+<p class="cap">Three cases, one query shape. Low name similarity with a rare shared identifier across different clients is worth an investigator's time, and is exactly what an automatic merge would erase. The same evidence inside one occurrence is near-conclusive for identity and worthless as a fraud signal. The third is a large building shared by dozens of unrelated parties — rarity is the only thing distinguishing it from the first.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Person projection</h3>
+  <p>Derived state, recomputed from confirmed links. Never hand-edited.</p>
+</div>
+<div class="step-data">
+<pre>{ "person_id": "P-0091",
+  "canonical_name": "Monroe, Alan T.",
+  "members": [ { "entity_id": "123456-789012-AB-01:E1", "claim_id": "123456-789012-AB-01" },
+               { "entity_id": "774100-220945-CG-01:E3", "claim_id": "774100-220945-CG-01" } ],
+  "union_details": ["npi:1548392012", "phone:+13125550101"],
+  "derived_from_links": ["IL-00412"],
+  "recomputed_at": "2026-09-18T02:14:00Z" }
+
+(:Entity {claim_id:"123456-789012-AB-01", entity_id:"E1"})-[:RESOLVES_TO]->(:Person {person_id:"P-0091"})</pre>
+<p class="cap">Identity projects upward; assertions do not. Category, actions and evidence stay on the claim-scoped entity, because the same individual can be a provider in one claim and a witness in another. Undoing a bad merge means deleting one link and recomputing, not reconstructing what each claim said.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge exc">exception</span>
+  <h3>Cluster-size alarm</h3>
+  <p>Sits in front of watchlist matching so a blob entity never produces an alert.</p>
+</div>
+<div class="step-data">
+<pre>{ "person_id": "P-1877", "member_count": 63,
+  "threshold": 12,
+  "chain_detail": "address:1100 w lawrence|chicago|il|60640",
+  "detail_rarity": 0.11,
+  "verdict": "implausible_cluster",
+  "action": "suspend_projection", "routed": "review_queue" }</pre>
+<p class="cap">Transitivity bites harder across claims than within one. A clinic's main line or an apartment building will chain dozens of unrelated people into a single Person. The alarm suspends the projection rather than alerting on it, and names the detail that did the chaining so the fix is obvious.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge">output</span>
+  <h3>Watchlist alert</h3>
+  <p>Matched once per Person, but the alert names the claim-scoped entity that triggered it.</p>
+</div>
+<div class="step-data">
+<pre>{ "alert_id": "ALRT-77120",
+  "person_id": "P-0091",
+  "watchlist_id": 440271,
+  "matched_on": ["npi:1548392012"],
+  "score": 0.97, "threshold": 0.90, "above_threshold": true,
+  "triggering_entity": "123456-789012-AB-01:E1",
+  "affected_claims": ["123456-789012-AB-01", "774100-220945-CG-01"],
+  "evidence_trail": [
+    { "evidence_id": "EV1", "note_id": 188213,
+      "raw_span": [1204, 1214], "quote": "NPI 1548392012" } ],
+  "identity_basis": ["IL-00412"] }
+
+below threshold, still stored:
+{ "person_id": "P-0344", "score": 0.71, "threshold": 0.90,
+  "above_threshold": false, "alert_id": null }</pre>
+<p class="cap">Two things make this alert actionable rather than a bare name: a quote with raw-note coordinates an investigator's viewer can highlight, and <code>identity_basis</code> naming the link that joined the two claims — so if the merge was wrong, the alert is visibly wrong too. Below-threshold scores are stored so threshold behaviour is auditable rather than invisible.</p>
+</div>
+
+</div>
+
+<div class="note"><strong>Open items.</strong> The six-value taxonomy needs a written, versioned artifact. Detail normalization rules per type, and the list of identity-bearing detail types, are undecided. Rarity weights and the cluster-size threshold are unset placeholders. GLiNER should be gated on measured LLM entity recall — if recall is already adequate against gold data, the lane is infrastructure for nothing.</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+(function () {
+  var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  mermaid.initialize({
+    startOnLoad: true, theme: 'base', securityLevel: 'loose',
+    flowchart: { htmlLabels: true, curve: 'basis', nodeSpacing: 45, rankSpacing: 50 },
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif',
+    themeVariables: {
+      darkMode: dark, fontSize: '13px', background: 'transparent',
+      primaryColor: dark ? '#2b2a27' : '#f7f6f3',
+      primaryTextColor: dark ? '#e8e6e0' : '#24231f',
+      primaryBorderColor: dark ? '#4a4945' : '#cfccc2',
+      lineColor: dark ? '#85837c' : '#8a8880',
+      textColor: dark ? '#b0aea6' : '#5f5e5a',
+      mainBkg: dark ? '#2b2a27' : '#f7f6f3',
+      nodeBorder: dark ? '#4a4945' : '#cfccc2'
+    }
+  });
+})();
+</script>
+</body>
+</html>
