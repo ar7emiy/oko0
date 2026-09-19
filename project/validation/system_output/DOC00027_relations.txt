@@ -1,0 +1,19 @@
+DOC00027.txt  claim=CLM0006   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Reyes' --[MANAGES_CARE_FOR]--> 'Alexander Delgado'   (asserted)
+      evidence [20:73]: 'Reyes continues to manage care for Alexander Delgado.'
+  'Omar Jones' --[AFFILIATED_WITH]--> 'Ibarra & Cole'   (asserted)
+      evidence [577:604]: 'Omar Jones of Ibarra & Cole'
+  'Omar Jones' --[REPRESENTS]--> 'Alexander Delgado'   (asserted)
+      evidence [577:651]: 'Omar Jones of Ibarra & Cole regarding representation of Alexander Delgado.'
+  'Omar Jones' --[EMPLOYED_BY]--> 'Ibarra & Cole'   (asserted)
+      evidence [1458:1482]: 'Omar Jones\nIbarra & Cole'
+  'Omar Jones' --[SENT_EMAIL_TO]--> 'Nadia Rodriguez'   (asserted)
+      evidence [1214:1310]: 'From: Omar Jones <omar.jones@ibarracole.com>\nSent: Fri, Apr 10, 2026 2:18 PM\nTo: Nadia Rodriguez'
+  'Reyes Rehabilitation Services' --[MANAGES_CARE_FOR]--> 'Alexander Delgado'   (asserted)
+      evidence [2141:2218]: 'Reyes Rehabilitation Services continues to manage care for Alexander Delgado.'
+  'Reyes Rehabilitation Services' --[MANAGES_CARE_FOR]--> 'Alexander Delgado'   (asserted)
+      evidence [2141:2218]: 'Reyes Rehabilitation Services continues to manage care for Alexander Delgado.'
+  'Nadia Rodriguez' --[SENT_UPDATED_DEMAND_PACKAGE_TO]--> 'Omar Jones'   (asserted)
+      evidence [1776:1884]: 'From: Nadia Rodriguez\n> Sent: earlier\n> To: Omar Jones\n> Per our call, attaching the updated demand package.'

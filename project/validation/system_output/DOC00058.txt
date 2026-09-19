@@ -1,0 +1,23 @@
+========================================================================================
+DOC00058.txt   claim=CLM0012   occurrence=OCC0009
+========================================================================================
+
+--- NAME MENTIONS (8), in order of appearance ---
+  [   12:30   ] 'Katherine Sterling'               class=claimant         extractor=gliner+llm           -> entity Ead44520ab977 ('Katherine Sterling')  [also in: DOC00057, DOC00059]
+  [  769:786  ] 'Dr. Robert Harris'                class=medical_provider extractor=gliner+llm           -> entity E5e9893966f6a ('Dr. Robert Harris')  [also in: DOC00009, DOC00010, DOC00011, DOC00012, DOC00057, DOC00059]
+  [  816:834  ] 'Katherine Sterling'               class=medical_provider extractor=gliner+llm           -> entity Ead44520ab977 ('Katherine Sterling')  [also in: DOC00057, DOC00059]
+  [  927:932  ] 'Lopez'                            class=repair_shop      extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00050, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00059]
+  [  934:953  ] 'Shop TIN 99-1566069'              class=repair_shop      extractor=gazetteer+gliner+llm+sweep -> entity E19e2afd034b2 ('Shop TIN 99-1566069')
+  [ 1238:1256 ] 'Katherine Sterling'               class=claimant         extractor=gliner+llm           -> entity Ead44520ab977 ('Katherine Sterling')  [also in: DOC00057, DOC00059]
+  [ 1834:1851 ] 'Dr. Robert Harris'                class=medical_provider extractor=gliner+llm           -> entity E5e9893966f6a ('Dr. Robert Harris')  [also in: DOC00009, DOC00010, DOC00011, DOC00012, DOC00057, DOC00059]
+  [ 1881:1900 ] 'Sterling, Katherine'              class=medical_provider extractor=llm                  -> entity Ead44520ab977 ('Katherine Sterling')  [also in: DOC00057, DOC00059]
+
+--- IDENTIFIERS (4), in order of appearance ---
+  [  113:127  ] phone    '(689) 672-6682'             owner='Katherine Sterling' [12:30]                 method=llm
+  [ 1092:1102 ] dob      '2024-08-15'                 owner=UNBOUND (orphan)                             method=unbound
+  [ 1339:1353 ] phone    '(689) 672-6682'             owner='Katherine Sterling' [1238:1256]             method=llm
+  [ 2030:2040 ] tin      '99-1566069'                 owner='Lopez' [927:932]                            method=llm
+
+--- COREFERENCE LINKS (2) ---
+  [  129:140  ] 'The insured'        (descriptor) -> 'Katherine Sterling' [12:30]
+  [  189:201  ] 'The claimant'       (descriptor) -> 'Katherine Sterling' [12:30]

@@ -16,11 +16,19 @@ from __future__ import annotations
 
 from collections import defaultdict
 
-from . import chunking, genai, textnorm
+from . import chunking, genai, profiling, textnorm
 from .graph_store import GraphEdge, GraphNode, GraphStore, get_graph_store
 from .repository import Repository
 from .settings import CFG, Paths
 from .vectorstore import FaissVectorStore
+
+
+class ChunkIndexUnavailable(RuntimeError):
+    """Incremental chunk indexing was asked to extend an index that is absent.
+
+    Distinct from agent.AgentStoreUnavailable, which is the query-time failure.
+    This one means the backfill never ran, so there is nothing to add to.
+    """
 
 # entity class -> the verb linking it to the claimant on that claim
 ROLE_PREDICATE = {
@@ -32,25 +40,50 @@ ROLE_PREDICATE = {
 ORG_CLASSES = {"repair_shop"}
 
 
-def build_chunk_index(repo: Repository, store: FaissVectorStore | None = None) -> dict:
-    """Embed every chunk; claim_id and occurrence_id ride in the metadata so the
-    RAG path can filter to a claim without the graph being partitioned."""
+def build_chunk_index(repo: Repository, store: FaissVectorStore | None = None,
+                      doc_ids: list[str] | None = None) -> dict:
+    """Embed chunks; claim_id and occurrence_id ride in the metadata so the RAG
+    path can filter to a claim without the graph being partitioned.
+
+    `doc_ids` restricts the pass to arriving notes and UPSERTS them into the
+    existing index. Without it the whole corpus is re-chunked and re-embedded.
+
+    This parameter is not an optimisation. `ingest()` did not call this function
+    at all, so chunks from an arriving note never entered chunks.faiss and Layer
+    4 retrieval could only ever see the backfill corpus -- silently, since the
+    agent still returned chunks, just never the new ones.
+    """
     docs = repo.table("documents")
     claim_of = {r["doc_id"]: r["claim_id"] for _, r in docs.iterrows()}
     occ_of = ({r["doc_id"]: r.get("occurrence_id") for _, r in docs.iterrows()}
               if "occurrence_id" in docs.columns else {})
-    texts = {f.stem: f.read_text(encoding="utf-8") for f in Paths.raw_notes.glob("*.txt")}
+    texts = {f.stem: f.read_text(encoding="utf-8")
+             for f in profiling.note_files(doc_ids)}
     doc_map = {d: (claim_of.get(d, "UNKNOWN"), t) for d, t in texts.items()}
     chunks = chunking.chunk_corpus(doc_map)
 
-    vecs = genai.embed([c.text for c in chunks])
     store = store or FaissVectorStore(
         CFG.EMBED_DIM, Paths.chunk_index, Paths.chunk_meta)
+    if doc_ids is not None:
+        # Add to what is already indexed rather than replacing it.
+        try:
+            store.load()
+        except FileNotFoundError as e:
+            raise ChunkIndexUnavailable(
+                "incremental chunk indexing asked to add to " +
+                str(Paths.chunk_index) + ", which does not exist. Run the "
+                "backfill first."
+            ) from e
+
+    if not chunks:
+        return {"n_chunks": 0, "index": str(store.index_path)}
+    vecs = genai.embed([c.text for c in chunks])
     store.upsert([c.chunk_id for c in chunks], vecs,
                  [{**c.to_meta(), "occurrence_id": occ_of.get(c.doc_id) or "",
                    "text": c.text} for c in chunks])
     store.persist()
-    return {"n_chunks": len(chunks), "index": str(store.index_path)}
+    return {"n_chunks": len(chunks), "index": str(store.index_path),
+            "scope": "incremental" if doc_ids is not None else "full"}
 
 
 def build_graph(repo: Repository, graph: GraphStore | None = None) -> dict:

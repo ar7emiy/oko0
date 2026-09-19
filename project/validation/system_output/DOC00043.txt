@@ -1,0 +1,34 @@
+========================================================================================
+DOC00043.txt   claim=CLM0009   occurrence=OCC0008
+========================================================================================
+
+--- NAME MENTIONS (13), in order of appearance ---
+  [   13:21   ] 'Anderson'                         class=attorney         extractor=llm                  -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00044, DOC00045, DOC00046]
+  [   25:47   ] 'Delgado Legal Partners'           class=attorney         extractor=gliner+llm           -> entity Ec5ccaeb906fe ('Delgado Legal Partners')  [also in: DOC00044, DOC00046]
+  [   76:88   ] 'Billy Garcia'                     class=attorney         extractor=gliner+llm           -> entity E212e498517aa ('William Garcia')  [also in: DOC00020, DOC00022, DOC00044, DOC00045, DOC00046]
+  [  278:294  ] 'Anderson, Andrew'                 class=attorney         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00044, DOC00045, DOC00046]
+  [  573:579  ] 'Garcia'                           class=claimant         extractor=llm                  -> entity E212e498517aa ('William Garcia')  [also in: DOC00020, DOC00022, DOC00044, DOC00045, DOC00046]
+  [  873:879  ] 'Ibarra'                           class=attorney         extractor=gliner+llm+sweep     -> entity E0f73dd7962e2 ('Omar Ibarra')  [also in: DOC00013, DOC00014, DOC00044, DOC00046]
+  [  909:923  ] 'William Garcia'                   class=repair_shop      extractor=gliner+llm           -> entity E212e498517aa ('William Garcia')  [also in: DOC00020, DOC00022, DOC00044, DOC00045, DOC00046]
+  [ 1181:1187 ] 'Miller'                           class=attorney         extractor=gliner+llm+sweep     -> entity E99a4d6a9edc0 ('Miller Car Care')  [also in: DOC00000, DOC00044, DOC00045, DOC00046]
+  [ 1463:1478 ] 'Samuel Anderson'                  class=attorney         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00044, DOC00045, DOC00046]
+  [ 1482:1504 ] 'Delgado Legal Partners'           class=attorney         extractor=gliner+llm           -> entity Ec5ccaeb906fe ('Delgado Legal Partners')  [also in: DOC00044, DOC00046]
+  [ 1533:1545 ] 'Billy Garcia'                     class=attorney         extractor=gliner+llm           -> entity E212e498517aa ('William Garcia')  [also in: DOC00020, DOC00022, DOC00044, DOC00045, DOC00046]
+  [ 1596:1611 ] 'Andrew Anderson'                  class=attorney         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00044, DOC00045, DOC00046]
+  [ 1918:1932 ] 'William Garcia'                   class=claimant         extractor=gliner+llm           -> entity E212e498517aa ('William Garcia')  [also in: DOC00020, DOC00022, DOC00044, DOC00045, DOC00046]
+
+--- IDENTIFIERS (11), in order of appearance ---
+  [  123:155  ] email    'samuel.anderson@delgadolegal.com' owner='Anderson' [13:21]                           method=llm
+  [  191:201  ] dob      '2024-12-14'                 owner='Billy Garcia' [76:88]                       method=line_rule
+  [  441:455  ] phone    '(948) 407-4023'             owner='Garcia' [573:579]                           method=llm
+  [  662:676  ] phone    '(948) 407-4023'             owner='Garcia' [573:579]                           method=llm
+  [  964:974  ] dob      '2024-06-01'                 owner='William Garcia' [909:923]                   method=line_rule
+  [ 1037:1069 ] address  '7777 Elm Ave, Riverton, NJ 08065' owner='Ibarra' [873:879]                           method=llm
+  [ 1198:1208 ] tin      '62-9241199'                 owner='Miller' [1181:1187]                         method=llm
+  [ 1573:1583 ] dob      '2024-08-22'                 owner='Billy Garcia' [1533:1545]                   method=line_rule
+  [ 1737:1784 ] email    'larkinrehabilitationservices@northlineortho.com' owner=UNBOUND (orphan)                             method=unbound
+  [ 2015:2029 ] phone    '(948) 407-4023'             owner='William Garcia' [1918:1932]                 method=llm
+  [ 2060:2092 ] address  '3531 Park Ln, Riverton, NJ 08098' owner='William Garcia' [1918:1932]                 method=llm
+
+--- COREFERENCE LINKS (1) ---
+  [  203:205  ] 'He'                 (pronoun) -> 'Billy Garcia' [76:88]

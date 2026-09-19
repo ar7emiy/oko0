@@ -22,6 +22,46 @@ from src.repository import Repository  # noqa: E402
 from src.settings import CFG, Paths  # noqa: E402
 
 
+def _assert_query_vocabulary_is_served():
+    """Every field offered to the query planner must have an executor branch.
+
+    `ssn` sat in contracts.query_plan_schema for months with nothing in
+    app._apply_filter to answer it, and `dob` alongside it. The planner would
+    emit a valid plan filtering on ssn, the executor's haystack stayed empty,
+    nothing matched, and the user was told there were no such entities -- for an
+    identifier the store held. A capability gap that reads as a factual answer.
+
+    Cheap to check, so it is checked rather than remembered.
+    """
+    from src import app, contracts
+
+    def _field_enum(node):
+        if isinstance(node, dict):
+            if node.get("properties", {}).get("field", {}).get("enum"):
+                return node["properties"]["field"]["enum"]
+            for v in node.values():
+                if (r := _field_enum(v)):
+                    return r
+        if isinstance(node, list):
+            for v in node:
+                if (r := _field_enum(v)):
+                    return r
+        return None
+
+    declared = set(_field_enum(contracts.query_plan_schema()) or [])
+    assert declared, "query_plan_schema exposes no field enum to check"
+    unserved = declared - app._SERVED_FIELDS
+    assert not unserved, (
+        f"query_plan_schema offers {sorted(unserved)} to the planner but "
+        "app._apply_filter has no branch for them; filtering on one would "
+        "silently return nothing and read as 'no such entity'")
+    undeclared = app._SERVED_FIELDS - declared
+    assert not undeclared, (
+        f"app._apply_filter serves {sorted(undeclared)} that the planner is "
+        "never told about, so the capability is unreachable")
+    print(f"      query vocabulary: {len(declared)} fields, all served")
+
+
 def _assert_no_silent_fallback():
     """A run must never quietly substitute a research stand-in for a model.
 
@@ -95,6 +135,7 @@ def main(full: bool = True):
     _assert_no_silent_fallback()
     g = leakage_guard.run_all_guards()
     assert all(v["ok"] for v in g.values())
+    _assert_query_vocabulary_is_served()
 
     print("[3/9] profiling")
     repo = Repository()
@@ -107,6 +148,32 @@ def main(full: bool = True):
     print("[4/9] layer 1 extraction")
     r = pipeline_v2.run(repo)
     assert r["n_orphan_identifiers"] > 0, "orphan identifiers not being recorded"
+
+    # SPAN GROUNDING is one of this project's four stated invariants, and until
+    # now nothing checked it for MENTIONS -- only for the manifest's own
+    # placements, which the generator produces and therefore cannot get wrong.
+    #
+    # Measured before the fix: 349 of 1051 mentions (33%) had a stored span that
+    # actually contained their own surface. The LLM and sweep lanes took
+    # `start`/`end` straight from the model, clamped them so nothing crashed,
+    # and took the surface from the model's own text field without ever
+    # comparing the two. Everything keyed on a span inherited the error --
+    # B-cubed's span-overlap match to ground truth (mention precision read
+    # 0.50), citations, proximity binding, polarity windows, the QA highlight.
+    ments = repo.table("mentions")
+    bad = []
+    for _, mm in ments.iterrows():
+        raw = (Paths.raw_notes / f"{mm['doc_id']}.txt").read_text(encoding="utf-8")
+        got = raw[int(mm["char_start"]):int(mm["char_end"])]
+        if got != mm["surface"]:
+            bad.append((mm["doc_id"], int(mm["char_start"]), mm["surface"], got))
+    rate = 1 - len(bad) / max(len(ments), 1)
+    assert not bad, (
+        f"{len(bad)} of {len(ments)} mentions ({1 - rate:.1%}) have a span that "
+        f"does not contain their surface, e.g. {bad[:3]}. Span grounding is an "
+        "invariant: a mention whose offsets do not locate its own text cannot "
+        "be cited, highlighted, or matched to ground truth by overlap.")
+    print(f"      span grounding: {len(ments)} mentions, all locate their surface")
 
     print("[5/9] audit: extraction quality")
     m = audit._load_manifest()
@@ -171,12 +238,68 @@ def main(full: bool = True):
               f"deterministic rule proposed (of {len(sae)} scored)")
     else:
         print(f"      deterministic blocking only; {len(sae)} pairs scored")
+    # ---- calibration ------------------------------------------------------
+    # These exist because the match prior was 16x too low for as long as this
+    # resolver had existed, and NOTHING here caught it: the B-cubed assertion
+    # below passed at 0.79 while the operating point was splitting 42 entities
+    # into 515. A gate insensitive to a 0.20 F1 defect is not a gate.
+    cal = out["calibration"]
+    lam = cal["probability_two_random_records_match"]
+    assert lam != 0.0001, ("match prior is Splink's untouched 1e-4 default; the "
+                           "deterministic estimate silently failed")
+    assert 1e-4 < lam < 0.5, (
+        f"match prior {lam} is outside any defensible band -- it claims "
+        f"1 in {1 / lam:.0f} random mention pairs co-refer")
+
+    # The label-free check: a globally unique identifier must outrank a name.
+    # Comparisons with a substituted parameter are exempt -- npi's m cannot be
+    # trained from 7 non-null values, and pretending otherwise is the failure
+    # this whole block exists to prevent.
+    weights = cal["agreement_weights_bits"]
+    substituted = set(cal["by_comparison"])
+    name_bits = weights.get("name_sorted", {}).get("match_weight_bits", 0.0)
+    inverted = [(k, w["match_weight_bits"]) for k, w in weights.items()
+                if k in ("npi", "email", "phone7", "dob")
+                and k not in substituted
+                and w["match_weight_bits"] < name_bits]
+    if inverted:
+        # KNOWN-FAILING, tracked as T0.5: u is inflated 3-37x because Splink's
+        # random-pair sample is contaminated with true matches, which costs the
+        # identifier comparisons more than the dense name ones. Reported rather
+        # than asserted until a label-free u estimator exists; promote this to
+        # an assert when T0.5 lands.
+        print(f"      [T0.5] {len(inverted)} identifier comparisons still score "
+              f"below name ({name_bits:+.1f}b): "
+              + ", ".join(f"{k} {v:+.1f}b" for k, v in inverted))
+
     gold = audit.entity_precision(repo, m)["_mention_gold"]
     sweep = audit.bcubed_sweep(repo, gold)
     best = sweep["best_by_f1"]
     assert best["bcubed_f1"] > 0.6, f"B-cubed F1 regressed to {best['bcubed_f1']}"
-    print(f"      {out['n_entities']} entities @ {out['operating_threshold']}; "
-          f"best F1 {best['bcubed_f1']:.3f} @ {best['threshold']}")
+
+    # Entity COUNT at the operating point, not just F1. B-cubed precision RISES
+    # under over-splitting, so a badly fragmented run can post 0.97 precision and
+    # a respectable best-F1 somewhere on the curve while the shipped threshold
+    # produces six times too many entities. That is exactly what happened.
+    # 4x is deliberately loose. The defect it exists to catch measured 12.3x
+    # (515 entities against 42) on a 60-document subset, and a tight bound here
+    # would be a fragile gate that fires on ordinary corpus variation instead of
+    # on a broken prior. Tighten it once T0.5 lands and the residual ~1.9x
+    # over-split closes.
+    n_gold = len(set(gold.values()))
+    ratio = out["n_entities"] / max(n_gold, 1)
+    assert ratio < 4.0, (
+        f"{out['n_entities']} entities at the operating threshold "
+        f"{out['operating_threshold']} against {n_gold} in ground truth "
+        f"({ratio:.1f}x) -- the corpus is being over-split. Check the match "
+        f"prior (currently {lam:.6f}) before touching the threshold.")
+
+    print(f"      {out['n_entities']} entities @ {out['operating_threshold']} "
+          f"vs {n_gold} gold ({ratio:.2f}x); best F1 {best['bcubed_f1']:.3f} "
+          f"@ {best['threshold']}")
+    print(f"      match prior {lam:.6f}; "
+          f"{cal['n_untrained_parameters']} substituted m/u parameters; "
+          f"{out['n_edges_uncalibrated']} edges flagged")
 
     print("[8/9] global graph")
     gr = build_graph.build_graph(repo)
@@ -199,6 +322,55 @@ def main(full: bool = True):
     hits = a.retrieve_chunks(claim, "who treated the claimant")
     assert hits, "scoped vector retrieval returned nothing"
     assert all(h["claim_id"] == claim for h in hits), "claim scope leaked"
+
+    # INVARIANT: every document in the database is reachable by retrieval.
+    #
+    # This guards a bug that shipped and was invisible: ingest() never called
+    # build_chunk_index, so notes arriving after backfill were resolved into
+    # entities and added to the graph while their text never entered
+    # chunks.faiss. Querying a claim with text copied verbatim out of one of
+    # those notes returned zero chunks. Nothing failed -- the agent still
+    # answered, from the backfill corpus only.
+    indexed = {m.get("doc_id") for m in a.chunks._meta.values()}
+    stored = set(repo.table("documents")["doc_id"])
+    orphaned = stored - indexed
+    assert not orphaned, (
+        f"{len(orphaned)} document(s) exist but are absent from the chunk "
+        f"index, so retrieval cannot reach them: {sorted(orphaned)[:5]}")
+
+    # And citations must be checked, not trusted. The synthesis prompt demands
+    # doc_id:span for every statement; before this, the returned strings were
+    # passed through unverified and presented as provenance.
+    fake = ["NO_SUCH_DOC:0-10", "banana", f"{hits[0]['doc_id']}:999999-1000000"]
+    ok = [f"{hits[0]['doc_id']}:{hits[0]['char_start']}-{hits[0]['char_end']}"]
+    verified, rejected = a._verify_citations(fake + ok, hits, [])
+    assert verified == ok, f"a valid citation was rejected: {verified}"
+    assert len(rejected) == len(fake), (
+        f"fabricated citations passed verification: {rejected}")
+    print(f"      citation check: {len(rejected)}/{len(fake)} fabrications caught")
+
+    # INVARIANT: the exact lane can find what the indexer indexed.
+    #
+    # who_is_at applied its own normalization (phone_last7, address_key) while
+    # build_graph keyed identifier nodes on normalize_identifier. The lookup
+    # asked for ID::phone::7979442 while the index held ID::phone::3237979442,
+    # so it returned [] for every phone and every address, always -- invisible
+    # because answer() never called the exact lane. One shared normalization
+    # function is the fix; this asserts the two sides still agree.
+    obs = repo.table("identifier_observations")
+    bound = obs[obs["subject_mention_id"].notna()]
+    checked = resolved = 0
+    for _, o in bound.iterrows():
+        if checked >= 25:
+            break
+        checked += 1
+        if a.who_is_at(o["kind"], o["value_raw"]):
+            resolved += 1
+    assert checked == 0 or resolved > 0, (
+        "exact identifier lookup resolved none of "
+        f"{checked} bound observations -- index and lookup normalization have "
+        "drifted apart again")
+    print(f"      exact lane: {resolved}/{checked} bound identifiers resolvable")
     print(f"      {ci['n_chunks']} chunks; {len(hits)} retrieved in scope")
 
     repo.close()

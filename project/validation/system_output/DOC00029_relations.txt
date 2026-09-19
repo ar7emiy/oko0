@@ -1,0 +1,21 @@
+DOC00029.txt  claim=CLM0006   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'O. Jones' --[AFFILIATED_WITH]--> 'Ibarra & Cole'   (asserted)
+      evidence [189:214]: 'O. Jones of Ibarra & Cole'
+  'O. Jones' --[REPRESENTS]--> 'Alexander Delgado'   (asserted)
+      evidence [189:260]: 'O. Jones of Ibarra & Cole regarding representation of Alexander Delgado'
+  'Nadia Rodriguez' --[WORKS_IN]--> 'Claims Department'   (asserted)
+      evidence [1488:1521]: 'Nadia Rodriguez\nClaims Department'
+  'Nadia Rodriguez' --[EMPLOYED_IN_DEPARTMENT]--> 'Claims Department'   (asserted)
+      evidence [1488:1521]: 'Nadia Rodriguez\nClaims Department'
+  'Nadia Rodriguez' --[SENT_EMAIL_TO]--> 'Omar Jones'   (asserted)
+      evidence [1246:1340]: 'From: Nadia Rodriguez <nrodriguez@ourinsco.com>\nSent: Mon, May 3, 2026 11:45 PM\nTo: Omar Jones'
+  'Omar Jones' --[SENT_EMAIL_TO]--> 'Nadia Rodriguez'   (asserted)
+      evidence [1779:1833]: 'From: Omar Jones\n> Sent: earlier\n> To: Nadia Rodriguez'
+  'Omar Jones' --[SENT_EMAIL_TO]--> 'Nadia Rodriguez'   (asserted)
+      evidence [1779:1833]: 'From: Omar Jones\n> Sent: earlier\n> To: Nadia Rodriguez'
+  'Reyes Rehabilitation Services' --[MANAGES_CARE_FOR]--> 'Xander Delgado'   (asserted)
+      evidence [2270:2344]: 'Reyes Rehabilitation Services continues to manage care for Xander Delgado.'
+  'indemnity reserve' --[SET_AT]--> '$44,000.00'   (asserted)
+      evidence [2521:2567]: 'indemnity reserve currently set at $44,000.00.'

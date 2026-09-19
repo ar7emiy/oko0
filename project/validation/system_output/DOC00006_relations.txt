@@ -1,0 +1,23 @@
+DOC00006.txt  claim=CLM0001   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'P. Brown' --[AFFILIATED_WITH]--> 'Sterling Injury Attorneys'   (asserted)
+      evidence [605:642]: 'P. Brown of Sterling Injury Attorneys'
+  'P. Brown' --[REPRESENTS]--> 'M. Jones'   (asserted)
+      evidence [605:679]: 'P. Brown of Sterling Injury Attorneys regarding representation of M. Jones'
+  'Dr. Christopher Nguyen' --[MANAGES_CARE_FOR]--> 'Margaret Jones'   (asserted)
+      evidence [840:906]: 'Dr. Christopher Nguyen continues to manage care for Margaret Jones'
+  'Dr. Christopher Nguyen' --[MANAGES_CARE_FOR]--> 'Margaret Jones'   (asserted)
+      evidence [840:907]: 'Dr. Christopher Nguyen continues to manage care for Margaret Jones.'
+  'Priya rBown' --[EMPLOYED_BY]--> 'Sterling Injury Attorneys'   (asserted)
+      evidence [1798:1838]: 'Priya rBown of Sterling Injury Attorneys'
+  'Priya rBown' --[REPRESENTS]--> 'Peggy Jones'   (asserted)
+      evidence [1787:1879]: 'Spoke with Priya rBown of Sterling Injury Attorneys regarding representation of Peggy Jones.'
+  'Nguyen, Christopher' --[MANAGES_CARE_FOR]--> 'Margaret Jones'   (asserted)
+      evidence [1967:2031]: 'Nguyen, Christopher continues to manage care for Margaret Jones.'
+  'Priya rBown' --[AFFILIATED_WITH]--> 'Sterling Injury Attorneys'   (asserted)
+      evidence [1798:1838]: 'Priya rBown of Sterling Injury Attorneys'
+  'Priya rBown' --[REPRESENTS]--> 'Peggy Jones'   (asserted)
+      evidence [1798:1878]: 'Priya rBown of Sterling Injury Attorneys regarding representation of Peggy Jones'
+  'Nguyen, Christopher' --[MANAGES_CARE_FOR]--> 'Margaret Jones'   (asserted)
+      evidence [1967:2030]: 'Nguyen, Christopher continues to manage care for Margaret Jones'

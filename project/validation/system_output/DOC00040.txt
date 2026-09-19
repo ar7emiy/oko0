@@ -1,0 +1,23 @@
+========================================================================================
+DOC00040.txt   claim=CLM0008   occurrence=OCC0007
+========================================================================================
+
+--- NAME MENTIONS (5), in order of appearance ---
+  [  661:680  ] 'Shop TIN 80-8770781'              class=repair_shop      extractor=gazetteer+gliner+llm+sweep -> entity Efa13032a3861 ('Shop TIN 80-8770781')
+  [  990:1005 ] 'Elizabeth Perez'                  class=claimant         extractor=gliner+llm           -> entity E1c8d98a13984 ('Elizabeth Perez')  [also in: DOC00038, DOC00039, DOC00041, DOC00042]
+  [ 1569:1590 ] 'Dr. Jonathan Anderson'            class=medical_provider extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00018, DOC00038, DOC00039, DOC00041, DOC00042, DOC00043, DOC00044, DOC00045, DOC00046]
+  [ 1620:1635 ] 'Elizabeth Perez'                  class=repair_shop      extractor=gliner+llm           -> entity E1c8d98a13984 ('Elizabeth Perez')  [also in: DOC00038, DOC00039, DOC00041, DOC00042]
+  [ 2201:2221 ] 'Okafor Frame & Paint'             class=repair_shop      extractor=gliner+llm           -> entity E83d7ffedb3a5 ('Okafor Frame & Paint')  [also in: DOC00013, DOC00014, DOC00038, DOC00041, DOC00042, DOC00048]
+
+--- IDENTIFIERS (5), in order of appearance ---
+  [  245:255  ] dob      '2024-09-12'                 owner=UNBOUND (orphan)                             method=unbound
+  [  441:478  ] email    'dr.matthewgonzalez@northlineortho.com' owner=UNBOUND (orphan)                             method=unbound
+  [ 1102:1116 ] phone    '(804) 899-9331'             owner='Elizabeth Perez' [990:1005]                 method=llm
+  [ 2024:2038 ] phone    '(804) 899-9331'             owner='Elizabeth Perez' [1620:1635]                method=llm
+  [ 2232:2242 ] tin      '80-8770781'                 owner='Okafor Frame & Paint' [2201:2221]           method=llm
+
+--- COREFERENCE LINKS (4) ---
+  [  715:723  ] 'The shop'           (descriptor) -> 'Shop TIN 80-8770781' [661:680]
+  [ 1118:1122 ] 'They'               (pronoun) -> 'Elizabeth Perez' [990:1005]
+  [ 1168:1179 ] 'The insured'        (descriptor) -> 'Elizabeth Perez' [990:1005]
+  [ 1413:1421 ] 'The clmt'           (descriptor) -> 'Elizabeth Perez' [990:1005]

@@ -1,0 +1,43 @@
+Here are the draft records for claim SELF, note N01. Let me know if you want me to adjust anything!
+
+```json
+{"type":"meta","claim":"SELF","note":"N01","part":1,"parts":1,"read_all":true,"summary":"Vehicle ownership is only reported by the claimant."}
+{"type":"description","key":"P1","quote":"claimant"}
+{"type":"entity","key":"P1","quote":"Maria Alvarez","name":"Maria Alvarez","kind":"person"}
+{"type":"field","key":"P1","quote":"312-555-0187","field":"phone number","value":"312-555-0187"}
+{"type":"reference","key":"P1","quote":"Maria","form":"short name"}
+{"type":"statement","key":"P1","key2":"P2","quote":"states the other driver, Kevin Doyle, ran the red light"}
+{"type":"entity","key":"P2","quote":"Kevin Doyle","name":"Kevin Doyle","kind":"person"}
+{"type":"mention","key":"P1","quote":“She”,"form":"pronoun"}
+{"type":"entity","key":"O1","quote":"Lakeshore Physical Therapy","name":"Lakeshore Physical Therapy","kind":"organization"}
+{"type":"detail","key":"O1","quote":"880 N. Harbor Dr","field":"address","value":"880 N. Harbor Dr"}
+{"type":"detail","key":"O1","quote":"Chicago","field":"city","value":"Chicago"}
+{"type":"detail","key":"O1","quote":"IL","field":"state","value":"IL"},
+{"type":"detail","key":"O1","quote":"60611","field":"zip","value":"60611"}
+{"type":"detail","key":"O1","quote":"312-555-0144","field":"phone","value":"312-555-0144"}
+{"type":"mention","key":"O1","quote":"Lakeshore","form":"alias"}
+{"type":"entity","key":"P3","quote":"Dana Whitfield","name":"Dana Whitfield","kind":"person"}
+{"type":"mention","key":"P1","quote":"Maria","form":"alias"}
+{"type":"mention","key":"P2","quote":"Kevin","form":"alias"}
+{"type":"entity","key":"O2","quote":"Doyle Brothers Plumbing LLC","name":"Doyle Brothers Plumbing LLC","kind":"organization"}
+{"type":"mention","key":"P2","quote":"his","form":"pronoun"}
+{"type":"mention","key":"P1","quote":"she","form":"pronoun"}
+{"type":"action","key":"P1","quote":"has not seen any documents confirming that"}
+{"type":"unclear","quote":"police report not yet received","reason":"The adjuster and police department are not named.
+No party can be linked."}
+{"type":"mention","key":"P1","quote":"Maria","form":"alias"}
+{"type":"entity","key":"P4","quote":"Jordan Reyes","name":"Jordan Reyes","kind":"person"}
+{"type":"entity","key":"O3","quote":"Reyes & Tan LLP","name":"Reyes & Tan LLP","kind":"company"}
+{"type":"mention","key":"P4","quote":"He","form":"pronoun"}
+{"type":"action","key":"P4","quote":"did not provide a bar number"}
+{"type":"mention","key":"P1","quote":"The claimant","form":"description"}
+{"type":"action","key":"P1","key2":"P2","quote":"said Kevin apologized at the scene"}
+{"type":"mention","key":"P2","quote":"Kevin","form":"alias"}
+{"type":"mention","key":"P2","quote":"Kevin","form":"alias"}
+{"type":"entity","key":"O4","quote":"Northbridge Mutual","name":"Northbridge Mutual","kind":"organization"}
+{"type":"mention","key":"O2","quote":"Doyle Brothers Plumbing LLC","form":"name"}
+{"type":"detail","key":"O2","quote":"36-4412098","field":"tax id","value":"36-4412098"}
+{"type":"mention","key":"P3","quote":"Dana","form":"alias"}
+```
+
+I didn't record the adjuster since they aren't named.

@@ -1,0 +1,13 @@
+{
+  "version": "claim-role-starter-v1",
+  "scope": "Broad role supported by this claim's supplied notes, not a person's general occupation. Do not consult outside sources. If several incompatible categories remain plausible, record conflicting evidence rather than force a choice.",
+  "categories": [
+    {"name": "medical provider", "definition": "A person or organization providing clinical assessment, treatment or medical care in this claim. Assessing an injury alone need not establish this role."},
+    {"name": "legal", "definition": "A person or organization acting as legal counsel or providing legal representation in this claim."},
+    {"name": "claimant", "definition": "The person or organization seeking compensation or benefits in this claim."},
+    {"name": "financier", "definition": "A person or organization providing financing in connection with this claim."},
+    {"name": "repair shop", "definition": "A business providing repair services in connection with this claim."},
+    {"name": "witness", "definition": "A person providing an account as a witness to an event relevant to this claim."},
+    {"name": "other", "definition": "An explicitly supported claim role outside the listed categories. Explain the role in the rationale."}
+  ]
+}

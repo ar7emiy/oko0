@@ -122,8 +122,24 @@ def resolve_incremental(repo: Repository, new_doc_ids: list[str],
         return {"n_new_mentions": len(new_ids),
                 "note": "nothing resolved yet; run the backfill first"}
 
+    # Refuse to score arriving notes with a model trained under a different
+    # evidence set. Silently reusing a stale model puts edges calibrated two
+    # different ways into one store, and nothing downstream can tell them apart.
+    er.check_model_current(frame)
+
     linker = Linker(existing, str(er.MODEL_PATH), db_api=DuckDBAPI())
     rules = [block_on(*rule) for rule in er.BLOCKING_RULES]
+
+    # The frozen model carries the backfill's untrained parameters with it, so an
+    # arriving edge is uncalibrated in exactly the same places. Recording it here
+    # too keeps the column meaning one thing across both paths -- a NULL must
+    # mean "calibrated", never "written by the incremental path".
+    cal = er.training_completeness(linker)
+    if not cal["fully_trained"]:
+        runlog.note(f"model was frozen with {cal['n_untrained_parameters']} "
+                    f"untrained m/u parameters "
+                    f"({', '.join(sorted(cal['by_comparison']))}); "
+                    "affected arriving edges are marked uncalibrated")
 
     # NaN -> None before handing records to Splink.
     #
@@ -142,7 +158,7 @@ def resolve_incremental(repo: Repository, new_doc_ids: list[str],
     preds = linker.inference.find_matches_to_new_records(
         records, blocking_rules=rules,
     ).as_pandas_dataframe()
-    edges = _normalise_pairs(preds, new_ids)
+    edges = _normalise_pairs(preds, new_ids, cal)
     n_vs_existing = len(edges)
 
     # SECOND PASS: arriving vs arriving.
@@ -160,7 +176,7 @@ def resolve_incremental(repo: Repository, new_doc_ids: list[str],
         try:
             wp = within.inference.predict(
                 threshold_match_probability=0.01).as_pandas_dataframe()
-            w_edges = _normalise_pairs(wp, new_ids)
+            w_edges = _normalise_pairs(wp, new_ids, cal)
             edges = pd.concat([edges, w_edges], ignore_index=True)
         except Exception as e:      # noqa: BLE001
             runlog.note(f"within-batch scoring failed ({type(e).__name__}: {e}); "
@@ -190,15 +206,19 @@ def resolve_incremental(repo: Repository, new_doc_ids: list[str],
     edges = edges.assign(suppressed_reason=reasons)
     n_suppressed = sum(1 for r in reasons if r)
 
+    unc = (edges["uncalibrated"] if "uncalibrated" in edges.columns
+           else pd.Series([None] * len(edges), index=edges.index))
+
     # ---- append, never rewrite --------------------------------------------
     repo.add_same_as_edges([
         {"mention_id_a": a, "mention_id_b": b, "probability": float(p),
          "match_weight": float(w), "backend": "splink-incremental",
-         "blocked_by": k, "suppressed_reason": sr}
-        for a, b, p, w, k, sr in zip(
+         "blocked_by": k, "uncalibrated": uc, "suppressed_reason": sr}
+        for a, b, p, w, k, uc, sr in zip(
             edges["mention_id_l"].to_numpy(), edges["mention_id_r"].to_numpy(),
             edges["match_probability"].to_numpy(), edges["match_weight"].to_numpy(),
-            edges["blocked_by"].to_numpy(), edges["suppressed_reason"].to_numpy())
+            edges["blocked_by"].to_numpy(), unc.to_numpy(),
+            edges["suppressed_reason"].to_numpy())
     ])
     persist_blocks(repo, all_buckets)
 
@@ -222,12 +242,16 @@ def resolve_incremental(repo: Repository, new_doc_ids: list[str],
     }
 
 
-def _normalise_pairs(preds: pd.DataFrame, new_ids: set) -> pd.DataFrame:
+def _normalise_pairs(preds: pd.DataFrame, new_ids: set,
+                     calibration: dict | None = None) -> pd.DataFrame:
     """find_matches_to_new_records returns the search record on one side.
 
     Which side is not guaranteed, and downstream code assumes nothing about
     order, so both columns are normalised to plain mention ids and the lane name
     is resolved the same way the backfill resolves it.
+
+    The uncalibrated flag is derived HERE rather than after the fact, because
+    it needs this frame's gamma columns and they do not survive the projection.
     """
     out = pd.DataFrame({
         "mention_id_l": preds["mention_id_l"].astype(str),
@@ -236,6 +260,8 @@ def _normalise_pairs(preds: pd.DataFrame, new_ids: set) -> pd.DataFrame:
         "match_weight": preds.get("match_weight", pd.Series(0.0, index=preds.index)).fillna(0.0),
         "blocked_by": (preds["match_key"].map(er._rule_name)
                        if "match_key" in preds.columns else None),
+        "uncalibrated": (er.SplinkResolver._uncalibrated_column(preds, calibration)
+                         if calibration else None),
     })
     # Drop self-pairs and any pair not actually involving an arriving mention.
     keep = (out["mention_id_l"] != out["mention_id_r"]) & (

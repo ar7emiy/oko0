@@ -1,0 +1,194 @@
+---
+title: "Target — Client-tunable claim-note intelligence architecture"
+---
+flowchart TB
+  classDef source fill:#E8EEF8,stroke:#315A8A,stroke-width:1.6px,color:#102A43
+  classDef control fill:#F3E8FF,stroke:#7048A8,stroke-width:1.6px,color:#32195A
+  classDef activity fill:#F7F7F4,stroke:#535B61,stroke-width:1.4px,color:#20252A
+  classDef evidence fill:#E4F2EA,stroke:#2F6B4F,stroke-width:1.8px,color:#12301F
+  classDef decision fill:#FFF2D9,stroke:#A06416,stroke-width:1.6px,color:#5A3300
+  classDef review fill:#FFF0F0,stroke:#A33A3A,stroke-width:1.6px,stroke-dasharray:6 3,color:#5C1616
+  classDef projection fill:#E7F5F7,stroke:#27717A,stroke-width:1.6px,color:#123A40
+  classDef invariant fill:#FFF8C9,stroke:#8A6A00,stroke-width:2px,color:#493800
+  classDef terminal fill:#263238,stroke:#263238,color:#FFFFFF
+
+  subgraph CONTROL["CONTROL PLANE — changes client policy without changing core code"]
+    direction LR
+    CP1["<b>ClientProfile vN</b><br/>client · effective window · locale · jurisdiction · LOB"]:::control
+    CP2["<b>Source contracts</b><br/>adapters · field mappings · required metadata · source ids"]:::control
+    CP3["<b>Extraction policy</b><br/>models · prompts · labels · detector packs · context/chunk rules"]:::control
+    CP4["<b>Identity policy</b><br/>per-type features · blockers · constraints · decision bands"]:::control
+    CP5["<b>Search policy</b><br/>lane routing · filters · fusion · reranker · context budget"]:::control
+    CP6["<b>Governance + evaluation</b><br/>authorization · model boundary · retention · release gates"]:::control
+    RS["<b>Immutable RunSpec</b><br/>resolved profile + code commit + model/prompt/schema hashes<br/>reference-data versions + source watermark"]:::evidence
+    CP1 --> RS
+    CP2 --> RS
+    CP3 --> RS
+    CP4 --> RS
+    CP5 --> RS
+    CP6 --> RS
+  end
+
+  subgraph INTAKE["1 — INTAKE: authoritative source facts, immutable document versions"]
+    direction TB
+    S0(["claim-system export / API / file feed"]):::source
+    S1["<b>SourceAdapter</b><br/>emit source_document_id · claim_id · occurrence_id<br/>note timestamp · author/source · bytes · metadata"]:::activity
+    S2{"contract valid?<br/>required ids · encoding · supported type · authorized client"}:::decision
+    Q0["<b>quarantine record</b><br/>reason · raw receipt id · retry/disposition"]:::review
+    D0[/"<b>source_document_version</b><br/>opaque document_version_id · SHA-256 · source metadata<br/>bytes are immutable; duplicate delivery is idempotent"/]:::evidence
+    S0 --> S1 --> S2
+    S2 -->|no| Q0
+    S2 -->|yes| D0
+  end
+
+  RS -.->|"parameterizes every stage"| S1
+
+  subgraph CONTEXT["2 — CONTEXT PREPARATION: create views, never rewrite evidence"]
+    direction LR
+    X1["layout / line / quoted-block signals<br/>confidence + detector-pack version"]:::activity
+    X2["task-specific text units<br/>sentence/layout-aware boundaries + overlap"]:::activity
+    X3["<b>ContextAssembler</b><br/>document metadata · chronology · neighboring notes<br/>authorized party roster · reference hits"]:::activity
+    XM[/"<b>context_manifest</b><br/>every item supplied to a model call, with id + as-of version"/]:::evidence
+    D0 --> X1 --> X2 --> X3 --> XM
+  end
+
+  subgraph CANDIDATES["3 — CANDIDATE GENERATION: maximize recall, preserve disagreements"]
+    direction TB
+    F0{{"fork by extraction capability"}}:::decision
+    NER["<b>entity span lane</b><br/>GLiNER / approved NER provider<br/>open unknown route; no casing gate"]:::activity
+    IDS["<b>structured-token lane</b><br/>email · phone · NPI · client identifier packs<br/>detection separate from validation"]:::activity
+    REL["<b>relation lane</b><br/>subject · raw predicate · object · evidence<br/>open predicate vocabulary"]:::activity
+    EVT["<b>claim-activity lane</b><br/>actor · action · participants · amount/date/status<br/>CONTACTED / RECEIVED / SENT are retained"]:::activity
+    REF["<b>reference-data lane</b><br/>carrier roster · client entity list · registries<br/>match is a proposal with source/version"]:::activity
+    CL[/"<b>extraction_candidate ledger</b><br/>raw span · raw label/value · lane · score · model/prompt/run<br/>alternatives and overlaps remain separate"/]:::evidence
+    XM --> F0
+    F0 --> NER --> CL
+    F0 --> IDS --> CL
+    F0 --> REL --> CL
+    F0 --> EVT --> CL
+    F0 --> REF --> CL
+  end
+
+  subgraph RECONCILE["4 — EVIDENCE RECONCILIATION: validate before interpreting"]
+    direction TB
+    G1["exact span check<br/>raw[start:end] must equal candidate surface<br/>relocate exactly or reject with reason"]:::activity
+    G2["compatible interval reconciliation<br/>preserve nested entities · multi-label alternatives · lane provenance"]:::activity
+    G3{"enough evidence to normalize?<br/>unknown and ambiguous remain valid states"}:::decision
+    RV["review / unresolved queue<br/>candidate is retained; no guessed fallback"]:::review
+    E1[/"<b>mentions</b><br/>structural entity_type · source span · extraction lineage"/]:::evidence
+    E2[/"<b>identifier observations + validations</b><br/>format · checksum · registry are separate facts"/]:::evidence
+    E3[/"<b>relation / role / event assertions</b><br/>raw + normalized form · orthogonal status axes · evidence"/]:::evidence
+    CL --> G1 --> G2 --> G3
+    G3 -->|ambiguous / unsupported| RV
+    G3 -->|entity observation| E1
+    G3 -->|structured observation| E2
+    G3 -->|semantic assertion| E3
+  end
+
+  subgraph BIND["5 — ARGUMENT + IDENTIFIER BINDING: proposals, not one-time guesses"]
+    direction LR
+    B1["candidate bindings<br/>explicit span · within-note coref · claim roster<br/>proximity · reference-data owner"]:::activity
+    B2["score + compatibility checks<br/>retain competing candidates and method provenance"]:::activity
+    B3{"binding decision band"}:::decision
+    B4[/"bound assertion / identifier<br/>selected mention/entity + probability + method"/]:::evidence
+    B5["binding review queue<br/>unbound observation remains searchable"]:::review
+    E1 --> B1
+    E2 --> B1
+    E3 --> B1
+    B1 --> B2 --> B3
+    B3 -->|auto| B4
+    B3 -->|review| B5
+    B3 -->|no-link| B5
+  end
+
+  subgraph IDENTITY["6 — ENTITY RESOLUTION: propose, score, validate clusters, version identity"]
+    direction TB
+    I0{{"candidate-generation union"}}:::decision
+    I1["deterministic blocks<br/>exact identifiers · normalized names · source/reference keys"]:::activity
+    I2["embedding recall net<br/>task-specific model · per-type compatibility<br/>proposes only; never decides"]:::activity
+    I3["per-entity-type pair models<br/>comparison explanations + calibration artifact"]:::activity
+    I4["cannot-link + cluster consistency<br/>bridge diagnostics · hub/shared-identifier handling"]:::activity
+    I5{"auto-link / review / no-link"}:::decision
+    I6["identity review<br/>decision and rationale are immutable"]:::review
+    I7[/"<b>stable entity_id</b> + versioned entity_snapshot<br/>membership · predecessor lineage · cluster fingerprint"/]:::evidence
+    E1 --> I0
+    B4 --> I0
+    I0 --> I1 --> I3
+    I0 --> I2 --> I3
+    I3 --> I4 --> I5
+    I5 -->|auto-link| I7
+    I5 -->|review| I6 --> I7
+    I5 -->|no-link| I7
+  end
+
+  subgraph PUBLISH["7 — ATOMIC PROJECTION PUBLICATION: one watermark, many read models"]
+    direction LR
+    P0["projection builder<br/>requires one client_id + source_run_id"]:::activity
+    P1[/"evidence graph<br/>factual assertions separate from derived navigation signals"/]:::projection
+    P2[/"entity profiles / dossiers<br/>deterministic summaries with evidence ids"/]:::projection
+    P3[/"exact + lexical indexes<br/>ids · names · codes · raw wording"/]:::projection
+    P4[/"evidence vector indexes<br/>task/model/version declared"/]:::projection
+    P5[/"analytics / timeline views<br/>claim activities ordered by event and record time"/]:::projection
+    AM{"all required projections validated<br/>at the same watermark?"}:::decision
+    BAD["do not publish<br/>retain last complete manifest; emit failed stage run"]:::review
+    GOOD[/"<b>ArtifactManifest</b><br/>checksums · counts · versions · watermarks<br/>atomic pointer to the complete searchable snapshot"/]:::evidence
+    I7 --> P0
+    E1 --> P0
+    E2 --> P0
+    E3 --> P0
+    B4 --> P0
+    P0 --> P1 --> AM
+    P0 --> P2 --> AM
+    P0 --> P3 --> AM
+    P0 --> P4 --> AM
+    P0 --> P5 --> AM
+    AM -->|no| BAD
+    AM -->|yes| GOOD
+  end
+
+  subgraph QUERY["8 — QUERY + ANSWER: retrieve evidence, then verify every claim"]
+    direction LR
+    U0(["authorized stakeholder question"]):::source
+    U1["shared QueryService<br/>authorization scope != relevance scope"]:::activity
+    U2["typed query router<br/>exact · lexical · vector · temporal · graph"]:::activity
+    U3["fusion + reranking<br/>lane attribution and filters preserved"]:::activity
+    U4[/"bounded evidence pack<br/>raw spans · assertions · entities · paths · chronology"/]:::evidence
+    U5["structured synthesis<br/>answer claims select evidence IDs only"]:::activity
+    U6{"citation exists, span matches,<br/>and evidence supports claim?"}:::decision
+    U7(["answer + citations + retrieval trace"]):::terminal
+    U8["abstain / qualify / request review"]:::review
+    GOOD --> U1
+    U0 --> U1 --> U2 --> U3 --> U4 --> U5 --> U6
+    U6 -->|yes| U7
+    U6 -->|no| U8
+  end
+
+  subgraph QUALITY["9 — QUALITY LOOP: tune profiles and learned artifacts, never silently mutate history"]
+    direction LR
+    M1["stage metrics<br/>span · type · binding · polarity axes · pair/cluster ER"]:::activity
+    M2["search metrics<br/>Recall@K · nDCG · citation support · abstention · latency/cost"]:::activity
+    M3["human review + representative labels<br/>stratified by source · LOB · locale · note form"]:::review
+    M4{"release gates passed?"}:::decision
+    M5[/"new calibration / model / ClientProfile version<br/>old RunSpecs remain reproducible"/]:::evidence
+    U7 --> M2
+    RV --> M3
+    B5 --> M3
+    I6 --> M3
+    E1 --> M1
+    E2 --> M1
+    E3 --> M1
+    M1 --> M4
+    M2 --> M4
+    M3 --> M4
+    M4 -->|no| CP6
+    M4 -->|yes| M5 --> CP1
+  end
+
+  INV["<b>Non-tunable invariants</b><br/>no cross-client identity · immutable source versions · exact evidence provenance<br/>no required silent fallback · unknown survives · factual vs inferred stays visible<br/>readers see only a complete published snapshot"]:::invariant
+  INV -.->|"constrains"| RS
+  INV -.->|"constrains"| G1
+  INV -.->|"constrains"| AM
+  INV -.->|"constrains"| U6
+
+  EX["<b>Small data example</b><br/><b>source:</b> '9/2 — claimant says Dr Reyes did not refer her to Apex Imaging.'<br/><b>candidates:</b> person='Dr Reyes'; organization='Apex Imaging'; action='refer'; negation='did not'<br/><b>assertion:</b> Dr Reyes —REFERRED_TO→ Apex Imaging; proposition_status=negated;<br/>evidentiality=reported; source=claimant; evidence=document_version_17[21:68]<br/><b>result:</b> the graph may store the negated assertion, but factual-positive traversal excludes it by policy."]:::invariant
+  E3 -.->|"example"| EX

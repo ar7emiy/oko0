@@ -1,0 +1,31 @@
+DOC00025.txt  claim=CLM0005   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Wilson' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [300:323]: 'Wilson of XYZ Law Group'
+  'Wilson' --[REPRESENTS]--> 'James Gonzalez'   (asserted)
+      evidence [300:366]: 'Wilson of XYZ Law Group regarding representation of James Gonzalez'
+  'Dr. Jennifer Garcia' --[MANAGES_CARE_FOR]--> 'James Gonzalez'   (asserted)
+      evidence [868:931]: 'Dr. Jennifer Garcia continues to manage care for James Gonzalez'
+  'Dr. Jennifer Garcia' --[MANAGES_CARE_FOR]--> 'James Gonzalez'   (asserted)
+      evidence [868:932]: 'Dr. Jennifer Garcia continues to manage care for James Gonzalez.'
+  'Patty Wilson' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [1788:1817]: 'Patty Wilson of XYZ Law Group'
+  'Patty Wilson' --[REPRESENTS]--> 'J. Gonzalez'   (asserted)
+      evidence [1788:1857]: 'Patty Wilson of XYZ Law Group regarding representation of J. Gonzalez'
+  'Patty Wilson' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [1788:1817]: 'Patty Wilson of XYZ Law Group'
+  'Patty Wilson' --[REPRESENTS]--> 'J. Gonzalez'   (asserted)
+      evidence [1788:1857]: 'Patty Wilson of XYZ Law Group regarding representation of J. Gonzalez'
+  'Dr. Jennifer Garcia' --[MANAGES_CARE_FOR]--> 'Gonzalez'   (asserted)
+      evidence [2252:2309]: 'Dr. Jennifer Garcia continues to manage care for Gonzalez'
+  'indemnity reserve' --[SET_AT]--> '$50,000.00'   (asserted)
+      evidence [2669:2714]: 'indemnity reserve currently set at $50,000.00'
+  'Patricia Wilson' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [2999:3031]: 'Patricia Wilson of XYZ Law Group'
+  'Patricia Wilson' --[REPRESENTS]--> 'James Gonzalez'   (asserted)
+      evidence [2999:3074]: 'Patricia Wilson of XYZ Law Group regarding representation of James Gonzalez'
+  'Patricia Wilson' --[EMPLOYED_BY]--> 'XYZ Law Group'   (asserted)
+      evidence [2999:3031]: 'Patricia Wilson of XYZ Law Group'
+  'Patricia Wilson' --[REPRESENTS]--> 'James Gonzalez'   (asserted)
+      evidence [2999:3074]: 'Patricia Wilson of XYZ Law Group regarding representation of James Gonzalez'

@@ -1,0 +1,5 @@
+doc_id,subject_entity,predicate,object_entity_or_value,evidence_quote,notes
+DOC00000,Marge Wilson,represents,Robert Miller,"regarding representation of Robert Miller","WORKED EXAMPLE (complete for this doc). predicate is free text in your own words -- there is no fixed vocabulary to match here, this lane is unfinished research code (see README)"
+DOC00000,Marge Wilson,works at,Harbor & Vance LLP,"Marge Wilson of Harbor & Vance LLP","WORKED EXAMPLE."
+DOC00000,Ibarra Neurology Associates,treats,Robert Miller,"continues to manage care for Rob Miller","WORKED EXAMPLE."
+DOC00000,Thomas Collision Center,holds vehicle of,Robert Miller,"vehicle currently at Thomas Collision Center","WORKED EXAMPLE. this one is IMPLIED, not stated -- note that distinction if it matters to you"

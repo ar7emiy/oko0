@@ -32,6 +32,10 @@ from .settings import CFG, Paths
 from .vectorstore import FaissVectorStore
 
 
+# doc_id:start-end -- the citation format the synthesis prompt demands.
+_CITE_RE = re.compile(r"^\[?([A-Za-z0-9_\-]+):(\d+)\s*-\s*(\d+)\]?$")
+
+
 class AgentStoreUnavailable(RuntimeError):
     """A store Layer 4 retrieval depends on has not been built."""
 
@@ -149,22 +153,80 @@ class ClaimScopedAgent:
             }
         return out
 
-    def who_is_at(self, kind: str, value: str) -> list[dict]:
+    # ---- step 2b: EXACT lane ---------------------------------------------
+    def exact_lookup(self, query: str, claim_id: str | None = None) -> list[dict]:
+        """Resolve identifiers appearing literally in the query.
+
+        Dense retrieval is structurally weak on rare literal tokens: a 768-dim
+        embedding of "1568291037" carries almost no signal, so "who is NPI
+        1568291037" cannot be answered by the vector lane no matter how it is
+        tuned. Yet the graph already indexes every identifier as a node, and
+        `find_by_identifier` has always been able to answer it directly -- the
+        agent simply never called it.
+
+        The detector is `gazetteers.scan`, the SAME one used on note text. A
+        query is text; reusing the extractor means a query identifier is
+        recognised, normalised and validated exactly as the note version was,
+        rather than by a second parser that could drift from it.
+        """
+        from . import gazetteers
+
+        out = []
+        for h in gazetteers.scan(query):
+            if not h.valid:
+                continue
+            rows = self.who_is_at(h.label, h.text, claim_id=claim_id)
+            # Detected-but-unresolved is reported, not dropped. Collapsing it
+            # into "not detected" is what hid the normalization mismatch above:
+            # every phone query looked like a query with no identifier in it.
+            out.append({"kind": h.label, "value": h.text,
+                        "validation": h.validation,
+                        "resolved": bool(rows), "matches": rows})
+        return out
+
+    def who_is_at(self, kind: str, value: str,
+                  claim_id: str | None = None) -> list[dict]:
         """'Who is associated with this address/phone?' -- the unnamed-identifier
-        query, answered by a direct lookup on the identifier node."""
+        query, answered by a direct lookup on the identifier node.
+
+        ONE normalization function, shared with the indexer. This previously
+        applied its own overrides -- `phone_last7` for phones, `address_key` for
+        addresses -- while `build_graph` keys identifier nodes on
+        `normalize_identifier`. So the lookup asked for `ID::phone::7979442`
+        while the index held `ID::phone::3237979442`, and this function returned
+        [] for every phone and every address, always.
+
+        It went unnoticed because nothing called it: `answer()` never used the
+        exact lane. Wiring the lane in surfaced it on the first phone query.
+
+        Last-7 matching is a BLOCKING concern (deliberately fuzzy, see the
+        `phone7` rule) and not an exact-lookup one. Exact lookup must use
+        whatever the index was built with, or it is not a lookup.
+        """
         from . import textnorm
         norm = textnorm.normalize_identifier(kind, value)
-        if kind == "address":
-            norm = textnorm.address_key(value)
-        if kind == "phone":
-            norm = textnorm.phone_last7(value)
-        return (self.graph.find_by_identifier(kind, norm)
+        return (self.graph.find_by_identifier(kind, norm, claim_id=claim_id)
                 if hasattr(self.graph, "find_by_identifier") else [])
 
     # ---- step 4: grounded synthesis --------------------------------------
     def answer(self, claim_id: str, question: str, hops: int | None = None) -> dict:
+        # EXACT lane first. An identifier in the question is a literal lookup,
+        # not a similarity problem, and the entities it resolves seed graph
+        # expansion even when the vector lane surfaces nothing relevant.
+        exact = self.exact_lookup(question, claim_id=claim_id)
         chunks = self.retrieve_chunks(claim_id, question)
         eids = self.entities_in_chunks(claim_id, chunks)
+
+        # Union the two entry points. Without this, an identifier query reaches
+        # the graph only if the vector lane happened to retrieve a chunk
+        # containing that entity -- which is exactly what it is bad at.
+        for hit in exact:
+            for row in hit["matches"]:
+                for key in ("subject_id", "object_id"):
+                    eid = row.get(key)
+                    if eid and eid in self._entities.index and eid not in eids:
+                        eids.append(eid)
+
         triples = self.expand(claim_id, eids, hops)
         synthesis = self._synthesize(claim_id, question, chunks, triples, eids)
         return {
@@ -173,6 +235,7 @@ class ClaimScopedAgent:
                       "chunks_considered": len(chunks),
                       "all_chunks_in_scope": all(c["claim_id"] == claim_id for c in chunks)},
             "retrieved_chunks": chunks,
+            "exact_matches": exact,
             "entities": [{"entity_id": e,
                           "name": self._entities.loc[e]["canonical_name"] if e in self._entities.index else e,
                           "class": self._entities.loc[e]["entity_class"] if e in self._entities.index else "?"}
@@ -180,6 +243,7 @@ class ClaimScopedAgent:
             "triples": triples,
             "answer": synthesis["answer"],
             "citations": synthesis["citations"],
+            "citation_check": synthesis.get("citation_check", {}),
         }
 
     def _synthesize(self, claim_id, question, chunks, triples, eids) -> dict:
@@ -202,9 +266,62 @@ class ClaimScopedAgent:
 
         data = genai.generate_json(prompt, _answer_schema(), task="agent_answer",
                                    offline_handler=offline)
-        cites = data.get("citations") or [
+        raw_cites = data.get("citations") or [
             f"{c['doc_id']}:{c['char_start']}-{c['char_end']}" for c in chunks]
-        return {"answer": data.get("answer", ""), "citations": cites}
+        verified, rejected = self._verify_citations(raw_cites, chunks, triples)
+        return {"answer": data.get("answer", ""),
+                "citations": verified,
+                "citation_check": {
+                    "n_claimed": len(raw_cites),
+                    "n_verified": len(verified),
+                    "n_rejected": len(rejected),
+                    "rejected": rejected,
+                    "grounded": bool(verified) and not rejected,
+                }}
+
+    def _verify_citations(self, cites: list[str], chunks: list[dict],
+                          triples: list[dict]) -> tuple[list[str], list[dict]]:
+        """Check every citation against the evidence that was actually retrieved.
+
+        The prompt DEMANDS a doc_id and char span for each statement. Nothing
+        checked that the model complied -- the returned strings were passed
+        through untouched and presented as provenance. For a system whose entire
+        claim is that facts trace to characters, the trace was unverified.
+
+        Four checks, cheapest first. A citation must:
+          1. parse as doc_id:start-end
+          2. name a document that exists
+          3. have a span inside that document's length
+          4. fall within evidence actually placed in the prompt -- a retrieved
+             chunk or a retrieved triple's span. A syntactically perfect
+             citation to a real document the model was never shown is a
+             fabricated provenance trail, which is the failure worth catching.
+        """
+        allowed = [(c["doc_id"], int(c["char_start"]), int(c["char_end"]))
+                   for c in chunks]
+        allowed += [(t["doc_id"], int(t["span"][0]), int(t["span"][1]))
+                    for t in triples if t.get("doc_id") and t.get("span")]
+
+        verified, rejected = [], []
+        for cite in cites:
+            m = _CITE_RE.match(str(cite).strip())
+            if not m:
+                rejected.append({"citation": cite, "reason": "unparseable"})
+                continue
+            doc, s, e = m.group(1), int(m.group(2)), int(m.group(3))
+            text = self._text(doc)
+            if not text:
+                rejected.append({"citation": cite, "reason": "unknown doc_id"})
+                continue
+            if not (0 <= s < e <= len(text)):
+                rejected.append({"citation": cite, "reason": "span out of bounds"})
+                continue
+            if not any(doc == d and s >= ds and e <= de for d, ds, de in allowed):
+                rejected.append({"citation": cite,
+                                 "reason": "span outside retrieved evidence"})
+                continue
+            verified.append(cite)
+        return verified, rejected
 
     # ---- dossier ---------------------------------------------------------
     def dossier(self, claim_id: str) -> dict:

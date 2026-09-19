@@ -27,7 +27,8 @@ from . import contracts, textnorm
 from .repository import Repository
 from .settings import CFG, Paths
 
-IDENTIFIER_ATTRS = {"has_email", "has_phone", "has_npi", "has_tin", "has_ssn"}
+IDENTIFIER_ATTRS = {"has_email", "has_phone", "has_npi", "has_tin", "has_ssn",
+                    "has_vin", "has_dob"}
 CLASS_ROLE = {
     "claimant": "claimant", "attorney": "claimant_attorney",
     "medical_provider": "treating_provider", "repair_shop": "repair_shop",
@@ -256,6 +257,13 @@ def _identity_summary(eid, ent_identifiers) -> dict:
         "phones": sorted(d.get("has_phone", [])),
         "npis": sorted(d.get("has_npi", [])),
         "tins": sorted(d.get("has_tin", [])),
+        # ssn and vin were absent here, so an SSN that had been detected,
+        # persisted and scored by the resolver still reached the app and the
+        # agent as if it did not exist. Latent until the corpus actually
+        # contained SSNs (D21).
+        "ssns": sorted(d.get("has_ssn", [])),
+        "vins": sorted(d.get("has_vin", [])),
+        "dobs": sorted(d.get("has_dob", [])),
         "email_domains": sorted(d.get("email_domain", [])),
         "addresses": sorted(d.get("addr", [])),
     }
@@ -265,7 +273,8 @@ def _linked_entities(eid, ent_identifiers, id_index, ent_to_mentions,
                      pair_by_mentions, entities) -> list:
     out = {}
     mine = ent_identifiers.get(eid, {})
-    for field in ("has_email", "has_phone", "has_npi", "has_tin", "addr"):
+    for field in ("has_email", "has_phone", "has_npi", "has_tin", "has_ssn",
+                  "has_vin", "has_dob", "addr"):
         for v in mine.get(field, []):
             for other in id_index.get((field, v), set()):
                 if other == eid:

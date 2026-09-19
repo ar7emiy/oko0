@@ -1,0 +1,9 @@
+DOC00028.txt  claim=CLM0006   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Omar Jones' --[EMPLOYED_BY]--> 'Ibarra & Cole'   (asserted)
+      evidence [649:676]: 'Omar Jones of Ibarra & Cole'
+  'Omar Jones' --[REPRESENTS]--> 'AlexanderD elgado'   (asserted)
+      evidence [638:723]: 'Spoke with Omar Jones of Ibarra & Cole regarding representation of AlexanderD elgado.'
+  'Reyes Rehabilitation Services' --[MANAGES_CARE_FOR]--> 'A. Delgado'   (asserted)
+      evidence [1643:1713]: 'Reyes Rehabilitation Services continues to manage care for A. Delgado.'

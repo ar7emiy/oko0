@@ -1,0 +1,25 @@
+DOC00017.txt  claim=CLM0004   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'AndrewA nderson' --[EMPLOYED_BY]--> 'Whitfield Trial Group'   (asserted)
+      evidence [394:434]: 'AndrewA nderson of Whitfield Trial Group'
+  'AndrewA nderson' --[REPRESENTS]--> 'Tomas Whitfield'   (asserted)
+      evidence [394:478]: 'AndrewA nderson of Whitfield Trial Group regarding representation of Tomas Whitfield'
+  'Tomas Whitfield' --[INVOLVED_IN]--> 'rear-end collision'   (reported)
+      evidence [956:1024]: 'Contacted Tomas Whitfield to discuss the reported rear-end collision'
+  'A. Anderson' --[EMPLOYED_BY]--> 'Whitfield Trial Group'   (asserted)
+      evidence [1605:1652]: 'Spoke with A. Anderson of Whitfield Trial Group'
+  'Whitfield Trial Group' --[REPRESENTS]--> 'Tomas Whitfield'   (asserted)
+      evidence [1631:1696]: 'Whitfield Trial Group regarding representation of Tomas Whitfield'
+  'A. Anderson' --[AFFILIATED_WITH]--> 'Whitfield Trial Group'   (asserted)
+      evidence [1616:1652]: 'A. Anderson of Whitfield Trial Group'
+  'A. Anderson' --[REPRESENTS]--> 'Tomas Whitfield'   (asserted)
+      evidence [1616:1696]: 'A. Anderson of Whitfield Trial Group regarding representation of Tomas Whitfield'
+  'Andrew Anderson' --[AFFILIATED_WITH]--> 'Whitfield Trial Group'   (asserted)
+      evidence [2796:2836]: 'Andrew Anderson of Whitfield Trial Group'
+  'Andrew Anderson' --[REPRESENTS]--> 'Tomas Whitfield'   (asserted)
+      evidence [2796:2880]: 'Andrew Anderson of Whitfield Trial Group regarding representation of Tomas Whitfield'
+  'Andrew Anderson' --[EMPLOYED_BY]--> 'Whitfield Trial Group'   (asserted)
+      evidence [2796:2836]: 'Andrew Anderson of Whitfield Trial Group'
+  'Andrew Anderson' --[REPRESENTS]--> 'Tomas Whitfield'   (asserted)
+      evidence [2796:2880]: 'Andrew Anderson of Whitfield Trial Group regarding representation of Tomas Whitfield'

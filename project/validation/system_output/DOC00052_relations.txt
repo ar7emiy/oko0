@@ -1,0 +1,15 @@
+DOC00052.txt  claim=CLM0011   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Dr. Michael Jackson' --[MANAGES_CARE_FOR]--> 'Petre Lopez'   (asserted)
+      evidence [834:895]: 'Dr. Michael Jackson continues to manage care for Petre Lopez.'
+  'Dr. Michael Jackson' --[MANAGES_CARE_FOR]--> 'Petre Lopez'   (asserted)
+      evidence [834:895]: 'Dr. Michael Jackson continues to manage care for Petre Lopez.'
+  'Mick Jackson' --[MANAGES_CARE_FOR]--> 'Lopez, Peter'   (asserted)
+      evidence [2040:2095]: 'Mick Jackson continues to manage care for Lopez, Peter.'
+  'indemnity reserve' --[SET_AT]--> '$36,000.00'   (asserted)
+      evidence [1879:1924]: 'indemnity reserve currently set at $36,000.00'
+  'Mick Jackson' --[MANAGES_CARE_FOR]--> 'Lopez, Peter'   (asserted)
+      evidence [2040:2094]: 'Mick Jackson continues to manage care for Lopez, Peter'
+  'vehicle' --[LOCATED_AT]--> 'Lopez'   (asserted)
+      evidence [2265:2291]: 'vehicle currently at Lopez'

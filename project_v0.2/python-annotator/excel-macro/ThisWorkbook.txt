@@ -1,0 +1,15 @@
+Option Explicit
+
+Private Sub Workbook_Open()
+    WorkbenchOpen
+End Sub
+
+Private Sub Workbook_BeforeClose(Cancel As Boolean)
+    On Error GoTo CannotClose
+    If Busy Then Cancel = True: Exit Sub
+    If Not CanLeave() Then Cancel = True
+    Exit Sub
+CannotClose:
+    Cancel = True
+    MsgBox "Close cancelled: " & Err.Description, vbExclamation
+End Sub

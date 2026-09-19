@@ -1,0 +1,33 @@
+========================================================================================
+DOC00011.txt   claim=CLM0002   occurrence=OCC0002
+========================================================================================
+
+--- NAME MENTIONS (12), in order of appearance ---
+  [   13:27   ] 'Marcus Jackson'                   class=attorney         extractor=gliner+llm           -> entity E765837ae3bf0 ('Marcus Jackson')  [also in: DOC00009, DOC00010, DOC00012, DOC00052, DOC00053]
+  [   31:56   ] 'Sterling Injury Attorneys'        class=attorney         extractor=gliner+llm           -> entity E19f1198903e9 ('Sterling Injury Attorneys')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00006, DOC00007, DOC00008, DOC00009, DOC00010, DOC00012]
+  [   85:100  ] 'Lucas  Martinez'                  class=attorney         extractor=gliner+llm           -> entity E79ca06ccc0b7 ('Lucas Martinez')  [also in: DOC00009, DOC00010, DOC00012]
+  [  341:358  ] 'Dr. Robert Harris'                class=medical_provider extractor=gliner+llm           -> entity E5e9893966f6a ('Dr. Robert Harris')  [also in: DOC00009, DOC00010, DOC00012, DOC00057, DOC00058, DOC00059]
+  [  388:396  ] 'Martinez'                         class=medical_provider extractor=llm                  -> entity E79ca06ccc0b7 ('Lucas Martinez')  [also in: DOC00009, DOC00010, DOC00012]
+  [  777:791  ] 'Lucas Martinez'                   class=claimant         extractor=gliner+llm           -> entity E79ca06ccc0b7 ('Lucas Martinez')  [also in: DOC00009, DOC00010, DOC00012]
+  [ 1567:1574 ] 'Jackson'                          class=attorney         extractor=llm                  -> entity E765837ae3bf0 ('Marcus Jackson')  [also in: DOC00009, DOC00010, DOC00012, DOC00052, DOC00053]
+  [ 1578:1603 ] 'Sterling Injury Attorneys'        class=attorney         extractor=gliner+llm           -> entity E19f1198903e9 ('Sterling Injury Attorneys')  [also in: DOC00001, DOC00002, DOC00003, DOC00004, DOC00005, DOC00006, DOC00007, DOC00008, DOC00009, DOC00010, DOC00012]
+  [ 1632:1646 ] 'Lucas Martinez'                   class=attorney         extractor=gliner+llm           -> entity E79ca06ccc0b7 ('Lucas Martinez')  [also in: DOC00009, DOC00010, DOC00012]
+  [ 1846:1863 ] 'Dr. Robert Harris'                class=medical_provider extractor=gliner+llm           -> entity E5e9893966f6a ('Dr. Robert Harris')  [also in: DOC00009, DOC00010, DOC00012, DOC00057, DOC00058, DOC00059]
+  [ 1893:1904 ] 'L. Martinez'                      class=medical_provider extractor=llm                  -> entity E79ca06ccc0b7 ('Lucas Martinez')  [also in: DOC00009, DOC00010, DOC00012]
+  [ 2155:2169 ] 'Lucas Martinez'                   class=claimant         extractor=gliner+llm           -> entity E79ca06ccc0b7 ('Lucas Martinez')  [also in: DOC00009, DOC00010, DOC00012]
+
+--- IDENTIFIERS (10), in order of appearance ---
+  [  135:168  ] email    'marcus.jackson@sterlinginjury.com' owner='Marcus Jackson' [13:27]                     method=llm
+  [  202:212  ] dob      '2025-02-03'                 owner='Lucas  Martinez' [85:100]                   method=line_rule
+  [  481:491  ] dob      '2024-05-05'                 owner='Martinez' [388:396]                         method=line_rule
+  [  631:641  ] dob      '2025-04-17'                 owner=UNBOUND (orphan)                             method=unbound
+  [  874:888  ] phone    '(886) 833-3403'             owner='Lucas Martinez' [777:791]                   method=llm
+  [  919:957  ] address  '5900 Franklin Blvd, Lakewood, CO 80288' owner='Lucas Martinez' [777:791]                   method=llm
+  [ 1491:1501 ] dob      '2024-02-22'                 owner=UNBOUND (orphan)                             method=unbound
+  [ 1681:1714 ] email    'marcus.jackson@sterlinginjury.com' owner='Jackson' [1567:1574]                        method=llm
+  [ 1747:1757 ] dob      '2024-06-21'                 owner='Lucas Martinez' [1632:1646]                 method=line_rule
+  [ 2252:2266 ] phone    '(886) 833-3403'             owner='Lucas Martinez' [2155:2169]                 method=llm
+
+--- COREFERENCE LINKS (2) ---
+  [  214:216  ] 'He'                 (pronoun) -> 'Lucas  Martinez' [85:100]
+  [  434:436  ] 'He'                 (pronoun) -> 'Martinez' [388:396]

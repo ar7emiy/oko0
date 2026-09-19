@@ -1,0 +1,36 @@
+========================================================================================
+DOC00021.txt   claim=CLM0005   occurrence=OCC0004
+========================================================================================
+
+--- NAME MENTIONS (17), in order of appearance ---
+  [   12:27   ] 'James Gonzaleez'                  class=claimant         extractor=gliner+llm           -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00020, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026]
+  [ 1091:1106 ] 'Patricia Wilson'                  class=attorney         extractor=gliner+llm           -> entity Ee1ca67e9b3b4 ('Patricia Wilson')  [also in: DOC00019, DOC00020, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026]
+  [ 1110:1123 ] 'XYZ Law Group'                    class=attorney         extractor=gliner+llm           -> entity Ecbec8f247b4e ('XYZ Law Group')  [also in: DOC00013, DOC00014, DOC00019, DOC00020, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048]
+  [ 1152:1166 ] 'Jimmy Gonzalez'                   class=attorney         extractor=gliner+llm           -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00020, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026]
+  [ 1294:1313 ] 'Dr. Jennifer Garcia'              class=medical_provider extractor=gliner+llm           -> entity E02e07676b29d ('Dr. Jennifer Garcia')  [also in: DOC00019, DOC00020, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026]
+  [ 1343:1357 ] 'James Gonzalez'                   class=medical_provider extractor=gliner+llm           -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00020, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026]
+  [ 1473:1483 ] 'Samuel Lee'                       class=adjuster         extractor=gliner+llm           -> entity Eb8ff486e9980 ('Samuel Lee')  [also in: DOC00019, DOC00022, DOC00023, DOC00045, DOC00046]
+  [ 1540:1555 ] 'Patricia Wilson'                  class=claimant         extractor=gliner+llm           -> entity Ee1ca67e9b3b4 ('Patricia Wilson')  [also in: DOC00019, DOC00020, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026]
+  [ 1703:1713 ] 'Samuel Lee'                       class=adjuster         extractor=gliner+llm           -> entity Eb8ff486e9980 ('Samuel Lee')  [also in: DOC00019, DOC00022, DOC00023, DOC00045, DOC00046]
+  [ 1714:1731 ] 'Claims Department'                class=medical_provider extractor=llm+sweep            -> entity E3f77c097446c ('Claims Department')  [also in: DOC00005, DOC00019, DOC00029, DOC00034, DOC00046]
+  [ 1995:2010 ] 'Patricia Wilson'                  class=claimant         extractor=gliner+llm           -> entity Ee1ca67e9b3b4 ('Patricia Wilson')  [also in: DOC00019, DOC00020, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026]
+  [ 2033:2043 ] 'Samuel Lee'                       class=claimant         extractor=gliner+llm           -> entity Eb8ff486e9980 ('Samuel Lee')  [also in: DOC00019, DOC00022, DOC00023, DOC00045, DOC00046]
+  [ 2150:2165 ] 'Patricia Wilson'                  class=claimant         extractor=gliner+llm           -> entity Ee1ca67e9b3b4 ('Patricia Wilson')  [also in: DOC00019, DOC00020, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026]
+  [ 2190:2200 ] 'Samuel Lee'                       class=claimant         extractor=gliner+llm           -> entity Eb8ff486e9980 ('Samuel Lee')  [also in: DOC00019, DOC00022, DOC00023, DOC00045, DOC00046]
+  [ 2309:2324 ] 'Patricia Wilson'                  class=claimant         extractor=gliner+llm           -> entity Ee1ca67e9b3b4 ('Patricia Wilson')  [also in: DOC00019, DOC00020, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026]
+  [ 2351:2361 ] 'Samuel Lee'                       class=claimant         extractor=gliner+llm           -> entity Eb8ff486e9980 ('Samuel Lee')  [also in: DOC00019, DOC00022, DOC00023, DOC00045, DOC00046]
+  [ 2472:2486 ] 'James Gnozalez'                   class=claimant         extractor=gliner+llm           -> entity Ec8a7fc048d0e ('James Gonzalez')  [also in: DOC00019, DOC00020, DOC00022, DOC00023, DOC00024, DOC00025, DOC00026]
+
+--- IDENTIFIERS (9), in order of appearance ---
+  [  115:129  ] phone    '(403) 451-2315'             owner='James Gonzaleez' [12:27]                    method=llm
+  [  160:194  ] address  '5994 Lincoln Ln, Bristol, PA 19063' owner='James Gonzaleez' [12:27]                    method=llm
+  [  903:940  ] address  '9416 Maple Ave, Springfield, IL 62790' owner=UNBOUND (orphan)                             method=unbound
+  [ 1198:1208 ] dob      '2026-05-10'                 owner='Jimmy Gonzalez' [1152:1166]                 method=line_rule
+  [ 1485:1502 ] email    'slee@ourinsco.com'          owner='Samuel Lee' [1473:1483]                     method=llm
+  [ 1510:1535 ] dob      'Fri, Apr 25, 2026 7:22 AM'  owner='Samuel Lee' [1473:1483]                     method=line_rule
+  [ 1740:1754 ] phone    '(579) 319-5827'             owner='Samuel Lee' [1703:1713]                     method=llm
+  [ 2574:2588 ] phone    '(403) 451-2315'             owner='James Gnozalez' [2472:2486]                 method=llm
+  [ 2619:2653 ] address  '5994 Lincoln Ln, Bristol, PA 19063' owner='James Gnozalez' [2472:2486]                 method=llm
+
+--- COREFERENCE LINKS (0) ---
+  (none)

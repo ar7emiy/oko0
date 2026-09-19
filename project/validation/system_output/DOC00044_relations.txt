@@ -1,0 +1,29 @@
+DOC00044.txt  claim=CLM0009   (relations lane -- NOT wired into the operational graph, D1)
+========================================================================================
+
+  'Samuel Andesron' --[AFFILIATED_WITH]--> 'Delgado Legal Partners'   (asserted)
+      evidence [2:54]: 'Spoke with Samuel Andesron of Delgado Legal Partners'
+  'Samuel Andesron' --[REPRESENTS]--> 'William Garcia'   (asserted)
+      evidence [2:98]: 'Spoke with Samuel Andesron of Delgado Legal Partners regarding representation of William Garcia.'
+  'Andrew Adnerson' --[REPRESENTS]--> 'William Garcia'   (asserted)
+      evidence [191:251]: 'Co-counsel Andrew Adnerson is also appearing on this matter.'
+  'Ibarra Imaging Center' --[MANAGES_CARE_FOR]--> 'Garcia, William'   (asserted)
+      evidence [323:390]: 'Ibarra Imaging Center continues to manage care for Garcia, William.'
+  'Anderson' --[AFFILIATED_WITH]--> 'Delgado Legal Partners'   (asserted)
+      evidence [1336:1381]: 'Spoke with Anderson of Delgado Legal Partners'
+  'Anderson' --[REPRESENTS]--> 'Garcia, William'   (asserted)
+      evidence [1336:1426]: 'Spoke with Anderson of Delgado Legal Partners regarding representation of Garcia, William.'
+  'Drew Anderson' --[REPRESENTS]--> 'Garcia, William'   (asserted)
+      evidence [1540:1582]: 'Co-counsel Drew Anderson is also appearing'
+  'Anderson' --[EMPLOYED_BY]--> 'Delgado Legal Partners'   (asserted)
+      evidence [1336:1381]: 'Spoke with Anderson of Delgado Legal Partners'
+  'Delgado Legal Partners' --[REPRESENTS]--> 'Garcia, William'   (asserted)
+      evidence [1359:1425]: 'Delgado Legal Partners regarding representation of Garcia, William'
+  'Drew Anderson' --[SERVES_AS_CO_COUNSEL_FOR]--> 'Garcia, William'   (asserted)
+      evidence [1540:1597]: 'Co-counsel Drew Anderson is also appearing on this matter'
+  'Ibarra' --[MANAGES_CARE_FOR]--> 'William Garcia'   (asserted)
+      evidence [1686:1736]: 'Ibarra continues to manage care for William Garcia'
+  'indemnity reserve' --[SET_AT]--> '$28,000.00'   (asserted)
+      evidence [1854:1899]: 'indemnity reserve currently set at $28,000.00'
+  'Ibarra' --[MANAGES_CARE_FOR]--> 'William Garcia'   (asserted)
+      evidence [1686:1737]: 'Ibarra continues to manage care for William Garcia.'

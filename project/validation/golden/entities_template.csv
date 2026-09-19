@@ -1,0 +1,6 @@
+doc_id,entity_name,entity_type,all_surfaces_seen,notes
+DOC00000,Robert Miller,claimant,"Miller, Robert; Rob Miller; Robert Miller; Robeert Miller (typo)","WORKED EXAMPLE (complete for this doc). entity_type must be one of: claimant, attorney, medical_provider, repair_shop, adjuster"
+DOC00000,Ibarra Neurology Associates,medical_provider,"Ibarra Neurology Associates","WORKED EXAMPLE. treating provider"
+DOC00000,Thomas Collision Center,repair_shop,"Thomas Collision Center","WORKED EXAMPLE."
+DOC00000,Marge Wilson,attorney,"Marge Wilson","WORKED EXAMPLE."
+DOC00000,Harbor & Vance LLP,attorney,"Harbor & Vance LLP","WORKED EXAMPLE. judgment call: is the FIRM its own entity, separate from Marge Wilson? Your call -- note your reasoning either way, the system has to make the same call and you want to be able to check it"

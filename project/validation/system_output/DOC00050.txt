@@ -1,0 +1,23 @@
+========================================================================================
+DOC00050.txt   claim=CLM0011   occurrence=OCC0009
+========================================================================================
+
+--- NAME MENTIONS (6), in order of appearance ---
+  [   12:23   ] 'Peter Lopez'                      class=claimant         extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [  324:329  ] 'Lopez'                            class=repair_shop      extractor=llm                  -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 1308:1327 ] 'Dr. Michael Jackson'              class=medical_provider extractor=gliner+llm           -> entity E1683b68650cd ('Dr. Michael Jackson')  [also in: DOC00049, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056]
+  [ 1357:1369 ] 'Lopez, Peter'                     class=medical_provider extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 1483:1494 ] 'Peter Lopez'                      class=claimant         extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+  [ 1768:1790 ] 'Lopez Collision Center'           class=repair_shop      extractor=gliner+llm           -> entity Ea1dcdb181d92 ('Marcus Lopez')  [also in: DOC00000, DOC00027, DOC00029, DOC00030, DOC00031, DOC00032, DOC00033, DOC00034, DOC00035, DOC00036, DOC00037, DOC00047, DOC00048, DOC00049, DOC00051, DOC00052, DOC00053, DOC00054, DOC00055, DOC00056, DOC00057, DOC00058, DOC00059]
+
+--- IDENTIFIERS (5), in order of appearance ---
+  [  106:120  ] phone    '(944) 232-5703'             owner='Peter Lopez' [12:23]                        method=llm
+  [ 1374:1384 ] dob      '2024-11-06'                 owner='Lopez, Peter' [1357:1369]                   method=line_rule
+  [ 1577:1591 ] phone    '(944) 232-5703'             owner='Peter Lopez' [1483:1494]                    method=llm
+  [ 1622:1658 ] address  '7157 Highland Ln, Fairview, TX 75027' owner='Peter Lopez' [1483:1494]                    method=llm
+  [ 1801:1811 ] tin      '99-1566069'                 owner='Lopez Collision Center' [1768:1790]         method=llm
+
+--- COREFERENCE LINKS (3) ---
+  [  122:130  ] 'The clmt'           (descriptor) -> 'Peter Lopez' [12:23]
+  [  179:187  ] 'The clmt'           (descriptor) -> 'Peter Lopez' [12:23]
+  [  399:407  ] 'The shop'           (descriptor) -> 'Lopez' [324:329]

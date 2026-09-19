@@ -1,0 +1,9 @@
+candidate_key	action	source_quote	occurrence	entity_key	display_name	entity_type	reference_form	field_kind	field_value	second_entity_key	open_label	reason
+R1	entity	Dr. Ada Monroe	1	P1	Dr. Ada Monroe	person						
+R2	statement	called regarding the claim	1	P1								
+R3	reference	Dr. Ada Monroe	2	P1			name					
+R4	context	orthopedic surgeon	1	P1								
+R5	entity	Northstar Orthopedics	1	O1	Northstar Orthopedics	organization						
+R6	statement	with Northstar Orthopedics	1	P1						O1		Proposed affiliation; verify in context.
+R7	reference	the medical provider	1	O1			description					
+R8	context	medical provider	1	O1								

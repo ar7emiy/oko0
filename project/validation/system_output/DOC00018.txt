@@ -1,0 +1,35 @@
+========================================================================================
+DOC00018.txt   claim=CLM0004   occurrence=OCC0004
+========================================================================================
+
+--- NAME MENTIONS (16), in order of appearance ---
+  [   52:67   ] 'Tomas Whitfield'                  class=claimant         extractor=gliner+llm           -> entity E8ce3f2a3987b ('Tomas Whitfield')  [also in: DOC00015, DOC00016, DOC00017, DOC00035, DOC00036, DOC00037]
+  [  138:153  ] 'Andrew Anderson'                  class=attorney         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00045, DOC00046]
+  [  156:177  ] 'Whitfield Trial Group'            class=attorney         extractor=gliner+llm           -> entity E093bcb3b31ef ('Whitfield Trial Group')  [also in: DOC00015, DOC00016, DOC00017]
+  [  243:256  ] 'Drew Anderson'                    class=medical_provider extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00045, DOC00046]
+  [  260:281  ] 'Whitfield Trial Group'            class=attorney         extractor=gliner+llm           -> entity E093bcb3b31ef ('Whitfield Trial Group')  [also in: DOC00015, DOC00016, DOC00017]
+  [  310:325  ] 'Tomas Whitfield'                  class=attorney         extractor=gliner+llm           -> entity E8ce3f2a3987b ('Tomas Whitfield')  [also in: DOC00015, DOC00016, DOC00017, DOC00035, DOC00036, DOC00037]
+  [ 1180:1196 ] 'Davis Automotive'                 class=repair_shop      extractor=gliner+llm           -> entity E6a097b663af1 ('Davis Automotive')  [also in: DOC00017, DOC00020, DOC00022, DOC00025, DOC00026]
+  [ 1461:1470 ] 'Whitfield'                        class=claimant         extractor=llm                  -> entity E8ce3f2a3987b ('Tomas Whitfield')  [also in: DOC00015, DOC00016, DOC00017, DOC00035, DOC00036, DOC00037]
+  [ 1654:1669 ] 'Andrew Anderson'                  class=attorney         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00045, DOC00046]
+  [ 1673:1694 ] 'Whitfield Trial Group'            class=attorney         extractor=gliner+llm           -> entity E093bcb3b31ef ('Whitfield Trial Group')  [also in: DOC00015, DOC00016, DOC00017]
+  [ 1723:1739 ] 'Whitfield, Tomas'                 class=attorney         extractor=gliner+llm+sweep     -> entity E8ce3f2a3987b ('Tomas Whitfield')  [also in: DOC00015, DOC00016, DOC00017, DOC00035, DOC00036, DOC00037]
+  [ 2527:2532 ] 'Davis'                            class=repair_shop      extractor=llm                  -> entity E6a097b663af1 ('Davis Automotive')  [also in: DOC00017, DOC00020, DOC00022, DOC00025, DOC00026]
+  [ 2762:2777 ] 'Tomas Whitfield'                  class=claimant         extractor=gliner+llm           -> entity E8ce3f2a3987b ('Tomas Whitfield')  [also in: DOC00015, DOC00016, DOC00017, DOC00035, DOC00036, DOC00037]
+  [ 3021:3036 ] 'Andrew Anderson'                  class=attorney         extractor=gliner+llm           -> entity Ec3578188ebe1 ('Samuel Anderson')  [also in: DOC00001, DOC00003, DOC00005, DOC00015, DOC00016, DOC00017, DOC00038, DOC00039, DOC00040, DOC00041, DOC00042, DOC00043, DOC00044, DOC00045, DOC00046]
+  [ 3040:3061 ] 'Whitfield Trial Group'            class=attorney         extractor=gliner+llm           -> entity E093bcb3b31ef ('Whitfield Trial Group')  [also in: DOC00015, DOC00016, DOC00017]
+  [ 3090:3099 ] 'Whitfield'                        class=attorney         extractor=llm                  -> entity E8ce3f2a3987b ('Tomas Whitfield')  [also in: DOC00015, DOC00016, DOC00017, DOC00035, DOC00036, DOC00037]
+
+--- IDENTIFIERS (8), in order of appearance ---
+  [   79:89   ] dob      '04/26/1953'                 owner='Tomas Whitfield' [52:67]                    method=line_rule
+  [  196:228  ] address  '1148 Oak Blvd, Bristol, PA 19061' owner='Tomas Whitfield' [310:325]                  method=llm
+  [  360:394  ] email    'andrew.anderson@whitfieldtrial.com' owner='Drew Anderson' [243:256]                    method=llm
+  [  427:437  ] dob      '2025-09-22'                 owner='Tomas Whitfield' [310:325]                  method=line_rule
+  [  698:708  ] dob      '2026-12-18'                 owner=UNBOUND (orphan)                             method=unbound
+  [ 1237:1247 ] dob      '2024-11-05'                 owner='Davis Automotive' [1180:1196]               method=line_rule
+  [ 2865:2879 ] phone    '(212) 366-6484'             owner='Tomas Whitfield' [2762:2777]                method=llm
+  [ 2910:2942 ] address  '1148 Oak Blvd, Bristol, PA 19061' owner='Tomas Whitfield' [2762:2777]                method=llm
+
+--- COREFERENCE LINKS (2) ---
+  [   89:102  ] 'same as above'      (descriptor) -> 'Tomas Whitfield' [52:67]
+  [ 1198:1206 ] 'The shop'           (descriptor) -> 'Davis Automotive' [1180:1196]
