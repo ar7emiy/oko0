@@ -45,6 +45,36 @@ have self-tests in cell 23.
 this pipeline can otherwise violate while completing cleanly. Cell 24 lists the architecture
 stages the POC does not implement, so a green summary cannot be read as a complete system.
 
+## First live run (Gemini 3.1 Pro)
+
+The offline fixtures were written by hand, so they could only ever confirm the plumbing
+behaves as its author expected. The first run against a real model found three bugs they
+structurally could not:
+
+| | Symptom | Cause | Fix |
+|---|---|---|---|
+| 1 | 7 of 10 entities had no category | Gemini 3.x thinking tokens are charged against `maxOutputTokens`; the category call's 512-token budget was spent thinking before any answer was written | The adapter adds thinking headroom, so `max_tokens` means "room for the answer" on every provider. Thinking tokens are now reported in `usage`. |
+| 2 | The summary reported those 7 as *"the model declining to guess"* | A failed call was recorded as `insufficient_evidence` | Failed calls are `CATEGORY_CALL_FAILED` and counted as a validity failure. A failed call is not an answer. |
+| 3 | Surface forms like `by Dr. Monroe (NPI`, `Referred to Lakeshore PT for six` | `quote` did two jobs: a *locating* phrase padded for uniqueness, and the party's *name* for blocking and matching. The model padded it, as instructed. | Entity mentions now carry `name` alongside `quote`, mirroring `quote` / `raw_value` on details. The span narrows to the name inside the quote. |
+
+Also: `gemini-2.5-pro` is still listed by the API but closed to new users, so the default is
+now `gemini-3.1-pro-preview`. The smoke test caught it on cell 3.
+
+After the fixes the live run is clean: 0 extraction failures, 0 category failures, 0
+round-trip failures, 0 unresolved quotes, 28/28 self-tests. Four notes is a smoke test, not
+a measurement.
+
+**Where the model disagreed with the trace.** Not bugs, but concrete instances of open
+design question 4 below:
+
+- The trace says `Office at 4410 N Broadway` must stay `UNASSIGNED` — proximity is not
+  ownership. Gemini assigned it to Dr. Monroe, labelled `basis: inferred`.
+- The trace says the phone should be `inferred`, since ownership comes from the pronoun
+  "He". Gemini called it `stated`.
+
+The `basis` label is currently the only thing between an inference like the first one and a
+cross-claim join key.
+
 ## What was wrong with the first version
 
 Every item below was reproduced against a run before it was fixed.

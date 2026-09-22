@@ -10,13 +10,15 @@
           "occurrences": [
             "The treating physician",
             "He"
-          ]
+          ],
+          "name": "Dr. Monroe"
         },
         {
           "mention_id": "m2",
           "quote": "Lakeshore PT",
           "type": "organization",
-          "occurrences": []
+          "occurrences": [],
+          "name": "Lakeshore PT"
         }
       ],
       "detail_mentions": [
@@ -85,13 +87,15 @@
           "mention_id": "m1",
           "quote": "A. Monroe, MD",
           "type": "person",
-          "occurrences": []
+          "occurrences": [],
+          "name": "A. Monroe, MD"
         },
         {
           "mention_id": "m2",
           "quote": "Lakeshore Physical Therapy",
           "type": "organization",
-          "occurrences": []
+          "occurrences": [],
+          "name": "Lakeshore Physical Therapy"
         }
       ],
       "detail_mentions": [
@@ -139,13 +143,15 @@
           "type": "organization",
           "occurrences": [
             "Shop"
-          ]
+          ],
+          "name": "Northside Auto Body"
         },
         {
           "mention_id": "m2",
           "quote": "Dr. Monroe office",
           "type": "person",
-          "occurrences": []
+          "occurrences": [],
+          "name": "Dr. Monroe office"
         }
       ],
       "detail_mentions": [
@@ -182,13 +188,15 @@
           "mention_id": "m1",
           "quote": "Midwest Spine Clinic",
           "type": "organization",
-          "occurrences": []
+          "occurrences": [],
+          "name": "Midwest Spine Clinic"
         },
         {
           "mention_id": "m2",
           "quote": "J. Whitfield",
           "type": "person",
-          "occurrences": []
+          "occurrences": [],
+          "name": "J. Whitfield"
         }
       ],
       "detail_mentions": [
