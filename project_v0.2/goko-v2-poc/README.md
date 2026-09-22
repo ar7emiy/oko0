@@ -20,14 +20,26 @@ python3 run_offline_check.py          # no key, no network, ~2s
 jupyter lab goko_v2_poc.ipynb         # same thing, interactively
 ```
 
-`OFFLINE_MODE = True` (cell 1, the default) replays recorded extractions for the bundled
-notes. It exists so the plumbing can be verified without a deployment, and it is never
-selected silently — with no key and `OFFLINE_MODE = False`, cell 1 raises and names the
-toggle. Every artifact from an offline run is stamped `model: "offline-replay"`.
+One toggle, `PROVIDER`, in cell 1:
 
-For a real run: put your Azure values in `settings.env` (cell 1 prints which keys it found,
-masked, and which variant names it accepts), set `OFFLINE_MODE = False`, and drop notes into
-`notes/` named `{claim_id}_{note_id}.txt`.
+| `PROVIDER` | Needs | Notes |
+|---|---|---|
+| `"offline"` *(default)* | nothing | Replays recorded extractions for the bundled notes. |
+| `"gemini"` | an API key | Paste it into `GEMINI_API_KEY` in cell 1. No `settings.env`, no SDK — the adapter is raw HTTPS over `urllib`. Falls back to `$GEMINI_API_KEY` / `$GOOGLE_API_KEY`. |
+| `"azure"` | `settings.env` + `openai` | Cell 1 prints which keys it found, masked, and which variant names it accepts. |
+
+Offline mode exists so the plumbing can be verified without a deployment, and it is never
+selected silently — name a live provider with no key and cell 1 raises, naming the toggle.
+Every artifact is stamped with the model that produced it.
+
+For a real run, drop notes into `notes/` named `{claim_id}_{note_id}.txt`.
+
+Gemini and Azure disagree on structured-output dialect. Rather than maintain two schemas,
+`to_gemini_schema` (cell 2) translates: type unions become `nullable`,
+`additionalProperties` is dropped (Gemini rejects it, OpenAI strict mode requires it), and
+property order is pinned so responses stay diffable. `finishReason: "MAX_TOKENS"` is
+normalised to `"length"` so the truncation check is provider-independent. Both translations
+have self-tests in cell 23.
 
 **Cell 23 is the one to run before believing any other number.** It checks the invariants
 this pipeline can otherwise violate while completing cleanly. Cell 24 lists the architecture
