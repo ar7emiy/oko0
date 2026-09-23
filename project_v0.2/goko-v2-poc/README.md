@@ -1,14 +1,22 @@
 # GOKO v2 — architecture POC
 
-A runnable trace of the v2 pipeline: whole-note extraction, three detection lanes, claim
-assembly, category assignment, cross-claim resolution. `architecture-trace.html` is the
-design this implements; `goko_v2_poc.ipynb` is the implementation.
+A runnable trace of the v2 pipeline: extraction in three lanes, identity as scored links
+with a read-time merged view, category assignment, cross-claim reading, and a search app
+over the result. `architecture-trace.html` is the design; `goko_v2_poc.ipynb` is the
+implementation.
 
 ```
 goko_v2_poc.ipynb            the pipeline, one cell per boundary
 architecture-trace.html      the design it implements
+goko/projection.py           read-time merged view (lenses, weakest link); notebook and app share it
+goko/net.py                  IPv4-first resolution (see "Slow calls" below)
+app/                         the search app: server.py, librarian.py, graph.py, static/
+evaluate.py                  scores a court-corpus run against the clerk's party lists
 notes/                       four fixture notes across three claims, two occurrences
-fixtures/                    recorded LLM payloads for OFFLINE_MODE
+fixtures/                    recorded LLM payloads for offline replay
+corpus/courtlistener/        two real RICO dockets, seven filings, plus gold/ party lists
+corpus/reference/            outside name-frequency tables (Census, SSA, NPPES) for rarity
+corpus/registry/             NPPES and OIG LEIE lookups for the court defendants (evaluation only)
 run_offline_check.py         runs every cell headless; non-zero exit if anything breaks
 poc_output/                  written by the notebook (gitignored)
 ```
@@ -16,9 +24,16 @@ poc_output/                  written by the notebook (gitignored)
 ## Running it
 
 ```bash
-python3 run_offline_check.py          # no key, no network, ~2s
+pip install -r requirements.txt       # recordlinkage, pandas, pypdf
+python3 run_offline_check.py          # no key, no network, a few seconds
 jupyter lab goko_v2_poc.ipynb         # same thing, interactively
+python app/server.py --run poc_output # the search app over the last run, http://127.0.0.1:8765
 ```
+
+Optional stages, each switchable in cell 1 without breaking anything downstream:
+`CLEANER` (off by default: spans are positions in the source text as stored), `CHUNKING`
+(on: long notes split on page and paragraph breaks, then sentences, with whole-sentence
+overlap), `GLINER_ENABLED` (off: needs `pip install gliner`).
 
 One toggle, `PROVIDER`, in cell 1:
 
@@ -41,9 +56,73 @@ property order is pinned so responses stay diffable. `finishReason: "MAX_TOKENS"
 normalised to `"length"` so the truncation check is provider-independent. Both translations
 have self-tests in cell 23.
 
+## Identity: links underneath, merged view on top
+
+Nothing is ever physically merged. Every candidate pair of mentions, at any distance, gets
+one **link** carrying a probability, a **basis** and possibly a **veto**. Entities are
+computed when something reads them, at a **lens**:
+
+| Lens | Admits |
+|---|---|
+| strict | identifier-backed links (NPI, TIN, SSN, VIN, bar number, phone), p ≥ 0.90 |
+| default | any basis, p ≥ 0.80 (what the dossier files use) |
+| broad | any basis, p ≥ 0.10 |
+
+Each merged entity lists the link that pulled in each member, and its confidence is its
+**weakest link**. A union that would join a vetoed pair (two stated NPIs, M.D. against D.O.)
+or grow a cluster past 40 mentions is refused and recorded.
+
+The score is Fellegi-Sunter in form with fixed parameters. Each agreeing field adds
+`log2(m/u)` bits. For names, `u` comes from outside tables, never from the corpus, so a
+shared "Pierre" counts for far more than a shared "Smith". The prior odds depend on distance
+(same note, same claim, same incident, same client, different client) and on role:
+clinics and professionals recur across claims, private persons don't.
+
+A rare exact name can score 0.99 and still be labelled `name_only`. The basis is never
+upgraded by the score. Co-parties add weight only when they are linked on an identifier
+(one-way, so name-only coincidences can't vouch for each other). Co-parties that match only
+by name are displayed and never scored.
+
+`recordlinkage` does the candidate generation and string comparisons. The markdown page
+above cell 17 explains the configuration. Cell 18b holds EM weight learning, disabled, with
+the criteria for turning it on.
+
+## The search app
+
+`python app/server.py --run <run dir>` serves a read-only interface over one run.
+
+- **Search bar.** Suggestions cover parties, identifiers, claims and notes, with no model
+  call. Pressing Enter goes to the librarian:
+  - a short query that clearly names something opens its dossier;
+  - a query phrased as a question goes to graph RAG: a retrieved subgraph plus the model,
+    where every statement cites a party or a source passage;
+  - anything else is routed by a small model.
+- **Windows.**
+  - Each window has a bubble in the header bar; "+" opens a new search.
+  - Clicking a citation or any linked item opens a window to its right.
+  - At most three are visible; the rest collapse into edge buttons.
+- **Dossiers.** Each dossier has its own Strict / Default / Broad toggle. Every evidence
+  item shows the source passage with the span highlighted, expandable to the full note.
+
+The model key is read from the environment or `.env`, stays in the server process, and is
+never sent to the browser.
+
 **Cell 23 is the one to run before believing any other number.** It checks the invariants
 this pipeline can otherwise violate while completing cleanly. Cell 24 lists the architecture
 stages the POC does not implement, so a green summary cannot be read as a complete system.
+
+## Slow calls: broken IPv6
+
+On a machine whose IPv6 route is advertised but broken, Python's `urllib` tries every IPv6
+address first, waiting out a full timeout on each, before it reaches IPv4. Browsers and
+`curl` race the two address families and never notice.
+
+On the development machine this added about 55 s to every connection: a one-word Gemini
+reply took 170 s. After the fix it took 2.6 s, and the notebook's smoke test dropped from
+172 s to 3 s.
+
+`goko/net.py` orders IPv4 answers first and keeps IPv6 as the fallback. Cell 2 and the app
+both call it.
 
 ## First live run (Gemini 3.1 Pro)
 

@@ -12,13 +12,17 @@ cleaning, no normalisation, no pseudonymisation. Pages are separated by a form
 feed (\\f), the same convention pdftotext uses.
 
     python fetch.py            # needs: pip install pypdf
+    python fetch.py --gold-only   # just refresh gold/docket_parties.json
 
 Downloaded PDFs are cached in ./pdf/ (gitignored). Everything else is committed.
 """
 import hashlib
 import io
 import json
+import re
+import sys
 import time
+from collections import defaultdict
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -77,7 +81,54 @@ def available_documents(docket_id):
     return docs
 
 
+def _party_key(name):
+    """Clerk party names, compared loosely: case, punctuation and legal suffixes ignored."""
+    s = re.sub(r"[^a-z0-9 ]", " ", name.lower())
+    drop = {"p", "c", "pc", "inc", "llc", "d", "o", "m", "md", "do", "the", "a"}
+    return " ".join(w for w in s.split() if w not in drop)
+
+
+def fetch_gold():
+    """The clerk's party / attorney / firm lists per docket, saved as evaluation gold.
+
+    Runtime never reads this file (AGENTS.md rule 13). It exists so the pipeline's party
+    recall and its cross-claim links can be scored against something it did not produce.
+    """
+    gold = {"source": "CourtListener v4 search, type=r (docket party lists as entered by the clerk)",
+            "fetched": time.strftime("%Y-%m-%d"), "dockets": {}}
+    for num, meta in DOCKETS.items():
+        d = getj(SEARCH + urllib.parse.urlencode({"type": "r", "q": f"docket_id:{meta['docket_id']}"}))
+        r = d["results"][0]
+        gold["dockets"][meta["claim_id"]] = {
+            "docket": num, "case": r.get("caseName"),
+            "parties": r.get("party") or [], "attorneys": r.get("attorney") or [],
+            "firms": sorted(set(r.get("firm") or []))}
+        time.sleep(1)
+
+    # Parties named on both dockets: the true cross-claim identities. A d/b/a name is one
+    # party under two names, so each side of it is a key.
+    keys = defaultdict(lambda: defaultdict(set))
+    for claim, g in gold["dockets"].items():
+        for p in g["parties"]:
+            for part in re.split(r"\bd/b/a\b", p, flags=re.I):
+                keys[_party_key(part)][claim].add(p)
+    shared = {}
+    for k, by_claim in keys.items():
+        if len(by_claim) > 1:
+            names = tuple(sorted({n for ns in by_claim.values() for n in ns}))
+            shared[names] = {c: sorted(ns) for c, ns in by_claim.items()}
+    gold["cross_claim_identities"] = [{"names": list(n), "by_claim": v} for n, v in sorted(shared.items())]
+    out = HERE / "gold" / "docket_parties.json"
+    out.parent.mkdir(exist_ok=True)
+    out.write_text(json.dumps(gold, indent=2) + "\n", encoding="utf-8")
+    print(f"gold: {sum(len(g['parties']) for g in gold['dockets'].values())} parties, "
+          f"{len(gold['cross_claim_identities'])} named on both dockets -> {out}")
+    for x in gold["cross_claim_identities"]:
+        print(f"  {x['names']}")
+
+
 def main():
+    fetch_gold()
     NOTES.mkdir(parents=True, exist_ok=True)
     PDFS.mkdir(exist_ok=True)
     catalog = {num: available_documents(meta["docket_id"]) for num, meta in DOCKETS.items()}
@@ -128,4 +179,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    fetch_gold() if "--gold-only" in sys.argv else main()

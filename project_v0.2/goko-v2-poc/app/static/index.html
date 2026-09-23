@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOKO Search</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<header id="bar" hidden>
+  <div id="bubbles"></div>
+  <button id="plus" class="plus" title="New search" aria-label="New search">+</button>
+</header>
+
+<main id="home">
+  <div class="home-inner">
+    <div class="wordmark">GOKO</div>
+    <div class="search big" data-search>
+      <input type="search" placeholder="Search a party, identifier, note or claim — or ask a question"
+             autocomplete="off" spellcheck="false" autofocus>
+      <div class="suggest" hidden></div>
+    </div>
+    <p class="hint">Pick a suggestion to open it directly. Press Enter to let the librarian decide.</p>
+  </div>
+</main>
+
+<section id="stage" hidden>
+  <button class="rolodex left" hidden></button>
+  <div id="windows"></div>
+  <button class="rolodex right" hidden></button>
+</section>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

@@ -179,8 +179,8 @@ and for joining back to source systems:
 <div class="diagram">
 <pre class="mermaid">
 flowchart TD
-  A0["Load raw note"] --> A1["Normalize<br/>non-destructive"]
-  A1 --> A2["Emit offset_map"]
+  A0["Load raw note<br/>line endings untouched"] --> A1["Clean<br/>optional, off by default"]
+  A1 --> A2["Emit offset_map<br/>identity when cleaning is off"]
   A2 --> FK(["Fan out to three lanes"])
 
   FK --> B1["Lane A: pattern scan"]
@@ -193,15 +193,19 @@ flowchart TD
   C2 -- yes --> RC1
   C1 -. "optional injection<br/>off by default" .-> D1
 
-  FK --> D1["Lane C: whole-note LLM<br/>schema v0.1 + few-shot"]
-  D1 --> D2["Parse JSON<br/>quotes, no offsets"]
+  FK --> CH{"Longer than<br/>CHUNK_MAX_CHARS?"}
+  CH -- "no, or chunking off" --> D1["Lane C: LLM extraction<br/>schema v0.1, calls in parallel"]
+  CH -- yes --> CS["Split: pages and paragraphs,<br/>then sentences, whole-sentence overlap"]
+  CS --> D1
+  D1 --> D2["Parse JSON per chunk<br/>quotes, no offsets; ids prefixed c0., c1."]
   D2 --> D3["Quote resolution"]
   D3 --> D4{"Resolved?"}
   D4 -- no --> RQ["Review queue"]
   D4 -- yes --> D5["Round-trip check"]
   D5 --> D6{"Raw slice == quote?"}
   D6 -- no --> RQ
-  D6 -- yes --> RC1
+  D6 -- yes --> DD["Rebase spans to note coordinates,<br/>drop overlap duplicates"]
+  DD --> RC1
 
   RC1["Reconcile lanes"] --> RC2{"Lane agreement"}
   RC2 -- "all lanes" --> RC5["Load, detected_by all"]
@@ -222,6 +226,8 @@ flowchart TD
   class D1 llm
   class RQ exc
   class C1 opt
+  class A1 opt
+  class CS opt
 </pre>
 </div>
 
@@ -441,38 +447,41 @@ result: accept, 0 routed to review</pre>
 
 </div>
 
-<div class="note"><strong>Oversized notes.</strong> Not drawn. Split on document structure first — dated entries, adjuster log records, section headers — fall back to sentence packing only inside an oversized structural unit, and overlap by whole sentences rather than characters. Segment results are rebased and overlap-deduplicated before rejoining at the parse step.</div>
+<div class="note"><strong>Optional stages (dashed).</strong> Cleaning and chunking can each be switched off without breaking anything downstream. With cleaning off the model reads the source text exactly, and every span is a position in it. With chunking on, a long note is split on its own structure first (page and paragraph breaks), then by sentence, overlapping by whole sentences; spans are rebased to the note and overlap duplicates collapse to the earlier chunk. With it off, a note too long to extract is a counted failure, never a crash.</div>
 
-<h2>2A — Claim assembly</h2>
-<p class="lede">Whole-note extraction removes span rebasing, overlap dedup and within-note coreference. What remains is the genuinely hard part: resolving the same party across different notes.</p>
+<h2>2A — Identity: links underneath, merged view on top</h2>
+<p class="lede">Nothing is physically merged. Every candidate pair of mentions — two chunks of one note, two notes of one claim, two claims of different insurers — gets one scored link with a basis. Entities are a projection of those links, computed when something reads them, at a lens the reader picks. The dossier and the search app call the same projection.</p>
 
 <div class="diagram">
 <pre class="mermaid">
 flowchart TD
-  IN["note_envelopes[] for claim"] --> R1["Flatten to mention_pool"]
-  R1 --> R2["Normalize detail values"]
-  R2 --> B1["Compute blocking keys"]
-  B1 --> B2["Emit candidate pairs<br/>across notes only"]
-  B2 --> P1["Score pair"]
-  P1 --> P2{"Band"}
-  P2 -- "high" --> G1["Write link edge"]
-  P2 -- "mid" --> RQ["Flag uncertain_merge<br/>no edge written"]
-  P2 -- "low" --> G2["No edge"]
-  P2 -- "must_not_link" --> G3["Block constraint"]
-  G1 --> U1
-  RQ --> U1
-  G2 --> U1
-  G3 --> U1
-  U1["Union-find<br/>respecting block constraints"] --> U2["Components to entity_ids"]
-  U2 --> M1["Build id_map"]
-  M1 --> M2["Remap detail.owner_ref"]
-  M2 --> M3["Remap action participants"]
-  M3 --> A1["Retry UNASSIGNED details<br/>full-claim context"]
+  IN["note_envelopes[] for all claims"] --> R1["Mention records<br/>fullest name, parsed parts, owned details,<br/>roles, note / claim / occurrence / client"]
+  REF[("Outside rarity<br/>Census surnames, SSA first names,<br/>NPPES org words")] --> P1
+  R1 --> B1["recordlinkage.Index<br/>NYSIIS surname blocks, rarest org word,<br/>sorted neighbourhood, identifier joins"]
+  B1 --> B2["recordlinkage.Compare<br/>Jaro-Winkler on name fields"]
+  B2 --> P1["Fellegi-Sunter score, fixed parameters<br/>prior by distance x role + log2(m/u) per field"]
+  P1 --> V{"Conflicting identifier<br/>or M.D. vs D.O.?"}
+  V -- yes --> LV["Link with veto"]
+  V -- no --> CP["Co-party A: anchored co-parties add bits<br/>Co-party B: name-matching co-parties shown"]
+  CP --> LK["Link: p, basis, weights,<br/>name agreement"]
+  LV --> ST[("links.json + mentions.json<br/>the stored layer")]
+  LK --> ST
+
+  ST -. "read time" .-> PJ["Project at lens<br/>strict | default | broad"]
+  PJ --> PU["Union strongest link first"]
+  PU --> PV{"Joins a vetoed pair, or<br/>cluster > MAX_CLUSTER?"}
+  PV -- yes --> RF["Refuse, record reason<br/>cluster-size alarm"]
+  PV -- no --> PC["Cluster: members, joining link each,<br/>weakest link = confidence"]
+  PC --> CE["Restrict to claim -> claim entities"]
+  CE --> M2["Remap detail owners and<br/>action participants"]
+  M2 --> A1["Retry UNASSIGNED details<br/>full-claim context"]
   A1 --> A2["Detect contradictions"]
   A2 --> OUT["claim_entity_set"]
 
-  class RQ exc
+  class LV exc
+  class RF exc
   class A1 llm
+  class A1 opt
 </pre>
 </div>
 
@@ -503,53 +512,61 @@ flowchart TD
 
 <div class="step-label">
   <span class="badge code">code</span>
-  <h3>Blocking</h3>
-  <p>Only mentions sharing a key are ever compared. This is what stops scoring from being quadratic.</p>
+  <h3>Candidate pairs (recordlinkage)</h3>
+  <p>Only proposed pairs are ever scored. This is what stops scoring from being quadratic, and the one miss no scorer can recover.</p>
 </div>
 <div class="step-data">
-<pre>{ "188213:m1": ["name_key:monroe", "name_key:monroe|dr",
-                 "detail:npi:1548392012"],
-  "188219:m4": ["name_key:monroe", "name_key:monroe|a",
-                 "detail:npi:1548392012"],
-  "188219:m1": ["name_key:lakeshore", "name_key:lakeshore_physical_therapy"] }
+<pre>persons        Block on NYSIIS(surname)          "Weiner" and "Wiener" meet
+organizations  Block on rarest name word (NPPES) "NEXRAY"
+               SortedNeighbourhood(window=5)     on the sorted name
+identifiers    join on (type, value)             a mention can own many
+never paired   same note AND same chunk          the model's own coreference call
 
-candidate pairs emitted: 1
-{ "a": "188213:m1", "b": "188219:m4",
-  "block_hit": ["name_key:monroe", "detail:npi:1548392012"] }</pre>
+{ "a": "note:188213:m1", "b": "note:188219:m1",
+  "proposed_by": ["block:surname_nysiis", "shared:npi"] }</pre>
 <p class="cap">The shared NPI is doing the work here. Surname alone would also have blocked them together, but it is the identifier that makes the pair worth scoring rather than merely worth looking at.</p>
 </div>
 
 <div class="step-label">
   <span class="badge code">code</span>
-  <h3>Score and band</h3>
-  <p>Mid band writes no edge. Under-merge is recoverable and visible; over-merge is a false attribution an investigator may act on.</p>
+  <h3>Score a link</h3>
+  <p>One formula at every distance. Score says how confident; basis says what it rests on.</p>
 </div>
 <div class="step-data">
-<pre>{ "a": "188213:m1", "b": "188219:m4",
-  "features": { "name_sim": 0.78, "detail_agree": 1.0,
-                "detail_rarity": 0.97, "role_compat": 1.0,
-                "type_match": true },
-  "score": 0.94, "band": "high", "action": "write_edge" }
+<pre>{ "a": "note:188213:m1", "b": "note:188219:m1",
+  "distance": "same_claim", "prior": 0.25,
+  "weights": { "last": 12.0, "npi:1548392012": 23.2 },
+  "name_agreement": { "last": "exact", "first": "missing" },
+  "p": 1.0, "basis": ["name", "npi"], "basis_class": "identifier",
+  "veto": null }
 
-{ "a": "188219:m1", "b": "188221:m3",
-  "features": { "name_sim": 0.74, "detail_agree": null,
-                "detail_rarity": null, "role_compat": 1.0,
-                "type_match": true },
-  "score": 0.71, "band": "mid", "action": "flag_uncertain_merge" }</pre>
-<p class="cap">Name similarity is only 0.78 — "Dr. Monroe" against "A. Monroe, MD" is not a strong string match. The pair clears the high band on the strength of a rare shared identifier, which is exactly the weighting you want: identifiers should outvote names.</p>
+{ "a": "note:720001:c0.m3", "b": "note:710036:c1.m2",
+  "distance": "different_client", "prior": 1e-4,
+  "weights": { "last": 13.6, "first": 6.0, "middle": 3.8 },
+  "p": 0.999, "basis": ["name"], "basis_class": "name_only",
+  "co_party": { "overlap": { "matched": 4, "of": 5 } } }</pre>
+<p class="cap">Each agreeing field adds <code>log2(m/u)</code> bits, with <code>u</code> from outside frequency tables: "Weiner" agreeing is worth far more than "Smith". The second link scores high and still reads <code>name_only</code>: nothing but the name holds it up, and the co-parties that also match by name are shown beside it, never added to it.</p>
 </div>
 
 <div class="step-label">
   <span class="badge code">code</span>
-  <h3>id_map</h3>
-  <p>Connected components over link edges, block constraints honoured.</p>
+  <h3>Project at a lens</h3>
+  <p>Computed on read. The same links give different merged views; none is stored.</p>
 </div>
 <div class="step-data">
-<pre>{ "188213:m1": "123456-789012-AB-01:E1",
-  "188219:m4": "123456-789012-AB-01:E1",
-  "188219:m1": "123456-789012-AB-01:E2",
-  "188221:m3": "123456-789012-AB-01:E5" }</pre>
-<p class="cap">E2 and E5 stay separate because the mid-band pair wrote no edge. Both appear in the dossier, both are flagged <code>uncertain_merge</code>, and a human decides.</p>
+<pre>strict   identifier basis, p &gt;= 0.90
+default  any basis,        p &gt;= 0.80
+broad    any basis,        p &gt;= 0.10
+
+{ "entity_id": "123456-789012-AB-01:E1", "cluster_id": "note:188213:m1",
+  "confidence": 1.0,
+  "merge_provenance": {
+    "lens": "default", "members": ["note:188213:m1", "note:188219:m1"],
+    "joined_by": { "note:188219:m1": { "with": "note:188213:m1",
+                   "p": 1.0, "basis_class": "identifier" } },
+    "weakest_link": { "p": 1.0, "basis_class": "identifier" },
+    "uncertain_merges": [] } }</pre>
+<p class="cap">Every member names the link that pulled it in, and the entity's confidence is its weakest link: a chain is only as strong as its weakest edge. Switching the lens re-groups the same links, so a reader can see an entity merged and unmerged without anything being written.</p>
 </div>
 
 <div class="step-label">
@@ -645,7 +662,7 @@ response:
 
 </div>
 
-<div class="note"><strong>Transitivity.</strong> Union-find merges A and C when A–B and B–C both score high, even where A–C scored low directly. A low score is the absence of an edge, not a veto. The <code>must_not_link</code> band is what makes it one, and a cluster-size alarm catches what it misses.</div>
+<div class="note"><strong>Transitivity.</strong> The projection merges A and C when A–B and B–C are admitted, even where A–C scored low directly. A low score is the absence of an edge, not a veto. A veto (two stated NPIs, M.D. against D.O.) refuses any union that would put the pair in one cluster, at every lens, and the cluster-size alarm refuses a union past <code>MAX_CLUSTER</code> mentions.</div>
 
 <h2>2B — Category assignment</h2>
 <p class="lede">Six frozen values constrain generation and carry the score: medical, legal, repair shop, witness, financier, other. An open <code>subcategory</code> string rides alongside, unscored, mined later for promotion — the same pattern as <code>action_type</code>.</p>
@@ -768,7 +785,7 @@ contrasting failure:
 </div>
 
 <h2>2C — Graph load and cross-claim resolution</h2>
-<p class="lede">Nothing enters the persistent store until the claim dossier is frozen, which keeps the scoreable artifact independent of the graph. Confirmed identity links project into canonical Person nodes without destroying the claim-scoped records beneath them.</p>
+<p class="lede">Nothing enters the persistent store until the claim dossier is frozen, which keeps the scoreable artifact independent of the graph. Cross-claim identity is the same mention links read across claim boundaries; Person is a read-time projection of them at a lens, never a stored merge, so the claim-scoped records beneath it are never touched.</p>
 
 <div class="diagram">
 <pre class="mermaid">
@@ -782,25 +799,23 @@ flowchart TD
   U0 --> U1["Upsert Entity nodes<br/>claim-scoped, never merged"]
   U1 --> U2["Upsert Note and Evidence nodes"]
   U2 --> U3["Edges HAS_DETAIL, PARTICIPATES_IN,<br/>EVIDENCED_BY"]
-  U3 --> X1["Find Entities sharing a Detail<br/>across different claim_id"]
-  X1 --> X2["Score pair, weighted by rarity"]
-  X2 --> X3{"Band"}
-  X3 -- "high" --> X4["IdentityLink same"]
-  X3 -- "mid" --> X5["IdentityLink review"]
-  X3 -- "low" --> X6["IdentityLink different"]
-  X4 --> PR
-  X5 --> PR
-  X6 --> PR
-  PR["Recompute Person projection<br/>from confirmed links"] --> PC{"Cluster size plausible?"}
-  PC -- no --> RQ3["Alarm: over-merge<br/>suspend projection"]
-  PC -- yes --> W1["Watchlist match on Person"]
+  U3 --> X0[("Mention links from 2A<br/>same store, every distance")]
+  X0 --> X1["Cross-claim links:<br/>identity p + basis"]
+  X1 --> X2["Suspicion = distance weight x p<br/>same occurrence: 0, different client: 1"]
+  U3 --> XS["Shared details across claims<br/>relationships, not identities"]
+  X2 --> PR
+  XS --> DV
+  PR["Person projection at read time<br/>lens chosen by the reader"] --> PC{"Union would exceed<br/>MAX_CLUSTER?"}
+  PC -- yes --> RQ3["Alarm: refuse union,<br/>record the chaining link"]
+  PC -- no --> DV["Dossier / search app / graph RAG<br/>weakest link shown with every merge"]
+  DV --> W1["Watchlist match on Person"]
   W1 --> W2{"Above threshold?"}
-  W2 -- yes --> W3["Alert + triggering entity<br/>+ evidence trail"]
+  W2 -- yes --> W3["Alert + triggering entity<br/>+ evidence trail + link basis"]
   W2 -- no --> W4["Store score, no alert"]
 
   class RQ2 exc
   class RQ3 exc
-  class X5 exc
+  class W1 opt
 </pre>
 </div>
 
@@ -951,7 +966,7 @@ below threshold, still stored:
 
 </div>
 
-<div class="note"><strong>Open items.</strong> The six-value taxonomy needs a written, versioned artifact. Detail normalization rules per type, and the list of identity-bearing detail types, are undecided. Rarity weights and the cluster-size threshold are unset placeholders. GLiNER should be gated on measured LLM entity recall — if recall is already adequate against gold data, the lane is infrastructure for nothing.</div>
+<div class="note"><strong>Open items.</strong> The six-value taxonomy needs a written, versioned artifact. Detail normalization rules per type, and the list of identity-bearing detail types, are undecided. Rarity now comes from outside tables (Census, SSA, NPPES), but the m-values, priors, lens thresholds and <code>MAX_CLUSTER</code> are stated assumptions awaiting calibration against gold data. GLiNER should be gated on measured LLM entity recall — if recall is already adequate against gold data, the lane is infrastructure for nothing.</div>
 
 </div>
 
