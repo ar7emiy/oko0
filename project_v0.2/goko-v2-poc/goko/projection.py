@@ -40,6 +40,8 @@ def admits(link, lens):
     spec = LENSES[lens]
     if link.get("veto"):
         return False
+    if link.get("basis_class") == "none":
+        return False        # no field agreed: a prior alone never merges anything
     if link["p"] < spec["min_p"]:
         return False
     return spec["basis"] is None or link["basis_class"] in spec["basis"]

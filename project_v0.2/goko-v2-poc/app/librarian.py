@@ -15,6 +15,7 @@ import json
 import os
 import re
 import time
+import urllib.error
 import urllib.request
 
 GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
@@ -46,8 +47,18 @@ class Model:
             req = urllib.request.Request(
                 GEMINI_URL.format(model=model or self.gemini_model), data=json.dumps(body).encode(),
                 headers={"Content-Type": "application/json", "x-goog-api-key": self.gemini_key})
-            with urllib.request.urlopen(req, timeout=timeout) as r:
-                d = json.loads(r.read())
+            d = None
+            for attempt in range(4):         # a rate limit is a wait, not an answer
+                try:
+                    with urllib.request.urlopen(req, timeout=timeout) as r:
+                        d = json.loads(r.read())
+                    break
+                except urllib.error.HTTPError as e:
+                    body_txt = e.read().decode("utf-8", "replace")
+                    if e.code not in (429, 500, 503) or attempt == 3:
+                        raise RuntimeError(f"Gemini HTTP {e.code}: {body_txt[:300]}") from None
+                    m = re.search(r'"retryDelay":\s*"(\d+(?:\.\d+)?)s"', body_txt)
+                    time.sleep(float(m.group(1)) + 1 if m else 2 ** attempt * 2)
             parts = d["candidates"][0]["content"]["parts"]
             text = "".join(p.get("text", "") for p in parts if not p.get("thought"))
             return json.loads(text)

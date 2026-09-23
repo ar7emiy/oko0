@@ -54,6 +54,11 @@ def match_party(name, parties):
     toks = key_tokens(name)
     if not toks:
         return None
+    # an exact name beats a word-subset: "Allstate Insurance Company" is also a subset of
+    # "Allstate Fire & Casualty Insurance Company"
+    exact = {label for label, parts in parties if any(toks == p for p in parts)}
+    if len(exact) == 1:
+        return exact.pop()
     hits = {label for label, parts in parties if any(toks <= p for p in parts)}
     return hits.pop() if len(hits) == 1 else None
 
@@ -126,7 +131,11 @@ def main(run_dir):
             common = set.intersection(*ids_by_claim.values()) if all(ids_by_claim.values()) else set()
             found |= common
             labels = {by_key[k]["_gold_party"] for k in c["members"] if by_key[k]["_gold_party"]}
-            if len(labels) > 1:
+            # one party may carry a different label on each docket ("Nexray ..., P.C." and
+            # "Nexray ... d/b/a Soul Radiology ..."): compare identities, not labels
+            canon = {("x", ident[k]) if ident[k] is not None else ("p", by_key[k]["_gold_party"])
+                     for k in c["members"] if by_key[k]["_gold_party"]}
+            if len(canon) > 1:
                 wrong.append(sorted(labels))
             if not labels:
                 unscored += 1
