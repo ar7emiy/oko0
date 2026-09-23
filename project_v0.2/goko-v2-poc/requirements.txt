@@ -1,0 +1,8 @@
+# Core pipeline (goko_v2_poc.ipynb)
+recordlinkage>=0.16      # candidate pairs and string comparisons (cells 17-18); pulls in jellyfish
+pandas>=1.0
+pypdf                    # corpus/courtlistener/fetch.py only
+
+# Optional stages
+# gliner                 # Lane B (cell 9), GLINER_ENABLED = True
+# openai                 # PROVIDER = "azure"
