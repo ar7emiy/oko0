@@ -111,6 +111,47 @@ never sent to the browser.
 this pipeline can otherwise violate while completing cleanly. Cell 24 lists the architecture
 stages the POC does not implement, so a green summary cannot be read as a complete system.
 
+## Court corpus results
+
+Two RICO dockets from different insurers against one ring of providers: seven filings,
+about 800k characters. Five of the docket parties appear on both dockets. Scored by
+`evaluate.py` against the clerk's party lists (`corpus/courtlistener/gold/`), which the
+pipeline never reads.
+
+| | Gemini 3.1 Pro + GLiNER | Gemini 3.5 Flash |
+|---|---|---|
+| Extraction | 27 calls (5 of 7 notes split), 0 failures | 27 calls, 0 failures |
+| Party recall, LLM | 16/17 | 16/17 |
+| Party recall, GLiNER | 16/17 | not run |
+| Cross-claim identities found (strict / default / broad) | 0 / 4 / 5 of 5 | 0 / 4 / 5 of 5 |
+| Wrong cross-claim joins (default / broad) | 0 / 1 | 0 / 0 |
+| Wall time | ~22 min (GLiNER ~9 on CPU) | ~8 min |
+
+- **Recall.** Both lanes miss Leon Kucherovsky, who is on the second docket's list but not
+  named in the selected filings. On these documents GLiNER added no party the LLM missed.
+- **Strict finds nothing.** Court filings carry almost no shared identifiers, and every true
+  cross-claim link is `name_only`.
+- **Default misses Bradley Pierre (p = 0.36).** He is a private person matched on name
+  alone. That is the private-person prior at work, as designed. He appears at broad, next to
+  a display that 32 of his 65 co-parties also match by name (Pro run).
+- **The Pro run's broad-lens error.** It joins Allstate Fire & Casualty with Allstate
+  Property & Casualty through the bare "Allstate", at weakest link 0.55. FIRE is too common
+  in NPPES to count as distinctive, so the sibling veto doesn't fire.
+- **Cross-claim clusters outside the gold five are real too.** Medical Reimbursement
+  Consultants, Allstate, and the attorney Cary Scott Goldinger all appear in both dockets'
+  filings.
+
+The first live run of this linker found every true identity but also joined Nexray with
+Rutland and four Allstate siblings into one. Each wrong join traced to a concrete cause, now
+fixed and covered by a self-test:
+
+- **Sentence fragments used as names.** "Ninth Cause of Action against Nexray, Pierre, and
+  Weiner" was treated as a name.
+- **Sibling companies became aliases.** The model listed them as occurrences of one
+  mention.
+- **A generic short form chained siblings.** "Allstate" linked every sibling to every
+  other.
+
 ## Slow calls: broken IPv6
 
 On a machine whose IPv6 route is advertised but broken, Python's `urllib` tries every IPv6
@@ -123,6 +164,11 @@ reply took 170 s. After the fix it took 2.6 s, and the notebook's smoke test dro
 
 `goko/net.py` orders IPv4 answers first and keeps IPv6 as the fallback. Cell 2 and the app
 both call it.
+
+Once calls were fast, the category step hit Gemini's per-minute quota. Both adapters now wait
+out a 429 using the server's `retryDelay`. A per-day quota is different: Gemini 3.1 Pro
+allows 250 requests a day on this key, and no retry can help once they're used, so the
+adapters report it at once rather than waiting.
 
 ## First live run (Gemini 3.1 Pro)
 
@@ -242,9 +288,10 @@ These are about the architecture, not the notebook. They need a decision before 
 
 1. **`must_not_link` is described as a band of the identity score.** A band derived from the
    same similarity number cannot act as a constraint — it carries no information the score
-   does not already carry. A veto needs independent evidence. Implemented here as type
-   mismatch plus conflicting singular identifiers; the full list of disqualifying evidence
-   is a decision, not an implementation detail.
+   does not already carry. A veto needs independent evidence. Implemented here as
+   conflicting stated identifiers, conflicting primary licenses, and sibling organization
+   names (entity type is a hard constraint on candidates); the full list of disqualifying
+   evidence is a decision, not an implementation detail.
 2. **The trace's worked scores are not reproducible from the model it describes.** An
    `identity_score` of 0.96 for a single shared phone within an occurrence implies an
    evidence base near 1.0 before the distance weight, but the base is never defined. Either
@@ -260,6 +307,11 @@ These are about the architecture, not the notebook. They need a decision before 
 5. **A suspended projection may already have produced alerts.** The cluster-size alarm
    suspends a projection, but nothing says what happens to alerts derived from it before the
    suspension.
-6. **Within-note duplicate mentions are never detected.** Assembly compares across notes
-   only, on the principle that within-note coreference is the model's job. When the model
-   emits two mentions for one party in one note, nothing notices.
+6. **Within-chunk duplicate mentions are never detected.** Linking compares across chunks
+   and notes, on the principle that coreference inside what the model read at once is the
+   model's job. When the model emits two mentions for one party in one chunk, nothing
+   notices.
+7. **Name-only cross-claim identity is the common case, not the edge case.** On the court
+   corpus every true cross-claim link is name-only, and only 11% of OIG LEIE exclusion rows
+   carry an NPI. Watchlist matching will mostly run on names and addresses; how an alert
+   built on a `name_only` link is presented, and whether it may alert at all, is undecided.

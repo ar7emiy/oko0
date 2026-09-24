@@ -28,7 +28,7 @@ class Model:
         self.provider = None
         self.gemini_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
         # answers need the stronger model; routing is a one-word decision
-        self.gemini_model = os.environ.get("LIBRARIAN_MODEL", "gemini-3.1-pro-preview")
+        self.gemini_model = os.environ.get("LIBRARIAN_MODEL", "gemini-3.5-flash")
         self.router_model = os.environ.get("LIBRARIAN_ROUTER_MODEL", "gemini-3.1-flash-lite")
         if self.gemini_key:
             self.provider = "gemini"
@@ -55,7 +55,7 @@ class Model:
                     break
                 except urllib.error.HTTPError as e:
                     body_txt = e.read().decode("utf-8", "replace")
-                    if e.code not in (429, 500, 503) or attempt == 3:
+                    if e.code not in (429, 500, 503) or attempt == 3 or "per_day" in body_txt:
                         raise RuntimeError(f"Gemini HTTP {e.code}: {body_txt[:300]}") from None
                     m = re.search(r'"retryDelay":\s*"(\d+(?:\.\d+)?)s"', body_txt)
                     time.sleep(float(m.group(1)) + 1 if m else 2 ** attempt * 2)

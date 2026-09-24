@@ -227,7 +227,9 @@ class Run:
                               "a_name": self.mentions[weakest["a"]]["name"],
                               "b_name": self.mentions[weakest["b"]]["name"]} if weakest else None),
             "basis_classes": sorted({e["basis_class"] for e in (c["edges"] if c else [])}),
-            "categories": sorted({json.dumps(self.category_of[k]) for k in members if k in self.category_of}),
+            "categories": sorted({json.dumps({"value": self.category_of[k]["value"],
+                                              "subcategory": self.category_of[k]["subcategory"]})
+                                  for k in members if k in self.category_of}),
             "members": mem, "details": list(folded.values()), "actions": acts,
             "related": sorted(related.values(), key=lambda r: -r["count"]),
             "not_merged": list(best.values())[:12],
