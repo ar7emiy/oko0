@@ -1,6 +1,19 @@
 # Core pipeline (goko_v2_poc.ipynb)
-recordlinkage>=0.16      # candidate pairs and string comparisons (cells 17-18); pulls in jellyfish
-pandas>=1.0
+#
+# recordlinkage 0.16 declares pandas<3, but works with pandas 3: tested with 3.0.6, 47/47
+# self-tests, and links identical to pandas 2.3.3 on the court corpus. Only a deprecation
+# warning inside recordlinkage (concat copy=) remains, which pandas 4 turns into an error.
+# pip would downgrade pandas to satisfy the pin, so install recordlinkage without its deps:
+#
+#   pip install -r requirements.txt
+#   pip install --no-deps recordlinkage==0.16
+#
+pandas>=3
+numpy
+scipy
+scikit-learn
+joblib
+jellyfish                # recordlinkage's string comparisons, and the org-name scorer
 pypdf                    # corpus/courtlistener/fetch.py only
 
 # Optional stages

@@ -24,7 +24,8 @@ poc_output/                  written by the notebook (gitignored)
 ## Running it
 
 ```bash
-pip install -r requirements.txt       # recordlinkage, pandas, pypdf
+pip install -r requirements.txt       # pandas 3, jellyfish, pypdf, ...
+pip install --no-deps recordlinkage==0.16   # its pandas<3 pin is stale; see requirements.txt
 python3 run_offline_check.py          # no key, no network, a few seconds
 jupyter lab goko_v2_poc.ipynb         # same thing, interactively
 python app/server.py --run poc_output # the search app over the last run, http://127.0.0.1:8765
