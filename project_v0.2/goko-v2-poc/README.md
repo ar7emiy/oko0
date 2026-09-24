@@ -42,6 +42,7 @@ One toggle, `PROVIDER`, in cell 1:
 |---|---|---|
 | `"offline"` *(default)* | nothing | Replays recorded extractions for the bundled notes. |
 | `"gemini"` | an API key | Paste it into `GEMINI_API_KEY` in cell 1. No `settings.env`, no SDK — the adapter is raw HTTPS over `urllib`. Falls back to `$GEMINI_API_KEY` / `$GOOGLE_API_KEY`. |
+| `"openai"` | an API key | api.openai.com directly (not Azure), raw HTTPS like the Gemini adapter. Key in `OPENAI_API_KEY` in cell 1 or the environment; model `OPENAI_MODEL`, default `gpt-5-nano`. Reasoning tokens get the same headroom as Gemini's thinking tokens; `reasoning_effort` is `low`. |
 | `"azure"` | `settings.env` + `openai` | Cell 1 prints which keys it found, masked, and which variant names it accepts. |
 
 Offline mode exists so the plumbing can be verified without a deployment, and it is never
@@ -153,15 +154,43 @@ fixed and covered by a self-test:
 - **A generic short form chained siblings.** "Allstate" linked every sibling to every
   other.
 
+### gpt-5-nano against the Gemini runs
+
+Same corpus and pipeline. Extraction and category assignment both run on nano, with
+`reasoning_effort` low and GLiNER off.
+
+| | Gemini 3.1 Pro | Gemini 3.5 Flash | gpt-5-nano |
+|---|---|---|---|
+| Wall time (extraction / categories) | 22 min (6.3 / 6.8) | 7.8 min (3.4 / 4.3) | **3.2 min** (1.3 / 1.6) |
+| Party recall | 16/17 | 16/17 | 16/17 |
+| Cross-claim identities: default / broad | 4 / 5 | 4 / 5 | 4 / 5 |
+| Wrong joins: default / broad | 0 / 1 | 0 / 0 | 0 / 0 |
+| Entity mentions | 196 | 156 | 110 |
+| **Actions** | 96 | 91 | **11** |
+| Details found by the LLM | 14 | 18 | **2** (the pattern lane caught 6 more) |
+| Quotes that could not be placed | 13 | 6 | 16 |
+
+Nano finds the parties about as well as Gemini, and on these filings party names alone drive
+the identity results. It extracts almost none of the relationships (who billed, referred,
+owned or controlled whom) and almost none of the identifiers. Those actions and details are
+what dossiers show and what graph-RAG answers are built from.
+
+Some of its quotes are paraphrases rather than copies (similarity 0.43–0.79 against the
+source), and those are rejected rather than placed. That is the round-trip check doing its
+job, but it costs spans.
+
+The 3.1 Pro run's 28 category failures were HTTP 429s from the per-minute limit, before the
+retry existed. They are not a model result.
+
 ## Slow calls: broken IPv6
 
 On a machine whose IPv6 route is advertised but broken, Python's `urllib` tries every IPv6
 address first, waiting out a full timeout on each, before it reaches IPv4. Browsers and
 `curl` race the two address families and never notice.
 
-On the development machine this added about 55 s to every connection: a one-word Gemini
-reply took 170 s. After the fix it took 2.6 s, and the notebook's smoke test dropped from
-172 s to 3 s.
+This happened once during development, on a network with a misconfigured IPv6 route. It
+added about 55 s to every connection: a one-word Gemini reply took 170 s. After the fix it
+took 2.6 s, and the notebook's smoke test dropped from 172 s to 3 s.
 
 `goko/net.py` orders IPv4 answers first and keeps IPv6 as the fallback. Cell 2 and the app
 both call it.
