@@ -71,6 +71,9 @@ class Handler(BaseHTTPRequestHandler):
                                     "run": r.info})
         if u.path == "/api/suggest":
             return self._send(200, self.run.suggest(q.get("q", "")))
+        if u.path == "/api/link":
+            v = self.run.link_card(q.get("a"), q.get("b"), q.get("lens", "default"))
+            return self._send(200, v) if v else self._send(404, {"error": "no such link"})
         if u.path == "/api/view":
             span = json.loads(q["span"]) if q.get("span") else None
             v = self.run.view(q.get("kind"), q.get("id"), q.get("lens", "default"), span)
@@ -100,10 +103,14 @@ def main():
     ap.add_argument("--run", default=str(HERE.parent / "poc_output" / "courtlistener"))
     ap.add_argument("--notes", help="notes folder, if the run has no run_info.json")
     ap.add_argument("--port", type=int, default=8765)
+    ap.add_argument("--no-model", action="store_true",
+                    help="never call a model, whatever keys the environment holds (lookups and "
+                         "retrieved facts only)")
     a = ap.parse_args()
-    load_dotenv()
+    if not a.no_model:
+        load_dotenv()
     Handler.run = Run(a.run, a.notes)
-    Handler.model = librarian.Model()
+    Handler.model = librarian.Model(enabled=not a.no_model)
     r = Handler.run
     print(f"run {a.run}: {len(r.mentions)} mentions, {len(r.links)} links, {len(r.notes)} notes; "
           f"librarian model: {Handler.model.provider or 'none (lookups only)'}")

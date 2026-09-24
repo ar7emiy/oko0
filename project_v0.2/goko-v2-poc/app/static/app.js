@@ -192,6 +192,8 @@ function ref(kind, id, label, extra = {}) {
   return `<span class="link" data-open='${esc(JSON.stringify({ kind, id, label, ...extra }))}'>${esc(label)}</span>`;
 }
 function wireLinks(el, w) {
+  GOKO.lens = (w.req && w.req.lens) || "default";
+  GOKO.wire(el, { open: false });
   el.querySelectorAll("[data-open]").forEach((a) => a.addEventListener("click", () => {
     const r = JSON.parse(a.dataset.open);
     openView({ kind: r.kind, id: r.id, lens: (w.req && w.req.lens) || "default", span: r.span }, r.label, w.id);
@@ -238,20 +240,12 @@ function drawEntity(el, w, d) {
     : `<span class="chip ${d.confidence >= 0.9 ? "good" : d.confidence >= 0.5 ? "" : "bad"}">weakest link ${pct(d.confidence)}</span>`;
   const cats = d.categories.map((c) => JSON.parse(c)).map((c) => `<span class="chip">${esc(c.value)}${c.subcategory ? " · " + esc(c.subcategory) : ""}</span>`).join("");
   let h = `<div class="win-head"><h1 class="title">${esc(d.title)}</h1>
-    <div class="meta"><span>${esc(d.type)}</span><span>·</span><span>${d.mention_count} mention${d.mention_count > 1 ? "s" : ""}</span><span>·</span>
-    <span>${d.claims.map((c) => ref("claim", c, c)).join(", ")}</span></div>
-    <div class="meta" style="margin-top:8px">${d.flagged && d.flagged.length ? `<span class="chip bad">Flagged for review</span>` : ""}${conf}${d.basis_classes.map(basisChip).join("")}${cats}</div>
+    <div class="meta"><span>${esc(d.type)}</span><span>·</span>
+    <span>${d.claims.map((c) => ref("claim", c, c)).join(", ")}</span>${d.flagged && d.flagged.length ? `<span class="chip bad" title="At this lens a mention of this party links to a record on the OIG exclusion list (LEIE). A lead to check, not a finding.">Flagged for review</span>` : ""}</div>
+    ${GOKO.summaryHTML(d)}${GOKO.categoryHTML(d)}
     ${lensBar(d)}</div><div class="win-body">`;
-  if (d.weakest_link) h += `<p class="muted">Weakest link: “${esc(d.weakest_link.a_name)}” ↔ “${esc(d.weakest_link.b_name)}” at ${pct(d.weakest_link.p)}, ${esc(d.weakest_link.basis_class.replace("_", " "))}.</p>`;
-  const wlRow = (f) => {
-    const r = f.record || {};
-    return `<div class="card"><div class="row"><strong class="grow">${esc(r.name)}</strong><span class="chip">${pct(f.p)}</span>${basisChip(f.basis_class)}
-      ${f.veto ? `<span class="chip bad">veto: ${esc(f.veto)}</span>` : ""}</div>
-      <div class="muted">${esc(r.general || "")}${r.specialty ? " · " + esc(r.specialty) : ""} · ${esc(r.city || "")} ${esc(r.state || "")} · excluded ${esc(r.excl_date || "")} (${esc(r.excl_type || "")})${r.npi ? " · NPI " + esc(r.npi) : ""}</div>
-      <div class="muted">via “${esc(f.mention_name)}”${f.links > 1 ? ` and ${f.links - 1} other mention(s)` : ""} · admitted at: ${f.admitted.length ? esc(f.admitted.join(", ")) : "no lens"}</div></div>`;
-  };
-  if (d.flagged && d.flagged.length) h += `<section class="block"><h2>Flagged for review — OIG exclusion list</h2>${d.flagged.map(wlRow).join("")}</section>`;
-  if (d.watchlist_near && d.watchlist_near.length) h += `<section class="block"><h2>Watchlist links this lens does not admit</h2>${d.watchlist_near.map(wlRow).join("")}</section>`;
+  if (d.flagged && d.flagged.length) h += `<section class="block"><h2 title="Records on the OIG exclusion list that a mention of this party links to, admitted at this lens">Flagged for review — OIG exclusion list</h2>${d.flagged.map(GOKO.watchRowHTML).join("")}</section>`;
+  if (d.watchlist_near && d.watchlist_near.length) h += `<section class="block"><h2 title="Watchlist links below this lens's threshold, or vetoed. They do not flag the entity here.">Exclusion-list links this lens does not admit</h2>${d.watchlist_near.map(GOKO.watchRowHTML).join("")}</section>`;
   if (d.details.length) {
     h += `<section class="block"><h2>Identifiers</h2>`;
     d.details.forEach((x) => {
@@ -282,16 +276,7 @@ function drawEntity(el, w, d) {
     if (d.actions.length > 40) h += `<p class="muted">${d.actions.length - 40} more not shown.</p>`;
     h += `</section>`;
   }
-  if (d.not_merged.length) {
-    h += `<section class="block"><h2>Not merged at this lens</h2>`;
-    d.not_merged.forEach((o) => {
-      const ov = o.co_party && o.co_party.overlap;
-      h += `<div class="card"><div class="row"><span class="grow">${ref(o.kind, o.id, o.name)}</span><span class="chip">${pct(o.p)}</span>${basisChip(o.basis_class)}
-        ${o.veto ? `<span class="chip bad">veto: ${esc(o.veto)}</span>` : ""}</div>
-        <div class="muted">${esc(o.distance.replaceAll("_", " "))}${ov && ov.matched ? ` · ${ov.matched} of ${ov.of} co-parties also match by name (shown, not scored)` : ""}</div></div>`;
-    });
-    h += `</section>`;
-  }
+  h += GOKO.candidatesHTML(d.candidates, d.lens);
   if (d.refused.length) h += `<section class="block"><h2>Refused merges</h2>${d.refused.map((r) => `<div class="muted">${esc(r.reason)}: ${esc(r.a)} / ${esc(r.b)}</div>`).join("")}</section>`;
   el.innerHTML = h + `</div>`;
 }
@@ -358,5 +343,11 @@ function drawAnswer(el, w) {
   el.innerHTML = h + `</div>`;
   wireLinks(el, w);
 }
+
+// the decision card asks the app to open things through an event
+document.addEventListener("goko:open", (e) => {
+  const r = e.detail;
+  openView({ kind: r.kind, id: r.id, lens: GOKO.lens || "default", span: r.span }, r.label);
+});
 
 render();

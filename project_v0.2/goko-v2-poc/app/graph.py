@@ -14,7 +14,7 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
-from goko.projection import LENSES, project, subtree_weakest
+from goko.projection import LENSES, admits, project, subtree_weakest
 from goko.watchlist import flags_for, near_flags
 
 EXCERPT = 180          # characters of context either side of a span
@@ -151,8 +151,12 @@ class Run:
             for p in a["participants"]:
                 self.actions_of[p["mention"]].append(a)
         self.links_of = defaultdict(list)
+        self.link_index = {}
         for l in self.links:
             self.links_of[l["a"]].append(l); self.links_of[l["b"]].append(l)
+            self.link_index[(l["a"], l["b"])] = self.link_index[(l["b"], l["a"])] = l
+        for l in self.watchlist["links"]:
+            self.link_index[(l["a"], l["b"])] = self.link_index[(l["b"], l["a"])] = l
         # categories from the frozen claim dossiers, per mention
         self.category_of = {}
         for d in self.dossiers.values():
@@ -229,7 +233,6 @@ class Run:
 
     @staticmethod
     def _admits(l, lens):
-        from goko.projection import admits
         return admits(l, lens)
 
     def _by_record(self, links):
@@ -254,6 +257,109 @@ class Run:
         members = c["members"] if c else [key]
         return {"kind": "entity", "id": c["id"] if c else key, "name": self.title_of(members),
                 "type": self.mentions[key]["type"]}
+
+    # ---- the decision card ---------------------------------------------------------
+    def _mask_link(self, l):
+        """A copy of a link safe for the page: masked identifiers shown as their last four."""
+        l = json.loads(json.dumps(l))
+        def mv(t, v):
+            return masked_value(t, v) if t in MASKED_TYPES and v else v
+        l["weights"] = {(f"{k.split(':', 1)[0]}:{mv(*k.split(':', 1))}" if ":" in k else k): v
+                        for k, v in l["weights"].items()}
+        for r in l.get("fields", []):
+            t = r.get("type")
+            if t in MASKED_TYPES:
+                r["value"] = mv(t, r.get("value"))
+                r["a"] = [mv(t, x) for x in r.get("a") or []]
+                r["b"] = [mv(t, x) for x in r.get("b") or []]
+        if l.get("veto") and l["veto"].split(":", 1)[0] in {f"conflicting_{t}" for t in MASKED_TYPES}:
+            l["veto"] = self.redact(re.sub(r"\d{5,}", lambda m: mask_digits(m.group(0)), l["veto"]))
+        return l
+
+    def _mention_side(self, key, lens):
+        m = self.mentions[key]
+        return {"kind": "mention", "key": key, "name": m["name"],
+                "name_as_extracted": m.get("name_as_extracted"), "type": m["type"],
+                "role_class": m["role_class"], "claim_id": m["claim_id"], "note": m["note_key"],
+                "entity": self._entity_ref(key, lens), "roles": m.get("roles", [])[:6],
+                "locations": m.get("locations", []),
+                "evidence": self.excerpt(m["note_key"], m.get("raw_span") or m.get("clean_span"))}
+
+    def lens_outcomes(self, l):
+        """For each lens: is the link admitted, and if not, why; and what the projection did
+        with it (merged by it, merged through other links, or the union refused)."""
+        out = []
+        for lens, spec in LENSES.items():
+            adm = admits(l, lens)
+            why = None
+            if not adm:
+                why = ("veto" if l.get("veto") else "no_agreement" if l["basis_class"] == "none"
+                       else "below_min" if l["p"] < spec["min_p"] else "basis")
+            row = {"lens": lens, "min_p": spec["min_p"], "identifier_only": spec["basis"] is not None,
+                   "admitted": adm, "why_not": why}
+            if l.get("source") == "oig_leie":
+                row["flags"] = adm
+            else:
+                pr = self.projection(lens)
+                ca, cb = pr["cluster_of"].get(l["a"]), pr["cluster_of"].get(l["b"])
+                row["merged"] = ca is not None and ca is cb
+                row["by_this_link"] = row["merged"] and any(
+                    (e["a"], e["b"]) == (l["a"], l["b"]) for e in ca["edges"])
+                ref = next((r for r in pr["refused"]
+                            if (r["link"]["a"], r["link"]["b"]) == (l["a"], l["b"])), None)
+                if ref:
+                    row["refused"] = {"reason": ref["reason"],
+                                      "would_merge": [self.mentions[k]["name"] for k in ref.get("would_merge", [])
+                                                      if k in self.mentions],
+                                      "would_reach": ref.get("would_reach")}
+            out.append(row)
+        return out
+
+    def link_card(self, a, b, lens="default"):
+        l = self.link_index.get((a, b))
+        if l is None:
+            return None
+        watch = l.get("source") == "oig_leie"
+        rec = self.watchlist["records"].get(l["b"]) if watch else None
+        return {"kind": "link", "link": self._mask_link(l), "watchlist": watch,
+                "a": self._mention_side(l["a"], lens),
+                "b": ({"kind": "record", "record_id": l["b"], "record": rec,
+                       "source": self.watchlist.get("source")} if watch
+                      else self._mention_side(l["b"], lens)),
+                "lens": lens, "lenses": self.lens_outcomes(l),
+                "lens_specs": {k: {"min_p": v["min_p"], "identifier_only": v["basis"] is not None,
+                                   "label": v["label"]} for k, v in LENSES.items()}}
+
+    def _cand_row(self, l, members, lens, merged):
+        inside = l["a"] if l["a"] in members else l["b"]
+        other = l["b"] if inside == l["a"] else l["a"]
+        return {"a": l["a"], "b": l["b"], "via": self.mentions[inside]["name"],
+                "other": {**self._entity_ref(other, lens), "mention_name": self.mentions[other]["name"],
+                          "claim_id": self.mentions[other]["claim_id"]},
+                "p": l["p"], "basis_class": l["basis_class"], "veto": l.get("veto"),
+                "similarity": l.get("name_similarity_pct", round(100 * (l.get("name_similarity") or 0))),
+                "distance": l["distance"], "merged": merged}
+
+    def candidates(self, members, cluster, lens, n=12):
+        """The closest mentions around an entity: the links that merged its members, and the
+        strongest link to each entity this lens kept apart (vetoed ones included)."""
+        ms = set(members)
+        merged = [self._cand_row(cluster["joined_by"][k], ms, lens, True)
+                  for k in members if cluster and cluster["joined_by"].get(k)]
+        best = {}
+        for k in members:
+            for l in self.links_of[k]:
+                other = l["b"] if l["a"] == k else l["a"]
+                if other in ms:
+                    continue
+                oc = self.cluster(other, lens)
+                oid = oc["id"] if oc else other
+                if oid not in best or l["p"] > best[oid]["p"]:
+                    best[oid] = l
+        apart = sorted(best.values(), key=lambda l: -l["p"])[:n]
+        return {"merged": sorted(merged, key=lambda r: -r["p"])[:n],
+                "not_merged": [self._cand_row(l, ms, lens, False) for l in apart],
+                "not_merged_total": len(best)}
 
     # ---- views ---------------------------------------------------------------------
     def entity_view(self, key, lens="default"):
@@ -322,6 +428,7 @@ class Run:
             best.setdefault(o["id"], o)
 
         weakest = c["weakest"] if c else None
+        cands = self.candidates(members, c, lens)
         refused = [r for r in self.projection(lens)["refused"]
                    if r["link"]["a"] in members or r["link"]["b"] in members]
         flags = self.flag_of(members, lens)
@@ -343,11 +450,27 @@ class Run:
             "members": mem, "details": list(folded.values()), "actions": acts,
             "related": sorted(related.values(), key=lambda r: -r["count"]),
             "not_merged": list(best.values())[:12],
+            "candidates": cands,
+            "category_line": self._category_line(members),
             "flagged": flags, "watchlist_near": near,
             "watchlist_source": {"name": self.watchlist.get("source"),
                                  "records_on_list": self.watchlist.get("records_on_list")},
             "refused": [{"reason": r["reason"], "a": r["link"]["a"], "b": r["link"]["b"]} for r in refused],
         }
+
+    def _category_line(self, members):
+        """The model's reading of the party's role, per claim; not part of identity."""
+        seen = []
+        for k in members:
+            c = self.category_of.get(k)
+            if not c:
+                continue
+            v = "undetermined" if c["value"] == "insufficient_evidence" else c["value"].replace("_", " ")
+            s = (c.get("subcategory") or "").replace("_", " ")
+            txt = f"{v} · {s}" if s else v
+            if txt not in seen:
+                seen.append(txt)
+        return seen
 
     def identifier_view(self, ident, lens="default"):
         ident = self.ident_of_public.get(ident, ident)

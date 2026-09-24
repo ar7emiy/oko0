@@ -24,9 +24,9 @@ GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:ge
 class Model:
     """Minimal provider adapter. The key stays in this process; the browser never sees it."""
 
-    def __init__(self):
+    def __init__(self, enabled=True):
         self.provider = None
-        self.gemini_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+        self.gemini_key = (os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")) if enabled else None
         # answers need the stronger model; routing is a one-word decision
         self.gemini_model = os.environ.get("LIBRARIAN_MODEL", "gemini-3.5-flash")
         self.router_model = os.environ.get("LIBRARIAN_ROUTER_MODEL", "gemini-3.1-flash-lite")
