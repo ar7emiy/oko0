@@ -15,6 +15,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from goko.projection import LENSES, project, subtree_weakest
+from goko.watchlist import flags_for, near_flags
 
 EXCERPT = 180          # characters of context either side of a span
 
@@ -76,6 +77,13 @@ class Run:
             self.dossiers[d["claim_id"]] = d
         cc = rd / "cross_claim.json"
         self.cross = json.loads(cc.read_text(encoding="utf-8")) if cc.exists() else {}
+        # watchlist links (cell 18c): corpus mention -> OIG LEIE record, scored like any link
+        wl = rd / "watchlist_links.json"
+        self.watchlist = json.loads(wl.read_text(encoding="utf-8")) if wl.exists() else {
+            "links": [], "records": {}, "records_on_list": 0}
+        self.wl_by_mention = defaultdict(list)
+        for l in self.watchlist["links"]:
+            self.wl_by_mention[l["a"]].append(l)
 
         # note texts: run_info names each file; otherwise look in notes_dir
         self.notes = {}
@@ -212,6 +220,35 @@ class Run:
         n = self.notes.get(note_key)
         return {"note": note_key, "claim_id": n["claim_id"], "text": n["text"]} if n else None
 
+    def _wl_ref(self, l):
+        rec = self.watchlist["records"].get(l["b"], {})
+        return {"record_id": l["b"], "record": rec, "mention": l["a"],
+                "mention_name": self.mentions[l["a"]]["name"] if l["a"] in self.mentions else l["a"],
+                "p": l["p"], "basis_class": l["basis_class"], "veto": l.get("veto"),
+                "admitted": [x for x in LENSES if self._admits(l, x)]}
+
+    @staticmethod
+    def _admits(l, lens):
+        from goko.projection import admits
+        return admits(l, lens)
+
+    def _by_record(self, links):
+        """One row per watchlist record: its strongest link, and every member that links."""
+        out = {}
+        for l in links:                               # strongest first
+            row = out.get(l["b"])
+            if row is None:
+                out[l["b"]] = {**self._wl_ref(l), "links": 1, "mentions": [l["a"]]}
+            else:
+                row["links"] += 1
+                row["mentions"].append(l["a"])
+        return list(out.values())
+
+    def flag_of(self, members, lens):
+        """Flagged for review at this lens: the admitted watchlist links of any member,
+        one row per listed record."""
+        return self._by_record(flags_for(members, self.wl_by_mention, lens))
+
     def _entity_ref(self, key, lens):
         c = self.cluster(key, lens)
         members = c["members"] if c else [key]
@@ -287,6 +324,8 @@ class Run:
         weakest = c["weakest"] if c else None
         refused = [r for r in self.projection(lens)["refused"]
                    if r["link"]["a"] in members or r["link"]["b"] in members]
+        flags = self.flag_of(members, lens)
+        near = self._by_record(near_flags(members, self.wl_by_mention, lens))[:8]
         return {
             "kind": "entity", "id": members[0], "lens": lens, "lenses": list(LENSES),
             "title": self.title_of(members), "type": head["type"],
@@ -304,6 +343,9 @@ class Run:
             "members": mem, "details": list(folded.values()), "actions": acts,
             "related": sorted(related.values(), key=lambda r: -r["count"]),
             "not_merged": list(best.values())[:12],
+            "flagged": flags, "watchlist_near": near,
+            "watchlist_source": {"name": self.watchlist.get("source"),
+                                 "records_on_list": self.watchlist.get("records_on_list")},
             "refused": [{"reason": r["reason"], "a": r["link"]["a"], "b": r["link"]["b"]} for r in refused],
         }
 
@@ -444,6 +486,8 @@ class Run:
                     words |= set(_norm(d["raw"]).split())
                 cat = self.category_of.get(k)
                 if cat: words |= set(_norm(f"{cat['value']} {cat.get('subcategory') or ''}").split())
+            if flags_for(c["members"], self.wl_by_mention, lens):
+                words |= {"flagged", "flag", "review", "watchlist", "excluded", "exclusion", "leie", "oig"}
             hit = len(qn & words)
             if hit:
                 scored.append((hit + 0.02 * len(c["members"]), c))
@@ -477,6 +521,13 @@ class Run:
             facts.append(f"[{a}] ENTITY {self.title_of(c['members'])!r} type={self.mentions[cid]['type']} "
                          f"mentions={len(c['members'])} claims={claims} categories={cats} "
                          f"details={dets} merge_confidence={conf} merge_basis={basis or ['single']}")
+            for f in self.flag_of(c["members"], lens)[:3]:
+                r = f["record"]
+                facts.append(f"[{a}] FLAGGED FOR REVIEW at lens {lens}: mention {f['mention_name']!r} links to "
+                             f"OIG LEIE exclusion record {r.get('name')!r} ({r.get('general')}, {r.get('specialty')}, "
+                             f"{r.get('city')} {r.get('state')}, exclusion type {r.get('excl_type')} on "
+                             f"{r.get('excl_date')}) with p={f['p']} basis={f['basis_class']}. A flag is a lead to "
+                             f"check, not a finding.")
         acts = []
         ids = set(chosen)
         for a in self.actions:

@@ -224,7 +224,7 @@ function evidence(x) {
 }
 const pct = (p) => (p == null ? "—" : p >= 0.9995 ? "1.00" : p.toFixed(2));
 const basisChip = (b) => {
-  const label = { identifier: "identifier", address: "address", dob: "name + date of birth", co_party: "name + anchored co-party", name_only: "name only", none: "no agreement" }[b] || b;
+  const label = { identifier: "identifier", address: "address", dob: "name + date of birth", co_party: "name + anchored co-party", location: "name + location", name_only: "name only", none: "no agreement" }[b] || b;
   const cls = b === "identifier" ? "good" : b === "name_only" || b === "co_party" ? "warn" : "";
   return `<span class="chip ${cls}">${esc(label)}</span>`;
 };
@@ -240,9 +240,18 @@ function drawEntity(el, w, d) {
   let h = `<div class="win-head"><h1 class="title">${esc(d.title)}</h1>
     <div class="meta"><span>${esc(d.type)}</span><span>·</span><span>${d.mention_count} mention${d.mention_count > 1 ? "s" : ""}</span><span>·</span>
     <span>${d.claims.map((c) => ref("claim", c, c)).join(", ")}</span></div>
-    <div class="meta" style="margin-top:8px">${conf}${d.basis_classes.map(basisChip).join("")}${cats}</div>
+    <div class="meta" style="margin-top:8px">${d.flagged && d.flagged.length ? `<span class="chip bad">Flagged for review</span>` : ""}${conf}${d.basis_classes.map(basisChip).join("")}${cats}</div>
     ${lensBar(d)}</div><div class="win-body">`;
   if (d.weakest_link) h += `<p class="muted">Weakest link: “${esc(d.weakest_link.a_name)}” ↔ “${esc(d.weakest_link.b_name)}” at ${pct(d.weakest_link.p)}, ${esc(d.weakest_link.basis_class.replace("_", " "))}.</p>`;
+  const wlRow = (f) => {
+    const r = f.record || {};
+    return `<div class="card"><div class="row"><strong class="grow">${esc(r.name)}</strong><span class="chip">${pct(f.p)}</span>${basisChip(f.basis_class)}
+      ${f.veto ? `<span class="chip bad">veto: ${esc(f.veto)}</span>` : ""}</div>
+      <div class="muted">${esc(r.general || "")}${r.specialty ? " · " + esc(r.specialty) : ""} · ${esc(r.city || "")} ${esc(r.state || "")} · excluded ${esc(r.excl_date || "")} (${esc(r.excl_type || "")})${r.npi ? " · NPI " + esc(r.npi) : ""}</div>
+      <div class="muted">via “${esc(f.mention_name)}”${f.links > 1 ? ` and ${f.links - 1} other mention(s)` : ""} · admitted at: ${f.admitted.length ? esc(f.admitted.join(", ")) : "no lens"}</div></div>`;
+  };
+  if (d.flagged && d.flagged.length) h += `<section class="block"><h2>Flagged for review — OIG exclusion list</h2>${d.flagged.map(wlRow).join("")}</section>`;
+  if (d.watchlist_near && d.watchlist_near.length) h += `<section class="block"><h2>Watchlist links this lens does not admit</h2>${d.watchlist_near.map(wlRow).join("")}</section>`;
   if (d.details.length) {
     h += `<section class="block"><h2>Identifiers</h2>`;
     d.details.forEach((x) => {
