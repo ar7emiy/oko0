@@ -472,6 +472,31 @@ class Run:
                 seen.append(txt)
         return seen
 
+    def entity_list(self, lens="default"):
+        """Every entity at a lens, for the left-hand list: Flagged for review first,
+        strongest flag first, then alphabetical. Forms are included for the filter box."""
+        pr = self.projection(lens)
+        if "list" in pr:
+            return pr["list"]
+        out = []
+        for c in pr["clusters"]:
+            ms = c["members"]
+            flags = flags_for(ms, self.wl_by_mention, lens)
+            near = near_flags(ms, self.wl_by_mention, lens, floor=0.1) if not flags else []
+            near = [l for l in near if not l.get("veto")]
+            out.append({
+                "id": c["id"], "name": self.title_of(ms), "type": self.mentions[c["id"]]["type"],
+                "mentions": len(ms), "claims": len({self.mentions[k]["claim_id"] for k in ms}),
+                "flag": ({"p": flags[0]["p"], "basis_class": flags[0]["basis_class"],
+                          "record": self.watchlist["records"].get(flags[0]["b"], {}).get("name")}
+                         if flags else None),
+                "near": {"p": near[0]["p"], "admitted": [x for x in LENSES if admits(near[0], x)]} if near else None,
+                "forms": sorted({f for k in ms for f in self.mentions[k]["forms"]})[:12]})
+        out.sort(key=lambda e: (0 if e["flag"] else 1, -(e["flag"]["p"] if e["flag"] else 0),
+                                _norm(e["name"]), e["id"]))
+        pr["list"] = out
+        return out
+
     def identifier_view(self, ident, lens="default"):
         ident = self.ident_of_public.get(ident, ident)
         recs = self.details_of.get(f"id:{ident}")
@@ -507,7 +532,11 @@ class Run:
         return {"kind": "note", "id": note_key, "title": f"Note {n['note_id']}",
                 "claim_id": n["claim_id"], "chars": len(n["text"]), "text": n["text"],
                 "highlight": span,
-                "entities": [{**self._entity_ref(m["key"], lens), "span": m.get("raw_span")} for m in ms],
+                "entities": [{**self._entity_ref(m["key"], lens), "span": m.get("raw_span"), "key": m["key"],
+                              "mention_name": m["name"],
+                              "flagged": bool(self.flag_of(self.cluster(m["key"], lens)["members"]
+                                                           if self.cluster(m["key"], lens) else [m["key"]], lens))}
+                             for m in ms],
                 "review_items": env.get("review_items", [])[:50],
                 "extraction_error": env.get("extraction_error")}
 
@@ -592,10 +621,12 @@ class Run:
         return [s for k in order for s in grouped[k]]
 
     # ---- retrieval for questions ---------------------------------------------------
-    def retrieve(self, question, lens="default", max_entities=14, max_actions=40):
+    def retrieve(self, question, lens="default", max_entities=14, max_actions=40, stats=None):
         """A small subgraph relevant to a question: matching entities, one hop out
         through shared actions and cross-claim links, and the actions that connect them.
-        Every fact carries a short alias the answer can cite."""
+        Every fact carries a short alias the answer can cite. `stats`, if given, is filled
+        with what each step found, for the progress log."""
+        stats = {} if stats is None else stats
         qn = set(_norm(question).split()) - {"the", "a", "an", "of", "and", "or", "is", "are", "was",
                                              "who", "what", "which", "how", "did", "does", "do", "in",
                                              "on", "to", "for", "with", "by", "at", "any", "all", "there"}
@@ -614,10 +645,13 @@ class Run:
             hit = len(qn & words)
             if hit:
                 scored.append((hit + 0.02 * len(c["members"]), c))
+        stats["matched_by_words"] = bool(scored)
         if not scored:   # fall back to the most-mentioned parties
             scored = [(len(c["members"]) / 100, c) for c in pr["clusters"]]
         scored.sort(key=lambda x: -x[0])
         seeds = [c for _, c in scored[:max_entities // 2]]
+        stats["seeds"] = [self.title_of(c["members"]) for c in seeds]
+        stats["candidates_scored"] = len(scored)
         chosen = {c["id"]: c for c in seeds}
         # one hop: co-participants in actions, strongest first
         hop = defaultdict(int)
@@ -631,6 +665,10 @@ class Run:
         for cid, _ in sorted(hop.items(), key=lambda x: -x[1]):
             if len(chosen) >= max_entities: break
             chosen[cid] = pr["cluster_of"][cid]
+        stats["hop_candidates"] = len(hop)
+        stats["hop_added"] = len(chosen) - len(seeds)
+        stats["hop_names"] = [self.title_of(c["members"]) for cid, c in chosen.items()
+                              if cid not in {s["id"] for s in seeds}][:8]
 
         facts, alias = [], {}
         for i, (cid, c) in enumerate(chosen.items(), start=1):
@@ -668,11 +706,17 @@ class Run:
                 who.append(f"{inv.get(pc['id'], self.title_of(pc['members']))}({p['role']})" if pc else p["role"])
             facts.append(f"[{al}] ACTION {a['type']} stance={a['stance']} time={a['time']} "
                          f"participants={who} claim={a['claim_id']} quote={a['quote'][:240]!r}")
+        stats["actions_found"], stats["actions_sent"] = len(acts), min(len(acts), max_actions)
+        n_links = 0
         for l in self.links:
             ca, cb = pr["cluster_of"].get(l["a"]), pr["cluster_of"].get(l["b"])
             if not (ca and cb) or ca["id"] == cb["id"] or l["p"] < 0.1:
                 continue
             if ca["id"] in ids and cb["id"] in ids:
+                n_links += 1
                 facts.append(f"[{inv[ca['id']]}~{inv[cb['id']]}] NOT-MERGED LINK p={l['p']} basis={l['basis_class']} "
                              f"veto={l['veto']} distance={l['distance']}")
+        stats["not_merged_links"] = n_links
+        stats["flag_facts"] = sum(1 for f in facts if " FLAGGED FOR REVIEW " in f)
+        stats["facts"] = len(facts)
         return facts, alias

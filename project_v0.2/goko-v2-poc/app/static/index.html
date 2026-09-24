@@ -8,28 +8,50 @@
 <link rel="stylesheet" href="/static/app.css">
 </head>
 <body>
-<header id="bar" hidden>
-  <div id="bubbles"></div>
-  <button id="plus" class="plus" title="New search" aria-label="New search">+</button>
+<header id="top">
+  <div class="brand" title="Read-only view of one pipeline run">GOKO</div>
+  <div id="run-meta" class="muted"></div>
+  <div class="grow"></div>
+  <div class="lens" id="lens" role="group" aria-label="Lens">
+    <button data-lens="strict" title="Strict: only identifier-backed links (p ≥ 0.90) merge or flag">Strict</button>
+    <button data-lens="default" title="Default: any basis, p ≥ 0.80">Default</button>
+    <button data-lens="broad" title="Broad: adds weak and partial name matches (p ≥ 0.10)">Broad</button>
+  </div>
 </header>
 
-<main id="home">
-  <div class="home-inner">
-    <div class="wordmark">GOKO</div>
-    <div class="search big" data-search>
-      <input type="search" placeholder="Search a party, identifier, note or claim — or ask a question"
-             autocomplete="off" spellcheck="false" autofocus>
-      <div class="suggest" hidden></div>
+<div id="layout">
+  <aside id="left">
+    <div id="list-pane">
+      <div class="left-head">
+        <input id="filter" type="search" placeholder="Filter parties" autocomplete="off" spellcheck="false"
+               title="Filters this list by name. A lookup only: no model is involved." aria-label="Filter parties">
+        <button id="ask-btn" class="pill" title="Ask the librarian: search anything, or ask a question">Ask</button>
+      </div>
+      <div id="list-meta" class="muted"></div>
+      <div id="entity-list" role="list"></div>
     </div>
-    <p class="hint">Pick a suggestion to open it directly. Press Enter to let the librarian decide.</p>
-  </div>
-</main>
+    <div id="ask-pane" hidden>
+      <div class="left-head">
+        <div class="search" data-search>
+          <input id="ask-input" type="search" placeholder="Search a party, identifier, note or claim, or ask a question"
+                 autocomplete="off" spellcheck="false" aria-label="Ask the librarian">
+          <div class="suggest" hidden></div>
+        </div>
+        <button id="ask-close" class="icon-btn" title="Close and return to the list (Esc)" aria-label="Close">×</button>
+      </div>
+      <p class="muted hint">Pick a suggestion to open it directly. Press Enter to let the librarian decide: a name opens its dossier, a question gets an answer built from the graph, with sources.</p>
+      <div id="ask-ideas"></div>
+    </div>
+  </aside>
 
-<section id="stage" hidden>
-  <button class="rolodex left" hidden></button>
-  <div id="windows"></div>
-  <button class="rolodex right" hidden></button>
-</section>
+  <nav id="trail" aria-label="Trail">
+    <div class="trail-head" title="Every step you took and why it was opened. Click one to go back to it.">Trail</div>
+    <ol id="trail-list"></ol>
+  </nav>
+
+  <main id="main"></main>
+  <section id="pinned" hidden></section>
+</div>
 
 <script src="/static/card.js"></script>
 <script src="/static/app.js"></script>

@@ -1,86 +1,191 @@
 "use strict";
-// GOKO search: one search bar, then a row of windows (at most three visible),
-// each with a bubble in the header bar. Read-only; every view comes from the server.
+// GOKO search. Every entity in a list on the left; one dossier in the main pane; a trail of
+// how you got there, and why each step was opened; an optional pinned dossier beside it for
+// comparison; a librarian that streams the steps it really takes. Read-only: every view is
+// computed by the server from one pipeline run, at the lens chosen in the top bar.
 
 const $ = (s, el = document) => el.querySelector(s);
-const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const maxVisible = () => (window.innerWidth < 900 ? 1 : 3);
-const LENS_NOTE = { strict: "identifier-backed links only", default: "any basis, high confidence", broad: "adds weak and partial name matches" };
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = GOKO.esc;
+const S = { lens: "default", list: [], trail: [], cur: -1, pinned: null, meta: null };
+GOKO.lens = S.lens;
 
-const state = { wins: [], start: 0, seq: 0 };
+// Recent searches live in this browser only; a private window or blocked storage just
+// means no history, never a broken page.
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* storage unavailable */ } },
+};
 
 async function api(path, body) {
   const r = await fetch(path, body ? { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) } : {});
   if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.statusText);
   return r.json();
 }
+const norm = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+const cap = (s) => String(s || "").replaceAll("_", " ");
+const goAttr = (o) => `data-go='${esc(JSON.stringify(o))}'`;
+const go = (kind, id, label, why, extra = {}) => `<span class="link" ${goAttr({ kind, id, label, why, ...extra })}>${esc(label)}</span>`;
+const TYPE_WORD = { person: "person", organization: "organization", vehicle: "vehicle" };
 
-// ---------------------------------------------------------------- windows
-function openWin(win, afterId) {
-  win.id = ++state.seq;
-  const at = afterId == null ? state.wins.length : state.wins.findIndex((w) => w.id === afterId) + 1;
-  state.wins.splice(at, 0, win);
-  reveal(win.id);
-  return win;
+// ---------------------------------------------------------------- navigation and trail
+function navigate(req, label, why) {
+  S.trail = S.trail.slice(0, S.cur + 1);
+  const item = { req, label, why, state: "loading" };
+  S.trail.push(item);
+  if (S.trail.length > 40) S.trail.shift();
+  S.cur = S.trail.length - 1;
+  renderTrail();
+  loadItem(item);
 }
-function closeWin(id) {
-  state.wins = state.wins.filter((w) => w.id !== id);
-  state.start = Math.max(0, Math.min(state.start, state.wins.length - maxVisible()));
-  render();
+function goBack(i) {
+  S.cur = i;
+  renderTrail();
+  const it = S.trail[i];
+  if (it.kind !== "answer" && (it.lens !== S.lens || it.state !== "view")) loadItem(it); else renderMain();
 }
-function reveal(id) {
-  const i = state.wins.findIndex((w) => w.id === id);
-  const n = maxVisible();
-  if (i < state.start) state.start = i;
-  else if (i >= state.start + n) state.start = i - n + 1;
-  render();
-}
-function winById(id) { return state.wins.find((w) => w.id === id); }
-
-async function loadView(win, req) {
-  Object.assign(win, { kind: "loading", req });
-  render();
+async function loadItem(item, target = "main") {
+  item.state = "loading"; item.lens = S.lens;
+  target === "main" ? renderMain() : renderPinned();
   try {
-    const q = new URLSearchParams({ kind: req.kind, id: req.id, lens: req.lens || "default" });
-    if (req.span) q.set("span", JSON.stringify(req.span));
-    win.data = await api("/api/view?" + q);
-    win.kind = "view";
-    win.label = win.label || win.data.title;
-  } catch (e) { win.kind = "error"; win.error = e.message; }
-  render();
+    const q = new URLSearchParams({ kind: item.req.kind, id: item.req.id, lens: S.lens });
+    if (item.req.span) q.set("span", JSON.stringify(item.req.span));
+    item.data = await api("/api/view?" + q);
+    item.state = "view";
+    if (!item.label) item.label = item.data.title;
+  } catch (e) { item.state = "error"; item.error = e.message; }
+  target === "main" ? (renderMain(), renderTrail(), renderList()) : renderPinned();
 }
-function openView(req, label, fromId) {
-  const w = openWin({ label, kind: "loading" }, fromId);
-  loadView(w, req);
+function renderTrail() {
+  const ol = $("#trail-list");
+  ol.innerHTML = S.trail.map((t, i) => `<li class="${i === S.cur ? "cur" : ""}" data-i="${i}" title="${esc(`${t.label} — ${t.why}`)}">
+      <span class="t-why">${esc(t.why || "")}</span><span class="t-label">${esc(t.label || "…")}</span></li>`).join("")
+    || `<li class="empty">Steps appear here as you open things.</li>`;
+  $$("li[data-i]", ol).forEach((li) => li.addEventListener("click", () => goBack(+li.dataset.i)));
+  const c = $("li.cur", ol);
+  if (c) c.scrollIntoView({ block: "nearest" });
 }
+document.addEventListener("click", (e) => {
+  const a = e.target.closest("[data-go]");
+  if (!a) return;
+  e.preventDefault();
+  const r = JSON.parse(a.dataset.go);
+  if (a.closest("#drawer")) GOKO.closeDrawer();
+  navigate({ kind: r.kind, id: r.id, span: r.span, key: r.key }, r.label, r.why || "opened");
+});
+document.addEventListener("goko:open", (e) => {
+  const r = e.detail;
+  navigate({ kind: r.kind, id: r.id, span: r.span }, r.label, r.why || "from a decision card");
+});
 
-async function ask(win, query) {
-  Object.assign(win, { kind: "thinking", label: query, query });
-  render();
+// ---------------------------------------------------------------- lens
+function setLens(l) {
+  S.lens = l; GOKO.lens = l;
+  $$("#lens button").forEach((b) => b.classList.toggle("on", b.dataset.lens === l));
+  loadList();
+  const it = S.trail[S.cur];
+  if (it && it.kind !== "answer") loadItem(it);
+  if (S.pinned) loadItem(S.pinned, "pinned");
+}
+$$("#lens button").forEach((b) => b.addEventListener("click", () => setLens(b.dataset.lens)));
+
+// ---------------------------------------------------------------- the entity list
+async function loadList() {
+  $("#list-meta").textContent = "Loading…";
   try {
-    const r = await api("/api/ask", { q: query });
-    if (r.mode === "lookup" && r.view) {
-      win.kind = "view"; win.data = r.view;
-      win.req = { kind: r.view.kind, id: r.view.id, lens: r.view.lens || "default" };
-    } else { win.kind = "answer"; win.data = r; }
-  } catch (e) { win.kind = "error"; win.error = e.message; }
-  render();
+    const r = await api("/api/entities?lens=" + S.lens);
+    S.list = r.entities; S.watch = r.watchlist;
+  } catch (e) { $("#list-meta").textContent = e.message; return; }
+  renderList();
+}
+function renderList() {
+  const f = norm($("#filter").value);
+  const rows = S.list.filter((e) => !f || norm(e.name).includes(f) || e.forms.some((x) => norm(x).includes(f)));
+  const flagged = S.list.filter((e) => e.flag).length;
+  $("#list-meta").innerHTML = `${rows.length}${f ? ` of ${S.list.length}` : ""} parties at <span class="term" title="The lens set in the top bar decides what counts as one party and what is flagged">${esc(S.lens)}</span>` +
+    (flagged ? ` · <span class="flag-text" title="Parties with a mention linked to a record on the OIG exclusion list at this lens">${flagged} flagged for review</span>` : "");
+  const it = S.trail[S.cur];
+  const curId = it && it.data && it.data.kind === "entity" ? it.data.id : null;
+  $("#entity-list").innerHTML = rows.map((e) => {
+    const badge = e.flag
+      ? `<span class="flag-badge" title="${esc(`Flagged for review: linked to the OIG exclusion record ${e.flag.record}, ${GOKO.probText(e.flag.p)}, ${(GOKO.BASIS[e.flag.basis_class] || [e.flag.basis_class])[0]}. A lead to check, not a finding.`)}">Flagged · ${esc(GOKO.band(e.flag.p))}</span>`
+      : e.near ? `<span class="near-badge" title="${esc(`An exclusion-list link exists (${GOKO.probText(e.near.p)}) but this lens does not admit it${e.near.admitted.length ? "; it flags at " + e.near.admitted.join(", ") : ""}.`)}">possible match</span>` : "";
+    return `<div class="erow${e.id === curId ? " on" : ""}" role="listitem" data-id="${esc(e.id)}" data-name="${esc(e.name)}" tabindex="0">
+      <div class="ename"><span class="tdot t-${esc(e.type)}" title="${esc(TYPE_WORD[e.type] || e.type)}"></span>${esc(e.name)}</div>
+      <div class="esub">${esc(TYPE_WORD[e.type] || e.type)} · ${e.mentions} mention${e.mentions === 1 ? "" : "s"} · ${e.claims} claim${e.claims === 1 ? "" : "s"} ${badge}</div></div>`;
+  }).join("") || `<p class="muted pad">No party matches.</p>`;
+  $$("#entity-list .erow").forEach((r) => {
+    const open = () => navigate({ kind: "entity", id: r.dataset.id }, r.dataset.name, "from the list");
+    r.addEventListener("click", open);
+    r.addEventListener("keydown", (e) => { if (e.key === "Enter") open(); });
+  });
+}
+$("#filter").addEventListener("input", renderList);
+
+// ---------------------------------------------------------------- the Ask pane
+function openAsk() {
+  $("#left").classList.add("asking");
+  $("#list-pane").hidden = true; $("#ask-pane").hidden = false;
+  renderIdeas();
+  setTimeout(() => $("#ask-input").focus(), 30);
+}
+function closeAsk() {
+  $("#left").classList.remove("asking");
+  $("#ask-pane").hidden = true; $("#list-pane").hidden = false;
+  $(".suggest", $("#ask-pane")).hidden = true;
+}
+$("#ask-btn").addEventListener("click", openAsk);
+$("#ask-close").addEventListener("click", closeAsk);
+document.addEventListener("keydown", (e) => {
+  const drawerOpen = $("#drawer") && !$("#drawer").hidden;
+  if (e.key === "Escape" && !$("#ask-pane").hidden && !drawerOpen) closeAsk();
+  if (e.key === "/" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName) && !drawerOpen) {
+    e.preventDefault(); $("#ask-pane").hidden ? $("#filter").focus() : $("#ask-input").focus();
+  }
+});
+function recent() { return store.get("goko.recent", []); }
+function remember(q) {
+  const r = [q, ...recent().filter((x) => x !== q)].slice(0, 8);
+  store.set("goko.recent", r);
+}
+function contextIdeas() {
+  const it = S.trail[S.cur], d = it && it.data, out = [];
+  if (it && it.kind !== "answer" && d) {
+    if (d.kind === "entity") {
+      if (d.flagged && d.flagged.length) out.push(`Why is ${d.title} flagged for review?`);
+      d.details.slice(0, 2).forEach((x) => out.push(`Who else shares ${x.raw}?`));
+      out.push(`Which claims mention ${d.title}?`);
+      if (d.related.length) out.push(`How is ${d.title} connected to ${d.related[0].name}?`);
+    } else if (d.kind === "identifier") out.push(`Who else shares ${d.title}?`);
+    else if (d.kind === "claim") out.push(`Which parties in ${d.title} appear in other claims?`);
+    else if (d.kind === "note") out.push(`Who are the parties named in ${d.title}?`);
+  }
+  if (!out.length) out.push("Who is flagged for review?", "Which parties appear in more than one claim?");
+  return [...new Set(out)].slice(0, 5);
+}
+function renderIdeas() {
+  const ctx = contextIdeas(), rec = recent().filter((q) => !ctx.includes(q)).slice(0, 6);
+  const it = S.trail[S.cur];
+  let h = `<div class="ideas-h" title="Built from the dossier open in the main pane">${it && it.data ? `About ${esc(it.data.title || it.label)}` : "To start"}</div>` +
+    ctx.map((q) => `<button class="idea" data-q="${esc(q)}">${esc(q)}</button>`).join("");
+  if (rec.length) h += `<div class="ideas-h" title="Stored in this browser only">Recent</div>` + rec.map((q) => `<button class="idea recent" data-q="${esc(q)}">${esc(q)}</button>`).join("");
+  $("#ask-ideas").innerHTML = h;
+  $$("#ask-ideas .idea").forEach((b) => b.addEventListener("click", () => ask(b.dataset.q)));
 }
 
-// ---------------------------------------------------------------- search box
 function attachSearch(box, onPick, onEnter) {
   const input = $("input", box), list = $(".suggest", box);
   let items = [], active = -1, timer = null, lastQ = "";
+  const labels = { entity: "Parties", identifier: "Identifiers", claim: "Claims", note: "Notes" };
   const draw = () => {
     if (!input.value.trim()) { list.hidden = true; return; }
     let html = "", group = null;
     items.forEach((s, i) => {
-      if (s.kind !== group) { group = s.kind; html += `<div class="group">${esc({ entity: "Parties", identifier: "Identifiers", claim: "Claims", note: "Notes" }[group])}</div>`; }
-      html += `<div class="item${i === active ? " active" : ""}" data-i="${i}"><span>${esc(s.label)}</span><span class="sub">${esc(s.sub)}</span></div>`;
+      if (s.kind !== group) { group = s.kind; html += `<div class="group">${esc(labels[group])}</div>`; }
+      html += `<div class="item${i === active ? " active" : ""}" data-i="${i}"><span class="lab">${esc(s.label)}</span><span class="sub">${esc(s.sub)}</span></div>`;
     });
-    html += `<div class="item ask${active === items.length ? " active" : ""}" data-i="${items.length}">Ask the librarian: “${esc(input.value.trim())}”</div>`;
-    list.innerHTML = html;
-    list.hidden = false;
+    html += `<div class="item ask${active === items.length ? " active" : ""}" data-i="${items.length}" title="The librarian decides: a lookup opens a dossier, a question gets an answer with sources">Ask the librarian: “${esc(input.value.trim())}”</div>`;
+    list.innerHTML = html; list.hidden = false;
   };
   input.addEventListener("input", () => {
     clearTimeout(timer);
@@ -95,7 +200,6 @@ function attachSearch(box, onPick, onEnter) {
   input.addEventListener("keydown", (e) => {
     if (e.key === "ArrowDown") { active = Math.min(active + 1, items.length); draw(); e.preventDefault(); }
     else if (e.key === "ArrowUp") { active = Math.max(active - 1, -1); draw(); e.preventDefault(); }
-    else if (e.key === "Escape") { list.hidden = true; }
     else if (e.key === "Enter") {
       e.preventDefault();
       const q = input.value.trim();
@@ -112,242 +216,320 @@ function attachSearch(box, onPick, onEnter) {
     list.hidden = true;
     if (i < items.length) onPick(items[i], input.value.trim()); else onEnter(input.value.trim());
   });
-  input.addEventListener("blur", () => setTimeout(() => (list.hidden = true), 120));
+  input.addEventListener("blur", () => setTimeout(() => (list.hidden = true), 150));
 }
+attachSearch($("#ask-pane [data-search]"),
+  (s, q) => { remember(q); closeAsk(); navigate({ kind: s.kind, id: s.id }, s.label, `search “${q}”`); },
+  (q) => ask(q));
 
-// home search: the first query becomes window 1
-attachSearch($("[data-search]", $("#home")),
-  (s) => openView({ kind: s.kind, id: s.id, lens: "default" }, s.label),
-  (q) => { const w = openWin({ label: q, kind: "thinking" }); ask(w, q); });
-
-$("#plus").addEventListener("click", () => openWin({ label: "New search", kind: "search" }));
-$(".rolodex.left").addEventListener("click", () => { state.start = Math.max(0, state.start - 1); render(); });
-$(".rolodex.right").addEventListener("click", () => { state.start = Math.min(state.wins.length - maxVisible(), state.start + 1); render(); });
-window.addEventListener("resize", () => { state.start = Math.max(0, Math.min(state.start, state.wins.length - maxVisible())); render(); });
+// ---------------------------------------------------------------- the librarian, streamed
+async function ask(q) {
+  remember(q);
+  closeAsk();
+  $("#ask-input").value = "";
+  S.trail = S.trail.slice(0, S.cur + 1);
+  const item = { kind: "answer", q, label: q, why: "asked", lens: S.lens, log: [], result: null, state: "answer", t0: performance.now() };
+  S.trail.push(item); S.cur = S.trail.length - 1;
+  renderTrail(); renderMain();
+  try {
+    const r = await fetch("/api/ask_stream", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ q, lens: S.lens }) });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.statusText);
+    const reader = r.body.getReader(), dec = new TextDecoder();
+    let buf = "";
+    for (;;) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buf += dec.decode(value, { stream: true });
+      let i;
+      while ((i = buf.indexOf("\n\n")) >= 0) {
+        const chunk = buf.slice(0, i); buf = buf.slice(i + 2);
+        const line = chunk.split("\n").find((l) => l.startsWith("data: "));
+        if (line) onAskEvent(item, JSON.parse(line.slice(6)));
+      }
+    }
+    if (!item.result) throw new Error("the answer stream ended without a result");
+  } catch (e) {
+    item.result = { mode: "error", error: e.message };
+    if (S.trail[S.cur] === item) renderMain();
+  }
+}
+function onAskEvent(item, e) {
+  if (e.step !== "result") {
+    item.log.push(e);
+    if (S.trail[S.cur] === item) renderAnswerLog(item);
+    return;
+  }
+  item.result = e;
+  if (e.mode === "lookup" && e.view) {
+    // a lookup is a navigation, not an answer: the step becomes the dossier it opened
+    Object.assign(item, { kind: undefined, req: { kind: e.view.kind, id: e.view.id }, data: e.view, state: "view",
+      label: e.view.title, why: `search “${item.q}”` });
+    renderTrail(); renderList();
+  }
+  if (S.trail[S.cur] === item) renderMain();
+}
 
 // ---------------------------------------------------------------- rendering
-function render() {
-  // a window redraws only when what it shows changed, so a half-typed search survives
-  state.wins.forEach((w) => {
-    const sig = w.kind + (w.data ? "+" : "-") + JSON.stringify(w.req || null);
-    if (w._sig !== sig) { w._sig = sig; w.ver = (w.ver || 0) + 1; }
-  });
-  const any = state.wins.length > 0;
-  $("#home").hidden = any; $("#bar").hidden = !any; $("#stage").hidden = !any;
-  if (!any) { $("#home input").focus(); return; }
-  const n = maxVisible(), vis = state.wins.slice(state.start, state.start + n);
-
-  $("#bubbles").innerHTML = state.wins.map((w, i) => {
-    const on = i >= state.start && i < state.start + n;
-    return `<div class="bubble ${on ? "visible" : "hidden-win"}" data-id="${w.id}" title="${esc(w.label)}">
-      <span class="label">${esc(w.label || "…")}</span><button class="x" data-close="${w.id}" aria-label="Close">×</button></div>`;
-  }).join("");
-  $("#bubbles").querySelectorAll(".bubble").forEach((b) => b.addEventListener("click", (e) => {
-    if (e.target.dataset.close) { closeWin(+e.target.dataset.close); return; }
-    reveal(+b.dataset.id);
-  }));
-
-  const left = $(".rolodex.left"), right = $(".rolodex.right");
-  left.hidden = state.start === 0; left.textContent = `‹ ${state.start} more`;
-  const after = state.wins.length - state.start - n;
-  right.hidden = after <= 0; right.textContent = `${after} more ›`;
-
-  const host = $("#windows");
-  const keep = new Map([...host.children].map((el) => [+el.dataset.id, el]));
-  host.innerHTML = "";
-  vis.forEach((w) => {
-    let el = keep.get(w.id);
-    if (!el || el.dataset.ver !== String(w.ver)) {
-      el = document.createElement("article");
-      el.className = "win"; el.dataset.id = w.id;
-      draw(el, w);
-    }
-    el.dataset.ver = w.ver;
-    host.appendChild(el);
-  });
-}
-
-function draw(el, w) {
-  if (w.kind === "search") {
-    el.innerHTML = `<div class="win-empty"><div class="search" data-search><input type="search" placeholder="Search or ask" autocomplete="off"><div class="suggest" hidden></div></div></div>`;
-    attachSearch($("[data-search]", el),
-      (s) => { w.label = s.label; loadView(w, { kind: s.kind, id: s.id, lens: "default" }); },
-      (q) => ask(w, q));
-    setTimeout(() => $("input", el).focus(), 0);
+function renderMain() {
+  const it = S.trail[S.cur];
+  const el = $("#main");
+  if (!it) {
+    el.innerHTML = welcome();
     return;
   }
-  if (w.kind === "loading" || w.kind === "thinking") {
-    el.innerHTML = `<div class="win-empty"><div class="thinking"><span class="dot"></span>${w.kind === "thinking" ? "The librarian is reading the graph…" : "Loading…"}</div></div>`;
-    return;
-  }
-  if (w.kind === "error") { el.innerHTML = `<div class="win-empty err">${esc(w.error)}</div>`; return; }
-  if (w.kind === "answer") return drawAnswer(el, w);
-  const d = w.data;
-  ({ entity: drawEntity, identifier: drawIdentifier, note: drawNote, claim: drawClaim }[d.kind] || drawEntity)(el, w, d);
-  wireLinks(el, w);
+  renderPane(el, it, false);
 }
-
-// clickable references: data-open='{"kind":..,"id":..}'
-function ref(kind, id, label, extra = {}) {
-  return `<span class="link" data-open='${esc(JSON.stringify({ kind, id, label, ...extra }))}'>${esc(label)}</span>`;
+function renderPinned() {
+  const el = $("#pinned");
+  el.hidden = !S.pinned;
+  document.body.classList.toggle("has-pin", !!S.pinned);
+  if (S.pinned) renderPane(el, S.pinned, true);
 }
-function wireLinks(el, w) {
-  GOKO.lens = (w.req && w.req.lens) || "default";
-  GOKO.wire(el, { open: false });
-  el.querySelectorAll("[data-open]").forEach((a) => a.addEventListener("click", () => {
-    const r = JSON.parse(a.dataset.open);
-    openView({ kind: r.kind, id: r.id, lens: (w.req && w.req.lens) || "default", span: r.span }, r.label, w.id);
-  }));
-  el.querySelectorAll("[data-lens]").forEach((b) => b.addEventListener("click", () => {
-    loadView(w, { ...w.req, lens: b.dataset.lens });
-  }));
-  el.querySelectorAll("[data-expand]").forEach((b) => b.addEventListener("click", async () => {
-    const box = b.closest(".ev");
-    const open = box.querySelector(".fulltext");
-    if (open) { open.remove(); b.textContent = "Show in full note"; return; }
-    const [note, s, e] = JSON.parse(b.dataset.expand);
-    b.textContent = "Loading…";
-    const v = await api("/api/view?" + new URLSearchParams({ kind: "note", id: note }));
-    const div = document.createElement("div");
-    div.className = "fulltext";
-    div.innerHTML = esc(v.text.slice(0, s)) + `<mark>${esc(v.text.slice(s, e))}</mark>` + esc(v.text.slice(e));
-    box.appendChild(div);
-    b.textContent = "Hide full note";
-    const m = div.querySelector("mark");
-    div.scrollTop = m.offsetTop - div.clientHeight / 3;
+function paneHead(title, it, pinned, meta = "") {
+  const btn = pinned
+    ? `<button class="pill ghost" data-unpin title="Remove the pinned dossier">Unpin</button>`
+    : it.kind === "answer" ? "" : `<button class="pill ghost" data-pin title="Keep this dossier beside the main pane for comparison">Pin</button>`;
+  return `<div class="pane-head">${pinned ? `<div class="pin-tag" title="Pinned for comparison. It follows the lens; links in it open in the main pane.">Pinned</div>` : ""}
+    <div class="row"><h1 class="title grow">${title}</h1>${btn}</div>${meta}</div>`;
+}
+function renderPane(el, it, pinned) {
+  if (it.kind === "answer") { el.innerHTML = drawAnswer(it); wireAnswer(el, it); return; }
+  if (it.state === "loading") { el.innerHTML = `${paneHead(esc(it.label || "…"), it, pinned)}<div class="pane-body"><div class="thinking"><span class="dot"></span>Loading…</div></div>`; wirePane(el, it, pinned); return; }
+  if (it.state === "error") { el.innerHTML = `${paneHead(esc(it.label || "Error"), it, pinned)}<div class="pane-body"><p class="err">${esc(it.error)}</p></div>`; wirePane(el, it, pinned); return; }
+  const d = it.data;
+  const html = { entity: drawEntity, identifier: drawIdentifier, note: drawNote, claim: drawClaim }[d.kind](d, it, pinned);
+  el.innerHTML = html;
+  wirePane(el, it, pinned);
+  if (d.kind === "note") afterNote(el, it);
+}
+function wirePane(el, it, pinned) {
+  GOKO.wire(el);
+  const p = $("[data-pin]", el);
+  if (p) p.addEventListener("click", () => { S.pinned = { req: it.req, label: it.label, why: "pinned", data: it.data, state: it.state, lens: it.lens }; renderPinned(); });
+  const u = $("[data-unpin]", el);
+  if (u) u.addEventListener("click", () => { S.pinned = null; renderPinned(); });
+  $$("[data-more]", el).forEach((b) => b.addEventListener("click", () => {
+    b.closest("section").querySelectorAll(".extra").forEach((x) => x.classList.remove("extra"));
+    b.remove();
   }));
 }
-
-function evidence(x) {
-  if (!x) return `<div class="ev muted">no source span</div>`;
-  return `<div class="ev">${x.clipped_left ? "…" : ""}${esc(x.before)}<mark>${esc(x.match)}</mark>${esc(x.after)}${x.clipped_right ? "…" : ""}
-    <div class="src">${ref("note", x.note, x.note.replace("note:", "Note "), { span: x.span })}<span>${esc(x.claim_id)}</span>
-    <span class="link" data-expand='${esc(JSON.stringify([x.note, x.span[0], x.span[1]]))}'>Show in full note</span></div></div>`;
-}
-const pct = (p) => (p == null ? "—" : p >= 0.9995 ? "1.00" : p.toFixed(2));
-const basisChip = (b) => {
-  const label = { identifier: "identifier", address: "address", dob: "name + date of birth", co_party: "name + anchored co-party", location: "name + location", name_only: "name only", none: "no agreement" }[b] || b;
-  const cls = b === "identifier" ? "good" : b === "name_only" || b === "co_party" ? "warn" : "";
-  return `<span class="chip ${cls}">${esc(label)}</span>`;
-};
-function lensBar(d) {
-  return `<div><div class="lens">${d.lenses.map((l) => `<button data-lens="${l}" class="${l === d.lens ? "on" : ""}">${l[0].toUpperCase() + l.slice(1)}</button>`).join("")}</div>
-    <span class="lens-note">${esc(LENS_NOTE[d.lens])}</span></div>`;
+function welcome() {
+  return `<div class="welcome"><h1 class="title">One run, read-only</h1>
+    <p>Pick a party on the left to open its dossier. Parties <span class="flag-text">flagged for review</span> come first: a mention of them links to a record on the federal health-care exclusion list (OIG LEIE) at the lens chosen above.</p>
+    <p><strong>Ask</strong> opens the librarian: type a name, an identifier, a claim or a note to open it, or ask a question to get an answer built only from the graph, with every step it took shown as it happens.</p>
+    <p>The <strong>trail</strong> records every step and why you took it; click one to go back. <strong>Pin</strong> keeps a dossier beside the main pane to compare two parties.</p>
+    <p class="muted">Every merge is a read-time view of scored links. The lens decides which links count: Strict admits identifier-backed links only, Default any basis at p ≥ 0.80, Broad adds weak name matches. Click any link sentence, candidate or flag to see how it was decided.</p></div>`;
 }
 
-function drawEntity(el, w, d) {
-  const conf = d.confidence == null ? `<span class="chip">single mention</span>`
-    : `<span class="chip ${d.confidence >= 0.9 ? "good" : d.confidence >= 0.5 ? "" : "bad"}">weakest link ${pct(d.confidence)}</span>`;
-  const cats = d.categories.map((c) => JSON.parse(c)).map((c) => `<span class="chip">${esc(c.value)}${c.subcategory ? " · " + esc(c.subcategory) : ""}</span>`).join("");
-  let h = `<div class="win-head"><h1 class="title">${esc(d.title)}</h1>
-    <div class="meta"><span>${esc(d.type)}</span><span>·</span>
-    <span>${d.claims.map((c) => ref("claim", c, c)).join(", ")}</span>${d.flagged && d.flagged.length ? `<span class="chip bad" title="At this lens a mention of this party links to a record on the OIG exclusion list (LEIE). A lead to check, not a finding.">Flagged for review</span>` : ""}</div>
-    ${GOKO.summaryHTML(d)}${GOKO.categoryHTML(d)}
-    ${lensBar(d)}</div><div class="win-body">`;
-  if (d.flagged && d.flagged.length) h += `<section class="block"><h2 title="Records on the OIG exclusion list that a mention of this party links to, admitted at this lens">Flagged for review — OIG exclusion list</h2>${d.flagged.map(GOKO.watchRowHTML).join("")}</section>`;
-  if (d.watchlist_near && d.watchlist_near.length) h += `<section class="block"><h2 title="Watchlist links below this lens's threshold, or vetoed. They do not flag the entity here.">Exclusion-list links this lens does not admit</h2>${d.watchlist_near.map(GOKO.watchRowHTML).join("")}</section>`;
+// ---------------------------------------------------------------- evidence
+function evidence(x, why, key) {
+  if (!x) return `<div class="ev muted">no source passage</div>`;
+  return `${GOKO.excerptHTML(x)}<div class="src">${go("note", x.note, x.note.replace("note:", "Note "), why, { span: x.span, key })}
+    <span class="muted">${esc(x.claim_id)}</span></div>`;
+}
+const more = (n, shown, what) => (n > shown ? `<button class="pill ghost small" data-more>Show all ${n} ${what}</button>` : "");
+
+// ---------------------------------------------------------------- entity
+function drawEntity(d, it, pinned) {
+  const T = d.title;
+  const flagged = d.flagged && d.flagged.length;
+  const meta = `<div class="meta"><span title="Entity type, as the model read it">${esc(d.type)}</span><span>·</span>
+      <span>${d.claims.map((c) => go("claim", c, c, `claim of ${T}`)).join(", ")}</span>
+      ${flagged ? `<span class="chip bad" title="At this lens a mention of this party links to a record on the OIG exclusion list (LEIE). A lead to check, not a finding.">Flagged for review</span>` : ""}</div>
+    ${GOKO.summaryHTML(d)}${GOKO.categoryHTML(d)}`;
+  let h = paneHead(esc(T), it, pinned, meta) + `<div class="pane-body">`;
+  if (flagged) h += `<section class="block"><h2 title="Exclusion-list records a mention of this party links to, admitted at this lens. Each row opens its decision card.">Flagged for review · OIG exclusion list</h2>${d.flagged.map(GOKO.watchRowHTML).join("")}</section>`;
   if (d.details.length) {
-    h += `<section class="block"><h2>Identifiers</h2>`;
-    d.details.forEach((x) => {
-      h += `<div class="card"><div class="row"><span class="chip">${esc(x.type.replaceAll("_", " "))}</span><span class="grow">${ref("identifier", x.ident, x.raw)}</span>
-        <span class="muted">${esc(x.basis || "")}${x.checksum && x.checksum !== "n/a" ? " · checksum " + esc(x.checksum) : ""}</span></div>
-        ${x.shared_with.length ? `<div class="muted" style="margin-top:4px">Also held by ${x.shared_with.map((s) => ref(s.kind, s.id, s.name)).join(", ")}</div>` : ""}
-        ${x.evidence.slice(0, 2).map(evidence).join("")}</div>`;
+    h += `<section class="block"><h2 title="Identifiers the notes attribute to this party. SSNs and bank accounts show their last four digits only.">Identifiers</h2>`;
+    d.details.forEach((x, i) => {
+      h += `<div class="card${i >= 6 ? " extra" : ""}"><div class="row"><span class="chip" title="Identifier type">${esc(cap(x.type))}</span><span class="grow">${go("identifier", x.ident, x.raw, `identifier of ${T}`)}</span>
+        <span class="muted" title="stated: the note says whose it is; inferred: the model concluded it">${esc(x.basis || "")}${x.checksum && x.checksum !== "n/a" ? ` · <span title="Check-digit test on the value">checksum ${esc(x.checksum)}</span>` : ""}</span></div>
+        ${x.shared_with.length ? `<div class="muted">Also held by ${x.shared_with.map((s) => go(s.kind, s.id, s.name, `shares ${cap(x.type)} with ${T}`)).join(", ")}</div>` : ""}
+        ${evidence(x.evidence[0], `passage for ${T}`)}</div>`;
     });
-    h += `</section>`;
+    h += more(d.details.length, 6, "identifiers") + `</section>`;
   }
-  h += `<section class="block"><h2>Mentions (${d.members.length})</h2>`;
-  d.members.forEach((m) => {
-    const j = m.joined_by ? `<span class="muted">joined via “${esc(m.joined_by.with_name)}” · ${pct(m.joined_by.p)} · ${esc(m.joined_by.basis_class.replace("_", " "))} · ${esc(m.joined_by.distance.replace("_", " "))}</span>` : `<span class="muted">first mention</span>`;
-    h += `<div class="card"><div class="row"><strong class="grow">${esc(m.name)}</strong>${j}</div>${evidence(m.evidence)}</div>`;
+  h += `<section class="block"><h2 title="Each mention is one place a note names this party. Merging is by scored links; each line shows the link that pulled the mention in.">Mentions (${d.members.length})</h2>`;
+  d.members.forEach((m, i) => {
+    const j = m.joined_by;
+    const how = j ? `<span class="link" ${GOKO.cardAttr(m.key, j.with)} title="Open the decision card for this link">joined via “${esc(j.with_name)}” · ${esc(GOKO.probText(j.p))} · ${esc((GOKO.BASIS[j.basis_class] || [j.basis_class])[0])}</span>`
+      : `<span class="muted" title="The mention the entity is anchored on (its lowest key)">first mention</span>`;
+    h += `<div class="card${i >= 5 ? " extra" : ""}"><div class="mhead"><strong>${esc(m.name)}</strong><div class="how">${how}</div></div>${evidence(m.evidence, `mention of ${T}`, m.key)}</div>`;
   });
-  h += `</section>`;
-  if (d.related.length) {
-    h += `<section class="block"><h2>Appears with</h2><div class="meta">${d.related.slice(0, 16).map((r) => `<span class="chip">${ref(r.kind, r.id, r.name)} ×${r.count}</span>`).join("")}</div></section>`;
-  }
+  h += more(d.members.length, 5, "mentions") + `</section>`;
+  if (d.related.length) h += `<section class="block"><h2 title="Parties that take part in the same actions, with how often">Appears with</h2><div class="meta">${d.related.slice(0, 16).map((r) => `<span class="chip">${go(r.kind, r.id, r.name, `appears with ${T}`)} ×${r.count}</span>`).join("")}</div></section>`;
   if (d.actions.length) {
-    h += `<section class="block"><h2>Actions (${d.actions.length})</h2>`;
-    d.actions.slice(0, 40).forEach((a) => {
-      h += `<div class="card"><div class="row"><strong>${esc(a.type.replaceAll("_", " "))}</strong><span class="muted">as ${esc(a.role)}</span>
-        ${a.stance && a.stance !== "asserted" ? `<span class="chip warn">${esc(a.stance)}</span>` : ""}${a.time ? `<span class="muted">${esc(a.time)}</span>` : ""}</div>
-        ${a.others.length ? `<div class="muted">with ${a.others.map((o) => `${ref(o.kind, o.id, o.name)} (${esc(o.role)})`).join(", ")}</div>` : ""}
-        ${evidence(a.evidence)}</div>`;
+    h += `<section class="block"><h2 title="What the notes say this party did or had done to it, with the source passage">Actions (${d.actions.length})</h2>`;
+    d.actions.slice(0, 40).forEach((a, i) => {
+      h += `<div class="card${i >= 6 ? " extra" : ""}"><div class="row"><strong>${esc(cap(a.type))}</strong><span class="muted">as ${esc(a.role)}</span>
+        ${a.stance && a.stance !== "asserted" ? `<span class="chip warn" title="How the text presents the event">${esc(a.stance)}</span>` : ""}${a.time ? `<span class="muted">${esc(a.time)}</span>` : ""}</div>
+        ${a.others.length ? `<div class="muted">with ${a.others.map((o) => `${go(o.kind, o.id, o.name, `co-party of ${T}`)} (${esc(o.role)})`).join(", ")}</div>` : ""}
+        ${evidence(a.evidence, `action of ${T}`)}</div>`;
     });
-    if (d.actions.length > 40) h += `<p class="muted">${d.actions.length - 40} more not shown.</p>`;
-    h += `</section>`;
+    h += more(Math.min(d.actions.length, 40), 6, "actions") + `</section>`;
   }
   h += GOKO.candidatesHTML(d.candidates, d.lens);
-  if (d.refused.length) h += `<section class="block"><h2>Refused merges</h2>${d.refused.map((r) => `<div class="muted">${esc(r.reason)}: ${esc(r.a)} / ${esc(r.b)}</div>`).join("")}</section>`;
-  el.innerHTML = h + `</div>`;
+  if (d.watchlist_near && d.watchlist_near.length) h += `<section class="block"><h2 title="Exclusion-list links below this lens's threshold, or vetoed. They do not flag the party here.">Exclusion-list links this lens does not admit</h2>${d.watchlist_near.map(GOKO.watchRowHTML).join("")}</section>`;
+  if (d.refused.length) h += `<section class="block"><h2 title="Unions the projection refused: a veto, or the cluster-size alarm">Refused merges</h2>${d.refused.map((r) => `<div class="card"><span class="link" ${GOKO.cardAttr(r.a, r.b)}>${esc(r.reason === "veto" ? "would join a vetoed pair" : "would pass the cluster-size alarm")}</span></div>`).join("")}</section>`;
+  return h + `</div>`;
 }
 
-function drawIdentifier(el, w, d) {
-  let h = `<div class="win-head"><h1 class="title mono">${esc(d.title)}</h1>
-    <div class="meta"><span class="chip">${esc(d.detail_type)}</span><span>${d.evidence.length} occurrence(s)</span><span>·</span><span>${d.claims.map((c) => ref("claim", c, c)).join(", ")}</span>
-    ${d.suspicion ? `<span class="chip bad">shared across ${esc(d.distance.replaceAll("_", " "))}</span>` : ""}</div></div><div class="win-body">`;
-  h += `<section class="block"><h2>Held by</h2>${d.holders.length ? d.holders.map((x) => `<div class="card row"><span class="grow">${ref(x.kind, x.id, x.name)}</span><span class="muted">${esc(x.type)} · ${x.claims.join(", ")}</span></div>`).join("") : `<p class="muted">No owner was assigned.</p>`}
-    ${d.unassigned ? `<p class="muted">${d.unassigned} occurrence(s) with no owner (UNASSIGNED).</p>` : ""}</section>`;
-  h += `<section class="block"><h2>Evidence</h2>${d.evidence.map(evidence).join("")}</section>`;
-  el.innerHTML = h + `</div>`;
+// ---------------------------------------------------------------- identifier, claim
+function drawIdentifier(d, it, pinned) {
+  const meta = `<div class="meta"><span class="chip" title="Identifier type">${esc(cap(d.detail_type))}</span><span>${d.evidence.length} occurrence(s)</span><span>·</span>
+    <span>${d.claims.map((c) => go("claim", c, c, `claim with ${d.title}`)).join(", ")}</span>
+    ${d.suspicion ? `<span class="chip bad" title="The same value appears across ${esc(cap(d.distance))}: shared details are relationships worth a look, not identities">shared across ${esc(cap(d.distance))}</span>` : ""}
+    ${d.masked ? `<span class="chip" title="Shown as its last four digits; the full value never reaches this page">masked</span>` : ""}</div>`;
+  let h = paneHead(`<span class="mono">${esc(d.title)}</span>`, it, pinned, meta) + `<div class="pane-body">`;
+  h += `<section class="block"><h2>Held by</h2>${d.holders.length ? d.holders.map((x) => `<div class="card row"><span class="grow">${go(x.kind, x.id, x.name, `holds ${d.title}`)}</span><span class="muted">${esc(x.type)} · ${esc(x.claims.join(", "))}</span></div>`).join("") : `<p class="muted">No owner was assigned.</p>`}
+    ${d.unassigned ? `<p class="muted" title="A pattern or the model found the value, but not whose it is">${d.unassigned} occurrence(s) with no owner (unassigned).</p>` : ""}</section>`;
+  h += `<section class="block"><h2>Evidence</h2>${d.evidence.map((x) => `<div class="card">${evidence(x, `passage with ${d.title}`)}</div>`).join("")}</section>`;
+  return h + `</div>`;
+}
+function drawClaim(d, it, pinned) {
+  const meta = `<div class="meta"><span>${d.entities.length} parties</span><span>·</span><span>${d.notes.length} notes</span></div>`;
+  let h = paneHead(esc(d.title), it, pinned, meta) + `<div class="pane-body">`;
+  h += `<section class="block"><h2>Parties</h2>${d.entities.map((e) => `<div class="card"><div>${go(e.kind, e.id, e.name, `party in ${d.title}`)}</div>
+      <div class="meta"><span>${esc(e.type)} · ${e.mentions} mention(s)${e.confidence != null ? " · weakest link " + esc(GOKO.probText(e.confidence)) : ""}</span>
+      ${e.elsewhere.length ? `<span class="chip warn" title="The same entity, at this lens, also appears in these claims">also in ${e.elsewhere.length} other claim(s)</span>` : ""}
+      ${e.category ? `<span class="chip" title="Role, the model's reading, not identity">${esc(e.category.value === "insufficient_evidence" ? "undetermined" : cap(e.category.value))}</span>` : ""}</div></div>`).join("")}</section>`;
+  h += `<section class="block"><h2>Notes</h2>${d.notes.map((n) => `<div class="card row"><span class="grow">${go("note", n.id, n.title, `note of ${d.title}`)}</span><span class="muted">${n.chars.toLocaleString()} chars</span></div>`).join("")}</section>`;
+  return h + `</div>`;
 }
 
-function drawNote(el, w, d) {
-  let h = `<div class="win-head"><h1 class="title">${esc(d.title)}</h1><div class="meta">${ref("claim", d.claim_id, d.claim_id)}<span>·</span><span>${d.chars.toLocaleString()} characters</span>
-    ${d.extraction_error ? `<span class="chip bad">extraction partial</span>` : ""}</div></div><div class="win-body">`;
-  const seen = new Set();
-  const ents = d.entities.filter((e) => !seen.has(e.id) && seen.add(e.id));
-  h += `<section class="block"><h2>Parties in this note (${ents.length})</h2><div class="meta">${ents.map((e) => `<span class="chip">${ref(e.kind, e.id, e.name)}</span>`).join("")}</div></section>`;
-  const t = d.text, s = d.highlight;
-  const body = s ? esc(t.slice(0, s[0])) + `<mark>${esc(t.slice(s[0], s[1]))}</mark>` + esc(t.slice(s[1])) : esc(t);
-  h += `<section class="block"><h2>Text</h2><div class="fulltext note-full">${body}</div></section>`;
-  el.innerHTML = h + `</div>`;
-  const m = el.querySelector("mark");
-  if (m) setTimeout(() => { const box = m.closest(".win-body"); box.scrollTop = m.offsetTop - box.clientHeight / 3; }, 0);
+// ---------------------------------------------------------------- note reader
+function drawNote(d, it, pinned) {
+  const meta = `<div class="meta">${go("claim", d.claim_id, d.claim_id, `claim of ${d.title}`)}<span>·</span><span>${d.chars.toLocaleString()} characters</span>
+    ${d.extraction_error ? `<span class="chip bad" title="${esc(d.extraction_error)}">extraction partial</span>` : ""}
+    <span class="legend" title="Every extracted mention is highlighted by entity type. Click one for its dossier summary."><span class="m t-person">person</span><span class="m t-organization">organization</span><span class="m t-vehicle">vehicle</span></span></div>`;
+  const t = d.text, hl = (it.req && it.req.span) || d.highlight;
+  const ms = d.entities.filter((e) => e.span).sort((a, b) => a.span[0] - b.span[0] || b.span[1] - a.span[1]);
+  let pos = 0, body = "", hlDone = false;
+  const hlMark = (s, e) => `<mark class="hl" id="hl">${esc(t.slice(s, e))}</mark>`;
+  for (const m of ms) {
+    const [s, e] = m.span;
+    if (s < pos) continue;
+    if (hl && !hlDone && hl[0] >= pos && hl[1] <= s) { body += esc(t.slice(pos, hl[0])) + hlMark(hl[0], hl[1]); pos = hl[1]; hlDone = true; }
+    const isHl = hl && !hlDone && hl[0] < e && s < hl[1];
+    if (isHl) hlDone = true;
+    body += esc(t.slice(pos, s)) + `<mark class="m t-${esc(m.type)}${m.flagged ? " flagged" : ""}${isHl ? " hl" : ""}" data-key="${esc(m.key)}" data-entity="${esc(m.id)}" data-name="${esc(m.name)}" tabindex="0"
+      title="${esc(`${m.mention_name} · ${m.type}${m.flagged ? " · flagged for review" : ""}. Click for its dossier summary.`)}">${esc(t.slice(s, e))}</mark>`;
+    pos = e;
+  }
+  if (hl && !hlDone && hl[0] >= pos) { body += esc(t.slice(pos, hl[0])) + hlMark(hl[0], hl[1]); pos = hl[1]; }
+  body += esc(t.slice(pos));
+  return paneHead(esc(d.title), it, pinned, meta) + `<div class="pane-body"><div class="reader" data-note="${esc(d.id)}">${body}</div></div>`;
+}
+function afterNote(el, it) {
+  $$(".reader mark.m", el).forEach((m) => {
+    const open = () => peek(m.dataset.key, m.dataset.entity, m.dataset.name, $(".reader", el).dataset.note);
+    m.addEventListener("click", open);
+    m.addEventListener("keydown", (e) => { if (e.key === "Enter") open(); });
+  });
+  const target = (it.req && it.req.key && $(`.reader mark[data-key="${CSS.escape(it.req.key)}"]`, el)) || $(".reader .hl", el);
+  if (target) setTimeout(() => flash(target), 30);
+}
+function flash(m) {
+  m.scrollIntoView({ block: "center" });
+  m.classList.remove("flash"); void m.offsetWidth; m.classList.add("flash");
+}
+// the mention drawer: the dossier in brief, and every mention of the party to jump to
+async function peek(key, entityId, name, noteId) {
+  const body = GOKO.openDrawer(esc(name), `<div class="thinking"><span class="dot"></span>Loading…</div>`);
+  let d;
+  try { d = await api("/api/view?" + new URLSearchParams({ kind: "entity", id: key, lens: S.lens })); }
+  catch (e) { body.innerHTML = `<p class="err">${esc(e.message)}</p>`; return; }
+  let h = `<div class="meta">${esc(d.type)} · ${d.claims.map(esc).join(", ")}</div>${GOKO.summaryHTML(d)}${GOKO.categoryHTML(d)}
+    <p><button class="pill" ${goAttr({ kind: "entity", id: d.id, label: d.title, why: `from ${noteId.replace("note:", "Note ")}` })}>Open the full dossier</button></p>`;
+  if (d.flagged && d.flagged.length) h += `<section class="block"><h2>Flagged for review</h2>${d.flagged.map(GOKO.watchRowHTML).join("")}</section>`;
+  if (d.details.length) h += `<section class="block"><h2>Identifiers</h2>${d.details.slice(0, 8).map((x) => `<div class="row"><span class="chip">${esc(cap(x.type))}</span><span class="mono">${esc(x.raw)}</span></div>`).join("")}</section>`;
+  h += `<section class="block"><h2 title="Click one to jump to it in the note, or to open the note it is in">Mentions (${d.members.length})</h2>` +
+    d.members.map((m) => `<div class="peek-m${m.key === key ? " on" : ""}" data-note="${esc(m.note)}" data-key="${esc(m.key)}" data-span='${esc(JSON.stringify(m.evidence ? m.evidence.span : null))}'>
+      <strong>${esc(m.name)}</strong> <span class="muted">${esc(m.note.replace("note:", "Note "))}${m.note === noteId ? " · this note" : ""} · ${esc(m.claim_id)}</span></div>`).join("") + `</section>`;
+  body.innerHTML = h;
+  GOKO.wire(body, { open: false });
+  $$(".peek-m", body).forEach((x) => x.addEventListener("click", () => {
+    const span = JSON.parse(x.dataset.span);
+    const here = $(`#main .reader[data-note="${CSS.escape(x.dataset.note)}"]`);
+    if (here) {
+      const m = $(`mark[data-key="${CSS.escape(x.dataset.key)}"]`, here);
+      if (m) flash(m);
+      $$(".peek-m", body).forEach((y) => y.classList.toggle("on", y === x));
+      return;
+    }
+    GOKO.closeDrawer();
+    navigate({ kind: "note", id: x.dataset.note, span, key: x.dataset.key }, x.dataset.note.replace("note:", "Note "), `mention of ${d.title}`);
+  }));
 }
 
-function drawClaim(el, w, d) {
-  let h = `<div class="win-head"><h1 class="title">${esc(d.title)}</h1><div class="meta"><span>${d.entities.length} parties</span><span>·</span><span>${d.notes.length} notes</span></div>
-    ${lensBar({ ...d, lenses: ["strict", "default", "broad"] })}</div><div class="win-body">`;
-  h += `<section class="block"><h2>Parties</h2>${d.entities.map((e) => `<div class="card"><div>${ref(e.kind, e.id, e.name)}</div>
-      <div class="meta" style="margin-top:4px"><span>${esc(e.type)} · ${e.mentions} mention(s)${e.confidence != null ? " · weakest link " + pct(e.confidence) : ""}</span>
-      ${e.elsewhere.length ? `<span class="chip warn">also in ${e.elsewhere.length} other claim(s)</span>` : ""}
-      ${e.category ? `<span class="chip">${esc(e.category.value)}</span>` : ""}</div></div>`).join("")}</section>`;
-  h += `<section class="block"><h2>Notes</h2>${d.notes.map((n) => `<div class="card row"><span class="grow">${ref("note", n.id, n.title)}</span><span class="muted">${n.chars.toLocaleString()} chars</span></div>`).join("")}</section>`;
-  el.innerHTML = h + `</div>`;
+// ---------------------------------------------------------------- answers
+const STEP_ICON = { route: "Route", match: "Match", expand: "Expand", facts: "Facts", model_start: "Model", model_done: "Model", model_failed: "Model", model_skip: "Model", citations: "Cite" };
+function logLine(e) {
+  let text = e.text;
+  if (e.step === "model_start") text = `Calling ${e.model} to ${e.purpose === "routing" ? "route the query" : `write the answer from ${e.facts} facts`}…`;
+  if (e.step === "model_done") text = `${e.model} ${e.purpose === "routing" ? "routed it" : "answered"} in ${e.seconds} s.`;
+  if (e.step === "model_failed") text = `The ${e.purpose} call failed after ${e.seconds} s: ${e.error}`;
+  let extra = "";
+  if (e.step === "match" && e.entities && e.entities.length) extra = `<div class="muted">${e.entities.map(esc).join(", ")}</div>`;
+  if (e.step === "expand" && e.names && e.names.length) extra = `<div class="muted">added: ${e.names.map(esc).join(", ")}</div>`;
+  if (e.step === "facts") extra = ` <span class="link" data-show-facts>show what was sent</span>`;
+  if (e.step === "citations" && e.dropped && e.dropped.length) extra = `<div class="muted">removed: ${e.dropped.map(esc).join(", ")}</div>`;
+  return `<li class="s-${esc(e.step)}"><span class="lt">${e.t.toFixed(1)} s</span><span class="lk">${esc(STEP_ICON[e.step] || e.step)}</span><span class="lx">${esc(text || "")}${extra}</span></li>`;
 }
-
-function drawAnswer(el, w) {
-  const d = w.data;
-  // citations become numbered markers in order of first use, listed as sources below
+function drawAnswer(it) {
+  const r = it.result, running = !r;
+  const facts = (it.log.find((e) => e.step === "facts") || {}).facts || (r && r.facts) || [];
+  const secs = r ? ((it.log.length ? it.log[it.log.length - 1].t : 0)).toFixed(1) : null;
+  let h = `<div class="pane-head"><div class="row"><h1 class="title grow">${esc(it.q)}</h1></div>
+    <div class="meta"><span title="The lens the answer was built at">lens ${esc(it.lens)}</span>${r && r.routed_by ? `<span>· routed by ${esc(cap(r.routed_by))}</span>` : ""}${r && r.facts_used ? `<span>· ${r.facts_used} facts</span>` : ""}</div></div><div class="pane-body">`;
+  const open = running || it.logOpen || (r && r.no_model && it.logOpen !== false);
+  h += `<details class="log"${open ? " open" : ""}><summary title="The steps the server actually took, as they happened">${running ? `<span class="dot"></span> Working…` : `${it.log.length} steps · ${secs} s`}</summary><ol>${it.log.map(logLine).join("")}</ol></details>`;
+  const factsBox = `<div class="facts" hidden><div class="ideas-h">What was sent (${facts.length} facts)</div>${facts.map((f) => `<div class="fact mono">${esc(f)}</div>`).join("")}</div>`;
+  if (!r) return h + `<p class="thinking"><span class="dot"></span>The librarian is reading the graph…</p>${factsBox}</div>`;
+  if (r.mode === "error") return h + `<p class="err">${esc(r.error)}</p></div>`;
   const order = [];
-  const openAttr = (c) => esc(JSON.stringify({ kind: c.kind, id: c.id, label: c.label, span: c.span }));
-  const text = esc(d.answer).replace(/\[([ea]\d+)\]/g, (m, a) => {
-    const c = d.citations[a];
+  const text = esc(r.answer || "").replace(/\[([ea]\d+)\]/g, (m, a) => {
+    const c = (r.citations || {})[a];
     if (!c) return "";
     if (!order.includes(a)) order.push(a);
-    return `<span class="cite" data-open='${openAttr(c)}' title="${esc(c.label)}">${order.indexOf(a) + 1}</span>`;
+    return `<span class="cite" ${goAttr({ kind: c.kind, id: c.id, label: c.label, span: c.span, why: `cited in “${it.q.slice(0, 40)}”` })} title="${esc(c.label)}">${order.indexOf(a) + 1}</span>`;
   });
-  const sources = order.map((a, i) => {
-    const c = d.citations[a];
-    const what = c.kind === "note" ? `${esc(c.label.replaceAll("_", " "))} · ${esc(c.id.replace("note:", "Note "))}` : esc(c.label);
-    return `<div class="source"><span class="cite" data-open='${openAttr(c)}'>${i + 1}</span><span class="link" data-open='${openAttr(c)}'>${what}</span>
-      <span class="muted">${c.kind === "note" ? "source passage" : "party"}</span></div>`;
-  }).join("");
-  let h = `<div class="win-head"><h1 class="title">${esc(d.question)}</h1><div class="meta"><span>answered from ${d.facts_used} retrieved facts</span>
-    ${d.seconds ? `<span>· ${d.seconds}s</span>` : ""}<span>· lens ${esc(d.lens)}</span></div></div><div class="win-body">
-    <div class="answer${d.error ? " err" : ""}">${text}</div>`;
-  if (d.confidence_note) h += `<p class="muted" style="margin-top:14px">${esc(d.confidence_note)}</p>`;
-  if (sources) h += `<section class="block"><h2>Sources</h2>${sources}</section>`;
-  if (d.facts) h += `<section class="block"><h2>Retrieved facts</h2>${d.facts.map((f) => `<div class="muted mono" style="margin-bottom:6px">${esc(f)}</div>`).join("")}</section>`;
-  if (d.dropped_citations && d.dropped_citations.length) h += `<p class="muted">Removed ${d.dropped_citations.length} citation(s) to facts that were not retrieved.</p>`;
-  el.innerHTML = h + `</div>`;
-  wireLinks(el, w);
+  h += `<div class="answer${r.error ? " err" : ""}${r.no_model ? " muted" : ""}">${text}</div>`;
+  if (r.confidence_note) h += `<p class="muted">${esc(r.confidence_note)}</p>`;
+  if (order.length) h += `<section class="block"><h2>Sources</h2>${order.map((a, i) => {
+    const c = r.citations[a];
+    const what = c.kind === "note" ? `${esc(cap(c.label))} · ${esc(c.id.replace("note:", "Note "))}` : esc(c.label);
+    return `<div class="source"><span class="cite" ${goAttr({ kind: c.kind, id: c.id, label: c.label, span: c.span, why: "source of an answer" })}>${i + 1}</span><span class="link" ${goAttr({ kind: c.kind, id: c.id, label: c.label, span: c.span, why: "source of an answer" })}>${what}</span><span class="muted">${c.kind === "note" ? "source passage" : "party"}</span></div>`;
+  }).join("")}</section>`;
+  if (facts.length) h += `<p><button class="pill ghost small" data-show-facts title="The exact facts, with their aliases, that ${r.no_model ? "a model would have received" : "the model received"}">show what was sent (${facts.length} facts)</button></p>`;
+  return h + factsBox + `</div>`;
+}
+function renderAnswerLog(it) {
+  const el = $("#main");
+  const ol = $("details.log ol", el);
+  if (!ol) return renderMain();
+  ol.innerHTML = it.log.map(logLine).join("");
+  wireAnswer(el, it);
+}
+function wireAnswer(el, it) {
+  $$("[data-show-facts]", el).forEach((x) => x.addEventListener("click", () => {
+    const f = $(".facts", el);
+    f.hidden = !f.hidden;
+    $$("[data-show-facts]", el).forEach((y) => { y.textContent = y.textContent.replace(f.hidden ? "hide" : "show", f.hidden ? "show" : "hide"); });
+    if (!f.hidden) f.scrollIntoView({ block: "start", behavior: "smooth" });
+  }));
+  const det = $("details.log", el);
+  if (det) det.addEventListener("toggle", () => { if (it.result) it.logOpen = det.open; });
 }
 
-// the decision card asks the app to open things through an event
-document.addEventListener("goko:open", (e) => {
-  const r = e.detail;
-  openView({ kind: r.kind, id: r.id, lens: GOKO.lens || "default", span: r.span }, r.label);
-});
-
-render();
+// ---------------------------------------------------------------- start
+(async () => {
+  $$("#lens button").forEach((b) => b.classList.toggle("on", b.dataset.lens === S.lens));
+  renderTrail(); renderMain();
+  try {
+    const m = await api("/api/meta");
+    S.meta = m;
+    $("#run-meta").innerHTML = `<span title="${esc(m.run && m.run.model ? "Extracted by " + m.run.model : "")}">${m.mentions.toLocaleString()} mentions · ${m.claims.length} claims · ${m.notes} notes</span> · <span title="${m.model ? "The librarian writes answers with a model; the key stays on the server" : "No model configured: lookups and retrieved facts only"}">librarian: ${esc(m.model || "no model")}</span>`;
+  } catch { /* meta is decoration; the list below still loads */ }
+  loadList();
+})();

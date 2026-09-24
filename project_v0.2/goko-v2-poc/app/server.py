@@ -69,6 +69,11 @@ class Handler(BaseHTTPRequestHandler):
                                     "mentions": len(r.mentions), "links": len(r.links),
                                     "notes": len(r.notes), "model": self.model.provider,
                                     "run": r.info})
+        if u.path == "/api/entities":
+            lens = q.get("lens", "default")
+            return self._send(200, {"lens": lens, "entities": self.run.entity_list(lens),
+                                    "watchlist": {"source": self.run.watchlist.get("source"),
+                                                  "records_on_list": self.run.watchlist.get("records_on_list")}})
         if u.path == "/api/suggest":
             return self._send(200, self.run.suggest(q.get("q", "")))
         if u.path == "/api/link":
@@ -80,21 +85,46 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, v) if v else self._send(404, {"error": "nothing found"})
         return self._send(404, {"error": "not found"})
 
+    def _lookup_result(self, e, lens):
+        if e.get("step") == "result" and e.get("mode") == "lookup":
+            t = e["target"]
+            e = {**e, "view": self.run.view(t["kind"], t["id"], lens)}
+        return e
+
     def do_POST(self):
         u = urllib.parse.urlparse(self.path)
         n = int(self.headers.get("Content-Length") or 0)
         body = json.loads(self.rfile.read(n) or b"{}")
+        if u.path == "/api/ask_stream":
+            # Server-sent events over one response: each real step as it happens, then the
+            # result. The page reads it with fetch(), so nothing reconnects and re-asks.
+            query, lens = (body.get("q") or "").strip(), body.get("lens", "default")
+            if not query:
+                return self._send(400, {"error": "empty query"})
+            self.send_response(200)
+            self.send_header("Content-Type", "text/event-stream; charset=utf-8")
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("X-Accel-Buffering", "no")
+            self.end_headers()
+            try:
+                for e in librarian.ask_events(query, self.run, self.model, lens):
+                    e = self._lookup_result(e, lens)
+                    self.wfile.write(f"event: {e['step']}\ndata: {json.dumps(e)}\n\n".encode("utf-8"))
+                    self.wfile.flush()
+            except (BrokenPipeError, ConnectionResetError):
+                pass                                   # the reader went away
+            except Exception as ex:                    # report, do not hang the page
+                err = {"step": "result", "mode": "error", "error": f"{type(ex).__name__}: {ex}"}
+                self.wfile.write(f"event: result\ndata: {json.dumps(err)}\n\n".encode("utf-8"))
+            return
         if u.path == "/api/ask":
             query = (body.get("q") or "").strip()
             if not query:
                 return self._send(400, {"error": "empty query"})
-            r = librarian.route(query, self.run, self.model)
-            if r["mode"] == "lookup":
-                t = r["target"]
-                v = self.run.view(t["kind"], t["id"], body.get("lens", "default"))
-                return self._send(200, {"mode": "lookup", "routed_by": r["routed_by"], "view": v})
-            a = librarian.answer(query, self.run, self.model, body.get("lens", "default"))
-            return self._send(200, {**a, "routed_by": r["routed_by"]})
+            # the same steps as /api/ask_stream, returned at once with the log attached
+            lens = body.get("lens", "default")
+            log = [self._lookup_result(e, lens) for e in librarian.ask_events(query, self.run, self.model, lens)]
+            return self._send(200, {**log[-1], "log": log[:-1]})
         return self._send(404, {"error": "not found"})
 
 

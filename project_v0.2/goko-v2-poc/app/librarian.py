@@ -1,7 +1,8 @@
 """The librarian: decide whether a query is a lookup or a question, and answer questions.
 
-A lookup opens a dossier; a question gets an answer built only from a retrieved
-subgraph, citing every claim it makes with aliases ([e3], [a12]) the interface
+ask_events() runs one query as the steps that really happen, and the server streams
+them to the page as they happen. A lookup opens a dossier; a question gets an answer
+built only from a retrieved subgraph, citing every claim it makes with aliases ([e3], [a12]) the interface
 turns into links. No citation, no claim: the prompt says so, and any alias the
 answer uses that was not in the retrieved facts is dropped before it reaches the
 screen.
@@ -108,46 +109,96 @@ def is_obvious_lookup(query, suggestions):
     return None
 
 
-def route(query, run, model):
+def ask_events(query, run, model, lens="default"):
+    """The whole ask, as the steps that really happen, one event per step: the routing
+    decision, what retrieval matched and added, what was sent, the model call with its
+    duration, and the citation check. The last event is always {"step": "result", ...}.
+    Nothing here is decorative: a step that did not run is not reported."""
+    t0 = time.time()
+
+    def ev(step, **kw):
+        return {"step": step, "t": round(time.time() - t0, 2), **kw}
+
     sugg = run.suggest(query)
     hit = is_obvious_lookup(query, sugg)
     if hit:
-        return {"mode": "lookup", "target": hit, "routed_by": "match"}
+        yield ev("route", decision="lookup", by="match",
+                 text=f"Matches {hit['label']} ({hit['kind']}) directly: opening it, no model needed.")
+        yield ev("result", mode="lookup", target=hit, routed_by="match")
+        return
     if QUESTION_RE.search(query):
-        return {"mode": "question", "routed_by": "phrasing"}
-    if not model.available:
-        return {"mode": "question", "routed_by": "no_model"}
-    try:
-        r = model.json_call(ROUTE_SYSTEM, query, ROUTE_SCHEMA, max_tokens=256, timeout=90,
-                            model=model.router_model)
-    except Exception as ex:
-        return {"mode": "question", "routed_by": f"route_failed: {type(ex).__name__}"}
-    if r.get("mode") == "lookup" and r.get("lookup_text"):
-        s = run.suggest(r["lookup_text"])
-        if s:
-            return {"mode": "lookup", "target": s[0], "routed_by": "model"}
-    return {"mode": "question", "routed_by": "model"}
+        routed = "phrasing"
+        yield ev("route", decision="question", by="phrasing", text="Phrased as a question: answering from the graph.")
+    elif not model.available:
+        routed = "no_model"
+        yield ev("route", decision="question", by="no_model",
+                 text="Not a clear lookup, and no model is configured to route it: treated as a question.")
+    else:
+        yield ev("model_start", purpose="routing", model=model.router_model)
+        t1 = time.time()
+        try:
+            r = model.json_call(ROUTE_SYSTEM, query, ROUTE_SCHEMA, max_tokens=256, timeout=90,
+                                model=model.router_model)
+            yield ev("model_done", purpose="routing", model=model.router_model, seconds=round(time.time() - t1, 1))
+        except Exception as ex:
+            r = {}
+            yield ev("model_failed", purpose="routing", error=f"{type(ex).__name__}: {ex}"[:300],
+                     seconds=round(time.time() - t1, 1))
+        if r.get("mode") == "lookup" and r.get("lookup_text"):
+            s = run.suggest(r["lookup_text"])
+            if s:
+                yield ev("route", decision="lookup", by="model",
+                         text=f"The routing model read it as a lookup of “{r['lookup_text']}”: opening {s[0]['label']}.")
+                yield ev("result", mode="lookup", target=s[0], routed_by="model")
+                return
+        routed = "model" if r else "route_failed"
+        yield ev("route", decision="question", by=routed,
+                 text="The routing model read it as a question." if r else "Routing failed: treated as a question.")
 
-
-def answer(question, run, model, lens="default"):
-    facts, alias = run.retrieve(question, lens)
-    base = {"mode": "answer", "question": question, "lens": lens, "facts_used": len(facts)}
+    stats = {}
+    facts, alias = run.retrieve(query, lens, stats=stats)
+    seeds = stats.get("seeds", [])
+    yield ev("match", n=len(seeds), entities=seeds[:8], by_words=stats.get("matched_by_words"),
+             text=(f"Matched {len(seeds)} part{'y' if len(seeds) == 1 else 'ies'} by the words of the question"
+                   if stats.get("matched_by_words") else
+                   "No party matched the question's words: starting from the most-mentioned parties") + ".")
+    yield ev("expand", added=stats.get("hop_added", 0), names=stats.get("hop_names", []),
+             actions=stats.get("actions_sent", 0), actions_found=stats.get("actions_found", 0),
+             links=stats.get("not_merged_links", 0), flags=stats.get("flag_facts", 0),
+             text=f"One hop out: {stats.get('hop_added', 0)} co-participant(s) added, "
+                  f"{stats.get('actions_sent', 0)} action(s) with source quotes, "
+                  f"{stats.get('not_merged_links', 0)} not-merged link(s), "
+                  f"{stats.get('flag_facts', 0)} flag(s) for review.")
+    yield ev("facts", n=len(facts), facts=facts, text=f"{len(facts)} facts assembled at lens {lens}.")
+    base = {"mode": "answer", "question": query, "lens": lens, "facts_used": len(facts),
+            "routed_by": routed}
     if not model.available:
-        return {**base, "answer": "No model is configured, so this is not an answer — only the "
-                "facts retrieved for your question. Set GEMINI_API_KEY to enable answers.",
-                "citations": alias, "facts": facts[:40]}
-    user = f"QUESTION: {question}\n\nFACTS:\n" + "\n".join(facts)
-    t0 = time.time()
+        yield ev("model_skip", text="No model is configured: no answer is written, only the facts above.")
+        yield ev("result", **base, answer="No model is configured, so this is not an answer — only the "
+                 "facts retrieved for your question. Set GEMINI_API_KEY to enable answers.",
+                 citations=alias, facts=facts[:40], no_model=True)
+        return
+    user = f"QUESTION: {query}\n\nFACTS:\n" + "\n".join(facts)
+    yield ev("model_start", purpose="answer", model=model.gemini_model, facts=len(facts))
+    t1 = time.time()
     try:
         r = model.json_call(ANSWER_SYSTEM, user, ANSWER_SCHEMA, max_tokens=2048)
     except Exception as ex:
-        return {**base, "answer": f"The model call failed ({type(ex).__name__}: {ex}). "
-                "Nothing below is an answer.", "citations": {}, "error": True}
+        yield ev("model_failed", purpose="answer", error=f"{type(ex).__name__}: {ex}"[:300],
+                 seconds=round(time.time() - t1, 1))
+        yield ev("result", **base, answer=f"The model call failed ({type(ex).__name__}: {ex}). "
+                 "Nothing below is an answer.", citations={}, error=True, facts=facts[:40])
+        return
+    secs = round(time.time() - t1, 1)
+    yield ev("model_done", purpose="answer", model=model.gemini_model, seconds=secs)
     text = r.get("answer", "")
     used = set(re.findall(r"\[([ea]\d+)\]", text))
     unknown = used - set(alias)
     for u in unknown:                         # a citation to nothing is removed, not rendered
         text = text.replace(f"[{u}]", "")
-    return {**base, "answer": text, "confidence_note": r.get("confidence_note"),
-            "citations": {k: v for k, v in alias.items() if k in used},
-            "dropped_citations": sorted(unknown), "seconds": round(time.time() - t0, 1)}
+    yield ev("citations", checked=len(used), kept=len(used - unknown), dropped=sorted(unknown),
+             text=f"{len(used)} citation(s) checked against the facts sent; "
+                  f"{len(unknown)} pointed at nothing and were removed.")
+    yield ev("result", **base, answer=text, confidence_note=r.get("confidence_note"),
+             citations={k: v for k, v in alias.items() if k in used},
+             dropped_citations=sorted(unknown), seconds=secs, facts=facts[:40])
