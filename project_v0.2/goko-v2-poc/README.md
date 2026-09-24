@@ -159,21 +159,28 @@ fixed and covered by a self-test:
 Same corpus and pipeline. Extraction and category assignment both run on nano, with
 `reasoning_effort` low and GLiNER off.
 
-| | Gemini 3.1 Pro | Gemini 3.5 Flash | gpt-5-nano |
-|---|---|---|---|
-| Wall time (extraction / categories) | 22 min (6.3 / 6.8) | 7.8 min (3.4 / 4.3) | **3.2 min** (1.3 / 1.6) |
-| Party recall | 16/17 | 16/17 | 16/17 |
-| Cross-claim identities: default / broad | 4 / 5 | 4 / 5 | 4 / 5 |
-| Wrong joins: default / broad | 0 / 1 | 0 / 0 | 0 / 0 |
-| Entity mentions | 196 | 156 | 110 |
-| **Actions** | 96 | 91 | **11** |
-| Details found by the LLM | 14 | 18 | **2** (the pattern lane caught 6 more) |
-| Quotes that could not be placed | 13 | 6 | 16 |
+| | Gemini 3.1 Pro | Gemini 3.5 Flash | nano, effort low | nano, effort medium |
+|---|---|---|---|---|
+| Wall time (extraction / categories) | 22 min (6.3 / 6.8) | 7.8 min (3.4 / 4.3) | **3.2 min** (1.3 / 1.6) | 15.4 min (8.0 / 7.0) |
+| Party recall | 16/17 | 16/17 | 16/17 | 15/17 |
+| Cross-claim identities: default / broad | 4 / 5 | 4 / 5 | 4 / 5 | 4 / 5 |
+| Wrong joins: default / broad | 0 / 1 | 0 / 0 | 0 / 0 | 0 / 0 |
+| Entity mentions | 196 | 156 | 110 | 139 |
+| **Actions** | 96 | 91 | **11** | 86 |
+| Details found by the LLM | 14 | 18 | **2** (+6 pattern-only) | 8 (+5 pattern-only) |
+| Quotes that could not be placed | 13 | 6 | 16 | 28 |
+
+`OPENAI_REASONING_EFFORT` in cell 2 sets the effort.
 
 Nano finds the parties about as well as Gemini, and on these filings party names alone drive
-the identity results. It extracts almost none of the relationships (who billed, referred,
-owned or controlled whom) and almost none of the identifiers. Those actions and details are
-what dossiers show and what graph-RAG answers are built from.
+the identity results.
+
+At low effort it extracts almost none of the relationships (who billed, referred, owned or
+controlled whom) and almost none of the identifiers. Those actions and details are what
+dossiers show and what graph-RAG answers are built from.
+
+At medium effort nano recovers the actions (86 against Gemini's ~95). It is then slower than
+Flash, misses one more party, and still finds fewer identifiers than either Gemini model.
 
 Some of its quotes are paraphrases rather than copies (similarity 0.43–0.79 against the
 source), and those are rejected rather than placed. That is the round-trip check doing its
