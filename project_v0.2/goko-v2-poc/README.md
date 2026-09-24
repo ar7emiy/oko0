@@ -1,22 +1,24 @@
 # GOKO v2 — architecture POC
 
 A runnable trace of the v2 pipeline: extraction in three lanes, identity as scored links
-with a read-time merged view, category assignment, cross-claim reading, and a search app
-over the result. `architecture-trace.html` is the design; `goko_v2_poc.ipynb` is the
-implementation.
+with a read-time merged view, a watchlist check against the federal health-care exclusion
+list, category assignment, cross-claim reading, and a search app over the result.
+`architecture-trace.html` is the design; `goko_v2_poc.ipynb` is the implementation.
 
 ```
 goko_v2_poc.ipynb            the pipeline, one cell per boundary
 architecture-trace.html      the design it implements
 goko/projection.py           read-time merged view (lenses, weakest link); notebook and app share it
+goko/watchlist.py            "Flagged for review" at a lens; notebook and app share it
 goko/net.py                  IPv4-first resolution (see "Slow calls" below)
-app/                         the search app: server.py, librarian.py, graph.py, static/
+app/                         the search app: server.py, librarian.py, graph.py, static/ (app.js, card.js)
 evaluate.py                  scores a court-corpus run against the clerk's party lists
-notes/                       four fixture notes across three claims, two occurrences
+notes/                       five fixture notes across four claims, three occurrences
 fixtures/                    recorded LLM payloads for offline replay
 corpus/courtlistener/        two real RICO dockets, seven filings, plus gold/ party lists
 corpus/reference/            outside name-frequency tables (Census, SSA, NPPES) for rarity
-corpus/registry/             NPPES and OIG LEIE lookups for the court defendants (evaluation only)
+corpus/registry/             OIG LEIE exclusion list as a compact table (the watchlist, cell 18c),
+                             plus NPPES and LEIE lookups of the court defendants (evaluation only)
 run_offline_check.py         runs every cell headless; non-zero exit if anything breaks
 poc_output/                  written by the notebook (gitignored)
 ```
@@ -29,6 +31,7 @@ pip install --no-deps recordlinkage==0.16   # its pandas<3 pin is stale; see req
 python3 run_offline_check.py          # no key, no network, a few seconds
 jupyter lab goko_v2_poc.ipynb         # same thing, interactively
 python app/server.py --run poc_output # the search app over the last run, http://127.0.0.1:8765
+python app/server.py --run poc_output --no-model   # never calls a model, whatever keys exist
 ```
 
 Optional stages, each switchable in cell 1 without breaking anything downstream:
@@ -66,7 +69,7 @@ computed when something reads them, at a **lens**:
 
 | Lens | Admits |
 |---|---|
-| strict | identifier-backed links (NPI, TIN, SSN, VIN, bar number, phone), p ≥ 0.90 |
+| strict | identifier-backed links (see Identifiers below), p ≥ 0.90 |
 | default | any basis, p ≥ 0.80 (what the dossier files use) |
 | broad | any basis, p ≥ 0.10 |
 
@@ -89,25 +92,157 @@ by name are displayed and never scored.
 above cell 17 explains the configuration. Cell 18b holds EM weight learning, disabled, with
 the criteria for turning it on.
 
+Every link carries `fields`: for each compared field, the two values, the agreement level,
+`m`, `u`, what `u` rests on (the surname's Census frequency, an organization word's NPPES
+share, an identifier's assumed rate) and the bits it added. The rows sum to the link's bits.
+The app's decision card is built from them, so nothing on screen is recomputed.
+
+### Identifiers
+
+| Type | Normalized | Counts as | Check |
+|---|---|---|---|
+| NPI | 10 digits | identifier, one per party (conflict vetoes) | Luhn (prefix 80840) |
+| TIN, SSN, VIN, bar number | digits / uppercase | identifier, one per party | — |
+| DEA number | `AB1234563` | identifier, one per party | DEA check digit |
+| professional license (`state_license`) | `NY:212345`, or `212345` with no state | identifier | — |
+| license plate | `NY:KLM4821`, or `KLM4821` | identifier | — |
+| bank account | `021000021:4417229108` (routing:account), or the account alone | identifier | ABA routing checksum |
+| email | lowercase | identifier | — |
+| phone | `+1` and ten digits | identifier | — |
+| address | lowercase words | weaker than an identifier | — |
+| date of birth (`dob`) | ISO date | adds weight to a person's name (u = 1/(365×80)); a difference counts against, never vetoes; never an identifier on its own | real date, not in the future |
+
+A plate, license or account number matches another when the numbers agree and the issuers
+(state, routing number) agree or one is unstated. Policy and claim numbers are deliberately
+not identifiers: they name a contract or a file, not a party. The pattern lane finds every
+type above (cued where a bare number would be ambiguous: an uncued DEA-shaped string is kept
+only if its check digit works). The app shows SSNs and bank accounts as their last four
+digits: the page gets an opaque id and a masked label, and those digits are blanked in note
+text, so the full value never reaches the browser.
+
+## Flagged for review: the OIG exclusion list
+
+`corpus/registry/leie_records.csv.gz` is the whole OIG List of Excluded Individuals/Entities
+(84,001 records) reduced to what the linker compares: name parts or business name, NPI (blank
+when all zeros; 11% have one), city, state, general category and specialty, exclusion type and
+date, and a record id hashed from the record's own fields. `fetch_registry.py` builds it from
+the gitignored raw download (`--leie-table` rebuilds without downloading). Street address,
+ZIP and date of birth are left out.
+
+Cell 18c links it with **the same machinery** as mention against mention. Each record is a
+mention record (`source: "oig_leie"`, no claim); `recordlinkage` proposes pairs in two-frame
+linking mode (surname NYSIIS, rarest and leading organization word, NPI), so two records are
+never paired; the cell 18 scorer, rarity tables and vetoes decide. About 7,000 candidate pairs
+are scored in ~4 s on the court corpus. What is new is declared:
+
+- **Distance `watchlist`**, with a prior by the corpus party's role: 5e-7 for a professional
+  or organization, 1e-7 for a private person. Semantics: the chance the party is on the list
+  at all (~4% and ~1% for parties named in a fraud file), spread over its records.
+- **A location field**, watchlist pairs only: the mention's own addresses against the record's
+  city and state. Same state adds weight scaled by the state's population share, same city
+  more; a different state counts against and never vetoes.
+- **The record's NPI** is an identifier like any other: agreement makes a link
+  identifier-backed; a different stated NPI vetoes.
+
+An entity is **Flagged for review** at a lens when any of its mentions has a watchlist link
+that lens admits. There is no second threshold, and the flag carries its basis: a name-only
+flag says so. Links with p ≥ 0.001 go to `watchlist_links.json` with their field breakdown.
+
+Decision card (AGENTS.md, change control):
+
+| | |
+|---|---|
+| User need | See which parties may be excluded providers, and on what evidence. |
+| New permitted decision | A read-time flag on an entity; nothing is merged, blocked or hidden. |
+| Evidence kept | The watchlist link: p, basis, veto, per-field breakdown, the record's fields. |
+| Unresolved outcome | Links below the lens stay visible ("possible match"), with their reason. |
+| Dossier effect | `flagged_for_review` in the entity's flags, the admitted links in `watchlist`. |
+| Disable / reverse | `WATCHLIST_ENABLED = False` in cell 18c, or delete the table: no link, no flag. |
+
+**Court corpus, relinked.**
+
+| Party | LEIE record | Link | Flagged at |
+|---|---|---|---|
+| Bradley Pierre (private person, NY filings) | BRADLEY PIERRE, employee, clinic; Lewisburg PA; 1128a3 (felony, health-care fraud), 2026-05-20; no NPI | p = 0.36, name only (surname ×7,300, first name ×780; no location on the mention) | broad only |
+| Dr. Andrew J. Dowd (named in the American Transit complaint) | ANDREW J DOWD, physician, orthopedics; South Setauket NY; 1128a3, 2024-08-20; NPI on record | p = 0.96, name only (no NPI in the filing to compare) | default and broad |
+| Nexray Medical Imaging | none on the list | — | never |
+
+The complaint itself says Dr. Dowd "was convicted in December 2018 for mail fraud"; the flag
+still rests on his name alone, and the card says so.
+
 ## The search app
 
-`python app/server.py --run <run dir>` serves a read-only interface over one run.
+`python app/server.py --run <run dir>` serves a read-only interface over one run. Every view
+is computed by the server from the run's files, through the same projection and flag code
+the notebook uses; nothing can be edited.
 
-- **Search bar.** Suggestions cover parties, identifiers, claims and notes, with no model
-  call. Pressing Enter goes to the librarian:
-  - a short query that clearly names something opens its dossier;
-  - a query phrased as a question goes to graph RAG: a retrieved subgraph plus the model,
-    where every statement cites a party or a source passage;
-  - anything else is routed by a small model.
-- **Windows.**
-  - Each window has a bubble in the header bar; "+" opens a new search.
-  - Clicking a citation or any linked item opens a window to its right.
-  - At most three are visible; the rest collapse into edge buttons.
-- **Dossiers.** Each dossier has its own Strict / Default / Broad toggle. Every evidence
-  item shows the source passage with the span highlighted, expandable to the full note.
+**Top bar.** The run (mentions, claims, notes, whether a librarian model is configured) and
+the **lens**: Strict, Default or Broad. The lens is global. It decides what counts as one
+party (which links merge) and who is flagged for review, in the list, the dossier and the
+pinned dossier alike. Hover any lens for its rule.
 
-The model key is read from the environment or `.env`, stays in the server process, and is
-never sent to the browser.
+**The list (left).** Every entity at the current lens. Parties **Flagged for review** come
+first, strongest flag first, then everyone alphabetically. Each row shows the type (the
+coloured dot), how many mentions and claims it spans, and a flag badge (`Flagged · weak`)
+whose hover names the listed record and the link's basis. `possible match` marks a party with
+an exclusion-list link that this lens does not admit. The filter box narrows the list by any
+name the party goes by. It is a lookup only; no model is involved.
+
+**Ask.** Opens the librarian's search bar over the list (Esc or × brings the list back).
+Suggestions cover parties, identifiers, claims and notes; picking one opens it directly.
+Enter lets the librarian decide: a query that clearly names something opens its dossier; a
+question is answered from a retrieved subgraph, where every statement cites a party or a
+source passage. Below the bar are suggested questions built from the open dossier ("Why is X
+flagged for review?", "Who else shares <identifier>?", "Which claims mention X?") and your
+recent searches (kept in this browser only).
+
+**The trail (narrow column).** Every step you took, newest at the bottom, each with why it
+was opened: "from the list", "co-party of Nexray", "mention of Bradley Pierre", "cited in …".
+Click a step to go back; opening something new from there replaces the steps after it.
+
+**The dossier (main pane).**
+- *Header:* the name, type and claims, a **Flagged for review** badge if the lens flags it,
+  and one sentence that says how the entity was formed: how many mentions across how many
+  claims, what the merge rests on, and how strong its weakest link is. Click the weakest link
+  to open its decision card. Below it, the **Role** line is the model's reading of what the
+  party does in each claim ("medical · doctor"); it plays no part in identity, and
+  `undetermined` is the model declining to guess.
+- *Flagged for review:* each exclusion-list record a mention links to, with the link's
+  strength and basis. Click a row for its decision card.
+- *Identifiers, Mentions, Appears with, Actions:* each with its source passage. "joined via …"
+  under a mention is the link that pulled it in; click it for the card. "Open in note" opens
+  the passage in the note reader.
+- *Candidates:* the closest mentions this lens kept apart, then the links that merged it.
+  Each row shows the other party, name similarity, probability in words and number, basis,
+  and any veto. Click any row for its decision card.
+- **Pin** keeps the dossier in a pane beside the main one, to compare two parties. It follows
+  the lens; links clicked in it open in the main pane.
+
+**The decision card (drawer).** How one link was decided, in order: (1) the two mentions,
+with their passages, or the exclusion-list record; (2) the starting odds in words ("1 in
+10,000,000 — private person, different insurers"; hover for why); (3) one row per field: what
+was compared, the agreement level, how common the value is ("about 1 in 7,800 people have
+this surname"), and its effect as an odds multiplier (×7,300; bits on hover) with a bar;
+identifier rows, conflicts, and the co-parties that match by name, shown and labelled as not
+scored; (4) the result as odds and a probability (never a bare 1.00: "> 0.99") with a verbal
+band; (5) what the link rests on, in words; (6) what each lens did with it, including a veto
+or a refused union in plain words.
+
+**The note reader.** A note in full, every extracted mention highlighted by type (person,
+organization, vehicle; a red underline marks a flagged party). Click a mention for a drawer
+with that party's dossier in brief and all its mentions; click one of those to jump to it in
+this note, or to open the other note scrolled to it.
+
+**Answers.** A short, collapsible log of the steps the server really took, streamed as they
+happen: the routing decision, the parties matched, the one-hop expansion and its counts, the
+facts assembled, the model call and how long it took (or that no model is configured), and
+how many citations were checked and removed. "show what was sent" reveals the facts the
+model received. Citations open their party or passage.
+
+**Privacy.** SSNs and bank accounts appear as their last four digits everywhere, including
+note text; the page never receives the full value. The model key is read from the
+environment or `.env`, stays in the server process, and is never sent to the browser.
+`--no-model` guarantees no model call at all.
 
 **Cell 23 is the one to run before believing any other number.** It checks the invariants
 this pipeline can otherwise violate while completing cleanly. Cell 24 lists the architecture
@@ -350,5 +485,7 @@ These are about the architecture, not the notebook. They need a decision before 
    notices.
 7. **Name-only cross-claim identity is the common case, not the edge case.** On the court
    corpus every true cross-claim link is name-only, and only 11% of OIG LEIE exclusion rows
-   carry an NPI. Watchlist matching will mostly run on names and addresses; how an alert
-   built on a `name_only` link is presented, and whether it may alert at all, is undecided.
+   carry an NPI. The POC's answer for the watchlist: a flag is shown only at a lens that
+   admits the link, and it carries the link's basis, so a name-only flag reads as one (the
+   court run's two flags are both name-only). Whether a name-only flag may reach the default
+   view at all, and what an investigator's review of a flag records, are still undecided.

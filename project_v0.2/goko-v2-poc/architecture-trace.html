@@ -808,14 +808,16 @@ flowchart TD
   PR["Person projection at read time<br/>lens chosen by the reader"] --> PC{"Union would exceed<br/>MAX_CLUSTER?"}
   PC -- yes --> RQ3["Alarm: refuse union,<br/>record the chaining link"]
   PC -- no --> DV["Dossier / search app / graph RAG<br/>weakest link shown with every merge"]
-  DV --> W1["Watchlist match on Person"]
-  W1 --> W2{"Above threshold?"}
-  W2 -- yes --> W3["Alert + triggering entity<br/>+ evidence trail + link basis"]
-  W2 -- no --> W4["Store score, no alert"]
+  WL[("OIG LEIE, ~84,000 records<br/>each a mention record, no claim")] --> W1["Watchlist links: same candidates,<br/>scorer, rarity and vetoes<br/>distance 'watchlist', location field"]
+  X0 --> W1
+  W1 --> W2{"A member's watchlist link<br/>admitted at the reader's lens?"}
+  PR --> W2
+  W2 -- yes --> W3["Flagged for review<br/>+ decision card + link basis"]
+  W2 -- no --> W4["Link kept and shown,<br/>no flag at this lens"]
+  W3 --> DV
 
   class RQ2 exc
   class RQ3 exc
-  class W1 opt
 </pre>
 </div>
 
@@ -962,6 +964,30 @@ below threshold, still stored:
 { "person_id": "P-0344", "score": 0.71, "threshold": 0.90,
   "above_threshold": false, "alert_id": null }</pre>
 <p class="cap">Two things make this alert actionable rather than a bare name: a quote with raw-note coordinates an investigator's viewer can highlight, and <code>identity_basis</code> naming the link that joined the two claims — so if the merge was wrong, the alert is visibly wrong too. Below-threshold scores are stored so threshold behaviour is auditable rather than invisible.</p>
+</div>
+
+<div class="step-label">
+  <span class="badge code">code</span>
+  <h3>Flagged for review (as the POC runs it)</h3>
+  <p>Matched per mention with the identity linker, flagged per entity at the reader's lens.</p>
+</div>
+<div class="step-data">
+<pre>watchlist_links.json, court corpus:
+{ "a": "note:710036:c0.m1", "b": "leie:6e5f0277f058",
+  "distance": "watchlist", "prior": 1e-07, "prior_key": "watchlist/private",
+  "weights": { "last": 12.83, "first": 9.61 },
+  "p": 0.3627, "basis_class": "name_only", "veto": null,
+  "fields": [ { "field": "last", "a": "PIERRE", "b": "PIERRE", "level": "exact",
+                "m": 0.93, "u": 0.000128, "u_source": "census2010", "bits": 12.83 },
+              { "field": "location", "a": null, "b": "Lewisburg, PA",
+                "level": "missing", "bits": null } ] }
+
+record: BRADLEY PIERRE, EMPLOYEE - PRIVATE S, LEWISBURG PA,
+        exclusion 1128a3 on 2026-05-20, no NPI
+
+strict: not admitted (no identifier)   default: not admitted (0.36 &lt; 0.80)
+broad:  admitted -> "Flagged for review", weak, name only</pre>
+<p class="cap">No separate matcher and no separate threshold: a watchlist record is compared exactly like a mention, and the lens that decides merges decides flags. The flag carries the link's basis, so a name-only flag reads as one, and the decision card shows every number it rests on. A record's NPI, when it has one, is an identifier like any other; a different stated NPI vetoes.</p>
 </div>
 
 </div>
