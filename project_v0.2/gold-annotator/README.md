@@ -128,7 +128,7 @@ python -m unittest discover -s tests     # parsing, evidence, workflow, frozen r
 node tests/e2e/ui_flow.mjs               # 35 steps in headless Edge or Chrome, with screenshots
 ```
 
-The browser run needs Node 22 or newer and Microsoft Edge or Google Chrome. It uses the stress packet in `../python-annotator/sample-data/`, fails on any JavaScript error, stray text such as "undefined", or a control covered by something else, and writes screenshots to `tests/e2e/screens/`.
+The browser run needs Node 22 or newer and Microsoft Edge or Google Chrome. It uses the stress packet in `sample-data/`, fails on any JavaScript error, stray text such as "undefined", or a control covered by something else, and writes screenshots to `tests/e2e/screens/`.
 
 ## Layout
 

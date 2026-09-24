@@ -1,0 +1,27 @@
+{
+  "purpose": "Hashes of source references at audit time; no corpus files included",
+  "files": {
+    "project/config/00_config.py": "a0c3afc9ce405624ccfd634e969c9d50e6bad574facb3c7ef9e0500669c891c7",
+    "project/src/agent.py": "5d4b73f8b9d821a15d53d8f5a6a9b1099431a87a91030848bd3df42e8dda3057",
+    "project/src/blocking.py": "666686893e38e43a708e30b1eca9ed1136405cdee670b5e1b465e34c6fcd08b3",
+    "project/src/build_graph.py": "c1b0a485a578831fa217821a07652d8550f9bb96eb239e2eb6c4ed1f4fbedd7b",
+    "project/src/contracts.py": "79efed3be871ab490d0d80d804ac91fde379e5debd16777f65f85d050d7e8578",
+    "project/src/entity_resolution.py": "1a699f605c15810253b5e99847a1ecc544932af790936827b6407df77d8d616c",
+    "project/src/graph_store.py": "503bc4e6ee23d08e54d0085ee4e733273cd4ac2fda0bdf939bb74bfe0f59e886",
+    "project/src/hashing.py": "03924cf20625ffd7bc9315f758560c472a361090ba7ac654c6fa2045edfe73e4",
+    "project/src/incremental.py": "6b19853f2ae7b372f78090dec5f0b74a655b875192d9a1b507899d42daa5eafe",
+    "project/src/ingest.py": "1e7d46aa88d83f8fb48d645ddc158ca9314d19cb56e5af0b15fa5b053b248d90",
+    "project/src/pipeline_v2.py": "0443ce9eb756305752a58f62ed1256ac60f7c962847833bb19ec768e5b9b51fd",
+    "project/src/profiles.py": "29c24008895ba0970ff074c8f81cbb02530b0db46e52cd018a13e6a873ffb861",
+    "project/src/repository.py": "9d856f4f1cf285ef41510925d7dcaf62517e97cc4d75cdaecc6f92b73e8aa684",
+    "project_v0.1/ARCHITECTURE.md": "9ee294de090c9c26b59bd51f60feb25b62197eec50589236c81056c5a9a45426",
+    "project_v0.1/config/config.py": "cad1d685b1134878947c83c0d6d92ad397b11dc687388f5d20ff1e13ab6a32f5",
+    "project_v0.1/src/contracts.py": "36f704dffcab07da2d2068a191cd68a82bea3d5db16a4d39832e7c59c22f8aa3",
+    "project_v0.1/src/coref.py": "69950e55d92dee4f38ce54012499903fc2a7cc5469cd846aef656ff9d1592770",
+    "project_v0.1/src/entity_type.py": "518ab9128f03d63294c6974b442f16eaecd2942f429e8a841d8a3ffe369299c2",
+    "project_v0.1/src/gazetteers.py": "c89f3cbbb0b141da64b261c32faa8feaaa24b037bfb855e22b91701400bf762d",
+    "project_v0.1/src/ner_ensemble.py": "bc3706a167f5ad75cdba0d786ea80fd490aefc581ac736454a5bba83f249d0d2",
+    "project_v0.1/STATE.md": "e2ac3c81eb8bb30183d218ee12700a2f674086ffd253742b230588b7230bf9c2",
+    "project_v0.1/tests/test_entity_type.py": "7bc1b61ba34ce2ae54a4d65b7579e85010cc7ece82b1ef6525699fac352871ee"
+  }
+}

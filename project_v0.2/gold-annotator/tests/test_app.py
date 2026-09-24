@@ -14,7 +14,7 @@ sys.path.insert(0, str(ROOT))
 from annotator.server import App, Config  # noqa: E402
 from annotator.store import Store, UserError  # noqa: E402
 
-SAMPLE = ROOT.parent / "python-annotator" / "sample-data" / "stress-packet"
+SAMPLE = ROOT / "sample-data" / "stress-packet"
 ME = "Pat Reviewer"
 
 
