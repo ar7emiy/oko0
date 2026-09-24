@@ -8,7 +8,7 @@ both call `project`, so the two can never disagree about what "merged" means.
 A link is a dict with at least:
     a, b         mention keys
     p            posterior probability the two are the same party (0..1)
-    basis_class  "identifier" | "address" | "name_only" | "co_party"
+    basis_class  "identifier" | "address" | "dob" | "co_party" | "name_only" | "none"
     veto         None, or the reason the pair can never be one party
 
 Lenses:

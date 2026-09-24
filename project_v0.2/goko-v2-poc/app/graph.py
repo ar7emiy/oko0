@@ -8,6 +8,7 @@ question. Merged entities come from goko.projection, the same code the
 notebook's dossiers use, so the app can never show a merge the notebook would
 not make.
 """
+import hashlib
 import json
 import re
 from collections import defaultdict
@@ -17,9 +18,47 @@ from goko.projection import LENSES, project, subtree_weakest
 
 EXCERPT = 180          # characters of context either side of a span
 
+# Identifiers the page never needs in full: shown as their last four digits, addressed by
+# an opaque token, and blanked in note text. The server keeps the value to match searches.
+MASKED_TYPES = {"ssn", "bank_account"}
+MASK = "\u2022"
+_SSN_SHAPE = re.compile(r"\b\d{3}-\d{2}-\d{4}\b")
+
 
 def _norm(s):
     return re.sub(r"[^a-z0-9]+", " ", (s or "").lower()).strip()
+
+
+def mask_digits(s, keep=4):
+    """Every digit but the last `keep` becomes a dot; length and punctuation survive, so
+    spans computed on the original text still point at the same characters."""
+    total = sum(c.isdigit() for c in s)
+    out, seen = [], 0
+    for c in s:
+        if c.isdigit():
+            seen += 1
+            out.append(c if seen > total - keep else MASK)
+        else:
+            out.append(c)
+    return "".join(out)
+
+
+def masked_value(t, v):
+    """How a masked identifier is shown: SSN as its last four, an account as its last four
+    with the (public) routing number of its bank."""
+    if t == "ssn":
+        return f"{MASK * 3}-{MASK * 2}-{v[-4:]}"
+    if t == "bank_account":
+        routing, _, acct = v.rpartition(":")
+        return f"acct {MASK * 4}{acct[-4:]}" + (f", routing {routing}" if routing else "")
+    return v
+
+
+def public_ident(t, v):
+    """The id the page uses for an identifier. Masked types get an opaque token."""
+    if t in MASKED_TYPES:
+        return f"{t}:#{hashlib.sha1(f'{t}:{v}'.encode()).hexdigest()[:12]}"
+    return f"{t}:{v}"
 
 
 class Run:
@@ -52,6 +91,23 @@ class Run:
             self.notes[env["note_key"]] = {"text": text, "claim_id": env["claim_id"],
                                            "note_id": env["note_id"], "file": f}
 
+        # masked identifiers: blank them in the note text (length-preserving, so every span
+        # stays valid) and remember the raw strings, so quotes and labels are masked too
+        self.ident_of_public = {}
+        self._masked_raw = set()
+        for env in self.envelopes:
+            n = self.notes[env["note_key"]]
+            text = n["text"]
+            for d in env["detail_mentions"]:
+                if d["detail_type"] not in MASKED_TYPES:
+                    continue
+                self._masked_raw.add(d["raw_value"])
+                span = d.get("raw_span") or d.get("clean_span")
+                if span and text:
+                    s, e = span
+                    text = text[:s] + mask_digits(text[s:e]) + text[e:]
+            n["text"] = _SSN_SHAPE.sub(lambda m: mask_digits(m.group(0)), text)
+
         # details and actions indexed by owning mention
         self.details_of = defaultdict(list)
         self.detail_owners = defaultdict(set)
@@ -60,9 +116,14 @@ class Run:
             nk = env["note_key"]
             for d in env["detail_mentions"]:
                 span = d.get("raw_span") or d.get("clean_span")
-                rec = {"type": d["detail_type"], "value": d["normalized"], "raw": d["raw_value"],
+                t, v = d["detail_type"], d["normalized"]
+                rec = {"type": t, "value": v,
+                       "raw": masked_value(t, v) if t in MASKED_TYPES and v else self.redact(d["raw_value"]),
+                       "ident": public_ident(t, v) if v else None,
                        "basis": d.get("basis"), "note": nk, "span": span,
                        "checksum": d.get("checksum"), "detected_by": d.get("detected_by")}
+                if v:
+                    self.ident_of_public[rec["ident"]] = f"{t}:{v}"
                 owner = f"{nk}:{d['owner_ref']}" if d.get("owner_ref") not in (None, "UNASSIGNED") else None
                 rec["owner"] = owner
                 if owner:
@@ -73,7 +134,7 @@ class Run:
             for a in env["action_mentions"]:
                 self.actions.append({
                     "id": f"{nk}:{a['action_id']}", "note": nk, "claim_id": env["claim_id"],
-                    "type": a["action_type"], "quote": a["quote"], "stance": a.get("stance"),
+                    "type": a["action_type"], "quote": self.redact(a["quote"]), "stance": a.get("stance"),
                     "time": a.get("time_qualifier"), "span": a.get("raw_span") or a.get("clean_span"),
                     "participants": [{"mention": f"{nk}:{p['mention_id']}", "role": p["role"]}
                                      for p in a["participants"]]})
@@ -93,6 +154,15 @@ class Run:
                                            "subcategory": e.get("subcategory"),
                                            "claim_entity": e["entity_id"]}
         self._proj = {}
+
+    def redact(self, s):
+        """A string with every masked identifier in it blanked to its last four digits."""
+        if not s:
+            return s
+        for raw in self._masked_raw:
+            if raw and raw in s:
+                s = s.replace(raw, mask_digits(raw))
+        return _SSN_SHAPE.sub(lambda m: mask_digits(m.group(0)), s)
 
     # ---- projection ----------------------------------------------------------------
     def projection(self, lens):
@@ -173,14 +243,15 @@ class Run:
         for k in members:
             for d in self.details_of[k]:
                 f = folded.setdefault((d["type"], d["value"]), {
-                    "type": d["type"], "value": d["value"], "raw": d["raw"], "basis": d["basis"],
-                    "checksum": d["checksum"], "evidence": [],
-                    "shared_with": []})
+                    "type": d["type"], "value": d["value"], "ident": d["ident"], "raw": d["raw"],
+                    "basis": d["basis"], "checksum": d["checksum"],
+                    "masked": d["type"] in MASKED_TYPES, "evidence": [], "shared_with": []})
                 f["evidence"].append(self.excerpt(d["note"], d["span"]))
         for f in folded.values():
             others = {o for o in self.detail_owners[f"{f['type']}:{f['value']}"] if o and o not in members}
             f["shared_with"] = sorted({json.dumps(self._entity_ref(o, lens)) for o in others})
             f["shared_with"] = [json.loads(x) for x in f["shared_with"]]
+            f.pop("value")                     # the page gets `ident` and the display form
 
         acts, related = [], {}
         for k in members:
@@ -237,6 +308,7 @@ class Run:
         }
 
     def identifier_view(self, ident, lens="default"):
+        ident = self.ident_of_public.get(ident, ident)
         recs = self.details_of.get(f"id:{ident}")
         if not recs:
             return None
@@ -252,8 +324,8 @@ class Run:
         claims = sorted({self.notes[r["note"]]["claim_id"] for r in recs})
         shared = next((s for s in self.cross.get("shared_details", [])
                        if s["detail_type"] == t and s["value"] == v), None)
-        return {"kind": "identifier", "id": ident, "title": recs[0]["raw"], "detail_type": t,
-                "value": v, "lens": lens, "claims": claims,
+        return {"kind": "identifier", "id": public_ident(t, v), "title": recs[0]["raw"], "detail_type": t,
+                "masked": t in MASKED_TYPES, "lens": lens, "claims": claims,
                 "holders": list(holders.values()),
                 "unassigned": sum(1 for r in recs if not r["owner"]),
                 "suspicion": shared["suspicion"] if shared else None,
@@ -337,7 +409,7 @@ class Run:
             hit = (qd and len(qd) >= 3 and qd in re.sub(r"\D", "", v)) or qn in _norm(raw) or qn in _norm(v)
             if hit and ident not in seen:
                 seen.add(ident)
-                out.append((2.5, {"kind": "identifier", "id": ident, "label": raw,
+                out.append((2.5, {"kind": "identifier", "id": public_ident(t, v), "label": raw,
                                   "sub": f"{t} · {len(recs)} occurrence(s)"}))
         for nk, n in self.notes.items():
             if qn in _norm(nk) or qn == str(n["note_id"]):

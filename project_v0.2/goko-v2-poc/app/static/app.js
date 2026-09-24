@@ -224,7 +224,7 @@ function evidence(x) {
 }
 const pct = (p) => (p == null ? "—" : p >= 0.9995 ? "1.00" : p.toFixed(2));
 const basisChip = (b) => {
-  const label = { identifier: "identifier", address: "address", co_party: "name + anchored co-party", name_only: "name only", none: "no agreement" }[b] || b;
+  const label = { identifier: "identifier", address: "address", dob: "name + date of birth", co_party: "name + anchored co-party", name_only: "name only", none: "no agreement" }[b] || b;
   const cls = b === "identifier" ? "good" : b === "name_only" || b === "co_party" ? "warn" : "";
   return `<span class="chip ${cls}">${esc(label)}</span>`;
 };
@@ -246,7 +246,7 @@ function drawEntity(el, w, d) {
   if (d.details.length) {
     h += `<section class="block"><h2>Identifiers</h2>`;
     d.details.forEach((x) => {
-      h += `<div class="card"><div class="row"><span class="chip">${esc(x.type)}</span><span class="grow">${ref("identifier", `${x.type}:${x.value}`, x.raw)}</span>
+      h += `<div class="card"><div class="row"><span class="chip">${esc(x.type.replaceAll("_", " "))}</span><span class="grow">${ref("identifier", x.ident, x.raw)}</span>
         <span class="muted">${esc(x.basis || "")}${x.checksum && x.checksum !== "n/a" ? " · checksum " + esc(x.checksum) : ""}</span></div>
         ${x.shared_with.length ? `<div class="muted" style="margin-top:4px">Also held by ${x.shared_with.map((s) => ref(s.kind, s.id, s.name)).join(", ")}</div>` : ""}
         ${x.evidence.slice(0, 2).map(evidence).join("")}</div>`;
