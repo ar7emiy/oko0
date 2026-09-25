@@ -43,9 +43,9 @@ One toggle, `PROVIDER`, in cell 1:
 
 | `PROVIDER` | Needs | Notes |
 |---|---|---|
-| `"offline"` *(default)* | nothing | Replays recorded extractions for the bundled notes. |
+| `"offline"` *(default in cell 1)* | nothing | Replays recorded extractions for the bundled notes. The offline check runs this. |
 | `"gemini"` | an API key | Paste it into `GEMINI_API_KEY` in cell 1. No `settings.env`, no SDK — the adapter is raw HTTPS over `urllib`. Falls back to `$GEMINI_API_KEY` / `$GOOGLE_API_KEY`. |
-| `"openai"` | an API key | api.openai.com directly (not Azure), raw HTTPS like the Gemini adapter. Key in `OPENAI_API_KEY` in cell 1 or the environment; model `OPENAI_MODEL`, default `gpt-5-nano`. Reasoning tokens get the same headroom as Gemini's thinking tokens; `reasoning_effort` is `low`. |
+| `"openai"` *(the live default)* | an API key | api.openai.com directly (not Azure), raw HTTPS like the Gemini adapter. Key in `OPENAI_API_KEY` in cell 1 or the environment; model `OPENAI_MODEL`, default **`gpt-6-luna`**, `OPENAI_REASONING_EFFORT` **`medium`** (cell 2; low drops most actions and identifiers). gpt-5 and later are reasoning models: no temperature, reasoning tokens get headroom. A court-corpus run costs about 0.28M prompt and 0.12M completion tokens. |
 | `"azure"` | `settings.env` + `openai` | Cell 1 prints which keys it found, masked, and which variant names it accepts. |
 
 Offline mode exists so the plumbing can be verified without a deployment, and it is never
@@ -60,6 +60,47 @@ Gemini and Azure disagree on structured-output dialect. Rather than maintain two
 property order is pinned so responses stay diffable. `finishReason: "MAX_TOKENS"` is
 normalised to `"length"` so the truncation check is provider-independent. Both translations
 have self-tests in cell 23.
+
+## Quotes: how extraction is placed in the text
+
+The model emits quotes, never offsets; cell 11 finds each one in the chunk it came from. The
+prompt's rule (`QUOTE_RULE`, cell 4): one short contiguous clause (target ≤ 120 characters),
+copied character for character including odd spacing, typos and OCR artifacts; never skip,
+insert or reorder words, never substitute names, never join two places; to be unique, extend
+with the words right next to it, such as the paragraph number where the paragraph begins.
+
+Placement passes, in order: exact; normalized (whitespace, case, soft hyphens and hyphenated
+line breaks, on both sides); a guarded snap (only whitespace, punctuation, hyphenation or
+case may differ, and digit runs must agree); fuzzy, refused when a name, number or negation
+differs. Identical repeats go to the copy nearest the owner's or a participant's span, and
+otherwise stay placed with `multi_hit_identical` and the count. An edited entity quote is
+placed by the party's name (`quote_edited_name_placed`). A name swap stays
+`unverifiable_quote`: an attribution error to surface, not fix.
+
+Court corpus, gpt-6-luna at medium effort:
+
+| | before (luna baseline) | after (prompt + resolver, run 2) |
+|---|---|---|
+| unverifiable_quote | 13 | 11 |
+| multi_hit_ambiguous | 9 | 0 |
+| multi_hit_no_anchor | 5 | 0 |
+| **unplaced, total** | **27** | **11** |
+| placed with multi_hit_identical | — | 14 |
+| placed by name (quote edited) | — | 4 |
+
+The 11 left are genuine edits: paragraph numbers stitched onto sentences they do not begin,
+a changed date, dropped words, a substituted subject. The run with the group and new-field
+schema (run 3, a longer prompt) left 19.
+
+## Groups and legal constructs
+
+`is_group` marks a collective the note defines ("(collectively, the “No-Fault Attorneys”)",
+"the MRC Defendants"); each member gets a `member_of` action (roles `member`, `group`), and a
+group card lists its members. On note 720001 ¶449 the run links the Law Office of Jason
+Tenenbaum, P.C., Jason Tenenbaum, Roman Kravchenko and the Russel Friedman Law Group to "the
+No-Fault Attorneys". Names carrying ENTERPRISE, SCHEME, CONSPIRACY or RICO are legal
+constructs. A party, a group and a construct never merge (`kind_conflict` veto), and a
+construct is never a company's full name.
 
 ## Identity: links underneath, merged view on top
 
@@ -104,12 +145,14 @@ The app's decision card is built from them, so nothing on screen is recomputed.
 | NPI | 10 digits | identifier, one per party (conflict vetoes) | Luhn (prefix 80840) |
 | TIN, SSN, VIN, bar number | digits / uppercase | identifier, one per party | — |
 | DEA number | `AB1234563` | identifier, one per party | DEA check digit |
-| professional license (`state_license`) | `NY:212345`, or `212345` with no state | identifier | — |
+| professional license (`state_license`) | `NY:212345`, or `212345` with no state; the license type (MD, DO, DC, LAc, PT, attorney) beside it | identifier; two stated types that differ are not a match | — |
+| driver's license (`driver_license`) | `NY:D1234567`, or the number alone | identifier, one per person **per state** (two stated numbers from one state veto) | — |
 | license plate | `NY:KLM4821`, or `KLM4821` | identifier | — |
 | bank account | `021000021:4417229108` (routing:account), or the account alone | identifier | ABA routing checksum |
 | email | lowercase | identifier | — |
-| phone | `+1` and ten digits | identifier | — |
-| address | lowercase words | weaker than an identifier | — |
+| phone | `+1` and ten digits; the line type (home, work, cell, fax) beside it when stated | identifier; a work or fax line counts less (u 1e-2 instead of 1e-4: an office shares it) | — |
+| address | lowercase words, plus parts: street number, direction, name, type, unit, city, state, ZIP | graded: exact · same street and number (unit may differ) · same ZIP · same city · same state; the first two are an `address` basis, the rest `location`; a different address is not scored | — |
+| specialty (`provider_specialty`) | lowercase words | supports a person's name (agree ×8, differ ÷4.5); never an identifier, never proposes a pair | — |
 | date of birth (`dob`) | ISO date | adds weight to a person's name (u = 1/(365×80)); a difference counts against, never vetoes; never an identifier on its own | real date, not in the future |
 
 A plate, license or account number matches another when the numbers agree and the issuers
@@ -177,67 +220,71 @@ is computed by the server from the run's files, through the same projection and 
 the notebook uses; nothing can be edited.
 
 **Top bar.** The run (mentions, claims, notes, whether a librarian model is configured) and
-the **lens**: Strict, Default or Broad. The lens is global. It decides what counts as one
-party (which links merge) and who is flagged for review, in the list, the dossier and the
-pinned dossier alike. Hover any lens for its rule.
+the global **Merge on** control: *Identifiers only* (strict: identifier-backed links, p ≥
+0.90), *Names + identifiers, confident* (default: any basis, p ≥ 0.80), *Also weak name
+matches* (broad: p ≥ 0.10). It decides what counts as one party and who is flagged for
+review, in the list and in every card that does not override it. In the work view, **Trail**
+and **Save trace** sit at the right.
 
-**The list (left).** Every entity at the current lens. Parties **Flagged for review** come
-first, strongest flag first, then everyone alphabetically. Each row shows the type (the
-coloured dot), how many mentions and claims it spans, and a flag badge (`Flagged · weak`)
-whose hover names the listed record and the link's basis. `possible match` marks a party with
-an exclusion-list link that this lens does not admit. The filter box narrows the list by any
-name the party goes by. It is a lookup only; no model is involved.
+**Home.** One centred search bar, no Ask button, with the full entity list beneath it.
+Parties **Flagged for review** come first, then everyone alphabetically; groups and legal
+constructs are marked as such. Typing narrows the list live (a lookup, no model) and shows
+typeahead suggestions over parties, identifiers, claims and notes. Picking a row or a
+suggestion opens its card; **Enter** sends the query to the librarian. An **Entities | Saved
+traces** switch sits above the list, and **Investigate a note** opens the note investigation.
 
-**Ask.** Opens the librarian's search bar over the list (Esc or × brings the list back).
-Suggestions cover parties, identifiers, claims and notes; picking one opens it directly.
-Enter lets the librarian decide: a query that clearly names something opens its dossier; a
-question is answered from a retrieved subgraph, where every statement cites a party or a
-source passage. Below the bar are suggested questions built from the open dossier ("Why is X
-flagged for review?", "Who else shares <identifier>?", "Which claims mention X?") and your
-recent searches (kept in this browser only).
+**Work view.** Opening anything turns the search bar and list into a **left sidebar** with the
+same functions; the rest of the screen is the **rolodex**:
 
-**The trail (narrow column).** Every step you took, newest at the bottom, each with why it
-was opened: "from the list", "co-party of Nexray", "mention of Bradley Pierre", "cited in …".
-Click a step to go back; opening something new from there replaces the steps after it.
+- up to three cards side by side (two below ~1040 px of stage, one on a phone); extra cards
+  collapse into edge buttons (`‹ 3 more`, `2 more ›`);
+- a row of **bubble tabs**, one per open card: hover elongates a bubble and pushes its
+  neighbours, × closes it, a click brings its card into view;
+- **Pin** on a card pins it to the left end; at most two, so the third slot stays free for
+  browsing; unpinned cards flow to the right of the pinned ones;
+- each card has its own small **merge override**; an overridden card says so
+  ("overridden: identifiers only").
 
-**The dossier (main pane).**
-- *Header:* the name, type and claims, a **Flagged for review** badge if the lens flags it,
-  and one sentence that says how the entity was formed: how many mentions across how many
-  claims, what the merge rests on, and how strong its weakest link is. Click the weakest link
-  to open its decision card. Below it, the **Role** line is the model's reading of what the
-  party does in each claim ("medical · doctor"); it plays no part in identity, and
-  `undetermined` is the model declining to guess.
-- *Flagged for review:* each exclusion-list record a mention links to, with the link's
-  strength and basis. Click a row for its decision card.
-- *Identifiers, Mentions, Appears with, Actions:* each with its source passage. "joined via …"
-  under a mention is the link that pulled it in; click it for the card. "Open in note" opens
-  the passage in the note reader.
-- *Candidates:* the closest mentions this lens kept apart, then the links that merged it.
-  Each row shows the other party, name similarity, probability in words and number, basis,
-  and any veto. Click any row for its decision card.
-- **Pin** keeps the dossier in a pane beside the main one, to compare two parties. It follows
-  the lens; links clicked in it open in the main pane.
+Links inside a card open a new card to its right, with the reason ("co-party of Nexray",
+"mention of Bradley Pierre", "cited in …"). A card for something already open is revealed
+instead of duplicated.
 
-**The decision card (drawer).** How one link was decided, in order: (1) the two mentions,
-with their passages, or the exclusion-list record; (2) the starting odds in words ("1 in
-10,000,000 — private person, different insurers"; hover for why); (3) one row per field: what
-was compared, the agreement level, how common the value is ("about 1 in 7,800 people have
-this surname"), and its effect as an odds multiplier (×7,300; bits on hover) with a bar;
-identifier rows, conflicts, and the co-parties that match by name, shown and labelled as not
-scored; (4) the result as odds and a probability (never a bare 1.00: "> 0.99") with a verbal
-band; (5) what the link rests on, in words; (6) what each lens did with it, including a veto
-or a refused union in plain words.
+**Trail** lists every card of the trace in the order it was opened, closed ones greyed, each
+with why it was opened and when; any closed card can be restored as a bubble. **Save trace**
+asks "Save this trace and start fresh?", takes a name, and keeps the cards (closed ones
+too), pins, merge settings and times in this browser's localStorage (a blocked storage means
+no saved traces, never a broken page), then returns Home. Saved traces are listed under
+*Saved traces*, renamable and deletable; opening one restores the work view. An answered
+question is saved with its answer, so reopening never calls the model again.
 
-**The note reader.** A note in full, every extracted mention highlighted by type (person,
-organization, vehicle; a red underline marks a flagged party). Click a mention for a drawer
-with that party's dossier in brief and all its mentions; click one of those to jump to it in
-this note, or to open the other note scrolled to it.
+**Cards.** An entity card has the name, type, claims, a Flagged-for-review badge, one sentence
+on how the entity was formed and its weakest link (click for its decision card), the model's
+role reading (not identity), specialties, group members or the groups it belongs to,
+identifiers (with license or phone-line type and address parts), mentions with the link that
+joined each, co-parties, actions with source passages, candidates, and refused merges.
+Identifier, claim and note cards work the same way; a note card is the note reader.
 
-**Answers.** A short, collapsible log of the steps the server really took, streamed as they
-happen: the routing decision, the parties matched, the one-hop expansion and its counts, the
-facts assembled, the model call and how long it took (or that no model is configured), and
-how many citations were checked and removed. "show what was sent" reveals the facts the
-model received. Citations open their party or passage.
+**Note investigation.** Type a note id (with typeahead). The whole note is shown with every
+extracted entity mention highlighted by type, lighter marks on every other place the note
+names the same party (its own name forms, found again in the chunk it came from), every
+detail outlined, and, with the *actions* toggle, every action underlined. Clicking a
+highlight opens that party's summary in a side drawer; **Pin for drill-down** collects
+parties in a list that opens them together as rolodex cards. The investigation is part of the
+trace and is saved with it.
+
+**The decision card (drawer)** is unchanged in shape: the two sides with passages, the
+starting odds, one row per field (now including the graded address and the specialty), the
+result, what the link rests on, and what each merge setting did with it.
+
+**Answers.** A card with a short, collapsible log of the steps the server really took,
+streamed as they happen: routing, parties matched, the one-hop expansion, the source
+passages read, the facts assembled, the model call and its duration, and the citation check.
+Facts carry aliases: `[e3]` a party, `[a12]` an action with its quote, and `[p4]` a
+**passage**: about 300 characters either side of each place the question's own words occur
+as a phrase ("no fault attorneys" finds "No-Fault Attorneys") and of the matched parties'
+mentions, merged when they overlap, at most 10. Passages let the model read relationships
+extraction missed; citing one opens the note at that span. "show what was sent" reveals the
+facts the model received.
 
 **Privacy.** SSNs and bank accounts appear as their last four digits everywhere, including
 note text; the page never receives the full value. The model key is read from the
@@ -271,9 +318,12 @@ pipeline never reads.
 - **Default misses Bradley Pierre (p = 0.36).** He is a private person matched on name
   alone. That is the private-person prior at work, as designed. He appears at broad, next to
   a display that 32 of his 65 co-parties also match by name (Pro run).
-- **The Pro run's broad-lens error.** It joins Allstate Fire & Casualty with Allstate
-  Property & Casualty through the bare "Allstate", at weakest link 0.55. FIRE is too common
-  in NPPES to count as distinctive, so the sibling veto doesn't fire.
+- **The broad-lens Allstate error, fixed.** Runs joined Allstate Fire & Casualty, Property
+  & Casualty and Insurance Company through the bare "Allstate" (FIRE is too common in NPPES
+  to count as distinctive). The sibling veto now also fires on a shared head word with a
+  non-generic word on each side (a curated generic list), and when a complete legal name
+  meets a longer one adding a word; a declared d/b/a exempts only names it covers. Relinked,
+  the luna baseline and both new luna runs score default 4/5, 0 wrong; broad 5/5, 0 wrong.
 - **Cross-claim clusters outside the gold five are real too.** Medical Reimbursement
   Consultants, Allstate, and the attorney Cary Scott Goldinger all appear in both dockets'
   filings.
