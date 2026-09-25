@@ -31,10 +31,62 @@ This file tracks both, how they differ, and the design decisions taken so far.
 - Probabilities should be data- and formula-driven, not preset (see "Parameters").
 - No unstructured text; relationships only from rows and shared details.
 
-Columns known so far: first name, last name, DOB, SSN, provider specialty, provider NPI,
-professional license number / state / type, driver license number / state, business name,
-TIN (EIN is a business TIN), clinic NPI, street number / direction / name / type, unit,
-city, state, ZIP, home phone, work phone, VIN, license plate number / state, email.
+- There are no labelled pairs. "Linked" in the extracted data means each row's details were
+  attached to that entity (by a person on a form, or by GenAI RAG over claim notes; treated as
+  reliable for now). It says who owns a detail, not which entities match.
+- Extracted file: hundreds of thousands of rows, null-heavy, many unmerged duplicates (same
+  name at different addresses, businesses sharing an address, and so on).
+
+### Input schema (both files, same columns; everything but `record_id` may be empty)
+
+| Column | Meaning | Goes to |
+|---|---|---|
+| `record_id` | unique row id (required) | row |
+| `claim_id`, `note_id` | extracted file only; the watchlist has neither | row |
+| `category` | medical, legal, repair shop, witness, claimant, other | row |
+| `first_name`, `middle_name`, `last_name` | | person part |
+| `dob`, `ssn` | | person part |
+| `driver_license_number`, `driver_license_state` | | person part |
+| `provider_npi` | | person part |
+| `professional_license_number`, `_state`, `_type` | | person part |
+| `provider_specialty` | | person part |
+| `business_name` | | business part |
+| `tin` | EIN is a business TIN | business part |
+| `clinic_npi` | | business part |
+| `street_number`, `street_direction`, `street_name`, `street_type`, `unit`, `city`, `state`, `zip` | address | row: held by both parts |
+| `home_phone` | | person part |
+| `work_phone` | | row: held by both parts |
+| `email` | | person part, or the business when there is no person |
+| `vin`, `plate_number`, `plate_state` | vehicle | person part, moderate weight |
+
+Routing confirmed 2026-09-25.
+
+### Breakdown ("explode"), done by the package, by rule
+
+Each row yields up to two parties, a person part (when there is a first or last name) and a
+business part (when there is a business name, or a TIN or clinic NPI with no name), tied to
+each other by the row. Each detail is normalized and attached to its owner per the table, or
+to both parts with ownership "row". Output of the step: a parties table, a details table
+(party, type, normalized value, ownership own/row), and ties (same row). One derived index maps
+every detail value to every party holding it across both files: it drives shared-identifier
+counts, anchored pairs and row-level evidence.
+
+### Category
+
+- Given category is kept; an inferred category is added beside it with the rule that set it:
+  provider/clinic NPI or a medical license type → medical (identifier-backed); bar number or a
+  legal license type → legal (identifier-backed); business-name words such as "Auto Body",
+  "Collision", "Towing" → repair shop, and "Law Office", "Esq.", "LLP" → legal (keyword, weaker).
+  Witness and claimant are never inferred.
+- "other" counts as no information.
+- Given vs inferred disagreement is a data-quality finding; matching uses the
+  identifier-backed value; the given value stays visible.
+- In matching, category is supporting evidence, never a veto. Its weight is learned from how
+  often anchored true matches agree on it, so frequent conflicts on identical entities make
+  it count for little automatically.
+- Category sets the group for starting rates: professional (medical, legal), business
+  (repair shop, or no person part), private (witness, claimant), unknown. Each group's rate is
+  estimated from the data, not preset.
 
 ## Open questions (B)
 
@@ -43,7 +95,33 @@ city, state, ZIP, home phone, work phone, VIN, license plate number / state, ema
 2. Combining several weak candidates for one entity: best single match (proposed) or
    combined.
 3. Whether any relationship columns (employer, owner) exist beyond the flat list.
+4. Whether the watchlist's `category` is populated (if always empty, category only groups the
+   extracted side and cannot be compared in matching).
 
-## Parameters: what can be learned from data, and what each needs
+## Parameters: sources, in order of preference
 
-See the conversation of 2026-09-24; summary in the package README when it is written.
+| Parameter | Source |
+|---|---|
+| u, chance agreement | Random record pairs from the data (as Splink does); outside tables for names (Census, SSA) and organization words (NPPES + a state business registry); for identifiers, how many distinct parties hold each value |
+| m, agreement among true matches | 1) anchored pairs inside the extracted file (two rows sharing a TIN/NPI that only one name ever uses: real extracted messiness); 2) watchlist duplicates anchored on single-holder SSN/NPI; 3) pessimistic simulation of extraction noise; 4) published starting values, only where nothing else informs a field |
+| Prior | Probability that two random records match (independent of candidate rules), estimated per category group by count; output includes a sensitivity table |
+| Correlated fields | Compared as one graded group: address (exact / same street and number / same ZIP / same city / same state), name |
+| Vetoes | Rules, not odds: two different single-holder identifiers of a one-per-party type |
+
+Every parameter in a run's manifest records its source and the number of pairs behind it.
+
+What each learning source depends on (2026-09-24): anchored pairs need enough single-holder
+identifiers present on both rows and are biased toward better-kept records; EM needs enough
+true matches among candidates (fragile when matches are rare, as against a watchlist) and
+assumes fields are independent; any prior estimated among candidate pairs changes with the
+candidate rules, hence defining it over all pairs.
+
+## Where Splink would do better (to be restated as comments at each notebook step)
+
+recordlinkage is the required base. Splink runs on DuckDB/Spark (1M rows routine), estimates u
+from random pairs, adjusts per value by term frequency, uses multi-level comparisons with an
+explicit null level, trains EM with u fixed and in blocking-aware passes, defines the prior
+independently of blocking, and draws a waterfall per pair. recordlinkage's ECMClassifier is
+textbook EM on binary vectors: u learned with m, prior among candidate pairs, no term
+frequency, no correction for blocking. The package implements Splink's fixes in its own
+scorer on top of recordlinkage's indexing and comparisons.
