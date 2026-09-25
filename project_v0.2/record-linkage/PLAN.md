@@ -1,7 +1,7 @@
 # Build plan: standalone record-linkage package [B]
 
-Status: **proposed, awaiting approval** (2026-09-25). Implements [DESIGN.md](DESIGN.md).
-Not yet reflected: the shared-core decision (section 8), pending the user's answer.
+Status: **approved 2026-09-25**, with the delivery and shared-code decisions in section 8.
+Implements [DESIGN.md](DESIGN.md).
 
 ## 1. Layout (`project_v0.2/record-linkage/`)
 
@@ -168,6 +168,25 @@ About 9.5 working days in total.
 
 Excel's row limit (continuation sheets, floor + top-K); candidate volume on common surnames (initial blocks, counts before indexing, state refinement); sparse anchors in null-heavy data (fallback chain, shown in the manifest); pandas 3 with recordlinkage `--no-deps` (pin < 4); best-single-match understates several independent weak candidates (DESIGN's choice; others listed).
 
-## 8. Pending: shared core with [A]
+## 8. Decided 2026-09-25
 
-Proposed 2026-09-25, awaiting the user's answer: build [B]'s scorer and parameter estimation as a core that [A] (goko-v2-poc) also uses, with [A]'s text-derived evidence as separate layers. If agreed, `src/wlink/` becomes that core and M1–M4 keep its interfaces free of [B]-only assumptions (spreadsheet columns, Excel output stay outside it).
+**Approved.** All issue resolutions in section 7 are accepted; build to this plan.
+
+**Delivery form: one notebook.** The whole system ships as a single `record_linkage.ipynb`:
+every function, the LEIE exporter, the synthetic-data generator and the tests live in it
+(tests as a self-test section, like goko's cell 23). Development happens in plain `.py`
+modules with unit tests first; once everything passes, the code is assembled into the
+notebook, the notebook is run end to end, and the development modules are removed. Data
+files stay files: `mappings/*.csv`, `reference/`, and the gitignored `data/`, `out/`,
+`review/`. Where section 1 lists `src/wlink/*.py`, `tools/*.py` and `tests/`, read them as
+development-time files that end up as notebook sections.
+
+**Same core code, separate systems.** [A] (goko-v2-poc) and [B] are entirely separate: no
+shared library, no shared runtime, no data passing between them. The matching core (name and
+org normalization, rarity lookups, comparison levels, the Fellegi-Sunter scorer, vetoes,
+basis classes, parameter estimation) is identical *code* in both. [B] writes it first as one
+contiguous notebook section headed with a core version; [A] later receives a copy of that
+section, with its text-derived layers kept in separate cells. Each notebook's self-tests
+include a check that its core section matches the recorded version hash, so drift is caught.
+The core must therefore take plain tables in and return plain tables out, with nothing
+spreadsheet-specific ([B]) or text-specific ([A]) inside it.
