@@ -2,7 +2,8 @@
 
 ask_events() runs one query as the steps that really happen, and the server streams
 them to the page as they happen. A lookup opens a dossier; a question gets an answer
-built only from a retrieved subgraph, citing every claim it makes with aliases ([e3], [a12]) the interface
+built only from a retrieved subgraph and source passages, citing every claim it makes with
+aliases ([e3], [a12], [p4]) the interface
 turns into links. No citation, no claim: the prompt says so, and any alias the
 answer uses that was not in the retrieved facts is dropped before it reaches the
 screen.
@@ -86,8 +87,11 @@ ROUTE_SYSTEM = (
 
 ANSWER_SYSTEM = (
     "You answer an investigator's question using ONLY the facts provided. Each fact starts "
-    "with an alias in brackets, like [e3] for an entity or [a12] for an action with its source "
-    "quote. Cite the alias right after every statement it supports, e.g. 'Nexray billed "
+    "with an alias in brackets, like [e3] for an entity, [a12] for an action with its source "
+    "quote, or [p4] for a PASSAGE of source text. Passages are the notes' own words around the "
+    "question's terms and the matched parties: read them for relationships the extracted facts "
+    "miss (who a group consists of, who acted for whom), and cite the passage for anything taken "
+    "from it. Cite the alias right after every statement it supports, e.g. 'Nexray billed "
     "Allstate [e2][a7].' Never state anything that no fact supports; if the facts do not "
     "answer the question, say what is missing. Entities are merged views: when a fact shows "
     "merge_basis=['name_only'], say that the identity rests on the name alone. Mention "
@@ -169,6 +173,10 @@ def ask_events(query, run, model, lens="default"):
                   f"{stats.get('actions_sent', 0)} action(s) with source quotes, "
                   f"{stats.get('not_merged_links', 0)} not-merged link(s), "
                   f"{stats.get('flag_facts', 0)} flag(s) for review.")
+    if stats.get("passages"):
+        yield ev("passages", n=stats["passages"], notes=stats.get("passage_notes", []),
+                 text=f"Read {stats['passages']} source passage(s) around the question's words and the "
+                      f"matched parties, from {len(stats.get('passage_notes', []))} note(s).")
     yield ev("facts", n=len(facts), facts=facts, text=f"{len(facts)} facts assembled at lens {lens}.")
     base = {"mode": "answer", "question": query, "lens": lens, "facts_used": len(facts),
             "routed_by": routed}
@@ -192,7 +200,7 @@ def ask_events(query, run, model, lens="default"):
     secs = round(time.time() - t1, 1)
     yield ev("model_done", purpose="answer", model=model.gemini_model, seconds=secs)
     text = r.get("answer", "")
-    used = set(re.findall(r"\[([ea]\d+)\]", text))
+    used = set(re.findall(r"\[([eap]\d+)\]", text))
     unknown = used - set(alias)
     for u in unknown:                         # a citation to nothing is removed, not rendered
         text = text.replace(f"[{u}]", "")
