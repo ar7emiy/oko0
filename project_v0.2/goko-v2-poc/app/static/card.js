@@ -31,6 +31,8 @@ const GOKO = (window.GOKO = window.GOKO || {});
   };
   const probText = (p) => `${band(p)} (${prob(p)})`;
   Object.assign(GOKO, { fmtN, odds, prob, band, mult, probText });
+  // the merge setting (the "lens"), in words: what a merge may rest on
+  GOKO.LENS_LABEL = { strict: "Identifiers only", default: "Names + identifiers, confident", broad: "Also weak name matches" };
 
   // ---------------------------------------------------------------- vocabulary
   const DIST = {
@@ -55,7 +57,7 @@ const GOKO = (window.GOKO = window.GOKO || {});
     address: ["shared address", "Both sides give the same address. An address is weaker than an identifier: several parties share one."],
     dob: ["name + date of birth", "The names agree and so do stated dates of birth. A date of birth adds weight but is never an identifier on its own."],
     co_party: ["name + anchored co-party", "The names agree, and another party in both claims is linked on an identifier. Co-parties matching only by name never count."],
-    location: ["name + location", "The names agree and so do city or state. Compared only against watchlist records."],
+    location: ["name + location", "The names agree and so do ZIP, city or state (from the parties' addresses, or a watchlist record's city and state). Weaker than a shared address."],
     name_only: ["name only", "Only the name agrees: no identifier, address or anchored co-party. A rare name can score high and is still a name-only link."],
     none: ["nothing agreed", "No field agreed. A prior alone never merges anything."],
   };
@@ -64,7 +66,7 @@ const GOKO = (window.GOKO = window.GOKO || {});
     address: "a shared address, plus whatever the names add.",
     dob: "the name plus a matching date of birth. No identifier agrees.",
     co_party: "the name, strengthened by co-parties that are linked on an identifier in both claims.",
-    location: "the name, plus a matching city or state. No identifier agrees.",
+    location: "the name, plus a matching ZIP, city or state. No identifier or street address agrees.",
     name_only: "the name alone. No identifier, address or anchored co-party agrees: however high the score, a different party with the same name would look identical.",
     none: "nothing: no field agreed.",
   };
@@ -84,6 +86,10 @@ const GOKO = (window.GOKO = window.GOKO || {});
     if ((m = v.match(/^conflicting_(\w+?):(.*)$/))) return `Both sides state a ${m[1].replaceAll("_", " ")}, and they differ (${m[2]}). A party has only one, so these cannot be the same party.`;
     if ((m = v.match(/^credential_conflict:(.*)$/))) return `The two hold different primary licenses (${m[1]}). A person holds one, so these cannot be the same person.`;
     if ((m = v.match(/^distinct_org_names:(.*)$/))) return `Each name keeps a distinctive word the other lacks (${m[1]}): sibling companies, not one party under two names.`;
+    if ((m = v.match(/^sibling_org_names:complete name vs one adding (.*)$/))) return `One is a complete company name, and the other adds ${m[1]} to it: a sibling company, not a short form of the same one.`;
+    if ((m = v.match(/^sibling_org_names:(.*)$/))) return `The names start alike but each keeps a word the other lacks (${m[1]}): sibling companies, not one party.`;
+    if ((m = v.match(/^kind_conflict:(\w+) vs (\w+)$/))) return `One is a ${m[1]}, the other a ${m[2]}: ${m[1] === "construct" || m[2] === "construct" ? "a legal construct (an enterprise, a scheme) is not the company it is named after" : "a group is not one of its members"}.`;
+    if ((m = v.match(/^conflicting_driver_license:(\w+)/))) return `Both sides state a driver's license from ${m[1]}, and the numbers differ. A person holds one per state, so these cannot be the same person.`;
     return v;
   };
   const basisChip = (b) => {
@@ -213,12 +219,17 @@ const GOKO = (window.GOKO = window.GOKO || {});
       }
       case "identifier":
       case "dob":
-        if (f.level === "exact") return f.type === "dob" ? `about 1 in ${fmtN(1 / f.u)} people share a birth date` : `a coincidental match is assumed at 1 in ${fmtN(1 / f.u)}${f.m < 0.9 ? "; one owner was inferred, so it counts for less" : ""}`;
+        if (f.level === "exact") return f.type === "dob" ? `about 1 in ${fmtN(1 / f.u)} people share a birth date` : `a coincidental match is assumed at 1 in ${fmtN(1 / f.u)}${f.m < 0.9 ? "; one owner was inferred, so it counts for less" : ""}${f.note ? `; ${esc(f.note)}` : ""}`;
         return f.note ? esc(f.note) : f.level === "missing" ? "only one side states one" : "";
       case "location":
         if (f.level === "missing") return "not compared: " + (f.a ? "the record" : "the mention") + " has no location";
         return `${(100 * f.u).toFixed(1)}% of US residents live in ${esc((f.b || "").split(", ").pop())} <span class="muted">(2020 Census)</span>`;
       case "vehicle": return "fixed weights (assumed)";
+      case "address":
+        if (f.bits == null) return f.note ? esc(f.note) : "only one side states one";
+        return `${esc({ exact: "the same address", same_street: "the same street and number; the unit differs or is missing", same_zip: "the same ZIP code", same_city: "the same city", same_state: "the same state" }[f.level] || f.level)}; two different parties agree this far about 1 in ${fmtN(1 / f.u)} times (assumed)`;
+      case "specialty":
+        return `${f.level === "exact" ? "the stated specialties agree" : "the stated specialties differ"}; supports the name, never an identifier`;
       case "co_party": return `${f.pairs.length} co-party pair(s) linked on an identifier in both claims; +${f.per_pair} bits each, at most ${f.max_pairs}`;
       default: return "";
     }
@@ -230,6 +241,7 @@ const GOKO = (window.GOKO = window.GOKO || {});
     return `${esc(v(f.a))} <span class="muted">↔</span> ${esc(v(f.b))}`;
   }
   const LEVEL = { exact: "exact", close: "close", initial: "initial", differ: "differ", missing: "missing", shared: "shared words", conflict: "conflict", anchored: "anchored",
+    same_street: "same street", same_zip: "same ZIP",
     same_city: "same city", same_state: "same state", same_state_other_city: "same state", different_state: "different state" };
   const LEVEL_WHY = {
     exact: "The values are identical after normalization.", close: "Spelling variants (Jaro-Winkler ≥ 0.92).", initial: "One side gives only an initial, and it agrees.",
@@ -252,7 +264,7 @@ const GOKO = (window.GOKO = window.GOKO || {});
   }
 
   function lensRow(r, l, watch) {
-    const name = r.lens[0].toUpperCase() + r.lens.slice(1);
+    const name = GOKO.LENS_LABEL[r.lens] || r.lens;
     let status, why = "";
     if (!r.admitted) {
       status = `<span class="chip">not admitted</span>`;

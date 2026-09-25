@@ -74,6 +74,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, {"lens": lens, "entities": self.run.entity_list(lens),
                                     "watchlist": {"source": self.run.watchlist.get("source"),
                                                   "records_on_list": self.run.watchlist.get("records_on_list")}})
+        if u.path == "/api/notes":
+            return self._send(200, self.run.notes_list())
         if u.path == "/api/suggest":
             return self._send(200, self.run.suggest(q.get("q", "")))
         if u.path == "/api/link":

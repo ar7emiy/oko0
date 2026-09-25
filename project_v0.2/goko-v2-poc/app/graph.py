@@ -18,6 +18,13 @@ from goko.projection import LENSES, admits, project, subtree_weakest
 from goko.watchlist import flags_for, near_flags
 
 EXCERPT = 180          # characters of context either side of a span
+# source passages for the librarian: characters either side of a hit, the longest a merged
+# window may grow, how many passages a question gets, and phrase hits per note
+PASSAGE_WIDTH, PASSAGE_MAX, PASSAGE_CAP, PASSAGES_PER_NOTE = 300, 1200, 10, 3
+QUESTION_STOP = {"the", "a", "an", "of", "and", "or", "is", "are", "was", "who", "what", "which",
+                 "how", "did", "does", "do", "in", "on", "to", "for", "with", "by", "at", "any",
+                 "all", "there", "were", "be", "been", "it", "its", "their", "his", "her", "about",
+                 "tell", "me", "show", "list", "find", "why", "when", "where"}
 
 # Identifiers the page never needs in full: shown as their last four digits, addressed by
 # an opaque token, and blanked in note text. The server keeps the value to match searches.
@@ -129,7 +136,8 @@ class Run:
                        "raw": masked_value(t, v) if t in MASKED_TYPES and v else self.redact(d["raw_value"]),
                        "ident": public_ident(t, v) if v else None,
                        "basis": d.get("basis"), "note": nk, "span": span,
-                       "checksum": d.get("checksum"), "detected_by": d.get("detected_by")}
+                       "checksum": d.get("checksum"), "detected_by": d.get("detected_by"),
+                       "subtype": d.get("subtype"), "parts": d.get("parts")}
                 if v:
                     self.ident_of_public[rec["ident"]] = f"{t}:{v}"
                 owner = f"{nk}:{d['owner_ref']}" if d.get("owner_ref") not in (None, "UNASSIGNED") else None
@@ -382,13 +390,19 @@ class Run:
                                        "distance": j["distance"]} if j else None),
                         "evidence": self.excerpt(m["note_key"], m.get("raw_span") or m.get("clean_span"))})
 
-        folded = {}
+        folded, specialties = {}, []
         for k in members:
             for d in self.details_of[k]:
+                if d["type"] == "provider_specialty":
+                    if d["raw"] not in specialties:
+                        specialties.append(d["raw"])
+                    continue
                 f = folded.setdefault((d["type"], d["value"]), {
                     "type": d["type"], "value": d["value"], "ident": d["ident"], "raw": d["raw"],
-                    "basis": d["basis"], "checksum": d["checksum"],
+                    "basis": d["basis"], "checksum": d["checksum"], "subtype": d.get("subtype"),
+                    "parts": d.get("parts"),
                     "masked": d["type"] in MASKED_TYPES, "evidence": [], "shared_with": []})
+                f["subtype"] = f["subtype"] or d.get("subtype")
                 f["evidence"].append(self.excerpt(d["note"], d["span"]))
         for f in folded.values():
             others = {o for o in self.detail_owners[f"{f['type']}:{f['value']}"] if o and o not in members}
@@ -396,9 +410,19 @@ class Run:
             f["shared_with"] = [json.loads(x) for x in f["shared_with"]]
             f.pop("value")                     # the page gets `ident` and the display form
 
-        acts, related = [], {}
+        acts, related, group_members, member_of = [], {}, {}, {}
         for k in members:
             for a in self.actions_of[k]:
+                if a["type"] == "member_of":
+                    me = next(p["role"] for p in a["participants"] if p["mention"] == k)
+                    for p in a["participants"]:
+                        if p["mention"] in members or p["mention"] not in self.mentions:
+                            continue
+                        ref = self._entity_ref(p["mention"], lens)
+                        if me == "group" and p["role"] != "group":
+                            group_members.setdefault(ref["id"], {**ref, "evidence": self.excerpt(a["note"], a["span"])})
+                        elif me != "group" and p["role"] == "group":
+                            member_of.setdefault(ref["id"], ref)
                 role = next(p["role"] for p in a["participants"] if p["mention"] == k)
                 others = []
                 for p in a["participants"]:
@@ -448,6 +472,8 @@ class Run:
                                               "subcategory": self.category_of[k]["subcategory"]})
                                   for k in members if k in self.category_of}),
             "members": mem, "details": list(folded.values()), "actions": acts,
+            "kind_of_party": self.kind_of(members), "specialties": specialties,
+            "group_members": list(group_members.values()), "member_of": list(member_of.values()),
             "related": sorted(related.values(), key=lambda r: -r["count"]),
             "not_merged": list(best.values())[:12],
             "candidates": cands,
@@ -457,6 +483,12 @@ class Run:
                                  "records_on_list": self.watchlist.get("records_on_list")},
             "refused": [{"reason": r["reason"], "a": r["link"]["a"], "b": r["link"]["b"]} for r in refused],
         }
+
+    def kind_of(self, members):
+        """party, group (a collective the note defines) or construct (an enterprise, a
+        scheme): the kind most of the entity's mentions carry."""
+        kinds = [self.mentions[k].get("kind", "party") for k in members]
+        return max(set(kinds), key=kinds.count) if kinds else "party"
 
     def _category_line(self, members):
         """The model's reading of the party's role, per claim; not part of identity."""
@@ -486,6 +518,7 @@ class Run:
             near = [l for l in near if not l.get("veto")]
             out.append({
                 "id": c["id"], "name": self.title_of(ms), "type": self.mentions[c["id"]]["type"],
+                "kind": self.kind_of(ms),
                 "mentions": len(ms), "claims": len({self.mentions[k]["claim_id"] for k in ms}),
                 "flag": ({"p": flags[0]["p"], "basis_class": flags[0]["basis_class"],
                           "record": self.watchlist["records"].get(flags[0]["b"], {}).get("name")}
@@ -522,23 +555,100 @@ class Run:
                 "distance": shared["distance"] if shared else None,
                 "evidence": [self.excerpt(r["note"], r["span"]) for r in recs]}
 
+    def _occurrences(self, env, text):
+        """Every other place a note names each of its mentions: the mention's own name forms
+        (name-like, same family: the notebook's `forms`) found again inside the chunk the
+        mention came from. A place two mentions both claim goes to the one whose own span is
+        nearer; a place inside another mention's own span is left to that mention."""
+        chunk_of = {m["mention_id"]: (m.get("_chunk") or [0, len(text)]) for m in env["entity_mentions"]}
+        own = []
+        for m in env["entity_mentions"]:
+            s = m.get("raw_span") or m.get("clean_span")
+            if s:
+                own.append(tuple(s))
+        claims = {}
+        for m in env["entity_mentions"]:
+            key = f"{env['note_key']}:{m['mention_id']}"
+            rec = self.mentions.get(key)
+            if not rec:
+                continue
+            w0, w1 = chunk_of[m["mention_id"]]
+            anchor = (m.get("raw_span") or m.get("clean_span") or [w0])[0]
+            forms = sorted({f for f in rec.get("forms", []) if len(f.strip()) >= 3}, key=len, reverse=True)
+            for f in forms:
+                rx = re.compile(r"(?<![A-Za-z0-9])" + r"\s+".join(map(re.escape, f.split())) + r"(?![A-Za-z0-9])", re.I)
+                for hit in rx.finditer(text, w0, w1):
+                    s, e = hit.span()
+                    if any(s < b and a < e for a, b in own):
+                        continue
+                    prev = claims.get((s, e))
+                    if prev is None or abs(anchor - s) < prev[1]:
+                        claims[(s, e)] = (key, abs(anchor - s))
+        out = defaultdict(list)
+        taken = []
+        for (s, e), (key, _) in sorted(claims.items(), key=lambda x: (x[0][0], -(x[0][1] - x[0][0]))):
+            if any(s < b and a < e for a, b in taken):
+                continue                      # a longer form already covers these characters
+            taken.append((s, e))
+            out[key].append([s, e])
+        return out
+
     def note_view(self, note_key, lens="default", span=None):
+        """A note with everything extracted from it placed: each entity mention (and the other
+        places the note names it), each detail with its owner, each action with who takes
+        part. The page layers them; nothing here is inferred beyond the notebook's spans."""
         n = self.notes.get(note_key)
         if not n:
             return None
+        env = next(e for e in self.envelopes if e["note_key"] == note_key)
+        text = n["text"]
         ms = sorted((m for m in self.mentions.values() if m["note_key"] == note_key),
                     key=lambda m: (m.get("raw_span") or [0])[0])
-        env = next(e for e in self.envelopes if e["note_key"] == note_key)
+        occ = self._occurrences(env, text) if text else {}
+        flagged = {}
+        def is_flagged(key):
+            c = self.cluster(key, lens)
+            cid = c["id"] if c else key
+            if cid not in flagged:
+                flagged[cid] = bool(self.flag_of(c["members"] if c else [key], lens))
+            return flagged[cid]
+        entities = [{**self._entity_ref(m["key"], lens), "span": m.get("raw_span") or m.get("clean_span"),
+                     "key": m["key"], "mention_name": m["name"], "occurrences": occ.get(m["key"], []),
+                     "flagged": is_flagged(m["key"])} for m in ms]
+        details = []
+        for d in env["detail_mentions"]:
+            sp = d.get("raw_span") or d.get("clean_span")
+            if not sp:
+                continue
+            t, v = d["detail_type"], d["normalized"]
+            owner = f"{note_key}:{d['owner_ref']}" if d.get("owner_ref") not in (None, "UNASSIGNED") else None
+            ref = self._entity_ref(owner, lens) if owner in self.mentions else None
+            details.append({"type": t, "span": sp, "subtype": d.get("subtype"),
+                            "raw": masked_value(t, v) if t in MASKED_TYPES and v else self.redact(d["raw_value"]),
+                            "ident": public_ident(t, v) if v else None, "owner": owner,
+                            "owner_name": ref["name"] if ref else None, "owner_entity": ref["id"] if ref else None})
+        actions = []
+        for a in self.actions:
+            if a["note"] != note_key or not a["span"]:
+                continue
+            who = []
+            for p in a["participants"]:
+                nm = self._entity_ref(p["mention"], lens)["name"] if p["mention"] in self.mentions else "?"
+                who.append(f"{nm} ({p['role']})")
+            actions.append({"id": a["id"], "type": a["type"], "span": a["span"], "who": who})
+        review = env.get("review_items", [])
         return {"kind": "note", "id": note_key, "title": f"Note {n['note_id']}",
-                "claim_id": n["claim_id"], "chars": len(n["text"]), "text": n["text"],
-                "highlight": span,
-                "entities": [{**self._entity_ref(m["key"], lens), "span": m.get("raw_span"), "key": m["key"],
-                              "mention_name": m["name"],
-                              "flagged": bool(self.flag_of(self.cluster(m["key"], lens)["members"]
-                                                           if self.cluster(m["key"], lens) else [m["key"]], lens))}
-                             for m in ms],
-                "review_items": env.get("review_items", [])[:50],
+                "claim_id": n["claim_id"], "chars": len(text), "text": text,
+                "highlight": span, "entities": entities, "details": details, "actions": actions,
+                "review_items": review[:50], "review_count": len(review),
                 "extraction_error": env.get("extraction_error")}
+
+    def notes_list(self):
+        per = defaultdict(int)
+        for m in self.mentions.values():
+            per[m["note_key"]] += 1
+        return [{"id": k, "note_id": str(v["note_id"]), "claim_id": v["claim_id"], "chars": len(v["text"]),
+                 "mentions": per.get(k, 0)} for k, v in sorted(self.notes.items())]
 
     def claim_view(self, claim_id, lens="default"):
         if not any(m["claim_id"] == claim_id for m in self.mentions.values()):
@@ -621,15 +731,50 @@ class Run:
         return [s for k in order for s in grouped[k]]
 
     # ---- retrieval for questions ---------------------------------------------------
+    def passages(self, question, clusters, width=None, cap=None):
+        """[(note, start, end, why)]: windows of source text, deduplicated (overlapping
+        windows in one note merge) and capped. First where the question's own words occur
+        as a phrase ("no fault attorneys" finds "No-Fault Attorneys"), then around the
+        mentions of the chosen parties, strongest first."""
+        width, cap = width or PASSAGE_WIDTH, cap or PASSAGE_CAP
+        out = []
+
+        def add(note, s, e, why):
+            text = self.notes[note]["text"]
+            a, b = max(0, s - width), min(len(text), e + width)
+            while a > 0 and not text[a - 1].isspace() and s - a < width + 40: a -= 1
+            while b < len(text) and not text[b].isspace() and b - e < width + 40: b += 1
+            for i, (nn, x, y, w) in enumerate(out):
+                if nn == note and a <= y and x <= b:
+                    if max(b, y) - min(a, x) <= PASSAGE_MAX:
+                        out[i] = (nn, min(a, x), max(b, y), w)
+                    return
+            if len(out) < cap:
+                out.append((note, a, b, why))
+
+        words = [w for w in _norm(question).split() if w not in QUESTION_STOP]
+        if 1 <= len(words) <= 6 and (len(words) > 1 or len(words[0]) >= 5):
+            rx = re.compile(r"(?<![A-Za-z0-9])" + r"[\W_]{1,3}".join(map(re.escape, words)) + r"(?![A-Za-z0-9])", re.I)
+            for nk, n in sorted(self.notes.items()):
+                for k, m in enumerate(rx.finditer(n["text"])):
+                    if k >= PASSAGES_PER_NOTE:
+                        break
+                    add(nk, m.start(), m.end(), "the question's words")
+        for c in clusters:
+            for k in c["members"][:3]:
+                m = self.mentions[k]
+                sp = m.get("raw_span") or m.get("clean_span")
+                if sp and m["note_key"] in self.notes:
+                    add(m["note_key"], sp[0], sp[1], f"around {self.title_of(c['members'])}")
+        return out
+
     def retrieve(self, question, lens="default", max_entities=14, max_actions=40, stats=None):
         """A small subgraph relevant to a question: matching entities, one hop out
         through shared actions and cross-claim links, and the actions that connect them.
         Every fact carries a short alias the answer can cite. `stats`, if given, is filled
         with what each step found, for the progress log."""
         stats = {} if stats is None else stats
-        qn = set(_norm(question).split()) - {"the", "a", "an", "of", "and", "or", "is", "are", "was",
-                                             "who", "what", "which", "how", "did", "does", "do", "in",
-                                             "on", "to", "for", "with", "by", "at", "any", "all", "there"}
+        qn = set(_norm(question).split()) - QUESTION_STOP
         pr = self.projection(lens)
         scored = []
         for c in pr["clusters"]:
@@ -717,6 +862,16 @@ class Run:
                 facts.append(f"[{inv[ca['id']]}~{inv[cb['id']]}] NOT-MERGED LINK p={l['p']} basis={l['basis_class']} "
                              f"veto={l['veto']} distance={l['distance']}")
         stats["not_merged_links"] = n_links
+        # source passages: the text around the question's own words and around the chosen
+        # parties' mentions, so the model can read relationships extraction did not capture
+        passages = self.passages(question, [c for c in chosen.values()])
+        for j, (note, s, e, why) in enumerate(passages, start=1):
+            al = f"p{j}"
+            alias[al] = {"kind": "note", "id": note, "span": [s, e], "label": "passage"}
+            text = re.sub(r"\s+", " ", self.notes[note]["text"][s:e]).strip()
+            facts.append(f"[{al}] PASSAGE {note} claim={self.notes[note]['claim_id']} ({why}): {text!r}")
+        stats["passages"] = len(passages)
+        stats["passage_notes"] = sorted({p[0] for p in passages})
         stats["flag_facts"] = sum(1 for f in facts if " FLAGGED FOR REVIEW " in f)
         stats["facts"] = len(facts)
         return facts, alias
