@@ -88,15 +88,24 @@ counts, anchored pairs and row-level evidence.
   (repair shop, or no person part), private (witness, claimant), unknown. Each group's rate is
   estimated from the data, not preset.
 
-## Open questions (B)
+### Answered 2026-09-25
 
-1. Output: a set of CSVs (entities, candidates, evidence, claims, run manifest) or one
-   Excel workbook with those as sheets.
-2. Combining several weak candidates for one entity: best single match (proposed) or
-   combined.
-3. Whether any relationship columns (employer, owner) exist beyond the flat list.
-4. Whether the watchlist's `category` is populated (if always empty, category only groups the
-   extracted side and cannot be compared in matching).
+- **Watchlist category** is not given directly; it is inferred from `provider_specialty` and
+  `professional_license_type`, which are more granular than the extracted categories
+  (acupuncture, chiropractic, osteopathy, ...). The package carries a reviewable mapping table
+  from each specialty and license type to the six extracted categories (e.g. acupuncture,
+  chiropractic, osteopathy → medical; attorney → legal); unmapped values → unknown, listed in
+  the run manifest. The granular specialty is also compared on its own, as a supporting field,
+  whenever the extracted row has one.
+- **Output**: one Excel workbook, one sheet per table: entities (one row per extracted row:
+  probability, basis, best watchlist row), candidates (every scored entity × watchlist pair
+  above a floor), evidence (pair × field breakdown), claims (per-claim roll-up), manifest
+  (parameters, their sources and counts, mappings, versions).
+- **Several candidates**: the entity's probability is its single best match; every other
+  candidate is listed. **Name-only matches are never hidden**: early runs will be dominated by
+  them, so they appear in every sheet with basis `name_only`, count toward the entity sheet,
+  and are filterable rather than thresholded away.
+- **Relationship columns**: none beyond the flat schema.
 
 ## Parameters: sources, in order of preference
 
