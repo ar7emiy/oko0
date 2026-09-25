@@ -114,6 +114,14 @@ AGREEMENT_LEVELS = {
     "plate": {"exact"}, "cnpi": {"exact"}, "phone": {"exact_owned_single", "exact_shared"},
     "spec_cat": {"specialty", "category_id", "category_weak"}, "co_party": {"anchored"},
 }
+# Levels that mean "disagrees": their bits never go above 0 (a sparse level can otherwise come
+# out with m > u by chance, and a disagreement must never count for a match).
+DISAGREEMENT_LEVELS = {
+    "name": {"else"}, "middle": {"differs"}, "org": {"sibling", "none"}, "dob": {"differs"},
+    "address": {"differs"}, "ssn": {"differs"}, "npi": {"differs"}, "dl": {"differs"},
+    "tin": {"differs"}, "license": {"differs"}, "email": {"differs"}, "vin": {"differs"},
+    "plate": {"differs"}, "cnpi": {"differs"}, "phone": {"differs"}, "spec_cat": {"differs"},
+}
 # Levels whose bits are forced to 0: no evidence either way, by declaration.
 ZERO_LEVELS = {"co_party": {"not_anchored"}}
 IDENTIFIER_FIELDS = ["ssn", "npi", "dl", "tin", "license", "email", "vin", "plate", "cnpi", "phone"]
@@ -560,16 +568,18 @@ def address_keys(number, name, unit, zip5, city, state):
 # ---- nicknames and phonetics ---------------------------------------------------------------
 class Nicknames:
     """Nickname roots from a (name1, relationship, name2) table (carltonnorthern/nicknames).
-    Two first names agree as nicknames when their root sets meet: BILL {BILL, WILLIAM,
-    ROBERT, WILL} meets WILLIAM {WILLIAM}."""
+    The table lists relations both ways ('bill has_nickname robert'), so it is read as
+    undirected, and a name's roots are itself plus every related name longer than it: BILL
+    {BILL, ROBERT, WILLIAM} meets WILLIAM {WILLIAM}, and BILLY meets WILL through WILLIAM, but
+    ROBERT {ROBERT} does not meet WILLIAM through BILL."""
 
     def __init__(self, table):
-        roots = defaultdict(set)
+        nb = defaultdict(set)
         if table is not None and len(table):
             for a, b in zip(table["name1"].map(fold), table["name2"].map(fold)):
-                roots[b].add(a)
-                roots[a].add(a)
-        self._roots = roots
+                nb[a].add(b)
+                nb[b].add(a)
+        self._roots = {n: {x for x in rel if len(x) > len(n)} for n, rel in nb.items()}
         self.size = len(table) if table is not None else 0
 
     def roots(self, first):
@@ -1362,7 +1372,9 @@ def weights_table(m_rows, u_df, components):
     w["agreement"] = [lev in AGREEMENT_LEVELS.get(f, set()) for f, lev in zip(w["field"], w["level"])]
     w["zero_by_rule"] = [lev in ZERO_LEVELS.get(f, set()) for f, lev in zip(w["field"], w["level"])]
     w["bits_field_level"] = np.log2(np.clip(w["m"], 1e-12, 1) / np.clip(w["u"], 1e-12, 1))
-    w["flag"] = np.where(w["agreement"] & (w["m"] < w["u"]), "m<u: agreement counts 0 bits", "")
+    w["disagreement"] = [lev in DISAGREEMENT_LEVELS.get(f, set()) for f, lev in zip(w["field"], w["level"])]
+    w["flag"] = np.where(w["agreement"] & (w["m"] < w["u"]), "m<u: agreement counts 0 bits",
+                         np.where(w["disagreement"] & (w["m"] > w["u"]), "m>u: disagreement counts 0 bits", ""))
     w["u_value_specific"] = [value_specific(f, lev) for f, lev in zip(w["field"], w["level"])]
     return w
 
@@ -1460,7 +1472,9 @@ def score_pairs(levels, part, weights, prior_logit):
         u = np.where(use_v, uv, ut[idx])
         u = np.clip(u, 1e-15, 1.0)
         bits = np.log2(np.clip(mt[idx], 1e-15, 1.0) / u)
+        disagree = np.array([lev in DISAGREEMENT_LEVELS.get(f, set()) for lev in FIELD_LEVELS[f]])
         bits = np.where(agree[idx], np.maximum(bits, 0.0), bits)
+        bits = np.where(disagree[idx], np.minimum(bits, 0.0), bits)
         bits = np.where(zero[idx] | (lv < 0), 0.0, bits)
         out[f"bits_{f}"] = bits
         total += bits

@@ -28,6 +28,7 @@ from wlink.core import *
 from wlink.core import _undot, _DBA_RE, _VIN_MAP, _VIN_W, _words
 from wlink.config import *
 from wlink.load import *
+from wlink.simulate import *
 
 LEIE_URL = "https://oig.hhs.gov/exclusions/downloadables/UPDATED.csv"
 

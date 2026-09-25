@@ -179,10 +179,10 @@ def rollup_entities(pr, pairs, E_by_part, cfg):
                                                 ascending=[True, False, False, True], kind="stable")
             best = ok.groupby("_l").head(1).set_index("_l")
             non_name = ok[~ok["rests_on_name"] & (ok["basis"] != "none")].groupby("_l")["p"].max()
-            others = ok.groupby("_l").apply(
-                lambda g: "; ".join(f"{a} ({b:.3g}, {c})" for a, b, c in
-                                    zip(g["watchlist_record_id"].iloc[1:cfg.top_k + 1], g["p"].iloc[1:cfg.top_k + 1],
-                                        g["basis"].iloc[1:cfg.top_k + 1])), include_groups=False)
+            pos = ok.groupby("_l").cumcount().to_numpy()
+            sub = ok[(pos >= 1) & (pos <= cfg.top_k)]
+            txt = (sub["watchlist_record_id"] + " (" + sub["p"].map(lambda v: f"{v:.3g}") + ", " + sub["basis"] + ")")
+            others = txt.groupby(sub["_l"].to_numpy()).agg("; ".join)
             idx = np.arange(len(X))
             base["best_watchlist_record_id"] = best["watchlist_record_id"].reindex(idx).fillna("").to_numpy()
             base["best_watchlist_name"] = best["watchlist_name"].reindex(idx).fillna("").to_numpy()

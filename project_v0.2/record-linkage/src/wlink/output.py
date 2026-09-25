@@ -48,6 +48,19 @@ def _clean_cell(v):
     return v if isinstance(v, (int, float, str)) else str(v)
 
 
+def _column_values(s):
+    """A column as Python values xlsxwriter writes directly: NaN and '' become blanks."""
+    a = s.to_numpy()
+    if a.dtype.kind in "fc":
+        return [None if v != v else float(v) for v in a.tolist()]
+    if a.dtype.kind in "iu":
+        return a.tolist()
+    if a.dtype.kind == "b":
+        return a.tolist()
+    return [None if (v is None or v == "" or (isinstance(v, float) and v != v)) else
+            (v if isinstance(v, (str, int, float, bool)) else str(v)) for v in a.tolist()]
+
+
 def write_workbook(path, tables, row_limit, filters=None):
     """tables: ordered {sheet name: DataFrame}. Streams rows (xlsxwriter constant_memory).
     Returns {sheet: [sheet names written]}."""
@@ -61,25 +74,15 @@ def write_workbook(path, tables, row_limit, filters=None):
         n = len(df)
         parts = max(1, math.ceil(n / row_limit))
         written[name] = []
-        arrays = [df[c].to_numpy() for c in df.columns]
+        cols_py = [_column_values(df[c]) for c in df.columns]
         for k in range(parts):
             sname = name if k == 0 else f"{name} ({k + 1})"
             ws = wb.add_worksheet(sname[:31])
             written[name].append(sname)
-            for j, c in enumerate(cols):
-                ws.write_string(0, j, c, head)
+            ws.write_row(0, 0, cols, head)
             lo, hi = k * row_limit, min(n, (k + 1) * row_limit)
             for i in range(lo, hi):
-                row = i - lo + 1
-                for j, a in enumerate(arrays):
-                    v = _clean_cell(a[i])
-                    if isinstance(v, str):
-                        if v:
-                            ws.write_string(row, j, v)
-                    elif isinstance(v, bool):
-                        ws.write_boolean(row, j, v)
-                    else:
-                        ws.write_number(row, j, v)
+                ws.write_row(i - lo + 1, 0, [col[i] for col in cols_py])
             ws.autofilter(0, 0, max(1, hi - lo), max(0, len(cols) - 1))
             ws.freeze_panes(1, 0)
     wb.close()

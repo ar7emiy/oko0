@@ -91,11 +91,22 @@ class Fake:
             for a, b in zip(nick["name1"].map(fold), nick["name2"].map(fold)):
                 self.nick_of[a].append(b)
 
+    def _draw(self, values, cum, n):
+        """Weighted draws by inverse CDF (rng.choice with p re-sums the weights on every call)."""
+        k = 1 if n is None else n
+        idx = np.searchsorted(cum, self.rng.random(k) * cum[-1], side="right")
+        out = values[np.minimum(idx, len(values) - 1)]
+        return out[0] if n is None else out
+
     def surname(self, n=None):
-        return self.rng.choice(self.surnames, size=n, p=self.sw)
+        if not hasattr(self, "_scum"):
+            self._scum = np.cumsum(self.sw)
+        return self._draw(self.surnames, self._scum, n)
 
     def first(self, n=None):
-        return self.rng.choice(self.firsts, size=n, p=self.fw)
+        if not hasattr(self, "_fcum"):
+            self._fcum = np.cumsum(self.fw)
+        return self._draw(self.firsts, self._fcum, n)
 
     def digits(self, k):
         return "".join(str(x) for x in self.rng.integers(0, 10, k))
