@@ -1,0 +1,225 @@
+{
+  "run": "poc_output\\q3_relink",
+  "gold": "corpus\\courtlistener\\gold\\docket_parties.json",
+  "party_recall": {
+    "100001-236572-RI-01": {
+      "parties": [
+        "Allstate Fire & Casualty Insurance Company",
+        "Rutland Medical P.C.",
+        "Nexray Medical Imaging, P.C.",
+        "William A. Weiner, D.O.",
+        "Bradley Pierre",
+        "Allstate Insurance Company",
+        "Allstate Property & Casualty Insurance Company",
+        "Medical Reimbursement Consultants Inc.",
+        "Allstate Indemnity Company",
+        "Marvin Moy, M.D."
+      ],
+      "llm_found": [
+        "Allstate Fire & Casualty Insurance Company",
+        "Allstate Indemnity Company",
+        "Allstate Insurance Company",
+        "Allstate Property & Casualty Insurance Company",
+        "Bradley Pierre",
+        "Marvin Moy, M.D.",
+        "Medical Reimbursement Consultants Inc.",
+        "Nexray Medical Imaging, P.C.",
+        "Rutland Medical P.C.",
+        "William A. Weiner, D.O."
+      ],
+      "gliner_found": null
+    },
+    "100002-240360-RI-01": {
+      "parties": [
+        "William A. Weiner, D.O.",
+        "Bradley Pierre",
+        "American Transit Insurance Company",
+        "Marvin Moy, M.D.",
+        "Leon Kucherovsky",
+        "Rutland Medical P.C.",
+        "Nexray Medical Imaging,  P.C. d/b/a Soul  Radiology Medical Imaging"
+      ],
+      "llm_found": [
+        "American Transit Insurance Company",
+        "Bradley Pierre",
+        "Marvin Moy, M.D.",
+        "Nexray Medical Imaging,  P.C. d/b/a Soul  Radiology Medical Imaging",
+        "Rutland Medical P.C.",
+        "William A. Weiner, D.O."
+      ],
+      "gliner_found": null
+    }
+  },
+  "cross_claim": {
+    "strict": {
+      "found": 0,
+      "of": 5,
+      "found_names": [],
+      "clusters_joining_different_parties": [],
+      "unscored_cross_clusters": 0
+    },
+    "default": {
+      "found": 4,
+      "of": 5,
+      "found_names": [
+        "Marvin Moy, M.D.",
+        "Nexray Medical Imaging,  P.C. d/b/a Soul  Radiology Medical Imaging",
+        "Rutland Medical P.C.",
+        "William A. Weiner, D.O."
+      ],
+      "clusters_joining_different_parties": [],
+      "unscored_cross_clusters": 1
+    },
+    "broad": {
+      "found": 5,
+      "of": 5,
+      "found_names": [
+        "Bradley Pierre",
+        "Marvin Moy, M.D.",
+        "Nexray Medical Imaging,  P.C. d/b/a Soul  Radiology Medical Imaging",
+        "Rutland Medical P.C.",
+        "William A. Weiner, D.O."
+      ],
+      "clusters_joining_different_parties": [],
+      "unscored_cross_clusters": 1
+    }
+  },
+  "true_identity_links": [
+    {
+      "identity": "Bradley Pierre",
+      "cross_links": 60,
+      "p": 0.3627,
+      "basis_class": "name_only",
+      "veto": null,
+      "name_agreement": {
+        "last": "exact",
+        "first": "exact",
+        "middle": "missing"
+      },
+      "names": [
+        "Bradley Pierre",
+        "Bradley Pierre"
+      ],
+      "co_party_overlap": {
+        "matched": 26,
+        "of": 65,
+        "names": [
+          "ALLSTATE INSURANCE COMPANY",
+          "William A. Weiner, D.O.",
+          "Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging",
+          "Medical Reimbursement Consultants Inc.",
+          "Marvin Moy, M.D.",
+          "Rutland Medical P.C. d/b/a MedicalNow"
+        ]
+      }
+    },
+    {
+      "identity": "Marvin Moy, M.D.",
+      "cross_links": 36,
+      "p": 0.9997,
+      "basis_class": "name_only",
+      "veto": null,
+      "name_agreement": {
+        "last": "exact",
+        "first": "exact",
+        "middle": "missing"
+      },
+      "names": [
+        "Marvin Moy, M.D.",
+        "Marvin Moy, M.D."
+      ],
+      "co_party_overlap": {
+        "matched": 25,
+        "of": 65,
+        "names": [
+          "ALLSTATE INSURANCE COMPANY",
+          "William A. Weiner, D.O.",
+          "Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging",
+          "Medical Reimbursement Consultants Inc.",
+          "Rutland Medical P.C. d/b/a MedicalNow",
+          "MRC"
+        ]
+      }
+    },
+    {
+      "identity": "Nexray Medical Imaging,  P.C. d/b/a Soul  Radiology Medical Imaging",
+      "cross_links": 14,
+      "p": 0.99,
+      "basis_class": "name_only",
+      "veto": null,
+      "name_agreement": {
+        "org_name": "shared:NEXRAY"
+      },
+      "names": [
+        "Nexray",
+        "Nexray"
+      ],
+      "co_party_overlap": {
+        "matched": 25,
+        "of": 65,
+        "names": [
+          "ALLSTATE INSURANCE COMPANY",
+          "William A. Weiner, D.O.",
+          "Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging",
+          "Medical Reimbursement Consultants Inc.",
+          "Marvin Moy, M.D.",
+          "Rutland Medical P.C. d/b/a MedicalNow"
+        ]
+      }
+    },
+    {
+      "identity": "Rutland Medical P.C.",
+      "cross_links": 24,
+      "p": 0.9068,
+      "basis_class": "name_only",
+      "veto": null,
+      "name_agreement": {
+        "org_name": "shared:RUTLAND,MEDICAL"
+      },
+      "names": [
+        "RUTLAND MEDICAL P.C.",
+        "Rutland Medical P.C."
+      ],
+      "co_party_overlap": {
+        "matched": 25,
+        "of": 65,
+        "names": [
+          "ALLSTATE INSURANCE COMPANY",
+          "William A. Weiner, D.O.",
+          "Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging",
+          "Medical Reimbursement Consultants Inc.",
+          "Marvin Moy, M.D.",
+          "Rutland Medical P.C. d/b/a MedicalNow"
+        ]
+      }
+    },
+    {
+      "identity": "William A. Weiner, D.O.",
+      "cross_links": 40,
+      "p": 0.9994,
+      "basis_class": "name_only",
+      "veto": null,
+      "name_agreement": {
+        "last": "exact",
+        "first": "exact",
+        "middle": "exact"
+      },
+      "names": [
+        "William A. Weiner, D.O.",
+        "William A. Weiner, D.O."
+      ],
+      "co_party_overlap": {
+        "matched": 25,
+        "of": 65,
+        "names": [
+          "ALLSTATE INSURANCE COMPANY",
+          "Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging",
+          "Medical Reimbursement Consultants Inc.",
+          "Marvin Moy, M.D.",
+          "Rutland Medical P.C. d/b/a MedicalNow",
+          "MRC"
+        ]
+      }
+    }
+  ]
+}

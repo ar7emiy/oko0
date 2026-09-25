@@ -23,6 +23,31 @@ run_offline_check.py         runs every cell headless; non-zero exit if anything
 poc_output/                  written by the notebook (gitignored)
 ```
 
+## Offline demo
+
+`demo/` holds a committed run of the pipeline on the court corpus (gpt-6-luna, medium effort)
+and three librarian answers recorded from the live system (`demo/answers.json`). Demo mode
+serves them with no API access: it never reads keys and never calls a model.
+
+```powershell
+python app/server.py --demo        # from this folder; opens http://127.0.0.1:8765
+```
+
+Needs Python 3 only: the app uses the standard library. Everything but answer-writing runs
+live: the entity list, lookups, dossiers, the three merge settings, decision cards, note
+investigation, trails and saved traces. A recorded question replays its real steps and
+answer. Its wording may differ in case and punctuation. Any other question still retrieves
+its facts locally and says no answer was recorded. The recorded questions:
+
+1. What is Nexray Medical Imaging accused of, and who controls it?
+2. Which defendants appear in both the Allstate and American Transit lawsuits, and how sure is
+   the system that they are the same parties?
+3. Trace how the scheme worked: who referred patients to whom, who billed which insurer, who
+   controlled the clinics, and which attorneys pursued the collections?
+
+To record new answers, run the server live on `demo/run` (with a key in `.env`), ask the
+questions through `/api/ask_stream`, and save the events in the same format.
+
 ## Running it
 
 ```bash

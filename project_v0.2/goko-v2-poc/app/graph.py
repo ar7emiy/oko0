@@ -37,6 +37,15 @@ def _norm(s):
     return re.sub(r"[^a-z0-9]+", " ", (s or "").lower()).strip()
 
 
+def _stem(w):
+    """Crude suffix strip so 'referred', 'referral' and 'refer' meet; 'billed' and 'billing'."""
+    for suf in ("ations", "ation", "ings", "ing", "als", "al", "ers", "er", "ed", "es", "s"):
+        if w.endswith(suf) and len(w) - len(suf) >= 3:
+            w = w[: -len(suf)]
+            break
+    return w[:-1] if len(w) > 4 and w[-1] == w[-2] else w       # 'referr' -> 'refer'
+
+
 def mask_digits(s, keep=4):
     """Every digit but the last `keep` becomes a dot; length and punctuation survive, so
     spans computed on the original text still point at the same characters."""
@@ -834,13 +843,32 @@ class Run:
                              f"{r.get('city')} {r.get('state')}, exclusion type {r.get('excl_type')} on "
                              f"{r.get('excl_date')}) with p={f['p']} basis={f['basis_class']}. A flag is a lead to "
                              f"check, not a finding.")
+        # Actions: those touching a chosen party, and those whose own words match the
+        # question's ("who referred...", "who billed..."), ranked by both. Without the second,
+        # a question about referrals only reached referral actions if their parties happened
+        # to be matched by name first.
+        qstems = {_stem(w) for w in qn if len(w) > 2}
         acts = []
         ids = set(chosen)
         for a in self.actions:
             parts = [pr["cluster_of"].get(p["mention"]) for p in a["participants"]]
-            if any(pc and pc["id"] in ids for pc in parts):
-                acts.append((sum(1 for pc in parts if pc and pc["id"] in ids), a))
+            touch = sum(1 for pc in parts if pc and pc["id"] in ids)
+            astems = {_stem(w) for w in _norm(a["type"].replace("_", " ") + " " + a["quote"]).split() if len(w) > 2}
+            verb = len(qstems & astems)
+            if touch or verb:
+                acts.append((touch + 2 * verb, a))
         acts.sort(key=lambda x: -x[0])
+        # parties of word-matched actions join the facts, so their citations resolve
+        for _, a in acts[:max_actions]:
+            for p in a["participants"]:
+                pc = pr["cluster_of"].get(p["mention"])
+                if pc and pc["id"] not in chosen and len(chosen) < max_entities + 10:
+                    chosen[pc["id"]] = pc
+                    i = len(alias) + 1
+                    while f"e{i}" in alias: i += 1
+                    alias[f"e{i}"] = {"kind": "entity", "id": pc["id"], "label": self.title_of(pc["members"])}
+                    facts.append(f"[e{i}] ENTITY {self.title_of(pc['members'])!r} type={self.mentions[pc['id']]['type']} "
+                                 f"mentions={len(pc['members'])} (reached through an action matching the question)")
         inv = {v["id"]: k for k, v in alias.items()}
         for j, (_, a) in enumerate(acts[:max_actions], start=1):
             al = f"a{j}"

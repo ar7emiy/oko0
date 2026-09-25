@@ -1,15 +1,20 @@
 """GOKO search app: a local, read-only server over one pipeline run.
 
     python app/server.py --run poc_output/courtlistener          # then open http://127.0.0.1:8765
+    python app/server.py --demo                                  # offline demo, opens the browser
 
 The model key is read from the environment (GEMINI_API_KEY) or from the repository's
 .env file, and never leaves this process.
 """
 import argparse
+import difflib
 import json
 import os
 import sys
+import threading
+import time
 import urllib.parse
+import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -37,9 +42,60 @@ def load_dotenv():
                     os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
 
 
+DEMO = HERE.parent / "demo"
+
+
+def _qkey(q):
+    return " ".join("".join(c.lower() if c.isalnum() else " " for c in q).split())
+
+
+class Demo:
+    """Offline demo: answers recorded from the live system, replayed step by step.
+
+    Nothing here calls a model. A recorded question replays its real events at their
+    recorded pace (capped, so a demo never stalls). Any other question still runs the local
+    retrieval and says plainly that no answer was recorded for it."""
+
+    MAX_GAP_S = 4.0
+
+    def __init__(self, path):
+        data = json.loads(path.read_text(encoding="utf-8"))
+        self.answers = {_qkey(a["question"]): a for a in data["answers"]}
+
+    def find(self, query):
+        k = _qkey(query)
+        if k in self.answers:
+            return self.answers[k]
+        best = max(self.answers, key=lambda x: difflib.SequenceMatcher(None, k, x).ratio(), default=None)
+        if best and difflib.SequenceMatcher(None, k, best).ratio() >= 0.9:
+            return self.answers[best]
+        return None
+
+    def events(self, query, run, lens):
+        rec = self.find(query)
+        if rec:
+            last = 0.0
+            for e in rec["events"]:
+                time.sleep(min(self.MAX_GAP_S, max(0.0, e.get("t", last) - last)))
+                last = e.get("t", last)
+                yield e
+            return
+        offline = librarian.Model(enabled=False)
+        for e in librarian.ask_events(query, run, offline, lens):
+            if e.get("step") == "model_skip":
+                e = {**e, "text": "Offline demo: no model is called. Only recorded questions have answers."}
+            if e.get("step") == "result" and e.get("mode") == "answer":
+                listed = "\n".join(f"• {a['question']}" for a in self.answers.values())
+                e = {**e, "answer": "This is an offline demo, and no answer was recorded for this question. "
+                                    "The facts it would be answered from are listed below. Recorded questions:\n"
+                                    + listed}
+            yield e
+
+
 class Handler(BaseHTTPRequestHandler):
     run = None
     model = None
+    demo = None
 
     def log_message(self, fmt, *args):
         sys.stderr.write("  " + (fmt % args) + "\n")
@@ -108,8 +164,10 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header("Cache-Control", "no-store")
             self.send_header("X-Accel-Buffering", "no")
             self.end_headers()
+            events = (self.demo.events(query, self.run, lens) if self.demo
+                      else librarian.ask_events(query, self.run, self.model, lens))
             try:
-                for e in librarian.ask_events(query, self.run, self.model, lens):
+                for e in events:
                     e = self._lookup_result(e, lens)
                     self.wfile.write(f"event: {e['step']}\ndata: {json.dumps(e)}\n\n".encode("utf-8"))
                     self.wfile.flush()
@@ -125,7 +183,9 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(400, {"error": "empty query"})
             # the same steps as /api/ask_stream, returned at once with the log attached
             lens = body.get("lens", "default")
-            log = [self._lookup_result(e, lens) for e in librarian.ask_events(query, self.run, self.model, lens)]
+            events = (self.demo.events(query, self.run, lens) if self.demo
+                      else librarian.ask_events(query, self.run, self.model, lens))
+            log = [self._lookup_result(e, lens) for e in events]
             return self._send(200, {**log[-1], "log": log[:-1]})
         return self._send(404, {"error": "not found"})
 
@@ -138,16 +198,30 @@ def main():
     ap.add_argument("--no-model", action="store_true",
                     help="never call a model, whatever keys the environment holds (lookups and "
                          "retrieved facts only)")
+    ap.add_argument("--demo", action="store_true",
+                    help="offline demo: serve the committed demo run and replay recorded answers; "
+                         "never reads keys or calls a model; opens the browser")
+    ap.add_argument("--no-browser", action="store_true", help="with --demo: do not open a browser")
     a = ap.parse_args()
+    if a.demo:
+        a.run, a.notes, a.no_model = str(DEMO / "run"), str(HERE.parent / "corpus" / "courtlistener" / "notes"), True
+        Handler.demo = Demo(DEMO / "answers.json")
     if not a.no_model:
         load_dotenv()
     Handler.run = Run(a.run, a.notes)
     Handler.model = librarian.Model(enabled=not a.no_model)
     r = Handler.run
+    url = f"http://127.0.0.1:{a.port}"
     print(f"run {a.run}: {len(r.mentions)} mentions, {len(r.links)} links, {len(r.notes)} notes; "
-          f"librarian model: {Handler.model.provider or 'none (lookups only)'}")
-    print(f"open http://127.0.0.1:{a.port}")
-    ThreadingHTTPServer(("127.0.0.1", a.port), Handler).serve_forever()
+          f"librarian: {'offline demo, ' + str(len(Handler.demo.answers)) + ' recorded answers' if a.demo else Handler.model.provider or 'none (lookups only)'}")
+    try:
+        server = ThreadingHTTPServer(("127.0.0.1", a.port), Handler)
+    except OSError:
+        sys.exit(f"port {a.port} is in use. Close the other server, or add --port 8766")
+    print(f"open {url}   (Ctrl+C to stop)")
+    if a.demo and not a.no_browser:
+        threading.Timer(1.0, lambda: webbrowser.open(url)).start()
+    server.serve_forever()
 
 
 if __name__ == "__main__":

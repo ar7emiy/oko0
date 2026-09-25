@@ -1,0 +1,1146 @@
+{
+  "note_id": 720077,
+  "note_key": "note:720077",
+  "claim_id": "100002-240360-RI-01",
+  "client_id": "100002",
+  "occurrence_id": "100002-240360",
+  "coverage_code": "RI",
+  "versions": {
+    "schema": "0.1",
+    "model": "gpt-6-luna",
+    "patterns": "1.7",
+    "gliner": null,
+    "clean_policy": "none",
+    "chunk_policy": "structure-v1/30000c/2s",
+    "structured": true,
+    "offline": false
+  },
+  "extraction_error": null,
+  "entity_mentions": [
+    {
+      "mention_id": "c0.m1",
+      "quote": "plaintiff American Transit Insurance (\u201cAmerican Transit\u201d or \u201cplaintiff\u201d)",
+      "name": "American Transit Insurance",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "AMERICAN TRANSIT INS. CO.",
+        "American Transit",
+        "plaintiff",
+        "AT"
+      ],
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        426,
+        452
+      ],
+      "raw_span": [
+        426,
+        452
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m2",
+      "quote": "against Bradley Pierre (\u201cPierre\u201d), Marvin Moy, M.D.",
+      "name": "Bradley Pierre",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "BRADLEY PIERRE",
+        "Pierre",
+        "defendant Pierre",
+        "him",
+        "he",
+        "his"
+      ],
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        520,
+        534
+      ],
+      "raw_span": [
+        520,
+        534
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m3",
+      "quote": "Marvin Moy, M.D. (\u201cMoy\u201d), Rutland",
+      "name": "Marvin Moy, M.D.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Moy"
+      ],
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        547,
+        563
+      ],
+      "raw_span": [
+        547,
+        563
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m4",
+      "quote": "Rutland Medical P.C. (\u201cRutland\u201d), William A. Weiner",
+      "name": "Rutland Medical P.C.",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Rutland",
+        "Rutland Medical, P.C.",
+        "Rutland Medical Facility",
+        "Rutland medical facilities",
+        "those facilities"
+      ],
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        574,
+        594
+      ],
+      "raw_span": [
+        574,
+        594
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m5",
+      "quote": "William A. Weiner, D.O. (\u201cWeiner\u201d), Nexray",
+      "name": "William A. Weiner, D.O.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Weiner"
+      ],
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        608,
+        631
+      ],
+      "raw_span": [
+        608,
+        631
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m6",
+      "quote": "Nexray Medical Imaging, P.C., d/b/a Soul Radiology Medical Imaging (\u201cNexray\u201d)",
+      "name": "Nexray Medical Imaging, P.C., d/b/a Soul Radiology Medical Imaging",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Nexray",
+        "Nexray medical facilities",
+        "those facilities"
+      ],
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        644,
+        711
+      ],
+      "raw_span": [
+        644,
+        711
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m7",
+      "quote": "and John Does 1-15.",
+      "name": "John Does 1-15",
+      "type": "person",
+      "is_group": true,
+      "occurrences": [
+        "John Does 1-15"
+      ],
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        728,
+        742
+      ],
+      "raw_span": [
+        728,
+        742
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m8",
+      "quote": "Cary Scott Goldinger, Esq. (\u201cMr. Goldinger\u201d)",
+      "name": "Cary Scott Goldinger, Esq.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Mr. Goldinger",
+        "Mr. Goldinger\u2019s",
+        "Pierre\u2019s counsel"
+      ],
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        4230,
+        4256
+      ],
+      "raw_span": [
+        4230,
+        4256
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m9",
+      "quote": "Skip Short, Esq. (\u201cMr. Short\u201d)",
+      "name": "Skip Short, Esq.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Mr. Short",
+        "plaintiff\u2019s attorney"
+      ],
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        4576,
+        4592
+      ],
+      "raw_span": [
+        4576,
+        4592
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m10",
+      "quote": "Adam B. Dressler, Esq.",
+      "name": "Adam B. Dressler, Esq.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Mr. Dressler"
+      ],
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        4361,
+        4383
+      ],
+      "raw_span": [
+        4361,
+        4383
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m11",
+      "quote": "Mr. Riopelle (\u201cRiopelle Decl.\u201d)",
+      "name": "Mr. Riopelle",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Riopelle"
+      ],
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        6107,
+        6119
+      ],
+      "raw_span": [
+        6107,
+        6119
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m12",
+      "quote": "Medical Reimbursement Consultants (\u201cMRC\u201d)",
+      "name": "Medical Reimbursement Consultants",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "MRC",
+        "Pierre\u2019s company",
+        "his personal company"
+      ],
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        21051,
+        21084
+      ],
+      "raw_span": [
+        21051,
+        21084
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m13",
+      "quote": "Allstate Ins. Co. v. Pierre, No. 23 CV 6572",
+      "name": "Allstate Ins. Co.",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Allstate Ins. Co."
+      ],
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        2561,
+        2578
+      ],
+      "raw_span": [
+        2561,
+        2578
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m14",
+      "quote": "United States v. Pierre, No. 22 CR 19 (S.D.N.Y.).",
+      "name": "United States",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "the government"
+      ],
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        3022,
+        3035
+      ],
+      "raw_span": [
+        3022,
+        3035
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m15",
+      "quote": "POLLAK, United States Magistrate Judge:",
+      "name": "POLLAK",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "the undersigned",
+        "this court",
+        "the Court"
+      ],
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        352,
+        358
+      ],
+      "raw_span": [
+        352,
+        358
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m1",
+      "quote": "Further, in his June 19, 2024, letter to the Court, Pierre also claims",
+      "name": "Pierre",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Pierre has raised several factual assertions",
+        "this case is in the very earliest stages",
+        "Pierre\u2019s default",
+        "Pierre\u2019s failure to act diligently",
+        "defendant Pierre",
+        "him",
+        "his",
+        "Pierre asserts",
+        "Pierre\u2019s appearance",
+        "Pierre be ordered to pay"
+      ],
+      "_chunk": [
+        27709,
+        35184
+      ],
+      "clean_span": [
+        28009,
+        28015
+      ],
+      "raw_span": [
+        28009,
+        28015
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m2",
+      "quote": "caused [AT] to",
+      "name": "[AT]",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "plaintiff",
+        "plaintiff\u2019s",
+        "[AT]\u2019s"
+      ],
+      "_chunk": [
+        27709,
+        35184
+      ],
+      "clean_span": [
+        29561,
+        29565
+      ],
+      "raw_span": [
+        29561,
+        29565
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    }
+  ],
+  "entity_candidates": [],
+  "detail_mentions": [],
+  "action_mentions": [
+    {
+      "action_id": "c0.a1",
+      "quote": "commenced this action against Bradley Pierre",
+      "action_type": "commenced_action",
+      "participants": [
+        {
+          "mention_id": "c0.m1",
+          "role": "plaintiff"
+        },
+        {
+          "mention_id": "c0.m2",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": "On January 17, 2024",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        490,
+        534
+      ],
+      "raw_span": [
+        490,
+        534
+      ]
+    },
+    {
+      "action_id": "c0.a2",
+      "quote": "defendants operated an illegal scheme to defraud plaintiff",
+      "action_type": "operated_scheme_to_defraud",
+      "participants": [
+        {
+          "mention_id": "c0.m2",
+          "role": "defendant"
+        },
+        {
+          "mention_id": "c0.m3",
+          "role": "defendant"
+        },
+        {
+          "mention_id": "c0.m4",
+          "role": "defendant"
+        },
+        {
+          "mention_id": "c0.m5",
+          "role": "defendant"
+        },
+        {
+          "mention_id": "c0.m6",
+          "role": "defendant"
+        },
+        {
+          "mention_id": "c0.m7",
+          "role": "defendant"
+        },
+        {
+          "mention_id": "c0.m1",
+          "role": "target"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        781,
+        839
+      ],
+      "raw_span": [
+        781,
+        839
+      ]
+    },
+    {
+      "action_id": "c0.a3",
+      "quote": "it asserts claims under the Racketeer Influenced and Corrupt Organizations Act",
+      "action_type": "asserts_claims",
+      "participants": [
+        {
+          "mention_id": "c0.m1",
+          "role": "plaintiff"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        929,
+        1008
+      ],
+      "raw_span": [
+        929,
+        1008
+      ]
+    },
+    {
+      "action_id": "c0.a4",
+      "quote": "defendant Pierre\u2019s Motion to vacate the certificate of default entered against him",
+      "action_type": "moved_to_vacate_default",
+      "participants": [
+        {
+          "mention_id": "c0.m2",
+          "role": "movant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        1184,
+        1267
+      ],
+      "raw_span": [
+        1184,
+        1267
+      ]
+    },
+    {
+      "action_id": "c0.a5",
+      "quote": "defendant Pierre was personally served with a copy of the Summons and Complaint",
+      "action_type": "served",
+      "participants": [
+        {
+          "mention_id": "c0.m2",
+          "role": "served_party"
+        }
+      ],
+      "time_qualifier": "January 24, 2024",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        2229,
+        2309
+      ],
+      "raw_span": [
+        2229,
+        2309
+      ]
+    },
+    {
+      "action_id": "c0.a6",
+      "quote": "Pierre\u2019s counsel in the related federal civil action and the state court action filed motions to withdraw",
+      "action_type": "filed_motion_to_withdraw",
+      "participants": [
+        {
+          "mention_id": "c0.m2",
+          "role": "client"
+        }
+      ],
+      "time_qualifier": "On February 8, 2024",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        3095,
+        3201
+      ],
+      "raw_span": [
+        3095,
+        3201
+      ]
+    },
+    {
+      "action_id": "c0.a7",
+      "quote": "Cary Scott Goldinger, Esq. (\u201cMr. Goldinger\u201d) filed a notice of appearance on behalf of Pierre",
+      "action_type": "filed_notice_of_appearance",
+      "participants": [
+        {
+          "mention_id": "c0.m8",
+          "role": "counsel"
+        },
+        {
+          "mention_id": "c0.m2",
+          "role": "client"
+        }
+      ],
+      "time_qualifier": "On May 29, 2024",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        4230,
+        4324
+      ],
+      "raw_span": [
+        4230,
+        4324
+      ]
+    },
+    {
+      "action_id": "c0.a8",
+      "quote": "Adam B. Dressler, Esq. also filed a notice of appearance on behalf of Pierre",
+      "action_type": "filed_notice_of_appearance",
+      "participants": [
+        {
+          "mention_id": "c0.m10",
+          "role": "counsel"
+        },
+        {
+          "mention_id": "c0.m2",
+          "role": "client"
+        }
+      ],
+      "time_qualifier": "on June 10, 2024",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": null,
+      "raw_span": null
+    },
+    {
+      "action_id": "c0.a9",
+      "quote": "began to speak with plaintiff\u2019s attorney, Skip Short, Esq.",
+      "action_type": "discussed_resolution_with",
+      "participants": [
+        {
+          "mention_id": "c0.m8",
+          "role": "counsel"
+        },
+        {
+          "mention_id": "c0.m9",
+          "role": "plaintiff_counsel"
+        },
+        {
+          "mention_id": "c0.m2",
+          "role": "client"
+        }
+      ],
+      "time_qualifier": "once he was retained by Pierre",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        4533,
+        4592
+      ],
+      "raw_span": [
+        4533,
+        4592
+      ]
+    },
+    {
+      "action_id": "c0.a10",
+      "quote": "Pierre filed a letter requesting an extension of time and vacatur of default",
+      "action_type": "requested_extension_and_vacatur",
+      "participants": [
+        {
+          "mention_id": "c0.m2",
+          "role": "movant"
+        }
+      ],
+      "time_qualifier": "on June 19, 2024",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        5262,
+        5339
+      ],
+      "raw_span": [
+        5262,
+        5339
+      ]
+    },
+    {
+      "action_id": "c0.a11",
+      "quote": "Pierre filed the instant Motion.",
+      "action_type": "filed_motion",
+      "participants": [
+        {
+          "mention_id": "c0.m2",
+          "role": "movant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        5944,
+        5977
+      ],
+      "raw_span": [
+        5944,
+        5977
+      ]
+    },
+    {
+      "action_id": "c0.a12",
+      "quote": "Pierre claims that he has several meritorious defenses.",
+      "action_type": "claimed_meritorious_defenses",
+      "participants": [
+        {
+          "mention_id": "c0.m2",
+          "role": "claimant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        20135,
+        20190
+      ],
+      "raw_span": [
+        20135,
+        20190
+      ]
+    },
+    {
+      "action_id": "c0.a13",
+      "quote": "he \u201cnever pled guilty to the health care fraud charges against him\u201d",
+      "action_type": "denied_pleading_guilty_to_health_care_fraud",
+      "participants": [
+        {
+          "mention_id": "c0.m2",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        20293,
+        20361
+      ],
+      "raw_span": [
+        20293,
+        20361
+      ]
+    },
+    {
+      "action_id": "c0.a14",
+      "quote": "Pierre did not plead guilty to healthcare fraud or conspiring to commit healthcare fraud.",
+      "action_type": "did_not_plead_guilty_to_healthcare_fraud",
+      "participants": [
+        {
+          "mention_id": "c0.m2",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        24529,
+        24619
+      ],
+      "raw_span": [
+        24529,
+        24619
+      ]
+    },
+    {
+      "action_id": "c0.a15",
+      "quote": "Pierre claims that he did not own, control, or operate either the Rutland or Nexray medical facilities",
+      "action_type": "denied_owning_controlling_or_operating",
+      "participants": [
+        {
+          "mention_id": "c0.m2",
+          "role": "denier"
+        },
+        {
+          "mention_id": "c0.m4",
+          "role": "facility"
+        },
+        {
+          "mention_id": "c0.m6",
+          "role": "facility"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        20773,
+        20878
+      ],
+      "raw_span": [
+        20773,
+        20878
+      ]
+    },
+    {
+      "action_id": "c0.a16",
+      "quote": "those facilities submitted their claims \u201clegitimately.\u201d",
+      "action_type": "submitted_claims",
+      "participants": [
+        {
+          "mention_id": "c0.m4",
+          "role": "submitter"
+        },
+        {
+          "mention_id": "c0.m6",
+          "role": "submitter"
+        },
+        {
+          "mention_id": "c0.m12",
+          "role": "submitter"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27957
+      ],
+      "clean_span": [
+        20895,
+        20951
+      ],
+      "raw_span": [
+        20895,
+        20951
+      ]
+    },
+    {
+      "action_id": "c1.a1",
+      "quote": "Pierre also claims that given the",
+      "action_type": "claims",
+      "participants": [
+        {
+          "mention_id": "c1.m1",
+          "role": "claimant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        27709,
+        35184
+      ],
+      "clean_span": [
+        28009,
+        28042
+      ],
+      "raw_span": [
+        28009,
+        28042
+      ]
+    },
+    {
+      "action_id": "c1.a2",
+      "quote": "Pierre argues that \u201cthis case is in the very earliest stages and this office has been actively participating",
+      "action_type": "argues",
+      "participants": [
+        {
+          "mention_id": "c1.m1",
+          "role": "speaker"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        27709,
+        35184
+      ],
+      "clean_span": [
+        29272,
+        29381
+      ],
+      "raw_span": [
+        29272,
+        29381
+      ]
+    },
+    {
+      "action_id": "c1.a3",
+      "quote": "plaintiff argues that it \u201cis substantially prejudiced,\u201d",
+      "action_type": "argues",
+      "participants": [
+        {
+          "mention_id": "c1.m2",
+          "role": "speaker"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        27709,
+        35184
+      ],
+      "clean_span": [
+        29467,
+        29523
+      ],
+      "raw_span": [
+        29467,
+        29523
+      ]
+    },
+    {
+      "action_id": "c1.a4",
+      "quote": "Pierre asserts that \u201cAT never had any intention of resolving this issue in good faith\u201d",
+      "action_type": "asserts",
+      "participants": [
+        {
+          "mention_id": "c1.m1",
+          "role": "speaker"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        27709,
+        35184
+      ],
+      "clean_span": [
+        31326,
+        31413
+      ],
+      "raw_span": [
+        31326,
+        31413
+      ]
+    },
+    {
+      "action_id": "c1.a5",
+      "quote": "the default entered against him should be vacated pursuant to Rule 55(c)",
+      "action_type": "vacated",
+      "participants": [
+        {
+          "mention_id": "c1.m1",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        27709,
+        35184
+      ],
+      "clean_span": [
+        30954,
+        31026
+      ],
+      "raw_span": [
+        30954,
+        31026
+      ]
+    },
+    {
+      "action_id": "c1.a6",
+      "quote": "order Pierre to pay a reasonable portion of plaintiff\u2019s attorney\u2019s fees",
+      "action_type": "pay",
+      "participants": [
+        {
+          "mention_id": "c1.m1",
+          "role": "payer"
+        },
+        {
+          "mention_id": "c1.m2",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": "at a later date",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        27709,
+        35184
+      ],
+      "clean_span": [
+        33928,
+        33999
+      ],
+      "raw_span": [
+        33928,
+        33999
+      ]
+    },
+    {
+      "action_id": "c1.a7",
+      "quote": "order plaintiff to submit accounting records supporting his request for attorney\u2019s fees and costs",
+      "action_type": "submit",
+      "participants": [
+        {
+          "mention_id": "c1.m2",
+          "role": "submitter"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        27709,
+        35184
+      ],
+      "clean_span": [
+        34069,
+        34167
+      ],
+      "raw_span": [
+        34069,
+        34167
+      ]
+    }
+  ],
+  "review_items": [
+    {
+      "flag": "unverifiable_quote",
+      "id": "c0.a8",
+      "quote": "Adam B. Dressler, Esq. also filed a notice of appearance on behalf of Pierre",
+      "reason": "unverifiable_quote:0.89"
+    }
+  ]
+}

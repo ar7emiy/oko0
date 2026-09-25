@@ -1,0 +1,12 @@
+{
+ "provider": "openai",
+ "model": "gpt-6-luna",
+ "offline": false,
+ "dossier_lens": "default",
+ "rarity": {
+  "surnames": "census2010",
+  "first_names": "ssa1930-2005",
+  "org_tokens": "nppes"
+ },
+ "notes_source": "corpus/courtlistener/notes (relative to goko-v2-poc)"
+}
