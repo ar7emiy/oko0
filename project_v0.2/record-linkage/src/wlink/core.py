@@ -16,6 +16,7 @@
 # | `party_id`, `part` | stable id; `person` or `business` |
 # | `first`, `middle`, `last` | cleaned name parts (`clean_person`) |
 # | `first_roots`, `last_nysiis`, `name_key` | nickname roots (`|`-joined), NYSIIS of the surname, `FIRST LAST` |
+# | `holder_key` | who holds a value, for single-holder counts: `LAST|F` (surname and first initial) for a person, the first alias for a business |
 # | `org_aliases`, `name_key` (business) | `|`-joined aliases from `org_aliases`; first alias is the name key |
 # | `dob`, `dob_int` | ISO date; `YYYYMMDD` as int (0 = none) |
 # | `addr_full`, `addr_street`, `zip`, `city_state`, `state` | address keys (`address_keys`) |
@@ -57,6 +58,7 @@ class CoreParams:
     surname_floor: int = 50         # count for a surname below the Census cutoff (goko cell 16)
     firstname_floor: int = 20       # count for a first name below the SSA cutoff
     org_df_floor: int = 1           # organizations using a word absent from NPPES
+    own_org_min_count: int = 5      # the reference population's own word share counts from this many users
     flat_freq: float = 1e-3         # used only when an outside table is missing; stamped FLAT
     alpha: float = 5.0              # shrinkage of an m estimate toward the next source
     n_min: int = 50                 # informative pairs below which simulation joins the chain
@@ -649,7 +651,7 @@ class Rarity:
             idf = math.log2(self.org_n / self.org_df.get(tok, self.p.org_df_floor))
         if self.own_org_total:
             own = math.log2(self.own_org_total / max(1, self.own_org.get(tok, 0)))
-            if self.own_org.get(tok, 0):
+            if self.own_org.get(tok, 0) >= self.p.own_org_min_count:
                 idf = min(idf, own)
         self._cache_org[tok] = idf
         return idf
@@ -704,7 +706,7 @@ def build_value_stats(left, right):
         ref_n[k] = int(len(v))
     both = pd.concat([left, right], ignore_index=True)
     for f, cols in VALUE_FIELDS.items():
-        parts = [pd.DataFrame({"v": both[c], "n": both["name_key"]}) for c in cols if c in both]
+        parts = [pd.DataFrame({"v": both[c], "n": both["holder_key"]}) for c in cols if c in both]
         long = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame({"v": [], "n": []})
         long = long[long["v"] != ""]
         nn = long.drop_duplicates().groupby("v")["n"].size()
@@ -1039,6 +1041,37 @@ def declared_dba_pairs(org_alias_strings):
     return pairs
 
 
+def _dba_index(ctx):
+    """word -> indexes of declared d/b/a pairs using it (built once per context)."""
+    idx = getattr(ctx, "_dba_idx", None)
+    if idx is None or idx[0] is not ctx.dba_pairs:
+        d = defaultdict(set)
+        for i, (q1, q2) in enumerate(ctx.dba_pairs):
+            for w in q1 | q2:
+                d[w].add(i)
+        idx = (ctx.dba_pairs, d)
+        ctx._dba_idx = idx
+    return idx[1]
+
+
+def _declared_same(xs, ys, ctx):
+    """Some record declares the two names to be one organization (goko _declared_same).
+    Only declarations sharing a word with each side are checked."""
+    if not ctx.dba_pairs:
+        return False
+    d = _dba_index(ctx)
+    cx = set().union(*(d.get(w, set()) for a in xs for w in a))
+    cy = set().union(*(d.get(w, set()) for b in ys for w in b))
+    p = ctx.params
+    for i in sorted(cx & cy):
+        q1, q2 = ctx.dba_pairs[i]
+        for a in xs:
+            for b in ys:
+                if (_fuzzy_family(set(a), q1, p) and _fuzzy_family(set(b), q2, p)) or                         (_fuzzy_family(set(a), q2, p) and _fuzzy_family(set(b), q1, p)):
+                    return True
+    return False
+
+
 def _org_words_u(words, R):
     """Chance two organizations share these words: the rarest counts in full, the others at
     half, because the words of one name travel together (goko _org_alias_bits)."""
@@ -1067,9 +1100,7 @@ def org_level(al, ar, ctx):
             if best is None or score > best[0]:
                 best = (score, matched, ox, oy, x, y)
     _, matched, ox, oy, x, y = best
-    declared = any((_fuzzy_family(set(a), q1, p) and _fuzzy_family(set(b), q2, p)) or
-                   (_fuzzy_family(set(a), q2, p) and _fuzzy_family(set(b), q1, p))
-                   for a in xs for b in ys for q1, q2 in ctx.dba_pairs)
+    declared = _declared_same(xs, ys, ctx)
     if declared and not matched:
         return 1, max(p.u_floor, _org_words_u(y, R)), "declared d/b/a"
     if matched and (not ox or not oy):
@@ -1458,7 +1489,7 @@ def basis_of(levels, bits, part):
     ident = np.zeros(n, bool)
     for f in IDENTIFIER_FIELDS:
         if f in PART_FIELDS[part] and f in levels:
-            exact = (lv(f) == 0) | ((lv(f) == 1) & (f == "phone"))
+            exact = lv(f) == 0        # phone: only an owned, single-holder number
             ident |= exact & pos(f)
     addr = pos("address") & np.isin(lv("address"), [0, 1])
     location = pos("address") & np.isin(lv("address"), [2, 3, 4])

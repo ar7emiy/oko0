@@ -22,6 +22,7 @@
 
 # %%
 from wlink.core import *
+from wlink.core import _undot, _DBA_RE, _VIN_MAP, _VIN_W, _words
 from wlink.config import *
 
 GROUPS = ["professional", "business", "private", "unknown"]

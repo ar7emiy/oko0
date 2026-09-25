@@ -22,6 +22,7 @@
 # %%
 import os, sys, time, json, hashlib, platform, gc
 from wlink.core import *
+from wlink.core import _undot, _DBA_RE, _VIN_MAP, _VIN_W, _words
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
 

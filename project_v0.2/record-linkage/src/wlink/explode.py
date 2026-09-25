@@ -13,6 +13,7 @@
 
 # %%
 from wlink.core import *
+from wlink.core import _undot, _DBA_RE, _VIN_MAP, _VIN_W, _words
 from wlink.config import *
 from wlink.load import *
 
@@ -128,6 +129,9 @@ def breakdown(rows, source, nick):
     B["org_aliases"] = rb["org_aliases"].to_numpy()
     P["name_key"] = np.where(P["first"] != "", P["first"] + " " + P["last"], P["last"])
     B["name_key"] = [a.split("|")[0] if a else "" for a in B["org_aliases"]]
+    # who holds a value: surname + first initial, so 'R. Smith' and 'Robert Smith' are one holder
+    P["holder_key"] = P["last"] + "|" + P["first"].str[:1]
+    B["holder_key"] = B["name_key"]
     P["display_name"] = rp["raw_name"].to_numpy()
     B["display_name"] = np.where(rb["raw_business"].to_numpy() != "", rb["raw_business"].to_numpy(),
                                  "(no name: " + np.where(rb["tin"].to_numpy() != "", "TIN " + rb["tin"].to_numpy(),
@@ -264,7 +268,7 @@ def value_index(parties, details):
 def value_index_fast(parties, details):
     """Same as value_index, vectorized for large inputs."""
     d = details[["party_id", "type", "value", "valid", "reason"]].merge(
-        parties[["party_id", "source", "name_key"]], on="party_id", how="left")
+        parties[["party_id", "source", "holder_key"]].rename(columns={"holder_key": "name_key"}), on="party_id", how="left")
     d["is_x"] = (d["source"] == "X").astype(np.int64)
     d["is_w"] = (d["source"] == "W").astype(np.int64)
     g = d.groupby(["type", "value"], sort=True)
