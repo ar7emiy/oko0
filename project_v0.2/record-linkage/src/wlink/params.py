@@ -130,6 +130,7 @@ def estimate_parameters(pr, maps, ref, cfg, wdf, log=print):
     tot = max(1, sum(nx.values()))
     # ---- u from random pairs ------------------------------------------------------------
     for part in ("person", "business"):
+        t_u = time.time()
         X, W = pr.X[part], pr.W[part]
         n = int(min(cfg.random_pairs * nx[part] / tot, len(X) * len(W)))
         if n <= 0 or not len(X) or not len(W):
@@ -149,11 +150,12 @@ def estimate_parameters(pr, maps, ref, cfg, wdf, log=print):
         out["random_levels"][part] = len(lv)
         if part == "person":
             out["components"] = name_components(lv)
-        log(f"u[{part}]: {len(lv):,} random pairs")
+        log(f"u[{part}]: {len(lv):,} random pairs ({time.time() - t_u:.0f}s)")
     ctx.components = out["components"] or {}
     pub = maps["published_m"]
     pub_arr = lambda f: np.array([float(pub[(pub["field"] == f) & (pub["level"] == lev)]["m"].iloc[0])
                                   for lev in FIELD_LEVELS[f]])
+    t0 = time.time()
     # ---- simulation: noisy copies of watchlist rows ----------------------------------------
     k = min(cfg.sim_records, len(wdf))
     pick = np.sort(rng.choice(len(wdf), size=k, replace=False)) if k else np.array([], int)
@@ -178,6 +180,8 @@ def estimate_parameters(pr, maps, ref, cfg, wdf, log=print):
         lv = with_coparty(compare_pairs(Cf, W, l, r, part, ctx), Cf, W, part)
         sim_counts[part] = level_counts(lv, PART_FIELDS[part])
         out["sources"].append({"part": part, "source": "simulation", "pairs": len(lv)})
+    log(f"simulation: {k:,} noisy copies compared ({time.time() - t0:.0f}s)")
+    t0 = time.time()
     # ---- 1a strict anchors, 1b loose anchors (extracted x extracted) ---------------------
     # ---- 2 watchlist duplicates ---------------------------------------------------------
     for part in ("person", "business"):
@@ -228,7 +232,7 @@ def estimate_parameters(pr, maps, ref, cfg, wdf, log=print):
         w.insert(0, "part", part)
         out["weights"][part] = w
         log(f"m[{part}]: strict anchors {len(lv1):,}, loose anchors {len(lv1b):,} (EM lambda {lam:.3f}, "
-            f"{iters} iterations), watchlist duplicates {n_wdup:,}, simulated {out['sources'][0 if part == 'person' else 1]['pairs']:,}")
+            f"{iters} iterations; {time.time() - t0:.0f}s), watchlist duplicates {n_wdup:,}, simulated {out['sources'][0 if part == 'person' else 1]['pairs']:,}")
     return out
 
 

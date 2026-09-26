@@ -16,7 +16,7 @@ This file tracks both, how they differ, and the design decisions taken so far.
 | Ownership of a detail | Stated or inferred by the model from the text | Only from which columns sit in which row (row-level unless the column says whose it is) |
 | Relationships | Extracted from text: actions, (planned) group membership | Inferred only from rows and shared details: same row, same phone/address/TIN |
 | Scale | Hundreds to thousands of mentions per batch | ~1 million watchlist rows × claim entities: candidate search must be indexed |
-| Output | Scored links → read-time merged view → dossiers, app, graph RAG | Per-entity probability + candidates + field-by-field evidence (CSV set) |
+| Output | Scored links → read-time merged view → dossiers, app, graph RAG | Per-entity probability + candidates + field-by-field evidence (one Excel workbook) |
 | Explanation | Decision card, backed by quotes in the note | Same field-by-field breakdown, backed by the input values only |
 | Shared core | Fellegi-Sunter scoring, value-specific rarity from outside tables, identifier vetoes, basis separate from probability, one-way anchored co-party evidence, no silent name-only upgrades | same |
 
@@ -106,6 +106,25 @@ counts, anchored pairs and row-level evidence.
   them, so they appear in every sheet with basis `name_only`, count toward the entity sheet,
   and are filterable rather than thresholded away.
 - **Relationship columns**: none beyond the flat schema.
+
+### Settled in the build plan (PLAN.md section 7, accepted 2026-09-25)
+
+- Name m is not estimated from the "one name per identifier" anchor (circular): a strict
+  anchor gives m for non-name fields, a loose anchor plus EM with u fixed gives name m.
+- The entities sheet has one row per party (record_id + part), not per extracted row.
+- Output is one Excel workbook (see "Answered 2026-09-25").
+- No bar-number column: legal licences are recognised through the licence type.
+- Vetoes: SSN, provider NPI, driver licence (same state), TIN. Never clinic NPI. Sibling
+  businesses are a strong negative level, not a veto.
+- The prior group comes from the extracted party; business parts are "business" unless
+  identifier-backed medical or legal.
+- Category and specialty are compared as one correlated group.
+- Basis gains "contextual" (name + location/specialty/category); `rests_on_name` covers
+  contextual and name_only.
+- Without an identifier, a given category ranks before a keyword one.
+
+The build is `record_linkage.ipynb` (PLAN.md section 8); its README lists the further choices
+made during the build.
 
 ## Parameters: sources, in order of preference
 

@@ -583,10 +583,12 @@ class Nicknames:
         self.size = len(table) if table is not None else 0
 
     def roots(self, first):
-        f = fold(first).split(" ")[0] if first else ""
-        if not f:
-            return frozenset()
-        return frozenset(self._roots.get(f, set()) | {f})
+        cache = self.__dict__.setdefault("_cache", {})
+        r = cache.get(first)
+        if r is None:
+            f = fold(first).split(" ")[0] if first else ""
+            r = cache[first] = frozenset(self._roots.get(f, set()) | {f}) if f else frozenset()
+        return r
 
     def roots_string(self, first):
         return "|".join(sorted(self.roots(first)))
@@ -771,8 +773,28 @@ def _lookup(counts, values):
     return pd.Series(values).map(counts).fillna(0).to_numpy(dtype=float)
 
 
+_JW_CACHE = {}
+
+
 def _jw(a, b):
-    return jellyfish.jaro_winkler_similarity(a, b)
+    """Jaro-Winkler, memoized: name and org words repeat across millions of pairs."""
+    k = (a, b)
+    v = _JW_CACHE.get(k)
+    if v is None:
+        if len(_JW_CACHE) > 5_000_000:
+            _JW_CACHE.clear()
+        v = _JW_CACHE[k] = jellyfish.jaro_winkler_similarity(a, b)
+    return v
+
+
+_NYSIIS_CACHE = {}
+
+
+def _nysiis_c(s):
+    v = _NYSIIS_CACHE.get(s)
+    if v is None:
+        v = _NYSIIS_CACHE[s] = nysiis(s)
+    return v
 
 
 def _last_cmp(a, b, p):
@@ -782,7 +804,7 @@ def _last_cmp(a, b, p):
     if a == b:
         return 0
     ta, tb = set(re.split(r"[ \-]", a)), set(re.split(r"[ \-]", b))
-    if (ta <= tb or tb <= ta) or _jw(a, b) >= p.jw_close or nysiis(a) == nysiis(b):
+    if (ta <= tb or tb <= ta) or _jw(a, b) >= p.jw_close or _nysiis_c(a) == _nysiis_c(b):
         return 1
     return 2
 
@@ -1056,9 +1078,14 @@ def _dba_index(ctx):
     idx = getattr(ctx, "_dba_idx", None)
     if idx is None or idx[0] is not ctx.dba_pairs:
         d = defaultdict(set)
+        R = ctx.rarity
         for i, (q1, q2) in enumerate(ctx.dba_pairs):
-            for w in q1 | q2:
-                d[w].add(i)
+            for q in (q1, q2):
+                # index on the side's distinctive words (common ones like MEDICAL would put
+                # every declaration in front of every pair); all words when none is distinctive
+                rare = [w for w in q if R.org_idf(w) >= 6.0] or list(q)
+                for w in rare:
+                    d[w].add(i)
         idx = (ctx.dba_pairs, d)
         ctx._dba_idx = idx
     return idx[1]

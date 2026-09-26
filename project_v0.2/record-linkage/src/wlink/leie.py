@@ -29,6 +29,7 @@ from wlink.core import _undot, _DBA_RE, _VIN_MAP, _VIN_W, _words
 from wlink.config import *
 from wlink.load import *
 from wlink.simulate import *
+from wlink.synth import make_dataset
 
 LEIE_URL = "https://oig.hhs.gov/exclusions/downloadables/UPDATED.csv"
 
@@ -76,7 +77,6 @@ def leie_test_set(leie_rows, ref, noise, seed, n_copies, n_fictional):
     """Extracted rows for the LEIE run: noisy copies of n_copies LEIE rows (the full,
     pessimistic noise table) plus n_fictional parties not on the list; truth pairs for the
     copies. Copies lose the LEIE-only columns and get claim and note ids."""
-    from wlink.synth import make_dataset
     rng = np.random.default_rng(seed)
     pick = np.sort(rng.choice(len(leie_rows), size=min(n_copies, len(leie_rows)), replace=False))
     src = leie_rows.iloc[pick][SCHEMA].copy()

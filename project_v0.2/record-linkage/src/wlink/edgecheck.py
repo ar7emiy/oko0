@@ -40,7 +40,8 @@ def check_edge_cases(pr, pairs, levels_by_part, scored, entities, edges):
                 P = pairs[(pairs["part"] == part) & (pairs["extracted_record_id"] == ex["x"]) &
                           (pairs["watchlist_record_id"] == ex["w"])]
                 if not len(P):
-                    problems.append("pair not visible")
+                    if not ex.get("if_visible"):      # a strong negative may fall below the keep rule
+                        problems.append("pair not visible")
                 else:
                     pr_ = P.iloc[0]
                     if "basis" in ex and pr_["basis"] != ex["basis"]:

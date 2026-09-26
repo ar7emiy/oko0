@@ -22,6 +22,9 @@ def acceptance_table(cfg, diag, sw, pairs, scored, selftest):
     add("self-tests pass", "all", f"{selftest.testsRun} run, {len(selftest.failures) + len(selftest.errors)} failing",
         selftest.wasSuccessful())
     total = sw.rows[-1]["elapsed"] if sw.rows else float("nan")
+    gen = next((r["elapsed"] for r in sw.rows if r["step"] == "inputs ready"), 0.0)
+    total = total - gen          # making the test inputs is not part of a run
+    add("input generation / export (not counted)", "-", f"{gen:.0f} s", None)
     truth = {t["part"]: t for t in diag["truth"] if t.get("true_pairs")}
     tp = sum(t["true_pairs"] for t in truth.values())
     prop = sum(t["proposed"] for t in truth.values())

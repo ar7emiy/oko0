@@ -89,7 +89,7 @@ def edge_cases():
          [blank_row("E03W1", business_name="Allport Indemnity Co"),
           blank_row("E03W2", business_name="Allport Casualty Surety Company", **A_NY)],
          [E(x="E03X", part="business", w="E03W1", rank=1, levels={"org": "exact"}),
-          E(x="E03X", part="business", w="E03W2", levels={"org": "sibling"})])
+          E(x="E03X", part="business", w="E03W2", levels={"org": "sibling"}, if_visible=True)])
     s4 = _ssn(104)
     case("E04", "one SSN under three names in the extracted file",
          [blank_row("E04X1", claim_id="CE04", note_id="NE04", first_name="Rosalind", last_name="Achterberg", ssn=s4),
@@ -310,7 +310,9 @@ BUSINESS_KINDS = [("Medical", "PC", "medical"), ("Chiropractic", "PC", "medical"
 
 def _business_entity(fake, rng, eid):
     kind, suffix, cat = BUSINESS_KINDS[int(rng.integers(0, len(BUSINESS_KINDS)))]
-    head = str(fake.surname()).title() if rng.random() < 0.6 else str(rng.choice(STREET_NAMES)).title()
+    head = str(fake.surname()).title()
+    if rng.random() < 0.3:                       # 'Maple Ridge Kowalski ...': not only a surname
+        head = f"{str(rng.choice(STREET_NAMES)).title()} {head}"
     name = f"{head} {kind} {suffix}"
     if kind == "Law Offices":
         name = f"Law Offices of {str(fake.first()).title()} {head}"
@@ -368,7 +370,8 @@ def make_dataset(n_persons, n_businesses, n_watchlist, ref, noise, seed, x_share
     for b in biz:
         if profs and rng.random() < 0.4:
             owner[b["eid"]] = profs[int(rng.integers(0, len(profs)))]
-    units = [[p] for p in persons if p["eid"] not in {o["eid"] for o in owner.values()}]
+    owners = {o["eid"] for o in owner.values()}
+    units = [[p] for p in persons if p["eid"] not in owners]
     units += [[b, owner[b["eid"]]] if b["eid"] in owner else [b] for b in biz]
     w_rows, x_rows, w_ent, x_ent = [], [], [], []
     for u in units:
