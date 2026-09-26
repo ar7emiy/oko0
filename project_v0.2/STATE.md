@@ -1,6 +1,6 @@
 # STATE
 
-Last updated: 2026-09-23.
+Last updated: 2026-09-26.
 
 Archive (2026-09-23): this folder now holds only goko-v2-poc, gold-annotator and their
 governing documents. Moved to `../archive/`: the Excel and desktop annotators
@@ -44,6 +44,39 @@ fictional practice claim, explicit comparison completion, opt-in practice export
 and three consolidated analysis CSVs. KPI provenance and denominators are in
 `gold-annotator/KPI-DATA-GUIDE.md`. Checks: 83 Python tests and 35 headless Edge
 checks passed with synthetic data; no real-data accuracy evaluation was run.
+
+## Record linkage [B] (`record-linkage/`), 2026-09-26
+
+**Built** (executable): `record_linkage.ipynb`, one notebook holding the matching core v1.0
+(normalizers, rarity lookups, comparison levels, Fellegi-Sunter scorer, vetoes, basis,
+parameter estimation; code-cell SHA-256 `f51d969c9f7efe34c4b2abbd416542003d79308ab12694a09ce24852591a2c48`
+checked by a self-test), breakdown, value index, category, blocking, u / m / prior estimation,
+scoring, roll-ups, evidence, workbook, diagnostics, the LEIE exporter, the synthetic generator,
+51 self-tests and an acceptance table. `run_notebook_check.py` runs every cell. Mappings and
+reference tables are files; data, outputs and review labels are gitignored.
+The development modules (`src/wlink`, `tests/`) were assembled into the notebook and removed
+(they remain in git history, commit 9e33221).
+
+**Checked** (actual runs on this machine, Windows, Python 3.13, pandas 3.0.6, recordlinkage 0.16):
+- Synthetic (2,962 extracted x 5,047 watchlist rows): notebook check 84 s for every cell
+  including self-tests; pipeline 37 s; 51/51 self-tests; 53/53 hand-written edge-case
+  expectations; 99.21% of true pairs proposed (2,135/2,152), every proposed true pair kept.
+- OIG LEIE (84,001 rows) against 3,000 noisy LEIE copies + 3,000 fictional parties:
+  125 s excluding the 18 s export; 98.90% of true pairs proposed (2,967/3,000); one proposed
+  true pair fell below the keep rule (2,966/2,967 visible); peak 1.3 GB.
+- 1/10 benchmark (100,000 x 28,090 rows): pipeline 93 s, 473k pairs scored, recall 99.0%
+  persons / 99.9% businesses.
+- **Full benchmark (1,000,000 watchlist x ~300,000 extracted rows): target not met.**
+  Generation 470 s (not counted); normalize to rarity 226 s; u and m 385 s; scoring 49.1M
+  pairs (21.1M business, 28.0M person) in 2,582 s, i.e. 54 min to the end of scoring, peak
+  8.5 GB; then the evidence step failed with an out-of-memory error building evidence for
+  10.2M kept pairs. Causes: single-core per-unique-pair Python comparisons (about 50 us per
+  pair), the keep rule (top 3 with ties) keeping 10M pairs, and a synthetic business
+  universe whose blocks are dense (rarest-word blocks: 30M pairs before refinement).
+
+**Not built**: the review sample (M6: section skeleton only); the copy of the core into
+goko-v2-poc [A]; cited published m values (`mappings/published_m.csv` holds stated
+assumptions and placeholders, marked as such). No client data has been run.
 
 ## Python annotation workbench delivery
 

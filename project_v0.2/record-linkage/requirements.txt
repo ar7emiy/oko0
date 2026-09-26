@@ -1,0 +1,15 @@
+# Install recordlinkage WITHOUT its dependencies: its metadata pins an old pandas.
+#   pip install -r requirements.txt
+#   pip install --no-deps recordlinkage==0.16
+pandas>=3,<4          # recordlinkage 0.16 breaks on pandas 4
+numpy>=2
+pyarrow>=15
+jellyfish>=1.0
+scikit-learn>=1.3     # imported by recordlinkage
+joblib>=1.3           # imported by recordlinkage
+xlsxwriter>=3.1       # fast streaming Excel writer
+openpyxl>=3.1         # reading review labels back (later phase)
+psutil>=5.9           # peak-memory measurement in the benchmark
+nbclient>=0.10        # run_notebook_check.py
+nbformat>=5.9
+ipykernel>=6
