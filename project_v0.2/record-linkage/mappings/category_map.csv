@@ -1,0 +1,322 @@
+source_field,value,category,needs_review,leie_rows,note
+license_type,IND- LIC HC SERV PRO,medical,,20811,LEIE GENERAL
+license_type,NURSING PROFESSION,medical,,12579,LEIE GENERAL
+license_type,EMPLOYEE - PRIVATE S,other,,5418,LEIE GENERAL
+license_type,INDIVIDUAL (UNAFFILI,other,,4683,LEIE GENERAL
+license_type,BUS OWNER/EXEC,other,,4404,LEIE GENERAL
+license_type,"MEDICAL PRACTICE, MD",medical,,4384,LEIE GENERAL
+license_type,SKILLED NURSING FAC,medical,,4215,LEIE GENERAL
+license_type,"PHYSICIAN (MD, DO)",medical,,3269,LEIE GENERAL
+license_type,HOSPITAL,medical,,2394,LEIE GENERAL
+license_type,DME COMPANY,medical,,2299,LEIE GENERAL
+license_type,PHARMACY,medical,,2244,LEIE GENERAL
+license_type,PRIVATE CIT/ENTITY,other,,1945,LEIE GENERAL
+license_type,CHIROPRACTIC PRACT,medical,,1766,LEIE GENERAL
+license_type,HOME HEALTH AGENCY,medical,,1342,LEIE GENERAL
+license_type,CLINIC,medical,,1284,LEIE GENERAL
+license_type,DENTAL PRACTICE,medical,,1212,LEIE GENERAL
+license_type,NURSING FIRM,medical,,988,LEIE GENERAL
+license_type,TRANSPORTATION CO,other,yes,793,LEIE GENERAL
+license_type,INTER CARE FACILITY,medical,yes,792,LEIE GENERAL
+license_type,OTHER BUSINESS,other,,637,LEIE GENERAL
+license_type,THERAPIST,medical,,619,LEIE GENERAL
+license_type,MENTAL HEALTH FAC,medical,,560,LEIE GENERAL
+license_type,COUNSELING CENTER,medical,yes,559,LEIE GENERAL
+license_type,PSYCHOLOGIC PRACTICE,medical,,511,LEIE GENERAL
+license_type,PODIATRY PRACTICE,medical,,442,LEIE GENERAL
+license_type,ADULT HOME,medical,yes,441,LEIE GENERAL
+license_type,AMBULANCE COMPANY,medical,yes,394,LEIE GENERAL
+license_type,OSTEOPATHIC PRAC,medical,,374,LEIE GENERAL
+license_type,LABORATORY,medical,,275,LEIE GENERAL
+license_type,STATE/LOCAL/TRIBAL A,other,,196,LEIE GENERAL
+license_type,PHYSICIAN ASSISTANT,medical,,196,LEIE GENERAL
+license_type,REHAB FACILITY - GEN,medical,,195,LEIE GENERAL
+license_type,MEDICAL GROUP,medical,,173,LEIE GENERAL
+license_type,EMPLOYEE - ST/LOC/TR,other,,147,LEIE GENERAL
+license_type,BILLING SERVICE CO,other,,125,LEIE GENERAL
+license_type,PHYSICAL THERAPIST,medical,,105,LEIE GENERAL
+license_type,OPTOMETRIC PRACTICE,medical,,102,LEIE GENERAL
+license_type,ACUPUNCTURIST,medical,,93,LEIE GENERAL
+license_type,DRUG COMPANY/SUPLIER,medical,yes,92,LEIE GENERAL
+license_type,RADIOLOGY FACILITY,medical,,83,LEIE GENERAL
+license_type,PHYSICIAN PRACTICE (,medical,,80,LEIE GENERAL
+license_type,OPTICAL PRACTICE,medical,,70,LEIE GENERAL
+license_type,GOVT EMP(STATE/LOC),other,,54,LEIE GENERAL
+license_type,CONSULTING FIRM,other,,51,LEIE GENERAL
+license_type,MANAGEMENT SVCS CO,other,,47,LEIE GENERAL
+license_type,COMM MNTL HLTH CNTR,medical,,43,LEIE GENERAL
+license_type,RECIPT/BENEFICIARY,other,,43,LEIE GENERAL
+license_type,HEALTH MAINT ORG,other,,41,LEIE GENERAL
+license_type,BOARDING HOME,medical,yes,36,LEIE GENERAL
+license_type,EMPLOYEE-GOVERNMENT,other,,36,LEIE GENERAL
+license_type,GOVERNMENT CONTRACTO,other,,34,LEIE GENERAL
+license_type,EMPLOYEE - FEDERAL -,other,,33,LEIE GENERAL
+license_type,DOCTOR OWNED ENTITY,medical,,32,LEIE GENERAL
+license_type,HOSPICE,medical,,27,LEIE GENERAL
+license_type,AUDIOLOGIST,medical,,24,LEIE GENERAL
+license_type,OWNER/EXEC-GOVT CONT,other,,20,LEIE GENERAL
+license_type,INSURANCE COMPANY,other,,17,LEIE GENERAL
+license_type,CARRIER/INTERMEDIARY,other,,16,LEIE GENERAL
+license_type,OWNER/EXEC-GOVT GRAN,other,,15,LEIE GENERAL
+license_type,LAW PRACTICE,legal,,14,LEIE GENERAL
+license_type,RENAL FACILITY,medical,,13,LEIE GENERAL
+license_type,GOVERNMENT GRANTEE,other,,10,LEIE GENERAL
+license_type,EMPLOYEE - HHS,other,,10,LEIE GENERAL
+license_type,HHS EMPLOYEE-IHS,other,,10,LEIE GENERAL
+license_type,ACCOUNTING FIRM,other,,9,LEIE GENERAL
+license_type,RURAL HEALTH CLINIC,medical,,8,LEIE GENERAL
+license_type,SUBCONTRACTING CO,other,,7,LEIE GENERAL
+license_type,AMBLNTRY SRGCL CNTR,medical,,6,LEIE GENERAL
+license_type,MANUF/LESSOR SUPP/EQ,other,,6,LEIE GENERAL
+license_type,UNIVERSITY/COLLEGE,other,,6,LEIE GENERAL
+license_type,FISCAL AGENT,other,,6,LEIE GENERAL
+license_type,INTERPRETER/TRANS,other,,5,LEIE GENERAL
+license_type,GOVT EMPLOYEE(FED),other,,4,LEIE GENERAL
+license_type,TRIBAL ORGANIZATION,other,,4,LEIE GENERAL
+license_type,HC CONGLOM - PARENT,other,,3,LEIE GENERAL
+license_type,PRINTING FIRM,other,,3,LEIE GENERAL
+license_type,HHS EMPLOYEE,other,,3,LEIE GENERAL
+license_type,ELECTED OFFICIAL,other,,3,LEIE GENERAL
+license_type,REPRESENTATIVE PAYEE,other,,2,LEIE GENERAL
+license_type,RENAL PROV-HOSPITAL,medical,,2,LEIE GENERAL
+license_type,REGULATED INDTRY REP,other,,1,LEIE GENERAL
+license_type,HHS EMPLOYEE-PHS,other,,1,LEIE GENERAL
+license_type,PUBLIC OFFICE,other,,1,LEIE GENERAL
+license_type,HHS EMPLOYEE-AOA,other,,1,LEIE GENERAL
+license_type,RESEARCHER,other,,1,LEIE GENERAL
+license_type,THERAPUDIC CLINIC,medical,,1,LEIE GENERAL
+license_type,ORTHOTIST/PROSTHETIS,medical,,1,LEIE GENERAL
+specialty,NURSE/NURSES AIDE,medical,,34742,LEIE SPECIALTY
+specialty,PERSONAL CARE PROVID,medical,yes,3262,LEIE SPECIALTY
+specialty,OWNER/OPERATOR,other,,3179,LEIE SPECIALTY
+specialty,HEALTH CARE AIDE,medical,yes,2943,LEIE SPECIALTY
+specialty,NO KNOWN AFFILIATION,other,,2155,LEIE SPECIALTY
+specialty,CHIROPRACTIC,medical,,2025,LEIE SPECIALTY
+specialty,GENERAL PRACTICE/FP,medical,,1863,LEIE SPECIALTY
+specialty,EMPLOYEE,other,,1802,LEIE SPECIALTY
+specialty,PHARMACIST,medical,,1732,LEIE SPECIALTY
+specialty,HOME HEALTH AGENCY,medical,,1483,LEIE SPECIALTY
+specialty,DENTIST,medical,,1349,LEIE SPECIALTY
+specialty,GENERAL PRACTICE,medical,,1226,LEIE SPECIALTY
+specialty,TECHNICIAN,medical,yes,1117,LEIE SPECIALTY
+specialty,DME - GENERAL,medical,,996,LEIE SPECIALTY
+specialty,COUNSELOR,medical,yes,912,LEIE SPECIALTY
+specialty,INTERNAL MEDICINE,medical,,872,LEIE SPECIALTY
+specialty,FAMILY PRACTICE,medical,,860,LEIE SPECIALTY
+specialty,THERAPIST,medical,,805,LEIE SPECIALTY
+specialty,PHARMACY TECHNICIAN,medical,yes,796,LEIE SPECIALTY
+specialty,CLINIC,medical,,744,LEIE SPECIALTY
+specialty,PHARMACY,medical,,668,LEIE SPECIALTY
+specialty,PSYCHOLOGY,medical,,582,LEIE SPECIALTY
+specialty,MENTAL/BEHAVIORAL HE,medical,,559,LEIE SPECIALTY
+specialty,BUSINESS MANAGER,other,,553,LEIE SPECIALTY
+specialty,PSYCHIATRY,medical,,548,LEIE SPECIALTY
+specialty,PODIATRY,medical,,527,LEIE SPECIALTY
+specialty,SURGERY,medical,,506,LEIE SPECIALTY
+specialty,RECIPT/BENEFICIARY,other,,488,LEIE SPECIALTY
+specialty,SOCIAL WORKER,medical,yes,480,LEIE SPECIALTY
+specialty,RECRUITER/CAPPER,other,,425,LEIE SPECIALTY
+specialty,OSTEOPATHY,medical,,363,LEIE SPECIALTY
+specialty,TRANSPORTATION CO,other,yes,342,LEIE SPECIALTY
+specialty,ASSISTED LIVING FACI,medical,yes,336,LEIE SPECIALTY
+specialty,ADULT HOME,medical,yes,309,LEIE SPECIALTY
+specialty,COUNSELING CENTER,medical,yes,271,LEIE SPECIALTY
+specialty,GYN/OBS,medical,,264,LEIE SPECIALTY
+specialty,SKILLED NURSING FAC,medical,,262,LEIE SPECIALTY
+specialty,NURSE PRACTITIONER (,medical,,247,LEIE SPECIALTY
+specialty,ANESTHESIOLOGY,medical,,231,LEIE SPECIALTY
+specialty,MARKETING FIRM,other,,221,LEIE SPECIALTY
+specialty,PHYSICIAN PRACTICE (,medical,,219,LEIE SPECIALTY
+specialty,SALES/MARKET/RETAIL,other,,215,LEIE SPECIALTY
+specialty,PHYSICIAN ASSISTANT,medical,,196,LEIE SPECIALTY
+specialty,PAIN MANAGEMENT,medical,,194,LEIE SPECIALTY
+specialty,INTER CARE FACILITY,medical,yes,193,LEIE SPECIALTY
+specialty,EMERGENCY MED TECH,medical,yes,188,LEIE SPECIALTY
+specialty,PHYSICAL THERAPY,medical,,184,LEIE SPECIALTY
+specialty,ADMINISTRATOR,other,,184,LEIE SPECIALTY
+specialty,HOSPITAL,medical,,177,LEIE SPECIALTY
+specialty,COMM MNTL HLTH CNTR,medical,,171,LEIE SPECIALTY
+specialty,AMBULANCE COMPANY,medical,yes,168,LEIE SPECIALTY
+specialty,ACCOUNT/BOOKKPR/AUDI,other,,168,LEIE SPECIALTY
+specialty,PEDIATRICS,medical,,143,LEIE SPECIALTY
+specialty,RELATED,other,,135,LEIE SPECIALTY
+specialty,LABORATORY,medical,,129,LEIE SPECIALTY
+specialty,EMERGENCY MEDICINE,medical,,129,LEIE SPECIALTY
+specialty,PARAMEDIC TECHNICIAN,medical,yes,127,LEIE SPECIALTY
+specialty,DRUG COMPANY/SUPLIER,medical,yes,126,LEIE SPECIALTY
+specialty,STATE GOV'T,other,,122,LEIE SPECIALTY
+specialty,REHAB FACILITY - GEN,medical,,121,LEIE SPECIALTY
+specialty,DENTAL PRACTICE,medical,,120,LEIE SPECIALTY
+specialty,NEUROLOGY,medical,,115,LEIE SPECIALTY
+specialty,PHYS THERAPY PROVIDE,medical,,112,LEIE SPECIALTY
+specialty,DME - ORTHOTICS,medical,,110,LEIE SPECIALTY
+specialty,OPTOMETRY,medical,,110,LEIE SPECIALTY
+specialty,REPRESENTATIVE PAYEE,other,,105,LEIE SPECIALTY
+specialty,CLERK/OTHER CLERICAL,other,,103,LEIE SPECIALTY
+specialty,DME - POWER VEHICLES,medical,,96,LEIE SPECIALTY
+specialty,ORTHOPEDICS,medical,,93,LEIE SPECIALTY
+specialty,OFFICER/EXECUT/BOARD,other,,92,LEIE SPECIALTY
+specialty,LAB - CLINICAL,medical,,86,LEIE SPECIALTY
+specialty,HOSPICE,medical,,84,LEIE SPECIALTY
+specialty,CONSULTING FIRM,other,,78,LEIE SPECIALTY
+specialty,BILLING SERVICE CO,other,,74,LEIE SPECIALTY
+specialty,RADIOLOGY,medical,,73,LEIE SPECIALTY
+specialty,OPHTHALMOLOGY,medical,,72,LEIE SPECIALTY
+specialty,LICENSED PRACTITIONE,medical,,68,LEIE SPECIALTY
+specialty,PSYCHOLOGIC PRACTICE,medical,,66,LEIE SPECIALTY
+specialty,CHIROPRACTIC PRACT,medical,,65,LEIE SPECIALTY
+specialty,MANAGEMENT SVCS CO,other,,62,LEIE SPECIALTY
+specialty,DENTAL HYGIENIST,medical,,59,LEIE SPECIALTY
+specialty,CARDIOLOGY,medical,,58,LEIE SPECIALTY
+specialty,ADULT DAY CARE FACIL,medical,yes,51,LEIE SPECIALTY
+specialty,SUBSTANCE ABUSE REHA,medical,yes,49,LEIE SPECIALTY
+specialty,NON-PROFIT ORGANIZAT,other,,47,LEIE SPECIALTY
+specialty,OTORHINOLARYNGOLOGY,medical,,47,LEIE SPECIALTY
+specialty,OPTICIAN,medical,,45,LEIE SPECIALTY
+specialty,PLASTIC SURGERY,medical,,44,LEIE SPECIALTY
+specialty,ACUPUNCTURIST,medical,,44,LEIE SPECIALTY
+specialty,DME - HEARING AID,medical,,42,LEIE SPECIALTY
+specialty,DME - OXYGEN,medical,,41,LEIE SPECIALTY
+specialty,DME - PROSTHETICS,medical,,41,LEIE SPECIALTY
+specialty,DERMATOLOGY,medical,,40,LEIE SPECIALTY
+specialty,DME - INCONTINENCE K,medical,,39,LEIE SPECIALTY
+specialty,NURSING FIRM,medical,,39,LEIE SPECIALTY
+specialty,INFUSION THERAPY CLI,medical,,39,LEIE SPECIALTY
+specialty,PATHOLOGY,medical,,37,LEIE SPECIALTY
+specialty,OPTICAL PRACTICE,medical,,36,LEIE SPECIALTY
+specialty,ONCOLOGY,medical,,34,LEIE SPECIALTY
+specialty,LABORATORY-IDTF,medical,,32,LEIE SPECIALTY
+specialty,DME - TELEMARKETING,medical,yes,32,LEIE SPECIALTY
+specialty,RADIOLOGY FACILITY,medical,,31,LEIE SPECIALTY
+specialty,UROLOGY,medical,,31,LEIE SPECIALTY
+specialty,BOARDING HOME,medical,yes,31,LEIE SPECIALTY
+specialty,DME - DIETARY SUPPLI,medical,,30,LEIE SPECIALTY
+specialty,ALLIED HEALTH RELATE,medical,,27,LEIE SPECIALTY
+specialty,MANUF/LESSOR SUPP/EQ,other,,26,LEIE SPECIALTY
+specialty,GASTROENTEROLOGY,medical,,26,LEIE SPECIALTY
+specialty,PULMONOLOGY,medical,,26,LEIE SPECIALTY
+specialty,OTHER CONTRACTOR,other,,25,LEIE SPECIALTY
+specialty,DME - DIABETIC SUPPL,medical,,24,LEIE SPECIALTY
+specialty,DME - UROLOGICAL SUP,medical,,23,LEIE SPECIALTY
+specialty,EMPLOYEE - GRADE UNK,other,,23,LEIE SPECIALTY
+specialty,COMMUNITY HLTH CTR (,medical,,22,LEIE SPECIALTY
+specialty,SUBCONTRACTOR (NON-H,other,,22,LEIE SPECIALTY
+specialty,SOBER HOME,medical,yes,21,LEIE SPECIALTY
+specialty,NEPHROLOGY,medical,,20,LEIE SPECIALTY
+specialty,UNIVERSITY/COLLEGE,other,,19,LEIE SPECIALTY
+specialty,LOCAL GOV'T,other,,19,LEIE SPECIALTY
+specialty,TRIBAL AGENCY,other,,18,LEIE SPECIALTY
+specialty,INTERPRETER/TRANS,other,,17,LEIE SPECIALTY
+specialty,COMPTROLLER,other,,17,LEIE SPECIALTY
+specialty,EMPLOYEE - 14 & BELO,other,,16,LEIE SPECIALTY
+specialty,INSURANCE COMPANY,other,,16,LEIE SPECIALTY
+specialty,RHEUMATOLOGY,medical,,15,LEIE SPECIALTY
+specialty,ALLERGIST/IMMUNOLOGY,medical,,14,LEIE SPECIALTY
+specialty,PODIATRY PRACTICE,medical,,14,LEIE SPECIALTY
+specialty,AUDIOLOGY,medical,,14,LEIE SPECIALTY
+specialty,OWNER,other,,14,LEIE SPECIALTY
+specialty,NIH,other,,13,LEIE SPECIALTY
+specialty,ENDOCRINOLOGY,medical,,13,LEIE SPECIALTY
+specialty,CONSULTANT,other,,13,LEIE SPECIALTY
+specialty,ACF,other,,12,LEIE SPECIALTY
+specialty,PHLEBOTOMY,medical,,11,LEIE SPECIALTY
+specialty,ACCOUNTING FIRM,other,,10,LEIE SPECIALTY
+specialty,HEALTH MAINT ORG,other,,10,LEIE SPECIALTY
+specialty,GENETICS,medical,,10,LEIE SPECIALTY
+specialty,OPTOMETRIC PRACTICE,medical,,9,LEIE SPECIALTY
+specialty,DME - WOUND CARE KIT,medical,,9,LEIE SPECIALTY
+specialty,HEMATOLOGY,medical,,9,LEIE SPECIALTY
+specialty,CONTRACTOR,other,,9,LEIE SPECIALTY
+specialty,LAWYER,legal,,9,LEIE SPECIALTY
+specialty,HC CONGLOM - PARENT,other,,7,LEIE SPECIALTY
+specialty,CHECK CASHING STORE,other,,7,LEIE SPECIALTY
+specialty,THERAPEUTIC BOARDING,medical,yes,7,LEIE SPECIALTY
+specialty,MULTI-SPECIALTY,medical,,6,LEIE SPECIALTY
+specialty,EMPLOYEE - MILITARY,other,,6,LEIE SPECIALTY
+specialty,PAIN MGMT/PHYSIATRIS,medical,,6,LEIE SPECIALTY
+specialty,ORTHOTIST/PROSTHETIS,medical,,6,LEIE SPECIALTY
+specialty,REGULATED INDUSTRY,other,,5,LEIE SPECIALTY
+specialty,RESEARCH COMPANY,other,,5,LEIE SPECIALTY
+specialty,COMPUTER RELATED,other,,5,LEIE SPECIALTY
+specialty,INFECTIOUS DISEASE,medical,,5,LEIE SPECIALTY
+specialty,NATUROPATHY,medical,,5,LEIE SPECIALTY
+specialty,DME - HOME INFUSION,medical,,4,LEIE SPECIALTY
+specialty,DME - TENS,medical,,4,LEIE SPECIALTY
+specialty,OTHERS,other,,4,LEIE SPECIALTY
+specialty,LABORER,other,,4,LEIE SPECIALTY
+specialty,MEDICAID MANAGED CAR,other,,4,LEIE SPECIALTY
+specialty,PHYS/DENT/HEAL/PROVI,medical,,4,LEIE SPECIALTY
+specialty,RURAL HEALTH CLINIC,medical,,3,LEIE SPECIALTY
+specialty,ACUPUNCTURE PRACTICE,medical,,3,LEIE SPECIALTY
+specialty,VENDOR,other,,3,LEIE SPECIALTY
+specialty,DMERC,other,,3,LEIE SPECIALTY
+specialty,OTHER FEDERAL AGENCY,other,,3,LEIE SPECIALTY
+specialty,MEDICARE ADV CONTR (,other,,3,LEIE SPECIALTY
+specialty,PHARMACY BENEFIT MAN,other,,3,LEIE SPECIALTY
+specialty,AMBLNTRY SRGCL CNTR,medical,,3,LEIE SPECIALTY
+specialty,AUDIOLOGY PRACTICE,medical,,3,LEIE SPECIALTY
+specialty,LAB-PHYSICIAN OWNED,medical,,3,LEIE SPECIALTY
+specialty,ACCOUNTABLE CARE ORG,other,,3,LEIE SPECIALTY
+specialty,LAB-NON-INVASIV VASC,medical,,3,LEIE SPECIALTY
+specialty,HOTEL/LODGING,other,,2,LEIE SPECIALTY
+specialty,EMPLOYEE - WAGE GRAD,other,,2,LEIE SPECIALTY
+specialty,CMS,other,,2,LEIE SPECIALTY
+specialty,SECUR OFFICER/GUARD,other,,2,LEIE SPECIALTY
+specialty,LAW PRACTICE,legal,,2,LEIE SPECIALTY
+specialty,IHS,other,,2,LEIE SPECIALTY
+specialty,UNEMPLOYED,other,,2,LEIE SPECIALTY
+specialty,SAMHSA,other,,2,LEIE SPECIALTY
+specialty,HRSA,other,,2,LEIE SPECIALTY
+specialty,ANESTHETIST,medical,,2,LEIE SPECIALTY
+specialty,MEDICARE PART D CONT,other,,2,LEIE SPECIALTY
+specialty,SUBCONTRACTOR,other,,2,LEIE SPECIALTY
+specialty,RENAL FACILITY,medical,,2,LEIE SPECIALTY
+specialty,DME - LYMPHEDEMA PUM,medical,,1,LEIE SPECIALTY
+specialty,FOSTER CARE PROVIDER,medical,yes,1,LEIE SPECIALTY
+specialty,GRANTEE,other,,1,LEIE SPECIALTY
+specialty,SUPERVISOR/FOREMAN,other,,1,LEIE SPECIALTY
+specialty,GOV'T INSUR RECIPIEN,other,,1,LEIE SPECIALTY
+specialty,PRIVATE CITIZEN,other,,1,LEIE SPECIALTY
+specialty,CONTRACTING OFFICER,other,,1,LEIE SPECIALTY
+specialty,ARCHITECT/ENGINEER,other,,1,LEIE SPECIALTY
+specialty,PRINTING FIRM,other,,1,LEIE SPECIALTY
+specialty,PUBLIC ASSIST. RCPT.,other,,1,LEIE SPECIALTY
+specialty,TEACHER,other,,1,LEIE SPECIALTY
+specialty,AHRQ,other,,1,LEIE SPECIALTY
+specialty,GS 1-12,other,,1,LEIE SPECIALTY
+specialty,GERONTOLOGY,medical,,1,LEIE SPECIALTY
+specialty,PROCTOLOGY,medical,,1,LEIE SPECIALTY
+specialty,RSRCH SCNTST-EMPLYEE,other,,1,LEIE SPECIALTY
+specialty,PARENT CHLD SUP ENF,other,,1,LEIE SPECIALTY
+specialty,EMPLOYEE - GM/GS-15,other,,1,LEIE SPECIALTY
+specialty,LOAN RECIPIENT,other,,1,LEIE SPECIALTY
+specialty,ACL,other,,1,LEIE SPECIALTY
+license_type,MD,medical,,0,extracted vocabulary (draft)
+license_type,DO,medical,,0,extracted vocabulary (draft)
+license_type,DC,medical,,0,extracted vocabulary (draft)
+license_type,DDS,medical,,0,extracted vocabulary (draft)
+license_type,DPM,medical,,0,extracted vocabulary (draft)
+license_type,PT,medical,,0,extracted vocabulary (draft)
+license_type,RN,medical,,0,extracted vocabulary (draft)
+license_type,NP,medical,,0,extracted vocabulary (draft)
+license_type,PA-C,medical,,0,extracted vocabulary (draft)
+license_type,LAC,medical,,0,extracted vocabulary (draft)
+license_type,PHYSICIAN,medical,,0,extracted vocabulary (draft)
+license_type,CHIROPRACTOR,medical,,0,extracted vocabulary (draft)
+license_type,NURSE,medical,,0,extracted vocabulary (draft)
+license_type,PHARMACIST,medical,,0,extracted vocabulary (draft)
+license_type,ATTORNEY,legal,,0,extracted vocabulary (draft)
+license_type,LAWYER,legal,,0,extracted vocabulary (draft)
+license_type,ESQ,legal,,0,extracted vocabulary (draft)
+license_type,BAR,legal,,0,extracted vocabulary (draft)
+license_type,BAR NUMBER,legal,,0,extracted vocabulary (draft)
+license_type,AUTO REPAIR,repair shop,,0,extracted vocabulary (draft)
+license_type,AUTO BODY,repair shop,,0,extracted vocabulary (draft)
+specialty,CHIROPRACTOR,medical,,0,extracted vocabulary (draft)
+specialty,ACUPUNCTURE,medical,,0,extracted vocabulary (draft)
+specialty,ORTHOPEDIC SURGERY,medical,,0,extracted vocabulary (draft)
+specialty,PERSONAL INJURY,legal,,0,extracted vocabulary (draft)
+specialty,ATTORNEY,legal,,0,extracted vocabulary (draft)
+specialty,AUTO BODY,repair shop,,0,extracted vocabulary (draft)
+specialty,COLLISION REPAIR,repair shop,,0,extracted vocabulary (draft)
+specialty,TOWING,repair shop,,0,extracted vocabulary (draft)

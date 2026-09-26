@@ -23,8 +23,8 @@ from annotator.ai_import import read_answer  # noqa: E402
 from annotator.notes import parse_name, read  # noqa: E402
 
 SAMPLES = ROOT / "tests" / "ai_samples"
-STRESS = ROOT.parent / "python-annotator" / "sample-data" / "stress-packet" / "notes"
-QA = ROOT.parent / "python-annotator" / "sample-data" / "qa-test-notes"
+STRESS = ROOT / "sample-data" / "stress-packet" / "notes"
+QA = ROOT / "sample-data" / "qa-test-notes"
 PRACTICE = ROOT / "annotator" / "practice"
 
 # reply file, note file, known entity numbers, ready, needs attention, error substring

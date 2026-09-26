@@ -1,0 +1,124 @@
+{
+ "William A. Weiner, D.O.": [
+  {
+   "npi": "1598782443",
+   "type": "NPI-1",
+   "name": "WILLIAM WEINER",
+   "credential": "MD",
+   "status": "A",
+   "enumeration_date": "2006-07-16",
+   "last_updated": "2025-08-13",
+   "deactivated": null,
+   "address": "1400 E PARKDALE AVE, STE: 4, MANISTEE, MI, 49660",
+   "phone": "231-398-1840",
+   "taxonomy": "Internal Medicine",
+   "authorized_official": null
+  },
+  {
+   "npi": "1912997586",
+   "type": "NPI-1",
+   "name": "WILLIAM A. WEINER",
+   "credential": "D.O.",
+   "status": "A",
+   "enumeration_date": "2005-10-25",
+   "last_updated": "2007-07-08",
+   "deactivated": null,
+   "address": "2800 MARCUS AVE, NEW HYDE PARK, NY, 11042",
+   "phone": "516-622-6100",
+   "taxonomy": "Radiology, Diagnostic Radiology",
+   "authorized_official": null
+  }
+ ],
+ "Marvin Moy, M.D.": [
+  {
+   "npi": "1376795310",
+   "type": "NPI-1",
+   "name": "MARVIN MOY",
+   "credential": "M.D.",
+   "status": "A",
+   "enumeration_date": "2008-10-22",
+   "last_updated": "2021-08-30",
+   "deactivated": null,
+   "address": "91 N FRANKLIN ST STE 101, HEMPSTEAD, NY, 11550",
+   "phone": "516-898-7676",
+   "taxonomy": "General Practice",
+   "authorized_official": null
+  }
+ ],
+ "Bradley Pierre": [],
+ "Rutland Medical P.C.": [
+  {
+   "npi": "1336799519",
+   "type": "NPI-2",
+   "name": "RUTLAND MEDICAL GROUP",
+   "credential": null,
+   "status": "A",
+   "enumeration_date": "2019-09-19",
+   "last_updated": "2020-03-27",
+   "deactivated": null,
+   "address": "1501 SUPERIOR AVE, NEWPORT BEACH, CA, 92663",
+   "phone": "949-333-0464",
+   "taxonomy": "Internal Medicine, Pulmonary Disease",
+   "authorized_official": "CEDRIC FRANKLIN"
+  },
+  {
+   "npi": "1194746636",
+   "type": "NPI-2",
+   "name": "RUTLAND MEDICAL PLAZA",
+   "credential": null,
+   "status": "A",
+   "enumeration_date": "2006-07-21",
+   "last_updated": "2008-09-29",
+   "deactivated": null,
+   "address": "887 RUTLAND RD, BROOKLYN, NY, 11203",
+   "phone": "718-756-3918",
+   "taxonomy": "Internal Medicine",
+   "authorized_official": "PETER EZE"
+  },
+  {
+   "npi": "1013083336",
+   "type": "NPI-2",
+   "name": "RUTLAND MEDICAL SUPPLY",
+   "credential": null,
+   "status": "A",
+   "enumeration_date": "2006-11-28",
+   "last_updated": "2020-08-22",
+   "deactivated": null,
+   "address": "3035 HARTLEY BRIDGE ROAD, SUITE 2, MACON, GA, 31216",
+   "phone": "478-781-1051",
+   "taxonomy": "Durable Medical Equipment & Medical Supplies",
+   "authorized_official": "MITCHELL HERRINGTON"
+  }
+ ],
+ "Nexray Medical Imaging, P.C.": [
+  {
+   "npi": "1659664001",
+   "type": "NPI-2",
+   "name": "NEXRAY MEDICAL IMAGING, P.C.",
+   "credential": null,
+   "status": "A",
+   "enumeration_date": "2011-05-18",
+   "last_updated": "2011-05-18",
+   "deactivated": null,
+   "address": "1963 GRAND CONCOURSE, SUITE B, BRONX, NY, 10453",
+   "phone": "718-901-0002",
+   "taxonomy": "Clinic/Center, Magnetic Resonance Imaging (MRI)",
+   "authorized_official": "WILLIAM WEINER"
+  },
+  {
+   "npi": "1083908768",
+   "type": "NPI-2",
+   "name": "NEXRAY MEDICAL IMANGING,PC.",
+   "credential": null,
+   "status": "A",
+   "enumeration_date": "2011-05-31",
+   "last_updated": "2011-05-31",
+   "deactivated": null,
+   "address": "6555 WOODHAVEN BLVD, REGO PARK, NY, 11374",
+   "phone": "718-459-9500",
+   "taxonomy": "Clinic/Center, Magnetic Resonance Imaging (MRI)",
+   "authorized_official": "WILLIAM WEINER"
+  }
+ ],
+ "Soul Radiology Medical Imaging": []
+}

@@ -1,0 +1,579 @@
+{
+  "note_id": 720052,
+  "note_key": "note:720052",
+  "claim_id": "100002-240360-RI-01",
+  "client_id": "100002",
+  "occurrence_id": "100002-240360",
+  "coverage_code": "RI",
+  "versions": {
+    "schema": "0.1",
+    "model": "gpt-6-luna",
+    "patterns": "1.7",
+    "gliner": null,
+    "clean_policy": "none",
+    "chunk_policy": "structure-v1/30000c/2s",
+    "structured": true,
+    "offline": false
+  },
+  "extraction_error": null,
+  "entity_mentions": [
+    {
+      "mention_id": "m1",
+      "quote": "Plaintiff American Transit Insurance Company  has moved for a preliminary injunction",
+      "name": "American Transit Insurance Company",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Plaintiff",
+        "plaintiff",
+        "American Transit",
+        "America Transit",
+        "the insurer",
+        "its"
+      ],
+      "_chunk": [
+        0,
+        24529
+      ],
+      "clean_span": [
+        569,
+        603
+      ],
+      "raw_span": [
+        569,
+        603
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "m2",
+      "quote": "BRADLEY PIERRE, MARVIN MOY, M.D.,",
+      "name": "BRADLEY PIERRE",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Mr. Pierre",
+        "Mr. Pierre\u2019s",
+        "Pierre",
+        "he",
+        "his"
+      ],
+      "_chunk": [
+        0,
+        24529
+      ],
+      "clean_span": [
+        246,
+        260
+      ],
+      "raw_span": [
+        246,
+        260
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "m3",
+      "quote": "MARVIN MOY, M.D., RUTLAND MEDICAL P.C.,",
+      "name": "MARVIN MOY, M.D.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Dr. Marvin Moy",
+        "defendant Dr. Marvin Moy",
+        "who is now missing and presumed dead"
+      ],
+      "_chunk": [
+        0,
+        24529
+      ],
+      "clean_span": [
+        262,
+        278
+      ],
+      "raw_span": [
+        262,
+        278
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "m4",
+      "quote": "WILLIAM A.  WEINER, D.O., NEXRAY MEDICAL",
+      "name": "WILLIAM A.  WEINER, D.O.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Dr. Weiner",
+        "Mr. Weiner",
+        "Weiner",
+        "he",
+        "his"
+      ],
+      "_chunk": [
+        0,
+        24529
+      ],
+      "clean_span": [
+        303,
+        328
+      ],
+      "raw_span": [
+        303,
+        328
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "m5",
+      "quote": "RUTLAND MEDICAL P.C., WILLIAM A.",
+      "name": "RUTLAND MEDICAL P.C.",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Rutland",
+        "defendants Rutland",
+        "that company",
+        "the clinics"
+      ],
+      "_chunk": [
+        0,
+        24529
+      ],
+      "clean_span": [
+        281,
+        301
+      ],
+      "raw_span": [
+        281,
+        301
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "m6",
+      "quote": "NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING and JOHN DOES 1 \u201315,",
+      "name": "NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Nexray",
+        "defendants Nexray",
+        "Nexray\u2019s",
+        "a medical facility",
+        "his medical practice"
+      ],
+      "_chunk": [
+        0,
+        24529
+      ],
+      "clean_span": [
+        330,
+        398
+      ],
+      "raw_span": [
+        330,
+        398
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "m7",
+      "quote": "and JOHN DOES 1 \u201315,",
+      "name": "JOHN DOES 1 \u201315",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "Defendants"
+      ],
+      "_chunk": [
+        0,
+        24529
+      ],
+      "clean_span": [
+        403,
+        418
+      ],
+      "raw_span": [
+        403,
+        418
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    }
+  ],
+  "entity_candidates": [],
+  "detail_mentions": [],
+  "action_mentions": [
+    {
+      "action_id": "a1",
+      "quote": "Plaintiff American Transit Insurance Company  has moved for a preliminary injunction",
+      "action_type": "moved_for_preliminary_injunction",
+      "participants": [
+        {
+          "mention_id": "m1",
+          "role": "movant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        24529
+      ],
+      "clean_span": [
+        559,
+        643
+      ],
+      "raw_span": [
+        559,
+        643
+      ]
+    },
+    {
+      "action_id": "a2",
+      "quote": "Defendants Dr. Weiner and Nexray , the only defendants that have appeare d in this case, oppose the  motion.",
+      "action_type": "oppose_motion",
+      "participants": [
+        {
+          "mention_id": "m4",
+          "role": "opponent"
+        },
+        {
+          "mention_id": "m6",
+          "role": "opponent"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        24529
+      ],
+      "clean_span": [
+        1039,
+        1148
+      ],
+      "raw_span": [
+        1039,
+        1148
+      ]
+    },
+    {
+      "action_id": "a3",
+      "quote": "Plaintiff\u2019s motion for a preliminary injunction  order is granted in part and denied in part.",
+      "action_type": "granted_in_part_and_denied_in_part",
+      "participants": [
+        {
+          "mention_id": "m1",
+          "role": "movant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        24529
+      ],
+      "clean_span": [
+        23799,
+        23892
+      ],
+      "raw_span": [
+        23799,
+        23892
+      ]
+    },
+    {
+      "action_id": "a4",
+      "quote": "Defendants Rutland and Nexray, and anyone acting on their behalf, are enjoined from (1) f urther pursuing any no-fault arbitrations",
+      "action_type": "enjoined_from_pursuing",
+      "participants": [
+        {
+          "mention_id": "m5",
+          "role": "enjoined_party"
+        },
+        {
+          "mention_id": "m6",
+          "role": "enjoined_party"
+        }
+      ],
+      "time_qualifier": "until the declaratory judgment claim in this case is resolved",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        24529
+      ],
+      "clean_span": [
+        23895,
+        24027
+      ],
+      "raw_span": [
+        23895,
+        24027
+      ]
+    },
+    {
+      "action_id": "a5",
+      "quote": "and (2) filing any additional no-f ault collection arbitrations and lawsuits against American Transit, until the declaratory judgment claim in this case is resolved .",
+      "action_type": "enjoined_from_filing",
+      "participants": [
+        {
+          "mention_id": "m5",
+          "role": "enjoined_party"
+        },
+        {
+          "mention_id": "m6",
+          "role": "enjoined_party"
+        },
+        {
+          "mention_id": "m1",
+          "role": "target"
+        }
+      ],
+      "time_qualifier": "until the declaratory judgment claim in this case is resolved",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        24529
+      ],
+      "clean_span": [
+        24119,
+        24286
+      ],
+      "raw_span": [
+        24119,
+        24286
+      ]
+    },
+    {
+      "action_id": "a6",
+      "quote": "Dr. Weiner and Mr. Pierre have pleaded guilty to conspiring to commit health care fraud and bribery, respectively.",
+      "action_type": "pleaded_guilty",
+      "participants": [
+        {
+          "mention_id": "m4",
+          "role": "defendant"
+        },
+        {
+          "mention_id": "m2",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        24529
+      ],
+      "clean_span": [
+        4635,
+        4750
+      ],
+      "raw_span": [
+        4635,
+        4750
+      ]
+    },
+    {
+      "action_id": "a7",
+      "quote": "Mr. Pierre acknowledged that (i) he is not a licensed medical provider,",
+      "action_type": "acknowledged_not_being",
+      "participants": [
+        {
+          "mention_id": "m2",
+          "role": "speaker"
+        }
+      ],
+      "time_qualifier": "At his change-of-plea hearing",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        24529
+      ],
+      "clean_span": [
+        4879,
+        4951
+      ],
+      "raw_span": [
+        4879,
+        4951
+      ]
+    },
+    {
+      "action_id": "a8",
+      "quote": "he agreed with others to unlawfully own and run medical clinics, including Rutland,",
+      "action_type": "agreed_to_own_and_run",
+      "participants": [
+        {
+          "mention_id": "m2",
+          "role": "participant"
+        },
+        {
+          "mention_id": "m5",
+          "role": "clinic"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        24529
+      ],
+      "clean_span": [
+        4982,
+        5066
+      ],
+      "raw_span": [
+        4982,
+        5066
+      ]
+    },
+    {
+      "action_id": "a9",
+      "quote": "he used his control of the clinics to steer patients to seek MRIs at Nexray,",
+      "action_type": "steered_patients_to",
+      "participants": [
+        {
+          "mention_id": "m2",
+          "role": "actor"
+        },
+        {
+          "mention_id": "m6",
+          "role": "destination"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        24529
+      ],
+      "clean_span": [
+        5586,
+        5663
+      ],
+      "raw_span": [
+        5586,
+        5663
+      ]
+    },
+    {
+      "action_id": "a10",
+      "quote": "Dr. Weiner admitted that he made false statements under oath about Mr. Pierre\u2019s role in his medical practice, Nexray,",
+      "action_type": "admitted_making_false_statements",
+      "participants": [
+        {
+          "mention_id": "m4",
+          "role": "actor"
+        },
+        {
+          "mention_id": "m2",
+          "role": "subject"
+        },
+        {
+          "mention_id": "m6",
+          "role": "organization"
+        }
+      ],
+      "time_qualifier": "in his plea allocution",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        24529
+      ],
+      "clean_span": [
+        6371,
+        6489
+      ],
+      "raw_span": [
+        6371,
+        6489
+      ]
+    },
+    {
+      "action_id": "a11",
+      "quote": "Rutland was controlled by Mr. Pierre, and nominally owned by defendant Dr. Marvin Moy,",
+      "action_type": "controlled_by",
+      "participants": [
+        {
+          "mention_id": "m5",
+          "role": "entity"
+        },
+        {
+          "mention_id": "m2",
+          "role": "controller"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        24529
+      ],
+      "clean_span": [
+        13165,
+        13251
+      ],
+      "raw_span": [
+        13165,
+        13251
+      ]
+    },
+    {
+      "action_id": "a12",
+      "quote": "Rutland was controlled by Mr. Pierre, and nominally owned by defendant Dr. Marvin Moy,",
+      "action_type": "nominally_owned_by",
+      "participants": [
+        {
+          "mention_id": "m5",
+          "role": "owned_entity"
+        },
+        {
+          "mention_id": "m3",
+          "role": "owner"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        24529
+      ],
+      "clean_span": [
+        13165,
+        13251
+      ],
+      "raw_span": [
+        13165,
+        13251
+      ]
+    }
+  ],
+  "review_items": []
+}

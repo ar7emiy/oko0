@@ -1,0 +1,7451 @@
+{
+  "note_id": 720001,
+  "note_key": "note:720001",
+  "claim_id": "100002-240360-RI-01",
+  "client_id": "100002",
+  "occurrence_id": "100002-240360",
+  "coverage_code": "RI",
+  "versions": {
+    "schema": "0.1",
+    "model": "gpt-6-luna",
+    "patterns": "1.7",
+    "gliner": null,
+    "clean_policy": "none",
+    "chunk_policy": "structure-v1/30000c/2s",
+    "structured": true,
+    "offline": false
+  },
+  "extraction_error": null,
+  "entity_mentions": [
+    {
+      "mention_id": "c0.m1",
+      "quote": "Plaintiff American Transit Insurance Company",
+      "name": "American Transit Insurance Company",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "American Transit",
+        "\u201cAmerican Transit\u201d",
+        "Plaintiff",
+        "the largest taxi and livery No-Fault liability insurer in New York",
+        "the largest No-Fault insurers for the taxi and livery commercial automobile service industry in New York",
+        "insurers",
+        "it"
+      ],
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        381,
+        415
+      ],
+      "raw_span": [
+        381,
+        415
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m2",
+      "quote": "Defendants Bradley Pierre (\u201cPierre\u201d)",
+      "name": "Bradley Pierre",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Pierre",
+        "Defendant Pierre",
+        "he",
+        "an unlicensed layperson",
+        "an architect of the scheme"
+      ],
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        531,
+        545
+      ],
+      "raw_span": [
+        531,
+        545
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m3",
+      "quote": "Marvin Moy, M.D. (\u201cMoy\u201d)",
+      "name": "Marvin Moy, M.D.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Moy",
+        "Defendant Moy",
+        "he"
+      ],
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        559,
+        575
+      ],
+      "raw_span": [
+        559,
+        575
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m4",
+      "quote": "Rutland Medical P.C. (\u201cRutland\u201d)",
+      "name": "Rutland Medical P.C.",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Rutland",
+        "Defendant Rutland",
+        "medical mill in New York",
+        "it",
+        "professional corporation"
+      ],
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        585,
+        605
+      ],
+      "raw_span": [
+        585,
+        605
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m5",
+      "quote": "William A. Weiner, D.O. (\u201cWeiner\u201d)",
+      "name": "William A. Weiner, D.O.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Weiner",
+        "Defendant Weiner",
+        "he"
+      ],
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        619,
+        642
+      ],
+      "raw_span": [
+        619,
+        642
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m6",
+      "quote": "Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging",
+      "name": "Nexray Medical Imaging, P.C.",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Nexray",
+        "Defendant Nexray",
+        "CT scan and x -ray provider",
+        "it",
+        "professional corporation"
+      ],
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        660,
+        688
+      ],
+      "raw_span": [
+        660,
+        688
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m7",
+      "quote": "JOHN DOES 1-15,",
+      "name": "JOHN DOES 1-15",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "John Does 1 -15",
+        "individuals and entities whose names are not yet known to American Transit",
+        "These individuals and entities"
+      ],
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        295,
+        309
+      ],
+      "raw_span": [
+        295,
+        309
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m8",
+      "quote": "\u201cJohn Doe Defendants,\u201d",
+      "name": "John Doe Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "John Does 1-15"
+      ],
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        761,
+        780
+      ],
+      "raw_span": [
+        761,
+        780
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m9",
+      "quote": "together with the other defendants, \u201cDefendants\u201d",
+      "name": "Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "the other defendants",
+        "Defendants"
+      ],
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        825,
+        835
+      ],
+      "raw_span": [
+        825,
+        835
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m1",
+      "quote": "submitted by a \nhealthcare services provider to American Transit,",
+      "name": "American Transit",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "all other au tomobile insurers",
+        "American Transit for",
+        "American transit"
+      ],
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        27685,
+        27701
+      ],
+      "raw_span": [
+        27685,
+        27701
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m2",
+      "quote": "when Moy, Pierre, and Weiner were indicted",
+      "name": "Moy",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Moy recruited medical practitioners",
+        "Moy \u201cto conduct painful and medically unnecessary  electrodiagnostic test ing\u201d",
+        "Dr. Moy",
+        "his patients",
+        "Moy and Weiner"
+      ],
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        29639,
+        29642
+      ],
+      "raw_span": [
+        29639,
+        29642
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m3",
+      "quote": "Pierre recruited medical practitioners to open No-Fault clinics",
+      "name": "Pierre",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Pierre, Moy, and Weiner",
+        "Pierre \u201cwas the actual owner, operator, and controller\u201d",
+        "Pierre \u201creceived the majority of the [c]linics\u2019 proceeds",
+        "Pierre \u201cpossessed the checkbooks",
+        "Pierre \u201ccontrolled hiring and firing",
+        "Pierre \u201cidentified the locations",
+        "Pierre \u201c chose the  attorneys",
+        "Pierre arranged",
+        "Pierre \u201cprofited every step of the way.\u201d",
+        "Pierre steered hundreds of patients",
+        "Pierre owned, operated, and controlled Nexray",
+        "Pierre controlled Nexray\u2019s bank accounts",
+        "Pierre influenced the hiring and firing",
+        "Pierre identified the locations",
+        "Pierre negotiated the rent",
+        "Pierre chose the attorneys",
+        "his control of the Clinics",
+        "his receipt of the No-Fault scheme proceeds",
+        "he then paid",
+        "Pierre purportedly gave loans",
+        "Pierre directly paid"
+      ],
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        30372,
+        30378
+      ],
+      "raw_span": [
+        30372,
+        30378
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m4",
+      "quote": "Pierre, Moy, Weiner, and other co -conspirators",
+      "name": "Weiner",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Moy, Pierre, and Weiner",
+        "licensed physician\u2014Weiner\u2014",
+        "Moy and Weiner",
+        "Weiner submitted bills"
+      ],
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        30169,
+        30175
+      ],
+      "raw_span": [
+        30169,
+        30175
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m5",
+      "quote": "such as Rutland, and MRI facilities",
+      "name": "Rutland",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Rutland\u2019s",
+        "Rutland patients",
+        "Rutland employees or agents",
+        "Rutland by Moy and Pierre",
+        "Ruland"
+      ],
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        30616,
+        30623
+      ],
+      "raw_span": [
+        30616,
+        30623
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m6",
+      "quote": "MRI facilities\u2014such as Nexray\u2014that provide medical imaging services",
+      "name": "Nexray",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Nexray purported to be operated and controlled",
+        "Nexray\u2019s proceeds",
+        "Nexray\u2019s bank accounts",
+        "Nexray\u2019s employees",
+        "Nexray\u2019s facilities",
+        "Nexray\u2019s leases",
+        "refer patients to Nexray"
+      ],
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        30652,
+        30658
+      ],
+      "raw_span": [
+        30652,
+        30658
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m7",
+      "quote": "one of the companies he controlled, Marketing 4 You.",
+      "name": "Marketing 4 You",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        34923,
+        34938
+      ],
+      "raw_span": [
+        34923,
+        34938
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m8",
+      "quote": "his own company, Medical Reimbursement\nConsultants (\u201cMRC\u201d).",
+      "name": "Medical Reimbursement\nConsultants (\u201cMRC\u201d)",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "MRC"
+      ],
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        35113,
+        35155
+      ],
+      "raw_span": [
+        35113,
+        35155
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m9",
+      "quote": "the American Medical Association (\u201cAMA\u201d),",
+      "name": "American Medical Association (\u201cAMA\u201d)",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "AMA"
+      ],
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        42798,
+        42834
+      ],
+      "raw_span": [
+        42798,
+        42834
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m10",
+      "quote": "patient I.V., whose treatment is described below,",
+      "name": "I.V.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "the patient"
+      ],
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        38246,
+        38250
+      ],
+      "raw_span": [
+        38246,
+        38250
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m11",
+      "quote": "patient L.J., in which the",
+      "name": "L.J.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "these patients"
+      ],
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        52098,
+        52102
+      ],
+      "raw_span": [
+        52098,
+        52102
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m12",
+      "quote": "Andrew Carothers, M.D., P.C. v Progressive",
+      "name": "Andrew Carothers, M.D., P.C.",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        29119,
+        29147
+      ],
+      "raw_span": [
+        29119,
+        29147
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m13",
+      "quote": "Progressive Ins. Co., 979 N.Y.S.2d",
+      "name": "Progressive Ins. Co.",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        29150,
+        29171
+      ],
+      "raw_span": [
+        29150,
+        29171
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m14",
+      "quote": "These clinics fell into two groups: the No-\nFault clinics",
+      "name": "No-\nFault clinics",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "the No-Fault clinics",
+        "the Clinics"
+      ],
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        30511,
+        30528
+      ],
+      "raw_span": [
+        30511,
+        30528
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c2.m1",
+      "quote": "Rutland\u2019s billing for MMT is false and fraudulent",
+      "name": "Rutland",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Rutland and Moy",
+        "Rutland and Nexray",
+        "Rutland\u2019s bills",
+        "Rutland billed American Transit",
+        "Rutland purportedly treated"
+      ],
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        57839,
+        57846
+      ],
+      "raw_span": [
+        57839,
+        57846
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c2.m2",
+      "quote": "for the sole purpose of billing American Transit",
+      "name": "American Transit",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "American Transit is entitled to recover",
+        "bills submitted to American Transit",
+        "American Transit was billed"
+      ],
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        57820,
+        57836
+      ],
+      "raw_span": [
+        57820,
+        57836
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c2.m3",
+      "quote": "173. Nonetheless, Rutland and Moy referred patients for early diagnostic imaging",
+      "name": "Moy",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Moy also ordered",
+        "Moy was the referring physician",
+        "Moy purportedly examined S.S.",
+        "Moy referred P.A.",
+        "Moy evaluated T.C."
+      ],
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        60282,
+        60285
+      ],
+      "raw_span": [
+        60282,
+        60285
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c2.m4",
+      "quote": "176. Moy systemically referred patients to Nexray for imaging",
+      "name": "Nexray",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Rutland and Nexray",
+        "Nexray billed American Transit",
+        "Nexray purportedly performed",
+        "Nexray\u2019s bills"
+      ],
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        60978,
+        60984
+      ],
+      "raw_span": [
+        60978,
+        60984
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c2.m5",
+      "quote": "179. Further, Rutland and Nexray were under Pierre\u2019s control",
+      "name": "Pierre",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        62472,
+        62478
+      ],
+      "raw_span": [
+        62472,
+        62478
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c2.m6",
+      "quote": "188. Defendant Weiner noted that the MRI of the brain was \u201cunremarkable.\u201d",
+      "name": "Weiner",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Weiner documented",
+        "Weiner purportedly conducted",
+        "Weiner performed"
+      ],
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        65142,
+        65148
+      ],
+      "raw_span": [
+        65142,
+        65148
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c2.m7",
+      "quote": "a. Patient D.W. (claim no. TNC17000535-301)",
+      "name": "D.W.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "D.W w as allegedly involved",
+        "D.W.\u2019s right shoulder and brain",
+        "D.W. never claimed",
+        "her",
+        "she"
+      ],
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        64263,
+        64267
+      ],
+      "raw_span": [
+        64263,
+        64267
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c2.m8",
+      "quote": "b. Patient E.H. (claim no. 101359902)",
+      "name": "E.H.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "He was taken by ambulance",
+        "E.H. was admitted to the hospital",
+        "E.H.\u2019s left knee",
+        "E.H.\u2019s right shoulder"
+      ],
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        66949,
+        66953
+      ],
+      "raw_span": [
+        66949,
+        66953
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c2.m9",
+      "quote": "c. Patient S.S. (claim no. 1044824-01)",
+      "name": "S.S.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "S.S. sustained no lacera tions",
+        "her alleged accident",
+        "S.S.\u2019s left and right knees",
+        "SS"
+      ],
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        71935,
+        71939
+      ],
+      "raw_span": [
+        71935,
+        71939
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c2.m10",
+      "quote": "d. Patient P.A. (claim no. 1043121-02)",
+      "name": "P.A.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "P.A. did not present",
+        "Rutland and Moy referred P.A.",
+        "P.A.\u2019s cervical and lumbar spine",
+        "PA"
+      ],
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        75159,
+        75163
+      ],
+      "raw_span": [
+        75159,
+        75163
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c2.m11",
+      "quote": "e. Patient A.C. (claim no. 1028221-01)",
+      "name": "A.C.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "A.C. was taken to the hospital",
+        "Rutland evaluated A.C.",
+        "A.C.\u2019s cervical spine",
+        "A.C.\u2019s treatment"
+      ],
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        80787,
+        80791
+      ],
+      "raw_span": [
+        80787,
+        80791
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c2.m12",
+      "quote": "263. On or about August 11, 2018, A.C. underwent a treatment by Dr. Andrew J. Dowd",
+      "name": "Dr. Andrew J. Dowd",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "who was convicted in December 2018"
+      ],
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        83758,
+        83776
+      ],
+      "raw_span": [
+        83758,
+        83776
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c2.m13",
+      "quote": "f. Patient T.C. (claim no. 100980102)",
+      "name": "T.C.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "T.C. was taken to the hospital",
+        "T.C.\u2019s treatment plan",
+        "Moy performed on T.C."
+      ],
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        84511,
+        84515
+      ],
+      "raw_span": [
+        84511,
+        84515
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c2.m14",
+      "quote": "For example, for one patient, J.J., Moy ordered seven MRIs",
+      "name": "J.J.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "for patient J.J.",
+        "J.J. was still working"
+      ],
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        61232,
+        61236
+      ],
+      "raw_span": [
+        61232,
+        61236
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c3.m1",
+      "quote": "278. Patient D.L. was allegedly involved in a motor vehicle accident",
+      "name": "D.L.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "D.L.\u2019s",
+        "his"
+      ],
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        87631,
+        87635
+      ],
+      "raw_span": [
+        87631,
+        87635
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c3.m2",
+      "quote": "296. Patient A.W. was allegedly involved in a motor vehicle accident",
+      "name": "A.W.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "A.W.",
+        "A.W.\u2019s",
+        "she",
+        "her"
+      ],
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        92509,
+        92513
+      ],
+      "raw_span": [
+        92509,
+        92513
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c3.m3",
+      "quote": "311. Patient R.S. was allegedly involved in a motor vehicle accident",
+      "name": "R.S.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "R.S.",
+        "R.S.\u2019s",
+        "she",
+        "her"
+      ],
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        96457,
+        96461
+      ],
+      "raw_span": [
+        96457,
+        96461
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c3.m4",
+      "quote": "322. Patient I.V. was allegedly involved in a motor vehicle accident",
+      "name": "I.V.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "I.V.",
+        "I.V.\u2019s",
+        "she",
+        "her"
+      ],
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        99681,
+        99685
+      ],
+      "raw_span": [
+        99681,
+        99685
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c3.m5",
+      "quote": "340. Patient L.J. was allegedly involved in a motor vehicle accident",
+      "name": "L.J.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "L.J.",
+        "L.J.\u2019s"
+      ],
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        104640,
+        104644
+      ],
+      "raw_span": [
+        104640,
+        104644
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c3.m6",
+      "quote": "357. Patient G.R. was allegedly involved in a motor vehicle accident",
+      "name": "G.R.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "G.R.",
+        "G.R.\u2019s",
+        "him"
+      ],
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        108296,
+        108300
+      ],
+      "raw_span": [
+        108296,
+        108300
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c3.m7",
+      "quote": "369. Patient E.J. was allegedly involved in a motor vehicle accident",
+      "name": "E.J.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "E.J."
+      ],
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        111027,
+        111031
+      ],
+      "raw_span": [
+        111027,
+        111031
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c3.m8",
+      "quote": "279. Rutland evaluated D.L. the next day",
+      "name": "Rutland",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Rutland\u2019s"
+      ],
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        87749,
+        87756
+      ],
+      "raw_span": [
+        87749,
+        87756
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c3.m9",
+      "quote": "281. On or about November 8, 2018, Weiner performed MRIs",
+      "name": "Weiner",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Weiner documented",
+        "Weiner did not indicate"
+      ],
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        88394,
+        88400
+      ],
+      "raw_span": [
+        88394,
+        88400
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c3.m10",
+      "quote": "281. Nexray billed American Transit for this imaging",
+      "name": "Nexray",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Nexray\u2019s"
+      ],
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        88554,
+        88560
+      ],
+      "raw_span": [
+        88554,
+        88560
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c3.m11",
+      "quote": "286. Moy referred D.L. to Nexray",
+      "name": "Moy",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Moy referred",
+        "Moy evaluated"
+      ],
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        89759,
+        89762
+      ],
+      "raw_span": [
+        89759,
+        89762
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c3.m12",
+      "quote": "280. On November 8, 2018, Rutland billed American Transit",
+      "name": "American Transit",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "American Transit\u2019s"
+      ],
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        88285,
+        88301
+      ],
+      "raw_span": [
+        88285,
+        88301
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c3.m13",
+      "quote": "As alleged in the indictment in the Criminal Action, Pierre selected attorneys",
+      "name": "Pierre",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        115766,
+        115772
+      ],
+      "raw_span": [
+        115766,
+        115772
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m1",
+      "quote": "389. In reliance on these misrepre sentations, American Transit paid money",
+      "name": "American Transit",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "American Transit Insurance Company",
+        "American Transit\u2019s"
+      ],
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        116798,
+        116814
+      ],
+      "raw_span": [
+        116798,
+        116814
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m2",
+      "quote": "each time that Rutland mailed (or was caused to mail) a demand for payment",
+      "name": "Rutland",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Rutland enterprise",
+        "Rutland\u2019s",
+        "the Rutland enterprise",
+        "the Rutland RICO Enterprise",
+        "Rutland/Moy"
+      ],
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        119548,
+        119555
+      ],
+      "raw_span": [
+        119548,
+        119555
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m3",
+      "quote": "each time that Nexray mailed (or was caused to mail) a demand for payment",
+      "name": "Nexray",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Nexray enterprise",
+        "Nexray\u2019s",
+        "the Nexray enterprise",
+        "the Nexray RICO Enterprise",
+        "Nexray/Weiner"
+      ],
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        121994,
+        122000
+      ],
+      "raw_span": [
+        121994,
+        122000
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m4",
+      "quote": "Pierre (a non -physician) unlawfully participated in the operation",
+      "name": "Pierre",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Pierre\u2019s",
+        "Pierre (through MRC)",
+        "Pierre and Moy",
+        "Pierre and Weiner",
+        "Pierre, Moy and the other Defendants",
+        "Pierre, Weiner, and the other Defendants",
+        "Pierre (\"Rose\")"
+      ],
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        119864,
+        119870
+      ],
+      "raw_span": [
+        119864,
+        119870
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m5",
+      "quote": "425. Moy attested (or caused the attestation) to the medical necessity",
+      "name": "Moy",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Moy\u2019s",
+        "Moy, Pierre and their agents",
+        "Moy (or persons under his direction and control)",
+        "Moy and Pierre",
+        "Moy, as a duly licensed physician",
+        "Rutland/Moy"
+      ],
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        128798,
+        128801
+      ],
+      "raw_span": [
+        128798,
+        128801
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m6",
+      "quote": "413. On January 16, 2024, Weiner pled guilty",
+      "name": "Weiner",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Weiner\u2019s",
+        "Weiner and Pierre",
+        "Weiner, as a duly licensed physician",
+        "Nexray/Weiner"
+      ],
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        125144,
+        125150
+      ],
+      "raw_span": [
+        125144,
+        125150
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m7",
+      "quote": "Pierre (through MRC) Moy and their agents",
+      "name": "MRC",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "MRC\u2019s",
+        "MRC maintained",
+        "MRC Defendants"
+      ],
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        118987,
+        118990
+      ],
+      "raw_span": [
+        118987,
+        118990
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m8",
+      "quote": "Anthony Rose (\u201cRose\u201d), who ran the scheme",
+      "name": "Anthony Rose",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Rose",
+        "Anthony Rose (\u201cRose\u201d)"
+      ],
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        123169,
+        123182
+      ],
+      "raw_span": [
+        123169,
+        123182
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m9",
+      "quote": "Nathaniel Coles ( \u201cColes\u201d) in 2016",
+      "name": "Nathaniel Coles",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Coles"
+      ],
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        123711,
+        123726
+      ],
+      "raw_span": [
+        123711,
+        123726
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m10",
+      "quote": "the Law Office of Jason Tenenbaum, P.C.",
+      "name": "Law Office of Jason Tenenbaum, P.C.",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "the Tenenbaum firm"
+      ],
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        136257,
+        136292
+      ],
+      "raw_span": [
+        136257,
+        136292
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m11",
+      "quote": "its principal, Jason Tenenbaum, an affiliated attorney",
+      "name": "Jason Tenenbaum",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Tenenbaum",
+        "Tenenbaum\u2019s"
+      ],
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        136311,
+        136327
+      ],
+      "raw_span": [
+        136311,
+        136327
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m12",
+      "quote": "Roman Kravchenko , the Russel Friedman Law Group, LLP",
+      "name": "Roman Kravchenko",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Kravchenko",
+        "Attorney Kravchenko"
+      ],
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        136353,
+        136369
+      ],
+      "raw_span": [
+        136353,
+        136369
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m13",
+      "quote": "the Russel Friedman Law Group, LLP, among others",
+      "name": "Russel Friedman Law Group, LLP",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        136376,
+        136406
+      ],
+      "raw_span": [
+        136376,
+        136406
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m14",
+      "quote": "(collectively, the \u201c No-Fault Attorneys\u201d)",
+      "name": "No-Fault Attorneys",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "the No-Fault Attorneys",
+        "certain No-Fault Attorneys"
+      ],
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        136443,
+        136461
+      ],
+      "raw_span": [
+        136443,
+        136461
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m15",
+      "quote": "New York Police Department officers",
+      "name": "New York Police Department",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        122917,
+        122953
+      ],
+      "raw_span": [
+        122917,
+        122953
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m16",
+      "quote": "New York State Police Investigator Paul Schneeloch",
+      "name": "Paul Schneeloch",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Investigator Paul Schneeloch",
+        "Schneeloch"
+      ],
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        124001,
+        124017
+      ],
+      "raw_span": [
+        124001,
+        124017
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m17",
+      "quote": "New York State Police Investigator Paul Schneeloch",
+      "name": "New York State Police",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        123966,
+        123987
+      ],
+      "raw_span": [
+        123966,
+        123987
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m18",
+      "quote": "registered with the State of New York as Rutland\u2019s sole officer",
+      "name": "State of New York",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "State of New York forming Rutland",
+        "State of New York related to Rutland"
+      ],
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        127414,
+        127431
+      ],
+      "raw_span": [
+        127414,
+        127431
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m19",
+      "quote": "the United States Postal Service",
+      "name": "United States Postal Service",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "U.S. Mail",
+        "United States mails"
+      ],
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        118085,
+        118114
+      ],
+      "raw_span": [
+        118085,
+        118114
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c5.m1",
+      "quote": "468. Pierre, Moy and others",
+      "name": "Pierre",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Pierre\u2019s continued attempt",
+        "Pierre continues to attempt",
+        "Pierre is an architect",
+        "Pierre and Moy",
+        "Pierre and Weiner"
+      ],
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        143857,
+        143863
+      ],
+      "raw_span": [
+        143857,
+        143863
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c5.m2",
+      "quote": "504. Moy and Weiner are practitioners",
+      "name": "Moy",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Moy is the owner of Rutland",
+        "Pierre and Moy",
+        "Moy and Weiner",
+        "Moy\u2019s extensive fraudulent conduct"
+      ],
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        164690,
+        164693
+      ],
+      "raw_span": [
+        164690,
+        164693
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c5.m3",
+      "quote": "Rutland\u2019s business is racketeering activity",
+      "name": "Rutland",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Rutland\u2019s affairs",
+        "through Rutland",
+        "Rutland was not entitled to receive",
+        "Rutland is not engaged in a legitimate medical practice",
+        "Rutland is engaged in inherently unlawful acts",
+        "the Rutland enterprise",
+        "Rutland, in turn, referred patients to Nexray",
+        "the owner of Rutland",
+        "Rutland and Nexray",
+        "services provided by Rutland and Moy",
+        "charges submitted through Rutland"
+      ],
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        145436,
+        145443
+      ],
+      "raw_span": [
+        145436,
+        145443
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c5.m4",
+      "quote": "Pierre, Weiner , and others",
+      "name": "Weiner",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Weiner the owner of Nexray",
+        "Pierre and Weiner",
+        "Moy and Weiner",
+        "Weiner\u2019s extensive fraudulent conduct"
+      ],
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        147387,
+        147393
+      ],
+      "raw_span": [
+        147387,
+        147393
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c5.m5",
+      "quote": "474. Nexray is an ongoing \u201centerprise\u201d",
+      "name": "Nexray",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Nexray\u2019s affairs",
+        "Nexray\u2019s business",
+        "Nexray is not engaged in a legitimate medical practice",
+        "Nexray is engaged in inherently unlawful acts",
+        "through Nexray",
+        "the owner of Nexray",
+        "Rutland referred patients to Nexray",
+        "Nexray, Pierre, and Weiner",
+        "charges submitted through Nexray"
+      ],
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        147228,
+        147234
+      ],
+      "raw_span": [
+        147228,
+        147234
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c5.m6",
+      "quote": "Plaintiff American Transit Insurance Company respectfully requests",
+      "name": "American Transit Insurance Company",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "American Transit",
+        "American Transit\u2019s expense",
+        "American Transit\u2019s payments",
+        "its injury",
+        "its business and property"
+      ],
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        173339,
+        173373
+      ],
+      "raw_span": [
+        173339,
+        173373
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c5.m7",
+      "quote": "the John Doe Defendants constituted",
+      "name": "the John Doe Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "such Defendants",
+        "Defendants"
+      ],
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        156271,
+        156294
+      ],
+      "raw_span": [
+        156271,
+        156294
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c5.m8",
+      "quote": "the \u201cAssociated In Fact Enterprise\u201d",
+      "name": "Associated In Fact Enterprise",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "the Associated In Fact Enterprise\u2019s affairs",
+        "the Associated In Fact Enterprise is distinct from"
+      ],
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        156472,
+        156501
+      ],
+      "raw_span": [
+        156472,
+        156501
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c6.m1",
+      "quote": "American Transit hereby demands a jury trial",
+      "name": "American Transit",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "in favor of American Transit",
+        "American Transit has no obligation to pay",
+        "submitted to it by Rutland and Nexray ,",
+        "American Transit paid to them",
+        "its favor"
+      ],
+      "_chunk": [
+        173863,
+        177314
+      ],
+      "clean_span": [
+        176797,
+        176813
+      ],
+      "raw_span": [
+        176797,
+        176813
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c6.m2",
+      "quote": "submitted to it by Rutland and Nexray ,",
+      "name": "Rutland",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "against Rutland",
+        "submitted to it by Rutland and Nexray ,"
+      ],
+      "_chunk": [
+        173863,
+        177314
+      ],
+      "clean_span": [
+        175635,
+        175642
+      ],
+      "raw_span": [
+        175635,
+        175642
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c6.m3",
+      "quote": "against Nexray, an order obligating Defendants",
+      "name": "Nexray",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "against Nexray",
+        "submitted to it by Rutland and Nexray ,"
+      ],
+      "_chunk": [
+        173863,
+        177314
+      ],
+      "clean_span": [
+        174194,
+        174200
+      ],
+      "raw_span": [
+        174194,
+        174200
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c6.m4",
+      "quote": "against Pierre and Moy, for compensatory damages",
+      "name": "Pierre",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "against Pierre and Weiner",
+        "Rutland, Pierre, and Moy",
+        "Nexray, Pierre, and Weiner"
+      ],
+      "_chunk": [
+        173863,
+        177314
+      ],
+      "clean_span": [
+        174579,
+        174585
+      ],
+      "raw_span": [
+        174579,
+        174585
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c6.m5",
+      "quote": "Rutland, Pierre, and Moy, a money judgment",
+      "name": "Moy",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "against Pierre and Moy"
+      ],
+      "_chunk": [
+        173863,
+        177314
+      ],
+      "clean_span": [
+        175869,
+        175872
+      ],
+      "raw_span": [
+        175869,
+        175872
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c6.m6",
+      "quote": "Nexray, Pierre, and Weiner, a money judgment",
+      "name": "Weiner",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "against Pierre and Weiner"
+      ],
+      "_chunk": [
+        173863,
+        177314
+      ],
+      "clean_span": [
+        176144,
+        176150
+      ],
+      "raw_span": [
+        176144,
+        176150
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c6.m7",
+      "quote": "against all Defendants, a money judgment in its",
+      "name": "all Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "against all Defendants",
+        "such defendants",
+        "such Defendants"
+      ],
+      "_chunk": [
+        173863,
+        177314
+      ],
+      "clean_span": [
+        176496,
+        176510
+      ],
+      "raw_span": [
+        176496,
+        176510
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    }
+  ],
+  "entity_candidates": [],
+  "detail_mentions": [
+    {
+      "detail_type": "address",
+      "raw_value": "145 E 98th Street, 1st Floor, Brooklyn, New York 11212",
+      "normalized": "145|e|98th|street|1st|floor|brooklyn|new|york|11212",
+      "clean_span": [
+        16549,
+        16646
+      ],
+      "owner_ref": "c0.m4",
+      "basis": "stated",
+      "issuer": null,
+      "subtype": null,
+      "parts": {
+        "number": "145",
+        "direction": "E",
+        "street": "98TH",
+        "street_type": "ST",
+        "unit": "",
+        "city": "BROOKLYN",
+        "state": "NY",
+        "zip": "11212"
+      },
+      "detected_by": [
+        "llm"
+      ],
+      "checksum": "n/a",
+      "cue": null,
+      "recall_gap": false,
+      "raw_span": [
+        16549,
+        16646
+      ]
+    },
+    {
+      "detail_type": "address",
+      "raw_value": "135-25F 79th Street, Suite 2B, Howard Beach, New York 11414",
+      "normalized": "135-25f|79th|street|suite|2b|howard|beach|new|york|11414",
+      "clean_span": [
+        18600,
+        18730
+      ],
+      "owner_ref": "c0.m6",
+      "basis": "stated",
+      "issuer": null,
+      "subtype": null,
+      "parts": {
+        "number": "135-25F",
+        "direction": "",
+        "street": "79TH",
+        "street_type": "ST",
+        "unit": "2B",
+        "city": "HOWARD BEACH",
+        "state": "NY",
+        "zip": "11414"
+      },
+      "detected_by": [
+        "llm"
+      ],
+      "checksum": "n/a",
+      "cue": null,
+      "recall_gap": false,
+      "raw_span": [
+        18600,
+        18730
+      ]
+    },
+    {
+      "detail_type": "phone",
+      "raw_value": "(212) 801-9200",
+      "normalized": "+12128019200",
+      "clean_span": [
+        177086,
+        177100
+      ],
+      "owner_ref": "UNASSIGNED",
+      "basis": "stated",
+      "issuer": null,
+      "subtype": null,
+      "parts": null,
+      "detected_by": [
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "cue": false,
+      "recall_gap": true,
+      "raw_span": [
+        177086,
+        177100
+      ]
+    },
+    {
+      "detail_type": "email",
+      "raw_value": "perkinsj@gtlaw.com",
+      "normalized": "perkinsj@gtlaw.com",
+      "clean_span": [
+        177102,
+        177120
+      ],
+      "owner_ref": "UNASSIGNED",
+      "basis": "stated",
+      "issuer": null,
+      "subtype": null,
+      "parts": null,
+      "detected_by": [
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "cue": false,
+      "recall_gap": true,
+      "raw_span": [
+        177102,
+        177120
+      ]
+    },
+    {
+      "detail_type": "email",
+      "raw_value": "serbarolif@gtlaw.com",
+      "normalized": "serbarolif@gtlaw.com",
+      "clean_span": [
+        177124,
+        177144
+      ],
+      "owner_ref": "UNASSIGNED",
+      "basis": "stated",
+      "issuer": null,
+      "subtype": null,
+      "parts": null,
+      "detected_by": [
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "cue": false,
+      "recall_gap": true,
+      "raw_span": [
+        177124,
+        177144
+      ]
+    },
+    {
+      "detail_type": "email",
+      "raw_value": "molluzzoj@gtlaw.com",
+      "normalized": "molluzzoj@gtlaw.com",
+      "clean_span": [
+        177146,
+        177165
+      ],
+      "owner_ref": "UNASSIGNED",
+      "basis": "stated",
+      "issuer": null,
+      "subtype": null,
+      "parts": null,
+      "detected_by": [
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "cue": false,
+      "recall_gap": true,
+      "raw_span": [
+        177146,
+        177165
+      ]
+    }
+  ],
+  "action_mentions": [
+    {
+      "action_id": "c0.a1",
+      "quote": "and together with the other defendants, \u201cDefendants\u201d",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m2",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m9",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        783,
+        836
+      ],
+      "raw_span": [
+        783,
+        836
+      ]
+    },
+    {
+      "action_id": "c0.a2",
+      "quote": "and together with the other defendants, \u201cDefendants\u201d",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m3",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m9",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        783,
+        836
+      ],
+      "raw_span": [
+        783,
+        836
+      ]
+    },
+    {
+      "action_id": "c0.a3",
+      "quote": "and together with the other defendants, \u201cDefendants\u201d",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m4",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m9",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        783,
+        836
+      ],
+      "raw_span": [
+        783,
+        836
+      ]
+    },
+    {
+      "action_id": "c0.a4",
+      "quote": "and together with the other defendants, \u201cDefendants\u201d",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m5",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m9",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        783,
+        836
+      ],
+      "raw_span": [
+        783,
+        836
+      ]
+    },
+    {
+      "action_id": "c0.a5",
+      "quote": "and together with the other defendants, \u201cDefendants\u201d",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m6",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m9",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        783,
+        836
+      ],
+      "raw_span": [
+        783,
+        836
+      ]
+    },
+    {
+      "action_id": "c0.a6",
+      "quote": "and together with the other defendants, \u201cDefendants\u201d",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m8",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m9",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        783,
+        836
+      ],
+      "raw_span": [
+        783,
+        836
+      ]
+    },
+    {
+      "action_id": "c0.a7",
+      "quote": "John Does 1-15 (the \u201cJohn Doe Defendants,\u201d",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m7",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m8",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        740,
+        782
+      ],
+      "raw_span": [
+        740,
+        782
+      ]
+    },
+    {
+      "action_id": "c0.a8",
+      "quote": "Defendants submitted, and caused to be submitted to American Transit for payment, thousands of fraudulent No-Fault insurance reimbursement claims",
+      "action_type": "submitted_claims_to",
+      "participants": [
+        {
+          "mention_id": "c0.m9",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c0.m1",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        2547,
+        2693
+      ],
+      "raw_span": [
+        2547,
+        2693
+      ]
+    },
+    {
+      "action_id": "c0.a9",
+      "quote": "Defendants provided patients with medically unnecessary treatment",
+      "action_type": "provided_treatment",
+      "participants": [
+        {
+          "mention_id": "c0.m9",
+          "role": "provider"
+        }
+      ],
+      "time_qualifier": "As part of the scheme",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        4789,
+        4855
+      ],
+      "raw_span": [
+        4789,
+        4855
+      ]
+    },
+    {
+      "action_id": "c0.a10",
+      "quote": "Defendant Pierre was an architect of the scheme by paying bribes to 911 operators",
+      "action_type": "paid_bribes",
+      "participants": [
+        {
+          "mention_id": "c0.m2",
+          "role": "payer"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        4177,
+        4260
+      ],
+      "raw_span": [
+        4177,
+        4260
+      ]
+    },
+    {
+      "action_id": "c0.a11",
+      "quote": "Pierre has since pled guilty to conspiracy to commit bribery and conspiracy to defraud the Internal Revenue Service.",
+      "action_type": "pled_guilty",
+      "participants": [
+        {
+          "mention_id": "c0.m2",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": "since",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        4533,
+        4650
+      ],
+      "raw_span": [
+        4533,
+        4650
+      ]
+    },
+    {
+      "action_id": "c0.a12",
+      "quote": "Weiner has since pled guilty to conspiracy to commit healthcare fraud and to defraud the United States.",
+      "action_type": "pled_guilty",
+      "participants": [
+        {
+          "mention_id": "c0.m5",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": "since",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        4652,
+        4756
+      ],
+      "raw_span": [
+        4652,
+        4756
+      ]
+    },
+    {
+      "action_id": "c0.a13",
+      "quote": "Rutland, in turn, referred patients to Nexray",
+      "action_type": "referred_patients_to",
+      "participants": [
+        {
+          "mention_id": "c0.m4",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c0.m6",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        4415,
+        4460
+      ],
+      "raw_span": [
+        4415,
+        4460
+      ]
+    },
+    {
+      "action_id": "c0.a14",
+      "quote": "Rutland is purportedly owned by Defendant Moy",
+      "action_type": "owned",
+      "participants": [
+        {
+          "mention_id": "c0.m3",
+          "role": "owner"
+        },
+        {
+          "mention_id": "c0.m4",
+          "role": "owned"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        5319,
+        5364
+      ],
+      "raw_span": [
+        5319,
+        5364
+      ]
+    },
+    {
+      "action_id": "c0.a15",
+      "quote": "is actually owned and controlled by Pierre",
+      "action_type": "owned_and_controlled",
+      "participants": [
+        {
+          "mention_id": "c0.m2",
+          "role": "controller"
+        },
+        {
+          "mention_id": "c0.m4",
+          "role": "controlled"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        5400,
+        5442
+      ],
+      "raw_span": [
+        5400,
+        5442
+      ]
+    },
+    {
+      "action_id": "c0.a16",
+      "quote": "Nexray is nominally owned by Weiner",
+      "action_type": "owned",
+      "participants": [
+        {
+          "mention_id": "c0.m5",
+          "role": "owner"
+        },
+        {
+          "mention_id": "c0.m6",
+          "role": "owned"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        5552,
+        5588
+      ],
+      "raw_span": [
+        5552,
+        5588
+      ]
+    },
+    {
+      "action_id": "c0.a17",
+      "quote": "is actually owned and controlled by Pierre through his management company",
+      "action_type": "owned_and_controlled",
+      "participants": [
+        {
+          "mention_id": "c0.m2",
+          "role": "controller"
+        },
+        {
+          "mention_id": "c0.m6",
+          "role": "controlled"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        5623,
+        5697
+      ],
+      "raw_span": [
+        5623,
+        5697
+      ]
+    },
+    {
+      "action_id": "c0.a18",
+      "quote": "Moy represented himself to American Transit to be the sole officer, director, and shareholder of Rutland.",
+      "action_type": "represented_self_as",
+      "participants": [
+        {
+          "mention_id": "c0.m3",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c0.m1",
+          "role": "recipient"
+        },
+        {
+          "mention_id": "c0.m4",
+          "role": "organization"
+        }
+      ],
+      "time_qualifier": "Beginning in or about 2009, and numerous times thereafter",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        14607,
+        14713
+      ],
+      "raw_span": [
+        14607,
+        14713
+      ]
+    },
+    {
+      "action_id": "c0.a19",
+      "quote": "Moy ceded operation and management over Rutland to Defendant Pierre.",
+      "action_type": "ceded_management_to",
+      "participants": [
+        {
+          "mention_id": "c0.m3",
+          "role": "former_controller"
+        },
+        {
+          "mention_id": "c0.m2",
+          "role": "recipient"
+        },
+        {
+          "mention_id": "c0.m4",
+          "role": "organization"
+        }
+      ],
+      "time_qualifier": "since at least 2009",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        14767,
+        14836
+      ],
+      "raw_span": [
+        14767,
+        14836
+      ]
+    },
+    {
+      "action_id": "c0.a20",
+      "quote": "Weiner represented himself to American Transit to be the sole office, director, and shareholder of Nexray.",
+      "action_type": "represented_self_as",
+      "participants": [
+        {
+          "mention_id": "c0.m5",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c0.m1",
+          "role": "recipient"
+        },
+        {
+          "mention_id": "c0.m6",
+          "role": "organization"
+        }
+      ],
+      "time_qualifier": "Beginning in 2011 and numerous times thereafter",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        15914,
+        16021
+      ],
+      "raw_span": [
+        15914,
+        16021
+      ]
+    },
+    {
+      "action_id": "c0.a21",
+      "quote": "Weiner ceded operation and management of Nexray to Defendant Pierre.",
+      "action_type": "ceded_management_to",
+      "participants": [
+        {
+          "mention_id": "c0.m5",
+          "role": "former_controller"
+        },
+        {
+          "mention_id": "c0.m2",
+          "role": "recipient"
+        },
+        {
+          "mention_id": "c0.m6",
+          "role": "organization"
+        }
+      ],
+      "time_qualifier": "at least since 2008",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        16074,
+        16142
+      ],
+      "raw_span": [
+        16074,
+        16142
+      ]
+    },
+    {
+      "action_id": "c0.a22",
+      "quote": "Rutland and Nexray fraudulently held themselves out as properly licensed professional corporations",
+      "action_type": "held_out_as",
+      "participants": [
+        {
+          "mention_id": "c0.m4",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c0.m6",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        5704,
+        5804
+      ],
+      "raw_span": [
+        5704,
+        5804
+      ]
+    },
+    {
+      "action_id": "c0.a23",
+      "quote": "Rutland violated N.Y. Pub. Health L. \u00a7 238 -a(1)(a) by referring patients to other providers with which it has a financial relationship, including Nexray.",
+      "action_type": "referred_patients_to",
+      "participants": [
+        {
+          "mention_id": "c0.m4",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c0.m6",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        18047,
+        18204
+      ],
+      "raw_span": [
+        18047,
+        18204
+      ]
+    },
+    {
+      "action_id": "c0.a24",
+      "quote": "Rutland\u2019s bills for services that it presented to American Transit were and are fraudulent",
+      "action_type": "billed",
+      "participants": [
+        {
+          "mention_id": "c0.m4",
+          "role": "biller"
+        },
+        {
+          "mention_id": "c0.m1",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        17092,
+        17183
+      ],
+      "raw_span": [
+        17092,
+        17183
+      ]
+    },
+    {
+      "action_id": "c0.a25",
+      "quote": "Nexray billed American Transit for unnecessary and/or excessive diagnostic radiology services",
+      "action_type": "billed",
+      "participants": [
+        {
+          "mention_id": "c0.m6",
+          "role": "biller"
+        },
+        {
+          "mention_id": "c0.m1",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": "throughout the course of this scheme",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        19133,
+        19227
+      ],
+      "raw_span": [
+        19133,
+        19227
+      ]
+    },
+    {
+      "action_id": "c0.a26",
+      "quote": "By 2024, Weiner pled guilty in Criminal Action of one count of conspiracy to commit healthcare fraud and to defraud the United States",
+      "action_type": "pled_guilty",
+      "participants": [
+        {
+          "mention_id": "c0.m5",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": "On January 16, 2024",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": null,
+      "raw_span": null
+    },
+    {
+      "action_id": "c0.a27",
+      "quote": "American Transit paid Rutland and Nexray\u2019s No -Fault claims",
+      "action_type": "paid_claims_to",
+      "participants": [
+        {
+          "mention_id": "c0.m1",
+          "role": "payer"
+        },
+        {
+          "mention_id": "c0.m4",
+          "role": "recipient"
+        },
+        {
+          "mention_id": "c0.m6",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": "to date",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        10006,
+        10067
+      ],
+      "raw_span": [
+        10006,
+        10067
+      ]
+    },
+    {
+      "action_id": "c0.a28",
+      "quote": "John Does 1 -15 are individuals and entities whose names are not yet known to American Transit, and who have conspired to and did assist in the fraudulent and unlawful conduct",
+      "action_type": "conspired_and_assisted",
+      "participants": [
+        {
+          "mention_id": "c0.m7",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c0.m1",
+          "role": "affected_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28266
+      ],
+      "clean_span": [
+        20234,
+        20410
+      ],
+      "raw_span": [
+        20234,
+        20410
+      ]
+    },
+    {
+      "action_id": "c1.a1",
+      "quote": "when Moy, Pierre, and Weiner were\nindicted in the Criminal Action",
+      "action_type": "indicted",
+      "participants": [
+        {
+          "mention_id": "c1.m2",
+          "role": "defendant"
+        },
+        {
+          "mention_id": "c1.m3",
+          "role": "defendant"
+        },
+        {
+          "mention_id": "c1.m4",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": "in January 2022",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        29634,
+        29700
+      ],
+      "raw_span": [
+        29634,
+        29700
+      ]
+    },
+    {
+      "action_id": "c1.a2",
+      "quote": "Pierre recruited medical practitioners to open No-Fault clinics",
+      "action_type": "recruited",
+      "participants": [
+        {
+          "mention_id": "c1.m3",
+          "role": "recruiter"
+        },
+        {
+          "mention_id": "c1.m5",
+          "role": "clinic"
+        }
+      ],
+      "time_qualifier": "from at least 2008 through 2021",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        30372,
+        30436
+      ],
+      "raw_span": [
+        30372,
+        30436
+      ]
+    },
+    {
+      "action_id": "c1.a3",
+      "quote": "Pierre \u201cwas the actual\nowner, operator, and controller\u201d of the No-Fault clinics.",
+      "action_type": "owned_operated_and_controlled",
+      "participants": [
+        {
+          "mention_id": "c1.m3",
+          "role": "owner_operator_controller"
+        },
+        {
+          "mention_id": "c1.m14",
+          "role": "clinic"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        30862,
+        30943
+      ],
+      "raw_span": [
+        30862,
+        30943
+      ]
+    },
+    {
+      "action_id": "c1.a4",
+      "quote": "Pierre arranged for the No -Fault clinics to use Moy",
+      "action_type": "arranged_for_use",
+      "participants": [
+        {
+          "mention_id": "c1.m3",
+          "role": "arranger"
+        },
+        {
+          "mention_id": "c1.m14",
+          "role": "clinic"
+        },
+        {
+          "mention_id": "c1.m2",
+          "role": "provider"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        31672,
+        31724
+      ],
+      "raw_span": [
+        31672,
+        31724
+      ]
+    },
+    {
+      "action_id": "c1.a5",
+      "quote": "Pierre steered hundreds of patients from the clinics to Nexray.",
+      "action_type": "steered",
+      "participants": [
+        {
+          "mention_id": "c1.m3",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c1.m6",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        32522,
+        32585
+      ],
+      "raw_span": [
+        32522,
+        32585
+      ]
+    },
+    {
+      "action_id": "c1.a6",
+      "quote": "Pierre owned, operated, and controlled Nexray.",
+      "action_type": "owned_operated_and_controlled",
+      "participants": [
+        {
+          "mention_id": "c1.m3",
+          "role": "owner_operator_controller"
+        },
+        {
+          "mention_id": "c1.m6",
+          "role": "organization"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        32703,
+        32749
+      ],
+      "raw_span": [
+        32703,
+        32749
+      ]
+    },
+    {
+      "action_id": "c1.a7",
+      "quote": "Pierre and Weiner \u201cagreed to falsify clinical findings",
+      "action_type": "agreed_to_falsify",
+      "participants": [
+        {
+          "mention_id": "c1.m3",
+          "role": "participant"
+        },
+        {
+          "mention_id": "c1.m4",
+          "role": "participant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        33474,
+        33529
+      ],
+      "raw_span": [
+        33474,
+        33529
+      ]
+    },
+    {
+      "action_id": "c1.a8",
+      "quote": "Pierre arranged for physicians, including Moy and Weiner \u201cto lie under  oath",
+      "action_type": "arranged_to_lie",
+      "participants": [
+        {
+          "mention_id": "c1.m3",
+          "role": "arranger"
+        },
+        {
+          "mention_id": "c1.m2",
+          "role": "witness"
+        },
+        {
+          "mention_id": "c1.m4",
+          "role": "witness"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        33999,
+        34075
+      ],
+      "raw_span": [
+        33999,
+        34075
+      ]
+    },
+    {
+      "action_id": "c1.a9",
+      "quote": "Pierre caused the No-Fault\nclinics to transfer the proceeds from the scheme to his own company, Medical Reimbursement",
+      "action_type": "caused_transfer",
+      "participants": [
+        {
+          "mention_id": "c1.m3",
+          "role": "causer"
+        },
+        {
+          "mention_id": "c1.m14",
+          "role": "transferor"
+        },
+        {
+          "mention_id": "c1.m8",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        35016,
+        35134
+      ],
+      "raw_span": [
+        35016,
+        35134
+      ]
+    },
+    {
+      "action_id": "c1.a10",
+      "quote": "Rutland and Weiner submitted bills to American Transit",
+      "action_type": "submitted_bills",
+      "participants": [
+        {
+          "mention_id": "c1.m5",
+          "role": "submitter"
+        },
+        {
+          "mention_id": "c1.m4",
+          "role": "submitter"
+        },
+        {
+          "mention_id": "c1.m1",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        35772,
+        35826
+      ],
+      "raw_span": [
+        35772,
+        35826
+      ]
+    },
+    {
+      "action_id": "c1.a11",
+      "quote": "Rutland , through Moy,  provided virtually every patient with a purported initial examination.",
+      "action_type": "provided",
+      "participants": [
+        {
+          "mention_id": "c1.m5",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c1.m2",
+          "role": "agent"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        36108,
+        36203
+      ],
+      "raw_span": [
+        36108,
+        36203
+      ]
+    },
+    {
+      "action_id": "c1.a12",
+      "quote": "Rutland and Moy administered computerized ROM testing",
+      "action_type": "administered",
+      "participants": [
+        {
+          "mention_id": "c1.m5",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c1.m2",
+          "role": "provider"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        55016,
+        55069
+      ],
+      "raw_span": [
+        55016,
+        55069
+      ]
+    },
+    {
+      "action_id": "c1.a13",
+      "quote": "Rutland and Moy subjected Rutland patients to needless and unwarranted",
+      "action_type": "subjected_to_testing",
+      "participants": [
+        {
+          "mention_id": "c1.m5",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c1.m2",
+          "role": "provider"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        52604,
+        52674
+      ],
+      "raw_span": [
+        52604,
+        52674
+      ]
+    },
+    {
+      "action_id": "c1.a14",
+      "quote": "Moy administered nerve conduction studies without regard to his patient\u2019s symptoms",
+      "action_type": "administered",
+      "participants": [
+        {
+          "mention_id": "c1.m2",
+          "role": "provider"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        43056,
+        43139
+      ],
+      "raw_span": [
+        43056,
+        43139
+      ]
+    },
+    {
+      "action_id": "c1.a15",
+      "quote": "Moy failed to tailor his EDX testing to each individual patient",
+      "action_type": "failed_to_tailor",
+      "participants": [
+        {
+          "mention_id": "c1.m2",
+          "role": "provider"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        43377,
+        43440
+      ],
+      "raw_span": [
+        43377,
+        43440
+      ]
+    },
+    {
+      "action_id": "c1.a16",
+      "quote": "Moy provided virtually the same justification for providing MMT",
+      "action_type": "provided_justification",
+      "participants": [
+        {
+          "mention_id": "c1.m2",
+          "role": "provider"
+        }
+      ],
+      "time_qualifier": "for each of his patients",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        57193,
+        57256
+      ],
+      "raw_span": [
+        57193,
+        57256
+      ]
+    },
+    {
+      "action_id": "c1.a17",
+      "quote": "Rutland and Moy used a protocol approach when administering electromyography studies",
+      "action_type": "used_protocol_approach",
+      "participants": [
+        {
+          "mention_id": "c1.m5",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c1.m2",
+          "role": "provider"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": [
+        47890,
+        47975
+      ],
+      "raw_span": [
+        47890,
+        47975
+      ]
+    },
+    {
+      "action_id": "c1.a18",
+      "quote": "the member clinic named as \u201csuch as Rutland\u201d",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c1.m5",
+          "role": "member"
+        },
+        {
+          "mention_id": "c1.m14",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        27574,
+        57746
+      ],
+      "clean_span": null,
+      "raw_span": null
+    },
+    {
+      "action_id": "c2.a1",
+      "quote": "173. Nonetheless, Rutland and Moy referred patients for early diagnostic imaging",
+      "action_type": "referred_to",
+      "participants": [
+        {
+          "mention_id": "c2.m1",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c2.m3",
+          "role": "referrer"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        60252,
+        60332
+      ],
+      "raw_span": [
+        60252,
+        60332
+      ]
+    },
+    {
+      "action_id": "c2.a2",
+      "quote": "176. Moy systemically referred patients to Nexray for imaging",
+      "action_type": "referred_to",
+      "participants": [
+        {
+          "mention_id": "c2.m3",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c2.m4",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        60935,
+        60996
+      ],
+      "raw_span": [
+        60935,
+        60996
+      ]
+    },
+    {
+      "action_id": "c2.a3",
+      "quote": "179. Further, Rutland and Nexray were under Pierre\u2019s control",
+      "action_type": "controlled",
+      "participants": [
+        {
+          "mention_id": "c2.m5",
+          "role": "controller"
+        },
+        {
+          "mention_id": "c2.m1",
+          "role": "controlled_party"
+        },
+        {
+          "mention_id": "c2.m4",
+          "role": "controlled_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": null,
+      "raw_span": null
+    },
+    {
+      "action_id": "c2.a4",
+      "quote": "187. Nexray purportedly took two MRIs of D.W.\u2019s right shoulder and brain",
+      "action_type": "performed",
+      "participants": [
+        {
+          "mention_id": "c2.m4",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c2.m7",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "January 3, 2018",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": null,
+      "raw_span": null
+    },
+    {
+      "action_id": "c2.a5",
+      "quote": "187. Nexray billed American Transit for these MRIs",
+      "action_type": "billed",
+      "participants": [
+        {
+          "mention_id": "c2.m4",
+          "role": "biller"
+        },
+        {
+          "mention_id": "c2.m2",
+          "role": "payor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": null,
+      "raw_span": null
+    },
+    {
+      "action_id": "c2.a6",
+      "quote": "188. Defendant Weiner noted that the MRI of the brain was \u201cunremarkable.\u201d",
+      "action_type": "documented",
+      "participants": [
+        {
+          "mention_id": "c2.m6",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c2.m7",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": null,
+      "raw_span": null
+    },
+    {
+      "action_id": "c2.a7",
+      "quote": "197. Three days later, on December 14, 2017, Rutland purportedly evaluated E.H.",
+      "action_type": "evaluated",
+      "participants": [
+        {
+          "mention_id": "c2.m1",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c2.m8",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "December 14, 2017",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        67555,
+        67634
+      ],
+      "raw_span": [
+        67555,
+        67634
+      ]
+    },
+    {
+      "action_id": "c2.a8",
+      "quote": "199. Nexray billed American Transit for this MRI",
+      "action_type": "billed",
+      "participants": [
+        {
+          "mention_id": "c2.m4",
+          "role": "biller"
+        },
+        {
+          "mention_id": "c2.m2",
+          "role": "payor"
+        }
+      ],
+      "time_qualifier": "January 9, 2018",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": null,
+      "raw_span": null
+    },
+    {
+      "action_id": "c2.a9",
+      "quote": "199. Moy was the referring physician",
+      "action_type": "referred_to",
+      "participants": [
+        {
+          "mention_id": "c2.m3",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c2.m8",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "January 9, 2018",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": null,
+      "raw_span": null
+    },
+    {
+      "action_id": "c2.a10",
+      "quote": "213. Moy purportedly examined S.S. on November 29, 2018.",
+      "action_type": "examined",
+      "participants": [
+        {
+          "mention_id": "c2.m3",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c2.m9",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "November 29, 2018",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        72699,
+        72755
+      ],
+      "raw_span": [
+        72699,
+        72755
+      ]
+    },
+    {
+      "action_id": "c2.a11",
+      "quote": "214. On November 9, 2018, Nexray purportedly performed MRIs of S.S.\u2019s left and right knees.",
+      "action_type": "performed",
+      "participants": [
+        {
+          "mention_id": "c2.m4",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c2.m9",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "November 9, 2018",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        72930,
+        73022
+      ],
+      "raw_span": [
+        72930,
+        73022
+      ]
+    },
+    {
+      "action_id": "c2.a12",
+      "quote": "216. Moy subsequently referred S.S. for additional MRIs.",
+      "action_type": "referred_to",
+      "participants": [
+        {
+          "mention_id": "c2.m3",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c2.m9",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "subsequently",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        73387,
+        73443
+      ],
+      "raw_span": [
+        73387,
+        73443
+      ]
+    },
+    {
+      "action_id": "c2.a13",
+      "quote": "227. Moy purportedly evaluated P.A. on November 19, 2018 .",
+      "action_type": "evaluated",
+      "participants": [
+        {
+          "mention_id": "c2.m3",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c2.m10",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "November 19, 2018",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        75483,
+        75541
+      ],
+      "raw_span": [
+        75483,
+        75541
+      ]
+    },
+    {
+      "action_id": "c2.a14",
+      "quote": "227. Despite the lack of any indication of injury, Rutland and Moy referred P.A. to Nexray",
+      "action_type": "referred_to",
+      "participants": [
+        {
+          "mention_id": "c2.m1",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c2.m3",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c2.m10",
+          "role": "patient"
+        },
+        {
+          "mention_id": "c2.m4",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": null,
+      "raw_span": null
+    },
+    {
+      "action_id": "c2.a15",
+      "quote": "228. On November 12, 2018, Rutland purportedly provided chiropractic services to P.A.",
+      "action_type": "provided_services_to",
+      "participants": [
+        {
+          "mention_id": "c2.m1",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c2.m10",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "November 12, 2018",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        75833,
+        75918
+      ],
+      "raw_span": [
+        75833,
+        75918
+      ]
+    },
+    {
+      "action_id": "c2.a16",
+      "quote": "251. Rutland evaluated A.C. on May 14, 2018",
+      "action_type": "evaluated",
+      "participants": [
+        {
+          "mention_id": "c2.m1",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c2.m11",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "May 14, 2018",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        81008,
+        81051
+      ],
+      "raw_span": [
+        81008,
+        81051
+      ]
+    },
+    {
+      "action_id": "c2.a17",
+      "quote": "251. Rutland evaluated A.C. on May 14, 2018 and referred A.C. to Nexray",
+      "action_type": "referred_to",
+      "participants": [
+        {
+          "mention_id": "c2.m1",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c2.m11",
+          "role": "patient"
+        },
+        {
+          "mention_id": "c2.m4",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": "May 14, 2018",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        81008,
+        81080
+      ],
+      "raw_span": [
+        81008,
+        81080
+      ]
+    },
+    {
+      "action_id": "c2.a18",
+      "quote": "262. Moy referred A.C. for a right shoulder MRI",
+      "action_type": "referred_to",
+      "participants": [
+        {
+          "mention_id": "c2.m3",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c2.m11",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        83428,
+        83475
+      ],
+      "raw_span": [
+        83428,
+        83475
+      ]
+    },
+    {
+      "action_id": "c2.a19",
+      "quote": "262. Weiner performed an unnecessary right shoulder MRI on A.C.",
+      "action_type": "performed",
+      "participants": [
+        {
+          "mention_id": "c2.m6",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c2.m11",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "July 24, 2018",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": null,
+      "raw_span": null
+    },
+    {
+      "action_id": "c2.a20",
+      "quote": "263. On or about August 11, 2018, A.C. underwent a treatment by Dr. Andrew J. Dowd",
+      "action_type": "treated_by",
+      "participants": [
+        {
+          "mention_id": "c2.m11",
+          "role": "patient"
+        },
+        {
+          "mention_id": "c2.m12",
+          "role": "provider"
+        }
+      ],
+      "time_qualifier": "On or about August 11, 2018",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        83694,
+        83776
+      ],
+      "raw_span": [
+        83694,
+        83776
+      ]
+    },
+    {
+      "action_id": "c2.a21",
+      "quote": "268. Moy evaluated T.C. on November 2, 2017 and referred T.C. to Nexray",
+      "action_type": "referred_to",
+      "participants": [
+        {
+          "mention_id": "c2.m3",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c2.m13",
+          "role": "patient"
+        },
+        {
+          "mention_id": "c2.m4",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": "November 2, 2017",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        84789,
+        84860
+      ],
+      "raw_span": [
+        84789,
+        84860
+      ]
+    },
+    {
+      "action_id": "c2.a22",
+      "quote": "269. On November 2, 6, 14, and 17, 2017, Rutland purportedly provided T.C. with physical therapy treatment",
+      "action_type": "provided_treatment_to",
+      "participants": [
+        {
+          "mention_id": "c2.m1",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c2.m13",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "November 2, 6, 14, and 17, 2017",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        57503,
+        87618
+      ],
+      "clean_span": [
+        85038,
+        85145
+      ],
+      "raw_span": [
+        85038,
+        85145
+      ]
+    },
+    {
+      "action_id": "c3.a1",
+      "quote": "278. Patient D.L. was allegedly involved in a motor vehicle accident",
+      "action_type": "involved_in",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "November 7, 2018",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        87618,
+        87686
+      ],
+      "raw_span": [
+        87618,
+        87686
+      ]
+    },
+    {
+      "action_id": "c3.a2",
+      "quote": "279. Rutland evaluated D.L. the next day",
+      "action_type": "evaluated",
+      "participants": [
+        {
+          "mention_id": "c3.m8",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c3.m1",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "the next day",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        87744,
+        87784
+      ],
+      "raw_span": [
+        87744,
+        87784
+      ]
+    },
+    {
+      "action_id": "c3.a3",
+      "quote": "Rutland also referred D.L. for MRIs",
+      "action_type": "referred",
+      "participants": [
+        {
+          "mention_id": "c3.m8",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c3.m1",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": null,
+      "raw_span": null
+    },
+    {
+      "action_id": "c3.a4",
+      "quote": "280. On November 8, 2018, Rutland billed American Transit",
+      "action_type": "billed",
+      "participants": [
+        {
+          "mention_id": "c3.m8",
+          "role": "biller"
+        },
+        {
+          "mention_id": "c3.m12",
+          "role": "billed_party"
+        }
+      ],
+      "time_qualifier": "November 8, 2018",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": null,
+      "raw_span": null
+    },
+    {
+      "action_id": "c3.a5",
+      "quote": "281. On or about November 8, 2018, Weiner performed MRIs",
+      "action_type": "performed",
+      "participants": [
+        {
+          "mention_id": "c3.m9",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c3.m1",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "On or about November 8, 2018",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        88359,
+        88415
+      ],
+      "raw_span": [
+        88359,
+        88415
+      ]
+    },
+    {
+      "action_id": "c3.a6",
+      "quote": "281. Nexray billed American Transit for this imaging",
+      "action_type": "billed",
+      "participants": [
+        {
+          "mention_id": "c3.m10",
+          "role": "biller"
+        },
+        {
+          "mention_id": "c3.m12",
+          "role": "billed_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": null,
+      "raw_span": null
+    },
+    {
+      "action_id": "c3.a7",
+      "quote": "286. Moy referred D.L. to Nexray",
+      "action_type": "referred",
+      "participants": [
+        {
+          "mention_id": "c3.m11",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c3.m1",
+          "role": "patient"
+        },
+        {
+          "mention_id": "c3.m10",
+          "role": "referred_to"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        89754,
+        89786
+      ],
+      "raw_span": [
+        89754,
+        89786
+      ]
+    },
+    {
+      "action_id": "c3.a8",
+      "quote": "296. Patient A.W. was allegedly involved in a motor vehicle accident",
+      "action_type": "involved_in",
+      "participants": [
+        {
+          "mention_id": "c3.m2",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "October 29, 2019",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        92496,
+        92564
+      ],
+      "raw_span": [
+        92496,
+        92564
+      ]
+    },
+    {
+      "action_id": "c3.a9",
+      "quote": "297. Moy evaluated A.W. the next day",
+      "action_type": "evaluated",
+      "participants": [
+        {
+          "mention_id": "c3.m11",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c3.m2",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "the next day",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        92588,
+        92624
+      ],
+      "raw_span": [
+        92588,
+        92624
+      ]
+    },
+    {
+      "action_id": "c3.a10",
+      "quote": "298. Moy referred A.W. to a psychotherapist",
+      "action_type": "referred",
+      "participants": [
+        {
+          "mention_id": "c3.m11",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c3.m2",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        92713,
+        92756
+      ],
+      "raw_span": [
+        92713,
+        92756
+      ]
+    },
+    {
+      "action_id": "c3.a11",
+      "quote": "302. On November 20, 2019 , after Moy referred A.W. to Nexray",
+      "action_type": "referred",
+      "participants": [
+        {
+          "mention_id": "c3.m11",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c3.m2",
+          "role": "patient"
+        },
+        {
+          "mention_id": "c3.m10",
+          "role": "referred_to"
+        }
+      ],
+      "time_qualifier": "November 20, 2019",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        93587,
+        93648
+      ],
+      "raw_span": [
+        93587,
+        93648
+      ]
+    },
+    {
+      "action_id": "c3.a12",
+      "quote": "302. Nexray billed American Transit for these MRIs",
+      "action_type": "billed",
+      "participants": [
+        {
+          "mention_id": "c3.m10",
+          "role": "biller"
+        },
+        {
+          "mention_id": "c3.m12",
+          "role": "billed_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": null,
+      "raw_span": null
+    },
+    {
+      "action_id": "c3.a13",
+      "quote": "311. Patient R.S. was allegedly involved in a motor vehicle accident",
+      "action_type": "involved_in",
+      "participants": [
+        {
+          "mention_id": "c3.m3",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "August 19, 2020",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        96444,
+        96512
+      ],
+      "raw_span": [
+        96444,
+        96512
+      ]
+    },
+    {
+      "action_id": "c3.a14",
+      "quote": "313. On August 27, 2020, Rutland evaluated R.S.",
+      "action_type": "evaluated",
+      "participants": [
+        {
+          "mention_id": "c3.m8",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c3.m3",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "August 27, 2020",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        96632,
+        96679
+      ],
+      "raw_span": [
+        96632,
+        96679
+      ]
+    },
+    {
+      "action_id": "c3.a15",
+      "quote": "313. On August 27, 2020, Rutland evaluated R.S. and referred her to Nexray",
+      "action_type": "referred",
+      "participants": [
+        {
+          "mention_id": "c3.m8",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c3.m3",
+          "role": "patient"
+        },
+        {
+          "mention_id": "c3.m10",
+          "role": "referred_to"
+        }
+      ],
+      "time_qualifier": "August 27, 2020",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        96632,
+        96706
+      ],
+      "raw_span": [
+        96632,
+        96706
+      ]
+    },
+    {
+      "action_id": "c3.a16",
+      "quote": "314. On August 27, 2020, Rutland provided unnecessary physical therapy treatment to R.S.",
+      "action_type": "provided",
+      "participants": [
+        {
+          "mention_id": "c3.m8",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c3.m3",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "August 27, 2020",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": null,
+      "raw_span": null
+    },
+    {
+      "action_id": "c3.a17",
+      "quote": "318. Rutland referred R.S. to Nexray for cervical spine, lumbar spine, and right shoulder MRIs.",
+      "action_type": "referred",
+      "participants": [
+        {
+          "mention_id": "c3.m8",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c3.m3",
+          "role": "patient"
+        },
+        {
+          "mention_id": "c3.m10",
+          "role": "referred_to"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        98174,
+        98270
+      ],
+      "raw_span": [
+        98174,
+        98270
+      ]
+    },
+    {
+      "action_id": "c3.a18",
+      "quote": "318. On September 30, 2020, Weiner performed MRIs of R.S.\u2019s",
+      "action_type": "performed",
+      "participants": [
+        {
+          "mention_id": "c3.m9",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c3.m3",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "September 30, 2020",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": null,
+      "raw_span": null
+    },
+    {
+      "action_id": "c3.a19",
+      "quote": "322. Patient I.V. was allegedly involved in a motor vehicle accident",
+      "action_type": "involved_in",
+      "participants": [
+        {
+          "mention_id": "c3.m4",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "May 23, 2020",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        99668,
+        99736
+      ],
+      "raw_span": [
+        99668,
+        99736
+      ]
+    },
+    {
+      "action_id": "c3.a20",
+      "quote": "324. Rutland evaluated I.V. on June 11, 2020",
+      "action_type": "evaluated",
+      "participants": [
+        {
+          "mention_id": "c3.m8",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c3.m4",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "June 11, 2020",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        99876,
+        99920
+      ],
+      "raw_span": [
+        99876,
+        99920
+      ]
+    },
+    {
+      "action_id": "c3.a21",
+      "quote": "324. Rutland evaluated I.V. on June 11, 2020  and referred I.V. to Nexray",
+      "action_type": "referred",
+      "participants": [
+        {
+          "mention_id": "c3.m8",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c3.m4",
+          "role": "patient"
+        },
+        {
+          "mention_id": "c3.m10",
+          "role": "referred_to"
+        }
+      ],
+      "time_qualifier": "June 11, 2020",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        99876,
+        99949
+      ],
+      "raw_span": [
+        99876,
+        99949
+      ]
+    },
+    {
+      "action_id": "c3.a22",
+      "quote": "325. On June 11, 2020 and on June 16, 2020, June 17, 2020, June 24, 2020, and June 25, 2020, Rutland also purportedly provided I.V.",
+      "action_type": "provided",
+      "participants": [
+        {
+          "mention_id": "c3.m8",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c3.m4",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "June 11, 2020 and on June 16, 2020, June 17, 2020, June 24, 2020, and June 25, 2020",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        99998,
+        100130
+      ],
+      "raw_span": [
+        99998,
+        100130
+      ]
+    },
+    {
+      "action_id": "c3.a23",
+      "quote": "327. Pursuant to Rutland\u2019s referral, on June 23, 2020, Nexray purportedly performed on I.V.",
+      "action_type": "performed",
+      "participants": [
+        {
+          "mention_id": "c3.m10",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c3.m4",
+          "role": "patient"
+        },
+        {
+          "mention_id": "c3.m8",
+          "role": "referrer"
+        }
+      ],
+      "time_qualifier": "June 23, 2020",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        100636,
+        100728
+      ],
+      "raw_span": [
+        100636,
+        100728
+      ]
+    },
+    {
+      "action_id": "c3.a24",
+      "quote": "340. Patient L.J. was allegedly involved in a motor vehicle accident",
+      "action_type": "involved_in",
+      "participants": [
+        {
+          "mention_id": "c3.m5",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "on or around September 22, 2019",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        104627,
+        104695
+      ],
+      "raw_span": [
+        104627,
+        104695
+      ]
+    },
+    {
+      "action_id": "c3.a25",
+      "quote": "343. Rutland billed American Transit for an examination of L.J.",
+      "action_type": "billed",
+      "participants": [
+        {
+          "mention_id": "c3.m8",
+          "role": "biller"
+        },
+        {
+          "mention_id": "c3.m12",
+          "role": "billed_party"
+        },
+        {
+          "mention_id": "c3.m5",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "October 2, 2019",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        104870,
+        104933
+      ],
+      "raw_span": [
+        104870,
+        104933
+      ]
+    },
+    {
+      "action_id": "c3.a26",
+      "quote": "344. Rutland also referred L.J. for MRIs",
+      "action_type": "referred",
+      "participants": [
+        {
+          "mention_id": "c3.m8",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c3.m5",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        104955,
+        104995
+      ],
+      "raw_span": [
+        104955,
+        104995
+      ]
+    },
+    {
+      "action_id": "c3.a27",
+      "quote": "349. On October 11, 2019, Nexray purportedly provided L.J. with MRIs",
+      "action_type": "provided",
+      "participants": [
+        {
+          "mention_id": "c3.m10",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c3.m5",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "October 11, 2019",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        106015,
+        106083
+      ],
+      "raw_span": [
+        106015,
+        106083
+      ]
+    },
+    {
+      "action_id": "c3.a28",
+      "quote": "357. Patient G.R. was allegedly involved in a motor vehicle accident",
+      "action_type": "involved_in",
+      "participants": [
+        {
+          "mention_id": "c3.m6",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "May 29, 2020",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        108283,
+        108351
+      ],
+      "raw_span": [
+        108283,
+        108351
+      ]
+    },
+    {
+      "action_id": "c3.a29",
+      "quote": "359. The same day, May 29, 2020, Rutland evaluated G.R.",
+      "action_type": "evaluated",
+      "participants": [
+        {
+          "mention_id": "c3.m8",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c3.m6",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "May 29, 2020",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        108509,
+        108564
+      ],
+      "raw_span": [
+        108509,
+        108564
+      ]
+    },
+    {
+      "action_id": "c3.a30",
+      "quote": "359. The same day, May 29, 2020, Rutland evaluated G.R. and referred him to Nexray",
+      "action_type": "referred",
+      "participants": [
+        {
+          "mention_id": "c3.m8",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c3.m6",
+          "role": "patient"
+        },
+        {
+          "mention_id": "c3.m10",
+          "role": "referred_to"
+        }
+      ],
+      "time_qualifier": "May 29, 2020",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        108509,
+        108591
+      ],
+      "raw_span": [
+        108509,
+        108591
+      ]
+    },
+    {
+      "action_id": "c3.a31",
+      "quote": "363. As a result of Rutland\u2019s referrals to Nexray, on  June 29, 2020, July 27, 2020, and July 28, 2020, Nexray purportedly performed on G.R.",
+      "action_type": "performed",
+      "participants": [
+        {
+          "mention_id": "c3.m10",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c3.m6",
+          "role": "patient"
+        },
+        {
+          "mention_id": "c3.m8",
+          "role": "referrer"
+        }
+      ],
+      "time_qualifier": "June 29, 2020, July 27, 2020, and July 28, 2020",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        109468,
+        109609
+      ],
+      "raw_span": [
+        109468,
+        109609
+      ]
+    },
+    {
+      "action_id": "c3.a32",
+      "quote": "365. Moy referred G.R. to Nexray for additional MRIs.",
+      "action_type": "referred",
+      "participants": [
+        {
+          "mention_id": "c3.m11",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c3.m6",
+          "role": "patient"
+        },
+        {
+          "mention_id": "c3.m10",
+          "role": "referred_to"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        110000,
+        110053
+      ],
+      "raw_span": [
+        110000,
+        110053
+      ]
+    },
+    {
+      "action_id": "c3.a33",
+      "quote": "369. Patient E.J. was allegedly involved in a motor vehicle accident",
+      "action_type": "involved_in",
+      "participants": [
+        {
+          "mention_id": "c3.m7",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "June 16, 2017",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        111014,
+        111082
+      ],
+      "raw_span": [
+        111014,
+        111082
+      ]
+    },
+    {
+      "action_id": "c3.a34",
+      "quote": "370. On July 11, 2017, nearly a month later, Rutland purportedly conducted an initial examination on E.J.",
+      "action_type": "conducted",
+      "participants": [
+        {
+          "mention_id": "c3.m8",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c3.m7",
+          "role": "patient"
+        }
+      ],
+      "time_qualifier": "July 11, 2017",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        111220,
+        111326
+      ],
+      "raw_span": [
+        111220,
+        111326
+      ]
+    },
+    {
+      "action_id": "c3.a35",
+      "quote": "370. Rutland also referred E.J. to Nexray",
+      "action_type": "referred",
+      "participants": [
+        {
+          "mention_id": "c3.m8",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c3.m7",
+          "role": "patient"
+        },
+        {
+          "mention_id": "c3.m10",
+          "role": "referred_to"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": null,
+      "raw_span": null
+    },
+    {
+      "action_id": "c3.a36",
+      "quote": "372. Per Rutland\u2019s referral, on August 16, 2017, Nexray purportedly performed MRI\u2019s on E.J.",
+      "action_type": "performed",
+      "participants": [
+        {
+          "mention_id": "c3.m10",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c3.m7",
+          "role": "patient"
+        },
+        {
+          "mention_id": "c3.m8",
+          "role": "referrer"
+        }
+      ],
+      "time_qualifier": "August 16, 2017",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        111715,
+        111807
+      ],
+      "raw_span": [
+        111715,
+        111807
+      ]
+    },
+    {
+      "action_id": "c3.a37",
+      "quote": "384. To induce American Transit to promptly pay Rutland\u2019s and Nexray\u2019s patient bills, the Defendants submitted (or caused to be submitted) to American Transit NF -3 forms",
+      "action_type": "submitted",
+      "participants": [
+        {
+          "mention_id": "c3.m8",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c3.m10",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c3.m12",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        114838,
+        115009
+      ],
+      "raw_span": [
+        114838,
+        115009
+      ]
+    },
+    {
+      "action_id": "c3.a38",
+      "quote": "As alleged in the indictment in the Criminal Action, Pierre selected attorneys to pursue",
+      "action_type": "selected",
+      "participants": [
+        {
+          "mention_id": "c3.m13",
+          "role": "selector"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        87591,
+        116745
+      ],
+      "clean_span": [
+        115713,
+        115802
+      ],
+      "raw_span": [
+        115713,
+        115802
+      ]
+    },
+    {
+      "action_id": "c4.a1",
+      "quote": "The Defendants concealed from American Transit the truth regarding Rutland and",
+      "action_type": "concealed",
+      "participants": [
+        {
+          "mention_id": "c4.m1",
+          "role": "target"
+        },
+        {
+          "mention_id": "c4.m2",
+          "role": "subject"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        116330,
+        116408
+      ],
+      "raw_span": [
+        116330,
+        116408
+      ]
+    },
+    {
+      "action_id": "c4.a2",
+      "quote": "American Transit paid money to Rutland",
+      "action_type": "paid",
+      "participants": [
+        {
+          "mention_id": "c4.m1",
+          "role": "payer"
+        },
+        {
+          "mention_id": "c4.m2",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        116798,
+        116836
+      ],
+      "raw_span": [
+        116798,
+        116836
+      ]
+    },
+    {
+      "action_id": "c4.a3",
+      "quote": "American Transit paid money to Rutland\nand Nexray",
+      "action_type": "paid",
+      "participants": [
+        {
+          "mention_id": "c4.m1",
+          "role": "payer"
+        },
+        {
+          "mention_id": "c4.m3",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        116798,
+        116848
+      ],
+      "raw_span": [
+        116798,
+        116848
+      ]
+    },
+    {
+      "action_id": "c4.a4",
+      "quote": "created, prepared, and submitted (or caused to be created, prepared, and submitted) false medical\ndocumentation to American Transit",
+      "action_type": "submitted_false_medical_documentation",
+      "participants": [
+        {
+          "mention_id": "c4.m4",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c4.m5",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c4.m6",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c4.m1",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        117601,
+        117733
+      ],
+      "raw_span": [
+        117601,
+        117733
+      ]
+    },
+    {
+      "action_id": "c4.a5",
+      "quote": "each time that Rutland mailed (or was caused to mail) a demand for payment",
+      "action_type": "mailed_demand_for_payment",
+      "participants": [
+        {
+          "mention_id": "c4.m2",
+          "role": "sender"
+        },
+        {
+          "mention_id": "c4.m1",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        119532,
+        119607
+      ],
+      "raw_span": [
+        119532,
+        119607
+      ]
+    },
+    {
+      "action_id": "c4.a6",
+      "quote": "each time that Nexray mailed\n(or was caused to mail) a demand for payment",
+      "action_type": "mailed_demand_for_payment",
+      "participants": [
+        {
+          "mention_id": "c4.m3",
+          "role": "sender"
+        },
+        {
+          "mention_id": "c4.m1",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        121979,
+        122053
+      ],
+      "raw_span": [
+        121979,
+        122053
+      ]
+    },
+    {
+      "action_id": "c4.a7",
+      "quote": "Pierre (a non -physician) unlawfully participated in the operation, management, and/or control of Rutland",
+      "action_type": "participated_in_control",
+      "participants": [
+        {
+          "mention_id": "c4.m4",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c4.m2",
+          "role": "target"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        119864,
+        119970
+      ],
+      "raw_span": [
+        119864,
+        119970
+      ]
+    },
+    {
+      "action_id": "c4.a8",
+      "quote": "Moy and Pierre purposely caused Rutland to make a material misrepresentation",
+      "action_type": "caused_misrepresentation",
+      "participants": [
+        {
+          "mention_id": "c4.m5",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c4.m4",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c4.m2",
+          "role": "subject"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        119972,
+        120049
+      ],
+      "raw_span": [
+        119972,
+        120049
+      ]
+    },
+    {
+      "action_id": "c4.a9",
+      "quote": "Moy and Pierre committed mail fraud",
+      "action_type": "committed_mail_fraud",
+      "participants": [
+        {
+          "mention_id": "c4.m5",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c4.m4",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        120491,
+        120526
+      ],
+      "raw_span": [
+        120491,
+        120526
+      ]
+    },
+    {
+      "action_id": "c4.a10",
+      "quote": "Weiner and Pierre purposely caused Nexray to make a",
+      "action_type": "caused_misrepresentation",
+      "participants": [
+        {
+          "mention_id": "c4.m6",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c4.m4",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c4.m3",
+          "role": "subject"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        122414,
+        122465
+      ],
+      "raw_span": [
+        122414,
+        122465
+      ]
+    },
+    {
+      "action_id": "c4.a11",
+      "quote": "Weiner, and Pierre committed mail fraud",
+      "action_type": "committed_mail_fraud",
+      "participants": [
+        {
+          "mention_id": "c4.m6",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c4.m4",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        126357,
+        126396
+      ],
+      "raw_span": [
+        126357,
+        126396
+      ]
+    },
+    {
+      "action_id": "c4.a12",
+      "quote": "Pierre paid Rose in exchange for Rose\u2019s referral of patients",
+      "action_type": "paid_for_referral",
+      "participants": [
+        {
+          "mention_id": "c4.m4",
+          "role": "payer"
+        },
+        {
+          "mention_id": "c4.m8",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        124680,
+        124740
+      ],
+      "raw_span": [
+        124680,
+        124740
+      ]
+    },
+    {
+      "action_id": "c4.a13",
+      "quote": "Pierre was communicating with another layperson, Nathaniel Coles ( \u201cColes\u201d) in 2016",
+      "action_type": "communicated_with",
+      "participants": [
+        {
+          "mention_id": "c4.m4",
+          "role": "communicator"
+        },
+        {
+          "mention_id": "c4.m9",
+          "role": "other_party"
+        }
+      ],
+      "time_qualifier": "in 2016",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        123661,
+        123745
+      ],
+      "raw_span": [
+        123661,
+        123745
+      ]
+    },
+    {
+      "action_id": "c4.a14",
+      "quote": "Weiner pled guilty in the Criminal Action to one count of conspiracy to commit healthcare fraud",
+      "action_type": "pled_guilty",
+      "participants": [
+        {
+          "mention_id": "c4.m6",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": "On January 16, 2024",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        125144,
+        125240
+      ],
+      "raw_span": [
+        125144,
+        125240
+      ]
+    },
+    {
+      "action_id": "c4.a15",
+      "quote": "Pierre selected counsel to prosecute claims against insurance companies like American Transit",
+      "action_type": "selected_counsel",
+      "participants": [
+        {
+          "mention_id": "c4.m4",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c4.m1",
+          "role": "target"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        135271,
+        135366
+      ],
+      "raw_span": [
+        135271,
+        135366
+      ]
+    },
+    {
+      "action_id": "c4.a16",
+      "quote": "the Law Office of Jason Tenenbaum, P.C. , its p rincipal, Jason Tenenbaum, an affiliated attorney, Roman Kravchenko , the Russel Friedman Law Group, LLP, among others (collectively, the \u201c No-Fault Attorneys\u201d)",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c4.m10",
+          "role": "member"
+        },
+        {
+          "mention_id": "c4.m14",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        136253,
+        136463
+      ],
+      "raw_span": [
+        136253,
+        136463
+      ]
+    },
+    {
+      "action_id": "c4.a17",
+      "quote": "the Law Office of Jason Tenenbaum, P.C. , its p rincipal, Jason Tenenbaum, an affiliated attorney, Roman Kravchenko , the Russel Friedman Law Group, LLP, among others (collectively, the \u201c No-Fault Attorneys\u201d)",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c4.m11",
+          "role": "member"
+        },
+        {
+          "mention_id": "c4.m14",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        136253,
+        136463
+      ],
+      "raw_span": [
+        136253,
+        136463
+      ]
+    },
+    {
+      "action_id": "c4.a18",
+      "quote": "the Law Office of Jason Tenenbaum, P.C. , its p rincipal, Jason Tenenbaum, an affiliated attorney, Roman Kravchenko , the Russel Friedman Law Group, LLP, among others (collectively, the \u201c No-Fault Attorneys\u201d)",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c4.m12",
+          "role": "member"
+        },
+        {
+          "mention_id": "c4.m14",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        136253,
+        136463
+      ],
+      "raw_span": [
+        136253,
+        136463
+      ]
+    },
+    {
+      "action_id": "c4.a19",
+      "quote": "the Law Office of Jason Tenenbaum, P.C. , its p rincipal, Jason Tenenbaum, an affiliated attorney, Roman Kravchenko , the Russel Friedman Law Group, LLP, among others (collectively, the \u201c No-Fault Attorneys\u201d)",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c4.m13",
+          "role": "member"
+        },
+        {
+          "mention_id": "c4.m14",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        136253,
+        136463
+      ],
+      "raw_span": [
+        136253,
+        136463
+      ]
+    },
+    {
+      "action_id": "c4.a20",
+      "quote": "appeared on behalf of Rut land and/or Nexray, to prosecute dozens of actions against American Transit",
+      "action_type": "prosecuted_actions",
+      "participants": [
+        {
+          "mention_id": "c4.m14",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c4.m2",
+          "role": "represented_party"
+        },
+        {
+          "mention_id": "c4.m3",
+          "role": "represented_party"
+        },
+        {
+          "mention_id": "c4.m1",
+          "role": "opposing_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        136465,
+        136567
+      ],
+      "raw_span": [
+        136465,
+        136567
+      ]
+    },
+    {
+      "action_id": "c4.a21",
+      "quote": "Attorney Kravchenko admitted to bringing actions against American Transit on behalf  of Rutland and Nexray without actually being engaged by them",
+      "action_type": "brought_actions",
+      "participants": [
+        {
+          "mention_id": "c4.m12",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c4.m1",
+          "role": "opposing_party"
+        },
+        {
+          "mention_id": "c4.m2",
+          "role": "represented_party"
+        },
+        {
+          "mention_id": "c4.m3",
+          "role": "represented_party"
+        }
+      ],
+      "time_qualifier": "when recently challenged on the issue",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        137128,
+        137274
+      ],
+      "raw_span": [
+        137128,
+        137274
+      ]
+    },
+    {
+      "action_id": "c4.a22",
+      "quote": "Pierre\u2019s operation, management, and/or control of Nexray",
+      "action_type": "controlled",
+      "participants": [
+        {
+          "mention_id": "c4.m4",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c4.m3",
+          "role": "target"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        122094,
+        122150
+      ],
+      "raw_span": [
+        122094,
+        122150
+      ]
+    },
+    {
+      "action_id": "c4.a23",
+      "quote": "Pierre and Weiner actively concealed from American Transit facts regarding Nexray\u2019s true ownership and control",
+      "action_type": "concealed",
+      "participants": [
+        {
+          "mention_id": "c4.m4",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c4.m6",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c4.m1",
+          "role": "target"
+        },
+        {
+          "mention_id": "c4.m3",
+          "role": "subject"
+        }
+      ],
+      "time_qualifier": "At all relevant times",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        116330,
+        145017
+      ],
+      "clean_span": [
+        133166,
+        133277
+      ],
+      "raw_span": [
+        133166,
+        133277
+      ]
+    },
+    {
+      "action_id": "c5.a1",
+      "quote": "Defendants Pierre, Moy, Weiner, Rutland, Nexray and the John Doe Defendants constituted a separate associated in fact enterprise",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c5.m1",
+          "role": "member"
+        },
+        {
+          "mention_id": "c5.m8",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": "At all times relevant to this complaint",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        156218,
+        156347
+      ],
+      "raw_span": [
+        156218,
+        156347
+      ]
+    },
+    {
+      "action_id": "c5.a2",
+      "quote": "Defendants Pierre, Moy, Weiner, Rutland, Nexray and the John Doe Defendants constituted a separate associated in fact enterprise",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c5.m2",
+          "role": "member"
+        },
+        {
+          "mention_id": "c5.m8",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": "At all times relevant to this complaint",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        156218,
+        156347
+      ],
+      "raw_span": [
+        156218,
+        156347
+      ]
+    },
+    {
+      "action_id": "c5.a3",
+      "quote": "Defendants Pierre, Moy, Weiner, Rutland, Nexray and the John Doe Defendants constituted a separate associated in fact enterprise",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c5.m3",
+          "role": "member"
+        },
+        {
+          "mention_id": "c5.m8",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": "At all times relevant to this complaint",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        156218,
+        156347
+      ],
+      "raw_span": [
+        156218,
+        156347
+      ]
+    },
+    {
+      "action_id": "c5.a4",
+      "quote": "Defendants Pierre, Moy, Weiner, Rutland, Nexray and the John Doe Defendants constituted a separate associated in fact enterprise",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c5.m4",
+          "role": "member"
+        },
+        {
+          "mention_id": "c5.m8",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": "At all times relevant to this complaint",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        156218,
+        156347
+      ],
+      "raw_span": [
+        156218,
+        156347
+      ]
+    },
+    {
+      "action_id": "c5.a5",
+      "quote": "Defendants Pierre, Moy, Weiner, Rutland, Nexray and the John Doe Defendants constituted a separate associated in fact enterprise",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c5.m5",
+          "role": "member"
+        },
+        {
+          "mention_id": "c5.m8",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": "At all times relevant to this complaint",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        156218,
+        156347
+      ],
+      "raw_span": [
+        156218,
+        156347
+      ]
+    },
+    {
+      "action_id": "c5.a6",
+      "quote": "and the John Doe Defendants constituted a separate associated in fact enterprise",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c5.m7",
+          "role": "member"
+        },
+        {
+          "mention_id": "c5.m8",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": "At all times relevant to this complaint",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        156267,
+        156347
+      ],
+      "raw_span": [
+        156267,
+        156347
+      ]
+    },
+    {
+      "action_id": "c5.a7",
+      "quote": "468. Pierre, Moy and others  knowingly conducted and/or participated, directly or indirectly, in the conduct of Rutland\u2019s affairs",
+      "action_type": "conducted_or_participated",
+      "participants": [
+        {
+          "mention_id": "c5.m1",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c5.m2",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c5.m3",
+          "role": "enterprise"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        143852,
+        143982
+      ],
+      "raw_span": [
+        143852,
+        143982
+      ]
+    },
+    {
+      "action_id": "c5.a8",
+      "quote": "475. Pierre, Weiner , and others  knowingly conducted and/or participated, directly or indirectly, in the conduct of Nexray\u2019s affairs",
+      "action_type": "conducted_or_participated",
+      "participants": [
+        {
+          "mention_id": "c5.m1",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c5.m4",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c5.m5",
+          "role": "enterprise"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        147374,
+        147508
+      ],
+      "raw_span": [
+        147374,
+        147508
+      ]
+    },
+    {
+      "action_id": "c5.a9",
+      "quote": "482. Pierre and Moy are employed by or associated with the Rutland enterprise",
+      "action_type": "associated_with",
+      "participants": [
+        {
+          "mention_id": "c5.m1",
+          "role": "associate"
+        },
+        {
+          "mention_id": "c5.m2",
+          "role": "associate"
+        },
+        {
+          "mention_id": "c5.m3",
+          "role": "enterprise"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        150823,
+        150900
+      ],
+      "raw_span": [
+        150823,
+        150900
+      ]
+    },
+    {
+      "action_id": "c5.a10",
+      "quote": "483. Pierre and Moy knowingly have agreed, combined, and conspired to conduct and/or participate",
+      "action_type": "conspired",
+      "participants": [
+        {
+          "mention_id": "c5.m1",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c5.m2",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c5.m3",
+          "role": "enterprise"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        150995,
+        151092
+      ],
+      "raw_span": [
+        150995,
+        151092
+      ]
+    },
+    {
+      "action_id": "c5.a11",
+      "quote": "489. Pierre and Weiner are employed by or associated with the Rutland enterprise",
+      "action_type": "associated_with",
+      "participants": [
+        {
+          "mention_id": "c5.m1",
+          "role": "associate"
+        },
+        {
+          "mention_id": "c5.m4",
+          "role": "associate"
+        },
+        {
+          "mention_id": "c5.m3",
+          "role": "enterprise"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        153612,
+        153692
+      ],
+      "raw_span": [
+        153612,
+        153692
+      ]
+    },
+    {
+      "action_id": "c5.a12",
+      "quote": "490. Pierre and Weiner knowingly have agreed, combined, and conspired to conduct and/or participate",
+      "action_type": "conspired",
+      "participants": [
+        {
+          "mention_id": "c5.m1",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c5.m4",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c5.m5",
+          "role": "enterprise"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        153695,
+        153795
+      ],
+      "raw_span": [
+        153695,
+        153795
+      ]
+    },
+    {
+      "action_id": "c5.a13",
+      "quote": "Pierre is an architect of a scheme involving paying bribes to 911 op erators, hospital employees, among others, in exchange for the referral of automobile accident victims to Rutland",
+      "action_type": "paid_bribes",
+      "participants": [
+        {
+          "mention_id": "c5.m1",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c5.m3",
+          "role": "beneficiary"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        157312,
+        157496
+      ],
+      "raw_span": [
+        157312,
+        157496
+      ]
+    },
+    {
+      "action_id": "c5.a14",
+      "quote": "Rutland, in turn, referred patients to Nexray",
+      "action_type": "referred_to",
+      "participants": [
+        {
+          "mention_id": "c5.m3",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c5.m5",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        157537,
+        157582
+      ],
+      "raw_span": [
+        157537,
+        157582
+      ]
+    },
+    {
+      "action_id": "c5.a15",
+      "quote": "Moy is the owner of Rutland and Weiner the owner of Nexray",
+      "action_type": "owned",
+      "participants": [
+        {
+          "mention_id": "c5.m2",
+          "role": "owner"
+        },
+        {
+          "mention_id": "c5.m3",
+          "role": "owned"
+        },
+        {
+          "mention_id": "c5.m4",
+          "role": "owner"
+        },
+        {
+          "mention_id": "c5.m5",
+          "role": "owned"
+        }
+      ],
+      "time_qualifier": "On paper",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        157661,
+        157720
+      ],
+      "raw_span": [
+        157661,
+        157720
+      ]
+    },
+    {
+      "action_id": "c5.a16",
+      "quote": "Moy and Weiner enabled Rutland and Nexray to regularly recommend unnecessary procedures",
+      "action_type": "enabled",
+      "participants": [
+        {
+          "mention_id": "c5.m2",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c5.m4",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c5.m3",
+          "role": "enabled_party"
+        },
+        {
+          "mention_id": "c5.m5",
+          "role": "enabled_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        157744,
+        157832
+      ],
+      "raw_span": [
+        157744,
+        157832
+      ]
+    },
+    {
+      "action_id": "c5.a17",
+      "quote": "505. Moy and Weiner regularly made referrals to entities they had financial relationships with",
+      "action_type": "made_referrals",
+      "participants": [
+        {
+          "mention_id": "c5.m2",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c5.m4",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c5.m3",
+          "role": "recipient"
+        },
+        {
+          "mention_id": "c5.m5",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": "regularly",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        164899,
+        164994
+      ],
+      "raw_span": [
+        164899,
+        164994
+      ]
+    },
+    {
+      "action_id": "c5.a18",
+      "quote": "509. American Transit has made payments to Rutland and Nexray",
+      "action_type": "made_payments",
+      "participants": [
+        {
+          "mention_id": "c5.m6",
+          "role": "payer"
+        },
+        {
+          "mention_id": "c5.m3",
+          "role": "recipient"
+        },
+        {
+          "mention_id": "c5.m5",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        165814,
+        165875
+      ],
+      "raw_span": [
+        165814,
+        165875
+      ]
+    },
+    {
+      "action_id": "c5.a19",
+      "quote": "471. American Transit has been injured in its business and property",
+      "action_type": "injured",
+      "participants": [
+        {
+          "mention_id": "c5.m6",
+          "role": "injured_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        143852,
+        174424
+      ],
+      "clean_span": [
+        146497,
+        146564
+      ],
+      "raw_span": [
+        146497,
+        146564
+      ]
+    },
+    {
+      "action_id": "c6.a1",
+      "quote": "On the Second Cause of Action against Rutland, for compensatory damages",
+      "action_type": "seeks_compensatory_damages",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "claimant"
+        },
+        {
+          "mention_id": "c6.m2",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        173863,
+        177314
+      ],
+      "clean_span": [
+        173863,
+        173934
+      ],
+      "raw_span": [
+        173863,
+        173934
+      ]
+    },
+    {
+      "action_id": "c6.a2",
+      "quote": "On the Third Cause of Action against Nexray, for compensatory damages",
+      "action_type": "seeks_compensatory_damages",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "claimant"
+        },
+        {
+          "mention_id": "c6.m3",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        173863,
+        177314
+      ],
+      "clean_span": [
+        174157,
+        174226
+      ],
+      "raw_span": [
+        174157,
+        174226
+      ]
+    },
+    {
+      "action_id": "c6.a3",
+      "quote": "On the Fourth Cause of Action against Pierre and Moy, for compensatory damages",
+      "action_type": "seeks_compensatory_damages",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "claimant"
+        },
+        {
+          "mention_id": "c6.m4",
+          "role": "defendant"
+        },
+        {
+          "mention_id": "c6.m5",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        173863,
+        177314
+      ],
+      "clean_span": [
+        174541,
+        174619
+      ],
+      "raw_span": [
+        174541,
+        174619
+      ]
+    },
+    {
+      "action_id": "c6.a4",
+      "quote": "On the Fifth Cause of Action against Pierre and Weiner, for compensatory damages",
+      "action_type": "seeks_compensatory_damages",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "claimant"
+        },
+        {
+          "mention_id": "c6.m4",
+          "role": "defendant"
+        },
+        {
+          "mention_id": "c6.m6",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        173863,
+        177314
+      ],
+      "clean_span": [
+        174842,
+        174922
+      ],
+      "raw_span": [
+        174842,
+        174922
+      ]
+    },
+    {
+      "action_id": "c6.a5",
+      "quote": "On the Sixth Cause of Action against all Defendants for compensatory damages",
+      "action_type": "seeks_compensatory_damages",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "claimant"
+        },
+        {
+          "mention_id": "c6.m7",
+          "role": "defendant_group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        173863,
+        177314
+      ],
+      "clean_span": [
+        175145,
+        175221
+      ],
+      "raw_span": [
+        175145,
+        175221
+      ]
+    },
+    {
+      "action_id": "c6.a6",
+      "quote": "a declaratory judgment declaring that American Transit has no obligation to pay pending or future No -Fault claims",
+      "action_type": "declares_no_obligation_to_pay",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "claimant"
+        },
+        {
+          "mention_id": "c6.m2",
+          "role": "provider"
+        },
+        {
+          "mention_id": "c6.m3",
+          "role": "provider"
+        }
+      ],
+      "time_qualifier": "pending or future",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        173863,
+        177314
+      ],
+      "clean_span": [
+        175499,
+        175614
+      ],
+      "raw_span": [
+        175499,
+        175614
+      ]
+    },
+    {
+      "action_id": "c6.a7",
+      "quote": "an order obligating Defendants to d isgorge the monies",
+      "action_type": "disgorge",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "payor"
+        },
+        {
+          "mention_id": "c6.m7",
+          "role": "defendant_group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        173863,
+        177314
+      ],
+      "clean_span": [
+        175656,
+        175710
+      ],
+      "raw_span": [
+        175656,
+        175710
+      ]
+    },
+    {
+      "action_id": "c6.a8",
+      "quote": "On the Eighth Cause of Action against Rutland, Pierre, and Moy, a money judgment",
+      "action_type": "seeks_money_judgment",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "claimant"
+        },
+        {
+          "mention_id": "c6.m2",
+          "role": "defendant"
+        },
+        {
+          "mention_id": "c6.m4",
+          "role": "defendant"
+        },
+        {
+          "mention_id": "c6.m5",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        173863,
+        177314
+      ],
+      "clean_span": [
+        175810,
+        175890
+      ],
+      "raw_span": [
+        175810,
+        175890
+      ]
+    },
+    {
+      "action_id": "c6.a9",
+      "quote": "On the Ninth Cause of Action against Nexray, Pierre, and Weiner, a money",
+      "action_type": "seeks_money_judgment",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "claimant"
+        },
+        {
+          "mention_id": "c6.m3",
+          "role": "defendant"
+        },
+        {
+          "mention_id": "c6.m4",
+          "role": "defendant"
+        },
+        {
+          "mention_id": "c6.m6",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        173863,
+        177314
+      ],
+      "clean_span": [
+        176087,
+        176159
+      ],
+      "raw_span": [
+        176087,
+        176159
+      ]
+    },
+    {
+      "action_id": "c6.a10",
+      "quote": "On the Tenth Cause of Action against all Defendants, a money judgment",
+      "action_type": "seeks_money_judgment",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "claimant"
+        },
+        {
+          "mention_id": "c6.m7",
+          "role": "defendant_group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        173863,
+        177314
+      ],
+      "clean_span": [
+        176459,
+        176528
+      ],
+      "raw_span": [
+        176459,
+        176528
+      ]
+    },
+    {
+      "action_id": "c6.a11",
+      "quote": "American Transit hereby demands a jury trial on all issues so triable",
+      "action_type": "demands_jury_trial",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "demanding_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        173863,
+        177314
+      ],
+      "clean_span": [
+        176797,
+        176866
+      ],
+      "raw_span": [
+        176797,
+        176866
+      ]
+    }
+  ],
+  "review_items": [
+    {
+      "flag": "unverifiable_quote",
+      "id": "c0.a26",
+      "quote": "By 2024, Weiner pled guilty in Criminal Action of one count of conspiracy to commit healthcare fraud and to defraud the United States",
+      "reason": "unverifiable_quote:0.86"
+    },
+    {
+      "flag": "unverifiable_quote",
+      "id": "c1.a18",
+      "quote": "the member clinic named as \u201csuch as Rutland\u201d",
+      "reason": "unverifiable_quote:0.41"
+    },
+    {
+      "flag": "unverifiable_quote",
+      "id": "c2.a3",
+      "quote": "179. Further, Rutland and Nexray were under Pierre\u2019s control",
+      "reason": "unverifiable_quote:0.97:number_differs"
+    },
+    {
+      "flag": "unverifiable_quote",
+      "id": "c2.a4",
+      "quote": "187. Nexray purportedly took two MRIs of D.W.\u2019s right shoulder and brain",
+      "reason": "unverifiable_quote:0.97:number_differs"
+    },
+    {
+      "flag": "unverifiable_quote",
+      "id": "c2.a5",
+      "quote": "187. Nexray billed American Transit for these MRIs",
+      "reason": "unverifiable_quote:0.75"
+    },
+    {
+      "flag": "unverifiable_quote",
+      "id": "c2.a6",
+      "quote": "188. Defendant Weiner noted that the MRI of the brain was \u201cunremarkable.\u201d",
+      "reason": "unverifiable_quote:0.97:number_differs"
+    },
+    {
+      "flag": "unverifiable_quote",
+      "id": "c2.a8",
+      "quote": "199. Nexray billed American Transit for this MRI",
+      "reason": "unverifiable_quote:0.95:number_differs"
+    },
+    {
+      "flag": "unverifiable_quote",
+      "id": "c2.a9",
+      "quote": "199. Moy was the referring physician",
+      "reason": "unverifiable_quote:0.94:number_differs"
+    },
+    {
+      "flag": "unverifiable_quote",
+      "id": "c2.a14",
+      "quote": "227. Despite the lack of any indication of injury, Rutland and Moy referred P.A. to Nexray",
+      "reason": "unverifiable_quote:0.76"
+    },
+    {
+      "flag": "unverifiable_quote",
+      "id": "c2.a19",
+      "quote": "262. Weiner performed an unnecessary right shoulder MRI on A.C.",
+      "reason": "unverifiable_quote:0.71"
+    },
+    {
+      "flag": "unverifiable_quote",
+      "id": "c3.a3",
+      "quote": "Rutland also referred D.L. for MRIs",
+      "reason": "unverifiable_quote:0.94:name_differs"
+    },
+    {
+      "flag": "unverifiable_quote",
+      "id": "c3.a4",
+      "quote": "280. On November 8, 2018, Rutland billed American Transit",
+      "reason": "unverifiable_quote:0.57"
+    },
+    {
+      "flag": "unverifiable_quote",
+      "id": "c3.a6",
+      "quote": "281. Nexray billed American Transit for this imaging",
+      "reason": "unverifiable_quote:0.70"
+    },
+    {
+      "flag": "unverifiable_quote",
+      "id": "c3.a12",
+      "quote": "302. Nexray billed American Transit for these MRIs",
+      "reason": "unverifiable_quote:0.96:number_differs"
+    },
+    {
+      "flag": "unverifiable_quote",
+      "id": "c3.a16",
+      "quote": "314. On August 27, 2020, Rutland provided unnecessary physical therapy treatment to R.S.",
+      "reason": "unverifiable_quote:0.57"
+    },
+    {
+      "flag": "unverifiable_quote",
+      "id": "c3.a18",
+      "quote": "318. On September 30, 2020, Weiner performed MRIs of R.S.\u2019s",
+      "reason": "unverifiable_quote:0.97:number_differs"
+    },
+    {
+      "flag": "unverifiable_quote",
+      "id": "c3.a35",
+      "quote": "370. Rutland also referred E.J. to Nexray",
+      "reason": "unverifiable_quote:0.90"
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c0.m1",
+      "quote": "Plaintiff American Transit Insurance Company",
+      "count": 3
+    },
+    {
+      "flag": "quote_edited_name_placed",
+      "id": "c2.m5",
+      "quote": "179. Further, Rutland and Nexray were under Pierre\u2019s control"
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c2.m6",
+      "quote": "Weiner",
+      "count": 19
+    },
+    {
+      "flag": "quote_edited_name_placed",
+      "id": "c2.m6",
+      "quote": "188. Defendant Weiner noted that the MRI of the brain was \u201cunremarkable.\u201d"
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c3.m10",
+      "quote": "Nexray",
+      "count": 59
+    },
+    {
+      "flag": "quote_edited_name_placed",
+      "id": "c3.m10",
+      "quote": "281. Nexray billed American Transit for this imaging"
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c3.m12",
+      "quote": "American Transit",
+      "count": 87
+    },
+    {
+      "flag": "quote_edited_name_placed",
+      "id": "c3.m12",
+      "quote": "280. On November 8, 2018, Rutland billed American Transit"
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c6.m3",
+      "quote": "Nexray",
+      "count": 3
+    },
+    {
+      "flag": "quote_edited_name_placed",
+      "id": "c6.m3",
+      "quote": "against Nexray, an order obligating Defendants"
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c0.a15",
+      "quote": "is actually owned and controlled by Pierre",
+      "count": 2
+    }
+  ]
+}

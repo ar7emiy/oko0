@@ -1,0 +1,7 @@
+# Inputs with personal data, run outputs and review labels never enter git.
+data/
+out/
+review/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/

@@ -1,0 +1,6370 @@
+{
+ "source": "OIG LEIE (List of Excluded Individuals/Entities)",
+ "table": "./corpus/registry/leie_records.csv.gz",
+ "records_on_list": 84001,
+ "candidates_scored": 7088,
+ "keep_p": 0.001,
+ "priors": {
+  "professional_or_organization": 5e-07,
+  "private": 1e-07
+ },
+ "records": {
+  "leie:1aee364ab389": {
+   "record_id": "leie:1aee364ab389",
+   "name": "ANDREW J DOWD",
+   "type": "person",
+   "role_class": "professional",
+   "general": "PHYSICIAN (MD, DO)",
+   "specialty": "ORTHOPEDICS",
+   "excl_type": "1128a3",
+   "excl_date": "2024-08-20",
+   "npi": "1205890910",
+   "city": "SOUTH SETAUKET",
+   "state": "NY"
+  },
+  "leie:6e5f0277f058": {
+   "record_id": "leie:6e5f0277f058",
+   "name": "BRADLEY PIERRE",
+   "type": "person",
+   "role_class": "private",
+   "general": "EMPLOYEE - PRIVATE S",
+   "specialty": "CLINIC",
+   "excl_type": "1128a3",
+   "excl_date": "2026-05-20",
+   "npi": "",
+   "city": "LEWISBURG",
+   "state": "PA"
+  },
+  "leie:10852c7fd2e3": {
+   "record_id": "leie:10852c7fd2e3",
+   "name": "JENNY MOY",
+   "type": "person",
+   "role_class": "private",
+   "general": "PHARMACY",
+   "specialty": "TECHNICIAN",
+   "excl_type": "1128b4",
+   "excl_date": "2001-01-18",
+   "npi": "",
+   "city": "CHICAGO",
+   "state": "IL"
+  },
+  "leie:7ffb361e8f90": {
+   "record_id": "leie:7ffb361e8f90",
+   "name": "NATHAN W MOY",
+   "type": "person",
+   "role_class": "professional",
+   "general": "IND- LIC HC SERV PRO",
+   "specialty": "PHARMACY TECHNICIAN",
+   "excl_type": "1128b4",
+   "excl_date": "2015-08-20",
+   "npi": "",
+   "city": "MIRAMAR",
+   "state": "FL"
+  },
+  "leie:0e573b06820d": {
+   "record_id": "leie:0e573b06820d",
+   "name": "CRYSTAL K WEINER",
+   "type": "person",
+   "role_class": "private",
+   "general": "EMPLOYEE - PRIVATE S",
+   "specialty": "HOME HEALTH AGENCY",
+   "excl_type": "1128a1",
+   "excl_date": "2012-11-20",
+   "npi": "",
+   "city": "COLUMBUS",
+   "state": "OH"
+  },
+  "leie:2e8c349413a7": {
+   "record_id": "leie:2e8c349413a7",
+   "name": "ARTHUR C WEINER",
+   "type": "person",
+   "role_class": "professional",
+   "general": "IND- LIC HC SERV PRO",
+   "specialty": "PHARMACIST",
+   "excl_type": "1128a1",
+   "excl_date": "2024-04-18",
+   "npi": "1558385468",
+   "city": "SWEDESBORO",
+   "state": "NJ"
+  },
+  "leie:2fe7f43e059b": {
+   "record_id": "leie:2fe7f43e059b",
+   "name": "MARK L WEINER",
+   "type": "person",
+   "role_class": "private",
+   "general": "PHARMACY",
+   "specialty": "PHARMACIST",
+   "excl_type": "1128b3",
+   "excl_date": "1992-02-04",
+   "npi": "",
+   "city": "CANTON",
+   "state": "OH"
+  },
+  "leie:4668c2f16903": {
+   "record_id": "leie:4668c2f16903",
+   "name": "IRA N WEINER",
+   "type": "person",
+   "role_class": "professional",
+   "general": "OSTEOPATHIC PRAC",
+   "specialty": "OSTEOPATHY",
+   "excl_type": "1128b4",
+   "excl_date": "1991-07-04",
+   "npi": "",
+   "city": "SYRACUSE",
+   "state": "NY"
+  },
+  "leie:5a4055344fd3": {
+   "record_id": "leie:5a4055344fd3",
+   "name": "ALAN WEINER",
+   "type": "person",
+   "role_class": "professional",
+   "general": "PODIATRY PRACTICE",
+   "specialty": "PODIATRY",
+   "excl_type": "1128b6",
+   "excl_date": "1981-09-17",
+   "npi": "",
+   "city": "SHAKER HEIGHTS",
+   "state": "OH"
+  },
+  "leie:5f70cb0c9140": {
+   "record_id": "leie:5f70cb0c9140",
+   "name": "TIMOTHY WEINER",
+   "type": "person",
+   "role_class": "professional",
+   "general": "NURSING PROFESSION",
+   "specialty": "NURSE/NURSES AIDE",
+   "excl_type": "1128a2",
+   "excl_date": "1990-04-23",
+   "npi": "",
+   "city": "SORRENTO",
+   "state": "FL"
+  },
+  "leie:9100966f031e": {
+   "record_id": "leie:9100966f031e",
+   "name": "BRETT WEINER",
+   "type": "person",
+   "role_class": "private",
+   "general": "BUS OWNER/EXEC",
+   "specialty": "MARKETING FIRM",
+   "excl_type": "1128a1",
+   "excl_date": "2024-08-20",
+   "npi": "",
+   "city": "PENSACOLA",
+   "state": "FL"
+  },
+  "leie:9c61f7df92a3": {
+   "record_id": "leie:9c61f7df92a3",
+   "name": "THOMAS CARL WEINER",
+   "type": "person",
+   "role_class": "professional",
+   "general": "PHYSICIAN (MD, DO)",
+   "specialty": "ONCOLOGY",
+   "excl_type": "1128b4",
+   "excl_date": "2026-04-20",
+   "npi": "1538260179",
+   "city": "PUTNAM STATION",
+   "state": "NY"
+  },
+  "leie:280f0f5a70f0": {
+   "record_id": "leie:280f0f5a70f0",
+   "name": "PATRICK PASCAL POLLAK",
+   "type": "person",
+   "role_class": "professional",
+   "general": "IND- LIC HC SERV PRO",
+   "specialty": "DENTIST",
+   "excl_type": "1128b5",
+   "excl_date": "2013-02-20",
+   "npi": "1124165543",
+   "city": "TORRINGTON",
+   "state": "CT"
+  },
+  "leie:73e1969e727a": {
+   "record_id": "leie:73e1969e727a",
+   "name": "LYNNE POLLAK",
+   "type": "person",
+   "role_class": "professional",
+   "general": "NURSING PROFESSION",
+   "specialty": "NURSE/NURSES AIDE",
+   "excl_type": "1128b4",
+   "excl_date": "2001-02-20",
+   "npi": "",
+   "city": "NEW MILFORD",
+   "state": "CT"
+  },
+  "leie:8c898073592b": {
+   "record_id": "leie:8c898073592b",
+   "name": "HEALTH & WELLNESS MEDICAL CLIN",
+   "type": "organization",
+   "role_class": "organization",
+   "general": "CLINIC",
+   "specialty": "",
+   "excl_type": "1128b8",
+   "excl_date": "2005-06-20",
+   "npi": "",
+   "city": "LOS ANGELES",
+   "state": "CA"
+  },
+  "leie:5493943c2192": {
+   "record_id": "leie:5493943c2192",
+   "name": "YURIY KRAVCHENKO",
+   "type": "person",
+   "role_class": "private",
+   "general": "HOME HEALTH AGENCY",
+   "specialty": "HEALTH CARE AIDE",
+   "excl_type": "1128a1",
+   "excl_date": "2009-05-20",
+   "npi": "",
+   "city": "BROOKLYN",
+   "state": "NY"
+  }
+ },
+ "links": [
+  {
+   "a": "note:720001:c2.m12",
+   "b": "leie:1aee364ab389",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.15,
+    "first": 7.7,
+    "middle": 3.75
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "exact",
+    "middle": "exact"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 1.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 25.6,
+   "p": 0.9622,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.15,
+     "a": "DOWD",
+     "b": "DOWD",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.1154220647794766e-05,
+     "freq_a": 5.1154220647794766e-05,
+     "freq_b": 5.1154220647794766e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": 7.7,
+     "a": "ANDREW",
+     "b": "ANDREW",
+     "level": "exact",
+     "m": 0.85,
+     "u": 0.004094295035186846,
+     "freq_a": 0.004094295035186846,
+     "freq_b": 0.004094295035186846,
+     "u_source": "ssa1930-2005",
+     "jw": 1.0
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": 3.75,
+     "a": "J",
+     "b": "J",
+     "level": "exact",
+     "m": 0.9,
+     "u": 0.06666666666666667,
+     "u_source": "assumed: 15 common initials"
+    },
+    {
+     "field": "identifier",
+     "type": "npi",
+     "label": "npi",
+     "level": "missing",
+     "a": [],
+     "b": [
+      "1205890910"
+     ],
+     "bits": null
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "South Setauket, NY",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:710036:c0.m5",
+   "b": "leie:6e5f0277f058",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 12.83,
+    "first": 9.61
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "exact",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 1.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 22.44,
+   "p": 0.3627,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 12.83,
+     "a": "PIERRE",
+     "b": "PIERRE",
+     "level": "exact",
+     "m": 0.93,
+     "u": 0.00012765217695575158,
+     "freq_a": 0.00012765217695575158,
+     "freq_b": 0.00012765217695575158,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": 9.61,
+     "a": "BRADLEY",
+     "b": "BRADLEY",
+     "level": "exact",
+     "m": 0.85,
+     "u": 0.0010901988489951846,
+     "freq_a": 0.0010901988489951846,
+     "freq_b": 0.0010901988489951846,
+     "u_source": "ssa1930-2005",
+     "jw": 1.0
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Lewisburg, PA",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:710036:c7.m10",
+   "b": "leie:6e5f0277f058",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 12.83,
+    "first": 9.61
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "exact",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 1.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 22.44,
+   "p": 0.3627,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 12.83,
+     "a": "PIERRE",
+     "b": "PIERRE",
+     "level": "exact",
+     "m": 0.93,
+     "u": 0.00012765217695575158,
+     "freq_a": 0.00012765217695575158,
+     "freq_b": 0.00012765217695575158,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": 9.61,
+     "a": "BRADLEY",
+     "b": "BRADLEY",
+     "level": "exact",
+     "m": 0.85,
+     "u": 0.0010901988489951846,
+     "freq_a": 0.0010901988489951846,
+     "freq_b": 0.0010901988489951846,
+     "u_source": "ssa1930-2005",
+     "jw": 1.0
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Lewisburg, PA",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:710045:c0.m6",
+   "b": "leie:6e5f0277f058",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 12.83,
+    "first": 9.61
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "exact",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 1.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 22.44,
+   "p": 0.3627,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 12.83,
+     "a": "PIERRE",
+     "b": "PIERRE",
+     "level": "exact",
+     "m": 0.93,
+     "u": 0.00012765217695575158,
+     "freq_a": 0.00012765217695575158,
+     "freq_b": 0.00012765217695575158,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": 9.61,
+     "a": "BRADLEY",
+     "b": "BRADLEY",
+     "level": "exact",
+     "m": 0.85,
+     "u": 0.0010901988489951846,
+     "freq_a": 0.0010901988489951846,
+     "freq_b": 0.0010901988489951846,
+     "u_source": "ssa1930-2005",
+     "jw": 1.0
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Lewisburg, PA",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:710085:m5",
+   "b": "leie:6e5f0277f058",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 12.83,
+    "first": 9.61
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "exact",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 1.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 22.44,
+   "p": 0.3627,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 12.83,
+     "a": "PIERRE",
+     "b": "PIERRE",
+     "level": "exact",
+     "m": 0.93,
+     "u": 0.00012765217695575158,
+     "freq_a": 0.00012765217695575158,
+     "freq_b": 0.00012765217695575158,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": 9.61,
+     "a": "BRADLEY",
+     "b": "BRADLEY",
+     "level": "exact",
+     "m": 0.85,
+     "u": 0.0010901988489951846,
+     "freq_a": 0.0010901988489951846,
+     "freq_b": 0.0010901988489951846,
+     "u_source": "ssa1930-2005",
+     "jw": 1.0
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Lewisburg, PA",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c0.m2",
+   "b": "leie:6e5f0277f058",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 12.83,
+    "first": 9.61
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "exact",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 1.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 22.44,
+   "p": 0.3627,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 12.83,
+     "a": "PIERRE",
+     "b": "PIERRE",
+     "level": "exact",
+     "m": 0.93,
+     "u": 0.00012765217695575158,
+     "freq_a": 0.00012765217695575158,
+     "freq_b": 0.00012765217695575158,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": 9.61,
+     "a": "BRADLEY",
+     "b": "BRADLEY",
+     "level": "exact",
+     "m": 0.85,
+     "u": 0.0010901988489951846,
+     "freq_a": 0.0010901988489951846,
+     "freq_b": 0.0010901988489951846,
+     "u_source": "ssa1930-2005",
+     "jw": 1.0
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Lewisburg, PA",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720040:c0.m2",
+   "b": "leie:6e5f0277f058",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 12.83,
+    "first": 9.61
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "exact",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 1.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 22.44,
+   "p": 0.3627,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 12.83,
+     "a": "PIERRE",
+     "b": "PIERRE",
+     "level": "exact",
+     "m": 0.93,
+     "u": 0.00012765217695575158,
+     "freq_a": 0.00012765217695575158,
+     "freq_b": 0.00012765217695575158,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": 9.61,
+     "a": "BRADLEY",
+     "b": "BRADLEY",
+     "level": "exact",
+     "m": 0.85,
+     "u": 0.0010901988489951846,
+     "freq_a": 0.0010901988489951846,
+     "freq_b": 0.0010901988489951846,
+     "u_source": "ssa1930-2005",
+     "jw": 1.0
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Lewisburg, PA",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720052:m2",
+   "b": "leie:6e5f0277f058",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 12.83,
+    "first": 9.61
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "exact",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 1.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 22.44,
+   "p": 0.3627,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 12.83,
+     "a": "PIERRE",
+     "b": "PIERRE",
+     "level": "exact",
+     "m": 0.93,
+     "u": 0.00012765217695575158,
+     "freq_a": 0.00012765217695575158,
+     "freq_b": 0.00012765217695575158,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": 9.61,
+     "a": "BRADLEY",
+     "b": "BRADLEY",
+     "level": "exact",
+     "m": 0.85,
+     "u": 0.0010901988489951846,
+     "freq_a": 0.0010901988489951846,
+     "freq_b": 0.0010901988489951846,
+     "u_source": "ssa1930-2005",
+     "jw": 1.0
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Lewisburg, PA",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720077:c0.m2",
+   "b": "leie:6e5f0277f058",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 12.83,
+    "first": 9.61
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "exact",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 1.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 22.44,
+   "p": 0.3627,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 12.83,
+     "a": "PIERRE",
+     "b": "PIERRE",
+     "level": "exact",
+     "m": 0.93,
+     "u": 0.00012765217695575158,
+     "freq_a": 0.00012765217695575158,
+     "freq_b": 0.00012765217695575158,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": 9.61,
+     "a": "BRADLEY",
+     "b": "BRADLEY",
+     "level": "exact",
+     "m": 0.85,
+     "u": 0.0010901988489951846,
+     "freq_a": 0.0010901988489951846,
+     "freq_b": 0.0010901988489951846,
+     "u_source": "ssa1930-2005",
+     "jw": 1.0
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Lewisburg, PA",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c1.m2",
+   "b": "leie:10852c7fd2e3",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.78
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.78,
+   "p": 0.0139,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.78,
+     "a": "MOY",
+     "b": "MOY",
+     "level": "exact",
+     "m": 0.93,
+     "u": 3.305262777838748e-05,
+     "freq_a": 3.305262777838748e-05,
+     "freq_b": 3.305262777838748e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "JENNY",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Chicago, IL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c1.m2",
+   "b": "leie:7ffb361e8f90",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.78
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.78,
+   "p": 0.0139,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.78,
+     "a": "MOY",
+     "b": "MOY",
+     "level": "exact",
+     "m": 0.93,
+     "u": 3.305262777838748e-05,
+     "freq_a": 3.305262777838748e-05,
+     "freq_b": 3.305262777838748e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "NATHAN",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "W",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Miramar, FL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c2.m3",
+   "b": "leie:10852c7fd2e3",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.78
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.78,
+   "p": 0.0139,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.78,
+     "a": "MOY",
+     "b": "MOY",
+     "level": "exact",
+     "m": 0.93,
+     "u": 3.305262777838748e-05,
+     "freq_a": 3.305262777838748e-05,
+     "freq_b": 3.305262777838748e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "JENNY",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Chicago, IL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c2.m3",
+   "b": "leie:7ffb361e8f90",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.78
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.78,
+   "p": 0.0139,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.78,
+     "a": "MOY",
+     "b": "MOY",
+     "level": "exact",
+     "m": 0.93,
+     "u": 3.305262777838748e-05,
+     "freq_a": 3.305262777838748e-05,
+     "freq_b": 3.305262777838748e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "NATHAN",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "W",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Miramar, FL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c3.m11",
+   "b": "leie:10852c7fd2e3",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.78
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.78,
+   "p": 0.0139,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.78,
+     "a": "MOY",
+     "b": "MOY",
+     "level": "exact",
+     "m": 0.93,
+     "u": 3.305262777838748e-05,
+     "freq_a": 3.305262777838748e-05,
+     "freq_b": 3.305262777838748e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "JENNY",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Chicago, IL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c3.m11",
+   "b": "leie:7ffb361e8f90",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.78
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.78,
+   "p": 0.0139,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.78,
+     "a": "MOY",
+     "b": "MOY",
+     "level": "exact",
+     "m": 0.93,
+     "u": 3.305262777838748e-05,
+     "freq_a": 3.305262777838748e-05,
+     "freq_b": 3.305262777838748e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "NATHAN",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "W",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Miramar, FL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c2.m6",
+   "b": "leie:0e573b06820d",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0086,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "CRYSTAL",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "K",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Columbus, OH",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c2.m6",
+   "b": "leie:2e8c349413a7",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0086,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "ARTHUR",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "C",
+     "level": "missing"
+    },
+    {
+     "field": "identifier",
+     "type": "npi",
+     "label": "npi",
+     "level": "missing",
+     "a": [],
+     "b": [
+      "1558385468"
+     ],
+     "bits": null
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Swedesboro, NJ",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c2.m6",
+   "b": "leie:2fe7f43e059b",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0086,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "MARK",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "L",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Canton, OH",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c2.m6",
+   "b": "leie:4668c2f16903",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0086,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "IRA",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "N",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Syracuse, NY",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c2.m6",
+   "b": "leie:5a4055344fd3",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0086,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "ALAN",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Shaker Heights, OH",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c2.m6",
+   "b": "leie:5f70cb0c9140",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0086,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "TIMOTHY",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Sorrento, FL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c2.m6",
+   "b": "leie:9100966f031e",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0086,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "BRETT",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Pensacola, FL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c2.m6",
+   "b": "leie:9c61f7df92a3",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0086,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "THOMAS",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "C",
+     "level": "missing"
+    },
+    {
+     "field": "identifier",
+     "type": "npi",
+     "label": "npi",
+     "level": "missing",
+     "a": [],
+     "b": [
+      "1538260179"
+     ],
+     "bits": null
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Putnam Station, NY",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c3.m9",
+   "b": "leie:0e573b06820d",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0086,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "CRYSTAL",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "K",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Columbus, OH",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c3.m9",
+   "b": "leie:2e8c349413a7",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0086,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "ARTHUR",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "C",
+     "level": "missing"
+    },
+    {
+     "field": "identifier",
+     "type": "npi",
+     "label": "npi",
+     "level": "missing",
+     "a": [],
+     "b": [
+      "1558385468"
+     ],
+     "bits": null
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Swedesboro, NJ",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c3.m9",
+   "b": "leie:2fe7f43e059b",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0086,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "MARK",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "L",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Canton, OH",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c3.m9",
+   "b": "leie:4668c2f16903",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0086,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "IRA",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "N",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Syracuse, NY",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c3.m9",
+   "b": "leie:5a4055344fd3",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0086,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "ALAN",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Shaker Heights, OH",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c3.m9",
+   "b": "leie:5f70cb0c9140",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0086,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "TIMOTHY",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Sorrento, FL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c3.m9",
+   "b": "leie:9100966f031e",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0086,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "BRETT",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Pensacola, FL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c3.m9",
+   "b": "leie:9c61f7df92a3",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0086,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "THOMAS",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "C",
+     "level": "missing"
+    },
+    {
+     "field": "identifier",
+     "type": "npi",
+     "label": "npi",
+     "level": "missing",
+     "a": [],
+     "b": [
+      "1538260179"
+     ],
+     "bits": null
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Putnam Station, NY",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720077:c0.m15",
+   "b": "leie:280f0f5a70f0",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 15.95
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 15.95,
+   "p": 0.0063,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 15.95,
+     "a": "POLLAK",
+     "b": "POLLAK",
+     "level": "exact",
+     "m": 0.93,
+     "u": 1.4710132030285647e-05,
+     "freq_a": 1.4710132030285647e-05,
+     "freq_b": 1.4710132030285647e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "PATRICK",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "P",
+     "level": "missing"
+    },
+    {
+     "field": "identifier",
+     "type": "npi",
+     "label": "npi",
+     "level": "missing",
+     "a": [],
+     "b": [
+      "1124165543"
+     ],
+     "bits": null
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Torrington, CT",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720077:c0.m15",
+   "b": "leie:73e1969e727a",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 15.95
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 15.95,
+   "p": 0.0063,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 15.95,
+     "a": "POLLAK",
+     "b": "POLLAK",
+     "level": "exact",
+     "m": 0.93,
+     "u": 1.4710132030285647e-05,
+     "freq_a": 1.4710132030285647e-05,
+     "freq_b": 1.4710132030285647e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "LYNNE",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "New Milford, CT",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:710045:c0.m14",
+   "b": "leie:8c898073592b",
+   "type": "organization",
+   "distance": "watchlist",
+   "prior": 5e-07,
+   "prior_key": "watchlist/recurring",
+   "weights": {
+    "org_name": 13.22
+   },
+   "name_agreement": {
+    "org_name": "shared:CLIN"
+   },
+   "name_similarity": 0.569,
+   "features": {
+    "last_jw": 0.0,
+    "first_jw": 0.0,
+    "org_jw": 0.524,
+    "last_phonetic": 0.0
+   },
+   "proposed_by": [
+    "block:org_rarest_word"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 13.22,
+   "p": 0.0047,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "org_name",
+     "label": "organization name",
+     "bits": 13.22,
+     "level": "shared",
+     "a": "CLIN",
+     "b": "HEALTH WELLNESS MEDICAL CLIN",
+     "shared": [
+      {
+       "t": "CLIN",
+       "bits": 17.1,
+       "orgs_using": 14,
+       "orgs_total": 1972027
+      }
+     ],
+     "only_a": [],
+     "only_b": [
+      {
+       "t": "HEALTH",
+       "bits": 3.47,
+       "orgs_using": 178522,
+       "orgs_total": 1972027
+      },
+      {
+       "t": "WELLNESS",
+       "bits": 5.61,
+       "orgs_using": 40425,
+       "orgs_total": 1972027
+      },
+      {
+       "t": "MEDICAL",
+       "bits": 3.88,
+       "orgs_using": 133727,
+       "orgs_total": 1972027
+      }
+     ],
+     "u_source": "nppes"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Los Angeles, CA",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 57
+  },
+  {
+   "a": "note:710036:c6.m9",
+   "b": "leie:10852c7fd2e3",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.78
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.78,
+   "p": 0.0028,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.78,
+     "a": "MOY",
+     "b": "MOY",
+     "level": "exact",
+     "m": 0.93,
+     "u": 3.305262777838748e-05,
+     "freq_a": 3.305262777838748e-05,
+     "freq_b": 3.305262777838748e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "JENNY",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Chicago, IL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:710036:c6.m9",
+   "b": "leie:7ffb361e8f90",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.78
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.78,
+   "p": 0.0028,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.78,
+     "a": "MOY",
+     "b": "MOY",
+     "level": "exact",
+     "m": 0.93,
+     "u": 3.305262777838748e-05,
+     "freq_a": 3.305262777838748e-05,
+     "freq_b": 3.305262777838748e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "NATHAN",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "W",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Miramar, FL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c5.m2",
+   "b": "leie:10852c7fd2e3",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.78
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.78,
+   "p": 0.0028,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.78,
+     "a": "MOY",
+     "b": "MOY",
+     "level": "exact",
+     "m": 0.93,
+     "u": 3.305262777838748e-05,
+     "freq_a": 3.305262777838748e-05,
+     "freq_b": 3.305262777838748e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "JENNY",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Chicago, IL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c5.m2",
+   "b": "leie:7ffb361e8f90",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.78
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.78,
+   "p": 0.0028,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.78,
+     "a": "MOY",
+     "b": "MOY",
+     "level": "exact",
+     "m": 0.93,
+     "u": 3.305262777838748e-05,
+     "freq_a": 3.305262777838748e-05,
+     "freq_b": 3.305262777838748e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "NATHAN",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "W",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Miramar, FL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c6.m5",
+   "b": "leie:10852c7fd2e3",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.78
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.78,
+   "p": 0.0028,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.78,
+     "a": "MOY",
+     "b": "MOY",
+     "level": "exact",
+     "m": 0.93,
+     "u": 3.305262777838748e-05,
+     "freq_a": 3.305262777838748e-05,
+     "freq_b": 3.305262777838748e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "JENNY",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Chicago, IL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c6.m5",
+   "b": "leie:7ffb361e8f90",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.78
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.78,
+   "p": 0.0028,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.78,
+     "a": "MOY",
+     "b": "MOY",
+     "level": "exact",
+     "m": 0.93,
+     "u": 3.305262777838748e-05,
+     "freq_a": 3.305262777838748e-05,
+     "freq_b": 3.305262777838748e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "NATHAN",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "W",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Miramar, FL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:710036:c7.m4",
+   "b": "leie:0e573b06820d",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "CRYSTAL",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "K",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Columbus, OH",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:710036:c7.m4",
+   "b": "leie:2e8c349413a7",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "ARTHUR",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "C",
+     "level": "missing"
+    },
+    {
+     "field": "identifier",
+     "type": "npi",
+     "label": "npi",
+     "level": "missing",
+     "a": [],
+     "b": [
+      "1558385468"
+     ],
+     "bits": null
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Swedesboro, NJ",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:710036:c7.m4",
+   "b": "leie:2fe7f43e059b",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "MARK",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "L",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Canton, OH",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:710036:c7.m4",
+   "b": "leie:4668c2f16903",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "IRA",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "N",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Syracuse, NY",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:710036:c7.m4",
+   "b": "leie:5a4055344fd3",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "ALAN",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Shaker Heights, OH",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:710036:c7.m4",
+   "b": "leie:5f70cb0c9140",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "TIMOTHY",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Sorrento, FL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:710036:c7.m4",
+   "b": "leie:9100966f031e",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "BRETT",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Pensacola, FL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:710036:c7.m4",
+   "b": "leie:9c61f7df92a3",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "THOMAS",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "C",
+     "level": "missing"
+    },
+    {
+     "field": "identifier",
+     "type": "npi",
+     "label": "npi",
+     "level": "missing",
+     "a": [],
+     "b": [
+      "1538260179"
+     ],
+     "bits": null
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Putnam Station, NY",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c1.m4",
+   "b": "leie:0e573b06820d",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "CRYSTAL",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "K",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Columbus, OH",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c1.m4",
+   "b": "leie:2e8c349413a7",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "ARTHUR",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "C",
+     "level": "missing"
+    },
+    {
+     "field": "identifier",
+     "type": "npi",
+     "label": "npi",
+     "level": "missing",
+     "a": [],
+     "b": [
+      "1558385468"
+     ],
+     "bits": null
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Swedesboro, NJ",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c1.m4",
+   "b": "leie:2fe7f43e059b",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "MARK",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "L",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Canton, OH",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c1.m4",
+   "b": "leie:4668c2f16903",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "IRA",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "N",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Syracuse, NY",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c1.m4",
+   "b": "leie:5a4055344fd3",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "ALAN",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Shaker Heights, OH",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c1.m4",
+   "b": "leie:5f70cb0c9140",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "TIMOTHY",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Sorrento, FL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c1.m4",
+   "b": "leie:9100966f031e",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "BRETT",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Pensacola, FL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c1.m4",
+   "b": "leie:9c61f7df92a3",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "THOMAS",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "C",
+     "level": "missing"
+    },
+    {
+     "field": "identifier",
+     "type": "npi",
+     "label": "npi",
+     "level": "missing",
+     "a": [],
+     "b": [
+      "1538260179"
+     ],
+     "bits": null
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Putnam Station, NY",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c5.m4",
+   "b": "leie:0e573b06820d",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "CRYSTAL",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "K",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Columbus, OH",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c5.m4",
+   "b": "leie:2e8c349413a7",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "ARTHUR",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "C",
+     "level": "missing"
+    },
+    {
+     "field": "identifier",
+     "type": "npi",
+     "label": "npi",
+     "level": "missing",
+     "a": [],
+     "b": [
+      "1558385468"
+     ],
+     "bits": null
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Swedesboro, NJ",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c5.m4",
+   "b": "leie:2fe7f43e059b",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "MARK",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "L",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Canton, OH",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c5.m4",
+   "b": "leie:4668c2f16903",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "IRA",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "N",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Syracuse, NY",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c5.m4",
+   "b": "leie:5a4055344fd3",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "ALAN",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Shaker Heights, OH",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c5.m4",
+   "b": "leie:5f70cb0c9140",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "TIMOTHY",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Sorrento, FL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c5.m4",
+   "b": "leie:9100966f031e",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "BRETT",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Pensacola, FL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c5.m4",
+   "b": "leie:9c61f7df92a3",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "THOMAS",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "C",
+     "level": "missing"
+    },
+    {
+     "field": "identifier",
+     "type": "npi",
+     "label": "npi",
+     "level": "missing",
+     "a": [],
+     "b": [
+      "1538260179"
+     ],
+     "bits": null
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Putnam Station, NY",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c6.m6",
+   "b": "leie:0e573b06820d",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "CRYSTAL",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "K",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Columbus, OH",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c6.m6",
+   "b": "leie:2e8c349413a7",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "ARTHUR",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "C",
+     "level": "missing"
+    },
+    {
+     "field": "identifier",
+     "type": "npi",
+     "label": "npi",
+     "level": "missing",
+     "a": [],
+     "b": [
+      "1558385468"
+     ],
+     "bits": null
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Swedesboro, NJ",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c6.m6",
+   "b": "leie:2fe7f43e059b",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "MARK",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "L",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Canton, OH",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c6.m6",
+   "b": "leie:4668c2f16903",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "IRA",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "N",
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Syracuse, NY",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c6.m6",
+   "b": "leie:5a4055344fd3",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "ALAN",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Shaker Heights, OH",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c6.m6",
+   "b": "leie:5f70cb0c9140",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "TIMOTHY",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Sorrento, FL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c6.m6",
+   "b": "leie:9100966f031e",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "BRETT",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Pensacola, FL",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c6.m6",
+   "b": "leie:9c61f7df92a3",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 14.09
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "missing",
+    "middle": "missing"
+   },
+   "name_similarity": 1.0,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 14.09,
+   "p": 0.0017,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 14.09,
+     "a": "WEINER",
+     "b": "WEINER",
+     "level": "exact",
+     "m": 0.93,
+     "u": 5.348043907018897e-05,
+     "freq_a": 5.348043907018897e-05,
+     "freq_b": 5.348043907018897e-05,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": null,
+     "a": null,
+     "b": "THOMAS",
+     "level": "missing"
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": "C",
+     "level": "missing"
+    },
+    {
+     "field": "identifier",
+     "type": "npi",
+     "label": "npi",
+     "level": "missing",
+     "a": [],
+     "b": [
+      "1538260179"
+     ],
+     "bits": null
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Putnam Station, NY",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 100
+  },
+  {
+   "a": "note:720001:c4.m12",
+   "b": "leie:5493943c2192",
+   "type": "person",
+   "distance": "watchlist",
+   "prior": 1e-07,
+   "prior_key": "watchlist/private",
+   "weights": {
+    "last": 18.41,
+    "first": -4.64
+   },
+   "name_agreement": {
+    "last": "exact",
+    "first": "differ",
+    "middle": "missing"
+   },
+   "name_similarity": 0.5,
+   "features": {
+    "last_jw": 1.0,
+    "first_jw": 0.0,
+    "org_jw": 0.0,
+    "last_phonetic": 1.0
+   },
+   "proposed_by": [
+    "block:surname_nysiis"
+   ],
+   "veto": null,
+   "id_notes": {},
+   "co_party": {
+    "anchored": [],
+    "overlap": null
+   },
+   "bits": 13.77,
+   "p": 0.0014,
+   "basis": [
+    "name"
+   ],
+   "basis_class": "name_only",
+   "suspicion": 0.0,
+   "source": "oig_leie",
+   "fields": [
+    {
+     "field": "last",
+     "label": "surname",
+     "bits": 18.41,
+     "a": "KRAVCHENKO",
+     "b": "KRAVCHENKO",
+     "level": "exact",
+     "m": 0.93,
+     "u": 2.6649880955584027e-06,
+     "freq_a": 2.6649880955584027e-06,
+     "freq_b": 2.6649880955584027e-06,
+     "u_source": "census2010",
+     "jw": 1.0
+    },
+    {
+     "field": "first",
+     "label": "first name",
+     "bits": -4.64,
+     "a": "ROMAN",
+     "b": "YURIY",
+     "level": "differ",
+     "m": 0.04,
+     "u": 1.0,
+     "freq_a": 0.00010685621395195872,
+     "freq_b": 3.0540415112135064e-07,
+     "u_source": "ssa1930-2005",
+     "jw": 0.0
+    },
+    {
+     "field": "middle",
+     "label": "middle initial",
+     "bits": null,
+     "a": null,
+     "b": null,
+     "level": "missing"
+    },
+    {
+     "field": "location",
+     "label": "city and state",
+     "bits": null,
+     "a": null,
+     "b": "Brooklyn, NY",
+     "level": "missing"
+    }
+   ],
+   "name_similarity_pct": 50
+  }
+ ]
+}

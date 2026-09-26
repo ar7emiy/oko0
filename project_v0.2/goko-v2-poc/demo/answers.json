@@ -1,0 +1,1189 @@
+{
+ "run": "demo/run",
+ "answers": [
+  {
+   "question": "What is Nexray Medical Imaging accused of, and who controls it?",
+   "lens": "default",
+   "recorded_at": "2026-09-25 14:53",
+   "events": [
+    {
+     "step": "route",
+     "t": 0.0,
+     "decision": "question",
+     "by": "phrasing",
+     "text": "Phrased as a question: answering from the graph."
+    },
+    {
+     "step": "match",
+     "t": 0.06,
+     "n": 7,
+     "entities": [
+      "NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING",
+      "WILLIAM A. WEINER, D.O.",
+      "MARVIN MOY, M.D.",
+      "Rutland Medical P.C. d/b/a MedicalNow",
+      "Bradley Pierre",
+      "Other Defendants",
+      "Medical Reimbursement Consultants, Inc."
+     ],
+     "by_words": true,
+     "text": "Matched 7 parties by the words of the question."
+    },
+    {
+     "step": "expand",
+     "t": 0.06,
+     "added": 7,
+     "names": [
+      "American Transit",
+      "American Transit Insurance Company",
+      "Bradley Pierre",
+      "R.S.",
+      "G.R.",
+      "Pierre (\"Rose\")",
+      "I.V."
+     ],
+     "actions": 40,
+     "actions_found": 231,
+     "links": 40,
+     "flags": 0,
+     "text": "One hop out: 7 co-participant(s) added, 40 action(s) with source quotes, 40 not-merged link(s), 0 flag(s) for review."
+    },
+    {
+     "step": "passages",
+     "t": 0.06,
+     "n": 10,
+     "notes": [
+      "note:710036",
+      "note:710045",
+      "note:720001"
+     ],
+     "text": "Read 10 source passage(s) around the question's words and the matched parties, from 3 note(s)."
+    },
+    {
+     "step": "facts",
+     "t": 0.06,
+     "n": 112,
+     "facts": [
+      "[e1] ENTITY 'NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING' type=organization mentions=15 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['medical'] details=['address=135-25F 79th Street, Suite 2B, Howard Beach, New York 11414'] merge_confidence=0.9998 merge_basis=['name_only']",
+      "[e2] ENTITY 'WILLIAM A. WEINER, D.O.' type=person mentions=15 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['medical'] details=[] merge_confidence=0.9994 merge_basis=['name_only']",
+      "[e3] ENTITY 'MARVIN MOY, M.D.' type=person mentions=14 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['medical'] details=[] merge_confidence=0.9997 merge_basis=['name_only']",
+      "[e4] ENTITY 'Rutland Medical P.C. d/b/a MedicalNow' type=organization mentions=14 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['medical'] details=['address=145 E 98th Street, 1st Floor, Brooklyn, New York 11212'] merge_confidence=0.9068 merge_basis=['name_only']",
+      "[e5] ENTITY 'Bradley Pierre' type=person mentions=10 claims=['100002-240360-RI-01'] categories=['other'] details=[] merge_confidence=0.9999 merge_basis=['name_only']",
+      "[e6] ENTITY 'Other Defendants' type=organization mentions=7 claims=['100001-236572-RI-01'] categories=['medical'] details=[] merge_confidence=1.0 merge_basis=['name_only']",
+      "[e7] ENTITY 'Medical Reimbursement Consultants, Inc.' type=organization mentions=6 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['insufficient_evidence', 'other'] details=[] merge_confidence=0.9988 merge_basis=['name_only']",
+      "[e8] ENTITY 'American Transit' type=organization mentions=4 claims=['100002-240360-RI-01'] categories=['financier'] details=[] merge_confidence=0.9998 merge_basis=['name_only']",
+      "[e9] ENTITY 'American Transit Insurance Company' type=organization mentions=6 claims=['100002-240360-RI-01'] categories=['financier'] details=[] merge_confidence=1.0 merge_basis=['name_only']",
+      "[e10] ENTITY 'Bradley Pierre' type=person mentions=6 claims=['100001-236572-RI-01'] categories=['other'] details=[] merge_confidence=0.9999 merge_basis=['name_only']",
+      "[e11] ENTITY 'R.S.' type=person mentions=1 claims=['100002-240360-RI-01'] categories=['other'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e12] ENTITY 'G.R.' type=person mentions=1 claims=['100002-240360-RI-01'] categories=['other'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e13] ENTITY 'Pierre (\"Rose\")' type=person mentions=1 claims=['100002-240360-RI-01'] categories=['other'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e14] ENTITY 'I.V.' type=person mentions=1 claims=['100002-240360-RI-01'] categories=['other'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e15] ENTITY 'Defendants' type=organization mentions=1 (reached through an action matching the question)",
+      "[e16] ENTITY 'PC Defendants' type=organization mentions=1 (reached through an action matching the question)",
+      "[e17] ENTITY 'Nexray/Weiner' type=organization mentions=1 (reached through an action matching the question)",
+      "[e18] ENTITY 'Defendants' type=organization mentions=1 (reached through an action matching the question)",
+      "[e19] ENTITY 'Answering Defendants' type=organization mentions=1 (reached through an action matching the question)",
+      "[e20] ENTITY 'John Does 1-15' type=person mentions=1 (reached through an action matching the question)",
+      "[e21] ENTITY 'Clin-' type=organization mentions=1 (reached through an action matching the question)",
+      "[e22] ENTITY 'P.A.' type=person mentions=1 (reached through an action matching the question)",
+      "[a1] ACTION denied_owning_controlling_or_operating stance=denied time=None participants=['e5(denier)', 'e4(facility)', 'e1(facility)'] claim=100002-240360-RI-01 quote='Pierre claims that he did not own, control, or operate either the Rutland or Nexray medical facilities'",
+      "[a2] ACTION member_of stance=asserted time=None participants=['e3(member)', 'e6(group)'] claim=100001-236572-RI-01 quote='“Moy”), Rutland Medical P.C. d/b/a MedicalNow (“Rutland”), William A. Weiner, D.O. (“Weiner”), and Nexray Medical Imaging'",
+      "[a3] ACTION member_of stance=asserted time=None participants=['e2(member)', 'e6(group)'] claim=100001-236572-RI-01 quote='William A. Weiner, D.O. (“Weiner”), and Nexray Medical Imaging, P.C.'",
+      "[a4] ACTION member_of stance=asserted time=None participants=['e1(member)', 'e6(group)'] claim=100001-236572-RI-01 quote='Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging\\n(“Nexray”)(collectively, the “Other Defendants”)'",
+      "[a5] ACTION member_of stance=asserted time=None participants=['e10(member)', 'e15(group)'] claim=100001-236572-RI-01 quote='Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\\ndiology Medical Imaging ( collectively, \"De'",
+      "[a6] ACTION member_of stance=asserted time=None participants=['e7(member)', 'e15(group)'] claim=100001-236572-RI-01 quote='Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\\ndiology Medical Imaging ( collectively, \"De'",
+      "[a7] ACTION member_of stance=asserted time=None participants=['e3(member)', 'e15(group)'] claim=100001-236572-RI-01 quote='Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\\ndiology Medical Imaging ( collectively, \"De'",
+      "[a8] ACTION member_of stance=asserted time=None participants=['e4(member)', 'e15(group)'] claim=100001-236572-RI-01 quote='Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\\ndiology Medical Imaging ( collectively, \"De'",
+      "[a9] ACTION member_of stance=asserted time=None participants=['e2(member)', 'e15(group)'] claim=100001-236572-RI-01 quote='Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\\ndiology Medical Imaging ( collectively, \"De'",
+      "[a10] ACTION member_of stance=asserted time=None participants=['e1(member)', 'e15(group)'] claim=100001-236572-RI-01 quote='Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\\ndiology Medical Imaging ( collectively, \"De'",
+      "[a11] ACTION member_of stance=asserted time=None participants=['e7(member)', 'e16(group)'] claim=100001-236572-RI-01 quote='Defendants Medical Reimbursement Consultants Inc., Rutland Medical\\nP.C. d/b/a MedicalNow, and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\\ndiology Medical Imaging are hereinafter referred to as the PC Defendants.'",
+      "[a12] ACTION member_of stance=asserted time=None participants=['e4(member)', 'e16(group)'] claim=100001-236572-RI-01 quote='Rutland Medical\\nP.C. d/b/a MedicalNow, and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\\ndiology Medical Imaging are hereinafter referred to as the PC Defendants.'",
+      "[a13] ACTION member_of stance=asserted time=None participants=['e1(member)', 'e16(group)'] claim=100001-236572-RI-01 quote='Nexray Medical Imaging, P.C. d/b/a Soul Ra-\\ndiology Medical Imaging are hereinafter referred to as the PC Defendants.'",
+      "[a14] ACTION controlled stance=asserted time=None participants=['e5(controller)', 'e4(controlled_party)', 'e1(controlled_party)'] claim=100002-240360-RI-01 quote='179. Further, Rutland and Nexray were under Pierre’s control'",
+      "[a15] ACTION concealed stance=alleged time=At all relevant times participants=['e13(actor)', 'e2(actor)', 'e9(target)', 'e17(subject)'] claim=100002-240360-RI-01 quote='Pierre and Weiner actively concealed from American Transit facts regarding Nexray’s true ownership and control'",
+      "[a16] ACTION member_of stance=asserted time=None participants=['e5(member)', 'e18(group)'] claim=100002-240360-RI-01 quote='BRADLEY PIERRE, MARVIN MOY, M.D., RUTLAND \\nMEDICAL P.C., WILLIAM A. WEINER, D.O., NEXRAY \\nMEDICAL IMAGING, P.C. d/b/a SOUL   RADIOLOGY \\nMEDICAL IMAGING and JOHN DOES 1-15,'",
+      "[a17] ACTION member_of stance=asserted time=None participants=['e1(member)', 'e18(group)'] claim=100002-240360-RI-01 quote='NEXRAY \\nMEDICAL IMAGING, P.C. d/b/a SOUL   RADIOLOGY \\nMEDICAL IMAGING and JOHN DOES 1-15,'",
+      "[a18] ACTION member_of stance=asserted time=None participants=['e2(member)', 'e19(group)'] claim=100002-240360-RI-01 quote='WILLIAM A. WEINER, D.O., NEXRAY MEDICAL IMAGING, \\nP.C. and d/b/a SOUL   RADIOLOGY MEDICA L IMAGING, (“Answering Defendants”)'",
+      "[a19] ACTION member_of stance=asserted time=None participants=['e1(member)', 'e19(group)'] claim=100002-240360-RI-01 quote='NEXRAY MEDICAL IMAGING, \\nP.C. and d/b/a SOUL   RADIOLOGY MEDICA L IMAGING, (“Answering Defendants”)'",
+      "[a20] ACTION admitted_making_false_statements stance=asserted time=in his plea allocution participants=['e2(actor)', 'e5(subject)', 'e1(organization)'] claim=100002-240360-RI-01 quote='Dr. Weiner admitted that he made false statements under oath about Mr. Pierre’s role in his medical practice, Nexray,'",
+      "[a21] ACTION owned_operated_and_controlled stance=alleged time=None participants=['e5(owner_operator_controller)', 'e1(organization)'] claim=100002-240360-RI-01 quote='Pierre owned, operated, and controlled Nexray.'",
+      "[a22] ACTION referred_to stance=alleged time=None participants=['e3(referrer)', 'e1(recipient)'] claim=100002-240360-RI-01 quote='176. Moy systemically referred patients to Nexray for imaging'",
+      "[a23] ACTION billed stance=asserted time=None participants=['e1(biller)', 'e8(billed_party)'] claim=100002-240360-RI-01 quote='281. Nexray billed American Transit for this imaging'",
+      "[a24] ACTION submitted_false_medical_documentation stance=alleged time=None participants=['e13(actor)', 'e3(actor)', 'e2(actor)', 'e9(recipient)'] claim=100002-240360-RI-01 quote='created, prepared, and submitted (or caused to be created, prepared, and submitted) false medical\\ndocumentation to American Transit'",
+      "[a25] ACTION owned stance=alleged time=On paper participants=['e3(owner)', 'e4(owned)', 'e2(owner)', 'e1(owned)'] claim=100002-240360-RI-01 quote='Moy is the owner of Rutland and Weiner the owner of Nexray'",
+      "[a26] ACTION enabled stance=alleged time=None participants=['e3(actor)', 'e2(actor)', 'e4(enabled_party)', 'e1(enabled_party)'] claim=100002-240360-RI-01 quote='Moy and Weiner enabled Rutland and Nexray to regularly recommend unnecessary procedures'",
+      "[a27] ACTION seeks_money_judgment stance=asserted time=None participants=['e8(claimant)', 'e1(defendant)', 'e5(defendant)', 'e2(defendant)'] claim=100002-240360-RI-01 quote='On the Ninth Cause of Action against Nexray, Pierre, and Weiner, a money'",
+      "[a28] ACTION steered_patients_to stance=asserted time=None participants=['e5(actor)', 'e1(destination)'] claim=100002-240360-RI-01 quote='he used his control of the clinics to steer patients to seek MRIs at Nexray,'",
+      "[a29] ACTION operated_scheme_to_defraud stance=alleged time=None participants=['e5(defendant)', 'e3(defendant)', 'e4(defendant)', 'e2(defendant)', 'e1(defendant)', 'e20(defendant)', 'e9(target)'] claim=100002-240360-RI-01 quote='defendants operated an illegal scheme to defraud plaintiff'",
+      "[a30] ACTION member_of stance=asserted time=None participants=['e1(member)', 'e21(group)'] claim=100001-236572-RI-01 quote='Nexray and Medical Reimbursement Consultants, Inc.'",
+      "[a31] ACTION ceded_control_to stance=alleged time=None participants=['e3(actor)', 'e4(target)', 'e10(recipient)'] claim=100001-236572-RI-01 quote='Moy ceded actual control over Rutland to Defendant Bradley\\nPierre'",
+      "[a32] ACTION represented_self_as stance=alleged time=Beginning in 2011 and numerous times thereafter participants=['e2(actor)', 'e9(recipient)', 'e1(organization)'] claim=100002-240360-RI-01 quote='Weiner represented himself to American Transit to be the sole office, director, and shareholder of Nexray.'",
+      "[a33] ACTION ceded_management_to stance=alleged time=at least since 2008 participants=['e2(former_controller)', 'e5(recipient)', 'e1(organization)'] claim=100002-240360-RI-01 quote='Weiner ceded operation and management of Nexray to Defendant Pierre.'",
+      "[a34] ACTION paid_claims_to stance=alleged time=to date participants=['e9(payer)', 'e4(recipient)', 'e1(recipient)'] claim=100002-240360-RI-01 quote='American Transit paid Rutland and Nexray’s No -Fault claims'",
+      "[a35] ACTION referred_to stance=alleged time=None participants=['e4(referrer)', 'e3(referrer)', 'e22(patient)', 'e1(recipient)'] claim=100002-240360-RI-01 quote='227. Despite the lack of any indication of injury, Rutland and Moy referred P.A. to Nexray'",
+      "[a36] ACTION referred stance=asserted time=August 27, 2020 participants=['e4(referrer)', 'e11(patient)', 'e1(referred_to)'] claim=100002-240360-RI-01 quote='313. On August 27, 2020, Rutland evaluated R.S. and referred her to Nexray'",
+      "[a37] ACTION referred stance=asserted time=None participants=['e4(referrer)', 'e11(patient)', 'e1(referred_to)'] claim=100002-240360-RI-01 quote='318. Rutland referred R.S. to Nexray for cervical spine, lumbar spine, and right shoulder MRIs.'",
+      "[a38] ACTION referred stance=asserted time=June 11, 2020 participants=['e4(referrer)', 'e14(patient)', 'e1(referred_to)'] claim=100002-240360-RI-01 quote='324. Rutland evaluated I.V. on June 11, 2020  and referred I.V. to Nexray'",
+      "[a39] ACTION performed stance=alleged time=June 23, 2020 participants=['e1(provider)', 'e14(patient)', 'e4(referrer)'] claim=100002-240360-RI-01 quote='327. Pursuant to Rutland’s referral, on June 23, 2020, Nexray purportedly performed on I.V.'",
+      "[a40] ACTION referred stance=asserted time=May 29, 2020 participants=['e4(referrer)', 'e12(patient)', 'e1(referred_to)'] claim=100002-240360-RI-01 quote='359. The same day, May 29, 2020, Rutland evaluated G.R. and referred him to Nexray'",
+      "[e10~e5] NOT-MERGED LINK p=0.3627 basis=name_only veto=None distance=different_client",
+      "[e10~e5] NOT-MERGED LINK p=0.3627 basis=name_only veto=None distance=different_client",
+      "[e10~e5] NOT-MERGED LINK p=0.3627 basis=name_only veto=None distance=different_client",
+      "[e10~e5] NOT-MERGED LINK p=0.3627 basis=name_only veto=None distance=different_client",
+      "[e10~e5] NOT-MERGED LINK p=0.3627 basis=name_only veto=None distance=different_client",
+      "[e10~e5] NOT-MERGED LINK p=0.3627 basis=name_only veto=None distance=different_client",
+      "[e10~e5] NOT-MERGED LINK p=0.3627 basis=name_only veto=None distance=different_client",
+      "[e10~e5] NOT-MERGED LINK p=0.3627 basis=name_only veto=None distance=different_client",
+      "[e10~e5] NOT-MERGED LINK p=0.3627 basis=name_only veto=None distance=different_client",
+      "[e10~e5] NOT-MERGED LINK p=0.3627 basis=name_only veto=None distance=different_client",
+      "[e10~e5] NOT-MERGED LINK p=0.3627 basis=name_only veto=None distance=different_client",
+      "[e10~e5] NOT-MERGED LINK p=0.3627 basis=name_only veto=None distance=different_client",
+      "[e10~e5] NOT-MERGED LINK p=0.3627 basis=name_only veto=None distance=different_client",
+      "[e10~e5] NOT-MERGED LINK p=0.3627 basis=name_only veto=None distance=different_client",
+      "[e10~e5] NOT-MERGED LINK p=0.3627 basis=name_only veto=None distance=different_client",
+      "[e10~e5] NOT-MERGED LINK p=0.3627 basis=name_only veto=None distance=different_client",
+      "[e9~e8] NOT-MERGED LINK p=0.9678 basis=name_only veto=sibling_org_names:complete name vs one adding FOR distance=same_note",
+      "[e9~e8] NOT-MERGED LINK p=0.9913 basis=name_only veto=None distance=same_note",
+      "[e9~e8] NOT-MERGED LINK p=0.9913 basis=name_only veto=None distance=same_note",
+      "[e9~e8] NOT-MERGED LINK p=0.9913 basis=name_only veto=None distance=same_note",
+      "[e8~e9] NOT-MERGED LINK p=0.9678 basis=name_only veto=sibling_org_names:complete name vs one adding FOR distance=same_note",
+      "[e8~e9] NOT-MERGED LINK p=0.9678 basis=name_only veto=sibling_org_names:complete name vs one adding FOR distance=same_note",
+      "[e8~e9] NOT-MERGED LINK p=0.9093 basis=name_only veto=sibling_org_names:complete name vs one adding FOR distance=same_claim",
+      "[e8~e9] NOT-MERGED LINK p=0.9093 basis=name_only veto=sibling_org_names:complete name vs one adding FOR distance=same_claim",
+      "[e8~e9] NOT-MERGED LINK p=0.9093 basis=name_only veto=None distance=same_claim",
+      "[e8~e9] NOT-MERGED LINK p=0.9913 basis=name_only veto=None distance=same_note",
+      "[e8~e9] NOT-MERGED LINK p=0.9913 basis=name_only veto=None distance=same_note",
+      "[e8~e9] NOT-MERGED LINK p=0.9743 basis=name_only veto=None distance=same_claim",
+      "[e8~e9] NOT-MERGED LINK p=0.9743 basis=name_only veto=None distance=same_claim",
+      "[e8~e9] NOT-MERGED LINK p=0.9743 basis=name_only veto=None distance=same_claim",
+      "[e8~e9] NOT-MERGED LINK p=0.9913 basis=name_only veto=None distance=same_note",
+      "[e8~e9] NOT-MERGED LINK p=0.9913 basis=name_only veto=None distance=same_note",
+      "[e8~e9] NOT-MERGED LINK p=0.9743 basis=name_only veto=None distance=same_claim",
+      "[e8~e9] NOT-MERGED LINK p=0.9743 basis=name_only veto=None distance=same_claim",
+      "[e8~e9] NOT-MERGED LINK p=0.9743 basis=name_only veto=None distance=same_claim",
+      "[e9~e8] NOT-MERGED LINK p=0.9913 basis=name_only veto=None distance=same_note",
+      "[e9~e8] NOT-MERGED LINK p=0.9913 basis=name_only veto=None distance=same_note",
+      "[e8~e9] NOT-MERGED LINK p=0.9743 basis=name_only veto=None distance=same_claim",
+      "[e8~e9] NOT-MERGED LINK p=0.9743 basis=name_only veto=None distance=same_claim",
+      "[e8~e9] NOT-MERGED LINK p=0.9743 basis=name_only veto=None distance=same_claim",
+      "[p1] PASSAGE note:710036 claim=100001-236572-RI-01 (around NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING): 'MOY, M.D., RUTLAND d/b/a MEDICALNOW, WILLIAM A. WEINER, D.O., and NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING MRC Defendants. Case 1:23-cv-06572-NGG-LB Document 36 Filed 11/13/23 Page 1 of 103 PageID #: 1307 2 (“Moy”), Rutland Medical P.C. d/b/a MedicalNow (“Rutland”), William A. Weiner, D.O. (“Weiner”), and Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging (“Nexray”)(collectively, the “Other Defendants”). As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 1 of the Complaint. 2. The allegations set forth in paragraph 2 of the Complaint call for a legal conclusion to which no response is necessary. To the extent a response is required, MRC Defendants'",
+      "[p2] PASSAGE note:710036 claim=100001-236572-RI-01 (around NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING): 'MRC Defendants reserve the right to assert additional defenses in the event that discovery indicates that any such additional defenses would be appropriate. FIRST CROSSCLAIM AGAINST PC DEFENDANTS Defendants Pierre and MRC (collectively, “MRC Defendants”), cross complain of Defendants Rutland and Nexray (collectively, the “PC Defendants”) as follows: 597. For purposes of the crossclaims only, MRC Defendants adopt by reference the allegations of the Complaint as against the PC Defendants. 598. Upon information and belief, Rutland is a professional corporation organized under the laws of the State of New York and registered to practice medicine under Defendant Moy’s name and medical license. Case 1:23-cv-06572-NGG-LB Document 36 Filed 11/13/23 Page 100 of 103 PageID #: 1406 101 599. Upon information and belief, Nexray is a professional corporation organized under the laws of the State of New York and registered to practice medicine under Defendant Weiner’s name and medical license. 600. Plaintiffs have filed a complaint against MRC Defendants and PC Defendants. 601. Plaintiffs have alleged damages resulting'",
+      "[p3] PASSAGE note:710045 claim=100001-236572-RI-01 (around WILLIAM A. WEINER, D.O.): 'UNITED STATES DISTRICT COURT EASTERN DISTRICT OF NEW YORK AllSTATE INSURANCE COMPANY, AllSTATE INDEMNITY COMPANY, AllSTATE FIRE & CASUALTY INSURANCE COMPANY, and AllSTATE PROPERTY & CASUALTY INSURANCE COMPANY, Plaintiffs, -against- BRADLEY PIERRE, MEDICAL REIMBURSEMENT CONSULTANTS INC., MARVIN MOY, M.D., RUTLAND MEDICAL P.C. d/b/a MEDICALNOW, WILLIAM A. WEINER, D.O., and NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING, Defendants. MEMORANDUM & ORDER 23-CV-06572 (NGG) (LB) NICHOLAS G. GARAUFIS, United States District Judge. Plaintiffs Allstate Insurance Company, Allstate Indemnity Com\\xad pany, Allstate Property and Casualty Insurance Company,'",
+      "[p4] PASSAGE note:710036 claim=100001-236572-RI-01 (around MARVIN MOY, M.D.): 'paragraph 1 of the Complaint call for a legal conclusion to which no response is necessary. To the extent a response is required, MRC Defendants lack the knowledge or information sufficient to form a basis as to the truth of the allegations contained in paragraph 1 of the Complaint as to Defendants Marvin Moy, M.D. ALLSTATE INSURANCE COMPANY, ALLSTATE INDEMNITY COMPANY, ALLSTATE FIRE & CASUALTY INSURANCE COMPANY, and ALLSTATE PROPERTY & CASUALTY INSURANCE COMPANY, Plaintiffs, -against- BRADLEY PIERRE, MEDICAL REIMBURSEMENT CONSULTANTS INC.,'",
+      "[p5] PASSAGE note:720001 claim=100002-240360-RI-01 (around Bradley Pierre): 'TRANSIT INSURANCE COMPANY, Plaintiff, - against – BRADLEY PIERRE, MARVIN MOY, M.D., RUTLAND MEDICAL P.C., WILLIAM A. WEINER, D.O., NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING and JOHN DOES 1-15, Defendants. (i) : ____ CV ____ COMPLAINT Plaintiff American Transit Insurance Company (“American Transit”), by and through its attorneys, Greenberg Traurig, LLP, for its Complaint against Defendants Bradley Pierre (“Pierre”), Marvin Moy, M.D. (“Moy”), Rutland Medical P.C. (“Rutland”), William A. Weiner, D.O. (“Weiner”), and Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging (“Nexray”), John Does 1-15 (the “John Doe Defendants,” and together with the other defendants, “Defendants”), hereby'",
+      "[p6] PASSAGE note:720001 claim=100002-240360-RI-01 (around Bradley Pierre): 'indictment, “[f]rom at least in or about 2008 up to and including in or about 2021 ,” Pierre, Moy, Weiner, and other co -conspirators “participated in a criminal scheme to exploit insurance programs designed to protect motor vehicle accident victims.” 76. As set forth in the Superseding Indictment, Pierre recruited medical practitioners to open No-Fault clinics from at least 2008 through 2021. These clinics fell into two groups: the No- Fault clinics that conduct initial evaluations of patients and prescribed specialized care, such as Rutland, and MRI facilities—such as Nexray—that provide medical'",
+      "[p7] PASSAGE note:720001 claim=100002-240360-RI-01 (around Bradley Pierre): 'that J.J. was “on a comprehensive rehabilitation program,” and yet she had not had any physical therapy or any other rehabilitation treatments prior to the MRI. 179. Rather, Rutland and M oy knowingly prescribed medically unnecessary and unwarranted imaging. Further, Rutland and Nexray were under Pierre’s control and knowingly participated in a scheme whereby Rutland referred patients for medically unnecessary imaging so that Nexray could conduct these expensive tests and bill American Transit for them , all to Defendants’ benefit. 180. Because the imaging was unnecessary and because the associated'",
+      "[p8] PASSAGE note:710036 claim=100001-236572-RI-01 (around Other Defendants): 'The allegations set forth in paragraph 69 of the Complaint are argument and call for legal conclusions, to which no response is necessary. To the extent a response is required, MRC Defendants lack the knowledge or information sufficient to form a basis as to the truth of the allegations as to the Other Defendants. As to the allegations against MRC Defendants, MRC Defendants deny the allegations set forth in paragraph 69 of the Complaint. 70. The allegations set forth in paragraph 70 of the Complaint are argument and call for legal conclusions, to which no response is necessary. To the extent a response is'",
+      "[p9] PASSAGE note:710036 claim=100001-236572-RI-01 (around Other Defendants): 'The allegations set forth in paragraph 142 of the Complaint are argument and call for legal conclusion, to which no response is necessary. To the extent a response is required, MRC Defendants lack the knowledge or information sufficient to form a basis as to the truth of the allegations as to the Other Defendants. As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 142 of the Complaint. 143. The allegations set forth in paragraph 143 of the Complaint are argument and call for legal conclusion, to which no response is necessary. To the extent a response'",
+      "[p10] PASSAGE note:710036 claim=100001-236572-RI-01 (around Medical Reimbursement Consultants, Inc.): 'attorneys’ fees. Dated: New York, New York November 13, 2023 MINTZ & GOLD LLP By: /s/ Ryan W. Lawler Ryan W. Lawler 600 Third Avenue, 25th Floor New York, New York 10016 (212) 696-4848 lawler@mintzandgold.com Attorney for Defendants Medical Reimbursement Consultants, Inc., and Bradley Pierre Case 1:23-cv-06572-NGG-LB Document 36 Filed 11/13/23 Page 103 of 103 PageID #: 1409'"
+     ],
+     "text": "112 facts assembled at lens default."
+    },
+    {
+     "step": "model_start",
+     "t": 0.06,
+     "purpose": "answer",
+     "model": "gemini-3.5-flash",
+     "facts": 112
+    },
+    {
+     "step": "model_done",
+     "t": 9.3,
+     "purpose": "answer",
+     "model": "gemini-3.5-flash",
+     "seconds": 9.2
+    },
+    {
+     "step": "citations",
+     "t": 9.3,
+     "checked": 16,
+     "kept": 16,
+     "dropped": [],
+     "text": "16 citation(s) checked against the facts sent; 0 pointed at nothing and were removed."
+    },
+    {
+     "step": "result",
+     "t": 9.3,
+     "mode": "answer",
+     "question": "What is Nexray Medical Imaging accused of, and who controls it?",
+     "lens": "default",
+     "facts_used": 112,
+     "routed_by": "phrasing",
+     "answer": "Nexray Medical Imaging (whose identity rests on name alone [e1]) is accused of the following:\n- Participating in an illegal scheme to defraud American Transit Insurance Company [a29].\n- Regularly recommending and performing medically unnecessary imaging procedures (such as MRIs) and billing American Transit for them [a26][a14][p7].\n- Submitting false medical documentation to American Transit [a24].\n- Actively concealing its true ownership and control [a15].\n\nRegarding control of Nexray Medical Imaging:\n- On paper, William A. Weiner, D.O. (identity rests on name alone [e2]) is the owner [a25] and represented himself as the sole officer, director, and shareholder [a32].\n- However, it is alleged that Bradley Pierre (identity rests on name alone [e5]) actually owned, operated, and controlled Nexray [a21][a14], as Weiner ceded operation and management of the practice to him [a33]. Weiner later admitted in a plea allocution to making false statements under oath about Pierre's role in Nexray [a20].\n- Pierre has denied owning, controlling, or operating Nexray [a1].\n- (Note: A separate Bradley Pierre entity exists in another claim [e10], which is linked but not merged with the first [e10~e5]).",
+     "confidence_note": "The answer is based entirely on the provided facts and passages. It notes that the identities of Nexray, Weiner, and Pierre rest on name alone, and mentions the not-merged link between the two Bradley Pierre entities.",
+     "citations": {
+      "e1": {
+       "kind": "entity",
+       "id": "note:710036:c0.m11",
+       "label": "NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING"
+      },
+      "e2": {
+       "kind": "entity",
+       "id": "note:710036:c0.m10",
+       "label": "WILLIAM A. WEINER, D.O."
+      },
+      "e5": {
+       "kind": "entity",
+       "id": "note:720001:c0.m2",
+       "label": "Bradley Pierre"
+      },
+      "e10": {
+       "kind": "entity",
+       "id": "note:710036:c0.m5",
+       "label": "Bradley Pierre"
+      },
+      "a1": {
+       "kind": "note",
+       "id": "note:720077",
+       "span": [
+        20773,
+        20878
+       ],
+       "label": "denied_owning_controlling_or_operating"
+      },
+      "a14": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": null,
+       "label": "controlled"
+      },
+      "a15": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        133166,
+        133277
+       ],
+       "label": "concealed"
+      },
+      "a20": {
+       "kind": "note",
+       "id": "note:720052",
+       "span": [
+        6371,
+        6489
+       ],
+       "label": "admitted_making_false_statements"
+      },
+      "a21": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        32703,
+        32749
+       ],
+       "label": "owned_operated_and_controlled"
+      },
+      "a24": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        117601,
+        117733
+       ],
+       "label": "submitted_false_medical_documentation"
+      },
+      "a25": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        157661,
+        157720
+       ],
+       "label": "owned"
+      },
+      "a26": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        157744,
+        157832
+       ],
+       "label": "enabled"
+      },
+      "a29": {
+       "kind": "note",
+       "id": "note:720077",
+       "span": [
+        781,
+        839
+       ],
+       "label": "operated_scheme_to_defraud"
+      },
+      "a32": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        15914,
+        16021
+       ],
+       "label": "represented_self_as"
+      },
+      "a33": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        16074,
+        16142
+       ],
+       "label": "ceded_management_to"
+      },
+      "p7": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        62168,
+        62785
+       ],
+       "label": "passage"
+      }
+     },
+     "dropped_citations": [],
+     "seconds": 9.2,
+     "facts": [
+      "[e1] ENTITY 'NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING' type=organization mentions=15 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['medical'] details=['address=135-25F 79th Street, Suite 2B, Howard Beach, New York 11414'] merge_confidence=0.9998 merge_basis=['name_only']",
+      "[e2] ENTITY 'WILLIAM A. WEINER, D.O.' type=person mentions=15 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['medical'] details=[] merge_confidence=0.9994 merge_basis=['name_only']",
+      "[e3] ENTITY 'MARVIN MOY, M.D.' type=person mentions=14 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['medical'] details=[] merge_confidence=0.9997 merge_basis=['name_only']",
+      "[e4] ENTITY 'Rutland Medical P.C. d/b/a MedicalNow' type=organization mentions=14 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['medical'] details=['address=145 E 98th Street, 1st Floor, Brooklyn, New York 11212'] merge_confidence=0.9068 merge_basis=['name_only']",
+      "[e5] ENTITY 'Bradley Pierre' type=person mentions=10 claims=['100002-240360-RI-01'] categories=['other'] details=[] merge_confidence=0.9999 merge_basis=['name_only']",
+      "[e6] ENTITY 'Other Defendants' type=organization mentions=7 claims=['100001-236572-RI-01'] categories=['medical'] details=[] merge_confidence=1.0 merge_basis=['name_only']",
+      "[e7] ENTITY 'Medical Reimbursement Consultants, Inc.' type=organization mentions=6 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['insufficient_evidence', 'other'] details=[] merge_confidence=0.9988 merge_basis=['name_only']",
+      "[e8] ENTITY 'American Transit' type=organization mentions=4 claims=['100002-240360-RI-01'] categories=['financier'] details=[] merge_confidence=0.9998 merge_basis=['name_only']",
+      "[e9] ENTITY 'American Transit Insurance Company' type=organization mentions=6 claims=['100002-240360-RI-01'] categories=['financier'] details=[] merge_confidence=1.0 merge_basis=['name_only']",
+      "[e10] ENTITY 'Bradley Pierre' type=person mentions=6 claims=['100001-236572-RI-01'] categories=['other'] details=[] merge_confidence=0.9999 merge_basis=['name_only']",
+      "[e11] ENTITY 'R.S.' type=person mentions=1 claims=['100002-240360-RI-01'] categories=['other'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e12] ENTITY 'G.R.' type=person mentions=1 claims=['100002-240360-RI-01'] categories=['other'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e13] ENTITY 'Pierre (\"Rose\")' type=person mentions=1 claims=['100002-240360-RI-01'] categories=['other'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e14] ENTITY 'I.V.' type=person mentions=1 claims=['100002-240360-RI-01'] categories=['other'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e15] ENTITY 'Defendants' type=organization mentions=1 (reached through an action matching the question)",
+      "[e16] ENTITY 'PC Defendants' type=organization mentions=1 (reached through an action matching the question)",
+      "[e17] ENTITY 'Nexray/Weiner' type=organization mentions=1 (reached through an action matching the question)",
+      "[e18] ENTITY 'Defendants' type=organization mentions=1 (reached through an action matching the question)",
+      "[e19] ENTITY 'Answering Defendants' type=organization mentions=1 (reached through an action matching the question)",
+      "[e20] ENTITY 'John Does 1-15' type=person mentions=1 (reached through an action matching the question)",
+      "[e21] ENTITY 'Clin-' type=organization mentions=1 (reached through an action matching the question)",
+      "[e22] ENTITY 'P.A.' type=person mentions=1 (reached through an action matching the question)",
+      "[a1] ACTION denied_owning_controlling_or_operating stance=denied time=None participants=['e5(denier)', 'e4(facility)', 'e1(facility)'] claim=100002-240360-RI-01 quote='Pierre claims that he did not own, control, or operate either the Rutland or Nexray medical facilities'",
+      "[a2] ACTION member_of stance=asserted time=None participants=['e3(member)', 'e6(group)'] claim=100001-236572-RI-01 quote='“Moy”), Rutland Medical P.C. d/b/a MedicalNow (“Rutland”), William A. Weiner, D.O. (“Weiner”), and Nexray Medical Imaging'",
+      "[a3] ACTION member_of stance=asserted time=None participants=['e2(member)', 'e6(group)'] claim=100001-236572-RI-01 quote='William A. Weiner, D.O. (“Weiner”), and Nexray Medical Imaging, P.C.'",
+      "[a4] ACTION member_of stance=asserted time=None participants=['e1(member)', 'e6(group)'] claim=100001-236572-RI-01 quote='Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging\\n(“Nexray”)(collectively, the “Other Defendants”)'",
+      "[a5] ACTION member_of stance=asserted time=None participants=['e10(member)', 'e15(group)'] claim=100001-236572-RI-01 quote='Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\\ndiology Medical Imaging ( collectively, \"De'",
+      "[a6] ACTION member_of stance=asserted time=None participants=['e7(member)', 'e15(group)'] claim=100001-236572-RI-01 quote='Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\\ndiology Medical Imaging ( collectively, \"De'",
+      "[a7] ACTION member_of stance=asserted time=None participants=['e3(member)', 'e15(group)'] claim=100001-236572-RI-01 quote='Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\\ndiology Medical Imaging ( collectively, \"De'",
+      "[a8] ACTION member_of stance=asserted time=None participants=['e4(member)', 'e15(group)'] claim=100001-236572-RI-01 quote='Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\\ndiology Medical Imaging ( collectively, \"De'",
+      "[a9] ACTION member_of stance=asserted time=None participants=['e2(member)', 'e15(group)'] claim=100001-236572-RI-01 quote='Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\\ndiology Medical Imaging ( collectively, \"De'",
+      "[a10] ACTION member_of stance=asserted time=None participants=['e1(member)', 'e15(group)'] claim=100001-236572-RI-01 quote='Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\\ndiology Medical Imaging ( collectively, \"De'",
+      "[a11] ACTION member_of stance=asserted time=None participants=['e7(member)', 'e16(group)'] claim=100001-236572-RI-01 quote='Defendants Medical Reimbursement Consultants Inc., Rutland Medical\\nP.C. d/b/a MedicalNow, and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\\ndiology Medical Imaging are hereinafter referred to as the PC Defendants.'",
+      "[a12] ACTION member_of stance=asserted time=None participants=['e4(member)', 'e16(group)'] claim=100001-236572-RI-01 quote='Rutland Medical\\nP.C. d/b/a MedicalNow, and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\\ndiology Medical Imaging are hereinafter referred to as the PC Defendants.'",
+      "[a13] ACTION member_of stance=asserted time=None participants=['e1(member)', 'e16(group)'] claim=100001-236572-RI-01 quote='Nexray Medical Imaging, P.C. d/b/a Soul Ra-\\ndiology Medical Imaging are hereinafter referred to as the PC Defendants.'",
+      "[a14] ACTION controlled stance=asserted time=None participants=['e5(controller)', 'e4(controlled_party)', 'e1(controlled_party)'] claim=100002-240360-RI-01 quote='179. Further, Rutland and Nexray were under Pierre’s control'",
+      "[a15] ACTION concealed stance=alleged time=At all relevant times participants=['e13(actor)', 'e2(actor)', 'e9(target)', 'e17(subject)'] claim=100002-240360-RI-01 quote='Pierre and Weiner actively concealed from American Transit facts regarding Nexray’s true ownership and control'",
+      "[a16] ACTION member_of stance=asserted time=None participants=['e5(member)', 'e18(group)'] claim=100002-240360-RI-01 quote='BRADLEY PIERRE, MARVIN MOY, M.D., RUTLAND \\nMEDICAL P.C., WILLIAM A. WEINER, D.O., NEXRAY \\nMEDICAL IMAGING, P.C. d/b/a SOUL   RADIOLOGY \\nMEDICAL IMAGING and JOHN DOES 1-15,'",
+      "[a17] ACTION member_of stance=asserted time=None participants=['e1(member)', 'e18(group)'] claim=100002-240360-RI-01 quote='NEXRAY \\nMEDICAL IMAGING, P.C. d/b/a SOUL   RADIOLOGY \\nMEDICAL IMAGING and JOHN DOES 1-15,'",
+      "[a18] ACTION member_of stance=asserted time=None participants=['e2(member)', 'e19(group)'] claim=100002-240360-RI-01 quote='WILLIAM A. WEINER, D.O., NEXRAY MEDICAL IMAGING, \\nP.C. and d/b/a SOUL   RADIOLOGY MEDICA L IMAGING, (“Answering Defendants”)'"
+     ]
+    }
+   ]
+  },
+  {
+   "question": "Which defendants appear in both the Allstate and American Transit lawsuits, and how sure is the system that they are the same parties?",
+   "lens": "default",
+   "recorded_at": "2026-09-25 14:53",
+   "events": [
+    {
+     "step": "route",
+     "t": 0.0,
+     "decision": "question",
+     "by": "phrasing",
+     "text": "Phrased as a question: answering from the graph."
+    },
+    {
+     "step": "match",
+     "t": 0.03,
+     "n": 7,
+     "entities": [
+      "American Transit Insurance Company",
+      "American Transit",
+      "MRC Defendants",
+      "ALLSTATE INSURANCE COMPANY",
+      "Other Defendants",
+      "ALLSTATE INDEMNITY COMPANY",
+      "ALLSTATE FIRE & CASUALTY INSURANCE\nCOMPANY"
+     ],
+     "by_words": true,
+     "text": "Matched 7 parties by the words of the question."
+    },
+    {
+     "step": "expand",
+     "t": 0.03,
+     "added": 7,
+     "names": [
+      "Rutland Medical P.C. d/b/a MedicalNow",
+      "NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING",
+      "WILLIAM A. WEINER, D.O.",
+      "MARVIN MOY, M.D.",
+      "Bradley Pierre",
+      "Rutland/Moy",
+      "Nexray/Weiner"
+     ],
+     "actions": 40,
+     "actions_found": 333,
+     "links": 39,
+     "flags": 0,
+     "text": "One hop out: 7 co-participant(s) added, 40 action(s) with source quotes, 39 not-merged link(s), 0 flag(s) for review."
+    },
+    {
+     "step": "passages",
+     "t": 0.03,
+     "n": 10,
+     "notes": [
+      "note:710036",
+      "note:720001"
+     ],
+     "text": "Read 10 source passage(s) around the question's words and the matched parties, from 2 note(s)."
+    },
+    {
+     "step": "facts",
+     "t": 0.03,
+     "n": 113,
+     "facts": [
+      "[e1] ENTITY 'American Transit Insurance Company' type=organization mentions=6 claims=['100002-240360-RI-01'] categories=['financier'] details=[] merge_confidence=1.0 merge_basis=['name_only']",
+      "[e2] ENTITY 'American Transit' type=organization mentions=4 claims=['100002-240360-RI-01'] categories=['financier'] details=[] merge_confidence=0.9998 merge_basis=['name_only']",
+      "[e3] ENTITY 'MRC Defendants' type=organization mentions=8 claims=['100001-236572-RI-01'] categories=['other'] details=[] merge_confidence=1.0 merge_basis=['name_only']",
+      "[e4] ENTITY 'ALLSTATE INSURANCE COMPANY' type=organization mentions=7 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['financier', 'other'] details=[] merge_confidence=0.9945 merge_basis=['name_only']",
+      "[e5] ENTITY 'Other Defendants' type=organization mentions=7 claims=['100001-236572-RI-01'] categories=['medical'] details=[] merge_confidence=1.0 merge_basis=['name_only']",
+      "[e6] ENTITY 'ALLSTATE INDEMNITY COMPANY' type=organization mentions=3 claims=['100001-236572-RI-01'] categories=['other'] details=[] merge_confidence=1.0 merge_basis=['name_only']",
+      "[e7] ENTITY 'ALLSTATE FIRE & CASUALTY INSURANCE\\nCOMPANY' type=organization mentions=3 claims=['100001-236572-RI-01'] categories=['other'] details=[] merge_confidence=1.0 merge_basis=['name_only']",
+      "[e8] ENTITY 'Rutland Medical P.C. d/b/a MedicalNow' type=organization mentions=14 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['medical'] details=['address=145 E 98th Street, 1st Floor, Brooklyn, New York 11212'] merge_confidence=0.9068 merge_basis=['name_only']",
+      "[e9] ENTITY 'NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING' type=organization mentions=15 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['medical'] details=['address=135-25F 79th Street, Suite 2B, Howard Beach, New York 11414'] merge_confidence=0.9998 merge_basis=['name_only']",
+      "[e10] ENTITY 'WILLIAM A. WEINER, D.O.' type=person mentions=15 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['medical'] details=[] merge_confidence=0.9994 merge_basis=['name_only']",
+      "[e11] ENTITY 'MARVIN MOY, M.D.' type=person mentions=14 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['medical'] details=[] merge_confidence=0.9997 merge_basis=['name_only']",
+      "[e12] ENTITY 'Bradley Pierre' type=person mentions=10 claims=['100002-240360-RI-01'] categories=['other'] details=[] merge_confidence=0.9999 merge_basis=['name_only']",
+      "[e13] ENTITY 'Rutland/Moy' type=organization mentions=1 claims=['100002-240360-RI-01'] categories=['medical'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e14] ENTITY 'Nexray/Weiner' type=organization mentions=1 claims=['100002-240360-RI-01'] categories=['other'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e15] ENTITY 'No-Fault Attorneys' type=organization mentions=1 (reached through an action matching the question)",
+      "[e16] ENTITY 'Plaintiffs' type=organization mentions=1 (reached through an action matching the question)",
+      "[e17] ENTITY 'John Does 1-15' type=person mentions=1 (reached through an action matching the question)",
+      "[e18] ENTITY 'Defendants' type=organization mentions=1 (reached through an action matching the question)",
+      "[e19] ENTITY 'Pierre (\"Rose\")' type=person mentions=1 (reached through an action matching the question)",
+      "[e20] ENTITY 'Roman Kravchenko' type=person mentions=1 (reached through an action matching the question)",
+      "[e21] ENTITY 'Defendants' type=organization mentions=1 (reached through an action matching the question)",
+      "[e22] ENTITY 'Allstate' type=organization mentions=1 (reached through an action matching the question)",
+      "[e23] ENTITY 'Bradley Pierre' type=person mentions=6 (reached through an action matching the question)",
+      "[e24] ENTITY 'Medical Reimbursement Consultants, Inc.' type=organization mentions=6 (reached through an action matching the question)",
+      "[a1] ACTION submitted stance=alleged time=None participants=['e8(provider)', 'e9(provider)', 'e2(recipient)'] claim=100002-240360-RI-01 quote='384. To induce American Transit to promptly pay Rutland’s and Nexray’s patient bills, the Defendants submitted (or caused to be submitted) to American Transit NF -3 forms'",
+      "[a2] ACTION prosecuted_actions stance=alleged time=None participants=['e15(actor)', 'e13(represented_party)', 'e14(represented_party)', 'e1(opposing_party)'] claim=100002-240360-RI-01 quote='appeared on behalf of Rut land and/or Nexray, to prosecute dozens of actions against American Transit'",
+      "[a3] ACTION declares_no_obligation_to_pay stance=asserted time=pending or future participants=['e2(claimant)', 'e8(provider)', 'e9(provider)'] claim=100002-240360-RI-01 quote='a declaratory judgment declaring that American Transit has no obligation to pay pending or future No -Fault claims'",
+      "[a4] ACTION enjoined_from_filing stance=asserted time=until the declaratory judgment claim in this case is resolved participants=['e8(enjoined_party)', 'e9(enjoined_party)', 'e1(target)'] claim=100002-240360-RI-01 quote='and (2) filing any additional no-f ault collection arbitrations and lawsuits against American Transit, until the declaratory judgment claim in this case is resolved .'",
+      "[a5] ACTION submitted_bills_to stance=alleged time=None participants=['e8(actor)', 'e16(recipient)', 'e11(facilitator)'] claim=100001-236572-RI-01 quote='Defendant Moy participated in this scheme by ensur-\\ning that Rutland \"continued to submit bills to Allstate'",
+      "[a6] ACTION billed stance=alleged time=None participants=['e8(biller)', 'e1(recipient)'] claim=100002-240360-RI-01 quote='Rutland’s bills for services that it presented to American Transit were and are fraudulent'",
+      "[a7] ACTION concealed stance=alleged time=None participants=['e1(target)', 'e13(subject)'] claim=100002-240360-RI-01 quote='The Defendants concealed from American Transit the truth regarding Rutland and'",
+      "[a8] ACTION operated_scheme_to_defraud stance=alleged time=None participants=['e12(defendant)', 'e11(defendant)', 'e8(defendant)', 'e10(defendant)', 'e9(defendant)', 'e17(defendant)', 'e1(target)'] claim=100002-240360-RI-01 quote='defendants operated an illegal scheme to defraud plaintiff'",
+      "[a9] ACTION submitted_claims_to stance=alleged time=None participants=['e18(actor)', 'e1(recipient)'] claim=100002-240360-RI-01 quote='Defendants submitted, and caused to be submitted to American Transit for payment, thousands of fraudulent No-Fault insurance reimbursement claims'",
+      "[a10] ACTION represented_self_as stance=alleged time=Beginning in or about 2009, and numerous times thereafter participants=['e11(actor)', 'e1(recipient)', 'e8(organization)'] claim=100002-240360-RI-01 quote='Moy represented himself to American Transit to be the sole officer, director, and shareholder of Rutland.'",
+      "[a11] ACTION represented_self_as stance=alleged time=Beginning in 2011 and numerous times thereafter participants=['e10(actor)', 'e1(recipient)', 'e9(organization)'] claim=100002-240360-RI-01 quote='Weiner represented himself to American Transit to be the sole office, director, and shareholder of Nexray.'",
+      "[a12] ACTION paid_claims_to stance=alleged time=to date participants=['e1(payer)', 'e8(recipient)', 'e9(recipient)'] claim=100002-240360-RI-01 quote='American Transit paid Rutland and Nexray’s No -Fault claims'",
+      "[a13] ACTION submitted_bills stance=alleged time=None participants=['e8(submitter)', 'e10(submitter)', 'e2(recipient)'] claim=100002-240360-RI-01 quote='Rutland and Weiner submitted bills to American Transit'",
+      "[a14] ACTION submitted_false_medical_documentation stance=alleged time=None participants=['e19(actor)', 'e11(actor)', 'e10(actor)', 'e1(recipient)'] claim=100002-240360-RI-01 quote='created, prepared, and submitted (or caused to be created, prepared, and submitted) false medical\\ndocumentation to American Transit'",
+      "[a15] ACTION brought_actions stance=asserted time=when recently challenged on the issue participants=['e20(actor)', 'e1(opposing_party)', 'e13(represented_party)', 'e14(represented_party)'] claim=100002-240360-RI-01 quote='Attorney Kravchenko admitted to bringing actions against American Transit on behalf  of Rutland and Nexray without actually being engaged by them'",
+      "[a16] ACTION concealed stance=alleged time=At all relevant times participants=['e19(actor)', 'e10(actor)', 'e1(target)', 'e14(subject)'] claim=100002-240360-RI-01 quote='Pierre and Weiner actively concealed from American Transit facts regarding Nexray’s true ownership and control'",
+      "[a17] ACTION made_payments stance=asserted time=None participants=['e1(payer)', 'e8(recipient)', 'e9(recipient)'] claim=100002-240360-RI-01 quote='509. American Transit has made payments to Rutland and Nexray'",
+      "[a18] ACTION defrauded stance=alleged time=None participants=['e21(actor)', 'e16(target)'] claim=100001-236572-RI-01 quote='alleging\\nthat Defendants defrauded Allstate'",
+      "[a19] ACTION defrauded stance=alleged time=None participants=['e21(actor)', 'e16(target)'] claim=100001-236572-RI-01 quote='alleging\\nthat Defendants defrauded Allstate in violation of the Racketeer-'",
+      "[a20] ACTION motion_granted stance=asserted time=pending disposition of the declaratory judgment action participants=['e4(movant)', 'e8(opposing_party)'] claim=100001-236572-RI-01 quote=\"Allstate's motion to enjoin future state court collection lawsuits by Rutland pending disposition of the declaratory judgment action is therefore GRANTED.\"",
+      "[a21] ACTION enjoined_from_filing stance=asserted time=pending resolution of the instant federal action participants=['e8(restrained_party)', 'e4(opposing_party)'] claim=100001-236572-RI-01 quote='Rutland is enjoined from filing any further no-fault collection arbitrations or lawsuits against Allstate'",
+      "[a22] ACTION dismissed stance=asserted time=None participants=['e22(plaintiff)', 'e23(defendant)', 'e24(defendant)'] claim=100001-236572-RI-01 quote=\"that Allstate's Complaint (Dkt. No. 1) be dismissed as to Defendants Bradley Pien-e and Medical Reimbursement Consultants, Inc.,\"",
+      "[a23] ACTION billed stance=alleged time=throughout the course of this scheme participants=['e9(biller)', 'e1(recipient)'] claim=100002-240360-RI-01 quote='Nexray billed American Transit for unnecessary and/or excessive diagnostic radiology services'",
+      "[a24] ACTION billed stance=asserted time=None participants=['e9(biller)', 'e2(payor)'] claim=100002-240360-RI-01 quote='187. Nexray billed American Transit for these MRIs'",
+      "[a25] ACTION billed stance=asserted time=January 9, 2018 participants=['e9(biller)', 'e2(payor)'] claim=100002-240360-RI-01 quote='199. Nexray billed American Transit for this MRI'",
+      "[a26] ACTION billed stance=asserted time=November 8, 2018 participants=['e8(biller)', 'e2(billed_party)'] claim=100002-240360-RI-01 quote='280. On November 8, 2018, Rutland billed American Transit'",
+      "[a27] ACTION billed stance=asserted time=None participants=['e9(biller)', 'e2(billed_party)'] claim=100002-240360-RI-01 quote='281. Nexray billed American Transit for this imaging'",
+      "[a28] ACTION billed stance=asserted time=None participants=['e9(biller)', 'e2(billed_party)'] claim=100002-240360-RI-01 quote='302. Nexray billed American Transit for these MRIs'",
+      "[a29] ACTION billed stance=asserted time=October 2, 2019 participants=['e8(biller)', 'e2(billed_party)', 'L.J.(patient)'] claim=100002-240360-RI-01 quote='343. Rutland billed American Transit for an examination of L.J.'",
+      "[a30] ACTION paid stance=asserted time=None participants=['e1(payer)', 'e13(recipient)'] claim=100002-240360-RI-01 quote='American Transit paid money to Rutland'",
+      "[a31] ACTION paid stance=asserted time=None participants=['e1(payer)', 'e14(recipient)'] claim=100002-240360-RI-01 quote='American Transit paid money to Rutland\\nand Nexray'",
+      "[a32] ACTION made_referrals stance=alleged time=regularly participants=['e11(actor)', 'e10(actor)', 'e8(recipient)', 'e9(recipient)'] claim=100002-240360-RI-01 quote='505. Moy and Weiner regularly made referrals to entities they had financial relationships with'",
+      "[a33] ACTION oppose_motion stance=asserted time=None participants=['e10(opponent)', 'e9(opponent)'] claim=100002-240360-RI-01 quote='Defendants Dr. Weiner and Nexray , the only defendants that have appeare d in this case, oppose the  motion.'",
+      "[a34] ACTION entered_into_agreements stance=asserted time=None participants=['e3(party)', 'e8(party)', 'e9(party)'] claim=100001-236572-RI-01 quote='MRC Defendants entered into agreements with Rutland and Nexray respectfully'",
+      "[a35] ACTION commenced_arbitrations_against stance=asserted time=None participants=['e8(actor)', 'e16(target)'] claim=100001-236572-RI-01 quote=\"Allstate's motion for a preliminary\\ninjunction to stay all 40 pending no-fault insurance collection ar-\\nbitrations commenced against Allstate by Defendant Rutland\"",
+      "[a36] ACTION paid stance=asserted time=None participants=['e16(payer)', 'e8(recipient)'] claim=100001-236572-RI-01 quote='Allstate asserts that as a result of these fraudulent\\nclaims, it has paid at least $1,309,811.48 to Rutland alone.'",
+      "[a37] ACTION failed_to_appear stance=asserted time=None participants=['e8(party)'] claim=100001-236572-RI-01 quote='Defendant Rutland has failed to appear in this action'",
+      "[a38] ACTION ceded_management_to stance=alleged time=since at least 2009 participants=['e11(former_controller)', 'e12(recipient)', 'e8(organization)'] claim=100002-240360-RI-01 quote='Moy ceded operation and management over Rutland to Defendant Pierre.'",
+      "[a39] ACTION ceded_management_to stance=alleged time=at least since 2008 participants=['e10(former_controller)', 'e12(recipient)', 'e9(organization)'] claim=100002-240360-RI-01 quote='Weiner ceded operation and management of Nexray to Defendant Pierre.'",
+      "[a40] ACTION conspired_and_assisted stance=alleged time=None participants=['JOHN DOES 1-15(actor)', 'e1(affected_party)'] claim=100002-240360-RI-01 quote='John Does 1 -15 are individuals and entities whose names are not yet known to American Transit, and who have conspired to and did assist in the fraudulent and unlawful conduct'",
+      "[e9~e14] NOT-MERGED LINK p=0.1586 basis=name_only veto=None distance=different_client",
+      "[e9~e14] NOT-MERGED LINK p=0.1586 basis=name_only veto=None distance=different_client",
+      "[e1~e2] NOT-MERGED LINK p=0.9678 basis=name_only veto=sibling_org_names:complete name vs one adding FOR distance=same_note",
+      "[e1~e2] NOT-MERGED LINK p=0.9913 basis=name_only veto=None distance=same_note",
+      "[e1~e2] NOT-MERGED LINK p=0.9913 basis=name_only veto=None distance=same_note",
+      "[e1~e2] NOT-MERGED LINK p=0.9913 basis=name_only veto=None distance=same_note",
+      "[e8~e13] NOT-MERGED LINK p=0.933 basis=name_only veto=sibling_org_names:complete name vs one adding MOY distance=same_note",
+      "[e9~e14] NOT-MERGED LINK p=0.9938 basis=name_only veto=sibling_org_names:complete name vs one adding WEINER distance=same_note",
+      "[e2~e1] NOT-MERGED LINK p=0.9678 basis=name_only veto=sibling_org_names:complete name vs one adding FOR distance=same_note",
+      "[e2~e1] NOT-MERGED LINK p=0.9678 basis=name_only veto=sibling_org_names:complete name vs one adding FOR distance=same_note",
+      "[e2~e1] NOT-MERGED LINK p=0.9093 basis=name_only veto=sibling_org_names:complete name vs one adding FOR distance=same_claim",
+      "[e2~e1] NOT-MERGED LINK p=0.9093 basis=name_only veto=sibling_org_names:complete name vs one adding FOR distance=same_claim",
+      "[e2~e1] NOT-MERGED LINK p=0.9093 basis=name_only veto=None distance=same_claim",
+      "[e9~e14] NOT-MERGED LINK p=0.9995 basis=name_only veto=None distance=same_note",
+      "[e2~e1] NOT-MERGED LINK p=0.9913 basis=name_only veto=None distance=same_note",
+      "[e2~e1] NOT-MERGED LINK p=0.9913 basis=name_only veto=None distance=same_note",
+      "[e2~e1] NOT-MERGED LINK p=0.9743 basis=name_only veto=None distance=same_claim",
+      "[e2~e1] NOT-MERGED LINK p=0.9743 basis=name_only veto=None distance=same_claim",
+      "[e2~e1] NOT-MERGED LINK p=0.9743 basis=name_only veto=None distance=same_claim",
+      "[e9~e14] NOT-MERGED LINK p=0.9995 basis=name_only veto=None distance=same_note",
+      "[e9~e14] NOT-MERGED LINK p=0.9995 basis=name_only veto=None distance=same_note",
+      "[e2~e1] NOT-MERGED LINK p=0.9913 basis=name_only veto=None distance=same_note",
+      "[e2~e1] NOT-MERGED LINK p=0.9913 basis=name_only veto=None distance=same_note",
+      "[e2~e1] NOT-MERGED LINK p=0.9743 basis=name_only veto=None distance=same_claim",
+      "[e2~e1] NOT-MERGED LINK p=0.9743 basis=name_only veto=None distance=same_claim",
+      "[e2~e1] NOT-MERGED LINK p=0.9743 basis=name_only veto=None distance=same_claim",
+      "[e1~e2] NOT-MERGED LINK p=0.9913 basis=name_only veto=None distance=same_note",
+      "[e13~e8] NOT-MERGED LINK p=0.8228 basis=name_only veto=sibling_org_names:complete name vs one adding MOY distance=same_claim",
+      "[e13~e8] NOT-MERGED LINK p=0.8228 basis=name_only veto=sibling_org_names:complete name vs one adding MOY distance=same_claim",
+      "[e14~e9] NOT-MERGED LINK p=0.9995 basis=name_only veto=None distance=same_note",
+      "[e14~e9] NOT-MERGED LINK p=0.9995 basis=name_only veto=None distance=same_note",
+      "[e14~e9] NOT-MERGED LINK p=0.9816 basis=name_only veto=None distance=same_claim",
+      "[e14~e9] NOT-MERGED LINK p=0.9816 basis=name_only veto=sibling_org_names:complete name vs one adding WEINER distance=same_claim",
+      "[e14~e9] NOT-MERGED LINK p=0.9816 basis=name_only veto=None distance=same_claim",
+      "[e14~e9] NOT-MERGED LINK p=0.9816 basis=name_only veto=None distance=same_claim",
+      "[e1~e2] NOT-MERGED LINK p=0.9913 basis=name_only veto=None distance=same_note",
+      "[e2~e1] NOT-MERGED LINK p=0.9743 basis=name_only veto=None distance=same_claim",
+      "[e2~e1] NOT-MERGED LINK p=0.9743 basis=name_only veto=None distance=same_claim",
+      "[e2~e1] NOT-MERGED LINK p=0.9743 basis=name_only veto=None distance=same_claim",
+      "[p1] PASSAGE note:720001 claim=100002-240360-RI-01 (around American Transit Insurance Company): 'TRANSIT INSURANCE COMPANY, Plaintiff, - against – BRADLEY PIERRE, MARVIN MOY, M.D., RUTLAND MEDICAL P.C., WILLIAM A. WEINER, D.O., NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING and JOHN DOES 1-15, Defendants. (i) : ____ CV ____ COMPLAINT Plaintiff American Transit Insurance Company (“American Transit”), by and through its attorneys, Greenberg Traurig, LLP, for its Complaint against Defendants Bradley Pierre (“Pierre”), Marvin Moy, M.D. (“Moy”), Rutland Medical P.C. (“Rutland”), William A. Weiner, D.O. (“Weiner”), and Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging (“Nexray”), John Does 1-15 (the “John Doe Defendants,” and together with the other defendants, “Defendants”), hereby alleges as follows on personal knowledge as to itself and information and belief as to all other matters: NATURE OF THE ACTION 1. This is an action pursuant to the Racketeer Influenced and Corrupt Organizations Act (“RICO”), 18 U.S.C. § 1961 et seq. and other applicable laws, rules, and'",
+      "[p2] PASSAGE note:720001 claim=100002-240360-RI-01 (around American Transit Insurance Company): 'eligible for payment when, in fact, they were not as the bills we re presented by companies owned or controlled by a person who is not a licensed physician. Case 1:24-cv-00360-RPK-CLP Document 1 Filed 01/17/24 Page 60 of 93 PageID #: 60 61 389. In reliance on these misrepre sentations, American Transit paid money to Rutland and Nexray to satisfy the bills Defendants presented to its detriment. 390. American Transit would not have paid these monies had the Defendants provided true and accurate information about the Defendants’ reim bursement eligibility under New York law, including the lack of'",
+      "[p3] PASSAGE note:720001 claim=100002-240360-RI-01 (around American Transit Insurance Company): 'scheme. 529. Rutland and Nexray’s retention of American Transit’s payments violates fundamental principles of justice, equity, and good conscience. 530. By reason of the above, Defendants have been unjustly enriched in an amount to be determined at trial. PRAYER FOR RELIEF WHEREFORE, Plaintiff American Transit Insurance Company respectfully requests that judgment enter in its favor as follows: A. On the First Cause of Action against all Defendants, a declaration pursuant to the Declaratory Judgment Act, 28 U.S.C. §§ 2201 and 2202, that Rutland and Nexray have no right to receive payment for any prior, pending or future'",
+      "[p4] PASSAGE note:720001 claim=100002-240360-RI-01 (around American Transit): 'and regulations; (ii) the service described by the specific CPT code that is used was reasonable and medically necessary; and (iii) the service and the attendant fee were not excessive. 69. Pursuant to New York Insurance Law § 403, the NF -3s form submitted by a healthcare services provider to American Transit, and to all other au tomobile insurers, must be verified by the health care provider subject to the following warning: Any person who knowingly and with intent to defraud any insurance company or other person files an application for insurance or statement of claim containing any materially false'",
+      "[p5] PASSAGE note:720001 claim=100002-240360-RI-01 (around American Transit): 'stated that “these assessments must be made on a monthly basis to monitor progress and efficient treatment.” But thes e tests were never used Case 1:24-cv-00360-RPK-CLP Document 1 Filed 01/17/24 Page 29 of 93 PageID #: 29 30 for that purpose and were conducted for the sole purpose of billing American Transit. Rutland’s billing for MMT is false and fraudulent because multiple charges under the same CPT code were submitted for a particular patient, even though the testing was conducted in the same session on the same patient. 165. Because the muscle testing was unnecessary and because the associated'",
+      "[p6] PASSAGE note:720001 claim=100002-240360-RI-01 (around American Transit): '01/17/24 Page 45 of 93 PageID #: 45 46 D.L. for MRIs of t his brain cervical spine, lumbar spine, and left knee even though there was no need for early diagnostic testing. 280. On November 8, 2018, Rutland purportedly provided to D.L. physical therapy and chiropractic treatment. Rutland billed American Transit for this treatment, which was medically unnecessary. 281. On or about November 8, 2018, Weiner performed MRIs of D.L.’s cervical spine, lumbar spine, brain, left shoulder, and left knee and took x-rays of D.L.’s cervical spine and lumbar spine. Nexray billed American Transit for this imaging,'",
+      "[p7] PASSAGE note:710036 claim=100001-236572-RI-01 (around MRC Defendants): '1:23-cv-06572 (NRM) (LB) JURY TRIAL DEMANDED DEFENDANTS BRADLEY PIERRE AND MEDICAL REIMBURSEMENT CONSULTANTS INC.’S ANSWER WITH AFFIRMATIVE DEFENSES AND CROSSCLAIMS Defendants Bradley Pierre (“Pierre”) and Medical Reimbursement Consultants Inc. (“MRC”) (collectively, “ MRC Defendants”), by and through their attorneys, answer Plaintiffs’ complaint (“Complaint”), filed in the above-captioned action (“Action”) on September 1, 2023, as follows: I. INTRODUCTION 1. The allegations set forth in paragraph 1 of the Complaint call for a legal conclusion to which no response is necessary. To the extent a response is required, MRC Defendants lack the knowledge or information sufficient to form a basis as to the truth of the allegations contained in paragraph 1 of the Complaint as to Defendants Marvin Moy, M.D. ALLSTATE INSURANCE COMPANY, ALLSTATE INDEMNITY COMPANY, ALLSTATE FIRE & CASUALTY INSURANCE COMPANY, and ALLSTATE PROPERTY & CASUALTY INSURANCE COMPANY, Plaintiffs, -against- BRADLEY PIERRE, MEDICAL REIMBURSEMENT CONSULTANTS INC., MARVIN MOY, M.D., RUTLAND d/b/a'",
+      "[p8] PASSAGE note:710036 claim=100001-236572-RI-01 (around MRC Defendants): 'The allegations set forth in paragraph 69 of the Complaint are argument and call for legal conclusions, to which no response is necessary. To the extent a response is required, MRC Defendants lack the knowledge or information sufficient to form a basis as to the truth of the allegations as to the Other Defendants. As to the allegations against MRC Defendants, MRC Defendants deny the allegations set forth in paragraph 69 of the Complaint. 70. The allegations set forth in paragraph 70 of the Complaint are argument and call for legal conclusions, to which no response is necessary. To the extent a response is required, MRC Defendants lack the knowledge or information sufficient'",
+      "[p9] PASSAGE note:710036 claim=100001-236572-RI-01 (around MRC Defendants): 'argument and call for legal conclusion, to which no response is necessary. To the extent a response is required, MRC Defendants lack the knowledge or information sufficient to form a basis as to the truth of the allegations as to the Other Defendants. As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 141 of the Complaint. Case 1:23-cv-06572-NGG-LB Document 36 Filed 11/13/23 Page 28 of 103 PageID #: 1334 29 142. The allegations set forth in paragraph 142 of the Complaint are argument and call for legal conclusion, to which no response is necessary. To the extent a response is required, MRC Defendants lack the knowledge or information sufficient to form a basis as to the truth of the allegations as to the Other Defendants. As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 142 of the Complaint. 143. The allegations set forth in paragraph 143 of the Complaint are argument and call for legal conclusion, to which no response is necessary. To the extent a response'",
+      "[p10] PASSAGE note:710036 claim=100001-236572-RI-01 (around ALLSTATE INSURANCE COMPANY): 'basis as to the truth of the allegations as to the Other Defendants. As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 420 of the Complaint. VII. SPECIFIC ALLEGATIONS OF FRAUDULENT CONCEALMENT AND MISREPRESENTATIONS MADE TO AND RELIED ON BY ALLSTATE 421. MRC Defendants lack knowledge or information sufficient to form a basis as to the truth of the allegations contained in paragraph 421 of the Complaint. 422. The allegations set forth in paragraph 422 of the Complaint are argument and call for legal conclusion, to which no response is necessary.'"
+     ],
+     "text": "113 facts assembled at lens default."
+    },
+    {
+     "step": "model_start",
+     "t": 0.03,
+     "purpose": "answer",
+     "model": "gemini-3.5-flash",
+     "facts": 113
+    },
+    {
+     "step": "model_done",
+     "t": 18.17,
+     "purpose": "answer",
+     "model": "gemini-3.5-flash",
+     "seconds": 18.1
+    },
+    {
+     "step": "citations",
+     "t": 18.17,
+     "checked": 9,
+     "kept": 9,
+     "dropped": [],
+     "text": "9 citation(s) checked against the facts sent; 0 pointed at nothing and were removed."
+    },
+    {
+     "step": "result",
+     "t": 18.17,
+     "mode": "answer",
+     "question": "Which defendants appear in both the Allstate and American Transit lawsuits, and how sure is the system that they are the same parties?",
+     "lens": "default",
+     "facts_used": 113,
+     "routed_by": "phrasing",
+     "answer": "The defendants appearing in both lawsuits, along with the system's confidence and basis, are: 1. NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING [e9], with a merge confidence of 0.9998 where the identity rests on the name alone [e9]. 2. MARVIN MOY, M.D. [e11], with a merge confidence of 0.9997 where the identity rests on the name alone [e11]. 3. WILLIAM A. WEINER, D.O. [e10], with a merge confidence of 0.9994 where the identity rests on the name alone [e10]. 4. Rutland Medical P.C. d/b/a MedicalNow [e8], with a merge confidence of 0.9068 where the identity rests on the name alone [e8]. Additionally, Bradley Pierre is named as a defendant in both the American Transit lawsuit [e12][p1] and the Allstate lawsuit [e23][p7][a22]. However, the system has not merged these records, treating them as separate entities [e12][e23] with no merge confidence or link provided.",
+     "confidence_note": "The system is highly confident in the matches for Nexray, Moy, Weiner, and Rutland (ranging from 0.9068 to 0.9998), though all identities rest on the name alone. Bradley Pierre is not merged.",
+     "citations": {
+      "e8": {
+       "kind": "entity",
+       "id": "note:710036:c0.m9",
+       "label": "Rutland Medical P.C. d/b/a MedicalNow"
+      },
+      "e9": {
+       "kind": "entity",
+       "id": "note:710036:c0.m11",
+       "label": "NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING"
+      },
+      "e10": {
+       "kind": "entity",
+       "id": "note:710036:c0.m10",
+       "label": "WILLIAM A. WEINER, D.O."
+      },
+      "e11": {
+       "kind": "entity",
+       "id": "note:710036:c0.m8",
+       "label": "MARVIN MOY, M.D."
+      },
+      "e12": {
+       "kind": "entity",
+       "id": "note:720001:c0.m2",
+       "label": "Bradley Pierre"
+      },
+      "e23": {
+       "kind": "entity",
+       "id": "note:710036:c0.m5",
+       "label": "Bradley Pierre"
+      },
+      "a22": {
+       "kind": "note",
+       "id": "note:710085",
+       "span": [
+        901,
+        1030
+       ],
+       "label": "dismissed"
+      },
+      "p1": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        77,
+        1137
+       ],
+       "label": "passage"
+      },
+      "p7": {
+       "kind": "note",
+       "id": "note:710036",
+       "span": [
+        75,
+        1262
+       ],
+       "label": "passage"
+      }
+     },
+     "dropped_citations": [],
+     "seconds": 18.1,
+     "facts": [
+      "[e1] ENTITY 'American Transit Insurance Company' type=organization mentions=6 claims=['100002-240360-RI-01'] categories=['financier'] details=[] merge_confidence=1.0 merge_basis=['name_only']",
+      "[e2] ENTITY 'American Transit' type=organization mentions=4 claims=['100002-240360-RI-01'] categories=['financier'] details=[] merge_confidence=0.9998 merge_basis=['name_only']",
+      "[e3] ENTITY 'MRC Defendants' type=organization mentions=8 claims=['100001-236572-RI-01'] categories=['other'] details=[] merge_confidence=1.0 merge_basis=['name_only']",
+      "[e4] ENTITY 'ALLSTATE INSURANCE COMPANY' type=organization mentions=7 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['financier', 'other'] details=[] merge_confidence=0.9945 merge_basis=['name_only']",
+      "[e5] ENTITY 'Other Defendants' type=organization mentions=7 claims=['100001-236572-RI-01'] categories=['medical'] details=[] merge_confidence=1.0 merge_basis=['name_only']",
+      "[e6] ENTITY 'ALLSTATE INDEMNITY COMPANY' type=organization mentions=3 claims=['100001-236572-RI-01'] categories=['other'] details=[] merge_confidence=1.0 merge_basis=['name_only']",
+      "[e7] ENTITY 'ALLSTATE FIRE & CASUALTY INSURANCE\\nCOMPANY' type=organization mentions=3 claims=['100001-236572-RI-01'] categories=['other'] details=[] merge_confidence=1.0 merge_basis=['name_only']",
+      "[e8] ENTITY 'Rutland Medical P.C. d/b/a MedicalNow' type=organization mentions=14 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['medical'] details=['address=145 E 98th Street, 1st Floor, Brooklyn, New York 11212'] merge_confidence=0.9068 merge_basis=['name_only']",
+      "[e9] ENTITY 'NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING' type=organization mentions=15 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['medical'] details=['address=135-25F 79th Street, Suite 2B, Howard Beach, New York 11414'] merge_confidence=0.9998 merge_basis=['name_only']",
+      "[e10] ENTITY 'WILLIAM A. WEINER, D.O.' type=person mentions=15 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['medical'] details=[] merge_confidence=0.9994 merge_basis=['name_only']",
+      "[e11] ENTITY 'MARVIN MOY, M.D.' type=person mentions=14 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['medical'] details=[] merge_confidence=0.9997 merge_basis=['name_only']",
+      "[e12] ENTITY 'Bradley Pierre' type=person mentions=10 claims=['100002-240360-RI-01'] categories=['other'] details=[] merge_confidence=0.9999 merge_basis=['name_only']",
+      "[e13] ENTITY 'Rutland/Moy' type=organization mentions=1 claims=['100002-240360-RI-01'] categories=['medical'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e14] ENTITY 'Nexray/Weiner' type=organization mentions=1 claims=['100002-240360-RI-01'] categories=['other'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e15] ENTITY 'No-Fault Attorneys' type=organization mentions=1 (reached through an action matching the question)",
+      "[e16] ENTITY 'Plaintiffs' type=organization mentions=1 (reached through an action matching the question)",
+      "[e17] ENTITY 'John Does 1-15' type=person mentions=1 (reached through an action matching the question)",
+      "[e18] ENTITY 'Defendants' type=organization mentions=1 (reached through an action matching the question)",
+      "[e19] ENTITY 'Pierre (\"Rose\")' type=person mentions=1 (reached through an action matching the question)",
+      "[e20] ENTITY 'Roman Kravchenko' type=person mentions=1 (reached through an action matching the question)",
+      "[e21] ENTITY 'Defendants' type=organization mentions=1 (reached through an action matching the question)",
+      "[e22] ENTITY 'Allstate' type=organization mentions=1 (reached through an action matching the question)",
+      "[e23] ENTITY 'Bradley Pierre' type=person mentions=6 (reached through an action matching the question)",
+      "[e24] ENTITY 'Medical Reimbursement Consultants, Inc.' type=organization mentions=6 (reached through an action matching the question)",
+      "[a1] ACTION submitted stance=alleged time=None participants=['e8(provider)', 'e9(provider)', 'e2(recipient)'] claim=100002-240360-RI-01 quote='384. To induce American Transit to promptly pay Rutland’s and Nexray’s patient bills, the Defendants submitted (or caused to be submitted) to American Transit NF -3 forms'",
+      "[a2] ACTION prosecuted_actions stance=alleged time=None participants=['e15(actor)', 'e13(represented_party)', 'e14(represented_party)', 'e1(opposing_party)'] claim=100002-240360-RI-01 quote='appeared on behalf of Rut land and/or Nexray, to prosecute dozens of actions against American Transit'",
+      "[a3] ACTION declares_no_obligation_to_pay stance=asserted time=pending or future participants=['e2(claimant)', 'e8(provider)', 'e9(provider)'] claim=100002-240360-RI-01 quote='a declaratory judgment declaring that American Transit has no obligation to pay pending or future No -Fault claims'",
+      "[a4] ACTION enjoined_from_filing stance=asserted time=until the declaratory judgment claim in this case is resolved participants=['e8(enjoined_party)', 'e9(enjoined_party)', 'e1(target)'] claim=100002-240360-RI-01 quote='and (2) filing any additional no-f ault collection arbitrations and lawsuits against American Transit, until the declaratory judgment claim in this case is resolved .'",
+      "[a5] ACTION submitted_bills_to stance=alleged time=None participants=['e8(actor)', 'e16(recipient)', 'e11(facilitator)'] claim=100001-236572-RI-01 quote='Defendant Moy participated in this scheme by ensur-\\ning that Rutland \"continued to submit bills to Allstate'",
+      "[a6] ACTION billed stance=alleged time=None participants=['e8(biller)', 'e1(recipient)'] claim=100002-240360-RI-01 quote='Rutland’s bills for services that it presented to American Transit were and are fraudulent'",
+      "[a7] ACTION concealed stance=alleged time=None participants=['e1(target)', 'e13(subject)'] claim=100002-240360-RI-01 quote='The Defendants concealed from American Transit the truth regarding Rutland and'",
+      "[a8] ACTION operated_scheme_to_defraud stance=alleged time=None participants=['e12(defendant)', 'e11(defendant)', 'e8(defendant)', 'e10(defendant)', 'e9(defendant)', 'e17(defendant)', 'e1(target)'] claim=100002-240360-RI-01 quote='defendants operated an illegal scheme to defraud plaintiff'",
+      "[a9] ACTION submitted_claims_to stance=alleged time=None participants=['e18(actor)', 'e1(recipient)'] claim=100002-240360-RI-01 quote='Defendants submitted, and caused to be submitted to American Transit for payment, thousands of fraudulent No-Fault insurance reimbursement claims'",
+      "[a10] ACTION represented_self_as stance=alleged time=Beginning in or about 2009, and numerous times thereafter participants=['e11(actor)', 'e1(recipient)', 'e8(organization)'] claim=100002-240360-RI-01 quote='Moy represented himself to American Transit to be the sole officer, director, and shareholder of Rutland.'",
+      "[a11] ACTION represented_self_as stance=alleged time=Beginning in 2011 and numerous times thereafter participants=['e10(actor)', 'e1(recipient)', 'e9(organization)'] claim=100002-240360-RI-01 quote='Weiner represented himself to American Transit to be the sole office, director, and shareholder of Nexray.'",
+      "[a12] ACTION paid_claims_to stance=alleged time=to date participants=['e1(payer)', 'e8(recipient)', 'e9(recipient)'] claim=100002-240360-RI-01 quote='American Transit paid Rutland and Nexray’s No -Fault claims'",
+      "[a13] ACTION submitted_bills stance=alleged time=None participants=['e8(submitter)', 'e10(submitter)', 'e2(recipient)'] claim=100002-240360-RI-01 quote='Rutland and Weiner submitted bills to American Transit'",
+      "[a14] ACTION submitted_false_medical_documentation stance=alleged time=None participants=['e19(actor)', 'e11(actor)', 'e10(actor)', 'e1(recipient)'] claim=100002-240360-RI-01 quote='created, prepared, and submitted (or caused to be created, prepared, and submitted) false medical\\ndocumentation to American Transit'",
+      "[a15] ACTION brought_actions stance=asserted time=when recently challenged on the issue participants=['e20(actor)', 'e1(opposing_party)', 'e13(represented_party)', 'e14(represented_party)'] claim=100002-240360-RI-01 quote='Attorney Kravchenko admitted to bringing actions against American Transit on behalf  of Rutland and Nexray without actually being engaged by them'",
+      "[a16] ACTION concealed stance=alleged time=At all relevant times participants=['e19(actor)', 'e10(actor)', 'e1(target)', 'e14(subject)'] claim=100002-240360-RI-01 quote='Pierre and Weiner actively concealed from American Transit facts regarding Nexray’s true ownership and control'"
+     ]
+    }
+   ]
+  },
+  {
+   "question": "Trace how the scheme worked: who referred patients to whom, who billed which insurer, who controlled the clinics, and which attorneys pursued the collections?",
+   "lens": "default",
+   "recorded_at": "2026-09-25 14:54",
+   "events": [
+    {
+     "step": "route",
+     "t": 0.0,
+     "decision": "question",
+     "by": "phrasing",
+     "text": "Phrased as a question: answering from the graph."
+    },
+    {
+     "step": "match",
+     "t": 0.03,
+     "n": 2,
+     "entities": [
+      "ALLSTATE INSURANCE COMPANY",
+      "No-Fault Attorneys"
+     ],
+     "by_words": true,
+     "text": "Matched 2 parties by the words of the question."
+    },
+    {
+     "step": "expand",
+     "t": 0.03,
+     "added": 10,
+     "names": [
+      "Rutland Medical P.C. d/b/a MedicalNow",
+      "Plaintiffs",
+      "Allstate",
+      "Law Office of Jason Tenenbaum, P.C.",
+      "Jason Tenenbaum",
+      "Roman Kravchenko",
+      "Russel Friedman Law Group, LLP",
+      "Rutland/Moy"
+     ],
+     "actions": 40,
+     "actions_found": 171,
+     "links": 8,
+     "flags": 0,
+     "text": "One hop out: 10 co-participant(s) added, 40 action(s) with source quotes, 8 not-merged link(s), 0 flag(s) for review."
+    },
+    {
+     "step": "passages",
+     "t": 0.03,
+     "n": 10,
+     "notes": [
+      "note:710036",
+      "note:710045",
+      "note:710085",
+      "note:720001"
+     ],
+     "text": "Read 10 source passage(s) around the question's words and the matched parties, from 4 note(s)."
+    },
+    {
+     "step": "facts",
+     "t": 0.03,
+     "n": 82,
+     "facts": [
+      "[e1] ENTITY 'ALLSTATE INSURANCE COMPANY' type=organization mentions=7 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['financier', 'other'] details=[] merge_confidence=0.9945 merge_basis=['name_only']",
+      "[e2] ENTITY 'No-Fault Attorneys' type=organization mentions=1 claims=['100002-240360-RI-01'] categories=['legal'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e3] ENTITY 'Rutland Medical P.C. d/b/a MedicalNow' type=organization mentions=14 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['medical'] details=['address=145 E 98th Street, 1st Floor, Brooklyn, New York 11212'] merge_confidence=0.9068 merge_basis=['name_only']",
+      "[e4] ENTITY 'Plaintiffs' type=organization mentions=1 claims=['100001-236572-RI-01'] categories=['other'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e5] ENTITY 'Allstate' type=organization mentions=1 claims=['100001-236572-RI-01'] categories=['financier'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e6] ENTITY 'Law Office of Jason Tenenbaum, P.C.' type=organization mentions=1 claims=['100002-240360-RI-01'] categories=['legal'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e7] ENTITY 'Jason Tenenbaum' type=person mentions=1 claims=['100002-240360-RI-01'] categories=['legal'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e8] ENTITY 'Roman Kravchenko' type=person mentions=1 claims=['100002-240360-RI-01'] categories=['legal'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e9] ENTITY 'Russel Friedman Law Group, LLP' type=organization mentions=1 claims=['100002-240360-RI-01'] categories=['legal'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e10] ENTITY 'Rutland/Moy' type=organization mentions=1 claims=['100002-240360-RI-01'] categories=['medical'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e11] ENTITY 'Nexray/Weiner' type=organization mentions=1 claims=['100002-240360-RI-01'] categories=['other'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e12] ENTITY 'American Transit Insurance Company' type=organization mentions=6 claims=['100002-240360-RI-01'] categories=['financier'] details=[] merge_confidence=1.0 merge_basis=['name_only']",
+      "[e13] ENTITY 'MARVIN MOY, M.D.' type=person mentions=14 (reached through an action matching the question)",
+      "[e14] ENTITY 'Bradley Pierre' type=person mentions=10 (reached through an action matching the question)",
+      "[e15] ENTITY 'NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING' type=organization mentions=15 (reached through an action matching the question)",
+      "[e16] ENTITY 'American Transit' type=organization mentions=4 (reached through an action matching the question)",
+      "[e17] ENTITY 'No- Fault' type=organization mentions=1 (reached through an action matching the question)",
+      "[e18] ENTITY 'Medical Reimbursement Consultants, Inc.' type=organization mentions=6 (reached through an action matching the question)",
+      "[e19] ENTITY 'Pierre (\"Rose\")' type=person mentions=1 (reached through an action matching the question)",
+      "[e20] ENTITY 'Anthony Rose' type=person mentions=1 (reached through an action matching the question)",
+      "[e21] ENTITY 'WILLIAM A. WEINER, D.O.' type=person mentions=15 (reached through an action matching the question)",
+      "[e22] ENTITY 'John Does 1-15' type=person mentions=1 (reached through an action matching the question)",
+      "[e23] ENTITY 'PC Defendants' type=organization mentions=1 (reached through an action matching the question)",
+      "[e24] ENTITY 'Bradley Pierre' type=person mentions=6 (reached through an action matching the question)",
+      "[a1] ACTION submitted_bills_to stance=alleged time=None participants=['e3(actor)', 'e4(recipient)', 'e13(facilitator)'] claim=100001-236572-RI-01 quote='Defendant Moy participated in this scheme by ensur-\\ning that Rutland \"continued to submit bills to Allstate'",
+      "[a2] ACTION brought_actions stance=asserted time=when recently challenged on the issue participants=['e8(actor)', 'e12(opposing_party)', 'e10(represented_party)', 'e11(represented_party)'] claim=100002-240360-RI-01 quote='Attorney Kravchenko admitted to bringing actions against American Transit on behalf  of Rutland and Nexray without actually being engaged by them'",
+      "[a3] ACTION steered_patients_to stance=asserted time=None participants=['e14(actor)', 'e15(destination)'] claim=100002-240360-RI-01 quote='he used his control of the clinics to steer patients to seek MRIs at Nexray,'",
+      "[a4] ACTION referred_to stance=alleged time=None participants=['e3(referrer)', 'e15(recipient)'] claim=100001-236572-RI-01 quote='Rutland patients were also referred to Nexray for\\nMRis, seemingly as a matter of course.'",
+      "[a5] ACTION referred_patients_to stance=alleged time=None participants=['e3(referrer)', 'e15(recipient)'] claim=100002-240360-RI-01 quote='Rutland, in turn, referred patients to Nexray'",
+      "[a6] ACTION referred_patients_to stance=alleged time=None participants=['e3(referrer)', 'e15(recipient)'] claim=100002-240360-RI-01 quote='Rutland violated N.Y. Pub. Health L. § 238 -a(1)(a) by referring patients to other providers with which it has a financial relationship, including Nexray.'",
+      "[a7] ACTION referred_to stance=alleged time=None participants=['e3(referrer)', 'e13(referrer)'] claim=100002-240360-RI-01 quote='173. Nonetheless, Rutland and Moy referred patients for early diagnostic imaging'",
+      "[a8] ACTION submitted stance=alleged time=None participants=['e3(provider)', 'e15(provider)', 'e16(recipient)'] claim=100002-240360-RI-01 quote='384. To induce American Transit to promptly pay Rutland’s and Nexray’s patient bills, the Defendants submitted (or caused to be submitted) to American Transit NF -3 forms'",
+      "[a9] ACTION paid_bribes stance=alleged time=None participants=['e14(actor)', 'e3(beneficiary)'] claim=100002-240360-RI-01 quote='Pierre is an architect of a scheme involving paying bribes to 911 op erators, hospital employees, among others, in exchange for the referral of automobile accident victims to Rutland'",
+      "[a10] ACTION referred_to stance=alleged time=None participants=['e3(referrer)', 'e15(recipient)'] claim=100002-240360-RI-01 quote='Rutland, in turn, referred patients to Nexray'",
+      "[a11] ACTION commenced_arbitrations_against stance=asserted time=None participants=['e3(actor)', 'e4(target)'] claim=100001-236572-RI-01 quote=\"Allstate's motion for a preliminary\\ninjunction to stay all 40 pending no-fault insurance collection ar-\\nbitrations commenced against Allstate by Defendant Rutland\"",
+      "[a12] ACTION motion_granted stance=asserted time=pending disposition of the declaratory judgment action participants=['e1(movant)', 'e3(opposing_party)'] claim=100001-236572-RI-01 quote=\"Allstate's motion to enjoin future state court collection lawsuits by Rutland pending disposition of the declaratory judgment action is therefore GRANTED.\"",
+      "[a13] ACTION enjoined_from_filing stance=asserted time=pending resolution of the instant federal action participants=['e3(restrained_party)', 'e1(opposing_party)'] claim=100001-236572-RI-01 quote='Rutland is enjoined from filing any further no-fault collection arbitrations or lawsuits against Allstate'",
+      "[a14] ACTION billed stance=alleged time=None participants=['e3(biller)', 'e12(recipient)'] claim=100002-240360-RI-01 quote='Rutland’s bills for services that it presented to American Transit were and are fraudulent'",
+      "[a15] ACTION owned_operated_and_controlled stance=alleged time=None participants=['e14(owner_operator_controller)', 'e17(clinic)'] claim=100002-240360-RI-01 quote='Pierre “was the actual\\nowner, operator, and controller” of the No-Fault clinics.'",
+      "[a16] ACTION steered stance=alleged time=None participants=['e14(referrer)', 'e15(recipient)'] claim=100002-240360-RI-01 quote='Pierre steered hundreds of patients from the clinics to Nexray.'",
+      "[a17] ACTION caused_transfer stance=alleged time=None participants=['e14(causer)', 'e17(transferor)', 'e18(recipient)'] claim=100002-240360-RI-01 quote='Pierre caused the No-Fault\\nclinics to transfer the proceeds from the scheme to his own company, Medical Reimbursement'",
+      "[a18] ACTION referred_to stance=alleged time=None participants=['e13(referrer)', 'e15(recipient)'] claim=100002-240360-RI-01 quote='176. Moy systemically referred patients to Nexray for imaging'",
+      "[a19] ACTION paid_for_referral stance=alleged time=None participants=['e19(payer)', 'e20(recipient)'] claim=100002-240360-RI-01 quote='Pierre paid Rose in exchange for Rose’s referral of patients'",
+      "[a20] ACTION member_of stance=asserted time=None participants=['e6(member)', 'e2(group)'] claim=100002-240360-RI-01 quote='the Law Office of Jason Tenenbaum, P.C. , its p rincipal, Jason Tenenbaum, an affiliated attorney, Roman Kravchenko , the Russel Friedman Law Group, LLP, among others (collectively, the “ No-Fault Attorneys”)'",
+      "[a21] ACTION member_of stance=asserted time=None participants=['e7(member)', 'e2(group)'] claim=100002-240360-RI-01 quote='the Law Office of Jason Tenenbaum, P.C. , its p rincipal, Jason Tenenbaum, an affiliated attorney, Roman Kravchenko , the Russel Friedman Law Group, LLP, among others (collectively, the “ No-Fault Attorneys”)'",
+      "[a22] ACTION member_of stance=asserted time=None participants=['e8(member)', 'e2(group)'] claim=100002-240360-RI-01 quote='the Law Office of Jason Tenenbaum, P.C. , its p rincipal, Jason Tenenbaum, an affiliated attorney, Roman Kravchenko , the Russel Friedman Law Group, LLP, among others (collectively, the “ No-Fault Attorneys”)'",
+      "[a23] ACTION member_of stance=asserted time=None participants=['e9(member)', 'e2(group)'] claim=100002-240360-RI-01 quote='the Law Office of Jason Tenenbaum, P.C. , its p rincipal, Jason Tenenbaum, an affiliated attorney, Roman Kravchenko , the Russel Friedman Law Group, LLP, among others (collectively, the “ No-Fault Attorneys”)'",
+      "[a24] ACTION prosecuted_actions stance=alleged time=None participants=['e2(actor)', 'e10(represented_party)', 'e11(represented_party)', 'e12(opposing_party)'] claim=100002-240360-RI-01 quote='appeared on behalf of Rut land and/or Nexray, to prosecute dozens of actions against American Transit'",
+      "[a25] ACTION concealed stance=alleged time=At all relevant times participants=['e19(actor)', 'e21(actor)', 'e12(target)', 'e11(subject)'] claim=100002-240360-RI-01 quote='Pierre and Weiner actively concealed from American Transit facts regarding Nexray’s true ownership and control'",
+      "[a26] ACTION enjoined_from_filing stance=asserted time=until the declaratory judgment claim in this case is resolved participants=['e3(enjoined_party)', 'e15(enjoined_party)', 'e12(target)'] claim=100002-240360-RI-01 quote='and (2) filing any additional no-f ault collection arbitrations and lawsuits against American Transit, until the declaratory judgment claim in this case is resolved .'",
+      "[a27] ACTION operated_scheme_to_defraud stance=alleged time=None participants=['e14(defendant)', 'e13(defendant)', 'e3(defendant)', 'e21(defendant)', 'e15(defendant)', 'e22(defendant)', 'e12(target)'] claim=100002-240360-RI-01 quote='defendants operated an illegal scheme to defraud plaintiff'",
+      "[a28] ACTION member_of stance=asserted time=None participants=['e3(member)', 'e23(group)'] claim=100001-236572-RI-01 quote='Rutland Medical\\nP.C. d/b/a MedicalNow, and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\\ndiology Medical Imaging are hereinafter referred to as the PC Defendants.'",
+      "[a29] ACTION ceded_control_to stance=alleged time=None participants=['e13(actor)', 'e3(target)', 'e24(recipient)'] claim=100001-236572-RI-01 quote='Moy ceded actual control over Rutland to Defendant Bradley\\nPierre'",
+      "[a30] ACTION stayed stance=asserted time=pending participants=['e3(party)', 'Plaintiffs(opposing_party)'] claim=100001-236572-RI-01 quote='all pending no-fault collection arbitrations by Rutland (or its agents) against Plaintiffs are stayed'",
+      "[a31] ACTION owned_and_controlled stance=alleged time=None participants=['e14(controller)', 'e3(controlled)'] claim=100002-240360-RI-01 quote='is actually owned and controlled by Pierre'",
+      "[a32] ACTION billed stance=alleged time=throughout the course of this scheme participants=['e15(biller)', 'e12(recipient)'] claim=100002-240360-RI-01 quote='Nexray billed American Transit for unnecessary and/or excessive diagnostic radiology services'",
+      "[a33] ACTION recruited stance=alleged time=from at least 2008 through 2021 participants=['e14(recruiter)', 'e3(clinic)'] claim=100002-240360-RI-01 quote='Pierre recruited medical practitioners to open No-Fault clinics'",
+      "[a34] ACTION submitted_bills stance=alleged time=None participants=['e3(submitter)', 'e21(submitter)', 'e16(recipient)'] claim=100002-240360-RI-01 quote='Rutland and Weiner submitted bills to American Transit'",
+      "[a35] ACTION provided stance=alleged time=None participants=['e3(provider)', 'e13(agent)'] claim=100002-240360-RI-01 quote='Rutland , through Moy,  provided virtually every patient with a purported initial examination.'",
+      "[a36] ACTION subjected_to_testing stance=alleged time=None participants=['e3(provider)', 'e13(provider)'] claim=100002-240360-RI-01 quote='Rutland and Moy subjected Rutland patients to needless and unwarranted'",
+      "[a37] ACTION member_of stance=asserted time=None participants=['e3(member)', 'e17(group)'] claim=100002-240360-RI-01 quote='the member clinic named as “such as Rutland”'",
+      "[a38] ACTION controlled stance=asserted time=None participants=['e14(controller)', 'e3(controlled_party)', 'e15(controlled_party)'] claim=100002-240360-RI-01 quote='179. Further, Rutland and Nexray were under Pierre’s control'",
+      "[a39] ACTION referred_to stance=alleged time=None participants=['e3(referrer)', 'e13(referrer)', 'P.A.(patient)', 'e15(recipient)'] claim=100002-240360-RI-01 quote='227. Despite the lack of any indication of injury, Rutland and Moy referred P.A. to Nexray'",
+      "[a40] ACTION referred_to stance=asserted time=May 14, 2018 participants=['e3(referrer)', 'A.C.(patient)', 'e15(recipient)'] claim=100002-240360-RI-01 quote='251. Rutland evaluated A.C. on May 14, 2018 and referred A.C. to Nexray'",
+      "[e1~e5] NOT-MERGED LINK p=0.9838 basis=name_only veto=kind_conflict:party vs group distance=same_claim",
+      "[e1~e5] NOT-MERGED LINK p=0.9999 basis=name_only veto=kind_conflict:party vs group distance=same_claim",
+      "[e1~e5] NOT-MERGED LINK p=0.9999 basis=name_only veto=kind_conflict:party vs group distance=same_claim",
+      "[e1~e5] NOT-MERGED LINK p=0.9838 basis=name_only veto=kind_conflict:party vs group distance=same_claim",
+      "[e1~e5] NOT-MERGED LINK p=0.9999 basis=name_only veto=kind_conflict:party vs group distance=same_claim",
+      "[e3~e10] NOT-MERGED LINK p=0.933 basis=name_only veto=sibling_org_names:complete name vs one adding MOY distance=same_note",
+      "[e10~e3] NOT-MERGED LINK p=0.8228 basis=name_only veto=sibling_org_names:complete name vs one adding MOY distance=same_claim",
+      "[e10~e3] NOT-MERGED LINK p=0.8228 basis=name_only veto=sibling_org_names:complete name vs one adding MOY distance=same_claim",
+      "[p1] PASSAGE note:710036 claim=100001-236572-RI-01 (around ALLSTATE INSURANCE COMPANY): 'paragraph 1 of the Complaint call for a legal conclusion to which no response is necessary. To the extent a response is required, MRC Defendants lack the knowledge or information sufficient to form a basis as to the truth of the allegations contained in paragraph 1 of the Complaint as to Defendants Marvin Moy, M.D. ALLSTATE INSURANCE COMPANY, ALLSTATE INDEMNITY COMPANY, ALLSTATE FIRE & CASUALTY INSURANCE COMPANY, and ALLSTATE PROPERTY & CASUALTY INSURANCE COMPANY, Plaintiffs, -against- BRADLEY PIERRE, MEDICAL REIMBURSEMENT CONSULTANTS INC., MARVIN MOY, M.D., RUTLAND d/b/a'",
+      "[p2] PASSAGE note:710036 claim=100001-236572-RI-01 (around ALLSTATE INSURANCE COMPANY): 'basis as to the truth of the allegations as to the Other Defendants. As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 420 of the Complaint. VII. SPECIFIC ALLEGATIONS OF FRAUDULENT CONCEALMENT AND MISREPRESENTATIONS MADE TO AND RELIED ON BY ALLSTATE 421. MRC Defendants lack knowledge or information sufficient to form a basis as to the truth of the allegations contained in paragraph 421 of the Complaint. 422. The allegations set forth in paragraph 422 of the Complaint are argument and call for legal conclusion, to which no response is necessary.'",
+      "[p3] PASSAGE note:710036 claim=100001-236572-RI-01 (around ALLSTATE INSURANCE COMPANY): 'a basis as to the truth of the allegations as to the Other Defendants. As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 448 of the Complaint. Case 1:23-cv-06572-NGG-LB Document 36 Filed 11/13/23 Page 72 of 103 PageID #: 1378 73 VIII. ALLSTATE’S JUSTIFIABLE RELIANCE 449. MRC Defendants lack knowledge or information sufficient to form a basis as to the truth of the allegations contained in paragraph 449 of the Complaint. 450. The allegations set forth in paragraph 450 of the Complaint are argument and call for legal conclusion, to which'",
+      "[p4] PASSAGE note:720001 claim=100002-240360-RI-01 (around No-Fault Attorneys): 'Nexray, the Defendants hired attorneys to pursue collection of the fraudulent charges from American Transit, including the prosecution and defense of claims. These attorneys routinely file time-consuming and expensive lawsuits and arbitration matters against American Transit. 449. For example, the Law Office of Jason Tenenbaum, P.C. , its p rincipal, Jason Tenenbaum, an affiliated attorney, Roman Kravchenko , the Russel Friedman Law Group, LLP, among others (collectively, the “ No-Fault Attorneys”) appeared on behalf of Rut land and/or Nexray, to prosecute dozens of actions against American Transit. 450. Many of these lawsuits involve the No-Fault Attorneys filing purported verifications on behalf of Rutland/Moy and Nexray/Weiner . Even though Moy purportedly died Case 1:24-cv-00360-RPK-CLP'",
+      "[p5] PASSAGE note:710036 claim=100001-236572-RI-01 (around Rutland Medical P.C. d/b/a MedicalNow): 'MRC Defendants reserve the right to assert additional defenses in the event that discovery indicates that any such additional defenses would be appropriate. FIRST CROSSCLAIM AGAINST PC DEFENDANTS Defendants Pierre and MRC (collectively, “MRC Defendants”), cross complain of Defendants Rutland and Nexray (collectively, the “PC Defendants”) as follows: 597. For purposes of the crossclaims only, MRC Defendants adopt by reference the allegations of the Complaint as against the PC Defendants. 598. Upon information and belief, Rutland is a professional corporation organized under the laws of the State of New York and registered to practice medicine under Defendant Moy’s name and medical license. Case 1:23-cv-06572-NGG-LB Document 36 Filed 11/13/23 Page 100 of 103 PageID #: 1406 101 599. Upon information and belief, Nexray is a professional corporation organized under the laws of the State of New York and registered to practice medicine under Defendant Weiner’s name and medical license. 600. Plaintiffs have filed a complaint against MRC Defendants and PC Defendants. 601. Plaintiffs have alleged damages resulting'",
+      "[p6] PASSAGE note:710045 claim=100001-236572-RI-01 (around Rutland Medical P.C. d/b/a MedicalNow): 'UNITED STATES DISTRICT COURT EASTERN DISTRICT OF NEW YORK AllSTATE INSURANCE COMPANY, AllSTATE INDEMNITY COMPANY, AllSTATE FIRE & CASUALTY INSURANCE COMPANY, and AllSTATE PROPERTY & CASUALTY INSURANCE COMPANY, Plaintiffs, -against- BRADLEY PIERRE, MEDICAL REIMBURSEMENT CONSULTANTS INC., MARVIN MOY, M.D., RUTLAND MEDICAL P.C. d/b/a MEDICALNOW, WILLIAM A. WEINER, D.O., and NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING, Defendants. MEMORANDUM & ORDER 23-CV-06572 (NGG) (LB) NICHOLAS G. GARAUFIS, United States District Judge. Plaintiffs Allstate Insurance Company, Allstate Indemnity Com\\xad pany, Allstate Property and Casualty Insurance Company, and Allstate Fire and Casualty Insurance Company (collectively, \"All\\xad state\" or \"Plaintiffs\") bring this action against Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy, M.D., Rutland Medical P.C. d/b/a MedicalNow, William A. Weiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra\\xad diology Medical Imaging ( collectively, \"Defendants\") 1, alleging that'",
+      "[p7] PASSAGE note:710085 claim=100001-236572-RI-01 (around Allstate): 'IMAGING, Defendants. STIPULATION OF DISMISSAL Pursuant to Fed. R. Civ. P. 41(a), it is hereby stipulated and agreed by Plaintiffs Allstate Insurance Company, Allstate Property & Casualty Insurance Company, Allstate Indemnity Company, and Allstate Fire & Casualty Insurance Company (collectively \"Allstate\"), and Defendants Bradley Pien-e and Medical Reimbursement Consultants, Inc., through their undersigned counsel, that Allstate\\'s Complaint (Dkt. No. 1) be dismissed as to Defendants Bradley Pien-e and Medical Reimbursement Consultants, Inc., with prejudice and without cost to any party. [SIGNATURE'",
+      "[p8] PASSAGE note:720001 claim=100002-240360-RI-01 (around Rutland/Moy): 'the use of the U.S. Mail would follow in the ordinary course of Rutland’s business by sending NF-3s to American Transit. 396. At all relevant times, Pierre (through MRC) and Moy caused Rutland to certify falsely that it was eligible to be reimbursed under New York’s No-Fault laws each time that Rutland mailed (or was caused to mail) a demand for payment (i.e., bill) to American Transit. 397. Pierre’s operation, management, and/or control of Rutland combined with his unlawful receipt of Rutland’s fees and profits, rendered Rutland ineligible for No -Fault reimbursement under New York law. 398. Because Pierre (a non -physician) unlawfully participated in the operation, management, and/or control of Rutland, Moy and Pierre purposely caused Rutland to make a material misrepresentation each and every time that Rutland mailed (or caused to mail) a document to American Transit claiming eligibility for reimbursement.'",
+      "[p9] PASSAGE note:720001 claim=100002-240360-RI-01 (around Nexray/Weiner): 'knowledge that the use of the U.S. Mail would follow in the ordinary course of Nexray’s business by sending NF-3s to American Transit. 404. At all relevant times, Pierre (through MRC) and Weiner caused Nexray to certify that it was eligible to be reimbursed under New York’s No-Fault laws each time that Nexray mailed (or was caused to mail) a demand for payment (i.e., bill) to American Transit. 405. Pierre’s operation, management, and/or control of Nexray combined with his unlawful receipt of Nexray’s fees and profits, rendered Nexray ineligible for No -Fault reimbursement under New York law. 406. Because'",
+      "[p10] PASSAGE note:720001 claim=100002-240360-RI-01 (around American Transit Insurance Company): 'TRANSIT INSURANCE COMPANY, Plaintiff, - against – BRADLEY PIERRE, MARVIN MOY, M.D., RUTLAND MEDICAL P.C., WILLIAM A. WEINER, D.O., NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING and JOHN DOES 1-15, Defendants. (i) : ____ CV ____ COMPLAINT Plaintiff American Transit Insurance Company (“American Transit”), by and through its attorneys, Greenberg Traurig, LLP, for its Complaint against Defendants Bradley Pierre (“Pierre”), Marvin Moy, M.D. (“Moy”), Rutland Medical P.C. (“Rutland”), William A. Weiner, D.O. (“Weiner”), and Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging (“Nexray”), John Does 1-15 (the “John Doe Defendants,” and together with the other defendants, “Defendants”), hereby'"
+     ],
+     "text": "82 facts assembled at lens default."
+    },
+    {
+     "step": "model_start",
+     "t": 0.03,
+     "purpose": "answer",
+     "model": "gemini-3.5-flash",
+     "facts": 82
+    },
+    {
+     "step": "model_done",
+     "t": 22.31,
+     "purpose": "answer",
+     "model": "gemini-3.5-flash",
+     "seconds": 22.3
+    },
+    {
+     "step": "citations",
+     "t": 22.31,
+     "checked": 31,
+     "kept": 31,
+     "dropped": [],
+     "text": "31 citation(s) checked against the facts sent; 0 pointed at nothing and were removed."
+    },
+    {
+     "step": "result",
+     "t": 22.31,
+     "mode": "answer",
+     "question": "Trace how the scheme worked: who referred patients to whom, who billed which insurer, who controlled the clinics, and which attorneys pursued the collections?",
+     "lens": "default",
+     "facts_used": 82,
+     "routed_by": "phrasing",
+     "answer": "Based on the provided facts, the scheme operated as follows: Patient Referrals: Bradley Pierre paid bribes to 911 operators, hospital employees, and others to refer automobile accident victims to Rutland Medical P.C. d/b/a MedicalNow (whose identity rests on the name alone) [e3][a9]. Pierre also paid Anthony Rose for patient referrals [a19]. Pierre then steered patients from the clinics to Nexray Medical Imaging, P.C. for MRIs [a3][a16]. Rutland and Marvin Moy, M.D. also referred patients to Nexray [a4][a5][a6][a7][a10][a18][a39][a40]. Billing of Insurers: Rutland (under Moy) submitted bills to Allstate Insurance Company (whose identity rests on the name alone) [e1][a1]. Rutland and Nexray (under William A. Weiner) submitted bills to American Transit Insurance Company (whose identity rests on the name alone) [e12][a8][a14][a32][a34]. Control of the Clinics: Bradley Pierre was the actual owner, operator, and controller of the clinics, including Rutland and Nexray [a15][a31][a38]. Marvin Moy ceded actual control of Rutland to Pierre [a29]. Attorneys Pursuing Collections: A group known as the 'No-Fault Attorneys' prosecuted collection actions against American Transit on behalf of Rutland and Nexray [a24][p4]. This group consisted of the Law Office of Jason Tenenbaum, P.C., its principal Jason Tenenbaum, affiliated attorney Roman Kravchenko, and the Russel Friedman Law Group, LLP [a20][a21][a22][a23][p4]. Roman Kravchenko admitted to bringing actions against American Transit on behalf of Rutland and Nexray without actually being engaged by them [a2].",
+     "confidence_note": "The facts provide a clear trace of the referral, billing, control, and collection activities of the scheme.",
+     "citations": {
+      "e1": {
+       "kind": "entity",
+       "id": "note:710036:c0.m1",
+       "label": "ALLSTATE INSURANCE COMPANY"
+      },
+      "e3": {
+       "kind": "entity",
+       "id": "note:710036:c0.m9",
+       "label": "Rutland Medical P.C. d/b/a MedicalNow"
+      },
+      "e12": {
+       "kind": "entity",
+       "id": "note:720001:c0.m1",
+       "label": "American Transit Insurance Company"
+      },
+      "a1": {
+       "kind": "note",
+       "id": "note:710045",
+       "span": [
+        11097,
+        11204
+       ],
+       "label": "submitted_bills_to"
+      },
+      "a2": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        137128,
+        137274
+       ],
+       "label": "brought_actions"
+      },
+      "a3": {
+       "kind": "note",
+       "id": "note:720052",
+       "span": [
+        5586,
+        5663
+       ],
+       "label": "steered_patients_to"
+      },
+      "a4": {
+       "kind": "note",
+       "id": "note:710045",
+       "span": null,
+       "label": "referred_to"
+      },
+      "a5": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        4415,
+        4460
+       ],
+       "label": "referred_patients_to"
+      },
+      "a6": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        18047,
+        18204
+       ],
+       "label": "referred_patients_to"
+      },
+      "a7": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        60252,
+        60332
+       ],
+       "label": "referred_to"
+      },
+      "a8": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        114838,
+        115009
+       ],
+       "label": "submitted"
+      },
+      "a9": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        157312,
+        157496
+       ],
+       "label": "paid_bribes"
+      },
+      "a10": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        157537,
+        157582
+       ],
+       "label": "referred_to"
+      },
+      "a14": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        17092,
+        17183
+       ],
+       "label": "billed"
+      },
+      "a15": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        30862,
+        30943
+       ],
+       "label": "owned_operated_and_controlled"
+      },
+      "a16": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        32522,
+        32585
+       ],
+       "label": "steered"
+      },
+      "a18": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        60935,
+        60996
+       ],
+       "label": "referred_to"
+      },
+      "a19": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        124680,
+        124740
+       ],
+       "label": "paid_for_referral"
+      },
+      "a20": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        136253,
+        136463
+       ],
+       "label": "member_of"
+      },
+      "a21": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        136253,
+        136463
+       ],
+       "label": "member_of"
+      },
+      "a22": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        136253,
+        136463
+       ],
+       "label": "member_of"
+      },
+      "a23": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        136253,
+        136463
+       ],
+       "label": "member_of"
+      },
+      "a24": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        136465,
+        136567
+       ],
+       "label": "prosecuted_actions"
+      },
+      "a29": {
+       "kind": "note",
+       "id": "note:710045",
+       "span": [
+        9260,
+        9326
+       ],
+       "label": "ceded_control_to"
+      },
+      "a31": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        5400,
+        5442
+       ],
+       "label": "owned_and_controlled"
+      },
+      "a32": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        19133,
+        19227
+       ],
+       "label": "billed"
+      },
+      "a34": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        35772,
+        35826
+       ],
+       "label": "submitted_bills"
+      },
+      "a38": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": null,
+       "label": "controlled"
+      },
+      "a39": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": null,
+       "label": "referred_to"
+      },
+      "a40": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        81008,
+        81080
+       ],
+       "label": "referred_to"
+      },
+      "p4": {
+       "kind": "note",
+       "id": "note:720001",
+       "span": [
+        135952,
+        136770
+       ],
+       "label": "passage"
+      }
+     },
+     "dropped_citations": [],
+     "seconds": 22.3,
+     "facts": [
+      "[e1] ENTITY 'ALLSTATE INSURANCE COMPANY' type=organization mentions=7 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['financier', 'other'] details=[] merge_confidence=0.9945 merge_basis=['name_only']",
+      "[e2] ENTITY 'No-Fault Attorneys' type=organization mentions=1 claims=['100002-240360-RI-01'] categories=['legal'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e3] ENTITY 'Rutland Medical P.C. d/b/a MedicalNow' type=organization mentions=14 claims=['100001-236572-RI-01', '100002-240360-RI-01'] categories=['medical'] details=['address=145 E 98th Street, 1st Floor, Brooklyn, New York 11212'] merge_confidence=0.9068 merge_basis=['name_only']",
+      "[e4] ENTITY 'Plaintiffs' type=organization mentions=1 claims=['100001-236572-RI-01'] categories=['other'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e5] ENTITY 'Allstate' type=organization mentions=1 claims=['100001-236572-RI-01'] categories=['financier'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e6] ENTITY 'Law Office of Jason Tenenbaum, P.C.' type=organization mentions=1 claims=['100002-240360-RI-01'] categories=['legal'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e7] ENTITY 'Jason Tenenbaum' type=person mentions=1 claims=['100002-240360-RI-01'] categories=['legal'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e8] ENTITY 'Roman Kravchenko' type=person mentions=1 claims=['100002-240360-RI-01'] categories=['legal'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e9] ENTITY 'Russel Friedman Law Group, LLP' type=organization mentions=1 claims=['100002-240360-RI-01'] categories=['legal'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e10] ENTITY 'Rutland/Moy' type=organization mentions=1 claims=['100002-240360-RI-01'] categories=['medical'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e11] ENTITY 'Nexray/Weiner' type=organization mentions=1 claims=['100002-240360-RI-01'] categories=['other'] details=[] merge_confidence=None merge_basis=['single']",
+      "[e12] ENTITY 'American Transit Insurance Company' type=organization mentions=6 claims=['100002-240360-RI-01'] categories=['financier'] details=[] merge_confidence=1.0 merge_basis=['name_only']",
+      "[e13] ENTITY 'MARVIN MOY, M.D.' type=person mentions=14 (reached through an action matching the question)",
+      "[e14] ENTITY 'Bradley Pierre' type=person mentions=10 (reached through an action matching the question)",
+      "[e15] ENTITY 'NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING' type=organization mentions=15 (reached through an action matching the question)",
+      "[e16] ENTITY 'American Transit' type=organization mentions=4 (reached through an action matching the question)",
+      "[e17] ENTITY 'No- Fault' type=organization mentions=1 (reached through an action matching the question)",
+      "[e18] ENTITY 'Medical Reimbursement Consultants, Inc.' type=organization mentions=6 (reached through an action matching the question)",
+      "[e19] ENTITY 'Pierre (\"Rose\")' type=person mentions=1 (reached through an action matching the question)",
+      "[e20] ENTITY 'Anthony Rose' type=person mentions=1 (reached through an action matching the question)",
+      "[e21] ENTITY 'WILLIAM A. WEINER, D.O.' type=person mentions=15 (reached through an action matching the question)",
+      "[e22] ENTITY 'John Does 1-15' type=person mentions=1 (reached through an action matching the question)",
+      "[e23] ENTITY 'PC Defendants' type=organization mentions=1 (reached through an action matching the question)",
+      "[e24] ENTITY 'Bradley Pierre' type=person mentions=6 (reached through an action matching the question)",
+      "[a1] ACTION submitted_bills_to stance=alleged time=None participants=['e3(actor)', 'e4(recipient)', 'e13(facilitator)'] claim=100001-236572-RI-01 quote='Defendant Moy participated in this scheme by ensur-\\ning that Rutland \"continued to submit bills to Allstate'",
+      "[a2] ACTION brought_actions stance=asserted time=when recently challenged on the issue participants=['e8(actor)', 'e12(opposing_party)', 'e10(represented_party)', 'e11(represented_party)'] claim=100002-240360-RI-01 quote='Attorney Kravchenko admitted to bringing actions against American Transit on behalf  of Rutland and Nexray without actually being engaged by them'",
+      "[a3] ACTION steered_patients_to stance=asserted time=None participants=['e14(actor)', 'e15(destination)'] claim=100002-240360-RI-01 quote='he used his control of the clinics to steer patients to seek MRIs at Nexray,'",
+      "[a4] ACTION referred_to stance=alleged time=None participants=['e3(referrer)', 'e15(recipient)'] claim=100001-236572-RI-01 quote='Rutland patients were also referred to Nexray for\\nMRis, seemingly as a matter of course.'",
+      "[a5] ACTION referred_patients_to stance=alleged time=None participants=['e3(referrer)', 'e15(recipient)'] claim=100002-240360-RI-01 quote='Rutland, in turn, referred patients to Nexray'",
+      "[a6] ACTION referred_patients_to stance=alleged time=None participants=['e3(referrer)', 'e15(recipient)'] claim=100002-240360-RI-01 quote='Rutland violated N.Y. Pub. Health L. § 238 -a(1)(a) by referring patients to other providers with which it has a financial relationship, including Nexray.'",
+      "[a7] ACTION referred_to stance=alleged time=None participants=['e3(referrer)', 'e13(referrer)'] claim=100002-240360-RI-01 quote='173. Nonetheless, Rutland and Moy referred patients for early diagnostic imaging'",
+      "[a8] ACTION submitted stance=alleged time=None participants=['e3(provider)', 'e15(provider)', 'e16(recipient)'] claim=100002-240360-RI-01 quote='384. To induce American Transit to promptly pay Rutland’s and Nexray’s patient bills, the Defendants submitted (or caused to be submitted) to American Transit NF -3 forms'",
+      "[a9] ACTION paid_bribes stance=alleged time=None participants=['e14(actor)', 'e3(beneficiary)'] claim=100002-240360-RI-01 quote='Pierre is an architect of a scheme involving paying bribes to 911 op erators, hospital employees, among others, in exchange for the referral of automobile accident victims to Rutland'",
+      "[a10] ACTION referred_to stance=alleged time=None participants=['e3(referrer)', 'e15(recipient)'] claim=100002-240360-RI-01 quote='Rutland, in turn, referred patients to Nexray'",
+      "[a11] ACTION commenced_arbitrations_against stance=asserted time=None participants=['e3(actor)', 'e4(target)'] claim=100001-236572-RI-01 quote=\"Allstate's motion for a preliminary\\ninjunction to stay all 40 pending no-fault insurance collection ar-\\nbitrations commenced against Allstate by Defendant Rutland\"",
+      "[a12] ACTION motion_granted stance=asserted time=pending disposition of the declaratory judgment action participants=['e1(movant)', 'e3(opposing_party)'] claim=100001-236572-RI-01 quote=\"Allstate's motion to enjoin future state court collection lawsuits by Rutland pending disposition of the declaratory judgment action is therefore GRANTED.\"",
+      "[a13] ACTION enjoined_from_filing stance=asserted time=pending resolution of the instant federal action participants=['e3(restrained_party)', 'e1(opposing_party)'] claim=100001-236572-RI-01 quote='Rutland is enjoined from filing any further no-fault collection arbitrations or lawsuits against Allstate'",
+      "[a14] ACTION billed stance=alleged time=None participants=['e3(biller)', 'e12(recipient)'] claim=100002-240360-RI-01 quote='Rutland’s bills for services that it presented to American Transit were and are fraudulent'",
+      "[a15] ACTION owned_operated_and_controlled stance=alleged time=None participants=['e14(owner_operator_controller)', 'e17(clinic)'] claim=100002-240360-RI-01 quote='Pierre “was the actual\\nowner, operator, and controller” of the No-Fault clinics.'",
+      "[a16] ACTION steered stance=alleged time=None participants=['e14(referrer)', 'e15(recipient)'] claim=100002-240360-RI-01 quote='Pierre steered hundreds of patients from the clinics to Nexray.'"
+     ]
+    }
+   ]
+  }
+ ]
+}

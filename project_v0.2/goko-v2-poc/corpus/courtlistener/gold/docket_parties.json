@@ -1,0 +1,141 @@
+{
+  "source": "CourtListener v4 search, type=r (docket party lists as entered by the clerk)",
+  "fetched": "2026-09-23",
+  "dockets": {
+    "100001-236572-RI-01": {
+      "docket": "1:23-cv-06572",
+      "case": "Allstate Insurance Company v. Pierre",
+      "parties": [
+        "Allstate Fire & Casualty Insurance Company",
+        "Rutland Medical P.C.",
+        "Nexray Medical Imaging, P.C.",
+        "William A. Weiner, D.O.",
+        "Bradley Pierre",
+        "Allstate Insurance Company",
+        "Allstate Property & Casualty Insurance Company",
+        "Medical Reimbursement Consultants Inc.",
+        "Allstate Indemnity Company",
+        "Marvin Moy, M.D."
+      ],
+      "attorneys": [
+        "Richard D. King , Jr.",
+        "Nathan A. Tilden",
+        "Caitlin Flanagan Keresey",
+        "Michael W Whitcher"
+      ],
+      "firms": [
+        "King, Tilden, McEttrick & Brink, P.C."
+      ]
+    },
+    "100002-240360-RI-01": {
+      "docket": "1:24-cv-00360",
+      "case": "American Transit Insurance Company v. Pierre",
+      "parties": [
+        "William A. Weiner, D.O.",
+        "Bradley Pierre",
+        "American Transit Insurance Company",
+        "John Does 1-15",
+        "Marvin Moy, M.D.",
+        "Leon Kucherovsky",
+        "Rutland Medical P.C.",
+        "Nexray Medical Imaging,  P.C. d/b/a Soul  Radiology Medical Imaging"
+      ],
+      "attorneys": [
+        "Gina Louise Faldetta",
+        "Seok Ho (Richard) Kang",
+        "Francis J. Serbaroli",
+        "James Wilson Perkins",
+        "John Charles Molluzzo , Jr.",
+        "Adam B. Dressler",
+        "Evan S. Schwartz",
+        "Matthew J. Conroy",
+        "Cary Scott Goldinger",
+        "Robert E. B. Hewitt , III",
+        "Skip Short",
+        "Steven J. Harfenist",
+        "Ioanna Zevgaras"
+      ],
+      "firms": [
+        "Cary Scott Goldinger",
+        "Greenberg Traurig, LLP",
+        "Greenberg Traurig, P.A",
+        "Harfenist Kraut & Perlstein LLP",
+        "New York",
+        "Schwartz, Conroy & Hack, PC",
+        "Schwartz,Conroy & Hack, PC",
+        "Short & Billy, P.C.",
+        "Short & Billy, PC",
+        "Short & Billy. P.C.",
+        "The Dressler Law Firm, PLLC"
+      ]
+    }
+  },
+  "cross_claim_identities": [
+    {
+      "names": [
+        "Bradley Pierre"
+      ],
+      "by_claim": {
+        "100001-236572-RI-01": [
+          "Bradley Pierre"
+        ],
+        "100002-240360-RI-01": [
+          "Bradley Pierre"
+        ]
+      }
+    },
+    {
+      "names": [
+        "Marvin Moy, M.D."
+      ],
+      "by_claim": {
+        "100001-236572-RI-01": [
+          "Marvin Moy, M.D."
+        ],
+        "100002-240360-RI-01": [
+          "Marvin Moy, M.D."
+        ]
+      }
+    },
+    {
+      "names": [
+        "Nexray Medical Imaging,  P.C. d/b/a Soul  Radiology Medical Imaging",
+        "Nexray Medical Imaging, P.C."
+      ],
+      "by_claim": {
+        "100001-236572-RI-01": [
+          "Nexray Medical Imaging, P.C."
+        ],
+        "100002-240360-RI-01": [
+          "Nexray Medical Imaging,  P.C. d/b/a Soul  Radiology Medical Imaging"
+        ]
+      }
+    },
+    {
+      "names": [
+        "Rutland Medical P.C."
+      ],
+      "by_claim": {
+        "100001-236572-RI-01": [
+          "Rutland Medical P.C."
+        ],
+        "100002-240360-RI-01": [
+          "Rutland Medical P.C."
+        ]
+      }
+    },
+    {
+      "names": [
+        "William A. Weiner, D.O."
+      ],
+      "by_claim": {
+        "100001-236572-RI-01": [
+          "William A. Weiner, D.O."
+        ],
+        "100002-240360-RI-01": [
+          "William A. Weiner, D.O."
+        ]
+      }
+    }
+  ]
+}

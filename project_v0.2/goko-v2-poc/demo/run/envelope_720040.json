@@ -1,0 +1,2130 @@
+{
+  "note_id": 720040,
+  "note_key": "note:720040",
+  "claim_id": "100002-240360-RI-01",
+  "client_id": "100002",
+  "occurrence_id": "100002-240360",
+  "coverage_code": "RI",
+  "versions": {
+    "schema": "0.1",
+    "model": "gpt-6-luna",
+    "patterns": "1.7",
+    "gliner": null,
+    "clean_policy": "none",
+    "chunk_policy": "structure-v1/30000c/2s",
+    "structured": true,
+    "offline": false
+  },
+  "extraction_error": null,
+  "entity_mentions": [
+    {
+      "mention_id": "c0.m1",
+      "quote": "AMERICAN TRANSIT INSURANCE COMPANY,           \n  Plaintiffs,",
+      "name": "AMERICAN TRANSIT INSURANCE COMPANY",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Plaintiffs",
+        "Plaintiffs\u2019",
+        "Plaintiff\u2019s",
+        "Plaintiffs\u2019 Complaint"
+      ],
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        138,
+        172
+      ],
+      "raw_span": [
+        138,
+        172
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m2",
+      "quote": "BRADLEY PIERRE, MARVIN MOY, M.D.,",
+      "name": "BRADLEY PIERRE",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        215,
+        229
+      ],
+      "raw_span": [
+        215,
+        229
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m3",
+      "quote": "MARVIN MOY, M.D., RUTLAND",
+      "name": "MARVIN MOY, M.D.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        231,
+        247
+      ],
+      "raw_span": [
+        231,
+        247
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m4",
+      "quote": "RUTLAND \nMEDICAL P.C., WILLIAM",
+      "name": "RUTLAND MEDICAL P.C.",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        249,
+        270
+      ],
+      "raw_span": [
+        249,
+        270
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m5",
+      "quote": "WILLIAM A. WEINER, D.O., NEXRAY",
+      "name": "WILLIAM A. WEINER, D.O.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Answering Defendants",
+        "The Answering Defendants"
+      ],
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        272,
+        295
+      ],
+      "raw_span": [
+        272,
+        295
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m6",
+      "quote": "NEXRAY \nMEDICAL IMAGING, P.C. d/b/a SOUL   RADIOLOGY \nMEDICAL IMAGING and JOHN DOES 1-15,",
+      "name": "NEXRAY MEDICAL IMAGING, P.C.",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "d/b/a SOUL   RADIOLOGY MEDICAL IMAGING",
+        "NEXRAY MEDICAL IMAGING, \nP.C. and d/b/a SOUL   RADIOLOGY MEDICA L IMAGING",
+        "Answering Defendants",
+        "The Answering Defendants"
+      ],
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        297,
+        326
+      ],
+      "raw_span": [
+        297,
+        326
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m7",
+      "quote": "and JOHN DOES 1-15,",
+      "name": "JOHN DOES 1-15",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [],
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        371,
+        385
+      ],
+      "raw_span": [
+        371,
+        385
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m8",
+      "quote": "and JOHN DOES 1-15,\nDefendants.",
+      "name": "Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "the Defendants"
+      ],
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        388,
+        398
+      ],
+      "raw_span": [
+        388,
+        398
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m9",
+      "quote": "(\u201cAnswering Defendants\u201d)",
+      "name": "Answering Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "The Answering Defendants",
+        "the Answering Defendants"
+      ],
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        692,
+        712
+      ],
+      "raw_span": [
+        692,
+        712
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m1",
+      "quote": "99. The Answering Defendants deny the allegations contained in paragraph 99",
+      "name": "Answering Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "The Answering Defendants",
+        "Answering Defendants"
+      ],
+      "_chunk": [
+        27756,
+        56403
+      ],
+      "clean_span": [
+        27994,
+        28014
+      ],
+      "raw_span": [
+        27994,
+        28014
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m2",
+      "quote": "99 of the Plaintiffs\u2019 Complaint",
+      "name": "Plaintiffs",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "Plaintiffs\u2019"
+      ],
+      "_chunk": [
+        27756,
+        56403
+      ],
+      "clean_span": [
+        28070,
+        28080
+      ],
+      "raw_span": [
+        28070,
+        28080
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c2.m1",
+      "quote": "207. The Answering Defendants deny the allegations contained in paragraph 207",
+      "name": "Answering Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "The Answering Defendants"
+      ],
+      "_chunk": [
+        56235,
+        84232
+      ],
+      "clean_span": [
+        56244,
+        56264
+      ],
+      "raw_span": [
+        56244,
+        56264
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c2.m2",
+      "quote": "208. The Answering Defendants deny the allegations contained in paragraph 208 \nof the Plaintiffs\u2019 Complaint",
+      "name": "Plaintiffs",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "Plaintiffs\u2019 Complaint"
+      ],
+      "_chunk": [
+        56235,
+        84232
+      ],
+      "clean_span": [
+        56720,
+        56730
+      ],
+      "raw_span": [
+        56720,
+        56730
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c3.m1",
+      "quote": "The Answering Defendants deny the allegations contained in paragraph 314",
+      "name": "The Answering Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "Answering Defendants"
+      ],
+      "_chunk": [
+        83880,
+        112679
+      ],
+      "clean_span": [
+        83880,
+        83904
+      ],
+      "raw_span": [
+        83880,
+        83904
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c3.m2",
+      "quote": "of the Plaintiffs\u2019 Complaint insofar as they relate",
+      "name": "Plaintiffs",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "Plaintiffs\u2019 Complaint"
+      ],
+      "_chunk": [
+        83880,
+        112679
+      ],
+      "clean_span": [
+        83961,
+        83971
+      ],
+      "raw_span": [
+        83961,
+        83971
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m1",
+      "quote": "The Answering Defendants deny the allegations contained in paragraph 419",
+      "name": "The Answering Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "Answering Defendants"
+      ],
+      "_chunk": [
+        112421,
+        141193
+      ],
+      "clean_span": [
+        112421,
+        112445
+      ],
+      "raw_span": [
+        112421,
+        112445
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m2",
+      "quote": "of the Plaintiffs\u2019 Complaint insofar as they relate or refer to the Answering Defendants.",
+      "name": "Plaintiffs",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "Plaintiffs\u2019"
+      ],
+      "_chunk": [
+        112421,
+        141193
+      ],
+      "clean_span": [
+        112502,
+        112512
+      ],
+      "raw_span": [
+        112502,
+        112512
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c5.m1",
+      "quote": "523. The Answering Defendants deny the allegations contained in paragraph 523",
+      "name": "The Answering Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "The Answering Defendant",
+        "Defendants"
+      ],
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        141030,
+        141054
+      ],
+      "raw_span": [
+        141030,
+        141054
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c5.m2",
+      "quote": "The Plaintiffs are barred by the doctrine of res judicata.",
+      "name": "The Plaintiffs",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "the Plaintiffs\u2019 Complaint",
+        "The Plaintiffs",
+        "Plaintiffs",
+        "the Plaintiff"
+      ],
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        144327,
+        144341
+      ],
+      "raw_span": [
+        144327,
+        144341
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c5.m3",
+      "quote": "WILLIAM A. WEINER, D.O., NEXRAY",
+      "name": "WILLIAM A. WEINER, D.O.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        147054,
+        147077
+      ],
+      "raw_span": [
+        147054,
+        147077
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c5.m4",
+      "quote": "NEXRAY MEDICAL IMAGING, P.C. and d/b/a SOUL",
+      "name": "NEXRAY MEDICAL IMAGING, P.C.",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "d/b/a SOUL RADIOLOGY MEDICAL IMAGING",
+        "the professional corporation",
+        "The professional corporation"
+      ],
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        147079,
+        147108
+      ],
+      "raw_span": [
+        147079,
+        147108
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c5.m5",
+      "quote": "SCHWARTZ, CONROY & HACK, PC",
+      "name": "SCHWARTZ, CONROY & HACK, PC",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        146999,
+        147026
+      ],
+      "raw_span": [
+        146999,
+        147026
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c5.m6",
+      "quote": "Matthew J. Conroy, Esq.",
+      "name": "Matthew J. Conroy",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Matthew J. Conroy___"
+      ],
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        147176,
+        147193
+      ],
+      "raw_span": [
+        147176,
+        147193
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c5.m7",
+      "quote": "GREENBERG TRAURIG, LLP",
+      "name": "GREENBERG TRAURIG, LLP",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        147332,
+        147354
+      ],
+      "raw_span": [
+        147332,
+        147354
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    }
+  ],
+  "entity_candidates": [],
+  "detail_mentions": [
+    {
+      "detail_type": "address",
+      "raw_value": "666 Old Country Road, 9th Floor",
+      "normalized": "666|old|country|road|9th|floor",
+      "clean_span": [
+        147201,
+        147232
+      ],
+      "owner_ref": "c5.m5",
+      "basis": "inferred",
+      "issuer": null,
+      "subtype": null,
+      "parts": {
+        "number": "666",
+        "direction": "",
+        "street": "OLD COUNTRY",
+        "street_type": "RD",
+        "unit": "",
+        "city": "",
+        "state": "",
+        "zip": ""
+      },
+      "detected_by": [
+        "llm"
+      ],
+      "checksum": "n/a",
+      "cue": null,
+      "recall_gap": false,
+      "raw_span": [
+        147201,
+        147232
+      ]
+    },
+    {
+      "detail_type": "address",
+      "raw_value": "Garden City, New York 11530",
+      "normalized": "garden|city|new|york|11530",
+      "clean_span": [
+        147234,
+        147261
+      ],
+      "owner_ref": "c5.m5",
+      "basis": "inferred",
+      "issuer": null,
+      "subtype": null,
+      "parts": {
+        "number": "",
+        "direction": "",
+        "street": "GARDEN CITY",
+        "street_type": "",
+        "unit": "",
+        "city": "GARDEN CITY",
+        "state": "NY",
+        "zip": "11530"
+      },
+      "detected_by": [
+        "llm"
+      ],
+      "checksum": "n/a",
+      "cue": null,
+      "recall_gap": false,
+      "raw_span": [
+        147234,
+        147261
+      ]
+    },
+    {
+      "detail_type": "phone",
+      "raw_value": "(516) 745-1122",
+      "normalized": "+15167451122",
+      "clean_span": [
+        147263,
+        147277
+      ],
+      "owner_ref": "c5.m5",
+      "basis": "inferred",
+      "issuer": null,
+      "subtype": null,
+      "parts": null,
+      "detected_by": [
+        "llm",
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "cue": false,
+      "recall_gap": false,
+      "raw_span": [
+        147263,
+        147277
+      ]
+    },
+    {
+      "detail_type": "phone",
+      "raw_value": "(516) 745-0844",
+      "normalized": "+15167450844",
+      "clean_span": [
+        147279,
+        147297
+      ],
+      "owner_ref": "c5.m5",
+      "basis": "stated",
+      "issuer": null,
+      "subtype": "fax",
+      "parts": null,
+      "detected_by": [
+        "llm",
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "cue": false,
+      "recall_gap": false,
+      "raw_span": [
+        147279,
+        147297
+      ]
+    },
+    {
+      "detail_type": "email",
+      "raw_value": "mjc@schlawpc.com",
+      "normalized": "mjc@schlawpc.com",
+      "clean_span": [
+        147306,
+        147322
+      ],
+      "owner_ref": "c5.m5",
+      "basis": "inferred",
+      "issuer": null,
+      "subtype": null,
+      "parts": null,
+      "detected_by": [
+        "llm",
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "cue": false,
+      "recall_gap": false,
+      "raw_span": [
+        147306,
+        147322
+      ]
+    },
+    {
+      "detail_type": "address",
+      "raw_value": "One Vanderbilt Avenue",
+      "normalized": "one|vanderbilt|avenue",
+      "clean_span": [
+        147384,
+        147405
+      ],
+      "owner_ref": "c5.m7",
+      "basis": "inferred",
+      "issuer": null,
+      "subtype": null,
+      "parts": {
+        "number": "",
+        "direction": "",
+        "street": "ONE VANDERBILT",
+        "street_type": "AVE",
+        "unit": "",
+        "city": "",
+        "state": "",
+        "zip": ""
+      },
+      "detected_by": [
+        "llm"
+      ],
+      "checksum": "n/a",
+      "cue": null,
+      "recall_gap": false,
+      "raw_span": [
+        147384,
+        147405
+      ]
+    },
+    {
+      "detail_type": "address",
+      "raw_value": "New York, New York 10017",
+      "normalized": "new|york|new|york|10017",
+      "clean_span": [
+        147408,
+        147432
+      ],
+      "owner_ref": "c5.m7",
+      "basis": "inferred",
+      "issuer": null,
+      "subtype": null,
+      "parts": {
+        "number": "",
+        "direction": "",
+        "street": "NEW YORK",
+        "street_type": "",
+        "unit": "",
+        "city": "NEW YORK",
+        "state": "NY",
+        "zip": "10017"
+      },
+      "detected_by": [
+        "llm"
+      ],
+      "checksum": "n/a",
+      "cue": null,
+      "recall_gap": false,
+      "raw_span": [
+        147408,
+        147432
+      ]
+    },
+    {
+      "detail_type": "phone",
+      "raw_value": "(212) 801-9200",
+      "normalized": "+12128019200",
+      "clean_span": [
+        147434,
+        147448
+      ],
+      "owner_ref": "c5.m7",
+      "basis": "inferred",
+      "issuer": null,
+      "subtype": null,
+      "parts": null,
+      "detected_by": [
+        "llm",
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "cue": false,
+      "recall_gap": false,
+      "raw_span": [
+        147434,
+        147448
+      ]
+    },
+    {
+      "detail_type": "email",
+      "raw_value": "perkinsj@gtlaw.com",
+      "normalized": "perkinsj@gtlaw.com",
+      "clean_span": [
+        147450,
+        147468
+      ],
+      "owner_ref": "c5.m7",
+      "basis": "inferred",
+      "issuer": null,
+      "subtype": null,
+      "parts": null,
+      "detected_by": [
+        "llm",
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "cue": false,
+      "recall_gap": false,
+      "raw_span": [
+        147450,
+        147468
+      ]
+    },
+    {
+      "detail_type": "email",
+      "raw_value": "serbarolif@gtlaw.com",
+      "normalized": "serbarolif@gtlaw.com",
+      "clean_span": [
+        147471,
+        147491
+      ],
+      "owner_ref": "c5.m7",
+      "basis": "inferred",
+      "issuer": null,
+      "subtype": null,
+      "parts": null,
+      "detected_by": [
+        "llm",
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "cue": false,
+      "recall_gap": false,
+      "raw_span": [
+        147471,
+        147491
+      ]
+    },
+    {
+      "detail_type": "email",
+      "raw_value": "molluzzoj@gtlaw.com",
+      "normalized": "molluzzoj@gtlaw.com",
+      "clean_span": [
+        147493,
+        147512
+      ],
+      "owner_ref": "c5.m7",
+      "basis": "inferred",
+      "issuer": null,
+      "subtype": null,
+      "parts": null,
+      "detected_by": [
+        "llm",
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "cue": false,
+      "recall_gap": false,
+      "raw_span": [
+        147493,
+        147512
+      ]
+    }
+  ],
+  "action_mentions": [
+    {
+      "action_id": "c0.a1",
+      "quote": "BRADLEY PIERRE, MARVIN MOY, M.D., RUTLAND \nMEDICAL P.C., WILLIAM A. WEINER, D.O., NEXRAY \nMEDICAL IMAGING, P.C. d/b/a SOUL   RADIOLOGY \nMEDICAL IMAGING and JOHN DOES 1-15,",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m2",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m8",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        215,
+        386
+      ],
+      "raw_span": [
+        215,
+        386
+      ]
+    },
+    {
+      "action_id": "c0.a2",
+      "quote": "BRADLEY PIERRE, MARVIN MOY, M.D.,",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m3",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m8",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        215,
+        248
+      ],
+      "raw_span": [
+        215,
+        248
+      ]
+    },
+    {
+      "action_id": "c0.a3",
+      "quote": "RUTLAND \nMEDICAL P.C., WILLIAM",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m4",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m8",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        249,
+        279
+      ],
+      "raw_span": [
+        249,
+        279
+      ]
+    },
+    {
+      "action_id": "c0.a4",
+      "quote": "WILLIAM A. WEINER, D.O., NEXRAY",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m5",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m8",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        272,
+        303
+      ],
+      "raw_span": [
+        272,
+        303
+      ]
+    },
+    {
+      "action_id": "c0.a5",
+      "quote": "NEXRAY \nMEDICAL IMAGING, P.C. d/b/a SOUL   RADIOLOGY \nMEDICAL IMAGING and JOHN DOES 1-15,",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m6",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m8",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        297,
+        386
+      ],
+      "raw_span": [
+        297,
+        386
+      ]
+    },
+    {
+      "action_id": "c0.a6",
+      "quote": "and JOHN DOES 1-15,",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m7",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m8",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        367,
+        386
+      ],
+      "raw_span": [
+        367,
+        386
+      ]
+    },
+    {
+      "action_id": "c0.a7",
+      "quote": "WILLIAM A. WEINER, D.O., NEXRAY MEDICAL IMAGING, \nP.C. and d/b/a SOUL   RADIOLOGY MEDICA L IMAGING, (\u201cAnswering Defendants\u201d)",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m5",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m9",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        590,
+        714
+      ],
+      "raw_span": [
+        590,
+        714
+      ]
+    },
+    {
+      "action_id": "c0.a8",
+      "quote": "NEXRAY MEDICAL IMAGING, \nP.C. and d/b/a SOUL   RADIOLOGY MEDICA L IMAGING, (\u201cAnswering Defendants\u201d)",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m6",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m9",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        615,
+        714
+      ],
+      "raw_span": [
+        615,
+        714
+      ]
+    },
+    {
+      "action_id": "c0.a9",
+      "quote": "1. The Answering Defendants deny the allegations contained in paragraph 1",
+      "action_type": "deny_allegations",
+      "participants": [
+        {
+          "mention_id": "c0.m9",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        817,
+        890
+      ],
+      "raw_span": [
+        817,
+        890
+      ]
+    },
+    {
+      "action_id": "c0.a10",
+      "quote": "17. The Answering Defendants deny informatio n sufficient to form  a belief as to\nthe allegations contained in paragraph 17.",
+      "action_type": "deny_information_sufficient_to_form_a_belief",
+      "participants": [
+        {
+          "mention_id": "c0.m9",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        5903,
+        6027
+      ],
+      "raw_span": [
+        5903,
+        6027
+      ]
+    },
+    {
+      "action_id": "c0.a11",
+      "quote": "28. The Answering Defendants admit the allegations contained in paragraph 28 of\nthe Plaintiff\u2019s Complaint.",
+      "action_type": "admit_allegations",
+      "participants": [
+        {
+          "mention_id": "c0.m9",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        8559,
+        8666
+      ],
+      "raw_span": [
+        8559,
+        8666
+      ]
+    },
+    {
+      "action_id": "c0.a12",
+      "quote": "53. The Answering Defendants neither admi t nor deny the allegations contained",
+      "action_type": "neither_admit_nor_deny_allegations",
+      "participants": [
+        {
+          "mention_id": "c0.m9",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "disputed",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        27986
+      ],
+      "clean_span": [
+        13839,
+        13917
+      ],
+      "raw_span": [
+        13839,
+        13917
+      ]
+    },
+    {
+      "action_id": "c1.a1",
+      "quote": "99. The Answering Defendants deny the allegations contained in paragraph 99",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c1.m1",
+          "role": "denier"
+        },
+        {
+          "mention_id": "c1.m2",
+          "role": "opposing_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        27756,
+        56403
+      ],
+      "clean_span": [
+        27986,
+        28061
+      ],
+      "raw_span": [
+        27986,
+        28061
+      ]
+    },
+    {
+      "action_id": "c1.a2",
+      "quote": "The Answering Defendants deny inform ation sufficient to form a beli ef as to the balance of the",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c1.m1",
+          "role": "denier"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        27756,
+        56403
+      ],
+      "clean_span": [
+        28153,
+        28250
+      ],
+      "raw_span": [
+        28153,
+        28250
+      ]
+    },
+    {
+      "action_id": "c1.a3",
+      "quote": "106. The Answering Defendants neither admi t nor deny the allegations contained",
+      "action_type": "neither_admit_nor_deny",
+      "participants": [
+        {
+          "mention_id": "c1.m1",
+          "role": "responding_party"
+        },
+        {
+          "mention_id": "c1.m2",
+          "role": "opposing_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        27756,
+        56403
+      ],
+      "clean_span": [
+        30154,
+        30233
+      ],
+      "raw_span": [
+        30154,
+        30233
+      ]
+    },
+    {
+      "action_id": "c1.a4",
+      "quote": "123. The Answering Defendants deny the allegations contained in paragraph 123",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c1.m1",
+          "role": "denier"
+        },
+        {
+          "mention_id": "c1.m2",
+          "role": "opposing_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        27756,
+        56403
+      ],
+      "clean_span": [
+        35149,
+        35226
+      ],
+      "raw_span": [
+        35149,
+        35226
+      ]
+    },
+    {
+      "action_id": "c1.a5",
+      "quote": "194. The Answering Defendants deny informatio n sufficient to form  a belief as to",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c1.m1",
+          "role": "denier"
+        },
+        {
+          "mention_id": "c1.m2",
+          "role": "opposing_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        27756,
+        56403
+      ],
+      "clean_span": [
+        53784,
+        53866
+      ],
+      "raw_span": [
+        53784,
+        53866
+      ]
+    },
+    {
+      "action_id": "c2.a1",
+      "quote": "209. The Answering Defendants deny the allegations contained in paragraph 209",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c2.m1",
+          "role": "denying_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        56235,
+        84232
+      ],
+      "clean_span": [
+        56944,
+        57021
+      ],
+      "raw_span": [
+        56944,
+        57021
+      ]
+    },
+    {
+      "action_id": "c2.a2",
+      "quote": "225. The Answering Defendants deny informatio n sufficient to form  a belief",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c2.m1",
+          "role": "denying_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        56235,
+        84232
+      ],
+      "clean_span": [
+        60509,
+        60585
+      ],
+      "raw_span": [
+        60509,
+        60585
+      ]
+    },
+    {
+      "action_id": "c3.a1",
+      "quote": "The Answering Defendants deny the allegations contained in paragraph 314",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "denier"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        83880,
+        112679
+      ],
+      "clean_span": [
+        83880,
+        83952
+      ],
+      "raw_span": [
+        83880,
+        83952
+      ]
+    },
+    {
+      "action_id": "c3.a2",
+      "quote": "322. The Answering Defendants deny informatio n sufficient to form  a belief as to",
+      "action_type": "deny_information_sufficient",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "denier"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        83880,
+        112679
+      ],
+      "clean_span": [
+        86020,
+        86102
+      ],
+      "raw_span": [
+        86020,
+        86102
+      ]
+    },
+    {
+      "action_id": "c3.a3",
+      "quote": "383. The Answering Defendants deny the allegations contained in paragraph 383",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "denier"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        83880,
+        112679
+      ],
+      "clean_span": [
+        102620,
+        102697
+      ],
+      "raw_span": [
+        102620,
+        102697
+      ]
+    },
+    {
+      "action_id": "c4.a1",
+      "quote": "The Answering Defendants deny the allegations contained in paragraph 419",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c4.m1",
+          "role": "denier"
+        },
+        {
+          "mention_id": "c4.m2",
+          "role": "opposing_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        112421,
+        141193
+      ],
+      "clean_span": [
+        112421,
+        112493
+      ],
+      "raw_span": [
+        112421,
+        112493
+      ]
+    },
+    {
+      "action_id": "c4.a2",
+      "quote": "The Answering Defendants deny inform ation sufficient to form a beli ef as to the balance",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c4.m1",
+          "role": "denier"
+        },
+        {
+          "mention_id": "c4.m2",
+          "role": "opposing_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        112421,
+        141193
+      ],
+      "clean_span": [
+        112984,
+        113074
+      ],
+      "raw_span": [
+        112984,
+        113074
+      ]
+    },
+    {
+      "action_id": "c4.a3",
+      "quote": "The Answering Defendants neither admi t nor deny the allegations contained",
+      "action_type": "neither_admit_nor_deny",
+      "participants": [
+        {
+          "mention_id": "c4.m1",
+          "role": "respondent"
+        },
+        {
+          "mention_id": "c4.m2",
+          "role": "opposing_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "disputed",
+      "basis": "stated",
+      "_chunk": [
+        112421,
+        141193
+      ],
+      "clean_span": [
+        115699,
+        115773
+      ],
+      "raw_span": [
+        115699,
+        115773
+      ]
+    },
+    {
+      "action_id": "c4.a4",
+      "quote": "459. The Answering Defendants incorporate, as though fully set forth herein, each",
+      "action_type": "incorporate",
+      "participants": [
+        {
+          "mention_id": "c4.m1",
+          "role": "incorporator"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        112421,
+        141193
+      ],
+      "clean_span": [
+        125238,
+        125319
+      ],
+      "raw_span": [
+        125238,
+        125319
+      ]
+    },
+    {
+      "action_id": "c5.a1",
+      "quote": "The Answering Defendants deny the allegations contained in paragraph 523",
+      "action_type": "deny_allegations",
+      "participants": [
+        {
+          "mention_id": "c5.m1",
+          "role": "denier"
+        },
+        {
+          "mention_id": "c5.m2",
+          "role": "referenced_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        141030,
+        141102
+      ],
+      "raw_span": [
+        141030,
+        141102
+      ]
+    },
+    {
+      "action_id": "c5.a2",
+      "quote": "The Answering Defendants deny the allegations contained in paragraph 524",
+      "action_type": "deny_allegations",
+      "participants": [
+        {
+          "mention_id": "c5.m1",
+          "role": "denier"
+        },
+        {
+          "mention_id": "c5.m2",
+          "role": "referenced_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        141429,
+        141501
+      ],
+      "raw_span": [
+        141429,
+        141501
+      ]
+    },
+    {
+      "action_id": "c5.a3",
+      "quote": "The Answering Defendants incorporate, as though fully set forth herein, each and every answer set forth in the foregoing paragraphs.",
+      "action_type": "incorporate_answers",
+      "participants": [
+        {
+          "mention_id": "c5.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        141739,
+        141872
+      ],
+      "raw_span": [
+        141739,
+        141872
+      ]
+    },
+    {
+      "action_id": "c5.a4",
+      "quote": "The Answering Defendants deny the allegations contained in paragraph 526",
+      "action_type": "deny_allegations",
+      "participants": [
+        {
+          "mention_id": "c5.m1",
+          "role": "denier"
+        },
+        {
+          "mention_id": "c5.m2",
+          "role": "referenced_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        141879,
+        141951
+      ],
+      "raw_span": [
+        141879,
+        141951
+      ]
+    },
+    {
+      "action_id": "c5.a5",
+      "quote": "The Answering Defendants deny the allegations contained in paragraph 527",
+      "action_type": "deny_allegations",
+      "participants": [
+        {
+          "mention_id": "c5.m1",
+          "role": "denier"
+        },
+        {
+          "mention_id": "c5.m2",
+          "role": "referenced_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        142189,
+        142261
+      ],
+      "raw_span": [
+        142189,
+        142261
+      ]
+    },
+    {
+      "action_id": "c5.a6",
+      "quote": "The Answering Defendants deny the allegations contained in paragraph 528",
+      "action_type": "deny_allegations",
+      "participants": [
+        {
+          "mention_id": "c5.m1",
+          "role": "denier"
+        },
+        {
+          "mention_id": "c5.m2",
+          "role": "referenced_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        142499,
+        142571
+      ],
+      "raw_span": [
+        142499,
+        142571
+      ]
+    },
+    {
+      "action_id": "c5.a7",
+      "quote": "The Answering Defendants deny the allegations contained in paragraph 529",
+      "action_type": "deny_allegations",
+      "participants": [
+        {
+          "mention_id": "c5.m1",
+          "role": "denier"
+        },
+        {
+          "mention_id": "c5.m2",
+          "role": "referenced_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        142809,
+        142881
+      ],
+      "raw_span": [
+        142809,
+        142881
+      ]
+    },
+    {
+      "action_id": "c5.a8",
+      "quote": "The Answering Defendants deny the allegations contained in paragraph 530",
+      "action_type": "deny_allegations",
+      "participants": [
+        {
+          "mention_id": "c5.m1",
+          "role": "denier"
+        },
+        {
+          "mention_id": "c5.m2",
+          "role": "referenced_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        143119,
+        143191
+      ],
+      "raw_span": [
+        143119,
+        143191
+      ]
+    },
+    {
+      "action_id": "c5.a9",
+      "quote": "The Answering Defendant neither admits nor denies the statement as it is a jury demand.",
+      "action_type": "neither_admits_nor_denies",
+      "participants": [
+        {
+          "mention_id": "c5.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "disputed",
+      "basis": "stated",
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        143437,
+        143524
+      ],
+      "raw_span": [
+        143437,
+        143524
+      ]
+    },
+    {
+      "action_id": "c5.a10",
+      "quote": "The Plaintiffs\u2019 Complaint fails to state a claim upon which relief may be granted.",
+      "action_type": "fails_to_state_a_claim",
+      "participants": [
+        {
+          "mention_id": "c5.m2",
+          "role": "plaintiff"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        143553,
+        143635
+      ],
+      "raw_span": [
+        143553,
+        143635
+      ]
+    },
+    {
+      "action_id": "c5.a11",
+      "quote": "The Plaintiffs\u2019 Complaint is barred by the Statute of Frauds.",
+      "action_type": "barred_by_statute_of_frauds",
+      "participants": [
+        {
+          "mention_id": "c5.m2",
+          "role": "plaintiff"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        143754,
+        143815
+      ],
+      "raw_span": [
+        143754,
+        143815
+      ]
+    },
+    {
+      "action_id": "c5.a12",
+      "quote": "The Plaintiffs\u2019 Complaint is barred by the Statute of Limitations.",
+      "action_type": "barred_by_statute_of_limitations",
+      "participants": [
+        {
+          "mention_id": "c5.m2",
+          "role": "plaintiff"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        143846,
+        143912
+      ],
+      "raw_span": [
+        143846,
+        143912
+      ]
+    },
+    {
+      "action_id": "c5.a13",
+      "quote": "The Plaintiffs cannot seek a Declaratory Judgment against the professional corporation as there is existing arbitration and litigation.",
+      "action_type": "cannot_seek_declaratory_judgment",
+      "participants": [
+        {
+          "mention_id": "c5.m2",
+          "role": "plaintiff"
+        },
+        {
+          "mention_id": "c5.m4",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "inferred",
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        146376,
+        146512
+      ],
+      "raw_span": [
+        146376,
+        146512
+      ]
+    },
+    {
+      "action_id": "c5.a14",
+      "quote": "Plaintiffs have not satisfied their burden to reverse, modify or amend arbitration rulings",
+      "action_type": "failed_to_satisfy_burden",
+      "participants": [
+        {
+          "mention_id": "c5.m2",
+          "role": "plaintiff"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        146135,
+        146225
+      ],
+      "raw_span": [
+        146135,
+        146225
+      ]
+    },
+    {
+      "action_id": "c5.a15",
+      "quote": "The Plaintiffs are barred from recovering any sums which were paid as a result of Judgments or Arbitration Awards.",
+      "action_type": "barred_from_recovering",
+      "participants": [
+        {
+          "mention_id": "c5.m2",
+          "role": "plaintiff"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        141025,
+        147604
+      ],
+      "clean_span": [
+        146801,
+        146916
+      ],
+      "raw_span": [
+        146801,
+        146916
+      ]
+    }
+  ],
+  "review_items": [
+    {
+      "flag": "multi_hit_identical",
+      "id": "c0.m5",
+      "quote": "WILLIAM A. WEINER, D.O., NEXRAY",
+      "count": 2
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c3.m2",
+      "quote": "of the Plaintiffs\u2019 Complaint insofar as they relate",
+      "count": 81
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c4.m2",
+      "quote": "of the Plaintiffs\u2019 Complaint insofar as they relate or refer to the Answering Defendants.",
+      "count": 80
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c1.a2",
+      "quote": "The Answering Defendants deny inform ation sufficient to form a beli ef as to the balance of the",
+      "count": 60
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c4.a2",
+      "quote": "The Answering Defendants deny inform ation sufficient to form a beli ef as to the balance",
+      "count": 75
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c5.a13",
+      "quote": "The Plaintiffs cannot seek a Declaratory Judgment against the professional corporation as there is existing arbitration and litigation.",
+      "count": 2
+    }
+  ]
+}
