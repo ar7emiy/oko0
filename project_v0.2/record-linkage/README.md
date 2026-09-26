@@ -72,5 +72,32 @@ value. goko-v2-poc [A] is to receive an identical copy (not yet done).
 
 ## Status
 
-See `../STATE.md` for what was run and measured. The review sample (plan milestone M6) is a
-skeleton section only.
+Measured runs are in `../STATE.md`: synthetic and LEIE meet their targets; the 1M x 300k
+benchmark does **not** (54 min to the end of scoring, then out of memory building evidence
+for 10.2M kept pairs). The review sample (plan milestone M6) is a skeleton section only.
+
+## Choices made during the build (to confirm)
+
+1. Two blocking rules added to the plan's list: surname-only parties meet every holder of the
+   surname's NYSIIS code, and exact number + street (persons and businesses). The rarest-word
+   rule also uses the rarest word of declared d/b/a partners.
+2. Single-holder means one *holder* = surname + first initial (persons) or first alias
+   (businesses), so "R. Smith" and "Robert Smith" holding one phone is one holder.
+3. Identifier u per value = distinct holders of the value / watchlist parties holding the
+   field; DOB, address, specialty and category u from the watchlist's own frequencies.
+4. Name levels combine outside tables with random-pair rates of the name sub-parts
+   (e.g. "last exact, first differs" u = surname share x random rate of differing first names).
+5. Agreement levels never count below 0 bits and disagreement levels never above 0.
+6. Invalid identifiers (Luhn, check digit, ranges, placeholders) and values held under more
+   than 25 holders are not compared; placeholder DOBs are empty, not weak.
+7. A near identifier (one digit / transposition) never vetoes and never makes the basis
+   "identifier"; only an owned, single-holder phone makes the basis "identifier".
+8. The watchlist's own share of an organization word replaces NPPES only when at least 5
+   watchlist businesses use the word (open question 5).
+9. Keyword categories are applied to both parts of the row; medical keywords were added
+   beside the repair-shop and legal ones.
+10. Nickname table read as undirected; a name's roots are itself and longer related names.
+11. Evidence rows are written for non-empty fields only; the synthetic extracted set uses
+    the noise table at half its rates, the LEIE copies at full rates.
+12. `published_m.csv` has no published citations yet: values are GOKO's stated assumptions
+    or placeholders, and say so.
