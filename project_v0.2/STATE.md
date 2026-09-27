@@ -138,10 +138,47 @@ layer and an incremental-vs-full-run equivalence check). Matching core v1.1 code
     heavy noise (0.60-0.81) — both small-count strata, reported rather than hidden.
   - `BASELINE` was not run on synthetic (LEIE below has the B1-vs-baseline comparison the
     task asked for).
-- **OIG LEIE** (84,001 rows) against noisy copies + fictional parties, `BASELINE=True`:
-  <!-- FILLED IN BELOW once the run finished -->
+- **OIG LEIE** (84,001 watchlist rows, exported from the raw download) against noisy copies
+  of 3,000 LEIE rows + 3,000 fictional parties, `RL_BASELINE=true`, default `SELF_CHECK=True`:
+  every cell ran in 1,349 s (82 self-tests + 2 full pipeline reruns for the self-checks: the
+  held-out-identifier check ran only for NPI — LEIE has no SSN/TIN/DL fields, so those were
+  correctly skipped as "fewer than 5 true pairs" — and the noise test). Main pipeline 1,202 s:
+  17 s LEIE export, 26 s normalize/standardize/breakdown/category, **331 s u/m/prior**
+  (dominant cost: closed-form u plus a 5,000,000-pair sample and Splink-style EM with 200
+  bootstrap replicates per level, both dedup and link models), 21 s candidates/dedup/link/
+  cluster, 18 s roll-ups/evidence/diagnostics; held-out check 388 s, noise test 409 s; peak
+  3.35 GB (well inside memory; the v1.0 1M-row benchmark had failed here). 5,885 extracted
+  person parties -> 5,207 entities (605 pooled, 1 refused); 115 business parties -> 115
+  entities (no business duplicates in this extracted set). 99.30% of true pairs proposed
+  (2,979/3,000); candidate stage lost 19/4,401 true pairs across the self-checks (0.43%);
+  2,978/2,979 kept true pairs visible (one below the keep rule, the same pattern v1.0's LEIE
+  run showed). 79 m/u level rows, all sourced. 577,142 pairs scored.
+  - **Held-out-identifier check (NPI, 339 true pairs), B1 vs baseline, precision/recall
+    at p >= 0.5** (`out/leie/tables/selfcheck_bands.csv`): B1 0.994/0.976, baseline (token-sort
+    >= 90 + category gate) 0.927/0.820. B1 leads on both; the baseline's 61 missed true pairs
+    split 5 blocked by the category gate, 56 name-too-different (`selfcheck_funnel.csv`).
+  - **Noise-injection test, person (3,874 true pairs)**: B1 0.961/0.960, baseline 0.761/0.559.
+    B1 leads by a wide margin; baseline misses split 972 blocked by the gate, 735
+    name-too-different.
+  - **Noise-injection test, business (188 true pairs)**: B1 0.685/0.936 at p >= 0.5, rising to
+    0.845/0.931 at p >= 0.8 and 0.869-0.893/0.89-0.91 at p >= 0.9-0.99; baseline 0.898/0.702.
+    **This is the one place the baseline's precision beats B1's at the loosest threshold** —
+    traced in `selfcheck_basis.csv` to the `name_only` basis alone (15 true positives, 54 false
+    positives, precision 0.217): LEIE's business universe is thin and its extracted-noise test
+    has no business duplicates to anchor on, so purely-name business matches at p >= 0.5 are
+    genuinely weak evidence here and B1 shows them as such (AGENTS rule 5: name-only is visible,
+    never hidden or upgraded) rather than suppressing them the way a fixed threshold would.
+    Every other basis (address, identifier, contextual) is at 0.91-1.00 precision. Reported
+    plainly rather than tuned away.
+  - Decision-card evidence for every disagreement is in `baseline_disagreements.csv`, e.g. the
+    baseline's false alarms B1 avoids: "Amber Wright" / "AMBER L BRIGHT" (token-sort 92, no B1
+    candidate at all — DOB/address disagree); "Robert Johnson" / "ROBERT MAX JR JOHNSON"
+    (token-sort 100, B1 p=0.013, basis name_only, address differs -2.5 bits). Ambiguity
+    (`baseline_ambiguity.csv`): most extracted names hit exactly one watchlist row under the
+    baseline; up to 50 for the noisiest common names.
 - Candidate generation, true pairs lost: reported per run in `selfcheck_funnel` and in the
-  manifest's `selfcheck.funnel` section (`lost_at_candidates`); 6/2,259 (0.27%) on synthetic.
+  manifest's `selfcheck.funnel` section (`lost_at_candidates`); 6/2,259 (0.27%) on synthetic,
+  19/4,401 (0.43%) on LEIE.
 
 **B1.1 (Delta Lake) testing status: faked, not real.** This machine has no Java, so `pyspark`
 cannot run locally regardless of installation (it needs a JVM `delta-spark` also depends on).
