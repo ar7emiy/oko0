@@ -1,0 +1,26 @@
+def input_paths(cfg, xf, wf):
+    """The files the chosen format reads: CSV as generated, or Parquet written beside it."""
+    if cfg.io_format != "parquet" or str(xf).endswith(".parquet"):
+        return xf, wf
+    out = []
+    for f in (xf, wf):
+        pq = Path(str(f)[:-4] + ".parquet")
+        if not pq.exists() or pq.stat().st_mtime < Path(f).stat().st_mtime:
+            pd.read_csv(f, dtype=str, keep_default_na=False, na_filter=False).to_parquet(pq, index=False)
+        out.append(pq)
+    return tuple(out)
+
+
+IO = TableIO(CFG)
+TF = None
+if CFG.io_format == "delta":
+    XDF, XREP, WDF, WREP, INPUT_META = IO.read_inputs()
+else:
+    XF, WF, TF = dataset_files(CFG, MAPS, REF)
+    SW.mark("inputs ready")
+    XDF, XREP, WDF, WREP, INPUT_META = IO.read_inputs(*input_paths(CFG, XF, WF))
+for rep in (XREP, WREP):
+    print(f"{rep['source']}: {rep['rows']:,} rows; all-empty columns: {rep['all_empty_columns'] or 'none'}; "
+          f"passthrough: {rep['passthrough_columns'] or 'none'}")
+print(f"inputs: {INPUT_META}")
+SW.mark("1 load and validate")
