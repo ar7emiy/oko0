@@ -2173,8 +2173,10 @@ _B2_ID_NAMES = {"ssn": "SSN", "npi": "NPI", "dl": "driver licence", "tin": "TIN"
 
 
 def b2_reason_text(levels, label):
+    """A reviewer-style reason from a pair's field levels: agreeing fields, conflicting fields,
+    and partial ones (same city only, same surname only) that support neither side."""
     defs, _ = b2_core_defs()
-    agree, disagree = [], []
+    agree, partial, disagree = [], [], []
     for f, lv in levels.items():
         if not lv or lv in defs["ZERO_LEVELS"].get(f, set()):
             continue
@@ -2185,13 +2187,21 @@ def b2_reason_text(levels, label):
             txt = B2_REASON.get(f, {}).get(lv, "")
         if not txt:
             continue
-        (agree if lv in defs["AGREEMENT_LEVELS"].get(f, set()) else disagree).append(txt)
+        if lv in defs["AGREEMENT_LEVELS"].get(f, set()):
+            agree.append(txt)
+        elif lv in defs["DISAGREEMENT_LEVELS"].get(f, set()):
+            disagree.append(txt)
+        else:
+            partial.append(txt)
     if label == "match":
-        return "; ".join(agree[:3]) or "values agree"
+        txt = "; ".join(agree[:3]) or "values agree"
+        return txt + (f" (despite: {disagree[0]})" if disagree else "")
     if label == "non-match":
-        return "; ".join(disagree[:3]) or "nothing agrees beyond a common name"
-    only_name = all(f in ("name", "org", "middle") for f in levels if levels[f]) or not agree
-    return ("only the name can be compared" if only_name else "evidence points both ways: " + "; ".join((agree[:1] + disagree[:1])))
+        txt = "; ".join((disagree + partial)[:3]) or "nothing agrees beyond a common name"
+        return txt + (f" (although: {agree[0]})" if agree else "")
+    if agree and (disagree or partial):
+        return "evidence points both ways: " + "; ".join(agree[:1] + (disagree + partial)[:1])
+    return "only the name can be compared" if not (disagree or partial) else "too little to compare: " + (disagree + partial)[0]
 
 
 def b2_truth_keys(truth_path):
@@ -2230,8 +2240,11 @@ def b2_simulate_labels(key, assignments, truth, feats, seed, profiles=None, star
                 lab, conf = ("non-match" if y else "match"), rng.choice(["medium", "low"])
             else:
                 lab, conf = ("match" if y else "non-match"), ("medium" if hard else "high")
+            reason = b2_reason_text(levels, lab)
+            if conf == "high" and ("(despite" in reason or "(although" in reason):
+                conf = "medium"                      # something shown points the other way
             rows.append({"review_id": rid, "annotator_id": a, "label": lab, "confidence": str(conf),
-                         "reason": b2_reason_text(levels, lab),
+                         "reason": reason,
                          "labelled_at": (start + _dt.timedelta(minutes=3 * i)).isoformat(timespec="seconds")})
     return pd.DataFrame(rows)
 

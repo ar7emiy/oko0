@@ -1,0 +1,194 @@
+{
+ "b2_version": "1.0",
+ "run_id": "run-cb24ce0c1598",
+ "core_version": "1.0",
+ "dataset": "synthetic",
+ "round": 0,
+ "seed": 20260926,
+ "created": "2026-09-28T09:00:00",
+ "pairs": 63,
+ "double_coded": 54,
+ "by_split": {
+  "train": 27,
+  "sealed_test": 24,
+  "calibration": 12
+ },
+ "by_selection": {
+  "stratified": 63
+ },
+ "by_stratum": [
+  {
+   "stratum": "0.1-0.5|address",
+   "N_h": 1,
+   "n_h": 1
+  },
+  {
+   "stratum": "0.1-0.5|contextual",
+   "N_h": 20,
+   "n_h": 3
+  },
+  {
+   "stratum": "0.1-0.5|identifier",
+   "N_h": 4,
+   "n_h": 2
+  },
+  {
+   "stratum": "0.1-0.5|name_only",
+   "N_h": 26,
+   "n_h": 3
+  },
+  {
+   "stratum": "0.1-0.5|none",
+   "N_h": 4,
+   "n_h": 2
+  },
+  {
+   "stratum": "0.5-0.8|address",
+   "N_h": 3,
+   "n_h": 2
+  },
+  {
+   "stratum": "0.5-0.8|contextual",
+   "N_h": 3,
+   "n_h": 2
+  },
+  {
+   "stratum": "0.5-0.8|identifier",
+   "N_h": 1,
+   "n_h": 1
+  },
+  {
+   "stratum": "0.5-0.8|name_only",
+   "N_h": 9,
+   "n_h": 2
+  },
+  {
+   "stratum": "0.8-0.9|address",
+   "N_h": 3,
+   "n_h": 2
+  },
+  {
+   "stratum": "0.8-0.9|co_party",
+   "N_h": 1,
+   "n_h": 1
+  },
+  {
+   "stratum": "0.8-0.9|contextual",
+   "N_h": 5,
+   "n_h": 2
+  },
+  {
+   "stratum": "0.8-0.9|name_only",
+   "N_h": 11,
+   "n_h": 2
+  },
+  {
+   "stratum": "p<0.1|address",
+   "N_h": 27,
+   "n_h": 2
+  },
+  {
+   "stratum": "p<0.1|contextual",
+   "N_h": 78,
+   "n_h": 2
+  },
+  {
+   "stratum": "p<0.1|dob",
+   "N_h": 2,
+   "n_h": 2
+  },
+  {
+   "stratum": "p<0.1|identifier",
+   "N_h": 4,
+   "n_h": 2
+  },
+  {
+   "stratum": "p<0.1|name_only",
+   "N_h": 1966,
+   "n_h": 6
+  },
+  {
+   "stratum": "p<0.1|none",
+   "N_h": 5409,
+   "n_h": 5
+  },
+  {
+   "stratum": "p>=0.9|address",
+   "N_h": 449,
+   "n_h": 2
+  },
+  {
+   "stratum": "p>=0.9|co_party",
+   "N_h": 6,
+   "n_h": 2
+  },
+  {
+   "stratum": "p>=0.9|contextual",
+   "N_h": 350,
+   "n_h": 3
+  },
+  {
+   "stratum": "p>=0.9|dob",
+   "N_h": 279,
+   "n_h": 2
+  },
+  {
+   "stratum": "p>=0.9|identifier",
+   "N_h": 918,
+   "n_h": 2
+  },
+  {
+   "stratum": "p>=0.9|name_only",
+   "N_h": 81,
+   "n_h": 2
+  },
+  {
+   "stratum": "p>=0.9|none",
+   "N_h": 3,
+   "n_h": 2
+  },
+  {
+   "stratum": "vetoed|address",
+   "N_h": 4,
+   "n_h": 2
+  },
+  {
+   "stratum": "vetoed|contextual",
+   "N_h": 20,
+   "n_h": 2
+  },
+  {
+   "stratum": "vetoed|dob",
+   "N_h": 1,
+   "n_h": 1
+  },
+  {
+   "stratum": "vetoed|name_only",
+   "N_h": 431,
+   "n_h": 2
+  },
+  {
+   "stratum": "vetoed|none",
+   "N_h": 1426,
+   "n_h": 2
+  }
+ ],
+ "annotators": {
+  "A1": 59,
+  "A2": 58
+ },
+ "files": {
+  "to-annotators/A1/review-workbook_A1_round00.xlsx": "e64128ea40285ce53b32df47c164a1ac9bd271587bcd63fb33be285086779637",
+  "to-annotators/A1/SME-INSTRUCTIONS.md": "078bf18b646b8ef15b48f8d27b60b0144aea218bc3dd8be4f3d4beca1805916a",
+  "to-annotators/A1/data-dictionary.csv": "a68fe9bad7f988c5731316d2c0bd64080f33dbc4649e303fbf3c5b0a31f35d12",
+  "to-annotators/A1/labels-template_A1_round00.csv": "08063c82ede5925da894327beb999e7d07d7d4d68e36b53e1ef5b70b1cd2ff3c",
+  "to-annotators/A2/review-workbook_A2_round00.xlsx": "201edbf41c78767ce4e11233eec7e09c511a8527c1d3a01f798be3ba6324cc44",
+  "to-annotators/A2/SME-INSTRUCTIONS.md": "078bf18b646b8ef15b48f8d27b60b0144aea218bc3dd8be4f3d4beca1805916a",
+  "to-annotators/A2/data-dictionary.csv": "a68fe9bad7f988c5731316d2c0bd64080f33dbc4649e303fbf3c5b0a31f35d12",
+  "to-annotators/A2/labels-template_A2_round00.csv": "4dde5c0ccf36cba22d0f3fb005ffbd7088b9eadb807b2f7cc9223a3949e5d98c",
+  "coordinator/sample-key_round00.csv": "54699375fe0a9e92510ba4e092ff5cb1f303517422978093acc0afc0a8216637",
+  "coordinator/assignments_round00.csv": "5bf0e156619e95c4c0747aec098f4523da42c0d341da96d144f56e3897a3c6e3",
+  "coordinator/pair-queue-import_round00.csv": "31f0d8a00e679250da0d80e9e9c100a41e3eb0a6be583fc141f2fe84fbcaf0c5",
+  "coordinator/label-schema.csv": "b08e7aedc79265b0e3196311df4b7d00cd15bb36b69dfa21e7950008796c89f6"
+ }
+}

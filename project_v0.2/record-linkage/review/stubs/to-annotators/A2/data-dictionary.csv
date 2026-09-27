@@ -1,0 +1,53 @@
+column,sheet,meaning,values / source columns
+review_id,both,Opaque identifier of the pair. Do not change it.,fixed
+label,both,Your decision.,match | non-match | unsure
+confidence,both,How sure you are.,high | medium | low
+reason,both,One short line: which fields decided it. Required for unsure and for anything not high.,free text
+annotator_id,both,"Your reviewer id, filled in for you.",fixed
+labelled_on,both,Date you labelled the pair.,date (YYYY-MM-DD)
+Name (extracted),Persons,"Name of the claim-data record, as recorded.",first_name middle_name last_name
+Name (watchlist),Persons,"Name of the watchlist record, as recorded.",first_name middle_name last_name
+Date of birth (extracted),Persons,"Date of birth of the claim-data record, as recorded.",dob
+Date of birth (watchlist),Persons,"Date of birth of the watchlist record, as recorded.",dob
+SSN (extracted),Persons,"SSN of the claim-data record, as recorded.",ssn
+SSN (watchlist),Persons,"SSN of the watchlist record, as recorded.",ssn
+Driver licence (extracted),Persons,"Driver licence of the claim-data record, as recorded.",driver_license_state driver_license_number
+Driver licence (watchlist),Persons,"Driver licence of the watchlist record, as recorded.",driver_license_state driver_license_number
+Provider NPI (extracted),Persons,"Provider NPI of the claim-data record, as recorded.",provider_npi
+Provider NPI (watchlist),Persons,"Provider NPI of the watchlist record, as recorded.",provider_npi
+Professional licence (extracted),Persons,"Professional licence of the claim-data record, as recorded.",professional_license_state professional_license_type professional_license_number
+Professional licence (watchlist),Persons,"Professional licence of the watchlist record, as recorded.",professional_license_state professional_license_type professional_license_number
+Specialty (extracted),Persons,"Specialty of the claim-data record, as recorded.",provider_specialty
+Specialty (watchlist),Persons,"Specialty of the watchlist record, as recorded.",provider_specialty
+Category (extracted),Persons,"Category of the claim-data record, as recorded.","category (medical, legal, repair shop, witness, claimant, other)"
+Category (watchlist),Persons,"Category of the watchlist record, as recorded.","category (medical, legal, repair shop, witness, claimant, other)"
+Address (extracted),Persons,"Address of the claim-data record, as recorded.","street_number street_direction street_name street_type, unit; city, state zip"
+Address (watchlist),Persons,"Address of the watchlist record, as recorded.","street_number street_direction street_name street_type, unit; city, state zip"
+Home phone (extracted),Persons,"Home phone of the claim-data record, as recorded.",home_phone
+Home phone (watchlist),Persons,"Home phone of the watchlist record, as recorded.",home_phone
+Work phone (extracted),Persons,"Work phone of the claim-data record, as recorded.",work_phone
+Work phone (watchlist),Persons,"Work phone of the watchlist record, as recorded.",work_phone
+Email (extracted),Persons,"Email of the claim-data record, as recorded.",email
+Email (watchlist),Persons,"Email of the watchlist record, as recorded.",email
+Vehicle (extracted),Persons,"Vehicle of the claim-data record, as recorded.",vin plate_state plate_number
+Vehicle (watchlist),Persons,"Vehicle of the watchlist record, as recorded.",vin plate_state plate_number
+Same row also lists (extracted),Persons,"Same row also lists of the claim-data record, as recorded.","the other party on the same input row (a person's business, a business's person)"
+Same row also lists (watchlist),Persons,"Same row also lists of the watchlist record, as recorded.","the other party on the same input row (a person's business, a business's person)"
+Business name (extracted),Businesses,"Business name of the claim-data record, as recorded.",business_name
+Business name (watchlist),Businesses,"Business name of the watchlist record, as recorded.",business_name
+TIN (extracted),Businesses,"TIN of the claim-data record, as recorded.",tin
+TIN (watchlist),Businesses,"TIN of the watchlist record, as recorded.",tin
+Clinic NPI (extracted),Businesses,"Clinic NPI of the claim-data record, as recorded.",clinic_npi
+Clinic NPI (watchlist),Businesses,"Clinic NPI of the watchlist record, as recorded.",clinic_npi
+Specialty (extracted),Businesses,"Specialty of the claim-data record, as recorded.",provider_specialty
+Specialty (watchlist),Businesses,"Specialty of the watchlist record, as recorded.",provider_specialty
+Category (extracted),Businesses,"Category of the claim-data record, as recorded.","category (medical, legal, repair shop, witness, claimant, other)"
+Category (watchlist),Businesses,"Category of the watchlist record, as recorded.","category (medical, legal, repair shop, witness, claimant, other)"
+Address (extracted),Businesses,"Address of the claim-data record, as recorded.","street_number street_direction street_name street_type, unit; city, state zip"
+Address (watchlist),Businesses,"Address of the watchlist record, as recorded.","street_number street_direction street_name street_type, unit; city, state zip"
+Work phone (extracted),Businesses,"Work phone of the claim-data record, as recorded.",work_phone
+Work phone (watchlist),Businesses,"Work phone of the watchlist record, as recorded.",work_phone
+Email (extracted),Businesses,"Email of the claim-data record, as recorded.",email
+Email (watchlist),Businesses,"Email of the watchlist record, as recorded.",email
+Same row also lists (extracted),Businesses,"Same row also lists of the claim-data record, as recorded.","the other party on the same input row (a person's business, a business's person)"
+Same row also lists (watchlist),Businesses,"Same row also lists of the watchlist record, as recorded.","the other party on the same input row (a person's business, a business's person)"
