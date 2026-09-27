@@ -99,9 +99,11 @@ overwhelmed. `acceptance.json` holds the acceptance table of the run.
 |---|---|
 | `record_linkage.ipynb` | the whole system: matching core v1.1, pipeline, table I/O (CSV/Parquet/Delta), self-checks, LEIE exporter, synthetic generator, self-tests |
 | `run_notebook_check.py` | runs every cell; exit code 1 on any error or failed self-test |
-| `mappings/` | reviewable tables: column routing, category map, keyword rules, specialty synonyms, simulation noise, published starting m |
+| `mappings/` | reviewable tables: column routing, category map (LEIE's 88 GENERAL + 206 SPECIALTY values, drafted, `needs_review` flags), keyword rules, specialty synonyms, simulation noise, published starting m |
 | `reference/` | copied Census / SSA / NPPES tables and the nickname table; `SOURCES.md` with SHA-256 (checked at start-up); `.gitattributes` keeps them byte-exact across checkouts |
-| `data/`, `out/`, `review/` | gitignored |
+| `b2_sections.py` | B2, the gold-label layer, as notebook sections in percent format (to be inserted into the notebook at its marked insertion point); also runs on its own against `out/<dataset>/` |
+| `review/stubs/` | fictional SME review packet generated from the synthetic run (committed; see its own README) |
+| `data/`, `out/`, `review/` (except `review/stubs/`) | gitignored |
 
 ## The matching core
 
@@ -134,9 +136,60 @@ blank and set `delta_path_root` to a Volume path (`/Volumes/catalog/schema/volum
 placeholder table, `delta_gold_labels_table` (`rl_gold_labels`), is reserved for gold-label
 sections another workstream adds at the end of this notebook; nothing here reads or writes it.
 
+## Gold labels (B2): `b2_sections.py`
+
+The layer that uses SME labels: review samples, blind SME packets, label ingestion, evaluation on
+a sealed test split, and four label-driven improvements that are adopted only if they beat the
+pipeline there. It is written as notebook sections (`# %% [markdown]` / `# %% [code]`) to be
+inserted after the pipeline's run and self-test sections; until then it runs on its own:
+
+```
+python b2_sections.py                          # B2 on out/synthetic (run the notebook first)
+RL_DATASET=leie python b2_sections.py          # on another dataset's outputs
+RL_B2_WRITE_STUBS=1 python b2_sections.py      # also regenerate review/stubs/
+```
+
+It reads only the pipeline's output tables (candidates, evidence, entities, manifest, and the
+input rows for display), through the adapter table `B2_DEPENDENCIES` at its top; the exact
+columns are listed in its first markdown cell. Inside the notebook it takes the variables
+(`CAND_OUT`/`PAIRS`, `EVIDENCE`, `ENTITIES`, `MANIFEST`, `XDF`, `WDF`, `TF`) and the core's level
+tables; outside, the Parquet files. `B2_IO` routes all file IO through the pipeline's
+CSV/Parquet/Delta switch when set.
+
+| Step | What |
+|---|---|
+| Sample | strata p band x basis (vetoed pairs a band of their own); allocation ~ sqrt(N_h), x4 for p 0.1-0.9, x2 for name-only and contextual; inclusion probabilities and weights recorded; split train 40 / calibration 20 / sealed_test 40 per extracted party by hash of party and seed; every sealed_test and calibration pair double-coded |
+| Packet | per SME: blind workbook (values side by side, drop-downs, locked data cells), instructions, data dictionary, label template; coordinator key with the hidden strata; adjudication sheet |
+| Labels | workbooks, CSV, Parquet, Delta; unknown / stale / unassigned ids, invalid labels, duplicates and contradictions rejected with reasons; Cohen's and Fleiss' kappa; disagreements and single "unsure" go to adjudication |
+| Evaluation | sealed split only, post-stratified Horvitz-Thompson weights: precision / recall / F1 by threshold, band and basis; candidate-space recall and the recall ceiling; reliability table, Brier, log loss, average precision, confusion tables; paired stratified bootstrap against the pipeline |
+| Improvements | (a) isotonic / Platt calibration on the calibration split; (b) semi-supervised EM (u fixed, train labels fix their pairs and anchor a prior shift); (c) gradient boosting on per-field bits with exact per-field contributions for the decision card; (d) cost-based threshold (false alarm 1 : miss 5). Adopted only if the sealed bootstrap interval (Bonferroni over the four) is above 0; applied only when a person also turns the switch on in `B2Config.apply` |
+| Loop | next batch: highest entropy of the mean p across scorers plus their spread (m intervals, prior x/÷10, and the fitted models), train-split parties only, written as the next round's packet |
+
+Outputs: `review/<dataset>/<run_id>/round_NN/` (packets, returned labels, adjudication; gitignored),
+`out/<dataset>/b2/b2_report.xlsx` (adoption, metrics, reliability, denominators, agreement, label
+issues, EM m, next batch, the B2 manifest section), `b2_candidates.parquet` (p under each model and
+the p actually used), `b2_decision_card.parquet`, `b2_manifest.parquet`.
+
+**gold-annotator compatibility.** The packets are **not importable** into
+`../gold-annotator/` as it stands: that app annotates claim notes and records a watchlist decision
+only per row of a firm export, after a claim's note review is frozen; it has no pair without
+notes, no DOB / SSN / NPI / licence / vehicle fields on the watchlist side, and no blind pair
+queue. It would need a pair-review queue: import of `coordinator/pair-queue-import_roundNN.csv`
+into a pair table with per-reviewer assignments; an append-only pair-label table (label,
+confidence, reason, time); a side-by-side page with no scores; an export in the columns of
+`labels-template_*.csv` (review_id, annotator_id, label, confidence, reason, labelled_at), which B2
+reads unchanged; optionally an adjudication view. B2 already accepts the app's vocabulary
+(same / different / cant_tell). Until then the Excel packets are the delivery.
+
 ## Status
 
-Measured runs are in `../STATE.md`.
+Measured runs are in `../STATE.md`: synthetic and LEIE meet their acceptance targets under
+B1's quality-focused build. The 1M x 300k scale benchmark predates the "quality over
+time/memory" priority and is no longer a target (see the note above cell 12's keep rule: a
+display-size floor found during merge review was removed in favor of never dropping a scored
+pair, regardless of table size). The review sample (plan milestone M6) is built as B2
+(`b2_sections.py`), consuming the pipeline's output tables through adapters; it is not yet
+inserted into the notebook.
 
 ## Choices made during the build (to confirm)
 

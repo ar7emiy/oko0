@@ -74,7 +74,42 @@ The development modules (`src/wlink`, `tests/`) were assembled into the notebook
   pair), the keep rule (top 3 with ties) keeping 10M pairs, and a synthetic business
   universe whose blocks are dense (rarest-word blocks: 30M pairs before refinement).
 
-**Not built**: the review sample (M6: section skeleton only); the copy of the core into
+**B2, gold labels (built 2026-09-26, branch `claude/record-linkage-b2`)**: `record-linkage/b2_sections.py`,
+notebook sections in percent format, **not yet inserted** into `record_linkage.ipynb` (B1 is
+changing the notebook in parallel; insert at its marked point). Label schema; stratified review
+sampler (p band x basis, weights, sealed split per extracted party by hash); blind SME Excel
+packets, instructions, data dictionary, label templates, adjudication sheet; label ingestion
+(XLSX / CSV / Parquet, Delta via `deltalake` or the pipeline's IO), validation, Cohen / Fleiss
+kappa, adjudication; sealed-split evaluation with post-stratified HT weights, recall ceiling,
+reliability, Brier, bootstrap; four switchable improvements (calibration, semi-supervised EM,
+gradient boosting with exact per-field contributions, cost threshold) with a pre-stated adoption
+rule; active-learning next batch; 17 self-tests. Fictional stub packets in
+`record-linkage/review/stubs/` (committed, regenerate byte-identically).
+
+Checked (actual runs, synthetic SMEs from the truth files with 2-6% flips and frequent "unsure"
+on name-only pairs; every sealed and calibration pair double-coded and adjudicated):
+- 17/17 B2 self-tests pass standalone on the synthetic and LEIE outputs, and inside a copy of the
+  notebook with the sections appended (all cells ran, 118 s; the notebook itself not changed).
+  Includes: sealed views refused by every fitting function, and flipping every sealed label
+  leaves every fitted parameter unchanged; a deliberately miscalibrated B1 gets calibration adopted.
+- Synthetic (11,545 candidates; 1,500 sampled, 612 sealed): B1 at p >= 0.5, HT-weighted on the
+  sealed gold labels: precision 0.990, recall in the candidate space 0.972, F1 0.981, Brier 0.0061;
+  recall ceiling 0.992 (truth), so overall recall ~0.964. Name-only pairs: precision 0.82, recall
+  0.64. No improvement adopted (calibration, EM and the supervised model are worse on Brier; the
+  cost threshold's interval spans 0).
+- LEIE (30,415 candidates; 595 sealed): B1 precision 0.943, candidate-space recall 0.924, F1 0.933,
+  Brier 0.0126; ceiling 0.989, overall recall ~0.914; name-only recall 0.46. Supervised model
+  better on the point estimate (Brier 0.0116, F1 0.943) but its interval spans 0; nothing adopted.
+- Label noise: with only 25% of sealed pairs double-coded, B1's sealed Brier on synthetic read
+  0.030 instead of 0.006, i.e. SME noise dominated the measurement; hence the double-coding default.
+- Real SME labels: none yet. The gold-annotator cannot import the packets (it needs a pair-review
+  queue; see record-linkage/README.md).
+
+Environment note: with `core.autocrlf=true`, a fresh checkout converts
+`reference/nicknames_LICENSE.txt` to CRLF and B1's reference-hash self-test fails (recorded
+hashes mix LF and CRLF files); worked around locally, not committed.
+
+**Not built**: the copy of the core into
 goko-v2-poc [A]; cited published m values (`mappings/published_m.csv` holds stated
 assumptions and placeholders, marked as such). No client data has been run.
 

@@ -286,3 +286,53 @@ here reads or writes it.
 Local testing used `InMemoryDeltaBackend`, a pure-pandas stand-in with the same interface
 (versions, change data feed, merge) — see STATE.md for why (no Java on this machine, so
 pyspark/delta-spark cannot run locally regardless of installation).
+## 11. B2: the gold-label layer (built 2026-09-26)
+
+Replaces milestone M6 and the skeleton section 18. Delivered as `b2_sections.py`, notebook
+sections in percent format, to be inserted at B1's marked insertion point once B1's notebook
+changes merge. It consumes only the pipeline's output tables through adapters
+(`B2_DEPENDENCIES`), so a renamed column is a one-line change there. Every section carries a
+"Where Splink would do better" note.
+
+**Label schema.** Sample key (pair identity: extracted record_id + part, watchlist record_id +
+part, run id, core version; stratum, p and basis at sampling, N_h, n_h, inclusion probability,
+weight, selection stratified / active, split, round, seed, annotators); labels (review_id,
+annotator, match / non-match / unsure, confidence, reason, timestamp and its source file); final
+labels (resolved label; single / unanimous / adjudicated / unresolved; adjudicator).
+
+**Sampling.** Strata p band x basis over every kept candidate, vetoed pairs as their own band.
+n_h ~ sqrt(N_h), x4 for bands 0.1-0.9, x2 for name-only and contextual, x0.5 for vetoed; at
+least 10, at most N_h. Split per extracted party by a hash of party and seed (train 40 /
+calibration 20 / sealed_test 40), so a party never straddles splits and keeps its split in later
+rounds. Every sealed_test and calibration pair is double-coded, 25% of train pairs.
+Active-learning batches come from train-split parties only and carry no weight.
+
+**Evaluation.** Sealed split only, reachable only through `B2Gold.sealed_view()` (each access
+logged in the B2 manifest section). Post-stratified HT weights N_h / m_h over definite labels;
+unsure, unresolved and uncovered strata reported with counts. Precision / recall / F1 by
+threshold, band and basis; recall inside the candidate space; recall ceiling from the
+pipeline's diagnostics (and the truth file on test data); reliability, Brier, log loss, average
+precision, confusion tables.
+
+**Improvements and adoption.** (a) calibration, (b) semi-supervised EM, (c) gradient boosting
+with exact per-field contributions, (d) cost threshold. Each is fitted on the tuning view only
+(`b2_guard_tuning` refuses anything else; a self-test flips every sealed label and checks that no
+fitted parameter moves). Adopted when the paired stratified bootstrap interval of B1's sealed
+Brier (expected cost for (d)) minus the improvement's lies above 0 at level 1 - 0.05/4. Adoption
+is a recommendation: the `B2Config.apply` switches stay off until a person turns one on (AGENTS
+rules 12 and 13).
+
+**Measured**: see STATE.md. On the synthetic and LEIE runs no improvement beats B1 on the
+sealed split, so none is adopted; double-coding the sealed split changed the measured B1 Brier
+more than any improvement did.
+
+**Open for the user.**
+1. Primary adoption metric: Brier (chosen) or log loss, which punishes confident errors much
+   harder (on the synthetic run calibration and the supervised model cut log loss when first
+   run with noisy single-coded labels, while losing on Brier).
+2. Cost of a false alarm vs a miss (1 : 5 assumed).
+3. May SMEs look parties up in other systems, or judge only the values shown (assumed)?
+4. Full SSNs in the packets, or the last four only (`masked_fields`)?
+5. Sample size per round (1,500 assumed), number of SMEs (3 assumed); double-coding the
+   calibration and sealed splits roughly doubles their labelling cost.
+6. A pair-review queue in the gold-annotator (README lists what it needs), or Excel packets.
