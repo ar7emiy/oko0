@@ -5,6 +5,9 @@ pandas>=3,<4          # recordlinkage 0.16 breaks on pandas 4
 numpy>=2
 pyarrow>=15
 jellyfish>=1.0
+rapidfuzz>=3.5         # B1: token-sort/token-set name similarity, the baseline module
+usaddress>=0.5         # B1: offline address standardizer (default)
+scipy>=1.11            # B1: bootstrap percentile intervals (np.percentile suffices; scipy is a soft dependency)
 scikit-learn>=1.3     # imported by recordlinkage
 joblib>=1.3           # imported by recordlinkage
 xlsxwriter>=3.1       # fast streaming Excel writer
@@ -13,3 +16,5 @@ psutil>=5.9           # peak-memory measurement in the benchmark
 nbclient>=0.10        # run_notebook_check.py
 nbformat>=5.9
 ipykernel>=6
+# B1.1 (Delta Lake), optional: pyspark>=3.5, delta-spark>=3.1 (matched to the pyspark minor
+# version); IO_FORMAT="delta" without them uses InMemoryDeltaBackend for local testing.
