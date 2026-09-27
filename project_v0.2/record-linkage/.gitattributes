@@ -1,0 +1,2 @@
+# The stub packets' manifest records a SHA-256 per file: keep their bytes exactly as generated.
+review/stubs/** -text
