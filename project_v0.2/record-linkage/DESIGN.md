@@ -153,3 +153,58 @@ independently of blocking, and draws a waterfall per pair. recordlinkage's ECMCl
 textbook EM on binary vectors: u learned with m, prior among candidate pairs, no term
 frequency, no correction for blocking. The package implements Splink's fixes in its own
 scorer on top of recordlinkage's indexing and comparisons.
+
+## B1 / B1.1 design notes, 2026-09-26
+
+**The unit being matched changes.** Through v1.0 the extracted *party* (one row's person or
+business part) was matched against the watchlist directly. B1 inserts a step: the extracted
+file is deduplicated against itself first (its own comparison context, `ctx_dedup`, with u
+from the extracted file's own value frequencies, not the watchlist's), and rows judged the
+same real party are pooled into an **entity**. The entity, not the row, is matched against the
+watchlist. A member comparison contributes its field's best level to the entity (never an
+average, which would blur a strong match with a weak one); an entity offering several distinct
+values of one field (say two different phone numbers across its rows) has that field's
+exact-level u multiplied by the count of distinct values, so offering more chances to agree by
+chance is not free evidence. Every original row still resolves back to its entity's one result
+(`rows` table), so per-row and per-claim answers are unaffected in shape, only in strength.
+
+**Deduplication reuses linking's machinery, not a separate algorithm.** Candidates, comparisons,
+scoring, even EM and the prior are the same code with `same_frame=True`: half the burden of a
+second bespoke deduplication engine, and any core fix improves both passes together. The one
+new primitive is `constrained_clusters`: greedy union-find over accepted edges, ordered by
+probability, that refuses a merge when it would combine two different single-holder values of
+a one-per-party identifier. It is used twice — once to pool extracted rows into entities, once
+to build the watchlist-side consistent clusters after linking — because both are the same
+problem (build components under a veto constraint), just on different graphs.
+
+**Why closed-form u needs inclusion-exclusion.** An address's five levels (exact, street, ZIP,
+city+state, state) are not independent draws: "exact" implies "street" implies "state". Counting
+each level's chance-agreement mass by brute exclusion (agrees on level i and not on any earlier,
+better level) would need one pass per level combination; `_hierarchy` does it in one shot via
+inclusion-exclusion over the joint keys, which is the same trick a decent SQL query planner
+would reach for and is what makes the closed form tractable at the watchlist's ~1M-row scale
+instead of needing a sampled estimate.
+
+**Why EM runs in several passes instead of once.** A single EM run over all candidate pairs
+would let a field's own agreement help select which pairs are "matches" and then estimate that
+same field's m from them — circular for whichever field the candidate rule leaned on hardest.
+Splink's answer, adopted here, is to run EM once per blocking rule, each time excluding the
+field(s) that rule's pairs were selected on, and combine the passes afterward (the mean, per
+field, of the passes that actually saw it). The Dirichlet prior on top serves the second half of
+the same problem: a pass that saw a field in only a handful of pairs would otherwise return a
+wild point estimate; centring on the section-4 source chain with pseudo-pairs pulls it back
+toward something sane, and the bootstrap interval then says openly how much to trust the result
+rather than presenting a single number as certain.
+
+**I/O behind one interface, on purpose.** `TableIO` and the `*Backend` classes are the entire
+seam between "plain files" and "Delta Lake": the pipeline, scoring and every table shape are
+unaware which one is underneath. This is also what makes the incremental mode's link cache
+possible without a second scoring code path — `score_link_cached` calls the very same
+`score_link_part` for whichever entities are new, and stitches in cached rows for the rest.
+
+**What was deliberately not built.** A saved, reloadable *model* independent of a run (Splink's
+serialized settings JSON) is still absent outside the Delta incremental path's `rl_model` table;
+scoring new data with an old model still means calling `run_pipeline` or `run_incremental`, not
+loading a standalone artifact into an arbitrary script. Cross-type matching (a sole proprietor
+matched as if a person) is still out of scope (PLAN.md open question 6). The review-sample
+milestone (M6) stays a skeleton for B2 to fill in.

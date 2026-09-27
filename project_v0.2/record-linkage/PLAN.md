@@ -190,3 +190,99 @@ section, with its text-derived layers kept in separate cells. Each notebook's se
 include a check that its core section matches the recorded version hash, so drift is caught.
 The core must therefore take plain tables in and return plain tables out, with nothing
 spreadsheet-specific ([B]) or text-specific ([A]) inside it.
+
+## 9. B1 (no gold labels, high-quality output, runs now), 2026-09-26
+
+**Goal.** Quality of entity-resolution output on real data, not time or memory. Matching core
+bumped to **v1.1**; hash re-recorded (`CORE_SHA256` in the self-test cell).
+
+**Candidates.** The blocking-rule union from section 2 stays and grows (B1 adds: NYSIIS of the
+surname alone; a compound surname's parts + first initial; sound-alike first name + surname
+initial; date of birth alone; "first last" sorted-neighbourhood; a second rare organization
+word; a rare word's sound; one-digit/one-transposition keys for every identifier and phone).
+An `EXHAUSTIVE` switch compares every same-type pair instead, streamed in chunks sized to a
+pair budget (`exhaustive_pairs_per_chunk`). The manifest's `blocking` section reports pairs
+proposed and refined per rule; the held-out-identifier self-check (below) reports how many
+true pairs the candidate stage lost.
+
+**u.** Exact-agreement levels (identifier exact, name exact, org exact, DOB exact, every
+address and specialty/category level) are computed in **closed form** from value frequencies
+over *all* extracted x watchlist pairs (`closed_form_u`, inclusion-exclusion over joint keys
+for the hierarchical fields) — no sampling, so a rare exact match is never under- or
+over-estimated by sampling noise. The fuzzy levels (spelling variants, sounds-alike, near
+identifiers) still come from a very large random sample (`random_pairs`, `dedup_random_pairs`;
+sizes recorded per dataset and part in the manifest's `u.sample` section), rescaled to the
+probability mass the closed form leaves.
+
+**EM, Splink-style.** u fixed. Several **training passes** per part (`TRAIN_RULES`), each on
+pairs selected by one rule and blind to the fields that rule used (a DOB-selected pass never
+trains DOB's own m; a name-block pass never trains name's own m). Each pass has a **Dirichlet
+prior** on m (a Beta per level) centred on the section-4 source chain (anchors, watchlist
+duplicates, simulation, published), with `em_prior_strength` pseudo-pairs, so a level a pass
+barely saw shrinks to that centre. A field's final m is the mean of the passes that saw it
+(Splink's own combination rule). **Bootstrapped 95% intervals** (`bootstrap_reps` replicates,
+pattern counts resampled) on every m, every field-level bits value and the prior. `m_floor`
+bounds every level away from zero (no field can produce an absurd weight from a thin count),
+and every field's bits are clipped to `[bits_min, bits_max]`. A level is flagged **unstable**
+in the manifest when its bootstrap interval is wide or its training passes disagree by more
+than `unstable_pass_bits`.
+
+**Richer comparisons.** Names combine Jaro-Winkler, normalized Levenshtein, rapidfuzz
+token-sort and token-set ratios, NYSIIS and Metaphone into graded levels (exact, nickname,
+close spelling, close-surname, sound-alike-surname, initial, swapped, empty, differs — see
+`FIELD_LEVELS["name"]`). Organizations add a rarity-weighted token-set `close` level between
+`short_form` and the single-rare-word level. Correlated fields are one graded group each, so
+nothing is counted twice: name (first + last, with middle compared **only when the surname
+already agrees**, closing a v1.0 double-counting gap), address (number/street/unit/ZIP/
+city/state), specialty + category.
+
+**Address standardization.** `address_standardizer` selects `given` (as supplied), `usaddress`
+(default, offline, parses a rejoined street line) or `smarty` (SmartyStreets US Street API,
+cached, safe without credentials, never called in tests). All three yield the same component
+fields, which then go through the existing normalizers.
+
+**Extracted-side deduplication.** A second comparison context (`ctx_dedup`) reuses the same
+core against the extracted file itself: candidates, comparisons, its own u/m/prior/EM, scored
+pairs pooled by constrained union-find (`constrained_clusters`, never joining two different
+single-holder identifiers). A pooled **entity** replaces the extracted party as the unit that
+is matched against the watchlist; every member comparison feeds `aggregate_member_levels`
+(best level per field, with a **multiplicity correction**: an entity offering k distinct
+values of a field has its exact-level u multiplied by k). Every row still resolves back to its
+entity's result (`rows` table).
+
+**Consistent clusters.** After scoring, entity x watchlist links at or above `link_cluster_p`
+that rest on more than the name join a cluster by the same constrained union-find as
+deduplication (transitive, vetoing conflicting identifiers); name-only links stay visible,
+labelled `"name only: visible, not clustered"`, and never merge a cluster.
+
+**Held-out identifier self-check** (no truth file needed): hide one of SSN / NPI / TIN / DL,
+run B1 on everything else, use the hidden value as truth (excluding near-duplicates and
+values held by too many holders). **Noise-injection test**: noisy copies (1..N per source, so
+deduplication is exercised too) of real watchlist rows plus decoys, same metrics. Both report
+precision/recall by threshold and by basis, and how many true pairs the candidate stage lost.
+
+**Optional baseline** (`baseline`, off by default): the user's current method — rapidfuzz
+`token_sort_ratio` on a cleaned name, gated by category — added to the candidates table as
+`p_baseline`, and compared against B1 on both self-checks with a disagreement report (false
+alarms B1 avoids, matches B1 recovers, ambiguity). Its cleaning and threshold are **assumed**
+until the user supplies the real settings (recorded in the manifest).
+
+**Output.** `IO_FORMAT` (`csv` default, `parquet`, `delta`) applies uniformly. The workbook is
+now a bounded summary (flagged entities, best matches, samples, self-check, manifest); the
+full tables (entities, rows, candidates, evidence, claims, dedup pairs, weights) go to
+CSV/Parquet/Delta.
+
+## 10. B1.1 (Delta Lake), 2026-09-26
+
+`IO_FORMAT = "delta"` reads the two inputs as Delta tables (pinned to a version) and writes
+every output as a Delta table (MERGE on key, history kept). The pandas core is unchanged —
+`toPandas()` / `createDataFrame()` at the edges (`TableIO`, `SparkDeltaBackend`). Incremental
+mode (`INCREMENTAL = True`) uses the extracted table's change data feed (or a version diff) to
+find changed `record_id`s, reuses the saved model, and re-scores only entities whose *content
+signature* changed (`LinkCache`); everything else is read from `rl_link_cache`. A placeholder
+Delta table name, `delta_gold_labels_table` (`rl_gold_labels`), is reserved for B2; nothing
+here reads or writes it.
+
+Local testing used `InMemoryDeltaBackend`, a pure-pandas stand-in with the same interface
+(versions, change data feed, merge) — see STATE.md for why (no Java on this machine, so
+pyspark/delta-spark cannot run locally regardless of installation).
