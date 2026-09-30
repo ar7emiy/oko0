@@ -2,6 +2,21 @@
 
 Last updated: 2026-09-30.
 
+**Record linkage Spark v2 scheduling correction (2026-09-30):** replaced sequential
+partition retrieval with one `collect()` per bounded wave, so Spark can run that wave's
+partitions concurrently. Results keep task order; the next wave waits for consumption;
+packed results, broadcasts and job descriptions are cleaned up on completion, failure
+or iterator closure. Added phase/task-range job descriptions, wave progress and timed
+candidate finalization. Matching/scoring definitions and retention policy are unchanged.
+Local checks: 23 embedded tests (18 passed, 5 skipped) plus 4 transport tests passed,
+including rejection of sequential dispatch, incomplete results and premature next-wave
+dispatch. Added a real Spark two-partition/one-job regression, skipped locally.
+
+The user reports that initial v2 completed on the real data. Intermediate logs showed
+9.61M scored link candidates, 33.48M member comparisons, 1,184 link chunks and 7,995.4s
+elapsed at the scoring/clustering marker, with sampled Python memory 4.04GB. Revised
+Databricks throughput and total memory remain unmeasured. See `record-linkage/SPARK-V2.md`.
+
 **Record linkage Spark v2 (2026-09-30):** added the standalone
 `record-linkage/goko_record_linkage_mvp_b1_spark_v2.ipynb`, based on the current pandas
 MVP matching definitions and original Spark/Delta adapters. Strict-prior pairs stay in
@@ -12,12 +27,13 @@ allocation. Missing compound-key components are excluded by default with a manif
 compatibility switch. Oversized anchor/training sample membership can differ from v1;
 the matching core itself is unchanged. Original notebooks were preserved.
 
-Local verification: 95 embedded tests (90 passed, 5 skipped) plus 2 passing serialized
+Initial local verification: 95 embedded tests (90 passed, 5 skipped) plus 2 passing serialized
 transport/lifecycle tests; final targeted rerun 22 embedded tests (18 passed, 4 skipped)
 plus the transport tests. Syntax and exact matching-core equality checked. Skew regression
-covers a 100,000-member anchor group without constructing its ~5 billion pairs. Spark,
-Linux fork execution, Delta writes and the real 300k/400k run remain **unverified** in this
-Windows environment. Raw input/party frames and graph state remain driver-resident; full
+covers a 100,000-member anchor group without constructing its ~5 billion pairs. At initial
+delivery, Spark, Linux fork execution, Delta writes and the real 300k/400k run were
+**unverified** in this Windows environment; the subsequent user-reported successful run
+is recorded above. Raw input/party frames and graph state remain driver-resident; full
 Spark-native normalization/clustering is deferred. See `record-linkage/SPARK-V2.md`.
 
 Archive (2026-09-23): this folder now holds only goko-v2-poc, gold-annotator and their

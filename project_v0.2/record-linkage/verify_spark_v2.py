@@ -4,7 +4,7 @@
     python verify_spark_v2.py --full    # all embedded B1 tests (Spark/fork tests skip locally)
 
 This runner exercises the disk-backed reference path. It does not start Spark or
-claim to validate Databricks, RDD scheduling, Unity Catalog access, or Delta writes.
+claim to validate Databricks scheduling, Unity Catalog access, or Delta writes.
 Enable RUN_SELF_TESTS in the notebook on a small synthetic cluster run for those.
 """
 import ast
@@ -54,7 +54,7 @@ def load_definitions():
 
 
 def pool_suite(namespace):
-    # Exercise wave ordering and broadcast cleanup through serialized task closures.
+    # Enforce one collect per bounded wave, lazy consumption and broadcast cleanup.
     # This transport harness does not stand in for a real Spark integration test.
     exec("def _pool_task(t):\n    if t < 0: raise ValueError('injected task failure')\n    return t * _SHARED['factor'][0], _IN_WORKER and (_SHARED['factor'] is _SHARED.get('alias', _SHARED['factor']))\n", namespace)
 
@@ -65,32 +65,47 @@ def pool_suite(namespace):
             self.destroyed = True
 
     class FakeRDD:
-        def __init__(self, data, fn=None):
-            self.data, self.fn = data, fn
+        def __init__(self, data, context, fn=None):
+            self.data, self.context, self.fn = data, context, fn
         def mapPartitions(self, fn):
-            return FakeRDD(self.data, fn)
+            return FakeRDD(self.data, self.context, fn)
         def toLocalIterator(self, prefetchPartitions=False):
+            raise AssertionError('partition-by-partition dispatch would serialize the wave')
+        def collect(self):
+            self.context.collect_calls += 1
+            result = []
             for group in self.data:
                 fn = namespace['_cloudpickle'].loads(namespace['_cloudpickle'].dumps(self.fn))
-                yield from fn(iter([group]))
+                result.extend(fn(iter([group])))
+            return result[:-1] if self.context.drop_result else result
 
     class FakeContext:
         defaultParallelism = 12
         def __init__(self):
             self.broadcasts, self.waves = [], []
+            self.collect_calls, self.drop_result = 0, False
+            self.properties = {'spark.job.description': 'original description'}
+        def getLocalProperty(self, key):
+            return self.properties.get(key)
+        def setLocalProperty(self, key, value):
+            self.properties[key] = value
+        def setJobDescription(self, description):
+            self.setLocalProperty('spark.job.description', description)
         def broadcast(self, value):
             item = FakeBroadcast(value)
             self.broadcasts.append(item)
             return item
         def parallelize(self, data, partitions):
+            if partitions != len(data):
+                raise AssertionError('expected one group per partition')
             self.waves.append(data)
-            return FakeRDD(data)
+            return FakeRDD(data, self)
 
     class PoolTests(unittest.TestCase):
         def test_waves_order_single_task_and_broadcast_cleanup(self):
             from types import SimpleNamespace
             context = FakeContext()
-            pool = namespace['SparkParallel'](SimpleNamespace(sparkContext=context), executor_processes=2)
+            pool = namespace['SparkParallel'](SimpleNamespace(sparkContext=context), executor_processes=2, progress=False)
             pool.executors = lambda: 3
             with patch.dict(namespace, {'Broadcast': FakeBroadcast, '_fork_available': lambda: False}):
                 factor = [7]
@@ -98,17 +113,63 @@ def pool_suite(namespace):
                 self.assertEqual(result, [(i*7, True) for i in range(19)])
                 self.assertTrue(all(len(g) <= 2 for wave in context.waves for g in wave))
                 self.assertTrue(all(sum(map(len, wave)) <= 6 for wave in context.waves))
+                self.assertEqual(context.collect_calls, 4)  # 19 tasks / 6 per wave
+                self.assertEqual(pool.last_call['tasks'], 19)
+                self.assertEqual(pool.last_call['waves'], 4)
                 self.assertEqual(pool.map(namespace['_pool_task'], [3], {'factor': [2]}), [(6, True)])
+            self.assertEqual(context.collect_calls, 5)
+            self.assertEqual(context.properties['spark.job.description'], 'original description')
             self.assertEqual(pool._bc, {})
             self.assertTrue(all(b.destroyed for b in context.broadcasts))
 
         def test_exception_releases_broadcasts(self):
             from types import SimpleNamespace
             context = FakeContext()
-            pool = namespace['SparkParallel'](SimpleNamespace(sparkContext=context))
+            pool = namespace['SparkParallel'](SimpleNamespace(sparkContext=context), progress=False)
             with patch.dict(namespace, {'Broadcast': FakeBroadcast, '_fork_available': lambda: False}):
                 with self.assertRaises(ValueError):
                     pool.map(namespace['_pool_task'], [-1], {'factor': [3]})
+            self.assertEqual(pool._bc, {})
+            self.assertTrue(all(b.destroyed for b in context.broadcasts))
+            self.assertEqual(context.properties['spark.job.description'], 'original description')
+
+        def test_next_wave_waits_for_consumption_and_close_releases_inputs(self):
+            from types import SimpleNamespace
+            context = FakeContext()
+            pool = namespace['SparkParallel'](SimpleNamespace(sparkContext=context), executor_processes=2, progress=False)
+            pool.executors = lambda: 3
+            consumed = []
+            def tasks():
+                for task in range(19):
+                    consumed.append(task)
+                    yield task
+            with patch.dict(namespace, {'Broadcast': FakeBroadcast, '_fork_available': lambda: False}):
+                results = pool.iter_map(namespace['_pool_task'], tasks(), {'factor': [7]})
+                self.assertEqual(next(results), (0, True))
+                self.assertEqual(consumed, list(range(6)))
+                self.assertEqual(context.collect_calls, 1)
+                self.assertTrue(any(not b.destroyed for b in context.broadcasts))
+                for task in range(1, 6):
+                    self.assertEqual(next(results), (task*7, True))
+                self.assertEqual(context.collect_calls, 1)
+                self.assertEqual(next(results), (42, True))
+                self.assertEqual(context.collect_calls, 2)
+                self.assertEqual(consumed, list(range(12)))
+                results.close()
+            self.assertEqual(pool._bc, {})
+            self.assertTrue(all(b.destroyed for b in context.broadcasts))
+            self.assertEqual(context.properties['spark.job.description'], 'original description')
+
+        def test_incomplete_wave_fails_before_yielding_results(self):
+            from types import SimpleNamespace
+            context = FakeContext()
+            context.drop_result = True
+            pool = namespace['SparkParallel'](SimpleNamespace(sparkContext=context), progress=False)
+            with patch.dict(namespace, {'Broadcast': FakeBroadcast, '_fork_available': lambda: False}):
+                results = pool.iter_map(namespace['_pool_task'], [1, 2], {'factor': [3]})
+                with self.assertRaisesRegex(RuntimeError, 'missing, duplicate or out-of-order'):
+                    next(results)
+            self.assertEqual(pool.last_call['tasks'], 0)
             self.assertEqual(pool._bc, {})
             self.assertTrue(all(b.destroyed for b in context.broadcasts))
     return unittest.defaultTestLoader.loadTestsFromTestCase(PoolTests)

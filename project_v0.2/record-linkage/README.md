@@ -94,7 +94,8 @@ The fork pool chooses its worker count from available memory and re-forks worker
 16 tasks. Below its free-memory floor it reduces concurrency; a stopped worker's task can
 be retried. These controls govern worker tasks, not all driver allocations, and cannot
 guarantee that the operating system preserves the notebook process. V2 additionally bounds
-result waves and broadcast lifetimes. Inputs, graph state and large individual entities
+result waves and broadcast lifetimes, and runs each wave in one Spark action so its
+partitions can execute concurrently. Inputs, graph state and large individual entities
 still need memory; lowering `PAIRS_PER_TASK` alone does not bound every stage.
 
 ## Inputs
@@ -140,7 +141,7 @@ overwhelmed. `acceptance.json` holds the acceptance table of the run.
 | `run_mvp_check.py` | runs every cell of the MVP on its built-in synthetic set |
 | `goko_record_linkage_mvp_b1_spark.ipynb` | the same MVP on a Databricks cluster: the same cells, with every heavy step a Spark task across the cluster, Delta tables in and out, chunk files on a Unity Catalog volume |
 | `goko_record_linkage_mvp_b1_spark_v2.ipynb` | Spark memory refactor: distributed strict-prior counts, aggregated training patterns, bounded samples/draws/result waves and stage-scoped broadcasts; setup and limits in `SPARK-V2.md` |
-| `verify_spark_v2.py` | local syntax, core equality, transport lifecycle and memory regression tests; `--full` runs the embedded B1 suite |
+| `verify_spark_v2.py` | local syntax, core equality, bounded-wave dispatch/lifecycle and memory regression tests; `--full` runs the embedded B1 suite; actual scheduling regression runs on Spark |
 | `mappings/` | reviewable tables: column routing, category map (LEIE's 88 GENERAL + 206 SPECIALTY values, drafted, `needs_review` flags), keyword rules, specialty synonyms, simulation noise, published starting m |
 | `reference/` | copied Census / SSA / NPPES tables and the nickname table; `SOURCES.md` with SHA-256 (checked at start-up); `.gitattributes` keeps them byte-exact across checkouts |
 | `b2_sections.py` | B2, the gold-label layer, as notebook sections in percent format (to be inserted into the notebook at its marked insertion point); also runs on its own against `out/<dataset>/` |
