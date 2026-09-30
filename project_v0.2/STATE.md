@@ -1,6 +1,24 @@
 # STATE
 
-Last updated: 2026-09-26.
+Last updated: 2026-09-30.
+
+**Record linkage Spark v2 (2026-09-30):** added the standalone
+`record-linkage/goko_record_linkage_mvp_b1_spark_v2.ipynb`, based on the current pandas
+MVP matching definitions and original Spark/Delta adapters. Strict-prior pairs stay in
+Spark and only exact per-party counts return to the driver; training returns pattern
+counts, oversized training joins spill before sampling, bootstrap draws/results are
+batched, broadcasts are released per stage, and anchor caps are applied before quadratic
+allocation. Missing compound-key components are excluded by default with a manifest-stamped
+compatibility switch. Oversized anchor/training sample membership can differ from v1;
+the matching core itself is unchanged. Original notebooks were preserved.
+
+Local verification: 95 embedded tests (90 passed, 5 skipped) plus 2 passing serialized
+transport/lifecycle tests; final targeted rerun 22 embedded tests (18 passed, 4 skipped)
+plus the transport tests. Syntax and exact matching-core equality checked. Skew regression
+covers a 100,000-member anchor group without constructing its ~5 billion pairs. Spark,
+Linux fork execution, Delta writes and the real 300k/400k run remain **unverified** in this
+Windows environment. Raw input/party frames and graph state remain driver-resident; full
+Spark-native normalization/clustering is deferred. See `record-linkage/SPARK-V2.md`.
 
 Archive (2026-09-23): this folder now holds only goko-v2-poc, gold-annotator and their
 governing documents. Moved to `../archive/`: the Excel and desktop annotators

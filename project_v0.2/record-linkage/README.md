@@ -64,14 +64,16 @@ they are the slowest part of a run; this is deliberate (quality of measurement o
 
 `goko_record_linkage_mvp_b1.ipynb` (pandas) and `goko_record_linkage_mvp_b1_spark.ipynb`
 (Databricks) run the same B1 cells; they differ only in where the heavy work runs and where the
-tables go. Neither samples, caps or skips anything: every scored pair, evidence row and
-self-check is what a single process computes, and the self-tests compare a parallel run with a
-one-process run table for table.
+tables go. The matching core is shared; training samples and candidate blocking limits are
+configured and reported in the manifest. The self-tests compare parallel and single-process
+results on small inputs. The newer `goko_record_linkage_mvp_b1_spark_v2.ipynb` also replaces
+driver-side strict-prior joins and training materialization; see `SPARK-V2.md`.
 
-What keeps memory flat at any volume (both notebooks):
+How the MVP notebooks limit memory:
 
 - **Chunks.** Extracted entities are scored in chunks sized by their estimated number of
-  comparisons (`PAIRS_PER_TASK`, default 250,000), so no step ever holds all pairs at once.
+  comparisons (`PAIRS_PER_TASK`, default 250,000), so scoring normally holds one chunk per task.
+  Large pooled entities can exceed this estimate; inputs and cluster state remain in memory.
 - **Two passes, streamed.** Pass 1 scores each chunk and writes its pairs and evidence to Parquet
   parts, returning only the small summaries the clustering needs; the driver clusters; pass 2
   reads each chunk's part back and writes the final candidates and entity pieces.
@@ -88,13 +90,12 @@ What keeps memory flat at any volume (both notebooks):
 | outputs | small tables as CSV, large ones as Parquet folders, the workbook | every table as Delta (large ones optionally Z-ordered), the workbook on the volume |
 | where | a Linux machine / VM with many cores | Databricks Runtime 15.4 LTS+, **Dedicated** access mode, repo as a Git folder |
 
-Memory is governed, not guessed: the number of workers is set at each step from the memory
-free then; workers are re-forked every 16 tasks (they copy more of the driver's pages the longer
-they live); below a free-memory floor the pool continues with fewer workers; and if the system
-still stops a worker, its task runs again (workers are the system's first choice to stop, never
-the notebook). None of this changes a result. Each large step prints its worker count and the
-largest worker's memory. Only a single task too large for the machine stops the run, with a
-message to lower `PAIRS_PER_TASK`.
+The fork pool chooses its worker count from available memory and re-forks workers every
+16 tasks. Below its free-memory floor it reduces concurrency; a stopped worker's task can
+be retried. These controls govern worker tasks, not all driver allocations, and cannot
+guarantee that the operating system preserves the notebook process. V2 additionally bounds
+result waves and broadcast lifetimes. Inputs, graph state and large individual entities
+still need memory; lowering `PAIRS_PER_TASK` alone does not bound every stage.
 
 ## Inputs
 
@@ -135,9 +136,11 @@ overwhelmed. `acceptance.json` holds the acceptance table of the run.
 |---|---|
 | `record_linkage.ipynb` | the whole system: matching core v1.1, pipeline, table I/O (CSV/Parquet/Delta), self-checks, LEIE exporter, synthetic generator, self-tests |
 | `run_notebook_check.py` | runs every cell; exit code 1 on any error or failed self-test |
-| `goko_record_linkage_mvp_b1.ipynb` | the MVP: B1 on two CSV files named in its Settings cell (no Delta, no incremental, no B2); the heavy steps run on every core in forked worker processes (Linux; one process elsewhere, same results) and the candidates, evidence and dedup pairs stream to Parquet folders, so memory stays flat at any volume; ends with a lookup by record or claim id |
+| `goko_record_linkage_mvp_b1.ipynb` | the MVP: B1 on two CSV files named in its Settings cell (no Delta, no incremental, no B2); parallel comparisons on Linux and streamed candidate/evidence/dedup outputs; inputs and graph state remain in memory; ends with a lookup by record or claim id |
 | `run_mvp_check.py` | runs every cell of the MVP on its built-in synthetic set |
 | `goko_record_linkage_mvp_b1_spark.ipynb` | the same MVP on a Databricks cluster: the same cells, with every heavy step a Spark task across the cluster, Delta tables in and out, chunk files on a Unity Catalog volume |
+| `goko_record_linkage_mvp_b1_spark_v2.ipynb` | Spark memory refactor: distributed strict-prior counts, aggregated training patterns, bounded samples/draws/result waves and stage-scoped broadcasts; setup and limits in `SPARK-V2.md` |
+| `verify_spark_v2.py` | local syntax, core equality, transport lifecycle and memory regression tests; `--full` runs the embedded B1 suite |
 | `mappings/` | reviewable tables: column routing, category map (LEIE's 88 GENERAL + 206 SPECIALTY values, drafted, `needs_review` flags), keyword rules, specialty synonyms, simulation noise, published starting m |
 | `reference/` | copied Census / SSA / NPPES tables and the nickname table; `SOURCES.md` with SHA-256 (checked at start-up); `.gitattributes` keeps them byte-exact across checkouts |
 | `b2_sections.py` | B2, the gold-label layer, as notebook sections in percent format (to be inserted into the notebook at its marked insertion point); also runs on its own against `out/<dataset>/` |
