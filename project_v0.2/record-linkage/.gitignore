@@ -1,0 +1,9 @@
+# Inputs with personal data, run outputs and review labels never enter git.
+data/
+out/
+review/*
+# ... except the fictional SME stub packets (B2), which are a deliverable
+!review/stubs/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/

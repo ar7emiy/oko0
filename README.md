@@ -10,7 +10,7 @@ This file is the map. The repository accumulated three generations of work acros
 
 | Directory | What it is | Status |
 |---|---|---|
-| **`project_v0.2/`** | Current. The Gold Annotator (the SME review application) plus the four proposal documents. | **Active** |
+| **`project_v0.2/`** | Current. The Gold Annotator (the SME review application), the four proposal documents, and the v2 architecture POC. | **Active** |
 | **`project_v0.1/`** | A first-principles rebuild scaffold. Identity layer designed, no pipeline runs. | Superseded by v0.2's direction; retained for its design record |
 | **`project/`** | The original full extraction system — NER ensemble, coreference, blocking, entity resolution, relations, embeddings, graph store — plus the audits that assessed it. | **Not current, but the most technically substantial code here.** See below |
 
@@ -20,6 +20,7 @@ This file is the map. The repository accumulated three generations of work acros
 - Improving the extraction system → [`project_v0.2/GOKO-SYSTEM-DEVELOPMENT-PROPOSAL.md`](project_v0.2/GOKO-SYSTEM-DEVELOPMENT-PROPOSAL.md)
 - Delivery work items → [`project_v0.2/ADO-BACKLOG.md`](project_v0.2/ADO-BACKLOG.md)
 - The annotator itself → [`project_v0.2/gold-annotator/README.md`](project_v0.2/gold-annotator/README.md)
+- The v2 pipeline, end to end and runnable → [`project_v0.2/goko-v2-poc/README.md`](project_v0.2/goko-v2-poc/README.md)
 
 ---
 

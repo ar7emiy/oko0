@@ -1,0 +1,291 @@
+1 
+UNITED STATES DISTRICT COURT 
+EASTERN DISTRICT OF NEW YORK 
+----------------------------------------------------------x 
+AMERICAN TRANSIT INSURANCE 
+COMPANY, 
+ 
+   Plaintiff,    MEMORANDUM AND ORDER 
+  v.      24-CV-0360 (RPK) (CLP) 
+        
+BRADLEY PIERRE, MARVIN MOY, M.D., 
+RUTLAND MEDICAL P.C., WILLIAM A.  
+WEINER, D.O., NEXRAY MEDICAL  
+IMAGING, P.C. d/b/a SOUL RADIOLOGY 
+MEDICAL IMAGING and JOHN DOES 1 –15,     
+    
+   Defendant s. 
+----------------------------------------------------------x  
+RACHEL P. KOVNER, United S tates District Judge: 
+Plaintiff American Transit Insurance Company  has moved for a preliminary injunction 
+enjoining defendants Rutland Medical P.C. and Nexray Medical Imaging, P.C. d/b/a Soul 
+Radiology Medical Imaging from (i) prosecuting  all no-fault arbitrations and state court lawsuits 
+pending against American Transit  and (ii) filing additional no-fault arbitrations and lawsuits 
+against American Transit during the pendency of this case.  See Mot. for Preliminary Injunction 
+(Dkt. #25).  Defendants Dr. Weiner and Nexray , the only defendants that have appeare d in this 
+case, oppose the  motion.  See Mem. in Opp’n (Dkt. #41).  As discussed below, plaintiff’s motion 
+is granted in part , and defendants  Rutland and Nexray are preliminarily enjoined from filing 
+additional no-fault arbitrations and lawsuits against American Transit and from prosecuting no-
+fault arbitrations against American Transit during the pendency of this action.  The Court declines 
+to preliminarily enjoin defendants from pursuing no-fault actions that are currently pending in state 
+court because t he Anti-Injunction Act pre cludes that relief.  
+  
+Case 1:24-cv-00360-RPK-CLP   Document 52   Filed 05/16/24   Page 1 of 12 PageID #: 17002 
+DISCUSSION 
+ Plaintiff’s motion for a preliminary injunction is granted in part and denied i n part  as 
+explained below .   
+I. Defendants Are Enjoined From Filing Additional Lawsuits and Arbi trations 
+Against Plaintiff and From Pro secuting Pending Arbitrations   
+ 
+Plaintiff is entitled to a preliminary injunction  enjoining defendants Rutland and Nexray 
+from prosecuting pending no-fault arbitrations and from filing additional no-fault lawsuits and 
+arbitrations during the pendency of this case .  A party seeking a preliminary injunction must 
+establish (1) a likelihood of success on the merits,  (2) a likelihood of irreparable harm in the 
+absence of preliminary relief, (3) that the  balance of equities tips in the party’s favor, and (4) that 
+an injunction is in the public interest.  Am. C.L. Union v. Clapper, 804 F.3d 617, 622 (2d Cir. 2015) 
+(citing Winter v. Nat. Res. Def. Council, Inc ., 555 U.S. 7, 20 (2008)); see Metro . Life Ins. Co. v. 
+Bucsek, 919 F.3d 184, 188 n.2 (2d Cir. 2019) (citing Winter, 555 U.S. at 20).   Plaintiff has 
+established these factors here.  
+A. Likelihood of Success o n the Merits  
+Plaintiff will likely succeed in demonstrating that defendants are not eligible for no-fault 
+reimbursements  and that defendants’ no-fault claims against them are part of a fraudulent scheme. 
+Under New York’s n o-fault laws and regulations, medical providers cannot rece ive no-fault 
+benefits if they “fail[] to meet any applicable New York State or local licensing requirement 
+necessary to perform such healthcare services.”  11 N.Y.C.R.R. § 65-3.16(a)(12).  New York 
+prohibits medical providers from  paying or accepting kickbacks in exchange for patient referrals, 
+N.Y. Pub. Health Law § 238, Gov’t Emps. Ins. Co. v. Mayzenberg, No. 17 -CV-2802 (ILG), 2018 
+WL 6031156, at *2 (E.D.N.Y. Nov. 16, 2018) , and from ordering tests or treatment not warranted 
+by the condition of the patient, N.Y. Educ. Law §§ 6530(2), (35).  New York also prohibits 
+Case 1:24-cv-00360-RPK-CLP   Document 52   Filed 05/16/24   Page 2 of 12 PageID #: 17013 
+unlicensed professionals from owning or controlling a medical professional corporation, serving 
+as director or officer of said corporation, enter ing into any agreement  with the corporation’s 
+shareholders, or receiving shares or otherwise deriving economic benefit from the corporation’s 
+professional services .  Allstate Ins. Co. v. Pierre, No. 23-CV-6572 (NGG) (LB), 2024 WL 85088, 
+at *2 (E.D.N.Y. Jan. 8, 2024)  (citing  N.Y. Bus. Corp. Law §§ 1507– 08; N.Y. Educ. Law § 
+6530(19)) ; see State Farm Mut. Auto. Ins. Co. v. Mallela , 827 N.E.2d 758, 760 ( N.Y. 2005) . 
+Based on the sworn statements of Dr. Weiner and Mr. Pierre , it is likely that plaintiff will 
+demonstrate that Rutland and Nexray were not eligible to receive no-fault reimbursements in New 
+York.  Dr. Weiner and Mr. Pierre have pleaded guilty to conspiring to commit health care fraud 
+and bribery, respectively.  Weiner Plea Tr. 3:3–9, 25:22– 24 (Dkt. #44-4 ); Pierre Plea Tr. 4:1–5, 
+28:18–20 (Dkt. #44-3).  At his change-of-plea hearing, Mr. Pierre acknowledged that (i) he is not 
+a licensed medical provider, Pierre Plea Tr. 21:2–10; (ii) he agreed with others to unlawfully own 
+and run medical clinics, including Rutland, id. 20:22–21:2; (ii) he knew that medical clinics were 
+unable to bill insurance companies for no-fault benefits if they were controlled by non-physicians, 
+id. 21:2– 5; (iii) he nevertheless agreed with others to submit bills to insurance companies and 
+falsely represented that the clinics were owned and operated by licensed medical practitioners, id. 
+21:5–8; (iv) he coached medical practitioners to lie during exam inations under oath about the 
+ownership, control, and finances of the clinics , id. 21:8–11; (v) he used his control of the clinics 
+to steer patients to seek MRIs at Nexray, a medical facility over which he also exercised substantial 
+control, id. 21:25– 22:4; (vi) Mr. Pierre agreed with Dr. Weiner that Dr. Weiner would falsely 
+report injuries in MRI reports and that Dr. Weiner would lie about Mr. Pierre’s role in Nexray, id. 
+22:4–11; (vii) Mr. Pierre agreed to pay bribes to hospital employees, 911 dispatchers, and others 
+who would help induce victims to receive medical treatment at Rutland and other clinics , id. 
+Case 1:24-cv-00360-RPK-CLP   Document 52   Filed 05/16/24   Page 3 of 12 PageID #: 17024 
+22:21– 24:6; and (viii) Mr. Pierre agreed to bribe medical officers  to send patients to Nexray for 
+MRIs, id. 23:25– 24:6.  
+For his part, in his plea allocution, Dr. Weiner admitted that he made false statements under 
+oath about Mr. Pierre’s role in his medical practice, Nexray, to obtain rei mbursements from 
+insurance companies.  Weiner Plea Tr. 19:14– 20:24.  Dr. Weiner stated that he both had an “overall 
+understanding with Mr. Pierre ” and “a more specific agreement with the  attorney representing 
+[him] during the examination under oath” that Dr. Weiner would “falsely minimize [Mr. Pierre’s] 
+role in [Dr. Weiner ’s] medical practice in order to facili tate claim reimbursement .”  Id. 20:2–24.  
+When asked whether he was “saying that the attorney was aware that as a result of Bradley Pierre’s 
+role in  your medical practice, that it  was not lawful to obtain medical  reimbursement from the 
+insurance company? ” Dr. Weiner replied, “[t]hat’s fair to say, your Honor. ”  Id. 21:6–10.  While 
+Dr. Weiner equivocated as to whether he “understood at the time” that Dr. Pierre’s involvement in 
+his practice made Nexray ineligible to obtain no-fault reimbursements, id. 21:11–18, Dr. Weiner’s 
+admission s, along with Mr. Pierre’s  comprehensive  allocution , make it likely that plaintiff will 
+succeed in proving that Nexray and Rutland were ineligible to recover no-fault benefits from 
+America Transit .   
+These sworn statements also make it likely that Mr. Pierre and Dr. Weiner engaged in 
+common law fraud.  “Under New York law, the five elements of a fraud claim must be shown by 
+clear and convincing evidence: (1) a material misrepresentation or omission of fact (2) made by 
+defendant with knowledge of its falsity (3) and intent to defraud; (4) reasonable reliance on the 
+part of the plaintiff; and (5) resulting damage to the plaintiff. ”  Crigger v. Fahnestock & Co., 443 
+F.3d 230, 234 (2d Cir. 2006) .  Both Mr. Pierre and Dr. Weiner have admitted that they made false 
+representations to insurance companies about Mr. Pierre ’s role in Nexray .  See Pierre Plea Tr. 
+Case 1:24-cv-00360-RPK-CLP   Document 52   Filed 05/16/24   Page 4 of 12 PageID #: 17035 
+22:4–11; Weiner Plea Tr. 19:14– 21:10.  Similarly, Mr. Pierre admitted that he agreed with others 
+to falsely represent that Rutland was owned and operated by licensed medical practitioners , when 
+it was in fact run and owned by Mr. Pierre.  See Pierre Plea Tr. 20:22–21:11.  As noted above, Mr. 
+Pierre’s role in Rutland and Nexray made those companies ineligible  to receive no-fault benefits.  
+These facts support an inference that as a result of American Transit’s reasonable reliance on Mr. 
+Pierre and Dr. W einer’s representations , the insurer paid out millions in no-fault benefits to 
+Rutland and Nexray that t he companies were not eligible to receive.   
+B. Irreparable Harm 
+Plaintiff has demonstrated  that it will likely suffer irreparable harm absent the requested 
+preliminary injunction.  “To establish irreparable harm, the m ovant must demonst rate an injury 
+that is neither remote nor speculative, but actual and imminent and that cannot be remedied by an 
+award of monetary damages.”  Shapiro v. Cadman Towers, Inc., 51 F.3d 328, 332 (2d Cir. 1995) 
+(internal quotation marks omitted); see Brenntag Int’l Chems., Inc. v. Bank of India, 175 F.3d 245, 
+249 (2d Cir. 1999) (explaining that irreparable harm exists “where, but for the grant of equitable 
+relief, there is a substantial chance that upon final resolution of the action the parties cannot be 
+returned t o the positions they previously occupied”).  
+Plaintiff has shown that it will likely suffer irreparable harm from defe ndants’ pursuit of 
+no-fault arbitrations, in the absence of injunctive relief.  As set forth above,  plaintiff has come 
+forward with  strong evidence that defendants’ efforts to collect judgments in no-fault arbitrations 
+are part of a fraudulent scheme.  Y et because of th e “expedited, simplified” procedures used in 
+“New York’s arbitration process for no-fault cov erage,” including “limited or non-existent” 
+discovery, the Second Circuit has held that “[c]omplex fraud and RICO claims . . . cannot be 
+shoehorned int o this system.”  Allstate Ins. Co. v. Mun , 751 F.3d 94, 99 (2d Cir. 2014); accord 
+Case 1:24-cv-00360-RPK-CLP   Document 52   Filed 05/16/24   Page 5 of 12 PageID #: 17046 
+Gov’t Emps. Ins. Co. v. SMK Pharmacy Corp, No. 21 -CV-3247 (AMD), 2022 WL 541647, at *6 
+(E.D.N.Y. Feb. 23, 2022) ; Gov’t Emps. Ins. Co. v. Advanced Comprehensive Lab’y, LLC, No. 20-
+CV-2391 (KAM), 2020 WL 7042648, at *2  (E.D.N.Y. Dec. 1, 2020 ).  As a result, plaintiff is not 
+likely to be able to fully litigate its fraud and RICO -based defenses to defendants’ no-fault claims 
+in the context of no-fault arbitrations . 
+Further, while an insurer like plaintiff that prevails on fraud and RICO claims against a 
+medical provider may generally recoup “the alleged harm suffered from the defendants’ fraudulent 
+claims” at the conclusion of its federal lawsuit, Allstate Ins. Co. v. Harvey Fam. Chiropractic, 677 
+F. App’x 716, 718 (2d Cir. 2017)  (discussing recoupment of “ No-Fault reimbursements in state 
+court and arbitrations ”), that relief does not supply an adequate remedy here because of the 
+“unlikelihood ” that defendants would “be able to satisfy a substantial damage award,” WPIX, Inc. 
+v. ivi, Inc ., 691 F.3d 275, 286 (2d Cir. 2012)  (quoting Omega Importing Corp. v. Petri –Kine 
+Camera Co., 451 F.2d 1190, 1195 (2d Cir.1971)); see Gov’t Emps. Ins. Co. v. Granovsky, No. 19-
+CV-6048 (EK) (RER), 2022 WL 1810727, at *7 (E.D.N.Y. June 2, 2022) .  Courts have found 
+defendants unlikely to satisfy a substantial damages award when “plaintiffs alleged that defendants 
+were insolvent, ceased operations, and/or were facing related criminal charges.”  Gov’t Emps. Ins. 
+Co. v. Mahmood, No. 23 -CV-04388 (NGG) (TAM), 2024 WL 113958, at *6 (E.D.N.Y. Jan. 10, 
+2024) (collecting cases).  Here, both Dr. Weiner and Mr. Pierre have pleaded guilty to federal 
+charges.  Dr. Weiner has consented to the forfeiture of $430,000, see Weiner Plea Tr. 26:14–21, 
+and Mr. Pierre will likely be required to pay millions of dollars in restitution and forfeiture , see 
+Pierre Plea Tr. 19:5–25.  Unsurprisingly, in a case filed by Allstate Insurance Company against 
+these same defendants, Judge Gara ufis found that , if convicted, the individual  defendants “will 
+likely be unable to satisfy an award of compensatory damages in excess of $2,749,000 soug ht by 
+Case 1:24-cv-00360-RPK-CLP   Document 52   Filed 05/16/24   Page 6 of 12 PageID #: 17057 
+Allstate.”  Pierre, 2024 WL 85088, at *6 .  For similar reasons, the individual defendants are 
+unlikely to be able to pay the more than $3.2 million in compensatory damages being sought in 
+this case.   
+The corporate defendants are no more likely to be able to pay a substantial damages award.  
+Rutland was controlled by Mr. Pierre, and nominally owned by defendant Dr. Marvin Moy, who 
+is now missing and presumed dead.  See Decl. of Cheryl Glaze ¶ 6 (Dkt. #27); Letter of Presumed 
+Death (Dkt. #51).  That company is therefore  not likely to be able to generate revenue  to cover a 
+substantial damages award.  Similarly, Nexray’s counsel conceded at oral argument that besides 
+its outstanding uncollected no-fault claims, Nexray does not own additional assets it could use to 
+satisfy a substantial damages awar d.  Oral Arg. Tr. 35:12– 36:9.   
+In sum,  absent a preliminary injunction, p laintiff is likely to suffer irreparable harm from 
+defendants ’ pursuit of fraudulent no-f ault claims. 
+C. Balance of Hardships  
+The “irreparable harm factor s discussed above also tip the equities squarely in [plaintiff’s] 
+favor.”  Pierre , 2024 WL 85088, at *7 (quoting State Farm Mut. Auto. Ins. Co. v. Parisien, 352 F. 
+Supp. 3d 215, 234 (E.D.N.Y. 2018) ).  While plaintiff will likely suffer irreparable harm in the 
+absence of a preliminary  injunction, defendants will suffer only temporary harm from that interim 
+relief.  Specifically, a lthough defendants will be delayed in collecting no-fault benefits, they will 
+ultimately be able  to recover  those benefits if they prevai l in this case.  
+D. Public Interest  
+The public interest favors granting the preliminary injunc tion discussed above .  In 
+analyzing the public interest, courts must consider “the public consequences in employing the 
+extraordinary remedy of injunction, ” Yang v. Kosinski , 960 F.3d 119, 135– 36 (2d Cir. 2020)  
+Case 1:24-cv-00360-RPK-CLP   Document 52   Filed 05/16/24   Page 7 of 12 PageID #: 17068 
+(quoting Winter, 555 U.S. at 24), and “ensure that [the ] injunction does not cause harm to the 
+public interest,” SEC v. Citigroup Glob. Mkts. Inc ., 673 F.3d 158, 163 n.1 (2d Cir.  2012).  There 
+is no indication that a preliminary injunction here would harm the public interest.  Rather, the 
+public interest would be disserved by permitting defendants to continue to litigate what, as 
+discussed above,  see supra pp. 3–5, are likely fraudulent no-fault claims, see Granovsky , 2022 WL 
+1810727, at *11. 
+E. Security for the Injunction  
+Plaintiff’s  request for a waiver of Federal Rule of Civil Procedure 65(c)’s security 
+requiremen t is granted.  Rule 65(c) provides that  “the court may issue a preliminary injunction or 
+a temporary restraining order only if the movant gives security in an amount that the court 
+considers proper to pay the costs and damages sustained by any party found to have been 
+wrongfully enjoined or restrained.”  Fed. R. Civ. P. 65(c).  However, an exception to the security 
+requirement applies in “cases involving the enforcement of ‘public interests’ arising out of 
+‘comprehensive federal health and welfare statutes .’”  Gov’t Emps. Ins. Co. v. Wellmart RX, Inc., 
+435 F. Supp. 3d 443, 456 (E.D.N.Y. 2020) (quoting Pharm. Soc. of State of N.Y., Inc. v. N.Y. State 
+Dep’t of Soc. Servs ., 50 F.3d 1168, 1174 (2d Cir. 1995)).  Courts in this district have consistently 
+held that claims of no-fault insurance fraud implicate the “enforcement of public interests” 
+exception to Rule 65(c)’s security requirement.  See Gov’t Emps. Ins. Co. v. Landow, No. 21-CV-
+1440 (NGG) (RER), 2022 WL 939717, at *14 (E.D.N.Y. Mar. 29, 2022); Pierre, 2024 WL 85088, 
+at *8; Granovsky , 2022 WL 1810727, at *11.  Defendants have not contested the waiver.  
+Accordingly, Rule 65(c)’s security requirement is waived.   
+ 
+ 
+Case 1:24-cv-00360-RPK-CLP   Document 52   Filed 05/16/24   Page 8 of 12 PageID #: 17079 
+II. The Anti-Injunction Act Precludes a  Stay of Pending State Cases  
+Plaintiff’s request for an order preliminarily enjoining Rutland and Nexray from pursuing 
+pending no-fault state court lawsuits aga inst plaintiff is denied.   See Mot. for Preliminary 
+Injunction 1.  The Anti-Injunction Act provides that “[a] court of the United States may not grant 
+an injunction to stay proceedings in a State court except as expressly authorized by Act of 
+Congress, or where necessary in aid of its jurisdiction, or to protect or effectuate  its judgments.”  
+28 U.S.C. § 2283.   “Any doubts as to the propriet y of a federal injunction against state court 
+proceedings should be resolved in favor of permitting the state courts to proceed in an orderly 
+fashion to finally determine the controversy.”  Atl. Coast Line R.R. Co. v. Bhd. of Locomotive 
+Eng’rs, 398 U.S. 281, 287, 297 (1970); see Ret. Sys. of Ala. v. J.P. Morgan Chase & Co., 386 F.3d 
+419, 430 (2d Cir. 2004)  (stating that “creat[ing] an additional exception to the Anti-Injunction Act 
+for circumstances where a federal court finds it convenient to enjoin relate d state proceedings [is] 
+an approach contrary to the Supreme Court’s direction”).  Courts apply the Anti-Injunction Act 
+not only to requests to stay proceedings in a state court but also to requests that the litigants be 
+enjoined from prosecuting pending state-law claims.  See Sierra v. City of New York, 528 F. Supp. 
+2d 465, 469 (S.D.N.Y. 2008)  (finding the Anti-Injunction Act barred both “plaintiff’s application 
+for injunctive relief to stay the Housing Court eviction proceedings and to prohibit defendant  [] 
+from prosecuting the eviction” ); Hanover Ins. Co. v. Olin Corp., No. 92 -CV-4278 (AGS), 1995 
+WL 598984, at *2 (S.D.N.Y. Oct. 11, 1995)  (denying plaintiff ’s motion to “enjoin [defendant] 
+from prosecuting its . . . claims ” in state court under the Anti -Injunction Act) .   
+Plaintiff contends that an injunction prohibiting Rutland and Nexray from litigating current 
+state court cases is  permissible because such an injunction would be  “in aid of” this Court’s 
+jurisdiction.  Pl.’s Mem. in Supp. 18–19 (Dkt. #26).   The “necessary in aid of the federal court’s 
+Case 1:24-cv-00360-RPK-CLP   Document 52   Filed 05/16/24   Page 9 of 12 PageID #: 170810 
+jurisdiction” exception to the Anti-Injunction Act simply means that an injunction may be issued 
+when “necessary to prevent a state court from so interfering with a federal court’s consideration 
+or disposition of a case as to seriously impair the federal court’s flexibility and authority to decide 
+that case.”  Atl. Coast Line R.R. Co., 398 U.S. at 295.  This exception “is generally reserved for 
+state court actions in rem , because the state court’s exercise of jurisdiction necessarily impairs, 
+and may defeat, the federal court’s jurisdiction over the res. ”  Wyly v. Weiss, 697 F.3d 131, 137–
+38 (2d Cir. 2012) (internal quotation marks omitted).  In contrast, because “an in personam action 
+involves a controversy over liability rather than over possession of a thing  . . . an in personam 
+action generally does not tend to impair or defeat the juris diction of the court in which a prior 
+action for the same cause is pending. ”  Id. at 138 (internal citations and quotation marks omitted).   
+“The Supreme Court has never held that a district court may enjoin a parallel in personam 
+action under the  ‘in aid of jurisdiction’ exception,” ibid., and the Second Circuit has done so only 
+once, when a “district court had before it a class action proceeding so far advanced that it was the 
+virtual equivalent of a res over which the di strict judge required full control,” In re Baldwin –
+United Corp., 770 F.2d 328, 337 (2d Cir. 1985).  Since Baldwin–United Corp. was decided almost 
+forty years ago, the Second Circuit has repeatedly refused to extend its holding to other situations, 
+emphasizing that Baldwin–United Corp presented “exceptional circumstances ,” United States v. 
+Schurkman , 728 F.3d 129, 138 (2d Cir. 2013) , and that the “in aid of jurisdiction” exception “is 
+generally reserved for state court actions in rem ,” Wyly, 697 F.3d at 137; see Ret. Sys. of Ala. V. 
+J.P. Morgan Chase & Co. , 386 F.3d 419, 426– 28 (2d Cir. 2004) . 
+Exceptional  circumstances here do not establish that state adjudication of no-fault actions 
+against plaintiff  would “so interfer[e] with this federal court’s consideration or disposition ” of 
+plaintiff ’s federal lawsuit “as to seriously impair the feder al court’s flexibility and  authority to 
+Case 1:24-cv-00360-RPK-CLP   Document 52   Filed 05/16/24   Page 10 of 12 PageID #: 170911 
+decide [this] case,” Atl. Coast Line R.R. Co., 398 U.S. at 295.  American Transit relies principally 
+on the prospect that state court judgments arising from defendants’ no-fault claims could limit the 
+relief available to plaintiff in this lawsuit by virtue of res judicata .  Pl.’s Mem. in Supp.  19.  
+Specifically, plaintiff argues that the in -aid-of-jurisdiction exception to the Anti-Injunction Act  
+applies because “fragmentation of American Transit’s dispute with Defenda nts into individual 
+Civil Court actions would nullify Am erican Transit’s efforts to prove fraud at a systemic  level, 
+impair a federal declaratory ju dgment action over which the Court has taken jurisdiction precisely 
+to eliminate su ch fragmentation, and deprive Amer ican Transit of an avenue toward complete 
+relief in any court. ”  Ibid. (brackets , internal quotation marks, and citation omitted).  But while it 
+is possible that a state court  could decide some issues presented in this case  in a manner adverse 
+to plaintiff , the risk of res judicata cannot alone justify the in-aid-of-jurisdiction exception because 
+the possibility that the state court enters jud gment first is present wherever state and federal 
+lawsuits present common issues.  If the risk of res judicata from a state court judgment were 
+sufficien t to trigger the in-aid-of-jurisdiction exception to the Anti-Injunction A ct, the exception 
+would likely swallow the rule.  The fact that the exception is almost never invoked in in personam 
+cases demonstrates that  “[t]he mere existence of a parallel action in state court does not rise to the 
+level of interference with federal jurisdiction necessar y to permit injunctive relief under the 
+‘necessary in aid of ’ exception. ”  Mayzenberg, 2018 WL 6031156, at *8 (citing In re Baldwin -
+United Corp., 770 F.2d at 336).   
+Because “the necessary -in-aid-of-jurisdiction exception applies (by definition) when 
+necessary to protect the Court’s jurisdiction—not when it is desirable, or even necessary, to protect 
+a private par ty’s litigation position ,”  Granovsky , 2022 WL 1810727, at *6, this Court  lacks 
+authority under the Anti -Injunction Act to  stay the pending state court proceedings.   
+Case 1:24-cv-00360-RPK-CLP   Document 52   Filed 05/16/24   Page 11 of 12 PageID #: 171012 
+CONCLUSION 
+Plaintiff’s motion for a preliminary injunction  order is granted in part and denied in part.  
+Defendants Rutland and Nexray, and anyone acting on their behalf, are enjoined from (1) f urther 
+pursuing any no-fault arbitrations against American Transit, until the declaratory judgment claim 
+in this case is resolved;  and (2) filing any additional no-f ault collection arbitrations and lawsuits 
+against American Transit, until the declaratory judgment claim in this case is resolved .  
+SO ORDERED. 
+       /s/ Rachel Kovner    
+      RACH EL P. KOVNER 
+      United States District Judge  
+ 
+Dated: May 16, 2024 
+ Brooklyn, New York 
+ 
+ 
+Case 1:24-cv-00360-RPK-CLP   Document 52   Filed 05/16/24   Page 12 of 12 PageID #: 1711

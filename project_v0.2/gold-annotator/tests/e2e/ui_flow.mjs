@@ -9,7 +9,7 @@ import { launch } from "./cdp.mjs";
 
 const ROOT = resolve(import.meta.dirname, "..", "..");
 const SHOTS = join(ROOT, "tests", "e2e", "screens");
-const STRESS = resolve(ROOT, "..", "python-annotator", "sample-data", "stress-packet");
+const STRESS = resolve(ROOT, "sample-data", "stress-packet");
 const PORT = 8799;
 const BASE = `http://localhost:${PORT}/`;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

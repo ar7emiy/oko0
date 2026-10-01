@@ -1,0 +1,436 @@
+1 
+ 
+UNITED STATES DISTRICT COURT 
+EASTERN DISTRICT OF NEW YORK 
+  
+---------------------------------------------------------- X  
+AMERICAN TRANSIT INS. CO.,  
+REPORT AND 
+RECOMMENDATION 
+24 CV 360 (RPK) (CLP) 
+  
+Plaintiff,  
+  
+-against-   
+  
+BRADLEY PIERRE, et al., 
+ 
+ 
+Defendants.  
+---------------------------------------------------------- X  
+POLLAK, United States Magistrate Judge: 
+ 
+On January 17, 2024, plaintiff American Transit Insurance (“American Transit” or 
+“plaintiff”) commenced this action against Bradley Pierre (“Pierre”), Marvin Moy, M.D. 
+(“Moy”), Rutland Medical P.C. (“Rutland”), William A. Weiner, D.O. (“Weiner”), Nexray 
+Medical Imaging, P.C., d/b/a Soul Radiology Medical Imaging (“Nexray”), and John Does 1-15.  
+(Compl.1).  Plaintiff alleges that defendants operated an illegal scheme to defraud plaintiff by 
+collecting payments on non-compensable and fraudulent No-Fault insurance claims, and it 
+asserts claims under the Racketeer Influenced and Corrupt Organizations Act, 18 U.S.C. §§ 1961 
+et seq., the Declaratory Judgment Act, 28 U.S.C. §§ 2201, 2202, and New York Public Health 
+Law § 238(a).  (Id.)   
+Currently pending before this Court is defendant Pierre’s Motion to vacate the certificate 
+of default entered against him on March 1, 2024 (ECF No. 22), and to interpose an Answer to 
+plaintiff’s Complaint (the “Motion” or “Mot.”) (ECF No. 73).  The Motion was referred to the 
+undersigned to prepare a Report and Recommendation.  (Electronic Order, dated August 6, 
+2024).  For the reasons set forth below, the Court respectfully recommends that the district court 
+grant defendant Pierre’s Motion. 
+ 1 Citations to “Compl.” refer to plaintiff’s Complaint, filed January 17, 2024.  (ECF No. 1).  
+Case 1:24-cv-00360-RPK-CLP   Document 77   Filed 08/27/24   Page 1 of 17 PageID #: 23362 
+ 
+FACTUAL AND PROCEDURAL BACKGROUND 
+Plaintiff alleges that it is “the largest taxi and livery No-Fault liability insurer in New 
+York.”  (Compl. ¶ 1).  For over a decade, defendant Pierre was allegedly involved in an illegal 
+scheme, along with the other named defendants, that demanded from plaintiff “payment for 
+numerous false, inflated, and otherwise fraudulent No-fault claims.”  (Id.)  Defendant Pierre was 
+personally served with a copy of the Summons and Complaint on January 24, 2024.  (ECF No. 
+14).  At the time, Pierre was represented by different counsel in a related federal civil case, 
+where Pierre was alleged to have been involved in a similar fraudulent No-fault claims scheme.  
+(ECF No. 63 at 2 (citing Allstate Ins. Co. v. Pierre, No. 23 CV 6572 (E.D.N.Y.)).  The same law 
+firm that was defending Pierre in the related civil case was also representing Pierre in one of two 
+related state court interpleader actions, which are currently pending in the Supreme Court of 
+Nassau County.  (ECF No. 61 at 2).  Pierre was also represented at the time by another law firm 
+in a criminal case in the Southern District of New York, which was terminated on June 3, 2024. 
+United States v. Pierre, No. 22 CR 19 (S.D.N.Y.).  
+On February 8, 2024, Pierre’s counsel in the related federal civil action and the state 
+court action filed motions to withdraw in both matters, which were granted in the federal action 
+on February 22, 2024, and on April 2, 2024, in the state court action.  (ECF No. 61 at 2).  In the 
+instant case, Pierre failed to appear or otherwise respond to the Complaint by the February 14, 
+2024, deadline, and on March 1, 2024, the Clerk of Court entered a certificate of default against 
+him.  (ECF No. 22).  On April 9, 2024, plaintiff filed a motion for default judgment against 
+Pierre and one other defendant, which remains pending.  (ECF No. 34).2   
+ 2 Default was simultaneously entered against defendant Rutland Medical, P.C. (“Rutland”), and plaintiff’s 
+pending default judgment motion was brought against both Pierre and Rutland.  (ECF Nos. 21, 34–38).  As of the 
+date of this Report and Recommendation, no counsel has appeared for Rutland, and Rutland has not challenged the 
+entry of default or plaintiff’s motion for default judgment. 
+Case 1:24-cv-00360-RPK-CLP   Document 77   Filed 08/27/24   Page 2 of 17 PageID #: 23373 
+ 
+On May 29, 2024, Cary Scott Goldinger, Esq. (“Mr. Goldinger”) filed a notice of 
+appearance on behalf of Pierre (ECF No. 55), and on June 10, 2024, Adam B. Dressler, Esq. 
+(“Mr. Dressler”) also filed a notice of appearance on behalf of Pierre (ECF No. 58).  Mr. 
+Goldinger claims that once he was retained by Pierre, he began to speak with plaintiff’s attorney, 
+Skip Short, Esq. (“Mr. Short”), “about a global resolution of this action on behalf of all 
+defendants, which settlement would also include the withdrawal of AT’s potential claim in the 
+two (2) state court interpleader cases.”  (ECF No. 61 at 2).  At that time, however, defendant 
+Pierre still had not moved to vacate the default entered against him, nor had he contested the 
+pending default judgment motion. 
+  On June 12, 2024, the Court held a conference and ordered defendant Pierre “to either 
+arrange with plaintiff to pay [the] costs of [a] default judgment motion or file [a] motion to 
+vacate.”  (Minute Entry, dated June 13, 2024).  Thereafter, on June 19, 2024, defendant Pierre 
+filed a letter requesting an extension of time and vacatur of default, explaining that the parties 
+were unable to reach an agreement on payment for plaintiff’s costs of litigating the default 
+judgment.  (ECF No. 61 at 1).  Plaintiff filed a letter in opposition on June 26, 2024 (ECF No. 
+63), and on July 5, 2024, Pierre filed a reply in support of his June 19, 2024, letter.  (ECF No. 
+68). 
+On July 19, 2024, this court issued an Order denying Pierre’s June 19, 2024, letter motion 
+for an extension of time, finding it to be substantively inadequate to constitute a formal motion to 
+vacate, and directing Pierre to submit a formal motion.  (ECF No. 69).  Thereafter, Pierre filed 
+the instant Motion.  In support of his Motion, Pierre filed the declarations of his attorneys, Mr. 
+Goldinger (“Goldinger Decl.”) (ECF No. 73-1) and Mr. Riopelle (“Riopelle Decl.”) (ECF No. 
+73-2), a Memorandum of Law (“Def’s Mem.”) (ECF No, 73-3), and his proposed Answer (ECF 
+Case 1:24-cv-00360-RPK-CLP   Document 77   Filed 08/27/24   Page 3 of 17 PageID #: 23384 
+ 
+No. 73-4).  In his Memorandum of Law, Pierre provides a more substantive argument for the 
+vacatur of default than he did in his previous letter, claiming that he began searching for an 
+attorney to represent him promptly after he was aware of the lawsuit.  (Def’s Mem.3 at 7–9).  He 
+also contends that his plea allocution from the related criminal case does not relate to the 
+allegations in the instant case, and that the delay will not cause prejudice to the plaintiff.  (Id.)   
+In response, plaintiff filed a Memorandum in Opposition to Pierre’s Motion.  (ECF No. 
+74).  In that Memorandum, plaintiff argues that Pierre continues to fail to prove that he did not 
+willfully default, that his plea allocution from the criminal case directly relates to the allegations 
+in the instant case, and that the plaintiff continues to be prejudiced by the delay.  (Id. at 3–4).   In 
+response, Pierre’s counsel, Mr. Goldinger, filed a second declaration in further support of 
+Pierre’s Motion to vacate (“Goldinger 2d Decl.”)  (ECF No. 75).  In that declaration, Mr. 
+Goldinger reiterates the arguments in Pierre’s Memorandum of Law, contending that Pierre 
+maintains a meritorious defense because he never pled guilty to health care fraud charges.  (Id. ¶ 
+14).   
+DISCUSSION 
+I. Legal Standards 
+Rule 55(a) of the Federal Rules of Civil Procedure provides that “[w]hen a party against 
+whom a judgment for affirmative relief is sought has failed to plead or otherwise defend, and that 
+failure is shown by affidavit or otherwise, the clerk must enter the party’s default.”  Fed. R. Civ. 
+P. 55(a).  Rule 55 sets forth a two-step process for an entry of default judgment.  See Enron Oil 
+Corp. v. Diakuhara, 10 F.3d 90, 95–96 (2d Cir. 1993).  First, the Clerk of Court enters the default 
+pursuant to Rule 55(a) by notation of the party’s default on the Clerk’s record of the case.  Fed. 
+ 3 Citations to “Def’s Mem.” refer to defendant’s Memorandum of Law, filed in support of his Motion for 
+vacatur of the default.  (ECF No, 73-3).   
+Case 1:24-cv-00360-RPK-CLP   Document 77   Filed 08/27/24   Page 4 of 17 PageID #: 23395 
+ 
+R. Civ. P. 55(a).  Second, after the Clerk of Court enters a default against a party, the court may 
+enter a default judgment thereagainst if that party fails to move to set aside the default pursuant 
+to Rule 55(c).  Fed. R. Civ. P. 55(b). 
+Rule 55(c) permits the Court to set aside an entry of default for good cause.  The standard 
+for doing so is less rigorous than the “excusable neglect” standard for setting aside a default 
+judgment by motion pursuant to Rule 60(b).  Meehan v. Snow, 652 F.2d 274, 276 (2d Cir. 1981).  
+The main factors for the Court to consider in determining whether vacatur is appropriate are 
+whether the default was willful, whether a meritorious defense is present, and whether setting it 
+aside would prejudice the adversary.  Shariff v. Amanda Realty, Inc. No. 11 CV 2547, 2013 WL 
+5522444 at *6 (E.D.N.Y. Sept. 30, 2013) (citing Enron Oil Corp. v. Diakuhara, 10 F.3d at 96, 
+and Meehan v. Snow, 652 F.2d at 277).  Other relevant equitable factors may also be considered, 
+including, for instance, whether the failure to follow a rule of procedure was a mistake made in 
+good faith and whether the entry of default would bring about a harsh or unfair result.  See Enron 
+Oil Corp. v. Diakuhara, 10 F.3d at 96.  The party seeking relief from an entry of default bears the 
+burden of proof.  Aetna Life Ins. Co. v. Licht, No. 03 CV 6764, 2004 WL 2389824, at *3 
+(S.D.N.Y. Oct. 25, 2004) (quoting In re Martin-Trigona, 763 F.2d 503, 505 n.2 (2d Cir. 1985)).  
+Defaults are not favored, however, and doubts are to be resolved in favor of a trial on the merits.  
+Meehan v. Snow, 652 F.2d at 277. 
+II. Analysis 
+Defendant seeks to vacate the Clerk’s entry of default against him, arguing that default in 
+this case was not willful, that he has several meritorious defenses to the action, and that plaintiff 
+will not be prejudiced by further delay.  (Def’s Mem. at 7–9).  Applying the factors articulated 
+above, the Court concludes that Pierre’s default was not willful, that he has adequately raised a 
+meritorious defense, and that vacating the default will not prejudice the adversary. 
+Case 1:24-cv-00360-RPK-CLP   Document 77   Filed 08/27/24   Page 5 of 17 PageID #: 23406 
+ 
+A. Willfulness 
+The first question is whether the default was willful. The test for willfulness in this 
+context is not simply whether a defendant was properly served and failed to respond.  Instead, 
+the relevant inquiry for determining willfulness relates to the defaulting party’s actions after it 
+became aware of the existence of the litigation or entry of default.  Prestige Capital Corp. v. 
+Fuber LLC, No. 16 CV 9577, 2017 WL 2558803, at *2 (S.D.N.Y. June 5, 2017) (citing Swarna 
+v. Al-Awadi, 622 F.3d 123, 142–43 (2d Cir. 2010)); see also Bank of New York Mellon v. 
+Hatter, No. 14 CV 1024, 2017 WL 11724909 at *2 (E.D.N.Y. Dec. 21, 2017) (finding that 
+despite defaulting party’s admission of proper service, the failure of the defaulting party to enter 
+an appearance in a timely manner “may have been negligent or careless,” but did “not constitute 
+willfulness”)).  Thus, there must be “more than mere[] neglect or carelessness” to support a 
+finding of willfulness.  Aetna Life Ins. Co. v. Licht, 2004 WL 2389824, at *4 (finding 
+defendant’s explanations for letting the case “languish” plausible and acceptable).   
+A finding of willfulness does not, however, require that the default occurred due to bad 
+faith, so long as the default is the “deliberate and intended consequence of movant’s actions.”  
+Shariff v. Amanda Realty, Inc., 2013 WL 5522444 at *7 (citing Gucci Am., Inc. v. Gold Ctr. 
+Jewelry, 158 F.3d 631, 635 (2d Cir. 1998)); see also S.E.C. v. McNulty, 137 F.3d 732, 739 (2d 
+Cir. 1998) (affirming the district court’s finding of willfulness where defendant’s counsel failed 
+to file an answer despite repeated warnings that plaintiff would move for default judgment), cert. 
+denied, 525 U.S. 931 (1998); Dominguez v. United States, 583 F.2d 615, 618 (2d Cir. 1978) 
+(finding that counsel’s 10-month delay in seeking to vacate a dismissal could not be 
+characterized as excusable neglect), cert. denied, 439 U.S. 1117 (1979); Dixon v. Ragland, No. 
+03 CV 826, 2005 WL 2649484, at *2 (S.D.N.Y. Oct. 14, 2005) (finding willfulness where 
+defendants offered no explanation for their failure to respond to the complaint). 
+Case 1:24-cv-00360-RPK-CLP   Document 77   Filed 08/27/24   Page 6 of 17 PageID #: 23417 
+ 
+In Swarna v. Al-Awadi, for example, the Second Circuit found that although the 
+individual defendants failed to answer the complaint, the defendants retained counsel just one 
+day after receiving the motion for default judgment.  The court found that this delay did not rise 
+to the level of “egregious or deliberate conduct” required to establish willfulness.  622 F.3d at 
+143 (citing New York v. Green, 420 F.3d 99, 108 (2d Cir. 2005)); cf. Kuklachev v. Gelfman, No. 
+08 CV 2214, 2009 WL 497576, at *3 (E.D.N.Y. Feb. 26, 2009) (finding willfulness where 
+defendants “took a calculated risk that the case would be resolved in their favor” where they 
+pursued insurance coverage and filed a motion to dismiss plaintiff’s claim in lieu of answering 
+another defendant’s cross claims). 
+Here, defendant Pierre argues that his default was not willful because after receiving 
+notice of the lawsuit, he promptly began searching for counsel to represent him on the matter.  
+(Def’s Mem. at 8).  Pierre acknowledges that at the time the answer was due, he “was 
+represented by counsel in related matters;” however, that counsel was already in the process of 
+withdrawing as counsel to Pierre in those matters.  (Id. at 7–8).  Pierre explains that he 
+“attempted to negotiate with his original counsel to continue to represent him” and 
+simultaneously “reached out to several [other] attorneys to discuss engaging their services.”  (Id. 
+at 8).  Pierre claims that despite his efforts to obtain an attorney, “he was unable to find counsel 
+while there were motions pending from an existing attorney to be relieved and it was not a 
+simple process to find new counsel.”  (Id.)  Further, Pierre notes that as soon as he was able to 
+secure his current counsel, his counsel promptly moved to work with plaintiff’s attorney “to 
+vacate the default and allow for an answer to be filed.”  (Id.)  Pierre argues that given his 
+“attempts to obtain time to answer” and his initial willingness to negotiate to pay “the costs of 
+vacatur[]” to plaintiff’s counsel, it is clear that he did not willfully default.  (Id.)  
+Case 1:24-cv-00360-RPK-CLP   Document 77   Filed 08/27/24   Page 7 of 17 PageID #: 23428 
+ 
+Having considered Pierre’s arguments, the Court concludes that Pierre’s default was not 
+willful.  Courts in this district have previously held that a defendant’s default was not willful 
+when the defendant was not represented by an attorney at the time of service and had “made 
+diligent efforts to reach out to various attorneys to engage them” following service.  Martinez v. 
+Feliks & Sons Storage Tank Corp., No. 21 CV 3613, 2022 WL 18859073 at *7 (E.D.N.Y. Nov. 
+1, 2022).  Even though Pierre admits that he was actively represented by counsel in related 
+matters at the time of service, given that his counsel at the time was already in the process of 
+withdrawing as counsel at the time the answer was due, the same principle applies here.  Indeed, 
+when Pierre’s counsel filed their motions to withdraw as counsel in the related cases on February 
+8, 2024, they cited “irreconcilable differences” between attorney and client.  This was less than 
+one week before the answer to the Complaint in the instant motion was due.  Allstate Ins. Co. v. 
+Pierre, No. 23 CV 6572 (E.D.N.Y.) (ECF No. 52-1 ¶ 11).  (See also ECF No. 61 at 2).  
+Therefore, it is reasonable to assume that his counsel of record in the other actions was in the 
+process of withdrawing from representation at the time of service and had no intention of 
+representing him in this action. 
+Further, while other courts have found that a defendant’s default was willful when the 
+defendant failed to prove that it made an effort to retain an attorney in a timely fashion,  see, e.g., 
+United We Stand America, Inc. v. United We Stand, America New York, Inc. 128 F.3d 86, 89 
+(2d Cir. 1997), Pierre represents  that even while he was still represented in his other cases by his 
+previous counsel, he began the process of contacting other attorneys.  (Def’s Mem. at 8).  While 
+six plus weeks passed after Pierre’s former counsel moved to withdraw and Pierre’s current 
+counsel filed his notice of appearance, the Court finds it reasonable to assume that Pierre’s 
+Case 1:24-cv-00360-RPK-CLP   Document 77   Filed 08/27/24   Page 8 of 17 PageID #: 23439 
+ 
+process to find new counsel “was not a simple process” given that he was facing several lawsuits 
+and motions to withdraw in the related cases.  (Id.)   
+Plaintiff argues that Pierre’s current counsel “had been representing Pierre’s company, 
+MRC, in a state court interpleader action,” beginning on March 12, 2024, over two months 
+before counsel filed a notice of appearance in the instant case.  (ECF No. 74 at 6).  However, the 
+fact that Pierre’s company was represented in a related case does not mean that the same counsel 
+had already agreed to represent Pierre in this case.  Given that Pierre was actively litigating 
+several cases at the same time, it is reasonable to assume that Pierre’s failure to respond in a 
+timely manner was a matter of negligence or confusion, rather than willfulness.  See Springs v. 
+Clements, 202 F.R.D. 387, 394 (E.D.N.Y. 2001) (finding that the defendants did not willfully 
+default simply because they did not understand that the two lawsuits they were simultaneously 
+involved in were being litigated in separate courthouses).  Moreover, while it took plaintiff’s 
+current counsel three weeks between filing a notice of appearance and submitting a letter seeking 
+an extension of time to file an answer, this can be explained by the fact that Pierre’s counsel first 
+attempted to negotiate with plaintiff’s counsel to obtain a voluntary vacatur of default in 
+exchange for the costs of moving for default before “seek[ing] court intervention.”  (Def’s Mem. 
+at 8).  Accordingly, it is clear that Pierre took several steps to address the suit and did not 
+deliberately avoid responding, and the Court thus concludes that Pierre did not willfully default.  
+If willfulness were the only factor to be considered in determining whether to vacate a 
+default, the Court would have no hesitation in recommending that the motion to vacate be 
+granted.  However, the Court must also consider the two remaining factors as they apply in this 
+case: whether defendant has raised a meritorious defense, and whether vacating the default 
+Case 1:24-cv-00360-RPK-CLP   Document 77   Filed 08/27/24   Page 9 of 17 PageID #: 234410 
+ 
+would prejudice the plaintiff.  Shariff v. Amanda Realty, Inc., 2013 WL 5522444 at *6 
+(E.D.N.Y. 2013). 
+B. Meritorious Defense 
+To demonstrate a sufficiently meritorious defense, “the defendant need not establish his 
+defense conclusively, but he must present evidence of facts that, if proven at trial, would 
+constitute a complete defense.”  Shariff v. Amanda Realty, Inc., 2013 WL 5522444 at *8 
+(E.D.N.Y. 2013) (citing Aetna Life Ins. Co. v. Licht, 2004 WL 2389824, at *4).  In other words, 
+the defendant must show that there is some determination to be made by the factfinder that could 
+result in a finding of no liability for the defendant.  American Alliance Ins. Co., Ltd. v. Eagle Ins. 
+Co., 92 F.3d 57, 61 (2d Cir. 1996). 
+Pierre claims that he has several meritorious defenses.  (Def’s Mem. at 9–10).  In his 
+Memorandum of Law in support of the instant Motion, Pierre notes that he “never pled guilty to 
+the health care fraud charges against him” and instead “pled guilty to a bribery charge and a tax 
+evasion charge.”  (Id. at 11; see also Riopelle Decl. at 1).  He claims that in that criminal case, 
+“the prosecutors were unable to prove” that Pierre “submitted fraudulent no-fault claims to 
+insurance companies,” and therefore, “[t]he health care fraud charges against Pierre were 
+ultimately dismissed” in that case.  (Def’s Mem. at 10–11).  Further, Pierre contends that he did 
+not own, control, or operate either the Rutland or Nexray medical facilities, and therefore, those 
+facilities submitted their claims “legitimately.”  (Id. at 10).  Pierre also clarifies that both Rutland 
+Medical Facility and his personal company, Medical Reimbursement Consultants (“MRC”), 
+were “never indicted,” nor did they ever plead guilty to health care fraud charges, and therefore, 
+it is a “question of fact” as to whether or not plaintiff is entitled to the money it seeks.  
+(Goldinger 2d Decl. ¶¶ 7, 9).  
+Case 1:24-cv-00360-RPK-CLP   Document 77   Filed 08/27/24   Page 10 of 17 PageID #: 234511 
+ 
+In plaintiff’s June 26, 2024, letter to the Court, plaintiff argued that in Pierre’s plea 
+allocution in the related criminal case, Pierre acknowledged his active role in the alleged scheme 
+that aimed to defraud plaintiff by collecting payments on non-compensable and fraudulent No-
+Fault insurance claims.  (ECF No. 63 at 2).  Plaintiff thus contends that Pierre’s denial of the 
+allegations against him in his proposed answer “is a blatant breach of his guilty plea and 
+allocution, and in any event wholly lacking merit given the facts adduced in the criminal 
+proceedings.”  (Id. at 4).  However, Pierre asserts that since he never pled guilty to health care 
+fraud charges, the criminal proceeding at which Pierre entered a guilty plea and the instant matter 
+“are distinguishable,” and that the funds at issue in the instant matter are not part of the criminal 
+investigation.  (ECF No. 68 at 1–2; Def.’s Mem. At 11–12).   
+In response to Pierre’s argument that “he did not operate the co-defendants medical 
+companies,” and therefore, the co-defendants “were eligible to collect the monies being sought 
+by the Plaintiff,” (Def’s Mem. at 11–12), plaintiff cites the specific language of Pierre’s plea 
+allocution in the related criminal case, wherein Pierre admitted that he “knew that Clinics were 
+unable to bill insurance companies for no-fault benefits if the medical facilities are controlled by 
+non-physicians,” but that he “nonetheless, agreed with others to submit bills to insurance 
+companies, falsely representing that the Clinics were owned and operated by licensed medical 
+practitioners . . . .”  (ECF No. 74 at 14 (citing ECF No. 74-2 at 20:20–21)).  In Mr. Goldinger’s 
+second declaration, Pierre’s counsel reiterated the same points as before with respect to the 
+assertion that Pierre “never pled guilty to health care fraud charges,” adding that plaintiff’s 
+allegations of health care fraud are “frivolous and without merit.”  (Golding 2d Decl. ¶¶ 8–9).   
+To prove a civil RICO fraud claim, “a plaintiff must establish: (1) that the defendant (2) 
+through the commission of two or more acts (3) constituting a ‘pattern’ (4) of ‘racketeering 
+Case 1:24-cv-00360-RPK-CLP   Document 77   Filed 08/27/24   Page 11 of 17 PageID #: 234612 
+ 
+activity’ (5) directly or indirectly invests in, or maintains an interest in, or participates in (6) an 
+‘enterprise’ (7) the activities of which affect interstate or foreign commerce.’”  Kades v. Organic 
+Inc., No. 00 CV 03671, 2003 WL 470331 at *8 (S.D.N.Y. Feb. 24, 2003) (citing Moss v. Morgan 
+Stanley, 719 F. 2d 5, 17 (2d Cir. 1983)).  Additionally, “a plaintiff must allege ‘causation,’ i.e., 
+that he or she was ‘injured in his [or her] business or property by reason of a violation of section 
+1962.”  Id.  To establish a RICO conspiracy claim under 18 U.S.C. § 1962(d), plaintiff must 
+prove that defendant engaged in “a conspiracy to violate one or more of the substantive RICO 
+provisions.”  Id. (citing Cofacredit, S.A. v. Windsor Plumbing Supply Co. Inc., 187 F. 3d 229, 
+244 (2d Cir. 1999)).   
+As demonstrated by his allocution, Pierre did not plead guilty to healthcare fraud or 
+conspiring to commit healthcare fraud.  In the plea allocution, the court confirms that he was 
+only pleading guilty to engaging in a Travel Act bribery scheme and a tax conspiracy to defraud 
+the IRS.  (See ECF No. 35-2).  The elements needed to prove the civil RICO claims alleged in 
+this case are substantively different from the elements required to prove a Travel Act bribery 
+charge and the elements necessary to prove the tax fraud charge.  (Id. at 10:17–24, 11:6–10, 
+12:12–25, 13:1–2 (listing the elements of the Travel Act bribery offense and the elements of the 
+conspiracy to defraud the IRS offense that the government would have to prove had Pierre 
+chosen to proceed to trial)).  Indeed, the plea allocution transcript does not mention 
+“racketeering,” “racketeering enterprise,” or “patterns of racketeering,” which are central 
+elements of the RICO claims in this case.  (Id.)  Moreover, as Pierre claims, there is no evidence 
+in the plea allocution transcript from which it could be determined if the Rutland and Nexray 
+facilities were owned, controlled by, or even associated with Pierre.  (Id. at 20:22–25; 21:1–2).   
+Case 1:24-cv-00360-RPK-CLP   Document 77   Filed 08/27/24   Page 12 of 17 PageID #: 234713 
+ 
+In any event, it is not the Court’s role to make factual or legal determinations in a motion 
+to vacate an entry of default.  Indeed, other courts in this district have held that in RICO cases, 
+which are particularly complex and require that the plaintiff must “allege facts that give rise to a 
+strong inference of fraudulent intent,” the court should give defendants “the opportunity to test 
+[the] Plaintiff’s RICO allegations on the merits.”  Long v. Zhuang, No. 22 CV 1293, 2022 WL 
+19196270, at *7 (E.D.N.Y. Oct. 27, 2022) (citing San Leandro Emergency Med. Grp. Profit 
+Sharing Plan v. Phillips Morris Cos., Inc., 75 F. 3d. 801, 812 (2d Cir. 1996)).   
+Therefore, while Pierre may have made some significant admissions during the course of 
+his plea allocution in the criminal case, it is clear that plaintiff has the burden of proving all of 
+the elements of a RICO and a RICO conspiracy claim in order to recover in this case and simply   
+referring to the plea allocution is not enough.  Had Pierre pled guilty to the healthcare fraud 
+charges, instead of the bribery and tax fraud charges, some of these other elements may have 
+been conceded.  However, based on the information before the Court, including the plea 
+allocution and defendant’s assertions of a defense to the claims, the Court finds that a factfinder 
+will have to determine whether plaintiff can satisfy all of the elements required, as well as  
+Pierre’s assertions that he did not own, control, or operate Rutland and Nexray medical facilities, 
+and that those facilities, along with MRC, submitted their claims legitimately.  (Def’s Mem. at 
+10–1).  Given that the record in this case is not fully developed, and taking into account the 
+Court’s strong preference to resolve a case on its merits, the Court finds that Pierre has 
+adequately established the existence of a meritorious defense.  See Shariff v. Amanda Realty, 
+Inc., 2013 WL 5522444 at *8 (finding that defendant’s factual assertions, “if proven at trial, 
+would constitute a complete defense”).  
+Case 1:24-cv-00360-RPK-CLP   Document 77   Filed 08/27/24   Page 13 of 17 PageID #: 234814 
+ 
+Further, in his June 19, 2024, letter to the Court, Pierre also claims that given the 
+“substantial sum” involved in the case, the Court should disfavor the default and instead decide 
+the case on its merits.  (ECF No. 61 at 3).  While this fact alone is not an adequate reason to 
+vacate the default, other courts have held that the fact that “large sums of money are at stake … 
+further tips the scale in favor of vacating the default.”  See 131 Main Street Associates, Inc. v. 
+Manko, 1998 WL 811875 at *5 (S.D.N.Y. 1998) (citing Sony Corp. v. Elm State Electronics, 
+Inc., 800 F.2d 317, 320 (2d Cir. 1986))).  Here, given that Pierre has raised several factual 
+assertions that may prove the existence of a meritorious defense, the Court concludes that the 
+significant sum of money further supports a vacatur of default.   
+C. Undue Prejudice 
+The third factor that the Court must consider in determining whether to excuse a default 
+is prejudice to the plaintiff.  To determine whether a vacatur would cause prejudice to the 
+plaintiff, courts must determine if in addition to a delay, the vacatur “will cause the loss of 
+evidence, create increased difficulties for discovery, or provide greater opportunity for fraud and 
+collusion.”  Shariff v. Amanda Realty, Inc., 2013 WL 5522444 at *8 (E.D.N.Y. 2013).  Pierre 
+argues that “this case is in the very earliest stages and this office has been actively participating 
+in any preliminary discovery that has commenced.”  (Def’s Mem. at 8).  In response, plaintiff 
+argues that it “is substantially prejudiced,” because “Pierre’s default has caused [AT] to 
+needlessly incur significant expense . . . .”  (ECF No. 74 at 18).   
+Although Pierre’s failure to act diligently has delayed the resolution of this case, plaintiff 
+has not asserted that setting aside the default will cause the loss of evidence or create increased 
+difficulties for discovery.  The Court thus concludes that plaintiff has not established meaningful 
+prejudice for purposes of the instant motion to vacate.  See Ward v. Ramkalawan, No. 11 CV 
+4295, 2013 WL 1149108, at *5 (E.D.N.Y. Feb. 11, 2013), report and recommendation adopted, 
+Case 1:24-cv-00360-RPK-CLP   Document 77   Filed 08/27/24   Page 14 of 17 PageID #: 234915 
+ 
+2013 WL 1149068 (E.D.N.Y. Mar. 19, 2013) (finding that “delay alone is not a sufficient basis 
+for establishing prejudice”); see also Sacks v. Deutsche Bank Nat'l Tr. Co. as Tr. for Am. Home 
+Mortg. Inv. Tr. 2006-3, No. 12 CV 6338, 2016 WL 11480710 at *7 (E.D.N.Y. Aug. 15, 2016) 
+(holding that “costs incurred with respect to countering a defendant’s motion to vacate do not 
+constitute prejudice.” (quoting Gesuldi v. Gayle Bard Landscapes, Inc., No. 10 CV 5762, 2011 
+WL 2457882, at *3 (E.D.N.Y. May 31, 2011))), report and recommendation adopted, No. 12 CV 
+6338, 2016 WL 5338540 (E.D.N.Y. Sept. 23, 2016). 
+D. Summation 
+As set forth above, the Court finds that the majority of relevant factors favor defendant 
+Pierre and thus that the default entered against him should be vacated pursuant to Rule 55(c) of 
+the Federal Rules of Civil Procedure. 
+III. Attorney’s Fees and Costs 
+Plaintiff also argues that if the Motion is granted, “Pierre’s appearance at this stage 
+should be conditioned upon paying [AT]’s fees and expenses incurred to deal with his 
+delinquency.”  (ECF No. 74 at 19).  In response, Pierre asserts that “AT never had any intention 
+of resolving this issue in good faith” and that his “demand of $40,000.00” is “outrageous” and 
+“laughable.”  (Goldinger 2d Decl. ¶ 10).  
+Upon granting a motion to vacate default, other courts in this circuit have ordered that the 
+defendant pay the plaintiff “the reasonable attorney’s fees and costs he incurred in connection 
+with the motion for default judgment.”  Dacas v. Duhaney, No. 17 CV 03568, 2019 WL 5789749 
+(E.D.N.Y. Oct. 15, 2019), report and recommendation adopted, 2019 WL 5788322 (E.D.N.Y. 
+Nov. 6, 2019); Filo Promotions, Inc. v. Bathtub Gins, Inc., 311 F. Supp. 3d 645, 647 (S.D.N.Y. 
+2018) (noting that in vacaturs of default, courts can require “that the defaulting party reimburse 
+the plaintiff its reasonable attorneys’ fees and costs incurred as a result of the default”) 
+Case 1:24-cv-00360-RPK-CLP   Document 77   Filed 08/27/24   Page 15 of 17 PageID #: 235016 
+ 
+(collecting cases).  To assess the reasonableness of attorney’s fees in vacaturs of default, courts 
+follow the same Second Circuit standards as they do in assessing attorney’s fees requested in 
+motions for default judgment.  Filo Promotions, Inc. v. Bathtub Gins, Inc., 311 F. Supp. 3d at 
+649.  Specifically, the Second Circuit “requires a party seeking an award of attorneys’ fees to 
+support its request with contemporaneous time records that show ‘for each attorney, the date, the 
+hours expended, and the nature of the work done.’”  Id. (citing New York State Ass’n for 
+Retarded Children, Inc. v. Carey, 711 F. 2d 1136, 1148 (2d Cir. 1983)).   
+Accordingly, the Court recommends that Pierre be ordered to pay plaintiff “reasonable” 
+fees and costs associated with litigating the default in an amount to be determined by the Court at 
+a later date.  In order to determine the “reasonableness” of the requested fees, the Court 
+recommends that plaintiff be ordered to submit records proving the reasonableness of the 
+requested fees, “preferably through contemporaneous time records that describe with specificity 
+the nature of the work done, the hours expended, and the dates.”  Gunawan v. Sake Sushi Rest., 
+897 F. Supp. 2d at 94 (citing New York State Ass’n for Retarded Children, Inc. v. Carey, 711 
+F.2d at 1147–48).   
+CONCLUSION 
+In light of the above, the Court respectfully recommends that the district court:  (1) grant 
+defendant’s motion to vacate the default; (2) grant defendant leave to interpose an Answer to the 
+Complaint within twenty-one days of the date of the district court’s order adopting this Report 
+and Recommendation; (3) order Pierre to pay a reasonable portion of plaintiff’s attorney’s fees in 
+an amount to be determined by the Court at a later date; and (4) order plaintiff to submit 
+accounting records supporting his request for attorney’s fees and costs.   
+Any objections to this Report and Recommendation must be filed with the Clerk of the 
+Court, with a copy to the undersigned, within fourteen (14) days of receipt of this Report.  See 
+Case 1:24-cv-00360-RPK-CLP   Document 77   Filed 08/27/24   Page 16 of 17 PageID #: 235117 
+ 
+28 U.S.C. § 636(b)(1); Fed. R. Civ. P. 72(b)(2); see also Fed. R. Civ. P. 6(a) (providing the 
+method for computing time).  Failure to file objections within the specified time waives the right 
+to appeal the District Court’s order.  See, e.g., Caidor v. Onondaga Cnty., 517 F.3d 601, 604 (2d 
+Cir. 2008). 
+The Clerk is directed to send copies of this Report and Recommendation to the parties 
+either electronically through the Electronic Case Filing (ECF) system or by mail. 
+SO ORDERED. 
+Dated: Brooklyn, New York 
+ August 27, 2024 
+   
+ Cheryl L. Pollak 
+United States Magistrate Judge 
+Eastern District of New York 
+ 
+ 
+/s/ Cheryl L. Pollak
+Case 1:24-cv-00360-RPK-CLP   Document 77   Filed 08/27/24   Page 17 of 17 PageID #: 2352

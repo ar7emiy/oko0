@@ -1,0 +1,4 @@
+# The corpus is raw source text: its bytes, line endings included, are the test.
+# Exempt it from core.autocrlf so a Windows checkout does not rewrite it, which
+# would also invalidate text_sha256 in manifest.json.
+notes/*.txt -text

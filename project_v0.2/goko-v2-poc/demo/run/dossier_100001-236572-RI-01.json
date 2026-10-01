@@ -1,0 +1,4372 @@
+{
+  "claim_id": "100001-236572-RI-01",
+  "client_id": "100001",
+  "occurrence_id": "100001-236572",
+  "coverage_code": "RI",
+  "versions": {
+    "schema": "0.1",
+    "taxonomy": "3",
+    "model": "gpt-6-luna",
+    "patterns": "1.7",
+    "clean_policy": "none",
+    "chunk_policy": [
+      "structure-v1/30000c/2s"
+    ],
+    "offline": false
+  },
+  "watchlist": {
+    "source": "OIG LEIE",
+    "records_on_list": 84001,
+    "rule": "flagged when any member mention has a watchlist link the dossier lens admits (goko/watchlist.py)"
+  },
+  "identity": {
+    "lens": "default",
+    "lenses": {
+      "strict": {
+        "min_p": 0.9,
+        "basis": [
+          "identifier"
+        ],
+        "label": "Identifier-backed links only"
+      },
+      "default": {
+        "min_p": 0.8,
+        "basis": null,
+        "label": "Any basis, high confidence"
+      },
+      "broad": {
+        "min_p": 0.1,
+        "basis": null,
+        "label": "Adds partial and weak name matches"
+      }
+    },
+    "rarity": {
+      "surnames": "census2010",
+      "first_names": "ssa1930-2005",
+      "org_tokens": "nppes"
+    },
+    "max_cluster": 40
+  },
+  "entities": [
+    {
+      "entity_id": "100001-236572-RI-01:E1",
+      "type": "organization",
+      "cluster_id": "note:710036:c0.m1",
+      "surface_forms": [
+        "ALLSTATE",
+        "ALLSTATE INSURANCE COMPANY",
+        "AllSTATE INSURANCE COMPANY",
+        "Allstate",
+        "Allstate Insurance Company"
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": 0.9945,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 6,
+        "members": [
+          "note:710036:c0.m1",
+          "note:710036:c4.m3",
+          "note:710036:c5.m3",
+          "note:710045:c0.m1",
+          "note:710045:c1.m1",
+          "note:710085:m1"
+        ],
+        "joined_by": {
+          "note:710036:c0.m1": null,
+          "note:710036:c4.m3": {
+            "a": "note:710036:c0.m1",
+            "b": "note:710036:c4.m3",
+            "with": "note:710036:c0.m1",
+            "p": 0.9945,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710036:c5.m3": {
+            "a": "note:710036:c4.m3",
+            "b": "note:710036:c5.m3",
+            "with": "note:710036:c4.m3",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710045:c0.m1": {
+            "a": "note:710036:c0.m1",
+            "b": "note:710045:c0.m1",
+            "with": "note:710036:c0.m1",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          "note:710045:c1.m1": {
+            "a": "note:710036:c4.m3",
+            "b": "note:710045:c1.m1",
+            "with": "note:710036:c4.m3",
+            "p": 0.9999,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          "note:710085:m1": {
+            "a": "note:710036:c0.m1",
+            "b": "note:710085:m1",
+            "with": "note:710036:c0.m1",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          }
+        },
+        "weakest_link": {
+          "a": "note:710036:c0.m1",
+          "b": "note:710036:c4.m3",
+          "p": 0.9945,
+          "basis_class": "name_only",
+          "distance": "same_note"
+        },
+        "also_in_other_claims": [
+          "100002-240360-RI-01"
+        ],
+        "uncertain_merges": [
+          {
+            "a": "note:710036:c0.m1",
+            "b": "note:710045:c0.m3",
+            "p": 0.5544,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          {
+            "a": "note:710036:c0.m1",
+            "b": "note:710085:m2",
+            "p": 0.5544,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          {
+            "a": "note:710036:c0.m4",
+            "b": "note:710045:c0.m1",
+            "p": 0.5544,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          {
+            "a": "note:710036:c0.m4",
+            "b": "note:710085:m1",
+            "p": 0.5544,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          {
+            "a": "note:710045:c0.m1",
+            "b": "note:710085:m2",
+            "p": 0.5544,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          {
+            "a": "note:710045:c0.m3",
+            "b": "note:710085:m1",
+            "p": 0.5544,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          }
+        ]
+      },
+      "watchlist": [],
+      "projection_flags": [
+        "name_only_merge",
+        "uncertain_merge"
+      ],
+      "details": [],
+      "flags": [
+        "name_only_merge",
+        "uncertain_merge"
+      ],
+      "category": {
+        "value": "financier",
+        "basis": "inferred",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710045:c0.a1",
+          "note:710085:a1"
+        ]
+      },
+      "subcategory": "insurance_company"
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E2",
+      "type": "person",
+      "cluster_id": "note:710036:c0.m10",
+      "surface_forms": [
+        "Defendant Weiner",
+        "Defendant Weiner\u2019s",
+        "WILLIAM A. WEINER, D.O.",
+        "Weiner",
+        "William A. Weiner, D.O.",
+        "\u201cWeiner\u201d"
+      ],
+      "role_class": [
+        "private",
+        "professional"
+      ],
+      "confidence": 0.9999,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 4,
+        "members": [
+          "note:710036:c0.m10",
+          "note:710036:c7.m4",
+          "note:710045:c0.m10",
+          "note:710085:m9"
+        ],
+        "joined_by": {
+          "note:710036:c0.m10": null,
+          "note:710036:c7.m4": {
+            "a": "note:710036:c0.m10",
+            "b": "note:710036:c7.m4",
+            "with": "note:710036:c0.m10",
+            "p": 0.9999,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710045:c0.m10": {
+            "a": "note:710036:c0.m10",
+            "b": "note:710045:c0.m10",
+            "with": "note:710036:c0.m10",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          "note:710085:m9": {
+            "a": "note:710036:c0.m10",
+            "b": "note:710085:m9",
+            "with": "note:710036:c0.m10",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          }
+        },
+        "weakest_link": {
+          "a": "note:710036:c0.m10",
+          "b": "note:710036:c7.m4",
+          "p": 0.9999,
+          "basis_class": "name_only",
+          "distance": "same_note"
+        },
+        "also_in_other_claims": [
+          "100002-240360-RI-01"
+        ],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [
+        "name_only_merge"
+      ],
+      "details": [],
+      "flags": [
+        "name_only_merge"
+      ],
+      "category": {
+        "value": "medical",
+        "basis": "stated",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710036:c0.a6",
+          "note:710036:c7.a4"
+        ]
+      },
+      "subcategory": "physician"
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E3",
+      "type": "organization",
+      "cluster_id": "note:710036:c0.m11",
+      "surface_forms": [
+        "NEXRA Y MEDICAL IMAGING, P.C.",
+        "NEXRAY MEDICAL IMAGING, P.C. d/b/a\nSOUL RADIOLOGY MEDICAL IMAGING",
+        "NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING",
+        "Nexray",
+        "Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging",
+        "\u201cNexray\u201d"
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": 1.0,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 5,
+        "members": [
+          "note:710036:c0.m11",
+          "note:710036:c6.m5",
+          "note:710036:c7.m3",
+          "note:710045:c0.m11",
+          "note:710085:m10"
+        ],
+        "joined_by": {
+          "note:710036:c0.m11": null,
+          "note:710036:c6.m5": {
+            "a": "note:710036:c0.m11",
+            "b": "note:710036:c6.m5",
+            "with": "note:710036:c0.m11",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710036:c7.m3": {
+            "a": "note:710036:c0.m11",
+            "b": "note:710036:c7.m3",
+            "with": "note:710036:c0.m11",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710045:c0.m11": {
+            "a": "note:710036:c0.m11",
+            "b": "note:710045:c0.m11",
+            "with": "note:710036:c0.m11",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          "note:710085:m10": {
+            "a": "note:710036:c0.m11",
+            "b": "note:710085:m10",
+            "with": "note:710036:c0.m11",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          }
+        },
+        "weakest_link": {
+          "a": "note:710036:c0.m11",
+          "b": "note:710036:c7.m3",
+          "p": 1.0,
+          "basis_class": "name_only",
+          "distance": "same_note"
+        },
+        "also_in_other_claims": [
+          "100002-240360-RI-01"
+        ],
+        "uncertain_merges": [
+          {
+            "a": "note:710036:c6.m5",
+            "b": "note:720001:c4.m3",
+            "p": 0.1586,
+            "basis_class": "name_only",
+            "distance": "different_client"
+          },
+          {
+            "a": "note:710036:c7.m3",
+            "b": "note:720001:c4.m3",
+            "p": 0.1586,
+            "basis_class": "name_only",
+            "distance": "different_client"
+          }
+        ]
+      },
+      "watchlist": [],
+      "projection_flags": [
+        "name_only_merge",
+        "uncertain_merge"
+      ],
+      "details": [],
+      "flags": [
+        "name_only_merge",
+        "uncertain_merge"
+      ],
+      "category": {
+        "value": "medical",
+        "basis": "stated",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710036:c7.a3",
+          "note:710036:c7.a4",
+          "note:710045:c0.a25"
+        ]
+      },
+      "subcategory": "medical_imaging_provider"
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E4",
+      "type": "organization",
+      "cluster_id": "note:710036:c0.m12",
+      "surface_forms": [
+        "Other Defendants",
+        "the Other Defendants"
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": 1.0,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 7,
+        "members": [
+          "note:710036:c0.m12",
+          "note:710036:c1.m2",
+          "note:710036:c2.m2",
+          "note:710036:c3.m2",
+          "note:710036:c4.m2",
+          "note:710036:c5.m2",
+          "note:710036:c6.m7"
+        ],
+        "joined_by": {
+          "note:710036:c0.m12": null,
+          "note:710036:c1.m2": {
+            "a": "note:710036:c0.m12",
+            "b": "note:710036:c1.m2",
+            "with": "note:710036:c0.m12",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710036:c2.m2": {
+            "a": "note:710036:c0.m12",
+            "b": "note:710036:c2.m2",
+            "with": "note:710036:c0.m12",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710036:c3.m2": {
+            "a": "note:710036:c0.m12",
+            "b": "note:710036:c3.m2",
+            "with": "note:710036:c0.m12",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710036:c4.m2": {
+            "a": "note:710036:c0.m12",
+            "b": "note:710036:c4.m2",
+            "with": "note:710036:c0.m12",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710036:c5.m2": {
+            "a": "note:710036:c0.m12",
+            "b": "note:710036:c5.m2",
+            "with": "note:710036:c0.m12",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710036:c6.m7": {
+            "a": "note:710036:c0.m12",
+            "b": "note:710036:c6.m7",
+            "with": "note:710036:c0.m12",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          }
+        },
+        "weakest_link": {
+          "a": "note:710036:c0.m12",
+          "b": "note:710036:c3.m2",
+          "p": 1.0,
+          "basis_class": "name_only",
+          "distance": "same_note"
+        },
+        "also_in_other_claims": [],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [
+        "name_only_merge"
+      ],
+      "details": [],
+      "flags": [
+        "name_only_merge"
+      ],
+      "category": {
+        "value": "medical",
+        "basis": "inferred",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710036:c0.a4",
+          "note:710036:c0.a5",
+          "note:710036:c0.a6",
+          "note:710036:c0.a7"
+        ]
+      },
+      "subcategory": "medical_providers"
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E5",
+      "type": "organization",
+      "cluster_id": "note:710036:c0.m2",
+      "surface_forms": [
+        "ALLSTATE INDEMNITY COMPANY",
+        "AllSTATE INDEMNITY COMPANY",
+        "Allstate Indemnity Company"
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": 1.0,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 3,
+        "members": [
+          "note:710036:c0.m2",
+          "note:710045:c0.m2",
+          "note:710085:m3"
+        ],
+        "joined_by": {
+          "note:710036:c0.m2": null,
+          "note:710045:c0.m2": {
+            "a": "note:710036:c0.m2",
+            "b": "note:710045:c0.m2",
+            "with": "note:710036:c0.m2",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          "note:710085:m3": {
+            "a": "note:710036:c0.m2",
+            "b": "note:710085:m3",
+            "with": "note:710036:c0.m2",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          }
+        },
+        "weakest_link": {
+          "a": "note:710036:c0.m2",
+          "b": "note:710045:c0.m2",
+          "p": 1.0,
+          "basis_class": "name_only",
+          "distance": "same_claim"
+        },
+        "also_in_other_claims": [],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [
+        "name_only_merge"
+      ],
+      "details": [],
+      "flags": [
+        "name_only_merge"
+      ],
+      "category": {
+        "value": "other",
+        "basis": "inferred",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710045:c0.a2",
+          "note:710085:a3"
+        ]
+      },
+      "subcategory": "insurance_company"
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E6",
+      "type": "organization",
+      "cluster_id": "note:710036:c0.m3",
+      "surface_forms": [
+        "ALLSTATE FIRE & CASUALTY INSURANCE\nCOMPANY",
+        "ALLSTATE PROPERTY &\nCASUALTY INSURANCE COMPANY",
+        "AllSTATE FIRE & CASUALTY INSURANCE COMPANY",
+        "AllSTATE PROPERTY & CASUALTY INSURANCE COMPANY",
+        "Allstate Fire & Casualty Insurance Company",
+        "Allstate Fire and Casualty Insurance Company",
+        "Allstate Property & Casualty Insurance Company",
+        "Allstate Property and Casualty Insurance Company"
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": 1.0,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 6,
+        "members": [
+          "note:710036:c0.m3",
+          "note:710036:c0.m4",
+          "note:710045:c0.m3",
+          "note:710045:c0.m4",
+          "note:710085:m2",
+          "note:710085:m4"
+        ],
+        "joined_by": {
+          "note:710036:c0.m3": null,
+          "note:710036:c0.m4": {
+            "a": "note:710036:c0.m4",
+            "b": "note:710045:c0.m3",
+            "with": "note:710045:c0.m3",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          "note:710045:c0.m3": {
+            "a": "note:710036:c0.m3",
+            "b": "note:710045:c0.m3",
+            "with": "note:710036:c0.m3",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          "note:710045:c0.m4": {
+            "a": "note:710036:c0.m3",
+            "b": "note:710045:c0.m4",
+            "with": "note:710036:c0.m3",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          "note:710085:m2": {
+            "a": "note:710036:c0.m3",
+            "b": "note:710085:m2",
+            "with": "note:710036:c0.m3",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          "note:710085:m4": {
+            "a": "note:710036:c0.m3",
+            "b": "note:710085:m4",
+            "with": "note:710036:c0.m3",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          }
+        },
+        "weakest_link": {
+          "a": "note:710036:c0.m3",
+          "b": "note:710045:c0.m3",
+          "p": 1.0,
+          "basis_class": "name_only",
+          "distance": "same_claim"
+        },
+        "also_in_other_claims": [],
+        "uncertain_merges": [
+          {
+            "a": "note:710036:c0.m1",
+            "b": "note:710045:c0.m3",
+            "p": 0.5544,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          {
+            "a": "note:710036:c0.m1",
+            "b": "note:710085:m2",
+            "p": 0.5544,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          {
+            "a": "note:710036:c0.m4",
+            "b": "note:710045:c0.m1",
+            "p": 0.5544,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          {
+            "a": "note:710036:c0.m4",
+            "b": "note:710085:m1",
+            "p": 0.5544,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          {
+            "a": "note:710045:c0.m1",
+            "b": "note:710085:m2",
+            "p": 0.5544,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          {
+            "a": "note:710045:c0.m3",
+            "b": "note:710085:m1",
+            "p": 0.5544,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          }
+        ]
+      },
+      "watchlist": [],
+      "projection_flags": [
+        "name_only_merge",
+        "uncertain_merge"
+      ],
+      "details": [],
+      "flags": [
+        "name_only_merge",
+        "uncertain_merge"
+      ],
+      "category": {
+        "value": "other",
+        "basis": "stated",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710045:c0.a3",
+          "note:710085:a2"
+        ]
+      },
+      "subcategory": "insurance_company"
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E7",
+      "type": "person",
+      "cluster_id": "note:710036:c0.m5",
+      "surface_forms": [
+        "BRADLEY PIERRE",
+        "Bradley Pierre",
+        "Defendant Pierre",
+        "Pierre",
+        "\u201cPierre\u201d"
+      ],
+      "role_class": [
+        "private"
+      ],
+      "confidence": 0.9999,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 6,
+        "members": [
+          "note:710036:c0.m5",
+          "note:710036:c6.m3",
+          "note:710036:c7.m10",
+          "note:710036:c7.m8",
+          "note:710045:c0.m6",
+          "note:710085:m5"
+        ],
+        "joined_by": {
+          "note:710036:c0.m5": null,
+          "note:710036:c6.m3": {
+            "a": "note:710036:c0.m5",
+            "b": "note:710036:c6.m3",
+            "with": "note:710036:c0.m5",
+            "p": 0.9999,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710036:c7.m10": {
+            "a": "note:710036:c0.m5",
+            "b": "note:710036:c7.m10",
+            "with": "note:710036:c0.m5",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710036:c7.m8": {
+            "a": "note:710036:c0.m5",
+            "b": "note:710036:c7.m8",
+            "with": "note:710036:c0.m5",
+            "p": 0.9999,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710045:c0.m6": {
+            "a": "note:710036:c0.m5",
+            "b": "note:710045:c0.m6",
+            "with": "note:710036:c0.m5",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          "note:710085:m5": {
+            "a": "note:710036:c0.m5",
+            "b": "note:710085:m5",
+            "with": "note:710036:c0.m5",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          }
+        },
+        "weakest_link": {
+          "a": "note:710036:c0.m5",
+          "b": "note:710036:c6.m3",
+          "p": 0.9999,
+          "basis_class": "name_only",
+          "distance": "same_note"
+        },
+        "also_in_other_claims": [],
+        "uncertain_merges": [
+          {
+            "a": "note:710036:c0.m5",
+            "b": "note:720001:c0.m2",
+            "p": 0.3627,
+            "basis_class": "name_only",
+            "distance": "different_client"
+          },
+          {
+            "a": "note:710036:c0.m5",
+            "b": "note:720040:c0.m2",
+            "p": 0.3627,
+            "basis_class": "name_only",
+            "distance": "different_client"
+          },
+          {
+            "a": "note:710036:c0.m5",
+            "b": "note:720052:m2",
+            "p": 0.3627,
+            "basis_class": "name_only",
+            "distance": "different_client"
+          },
+          {
+            "a": "note:710036:c0.m5",
+            "b": "note:720077:c0.m2",
+            "p": 0.3627,
+            "basis_class": "name_only",
+            "distance": "different_client"
+          },
+          {
+            "a": "note:710036:c7.m10",
+            "b": "note:720001:c0.m2",
+            "p": 0.3627,
+            "basis_class": "name_only",
+            "distance": "different_client"
+          },
+          {
+            "a": "note:710036:c7.m10",
+            "b": "note:720040:c0.m2",
+            "p": 0.3627,
+            "basis_class": "name_only",
+            "distance": "different_client"
+          },
+          {
+            "a": "note:710036:c7.m10",
+            "b": "note:720052:m2",
+            "p": 0.3627,
+            "basis_class": "name_only",
+            "distance": "different_client"
+          },
+          {
+            "a": "note:710036:c7.m10",
+            "b": "note:720077:c0.m2",
+            "p": 0.3627,
+            "basis_class": "name_only",
+            "distance": "different_client"
+          }
+        ]
+      },
+      "watchlist": [],
+      "projection_flags": [
+        "name_only_merge",
+        "uncertain_merge"
+      ],
+      "details": [],
+      "flags": [
+        "name_only_merge",
+        "uncertain_merge"
+      ],
+      "category": {
+        "value": "other",
+        "basis": "inferred",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710045:c0.a21",
+          "note:710045:c0.a22",
+          "note:710045:c0.a23"
+        ]
+      },
+      "subcategory": null
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E8",
+      "type": "organization",
+      "cluster_id": "note:710036:c0.m6",
+      "surface_forms": [
+        "MEDICAL REIMBURSEMENT CONSULTANTS INC.",
+        "MEDICAL REIMBURSEMENT CONSULTANTS INC.,",
+        "Medical Reimbursement Consultants Inc.",
+        "Medical Reimbursement Consultants, Inc."
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": 1.0,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 4,
+        "members": [
+          "note:710036:c0.m6",
+          "note:710036:c7.m9",
+          "note:710045:c0.m7",
+          "note:710085:m6"
+        ],
+        "joined_by": {
+          "note:710036:c0.m6": null,
+          "note:710036:c7.m9": {
+            "a": "note:710036:c0.m6",
+            "b": "note:710036:c7.m9",
+            "with": "note:710036:c0.m6",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710045:c0.m7": {
+            "a": "note:710036:c0.m6",
+            "b": "note:710045:c0.m7",
+            "with": "note:710036:c0.m6",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          "note:710085:m6": {
+            "a": "note:710036:c0.m6",
+            "b": "note:710085:m6",
+            "with": "note:710036:c0.m6",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          }
+        },
+        "weakest_link": {
+          "a": "note:710036:c0.m6",
+          "b": "note:710085:m6",
+          "p": 1.0,
+          "basis_class": "name_only",
+          "distance": "same_claim"
+        },
+        "also_in_other_claims": [
+          "100002-240360-RI-01"
+        ],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [
+        "name_only_merge"
+      ],
+      "details": [],
+      "flags": [
+        "name_only_merge"
+      ],
+      "category": {
+        "value": "insufficient_evidence",
+        "basis": "inferred",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710045:c0.a13",
+          "note:710045:c0.a17"
+        ]
+      },
+      "subcategory": null
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E9",
+      "type": "organization",
+      "cluster_id": "note:710036:c0.m7",
+      "surface_forms": [
+        "MRC Defendants"
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": 1.0,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 8,
+        "members": [
+          "note:710036:c0.m7",
+          "note:710036:c1.m1",
+          "note:710036:c2.m1",
+          "note:710036:c3.m1",
+          "note:710036:c4.m1",
+          "note:710036:c5.m1",
+          "note:710036:c6.m1",
+          "note:710036:c7.m6"
+        ],
+        "joined_by": {
+          "note:710036:c0.m7": null,
+          "note:710036:c1.m1": {
+            "a": "note:710036:c0.m7",
+            "b": "note:710036:c1.m1",
+            "with": "note:710036:c0.m7",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710036:c2.m1": {
+            "a": "note:710036:c0.m7",
+            "b": "note:710036:c2.m1",
+            "with": "note:710036:c0.m7",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710036:c3.m1": {
+            "a": "note:710036:c0.m7",
+            "b": "note:710036:c3.m1",
+            "with": "note:710036:c0.m7",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710036:c4.m1": {
+            "a": "note:710036:c0.m7",
+            "b": "note:710036:c4.m1",
+            "with": "note:710036:c0.m7",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710036:c5.m1": {
+            "a": "note:710036:c0.m7",
+            "b": "note:710036:c5.m1",
+            "with": "note:710036:c0.m7",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710036:c6.m1": {
+            "a": "note:710036:c0.m7",
+            "b": "note:710036:c6.m1",
+            "with": "note:710036:c0.m7",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710036:c7.m6": {
+            "a": "note:710036:c0.m7",
+            "b": "note:710036:c7.m6",
+            "with": "note:710036:c0.m7",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          }
+        },
+        "weakest_link": {
+          "a": "note:710036:c0.m7",
+          "b": "note:710036:c4.m1",
+          "p": 1.0,
+          "basis_class": "name_only",
+          "distance": "same_note"
+        },
+        "also_in_other_claims": [],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [
+        "name_only_merge"
+      ],
+      "details": [],
+      "flags": [
+        "name_only_merge"
+      ],
+      "category": {
+        "value": "other",
+        "basis": "stated",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710036:c0.a3",
+          "note:710036:c7.a5"
+        ]
+      },
+      "subcategory": "defendant_organization"
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E10",
+      "type": "person",
+      "cluster_id": "note:710036:c0.m8",
+      "surface_forms": [
+        "Defendant Moy",
+        "MARVIN MOY, M.D.",
+        "Marvin Moy, M.D.",
+        "Moy",
+        "\u201cMoy\u201d"
+      ],
+      "role_class": [
+        "private",
+        "professional"
+      ],
+      "confidence": 1.0,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 4,
+        "members": [
+          "note:710036:c0.m8",
+          "note:710036:c6.m9",
+          "note:710045:c0.m8",
+          "note:710085:m7"
+        ],
+        "joined_by": {
+          "note:710036:c0.m8": null,
+          "note:710036:c6.m9": {
+            "a": "note:710036:c0.m8",
+            "b": "note:710036:c6.m9",
+            "with": "note:710036:c0.m8",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710045:c0.m8": {
+            "a": "note:710036:c0.m8",
+            "b": "note:710045:c0.m8",
+            "with": "note:710036:c0.m8",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          "note:710085:m7": {
+            "a": "note:710036:c0.m8",
+            "b": "note:710085:m7",
+            "with": "note:710036:c0.m8",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          }
+        },
+        "weakest_link": {
+          "a": "note:710036:c0.m8",
+          "b": "note:710036:c6.m9",
+          "p": 1.0,
+          "basis_class": "name_only",
+          "distance": "same_note"
+        },
+        "also_in_other_claims": [
+          "100002-240360-RI-01"
+        ],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [
+        "name_only_merge"
+      ],
+      "details": [],
+      "flags": [
+        "name_only_merge"
+      ],
+      "category": {
+        "value": "medical",
+        "basis": "stated",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710045:c0.a8",
+          "note:710036:c6.a19"
+        ]
+      },
+      "subcategory": "physician"
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E11",
+      "type": "organization",
+      "cluster_id": "note:710036:c0.m9",
+      "surface_forms": [
+        "Defendant Rutland",
+        "RUTLAND MEDICAL P.C.",
+        "RUTLAND MEDICAL P.C. d/b/a MEDICALNOW",
+        "RUTLAND d/b/a MEDICALNOW",
+        "Rutland",
+        "Rutland Medical P.C. d/b/a MedicalNow",
+        "\u201cRutland\u201d"
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": 0.9999,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 5,
+        "members": [
+          "note:710036:c0.m9",
+          "note:710036:c6.m4",
+          "note:710045:c0.m9",
+          "note:710045:c1.m2",
+          "note:710085:m8"
+        ],
+        "joined_by": {
+          "note:710036:c0.m9": null,
+          "note:710036:c6.m4": {
+            "a": "note:710036:c0.m9",
+            "b": "note:710036:c6.m4",
+            "with": "note:710036:c0.m9",
+            "p": 0.9999,
+            "basis_class": "name_only",
+            "distance": "same_note"
+          },
+          "note:710045:c0.m9": {
+            "a": "note:710036:c0.m9",
+            "b": "note:710045:c0.m9",
+            "with": "note:710036:c0.m9",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          "note:710045:c1.m2": {
+            "a": "note:710036:c6.m4",
+            "b": "note:710045:c1.m2",
+            "with": "note:710036:c6.m4",
+            "p": 0.9999,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          },
+          "note:710085:m8": {
+            "a": "note:710036:c0.m9",
+            "b": "note:710085:m8",
+            "with": "note:710036:c0.m9",
+            "p": 1.0,
+            "basis_class": "name_only",
+            "distance": "same_claim"
+          }
+        },
+        "weakest_link": {
+          "a": "note:710036:c0.m9",
+          "b": "note:710036:c6.m4",
+          "p": 0.9999,
+          "basis_class": "name_only",
+          "distance": "same_note"
+        },
+        "also_in_other_claims": [
+          "100002-240360-RI-01"
+        ],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [
+        "name_only_merge"
+      ],
+      "details": [],
+      "flags": [
+        "name_only_merge"
+      ],
+      "category": {
+        "value": "medical",
+        "basis": "stated",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710036:c6.a18",
+          "note:710036:c6.a19"
+        ]
+      },
+      "subcategory": "medical_practice"
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E12",
+      "type": "person",
+      "cluster_id": "note:710036:c1.m3",
+      "surface_forms": [
+        "Plaintiff"
+      ],
+      "role_class": [
+        "private"
+      ],
+      "confidence": null,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 1,
+        "members": [
+          "note:710036:c1.m3"
+        ],
+        "joined_by": {
+          "note:710036:c1.m3": null
+        },
+        "weakest_link": null,
+        "also_in_other_claims": [],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [],
+      "details": [],
+      "flags": [],
+      "category": {
+        "value": "insufficient_evidence",
+        "basis": "stated",
+        "taxonomy_version": "3",
+        "evidence_ids": []
+      },
+      "subcategory": null
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E13",
+      "type": "organization",
+      "cluster_id": "note:710036:c6.m2",
+      "surface_forms": [
+        "MRC"
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": null,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 1,
+        "members": [
+          "note:710036:c6.m2"
+        ],
+        "joined_by": {
+          "note:710036:c6.m2": null
+        },
+        "weakest_link": null,
+        "also_in_other_claims": [
+          "100002-240360-RI-01"
+        ],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [],
+      "details": [],
+      "flags": [],
+      "category": {
+        "value": "other",
+        "basis": "stated",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710036:c6.a16",
+          "note:710036:c6.a21"
+        ]
+      },
+      "subcategory": "cross_complaining_organization"
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E14",
+      "type": "organization",
+      "cluster_id": "note:710036:c6.m6",
+      "surface_forms": [
+        "PC Defendants"
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": null,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 1,
+        "members": [
+          "note:710036:c6.m6"
+        ],
+        "joined_by": {
+          "note:710036:c6.m6": null
+        },
+        "weakest_link": null,
+        "also_in_other_claims": [],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [],
+      "details": [],
+      "flags": [],
+      "category": {
+        "value": "insufficient_evidence",
+        "basis": "inferred",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710036:c6.a22",
+          "note:710036:c6.a23"
+        ]
+      },
+      "subcategory": null
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E15",
+      "type": "organization",
+      "cluster_id": "note:710036:c6.m8",
+      "surface_forms": [
+        "Plaintiffs"
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": null,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 1,
+        "members": [
+          "note:710036:c6.m8"
+        ],
+        "joined_by": {
+          "note:710036:c6.m8": null
+        },
+        "weakest_link": null,
+        "also_in_other_claims": [],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [],
+      "details": [],
+      "flags": [],
+      "category": {
+        "value": "other",
+        "basis": "stated",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710036:c6.a12",
+          "note:710036:c6.a13"
+        ]
+      },
+      "subcategory": "plaintiff"
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E16",
+      "type": "organization",
+      "cluster_id": "note:710036:c7.m11",
+      "surface_forms": [
+        "MINTZ & GOLD LLP"
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": null,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 1,
+        "members": [
+          "note:710036:c7.m11"
+        ],
+        "joined_by": {
+          "note:710036:c7.m11": null
+        },
+        "weakest_link": null,
+        "also_in_other_claims": [],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [],
+      "details": [],
+      "flags": [],
+      "category": {
+        "value": "insufficient_evidence",
+        "basis": "inferred",
+        "taxonomy_version": "3",
+        "evidence_ids": []
+      },
+      "subcategory": null
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E17",
+      "type": "person",
+      "cluster_id": "note:710036:c7.m12",
+      "surface_forms": [
+        "Ryan W. Lawler"
+      ],
+      "role_class": [
+        "private"
+      ],
+      "confidence": null,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 1,
+        "members": [
+          "note:710036:c7.m12"
+        ],
+        "joined_by": {
+          "note:710036:c7.m12": null
+        },
+        "weakest_link": null,
+        "also_in_other_claims": [],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [],
+      "details": [],
+      "flags": [],
+      "category": {
+        "value": "insufficient_evidence",
+        "basis": "inferred",
+        "taxonomy_version": "3",
+        "evidence_ids": []
+      },
+      "subcategory": null
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E18",
+      "type": "organization",
+      "cluster_id": "note:710036:c7.m5",
+      "surface_forms": [
+        "Plaintiffs"
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": null,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 1,
+        "members": [
+          "note:710036:c7.m5"
+        ],
+        "joined_by": {
+          "note:710036:c7.m5": null
+        },
+        "weakest_link": null,
+        "also_in_other_claims": [],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [],
+      "details": [],
+      "flags": [],
+      "category": {
+        "value": "other",
+        "basis": "stated",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710036:c7.a5",
+          "note:710036:c7.a6"
+        ]
+      },
+      "subcategory": "plaintiffs"
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E19",
+      "type": "organization",
+      "cluster_id": "note:710036:c7.m7",
+      "surface_forms": [
+        "PC Defendants"
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": null,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 1,
+        "members": [
+          "note:710036:c7.m7"
+        ],
+        "joined_by": {
+          "note:710036:c7.m7": null
+        },
+        "weakest_link": null,
+        "also_in_other_claims": [],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [],
+      "details": [],
+      "flags": [],
+      "category": {
+        "value": "insufficient_evidence",
+        "basis": "inferred",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710036:c7.a5",
+          "note:710036:c7.a15"
+        ]
+      },
+      "subcategory": null
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E20",
+      "type": "organization",
+      "cluster_id": "note:710045:c0.m12",
+      "surface_forms": [
+        "Defendants"
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": null,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 1,
+        "members": [
+          "note:710045:c0.m12"
+        ],
+        "joined_by": {
+          "note:710045:c0.m12": null
+        },
+        "weakest_link": null,
+        "also_in_other_claims": [],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [],
+      "details": [],
+      "flags": [],
+      "category": {
+        "value": "medical",
+        "basis": "inferred",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710045:c0.a6",
+          "note:710045:c0.a12"
+        ]
+      },
+      "subcategory": "medical_providers_and_entities"
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E21",
+      "type": "organization",
+      "cluster_id": "note:710045:c0.m13",
+      "surface_forms": [
+        "PC Defendants",
+        "the PC Defendants"
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": null,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 1,
+        "members": [
+          "note:710045:c0.m13"
+        ],
+        "joined_by": {
+          "note:710045:c0.m13": null
+        },
+        "weakest_link": null,
+        "also_in_other_claims": [],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [],
+      "details": [],
+      "flags": [],
+      "category": {
+        "value": "medical",
+        "basis": "stated",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710045:c0.a13",
+          "note:710045:c0.a26"
+        ]
+      },
+      "subcategory": "medical_providers"
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E22",
+      "type": "organization",
+      "cluster_id": "note:710045:c0.m14",
+      "surface_forms": [
+        "Clin-"
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": null,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 1,
+        "members": [
+          "note:710045:c0.m14"
+        ],
+        "joined_by": {
+          "note:710045:c0.m14": null
+        },
+        "weakest_link": null,
+        "also_in_other_claims": [],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [],
+      "details": [],
+      "flags": [],
+      "category": {
+        "value": "other",
+        "basis": "inferred",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710045:c0.a16",
+          "note:710045:c0.a17"
+        ]
+      },
+      "subcategory": "medical_reimbursement_consultant"
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E23",
+      "type": "organization",
+      "cluster_id": "note:710045:c0.m5",
+      "surface_forms": [
+        "Plaintiffs"
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": null,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 1,
+        "members": [
+          "note:710045:c0.m5"
+        ],
+        "joined_by": {
+          "note:710045:c0.m5": null
+        },
+        "weakest_link": null,
+        "also_in_other_claims": [],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [],
+      "details": [],
+      "flags": [],
+      "category": {
+        "value": "other",
+        "basis": "stated",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710045:c0.a1",
+          "note:710045:c0.a26"
+        ]
+      },
+      "subcategory": "insurance_company"
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E24",
+      "type": "organization",
+      "cluster_id": "note:710045:c1.m3",
+      "surface_forms": [
+        "Plaintiffs"
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": null,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 1,
+        "members": [
+          "note:710045:c1.m3"
+        ],
+        "joined_by": {
+          "note:710045:c1.m3": null
+        },
+        "weakest_link": null,
+        "also_in_other_claims": [],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [],
+      "details": [],
+      "flags": [],
+      "category": {
+        "value": "insufficient_evidence",
+        "basis": "inferred",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710045:c1.a5"
+        ]
+      },
+      "subcategory": null
+    },
+    {
+      "entity_id": "100001-236572-RI-01:E25",
+      "type": "organization",
+      "cluster_id": "note:710085:m11",
+      "surface_forms": [
+        "Allstate",
+        "Allstate's"
+      ],
+      "role_class": [
+        "organization"
+      ],
+      "confidence": null,
+      "merge_provenance": {
+        "lens": "default",
+        "merged_mentions": 1,
+        "members": [
+          "note:710085:m11"
+        ],
+        "joined_by": {
+          "note:710085:m11": null
+        },
+        "weakest_link": null,
+        "also_in_other_claims": [],
+        "uncertain_merges": []
+      },
+      "watchlist": [],
+      "projection_flags": [],
+      "details": [],
+      "flags": [],
+      "category": {
+        "value": "financier",
+        "basis": "stated",
+        "taxonomy_version": "3",
+        "evidence_ids": [
+          "note:710085:a1"
+        ]
+      },
+      "subcategory": "insurance_company"
+    }
+  ],
+  "unassigned_details": [
+    {
+      "detail_type": "address",
+      "raw_value": "600 Third Avenue, 25th Floor\n      New York, New York 10016",
+      "normalized": "600|third|avenue|25th|floor|new|york|new|york|10016",
+      "basis": "stated",
+      "detected_by": [
+        "llm"
+      ],
+      "checksum": "n/a",
+      "clean_span": [
+        207069,
+        207129
+      ],
+      "subtype": null,
+      "parts": {
+        "number": "600",
+        "direction": "",
+        "street": "THIRD",
+        "street_type": "AVE",
+        "unit": "NEW",
+        "city": "TH FLOOR NEW YORK",
+        "state": "NY",
+        "zip": "10016"
+      },
+      "evidence": [
+        {
+          "note_key": "note:710036",
+          "clean_span": [
+            207069,
+            207129
+          ],
+          "raw_value": "600 Third Avenue, 25th Floor\n      New York, New York 10016"
+        }
+      ],
+      "owner_status": "unassigned",
+      "note_key": "note:710036"
+    },
+    {
+      "detail_type": "phone",
+      "raw_value": "(212) 696-4848",
+      "normalized": "+12126964848",
+      "basis": "stated",
+      "detected_by": [
+        "llm",
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "clean_span": [
+        207137,
+        207151
+      ],
+      "subtype": null,
+      "parts": null,
+      "evidence": [
+        {
+          "note_key": "note:710036",
+          "clean_span": [
+            207137,
+            207151
+          ],
+          "raw_value": "(212) 696-4848"
+        }
+      ],
+      "owner_status": "unassigned",
+      "note_key": "note:710036"
+    },
+    {
+      "detail_type": "email",
+      "raw_value": "lawler@mintzandgold.com",
+      "normalized": "lawler@mintzandgold.com",
+      "basis": "stated",
+      "detected_by": [
+        "llm",
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "clean_span": [
+        207159,
+        207182
+      ],
+      "subtype": null,
+      "parts": null,
+      "evidence": [
+        {
+          "note_key": "note:710036",
+          "clean_span": [
+            207159,
+            207182
+          ],
+          "raw_value": "lawler@mintzandgold.com"
+        }
+      ],
+      "owner_status": "unassigned",
+      "note_key": "note:710036"
+    },
+    {
+      "detail_type": "phone",
+      "raw_value": "(347) 710-0050",
+      "normalized": "+13477100050",
+      "basis": "stated",
+      "detected_by": [
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "clean_span": [
+        1573,
+        1587
+      ],
+      "subtype": null,
+      "parts": null,
+      "evidence": [
+        {
+          "note_key": "note:710085",
+          "clean_span": [
+            1573,
+            1587
+          ],
+          "raw_value": "(347) 710-0050"
+        }
+      ],
+      "owner_status": "unassigned",
+      "note_key": "note:710085"
+    },
+    {
+      "detail_type": "email",
+      "raw_value": "mwhitcher@ktmpc.com",
+      "normalized": "mwhitcher@ktmpc.com",
+      "basis": "stated",
+      "detected_by": [
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "clean_span": [
+        1589,
+        1608
+      ],
+      "subtype": null,
+      "parts": null,
+      "evidence": [
+        {
+          "note_key": "note:710085",
+          "clean_span": [
+            1589,
+            1608
+          ],
+          "raw_value": "mwhitcher@ktmpc.com"
+        }
+      ],
+      "owner_status": "unassigned",
+      "note_key": "note:710085"
+    },
+    {
+      "detail_type": "phone",
+      "raw_value": "(516) 227-3344",
+      "normalized": "+15162273344",
+      "basis": "stated",
+      "detected_by": [
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "clean_span": [
+        1934,
+        1948
+      ],
+      "subtype": null,
+      "parts": null,
+      "evidence": [
+        {
+          "note_key": "note:710085",
+          "clean_span": [
+            1934,
+            1948
+          ],
+          "raw_value": "(516) 227-3344"
+        }
+      ],
+      "owner_status": "unassigned",
+      "note_key": "note:710085"
+    },
+    {
+      "detail_type": "email",
+      "raw_value": "csg@goldinger.com",
+      "normalized": "csg@goldinger.com",
+      "basis": "stated",
+      "detected_by": [
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "clean_span": [
+        1950,
+        1967
+      ],
+      "subtype": null,
+      "parts": null,
+      "evidence": [
+        {
+          "note_key": "note:710085",
+          "clean_span": [
+            1950,
+            1967
+          ],
+          "raw_value": "csg@goldinger.com"
+        }
+      ],
+      "owner_status": "unassigned",
+      "note_key": "note:710085"
+    }
+  ],
+  "actions": [
+    {
+      "action_id": "note:710036:c0.a1",
+      "action_type": "answer",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E7",
+          "role": "answering_party"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E8",
+          "role": "answering_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Defendants Bradley Pierre (\u201cPierre\u201d) and Medical Reimbursement Consultants Inc.\n(\u201cMRC\u201d) (collectively, \u201c MRC Defendants\u201d), by and through their attorneys, answer Plaintiffs\u2019 complaint",
+      "raw_span": [
+        275,
+        460
+      ]
+    },
+    {
+      "action_id": "note:710036:c0.a2",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E7",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Defendants Bradley Pierre (\u201cPierre\u201d) and",
+      "raw_span": [
+        275,
+        315
+      ]
+    },
+    {
+      "action_id": "note:710036:c0.a3",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E8",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "and Medical Reimbursement Consultants Inc.\n(\u201cMRC\u201d) (collectively, \u201c MRC Defendants\u201d)",
+      "raw_span": [
+        312,
+        397
+      ]
+    },
+    {
+      "action_id": "note:710036:c0.a4",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E10",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E4",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "\u201cMoy\u201d), Rutland Medical P.C. d/b/a MedicalNow (\u201cRutland\u201d), William A. Weiner, D.O. (\u201cWeiner\u201d), and Nexray Medical Imaging",
+      "raw_span": [
+        1530,
+        1652
+      ]
+    },
+    {
+      "action_id": "note:710036:c0.a5",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E11",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E4",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Rutland Medical P.C. d/b/a MedicalNow (\u201cRutland\u201d), William A. Weiner, D.O.",
+      "raw_span": [
+        1538,
+        1612
+      ]
+    },
+    {
+      "action_id": "note:710036:c0.a6",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E2",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E4",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "William A. Weiner, D.O. (\u201cWeiner\u201d), and Nexray Medical Imaging, P.C.",
+      "raw_span": [
+        1589,
+        1658
+      ]
+    },
+    {
+      "action_id": "note:710036:c0.a7",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E3",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E4",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging\n(\u201cNexray\u201d)(collectively, the \u201cOther Defendants\u201d)",
+      "raw_span": [
+        1630,
+        1745
+      ]
+    },
+    {
+      "action_id": "note:710036:c0.a8",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "denying_party"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 1 of the Complaint.",
+      "raw_span": [
+        1747,
+        1872
+      ]
+    },
+    {
+      "action_id": "note:710036:c0.a9",
+      "action_type": "admit",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "admitting_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "28. MRC Defendants admit the allegations set forth in paragraph 28 of the Complaint.",
+      "raw_span": [
+        12978,
+        13062
+      ]
+    },
+    {
+      "action_id": "note:710036:c1.a1",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "denier"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "MRC Defendants deny the allegations set forth in paragraph 69 of the Complaint.",
+      "raw_span": [
+        28393,
+        28473
+      ]
+    },
+    {
+      "action_id": "note:710036:c1.a2",
+      "action_type": "lack_knowledge",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "respondent"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "71. MRC Defendants lack the knowledge or information sufficient to form a basis as to the truth of the allegations contained in paragraph 71 of the Complaint.",
+      "raw_span": [
+        28979,
+        29138
+      ]
+    },
+    {
+      "action_id": "note:710036:c1.a3",
+      "action_type": "refer_to",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "referring_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "MRC Defendants respectfully refer the Court to N.Y. Ins. Law \u00a7 403(d)",
+      "raw_span": [
+        36818,
+        36887
+      ]
+    },
+    {
+      "action_id": "note:710036:c2.a1",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "responding_party"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "MRC Defendants deny the allegations contained in paragraph 141 of the Complaint.",
+      "raw_span": [
+        56474,
+        56555
+      ]
+    },
+    {
+      "action_id": "note:710036:c2.a2",
+      "action_type": "lack_knowledge",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "responding_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "145. MRC Defendants lack knowledge or information sufficient to form a basis as to the truth of the allegations contained in paragraph 145 of the Complaint.",
+      "raw_span": [
+        58011,
+        58168
+      ]
+    },
+    {
+      "action_id": "note:710036:c2.a3",
+      "action_type": "refer_to",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "responding_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "MRC Defendants respectfully refer the Court to these affidavits for the effect and meaning thereof.",
+      "raw_span": [
+        58281,
+        58381
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a1",
+      "action_type": "lack_knowledge",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "MRC Defendants lack knowledge or information sufficient to form a basis as to the truth of the allegations contained in paragraph 231 of the Complaint.",
+      "raw_span": [
+        85532,
+        85684
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a2",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 229 of the Complaint.",
+      "raw_span": [
+        84945,
+        85072
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a3",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 230 of the Complaint.",
+      "raw_span": [
+        85398,
+        85525
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a4",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 247 of the Complaint.",
+      "raw_span": [
+        88505,
+        88632
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a5",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 248 of the Complaint.",
+      "raw_span": [
+        89052,
+        89179
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a6",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 264 of the Complaint.",
+      "raw_span": [
+        91999,
+        92126
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a7",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 265 of the Complaint.",
+      "raw_span": [
+        92452,
+        92579
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a8",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 284 of the Complaint.",
+      "raw_span": [
+        95973,
+        96100
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a9",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 285 of the Complaint.",
+      "raw_span": [
+        96426,
+        96553
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a10",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 286 of the Complaint.",
+      "raw_span": [
+        96973,
+        97100
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a11",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 299 of the Complaint.",
+      "raw_span": [
+        99440,
+        99567
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a12",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 300 of the Complaint.",
+      "raw_span": [
+        99893,
+        100020
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a13",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 314 of the Complaint.",
+      "raw_span": [
+        102614,
+        102741
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a14",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 315 of the Complaint.",
+      "raw_span": [
+        103067,
+        103194
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a15",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 316 of the Complaint.",
+      "raw_span": [
+        103520,
+        103647
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a16",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 329 of the Complaint.",
+      "raw_span": [
+        105987,
+        106114
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a17",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 330 of the Complaint.",
+      "raw_span": [
+        106534,
+        106661
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a18",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 341 of the Complaint.",
+      "raw_span": [
+        108681,
+        108808
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a19",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 342 of the Complaint.",
+      "raw_span": [
+        109134,
+        109261
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a20",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 349 of the Complaint.",
+      "raw_span": [
+        110641,
+        110768
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a21",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 350 of the Complaint.",
+      "raw_span": [
+        111094,
+        111221
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a22",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 357 of the Complaint.",
+      "raw_span": [
+        112601,
+        112728
+      ]
+    },
+    {
+      "action_id": "note:710036:c3.a23",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "actor"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 358 of the Complaint.",
+      "raw_span": [
+        113054,
+        113181
+      ]
+    },
+    {
+      "action_id": "note:710036:c4.a1",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "denier"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "MRC Defendants deny the allegations contained in paragraph 365 of the Complaint.",
+      "raw_span": [
+        114900,
+        114981
+      ]
+    },
+    {
+      "action_id": "note:710036:c4.a2",
+      "action_type": "lack_knowledge",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "responding_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "366. MRC Defendants lack knowledge or information sufficient to form a basis as to the truth of the allegations contained in paragraph 366 of the Complaint.",
+      "raw_span": [
+        114983,
+        115140
+      ]
+    },
+    {
+      "action_id": "note:710036:c5.a1",
+      "action_type": "deny",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "denier"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "MRC Defendants deny the allegations contained in paragraph 444 of the Complaint.",
+      "raw_span": [
+        143798,
+        143879
+      ]
+    },
+    {
+      "action_id": "note:710036:c5.a2",
+      "action_type": "lack_knowledge",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "subject"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "449. MRC Defendants lack knowledge or information sufficient to form a basis as to\nthe truth of the allegations contained in paragraph 449 of the Complaint.",
+      "raw_span": [
+        145826,
+        145983
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a1",
+      "action_type": "deny_allegations",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "denying_party"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "MRC Defendants deny the allegations contained in paragraph 518 of the Complaint.",
+      "raw_span": [
+        172480,
+        172561
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a2",
+      "action_type": "characterize_as_argument",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "responding_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "The allegations set forth in paragraph 519 of the Complaint are argument",
+      "raw_span": [
+        172662,
+        172734
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a3",
+      "action_type": "lack_knowledge",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "responding_party"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E4",
+          "role": "referenced_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "MRC Defendants lack the knowledge or information sufficient to form a basis as to the truth of the allegations as to the Other Defendants.",
+      "raw_span": [
+        172841,
+        172980
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a4",
+      "action_type": "repeat_and_reassert",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "responding_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "534. MRC Defendants repeat and reassert the above response as though fully set forth herein.",
+      "raw_span": [
+        179755,
+        179848
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a5",
+      "action_type": "lack_knowledge",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "responding_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "570. MRC Defendants lack knowledge or information sufficient to form a basis as to the truth of the allegations contained in paragraph 570 of the Complaint.",
+      "raw_span": [
+        194686,
+        194843
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a6",
+      "action_type": "fail_to_state_cause_of_action",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "defending_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "The Complaint fails to state a cause of action as to the answering MRC Defendants.",
+      "raw_span": [
+        199729,
+        199812
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a7",
+      "action_type": "barred_by_statute_of_limitation",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "defending_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "The claims in the Complaint as to the answering MRC Defendants are barred in whole or in part by applicable statutes of limitation.",
+      "raw_span": [
+        199848,
+        199980
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a8",
+      "action_type": "barred_by_laches",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "defending_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "The claims in the Complaint as to the answering MRC Defendants are barred in whole or in part by the doctrine of laches.",
+      "raw_span": [
+        200016,
+        200137
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a9",
+      "action_type": "barred_by_estoppel",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "defending_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "The claims in the Complaint as to the answering MRC Defendants are barred in whole or in part by the doctrine of estoppel.",
+      "raw_span": [
+        200173,
+        200296
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a10",
+      "action_type": "barred_by_waiver",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "defending_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "The claims in the Complaint as to the answering MRC Defendants are barred in whole or in part by the doctrine of waiver.",
+      "raw_span": [
+        200331,
+        200452
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a11",
+      "action_type": "barred_by_unclean_hands",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "defending_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "The claims in the Complaint as to the answering MRC Defendants are barred in whole or in part by the doctrine of unclean hands.",
+      "raw_span": [
+        200487,
+        200615
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a12",
+      "action_type": "barred_by_failure_to_mitigate",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "defending_party"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E15",
+          "role": "referenced_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "The claims in the Complaint as to the answering MRC Defendants are barred in whole or in part by Plaintiffs\u2019 failure to mitigate, minimize, or avoid their own damages.",
+      "raw_span": [
+        200652,
+        200820
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a13",
+      "action_type": "attribute_cause_to_other_persons",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "defending_party"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E15",
+          "role": "referenced_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "The claims in the Complaint as to the answering MRC Defendants are barred in whole or in part because the injury and/or damages alleged to have been sustained by Plaintiffs were caused by persons other than the answering MRC Defendants.",
+      "raw_span": [
+        200951,
+        201189
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a14",
+      "action_type": "deny_fraud",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "denying_party"
+        }
+      ],
+      "stance": "denied",
+      "time_qualifier": null,
+      "quote": "the answering MRC Defendants deny any fraud and did not possess the requisite scienter.",
+      "raw_span": [
+        201327,
+        201415
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a15",
+      "action_type": "reserve_right_to_assert_defenses",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "reserving_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "MRC Defendants reserve the right to assert additional defenses",
+      "raw_span": [
+        201621,
+        201684
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a16",
+      "action_type": "cross_complain",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "cross_complainant"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E7",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E13",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E14",
+          "role": "cross_defendant_group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Defendants Pierre and MRC (collectively, \u201cMRC Defendants\u201d), cross complain of",
+      "raw_span": [
+        201822,
+        201899
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a17",
+      "action_type": "adopt_by_reference",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "adopting_party"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E14",
+          "role": "referenced_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": "For purposes of the crossclaims only",
+      "quote": "MRC Defendants adopt by reference the allegations of the Complaint as against the PC Defendants.",
+      "raw_span": [
+        202023,
+        202120
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a18",
+      "action_type": "organized_under_laws",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E11",
+          "role": "organization"
+        }
+      ],
+      "stance": "alleged",
+      "time_qualifier": null,
+      "quote": "Rutland is a professional corporation organized under the laws of the State of New York",
+      "raw_span": [
+        202157,
+        202245
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a19",
+      "action_type": "registered_to_practice_medicine",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E11",
+          "role": "registered_entity"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E10",
+          "role": "under_name_and_license"
+        }
+      ],
+      "stance": "alleged",
+      "time_qualifier": null,
+      "quote": "registered to practice medicine under Defendant Moy\u2019s name and medical license.",
+      "raw_span": [
+        202250,
+        202330
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a20",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E7",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Defendants Pierre and MRC (collectively, \u201cMRC Defendants\u201d)",
+      "raw_span": [
+        201822,
+        201880
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a21",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E13",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "MRC (collectively, \u201cMRC Defendants\u201d), cross complain of",
+      "raw_span": [
+        201844,
+        201899
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a22",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E11",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E14",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Defendants Rutland and Nexray (collectively, the \u201cPC Defendants\u201d)",
+      "raw_span": [
+        201901,
+        201966
+      ]
+    },
+    {
+      "action_id": "note:710036:c6.a23",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E3",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E14",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Rutland and Nexray (collectively, the \u201cPC Defendants\u201d)",
+      "raw_span": [
+        201912,
+        201966
+      ]
+    },
+    {
+      "action_id": "note:710036:c7.a1",
+      "action_type": "organized_under",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E11",
+          "role": "organization"
+        }
+      ],
+      "stance": "alleged",
+      "time_qualifier": null,
+      "quote": "Rutland is a professional corporation organized \nunder the laws of the State of New York",
+      "raw_span": [
+        202157,
+        202245
+      ]
+    },
+    {
+      "action_id": "note:710036:c7.a3",
+      "action_type": "organized_under",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E3",
+          "role": "organization"
+        }
+      ],
+      "stance": "alleged",
+      "time_qualifier": null,
+      "quote": "Nexray is a professional corporation organized \nunder the laws of the State of New York",
+      "raw_span": [
+        202464,
+        202551
+      ]
+    },
+    {
+      "action_id": "note:710036:c7.a4",
+      "action_type": "registered_to_practice_medicine",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E3",
+          "role": "organization"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E2",
+          "role": "person"
+        }
+      ],
+      "stance": "alleged",
+      "time_qualifier": null,
+      "quote": "registered to practice medicine under Defendant \nWeiner\u2019s name and medical license.",
+      "raw_span": [
+        202556,
+        202639
+      ]
+    },
+    {
+      "action_id": "note:710036:c7.a5",
+      "action_type": "filed_complaint_against",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E18",
+          "role": "plaintiff"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "defendant"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E19",
+          "role": "defendant"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "600. Plaintiffs have filed a complaint against MRC Defendants and PC Defendants.",
+      "raw_span": [
+        202642,
+        202722
+      ]
+    },
+    {
+      "action_id": "note:710036:c7.a6",
+      "action_type": "alleged_damages",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E18",
+          "role": "plaintiff"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E19",
+          "role": "party"
+        }
+      ],
+      "stance": "alleged",
+      "time_qualifier": null,
+      "quote": "601. Plaintiffs have alleged damages resulting from PC Defendants actions.",
+      "raw_span": [
+        202725,
+        202799
+      ]
+    },
+    {
+      "action_id": "note:710036:c7.a7",
+      "action_type": "owed_duties",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E19",
+          "role": "obligor"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E18",
+          "role": "duty_beneficiary"
+        }
+      ],
+      "stance": "alleged",
+      "time_qualifier": null,
+      "quote": "PC Defendants owed statutory duties of honesty, fiduciary duties, a common law \nduty of care",
+      "raw_span": [
+        202807,
+        202899
+      ]
+    },
+    {
+      "action_id": "note:710036:c7.a8",
+      "action_type": "breached_duties",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E19",
+          "role": "actor"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E7",
+          "role": "other_party"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E8",
+          "role": "other_party"
+        }
+      ],
+      "stance": "alleged",
+      "time_qualifier": null,
+      "quote": "they allegedly breached independent \nof any conduct on the part of Pierre or MRC",
+      "raw_span": [
+        202948,
+        203028
+      ]
+    },
+    {
+      "action_id": "note:710036:c7.a9",
+      "action_type": "found_liable",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E7",
+          "role": "party"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E8",
+          "role": "party"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E18",
+          "role": "claimant"
+        }
+      ],
+      "stance": "alleged",
+      "time_qualifier": "to the extent",
+      "quote": "to the extent that Pierre or MRC is found liable for any of the damages or injury",
+      "raw_span": [
+        203086,
+        203167
+      ]
+    },
+    {
+      "action_id": "note:710036:c7.a10",
+      "action_type": "entitled_to_contribution",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E7",
+          "role": "party"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E8",
+          "role": "party"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E19",
+          "role": "contributor"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": "to the extent",
+      "quote": "they shall be entitled to contribution from PC Defendants.",
+      "raw_span": [
+        203203,
+        203261
+      ]
+    },
+    {
+      "action_id": "note:710036:c7.a11",
+      "action_type": "entered_into_agreements",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "party"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E11",
+          "role": "party"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E3",
+          "role": "party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "MRC Defendants entered into agreements with Rutland and Nexray respectfully",
+      "raw_span": [
+        203822,
+        203897
+      ]
+    },
+    {
+      "action_id": "note:710036:c7.a12",
+      "action_type": "seek_indemnification",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "claimant"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "607. MRC Defendants seek indemnification herein under the Agreements",
+      "raw_span": [
+        203935,
+        204003
+      ]
+    },
+    {
+      "action_id": "note:710036:c7.a13",
+      "action_type": "exposed_to_liability",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "affected_party"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E19",
+          "role": "alleged_cause"
+        }
+      ],
+      "stance": "alleged",
+      "time_qualifier": null,
+      "quote": "608. As a result of PC Defendants\u2019 actions, MRC Defendants have been exposed to liability",
+      "raw_span": [
+        204500,
+        204590
+      ]
+    },
+    {
+      "action_id": "note:710036:c7.a14",
+      "action_type": "indemnify",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E19",
+          "role": "indemnitor"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "indemnitee"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "PC Defendants are obligated to indemnify and hold MRC Defendants harmless.",
+      "raw_span": [
+        204788,
+        204863
+      ]
+    },
+    {
+      "action_id": "note:710036:c7.a15",
+      "action_type": "entered_into_agreements",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "party"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E19",
+          "role": "party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "612. MRC Defendants entered into the Agreements with PC Defendants.",
+      "raw_span": [
+        205108,
+        205175
+      ]
+    },
+    {
+      "action_id": "note:710036:c7.a16",
+      "action_type": "suffered_damages",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "affected_party"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E19",
+          "role": "alleged_cause"
+        }
+      ],
+      "stance": "alleged",
+      "time_qualifier": null,
+      "quote": "614. As a result of PC Defendants breach of the Agreements, MRC Defendants have \nsuffered",
+      "raw_span": [
+        205456,
+        205545
+      ]
+    },
+    {
+      "action_id": "note:710036:c7.a17",
+      "action_type": "demand_judgment",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E9",
+          "role": "claimant"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "MRC Defendants demand judgment as follows:",
+      "raw_span": [
+        205651,
+        205693
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a1",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E1",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E23",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Plaintiffs Allstate Insurance Company, Allstate Indemnity Com-\npany, Allstate Property and Casualty Insurance Company, and Allstate Fire and Casualty Insurance Company",
+      "raw_span": [
+        565,
+        733
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a2",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E5",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E23",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Allstate Insurance Company, Allstate Indemnity Com-\npany, Allstate Property and Casualty Insurance Company, and\nAllstate Fire and Casualty Insurance Company (collectively, \"All-\nstate\"",
+      "raw_span": [
+        576,
+        761
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a3",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E6",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E23",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Allstate Property and Casualty Insurance Company, and\nAllstate Fire and Casualty Insurance Company (collectively, \"All-\nstate\"",
+      "raw_span": [
+        634,
+        761
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a4",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E6",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E23",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Allstate Fire and Casualty Insurance Company (collectively, \"All-\nstate\" or \"Plaintiffs\")",
+      "raw_span": [
+        689,
+        778
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a5",
+      "action_type": "bring_action",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E23",
+          "role": "plaintiff"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Plaintiffs Allstate Insurance Company, Allstate Indemnity Com-\npany, Allstate Property and Casualty Insurance Company, and Allstate Fire and Casualty Insurance Company (collectively, \"All-\nstate\" or \"Plaintiffs\") bring this action",
+      "raw_span": [
+        565,
+        796
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a6",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E7",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E20",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\ndiology Medical Imaging ( collectively, \"Defendants\")",
+      "raw_span": [
+        805,
+        1058
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a7",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E8",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E20",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\ndiology Medical Imaging ( collectively, \"Defendants\")",
+      "raw_span": [
+        805,
+        1058
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a8",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E10",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E20",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\ndiology Medical Imaging ( collectively, \"Defendants\")",
+      "raw_span": [
+        805,
+        1058
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a9",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E11",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E20",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\ndiology Medical Imaging ( collectively, \"Defendants\")",
+      "raw_span": [
+        805,
+        1058
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a10",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E2",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E20",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\ndiology Medical Imaging ( collectively, \"Defendants\")",
+      "raw_span": [
+        805,
+        1058
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a11",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E3",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E20",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\ndiology Medical Imaging ( collectively, \"Defendants\")",
+      "raw_span": [
+        805,
+        1058
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a12",
+      "action_type": "defrauded",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E20",
+          "role": "actor"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E23",
+          "role": "target"
+        }
+      ],
+      "stance": "alleged",
+      "time_qualifier": null,
+      "quote": "alleging\nthat Defendants defrauded Allstate",
+      "raw_span": [
+        1062,
+        1106
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a13",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E8",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E21",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Defendants Medical Reimbursement Consultants Inc., Rutland Medical\nP.C. d/b/a MedicalNow, and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\ndiology Medical Imaging are hereinafter referred to as the PC Defendants.",
+      "raw_span": [
+        1336,
+        1548
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a14",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E11",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E21",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Rutland Medical\nP.C. d/b/a MedicalNow, and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\ndiology Medical Imaging are hereinafter referred to as the PC Defendants.",
+      "raw_span": [
+        1387,
+        1548
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a15",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E3",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E21",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Nexray Medical Imaging, P.C. d/b/a Soul Ra-\ndiology Medical Imaging are hereinafter referred to as the PC Defendants.",
+      "raw_span": [
+        1431,
+        1548
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a16",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E3",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E22",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Nexray and Medical Reimbursement Consultants, Inc.",
+      "raw_span": [
+        10071,
+        10121
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a17",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E8",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E22",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Medical Reimbursement Consultants, Inc. (\"MR1\"), the two other PC Defendants in this action.",
+      "raw_span": [
+        10082,
+        10175
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a18",
+      "action_type": "bring_action_against",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E23",
+          "role": "plaintiff"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E20",
+          "role": "defendant"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Plaintiffs Allstate Insurance Company, Allstate Indemnity Com-\npany, Allstate Property and Casualty Insurance Company, and Allstate Fire and Casualty Insurance Company (collectively, \"All-\nstate\" or \"Plaintiffs\") bring this action against Defendants Bradley",
+      "raw_span": [
+        565,
+        823
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a19",
+      "action_type": "defrauded",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E20",
+          "role": "actor"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E23",
+          "role": "target"
+        }
+      ],
+      "stance": "alleged",
+      "time_qualifier": null,
+      "quote": "alleging\nthat Defendants defrauded Allstate in violation of the Racketeer-",
+      "raw_span": [
+        1062,
+        1136
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a20",
+      "action_type": "commenced_arbitrations_against",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E11",
+          "role": "actor"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E23",
+          "role": "target"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Allstate's motion for a preliminary\ninjunction to stay all 40 pending no-fault insurance collection ar-\nbitrations commenced against Allstate by Defendant Rutland",
+      "raw_span": [
+        1828,
+        1991
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a21",
+      "action_type": "ceded_control_to",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E10",
+          "role": "actor"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E11",
+          "role": "target"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E7",
+          "role": "recipient"
+        }
+      ],
+      "stance": "alleged",
+      "time_qualifier": null,
+      "quote": "Moy ceded actual control over Rutland to Defendant Bradley\nPierre",
+      "raw_span": [
+        9260,
+        9326
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a22",
+      "action_type": "received_proceeds_from",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E7",
+          "role": "recipient"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E11",
+          "role": "source"
+        }
+      ],
+      "stance": "alleged",
+      "time_qualifier": null,
+      "quote": "Pierre received the majority of the proceeds from various Clin-\nics, including Rutland",
+      "raw_span": [
+        9520,
+        9606
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a23",
+      "action_type": "concealed",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E7",
+          "role": "actor"
+        }
+      ],
+      "stance": "alleged",
+      "time_qualifier": null,
+      "quote": "Pierre utilized \"phony lending agreements, check-cashing enti-\nties, and shell companies\" to conceal the scheme",
+      "raw_span": [
+        10452,
+        10563
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a24",
+      "action_type": "submitted_bills_to",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E11",
+          "role": "actor"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E23",
+          "role": "recipient"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E10",
+          "role": "facilitator"
+        }
+      ],
+      "stance": "alleged",
+      "time_qualifier": null,
+      "quote": "Defendant Moy participated in this scheme by ensur-\ning that Rutland \"continued to submit bills to Allstate",
+      "raw_span": [
+        11097,
+        11204
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a25",
+      "action_type": "referred_to",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E11",
+          "role": "referrer"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E3",
+          "role": "recipient"
+        }
+      ],
+      "stance": "alleged",
+      "time_qualifier": null,
+      "quote": "Rutland patients were also referred to Nexray for\nMRis, seemingly as a matter of course.",
+      "raw_span": null
+    },
+    {
+      "action_id": "note:710045:c0.a26",
+      "action_type": "paid_claims_submitted_by",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E23",
+          "role": "payer"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E21",
+          "role": "submitter"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Allstate has paid in excess of\n$2,749,000.00 for no-fault claims submitted by the PC Defend-\nants.",
+      "raw_span": [
+        12961,
+        13060
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a27",
+      "action_type": "paid",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E23",
+          "role": "payer"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E11",
+          "role": "recipient"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Allstate asserts that as a result of these fraudulent\nclaims, it has paid at least $1,309,811.48 to Rutland alone.",
+      "raw_span": [
+        14435,
+        14550
+      ]
+    },
+    {
+      "action_id": "note:710045:c0.a28",
+      "action_type": "failed_to_appear",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E11",
+          "role": "party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Defendant Rutland has failed to appear in this action",
+      "raw_span": [
+        16333,
+        16386
+      ]
+    },
+    {
+      "action_id": "note:710045:c1.a1",
+      "action_type": "be_irreparably_harmed",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E1",
+          "role": "harmed_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Allstate will be irreparably harmed if it is subject to numerous state court proceedings",
+      "raw_span": [
+        29567,
+        29658
+      ]
+    },
+    {
+      "action_id": "note:710045:c1.a2",
+      "action_type": "motion_granted",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E1",
+          "role": "movant"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E11",
+          "role": "opposing_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": "pending disposition of the declaratory judgment action",
+      "quote": "Allstate's motion to enjoin future state court collection lawsuits by Rutland pending disposition of the declaratory judgment action is therefore GRANTED.",
+      "raw_span": [
+        30083,
+        30239
+      ]
+    },
+    {
+      "action_id": "note:710045:c1.a3",
+      "action_type": "asks_to_waive",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E1",
+          "role": "requesting_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Allstate also asks the court to use its discretion to waive the security requirement",
+      "raw_span": [
+        30273,
+        30359
+      ]
+    },
+    {
+      "action_id": "note:710045:c1.a4",
+      "action_type": "need_not_post_bond",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E1",
+          "role": "party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": "in this case",
+      "quote": "Allstate need not post bond in this case",
+      "raw_span": [
+        31213,
+        31254
+      ]
+    },
+    {
+      "action_id": "note:710045:c1.a5",
+      "action_type": "stayed",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E11",
+          "role": "party"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E24",
+          "role": "opposing_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": "pending",
+      "quote": "all pending no-fault collection arbitrations by Rutland (or its agents) against Plaintiffs are stayed",
+      "raw_span": [
+        31567,
+        31670
+      ]
+    },
+    {
+      "action_id": "note:710045:c1.a6",
+      "action_type": "enjoined_from_filing",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E11",
+          "role": "restrained_party"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E1",
+          "role": "opposing_party"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": "pending resolution of the instant federal action",
+      "quote": "Rutland is enjoined from filing any further no-fault collection arbitrations or lawsuits against Allstate",
+      "raw_span": [
+        31679,
+        31785
+      ]
+    },
+    {
+      "action_id": "note:710085:a1",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E1",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E25",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Plaintiffs Allstate Insurance Company, Allstate Property & Casualty Insurance Company, Allstate Indemnity Company, and Allstate Fire & Casualty Insurance Company (collectively \"Allstate\")",
+      "raw_span": [
+        598,
+        787
+      ]
+    },
+    {
+      "action_id": "note:710085:a2",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E6",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E25",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Allstate Property & Casualty Insurance Company, Allstate Indemnity Company, and Allstate Fire & Casualty Insurance Company (collectively \"Allstate\")",
+      "raw_span": [
+        638,
+        787
+      ]
+    },
+    {
+      "action_id": "note:710085:a3",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E5",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E25",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Allstate Indemnity Company, and Allstate Fire & Casualty Insurance Company (collectively \"Allstate\")",
+      "raw_span": [
+        686,
+        787
+      ]
+    },
+    {
+      "action_id": "note:710085:a4",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E6",
+          "role": "member"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E25",
+          "role": "group"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "Allstate Fire & Casualty Insurance Company (collectively \"Allstate\")",
+      "raw_span": [
+        719,
+        787
+      ]
+    },
+    {
+      "action_id": "note:710085:a5",
+      "action_type": "dismissed",
+      "participants": [
+        {
+          "entity_id": "100001-236572-RI-01:E25",
+          "role": "plaintiff"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E7",
+          "role": "defendant"
+        },
+        {
+          "entity_id": "100001-236572-RI-01:E8",
+          "role": "defendant"
+        }
+      ],
+      "stance": "asserted",
+      "time_qualifier": null,
+      "quote": "that Allstate's Complaint (Dkt. No. 1) be dismissed as to Defendants Bradley Pien-e and Medical Reimbursement Consultants, Inc.,",
+      "raw_span": [
+        901,
+        1030
+      ]
+    }
+  ],
+  "blocked_merges": [],
+  "dangling_participants": [],
+  "review_items": [
+    {
+      "flag": "multi_hit_identical",
+      "id": "c3.m2",
+      "quote": "the allegations as to the Other Defendants.",
+      "count": 22
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c4.m2",
+      "quote": "truth of the allegations as to the Other Defendants. As to the allegations against MRC Defendants",
+      "count": 46
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c6.m7",
+      "quote": "as to the Other Defendants.",
+      "count": 52
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c2.a3",
+      "quote": "MRC Defendants respectfully refer the Court to these affidavits for the effect and meaning thereof.",
+      "count": 3
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c6.a3",
+      "quote": "MRC Defendants lack the knowledge or information sufficient to form a basis as to the truth of the allegations as to the Other Defendants.",
+      "count": 46
+    },
+    {
+      "flag": "unverifiable_quote",
+      "id": "c0.a25",
+      "quote": "Rutland patients were also referred to Nexray for\nMRis, seemingly as a matter of course.",
+      "reason": "unverifiable_quote:0.87"
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c0.m7",
+      "quote": "MEDICAL REIMBURSEMENT CONSULTANTS INC.,\nMARVIN",
+      "count": 2
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c0.m9",
+      "quote": "RUTLAND MEDICAL P.C. d/b/a MEDICALNOW, WILLIAM",
+      "count": 2
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c0.m10",
+      "quote": "WILLIAM A. WEINER,\nD.O., and NEXRAY",
+      "count": 2
+    }
+  ]
+}

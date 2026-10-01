@@ -1,0 +1,46 @@
+table,column,type,meaning
+sample_key,review_id,str,opaque id shown to the SME; unique per pair and round
+sample_key,pair_id,str,the pipeline's pair id
+sample_key,extracted_record_id,str,extracted row
+sample_key,extracted_part,str,person | business
+sample_key,watchlist_record_id,str,watchlist row
+sample_key,watchlist_part,str,person | business
+sample_key,run_id,str,pipeline run the pair came from
+sample_key,core_version,str,matching core version
+sample_key,b2_version,str,B2 version
+sample_key,round,int,review round (0 = first stratified sample)
+sample_key,selection,str,stratified | active
+sample_key,seed,int,sampling seed
+sample_key,stratum,str,band|basis at sampling time
+sample_key,band,str,p band at sampling time or 'vetoed'
+sample_key,basis,str,pipeline basis at sampling time
+sample_key,p_at_sampling,float,pipeline p at sampling time
+sample_key,rank,float,rank of the pair within its extracted party
+sample_key,N_h,int,candidate pairs in the stratum (population)
+sample_key,n_h,int,pairs drawn from the stratum
+sample_key,inclusion_prob,float,n_h / N_h (stratified); empty for active selection
+sample_key,weight,float,1 / inclusion_prob; empty for active selection
+sample_key,split,str,train | calibration | sealed_test (from the extracted party and the seed)
+sample_key,group,str,extracted record_id|part: the unit the split is assigned to
+sample_key,annotators,str,"annotator ids the pair was assigned to, ';'-joined"
+sample_key,double_coded,bool,assigned to two annotators
+labels,review_id,str,as in the sample key
+labels,annotator_id,str,who labelled
+labels,label,str,match | non-match | unsure
+labels,confidence,str,high | medium | low (optional)
+labels,reason,str,free text; required for unsure
+labels,labelled_at,str,ISO 8601; from the file's modified time when the cell is empty
+labels,timestamp_source,str,cell | file
+labels,source_file,str,file the label was read from
+labels,source_row,int,row in that file
+final_labels,review_id,str,
+final_labels,pair_id,str,
+final_labels,final_label,str,match | non-match | unsure
+final_labels,y,float,"1 match, 0 non-match, empty unsure"
+final_labels,n_annotators,int,
+final_labels,labels,str,annotator:label pairs
+final_labels,unanimous,bool,
+final_labels,adjudicated,bool,
+final_labels,adjudicator_id,str,
+final_labels,adjudication_reason,str,
+final_labels,label_source,str,single | unanimous | adjudicated | unresolved

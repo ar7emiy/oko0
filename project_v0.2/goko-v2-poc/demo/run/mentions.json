@@ -1,0 +1,9313 @@
+[
+ {
+  "key": "note:710036:c0.m1",
+  "type": "organization",
+  "name": "ALLSTATE INSURANCE COMPANY",
+  "name_as_extracted": "ALLSTATE INSURANCE COMPANY",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 0,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   931,
+   957
+  ],
+  "clean_span": [
+   931,
+   957
+  ],
+  "forms": [
+   "ALLSTATE INSURANCE COMPANY"
+  ],
+  "aliases": [
+   [
+    "ALLSTATE",
+    "INSURANCE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c0.m2",
+  "type": "organization",
+  "name": "ALLSTATE INDEMNITY COMPANY",
+  "name_as_extracted": "ALLSTATE INDEMNITY COMPANY",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 0,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   960,
+   986
+  ],
+  "clean_span": [
+   960,
+   986
+  ],
+  "forms": [
+   "ALLSTATE INDEMNITY COMPANY"
+  ],
+  "aliases": [
+   [
+    "ALLSTATE",
+    "INDEMNITY"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c0.m3",
+  "type": "organization",
+  "name": "ALLSTATE FIRE & CASUALTY INSURANCE\nCOMPANY",
+  "name_as_extracted": "ALLSTATE FIRE & CASUALTY INSURANCE\nCOMPANY",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 0,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   989,
+   1032
+  ],
+  "clean_span": [
+   989,
+   1032
+  ],
+  "forms": [
+   "ALLSTATE FIRE & CASUALTY INSURANCE\nCOMPANY"
+  ],
+  "aliases": [
+   [
+    "ALLSTATE",
+    "FIRE",
+    "CASUALTY",
+    "INSURANCE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c0.m4",
+  "type": "organization",
+  "name": "ALLSTATE PROPERTY &\nCASUALTY INSURANCE COMPANY",
+  "name_as_extracted": "ALLSTATE PROPERTY &\nCASUALTY INSURANCE COMPANY",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 0,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   1038,
+   1085
+  ],
+  "clean_span": [
+   1038,
+   1085
+  ],
+  "forms": [
+   "ALLSTATE PROPERTY &\nCASUALTY INSURANCE COMPANY"
+  ],
+  "aliases": [
+   [
+    "ALLSTATE",
+    "PROPERTY",
+    "CASUALTY",
+    "INSURANCE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c0.m5",
+  "type": "person",
+  "name": "Bradley Pierre",
+  "name_as_extracted": "Bradley Pierre",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 0,
+  "occurrences": [
+   "\u201cPierre\u201d"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "answering_party",
+   "member"
+  ],
+  "raw_span": [
+   286,
+   300
+  ],
+  "clean_span": [
+   286,
+   300
+  ],
+  "forms": [
+   "Bradley Pierre",
+   "\u201cPierre\u201d"
+  ],
+  "first": "BRADLEY",
+  "middle": "",
+  "last": "PIERRE",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:710036:c0.m6",
+  "type": "organization",
+  "name": "Medical Reimbursement Consultants Inc.",
+  "name_as_extracted": "Medical Reimbursement Consultants Inc.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 0,
+  "occurrences": [
+   "\u201cMRC\u201d"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "answering_party",
+   "member"
+  ],
+  "raw_span": [
+   316,
+   354
+  ],
+  "clean_span": [
+   316,
+   354
+  ],
+  "forms": [
+   "Medical Reimbursement Consultants Inc."
+  ],
+  "aliases": [
+   [
+    "MEDICAL",
+    "REIMBURSEMENT",
+    "CONSULTANTS"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c0.m7",
+  "type": "organization",
+  "name": "MRC Defendants",
+  "name_as_extracted": "MRC Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 0,
+  "occurrences": [
+   "MRC Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "admitting_party",
+   "denying_party",
+   "group"
+  ],
+  "raw_span": [
+   381,
+   395
+  ],
+  "clean_span": [
+   381,
+   395
+  ],
+  "forms": [
+   "MRC Defendants"
+  ],
+  "aliases": [
+   [
+    "MRC"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c0.m8",
+  "type": "person",
+  "name": "Marvin Moy, M.D.",
+  "name_as_extracted": "Marvin Moy, M.D.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 0,
+  "occurrences": [
+   "\u201cMoy\u201d"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   911,
+   927
+  ],
+  "clean_span": [
+   911,
+   927
+  ],
+  "forms": [
+   "Marvin Moy, M.D.",
+   "\u201cMoy\u201d"
+  ],
+  "first": "MARVIN",
+  "middle": "",
+  "last": "MOY",
+  "creds": [
+   "MD"
+  ],
+  "title": null,
+  "role_class": "professional"
+ },
+ {
+  "key": "note:710036:c0.m9",
+  "type": "organization",
+  "name": "Rutland Medical P.C. d/b/a MedicalNow",
+  "name_as_extracted": "Rutland Medical P.C. d/b/a MedicalNow",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 0,
+  "occurrences": [
+   "\u201cRutland\u201d",
+   "RUTLAND d/b/a MEDICALNOW"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   1538,
+   1575
+  ],
+  "clean_span": [
+   1538,
+   1575
+  ],
+  "forms": [
+   "Rutland Medical P.C. d/b/a MedicalNow",
+   "\u201cRutland\u201d",
+   "RUTLAND d/b/a MEDICALNOW"
+  ],
+  "aliases": [
+   [
+    "RUTLAND",
+    "MEDICAL"
+   ],
+   [
+    "MEDICALNOW"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c0.m10",
+  "type": "person",
+  "name": "William A. Weiner, D.O.",
+  "name_as_extracted": "William A. Weiner, D.O.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 0,
+  "occurrences": [
+   "\u201cWeiner\u201d"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   1589,
+   1612
+  ],
+  "clean_span": [
+   1589,
+   1612
+  ],
+  "forms": [
+   "William A. Weiner, D.O.",
+   "\u201cWeiner\u201d"
+  ],
+  "first": "WILLIAM",
+  "middle": "A",
+  "last": "WEINER",
+  "creds": [
+   "DO"
+  ],
+  "title": null,
+  "role_class": "professional"
+ },
+ {
+  "key": "note:710036:c0.m11",
+  "type": "organization",
+  "name": "Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging",
+  "name_as_extracted": "Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 0,
+  "occurrences": [
+   "\u201cNexray\u201d",
+   "NEXRAY MEDICAL IMAGING, P.C. d/b/a\nSOUL RADIOLOGY MEDICAL IMAGING"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   1630,
+   1695
+  ],
+  "clean_span": [
+   1630,
+   1695
+  ],
+  "forms": [
+   "Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging",
+   "\u201cNexray\u201d",
+   "NEXRAY MEDICAL IMAGING, P.C. d/b/a\nSOUL RADIOLOGY MEDICAL IMAGING"
+  ],
+  "aliases": [
+   [
+    "NEXRAY",
+    "MEDICAL",
+    "IMAGING"
+   ],
+   [
+    "SOUL",
+    "RADIOLOGY",
+    "MEDICAL",
+    "IMAGING"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c0.m12",
+  "type": "organization",
+  "name": "Other Defendants",
+  "name_as_extracted": "Other Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 0,
+  "occurrences": [
+   "Other Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "group"
+  ],
+  "raw_span": [
+   1727,
+   1743
+  ],
+  "clean_span": [
+   1727,
+   1743
+  ],
+  "forms": [
+   "Other Defendants"
+  ],
+  "aliases": [
+   [
+    "OTHER"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c1.m1",
+  "type": "organization",
+  "name": "MRC Defendants",
+  "name_as_extracted": "MRC Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 27774,
+  "occurrences": [
+   "MRC Defendants lack the knowledge or information sufficient to form a basis",
+   "MRC Defendants respectfully refer the Court",
+   "the allegations against MRC Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "denier",
+   "referring_party",
+   "respondent"
+  ],
+  "raw_span": [
+   28393,
+   28408
+  ],
+  "clean_span": [
+   28393,
+   28408
+  ],
+  "forms": [
+   "MRC Defendants"
+  ],
+  "aliases": [
+   [
+    "MRC"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c1.m2",
+  "type": "organization",
+  "name": "Other Defendants",
+  "name_as_extracted": "Other Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 27774,
+  "occurrences": [
+   "the allegations as to the Other Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   28329,
+   28345
+  ],
+  "clean_span": [
+   28329,
+   28345
+  ],
+  "forms": [
+   "Other Defendants"
+  ],
+  "aliases": [
+   [
+    "OTHER"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c1.m3",
+  "type": "person",
+  "name": "Plaintiff",
+  "name_as_extracted": "Plaintiff",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 27774,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   27813,
+   27822
+  ],
+  "clean_span": [
+   27813,
+   27822
+  ],
+  "forms": [
+   "Plaintiff"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:710036:c2.m1",
+  "type": "organization",
+  "name": "MRC Defendants",
+  "name_as_extracted": "MRC Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 56428,
+  "occurrences": [
+   "As to the allegations against MRC Defendants",
+   "MRC Defendants lack the knowledge or information sufficient to form a basis as to the truth of the allegations as to the Other Defendants",
+   "MRC Defendants respectfully refer the Court to these affidavits",
+   "MRC Defendants lack knowledge or information sufficient to form a basis",
+   "MRC Defendants deny the allegations set forth in paragraph 142 of the Complaint"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "responding_party"
+  ],
+  "raw_span": [
+   56474,
+   56489
+  ],
+  "clean_span": [
+   56474,
+   56489
+  ],
+  "forms": [
+   "MRC Defendants"
+  ],
+  "aliases": [
+   [
+    "MRC"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c2.m2",
+  "type": "organization",
+  "name": "Other Defendants",
+  "name_as_extracted": "Other Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 56428,
+  "occurrences": [
+   "the Other Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   56957,
+   56973
+  ],
+  "clean_span": [
+   56957,
+   56973
+  ],
+  "forms": [
+   "Other Defendants",
+   "the Other Defendants"
+  ],
+  "aliases": [
+   [
+    "OTHER"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c3.m1",
+  "type": "organization",
+  "name": "MRC Defendants",
+  "name_as_extracted": "MRC Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 84532,
+  "occurrences": [
+   "MRC Defendants deny the allegations",
+   "the allegations against MRC Defendants",
+   "MRC Defendants lack the knowledge or information sufficient to form a basis",
+   "MRC Defendants lack knowledge or information sufficient to form a basis"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor"
+  ],
+  "raw_span": [
+   85532,
+   85546
+  ],
+  "clean_span": [
+   85532,
+   85546
+  ],
+  "forms": [
+   "MRC Defendants"
+  ],
+  "aliases": [
+   [
+    "MRC"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c3.m2",
+  "type": "organization",
+  "name": "Other Defendants",
+  "name_as_extracted": "Other Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 84532,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   84927,
+   84943
+  ],
+  "clean_span": [
+   84927,
+   84943
+  ],
+  "forms": [
+   "Other Defendants"
+  ],
+  "aliases": [
+   [
+    "OTHER"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c4.m1",
+  "type": "organization",
+  "name": "MRC Defendants",
+  "name_as_extracted": "MRC Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 113988,
+  "occurrences": [
+   "MRC Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "denier",
+   "responding_party"
+  ],
+  "raw_span": [
+   114900,
+   114915
+  ],
+  "clean_span": [
+   114900,
+   114915
+  ],
+  "forms": [
+   "MRC Defendants"
+  ],
+  "aliases": [
+   [
+    "MRC"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c4.m2",
+  "type": "organization",
+  "name": "Other Defendants",
+  "name_as_extracted": "Other Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 113988,
+  "occurrences": [
+   "Other Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   114836,
+   114852
+  ],
+  "clean_span": [
+   114836,
+   114852
+  ],
+  "forms": [
+   "Other Defendants"
+  ],
+  "aliases": [
+   [
+    "OTHER"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c4.m3",
+  "type": "organization",
+  "name": "ALLSTATE",
+  "name_as_extracted": "ALLSTATE",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 113988,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   134577,
+   134585
+  ],
+  "clean_span": [
+   134577,
+   134585
+  ],
+  "forms": [
+   "ALLSTATE"
+  ],
+  "aliases": [
+   [
+    "ALLSTATE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c5.m1",
+  "type": "organization",
+  "name": "MRC Defendants",
+  "name_as_extracted": "MRC Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 143339,
+  "occurrences": [
+   "MRC Defendants lack the knowledge or information sufficient to form a basis",
+   "MRC Defendants deny the allegations contained in paragraph 445 of the Complaint",
+   "the allegations against MRC Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "denier",
+   "subject"
+  ],
+  "raw_span": [
+   149843,
+   149857
+  ],
+  "clean_span": [
+   149843,
+   149857
+  ],
+  "forms": [
+   "MRC Defendants"
+  ],
+  "aliases": [
+   [
+    "MRC"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c5.m2",
+  "type": "organization",
+  "name": "Other Defendants",
+  "name_as_extracted": "Other Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 143339,
+  "occurrences": [
+   "the allegations as to the Other Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   147632,
+   147648
+  ],
+  "clean_span": [
+   147632,
+   147648
+  ],
+  "forms": [
+   "Other Defendants"
+  ],
+  "aliases": [
+   [
+    "OTHER"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c5.m3",
+  "type": "organization",
+  "name": "ALLSTATE",
+  "name_as_extracted": "ALLSTATE",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 143339,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   145793,
+   145801
+  ],
+  "clean_span": [
+   145793,
+   145801
+  ],
+  "forms": [
+   "ALLSTATE"
+  ],
+  "aliases": [
+   [
+    "ALLSTATE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c6.m1",
+  "type": "organization",
+  "name": "MRC Defendants",
+  "name_as_extracted": "MRC Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 172434,
+  "occurrences": [
+   "MRC Defendants",
+   "answering MRC Defendants",
+   "they"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "adopting_party",
+   "cross_complainant",
+   "defending_party",
+   "denying_party",
+   "group",
+   "reserving_party",
+   "responding_party"
+  ],
+  "raw_span": [
+   201864,
+   201878
+  ],
+  "clean_span": [
+   201864,
+   201878
+  ],
+  "forms": [
+   "MRC Defendants"
+  ],
+  "aliases": [
+   [
+    "MRC"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c6.m2",
+  "type": "organization",
+  "name": "MRC",
+  "name_as_extracted": "MRC",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 172434,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   201844,
+   201847
+  ],
+  "clean_span": [
+   201844,
+   201847
+  ],
+  "forms": [
+   "MRC"
+  ],
+  "aliases": [
+   [
+    "MRC"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c6.m3",
+  "type": "person",
+  "name": "Pierre",
+  "name_as_extracted": "Pierre",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 172434,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   201833,
+   201839
+  ],
+  "clean_span": [
+   201833,
+   201839
+  ],
+  "forms": [
+   "Pierre"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "PIERRE",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:710036:c6.m4",
+  "type": "organization",
+  "name": "Rutland",
+  "name_as_extracted": "Rutland",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 172434,
+  "occurrences": [
+   "Rutland"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member",
+   "organization",
+   "party",
+   "registered_entity"
+  ],
+  "raw_span": [
+   202157,
+   202164
+  ],
+  "clean_span": [
+   202157,
+   202164
+  ],
+  "forms": [
+   "Rutland"
+  ],
+  "aliases": [
+   [
+    "RUTLAND"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c6.m5",
+  "type": "organization",
+  "name": "Nexray",
+  "name_as_extracted": "Nexray",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 172434,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   201924,
+   201930
+  ],
+  "clean_span": [
+   201924,
+   201930
+  ],
+  "forms": [
+   "Nexray"
+  ],
+  "aliases": [
+   [
+    "NEXRAY"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c6.m6",
+  "type": "organization",
+  "name": "PC Defendants",
+  "name_as_extracted": "PC Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 172434,
+  "occurrences": [
+   "PC Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "cross_defendant_group",
+   "group",
+   "referenced_party"
+  ],
+  "raw_span": [
+   201951,
+   201964
+  ],
+  "clean_span": [
+   201951,
+   201964
+  ],
+  "forms": [
+   "PC Defendants"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c6.m7",
+  "type": "organization",
+  "name": "Other Defendants",
+  "name_as_extracted": "Other Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 172434,
+  "occurrences": [
+   "the Other Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "referenced_party"
+  ],
+  "raw_span": [
+   172963,
+   172979
+  ],
+  "clean_span": [
+   172963,
+   172979
+  ],
+  "forms": [
+   "Other Defendants",
+   "the Other Defendants"
+  ],
+  "aliases": [
+   [
+    "OTHER"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c6.m8",
+  "type": "organization",
+  "name": "Plaintiffs",
+  "name_as_extracted": "Plaintiffs",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 172434,
+  "occurrences": [
+   "Plaintiffs",
+   "Plaintiffs\u2019"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "referenced_party"
+  ],
+  "raw_span": [
+   200750,
+   200760
+  ],
+  "clean_span": [
+   200750,
+   200760
+  ],
+  "forms": [
+   "Plaintiffs"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c6.m9",
+  "type": "person",
+  "name": "Moy",
+  "name_as_extracted": "Moy",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 172434,
+  "occurrences": [
+   "Defendant Moy"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "under_name_and_license"
+  ],
+  "raw_span": [
+   202299,
+   202302
+  ],
+  "clean_span": [
+   202299,
+   202302
+  ],
+  "forms": [
+   "Moy",
+   "Defendant Moy"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "MOY",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:710036:c7.m3",
+  "type": "organization",
+  "name": "Nexray",
+  "name_as_extracted": "Nexray",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 202128,
+  "occurrences": [
+   "Nexray"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "organization",
+   "party"
+  ],
+  "raw_span": [
+   202464,
+   202470
+  ],
+  "clean_span": [
+   202464,
+   202470
+  ],
+  "forms": [
+   "Nexray"
+  ],
+  "aliases": [
+   [
+    "NEXRAY"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c7.m4",
+  "type": "person",
+  "name": "Weiner",
+  "name_as_extracted": "Weiner",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 202128,
+  "occurrences": [
+   "Defendant Weiner\u2019s"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "person"
+  ],
+  "raw_span": [
+   202605,
+   202611
+  ],
+  "clean_span": [
+   202605,
+   202611
+  ],
+  "forms": [
+   "Weiner",
+   "Defendant Weiner\u2019s"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "WEINER",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:710036:c7.m5",
+  "type": "organization",
+  "name": "Plaintiffs",
+  "name_as_extracted": "Plaintiffs",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 202128,
+  "occurrences": [
+   "Plaintiffs have alleged damages",
+   "Plaintiffs recover against MRC Defendants",
+   "Plaintiffs allege Defendants engaged"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "claimant",
+   "duty_beneficiary",
+   "plaintiff"
+  ],
+  "raw_span": [
+   202647,
+   202657
+  ],
+  "clean_span": [
+   202647,
+   202657
+  ],
+  "forms": [
+   "Plaintiffs"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c7.m6",
+  "type": "organization",
+  "name": "MRC Defendants",
+  "name_as_extracted": "MRC Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 202128,
+  "occurrences": [
+   "MRC Defendants owed",
+   "MRC Defendants are entitled",
+   "MRC Defendants repeat and reallege",
+   "MRC Defendants entered into agreements",
+   "MRC Defendants seek indemnification",
+   "MRC Defendants have been exposed",
+   "MRC Defendants are obligated",
+   "MRC Defendants have suffered",
+   "MRC Defendants demand judgment"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "affected_party",
+   "claimant",
+   "defendant",
+   "indemnitee",
+   "party"
+  ],
+  "raw_span": [
+   202689,
+   202703
+  ],
+  "clean_span": [
+   202689,
+   202703
+  ],
+  "forms": [
+   "MRC Defendants"
+  ],
+  "aliases": [
+   [
+    "MRC"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c7.m7",
+  "type": "organization",
+  "name": "PC Defendants",
+  "name_as_extracted": "PC Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 202128,
+  "occurrences": [
+   "PC Defendants actions",
+   "PC Defendants owed statutory duties",
+   "PC Defendants in proportion",
+   "crossclaim against PC Defendants",
+   "PC Defendants are obligated",
+   "PC Defendants\u2019 actions",
+   "PC Defendants\u2019 acts and/or omissions",
+   "PC Defendants breach of the Agreements",
+   "against PC Defendants for Contribution",
+   "against PC Defendants for Indemnification",
+   "against PC Defendants for Breach of Contract"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "alleged_cause",
+   "contributor",
+   "defendant",
+   "indemnitor",
+   "obligor",
+   "party"
+  ],
+  "raw_span": [
+   202708,
+   202721
+  ],
+  "clean_span": [
+   202708,
+   202721
+  ],
+  "forms": [
+   "PC Defendants"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c7.m8",
+  "type": "person",
+  "name": "Pierre",
+  "name_as_extracted": "Pierre",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 202128,
+  "occurrences": [
+   "Pierre or MRC",
+   "Pierre or MRC is found liable",
+   "Pierre"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "other_party",
+   "party"
+  ],
+  "raw_span": [
+   205770,
+   205776
+  ],
+  "clean_span": [
+   205770,
+   205776
+  ],
+  "forms": [
+   "Pierre"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "PIERRE",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:710036:c7.m9",
+  "type": "organization",
+  "name": "Medical Reimbursement Consultants, Inc.",
+  "name_as_extracted": "Medical Reimbursement Consultants, Inc.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 202128,
+  "occurrences": [
+   "MRC",
+   "MRC Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "other_party",
+   "party"
+  ],
+  "raw_span": [
+   207208,
+   207248
+  ],
+  "clean_span": [
+   207208,
+   207248
+  ],
+  "forms": [
+   "Medical Reimbursement Consultants, Inc."
+  ],
+  "aliases": [
+   [
+    "MEDICAL",
+    "REIMBURSEMENT",
+    "CONSULTANTS"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c7.m10",
+  "type": "person",
+  "name": "Bradley Pierre",
+  "name_as_extracted": "Bradley Pierre",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 202128,
+  "occurrences": [
+   "Pierre"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   207254,
+   207268
+  ],
+  "clean_span": [
+   207254,
+   207268
+  ],
+  "forms": [
+   "Bradley Pierre",
+   "Pierre"
+  ],
+  "first": "BRADLEY",
+  "middle": "",
+  "last": "PIERRE",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:710036:c7.m11",
+  "type": "organization",
+  "name": "MINTZ & GOLD LLP",
+  "name_as_extracted": "MINTZ & GOLD LLP",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 202128,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   206989,
+   207005
+  ],
+  "clean_span": [
+   206989,
+   207005
+  ],
+  "forms": [
+   "MINTZ & GOLD LLP"
+  ],
+  "aliases": [
+   [
+    "MINTZ",
+    "GOLD"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710036:c7.m12",
+  "type": "person",
+  "name": "Ryan W. Lawler",
+  "name_as_extracted": "Ryan W. Lawler",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710036",
+  "chunk": 202128,
+  "occurrences": [
+   "Ryan W. Lawler"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   207025,
+   207039
+  ],
+  "clean_span": [
+   207025,
+   207039
+  ],
+  "forms": [
+   "Ryan W. Lawler"
+  ],
+  "first": "RYAN",
+  "middle": "W",
+  "last": "LAWLER",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:710045:c0.m1",
+  "type": "organization",
+  "name": "AllSTATE INSURANCE COMPANY",
+  "name_as_extracted": "AllSTATE INSURANCE COMPANY",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710045",
+  "chunk": 0,
+  "occurrences": [
+   "Allstate Insurance Company"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   60,
+   86
+  ],
+  "clean_span": [
+   60,
+   86
+  ],
+  "forms": [
+   "AllSTATE INSURANCE COMPANY",
+   "Allstate Insurance Company"
+  ],
+  "aliases": [
+   [
+    "ALLSTATE",
+    "INSURANCE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710045:c0.m2",
+  "type": "organization",
+  "name": "AllSTATE INDEMNITY COMPANY",
+  "name_as_extracted": "AllSTATE INDEMNITY COMPANY",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710045",
+  "chunk": 0,
+  "occurrences": [
+   "Allstate Indemnity Company"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   88,
+   115
+  ],
+  "clean_span": [
+   88,
+   115
+  ],
+  "forms": [
+   "AllSTATE INDEMNITY COMPANY",
+   "Allstate Indemnity Company"
+  ],
+  "aliases": [
+   [
+    "ALLSTATE",
+    "INDEMNITY"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710045:c0.m3",
+  "type": "organization",
+  "name": "AllSTATE PROPERTY & CASUALTY INSURANCE COMPANY",
+  "name_as_extracted": "AllSTATE PROPERTY & CASUALTY INSURANCE COMPANY",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710045",
+  "chunk": 0,
+  "occurrences": [
+   "Allstate Property and Casualty Insurance Company"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   167,
+   214
+  ],
+  "clean_span": [
+   167,
+   214
+  ],
+  "forms": [
+   "AllSTATE PROPERTY & CASUALTY INSURANCE COMPANY",
+   "Allstate Property and Casualty Insurance Company"
+  ],
+  "aliases": [
+   [
+    "ALLSTATE",
+    "PROPERTY",
+    "CASUALTY",
+    "INSURANCE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710045:c0.m4",
+  "type": "organization",
+  "name": "AllSTATE FIRE & CASUALTY INSURANCE COMPANY",
+  "name_as_extracted": "AllSTATE FIRE & CASUALTY INSURANCE COMPANY",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710045",
+  "chunk": 0,
+  "occurrences": [
+   "Allstate Fire and Casualty Insurance Company"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   117,
+   160
+  ],
+  "clean_span": [
+   117,
+   160
+  ],
+  "forms": [
+   "AllSTATE FIRE & CASUALTY INSURANCE COMPANY",
+   "Allstate Fire and Casualty Insurance Company"
+  ],
+  "aliases": [
+   [
+    "ALLSTATE",
+    "FIRE",
+    "CASUALTY",
+    "INSURANCE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710045:c0.m5",
+  "type": "organization",
+  "name": "Plaintiffs",
+  "name_as_extracted": "Plaintiffs",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710045",
+  "chunk": 0,
+  "occurrences": [
+   "All-\nstate"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "group",
+   "payer",
+   "plaintiff",
+   "recipient",
+   "target"
+  ],
+  "raw_span": [
+   766,
+   776
+  ],
+  "clean_span": [
+   766,
+   776
+  ],
+  "forms": [
+   "Plaintiffs"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710045:c0.m6",
+  "type": "person",
+  "name": "BRADLEY PIERRE",
+  "name_as_extracted": "BRADLEY PIERRE",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710045",
+  "chunk": 0,
+  "occurrences": [
+   "Bradley Pierre",
+   "Defendant Pierre",
+   "Pierre"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "member",
+   "recipient"
+  ],
+  "raw_span": [
+   240,
+   254
+  ],
+  "clean_span": [
+   240,
+   254
+  ],
+  "forms": [
+   "BRADLEY PIERRE",
+   "Bradley Pierre",
+   "Defendant Pierre",
+   "Pierre"
+  ],
+  "first": "BRADLEY",
+  "middle": "",
+  "last": "PIERRE",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:710045:c0.m7",
+  "type": "organization",
+  "name": "MEDICAL REIMBURSEMENT CONSULTANTS INC.",
+  "name_as_extracted": "MEDICAL REIMBURSEMENT CONSULTANTS INC.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710045",
+  "chunk": 0,
+  "occurrences": [
+   "Medical Reimbursement Consultants Inc.",
+   "Medical Reimbursement Consultants, Inc.",
+   "MR1"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   256,
+   295
+  ],
+  "clean_span": [
+   256,
+   295
+  ],
+  "forms": [
+   "MEDICAL REIMBURSEMENT CONSULTANTS INC.",
+   "Medical Reimbursement Consultants Inc.",
+   "Medical Reimbursement Consultants, Inc."
+  ],
+  "aliases": [
+   [
+    "MEDICAL",
+    "REIMBURSEMENT",
+    "CONSULTANTS"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710045:c0.m8",
+  "type": "person",
+  "name": "MARVIN MOY, M.D.",
+  "name_as_extracted": "MARVIN MOY, M.D.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710045",
+  "chunk": 0,
+  "occurrences": [
+   "Marvin Moy, M.D.",
+   "Defendant Moy",
+   "Moy",
+   "Dr. May"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "facilitator",
+   "member"
+  ],
+  "raw_span": [
+   298,
+   314
+  ],
+  "clean_span": [
+   298,
+   314
+  ],
+  "forms": [
+   "MARVIN MOY, M.D.",
+   "Marvin Moy, M.D.",
+   "Defendant Moy",
+   "Moy"
+  ],
+  "first": "MARVIN",
+  "middle": "",
+  "last": "MOY",
+  "creds": [
+   "MD"
+  ],
+  "title": null,
+  "role_class": "professional"
+ },
+ {
+  "key": "note:710045:c0.m9",
+  "type": "organization",
+  "name": "RUTLAND MEDICAL P.C. d/b/a MEDICALNOW",
+  "name_as_extracted": "RUTLAND MEDICAL P.C. d/b/a MEDICALNOW",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710045",
+  "chunk": 0,
+  "occurrences": [
+   "Rutland Medical P.C. d/b/a Medica!Now",
+   "Defendant Rutland",
+   "Rutland"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "member",
+   "party",
+   "recipient",
+   "referrer",
+   "source",
+   "target"
+  ],
+  "raw_span": [
+   316,
+   354
+  ],
+  "clean_span": [
+   316,
+   354
+  ],
+  "forms": [
+   "RUTLAND MEDICAL P.C. d/b/a MEDICALNOW",
+   "Defendant Rutland",
+   "Rutland"
+  ],
+  "aliases": [
+   [
+    "RUTLAND",
+    "MEDICAL"
+   ],
+   [
+    "MEDICALNOW"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710045:c0.m10",
+  "type": "person",
+  "name": "WILLIAM A. WEINER, D.O.",
+  "name_as_extracted": "WILLIAM A. WEINER, D.O.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710045",
+  "chunk": 0,
+  "occurrences": [
+   "William A. Weiner, D.O.",
+   "Defendant Weiner",
+   "Weiner"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   356,
+   380
+  ],
+  "clean_span": [
+   356,
+   380
+  ],
+  "forms": [
+   "WILLIAM A. WEINER, D.O.",
+   "William A. Weiner, D.O.",
+   "Defendant Weiner",
+   "Weiner"
+  ],
+  "first": "WILLIAM",
+  "middle": "A",
+  "last": "WEINER",
+  "creds": [
+   "DO"
+  ],
+  "title": null,
+  "role_class": "professional"
+ },
+ {
+  "key": "note:710045:c0.m11",
+  "type": "organization",
+  "name": "NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING",
+  "name_as_extracted": "NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710045",
+  "chunk": 0,
+  "occurrences": [
+   "Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging",
+   "Nexray",
+   "Nexray's facility"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member",
+   "recipient"
+  ],
+  "raw_span": [
+   386,
+   452
+  ],
+  "clean_span": [
+   386,
+   452
+  ],
+  "forms": [
+   "NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING",
+   "Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging",
+   "Nexray"
+  ],
+  "aliases": [
+   [
+    "NEXRAY",
+    "MEDICAL",
+    "IMAGING"
+   ],
+   [
+    "SOUL",
+    "RADIOLOGY",
+    "MEDICAL",
+    "IMAGING"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710045:c0.m12",
+  "type": "organization",
+  "name": "Defendants",
+  "name_as_extracted": "Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710045",
+  "chunk": 0,
+  "occurrences": [
+   "Defendant",
+   "Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "defendant",
+   "group"
+  ],
+  "raw_span": [
+   1046,
+   1056
+  ],
+  "clean_span": [
+   1046,
+   1056
+  ],
+  "forms": [
+   "Defendants"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710045:c0.m13",
+  "type": "organization",
+  "name": "PC Defendants",
+  "name_as_extracted": "PC Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710045",
+  "chunk": 0,
+  "occurrences": [
+   "the PC Defendants",
+   "two other PC Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "group",
+   "submitter"
+  ],
+  "raw_span": [
+   1534,
+   1547
+  ],
+  "clean_span": [
+   1534,
+   1547
+  ],
+  "forms": [
+   "PC Defendants",
+   "the PC Defendants"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710045:c0.m14",
+  "type": "organization",
+  "name": "Clin-",
+  "name_as_extracted": "Clin-\nics",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710045",
+  "chunk": 0,
+  "occurrences": [
+   "the Clinics",
+   "Clinics"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "group"
+  ],
+  "raw_span": [
+   10048,
+   10057
+  ],
+  "clean_span": [
+   10048,
+   10057
+  ],
+  "forms": [
+   "Clin-"
+  ],
+  "aliases": [
+   [
+    "CLIN"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710045:c1.m1",
+  "type": "organization",
+  "name": "Allstate",
+  "name_as_extracted": "Allstate",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710045",
+  "chunk": 28780,
+  "occurrences": [
+   "Allstate's motion",
+   "Allstate also asks",
+   "Allstate need",
+   "Allstate's request",
+   "against Allstate"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "harmed_party",
+   "movant",
+   "opposing_party",
+   "party",
+   "requesting_party"
+  ],
+  "raw_span": [
+   29567,
+   29575
+  ],
+  "clean_span": [
+   29567,
+   29575
+  ],
+  "forms": [
+   "Allstate"
+  ],
+  "aliases": [
+   [
+    "ALLSTATE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710045:c1.m2",
+  "type": "organization",
+  "name": "Rutland",
+  "name_as_extracted": "Rutland",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710045",
+  "chunk": 28780,
+  "occurrences": [
+   "by Rutland (or its agents)",
+   "Rutland is enjoined"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "opposing_party",
+   "party",
+   "restrained_party"
+  ],
+  "raw_span": [
+   30154,
+   30161
+  ],
+  "clean_span": [
+   30154,
+   30161
+  ],
+  "forms": [
+   "Rutland"
+  ],
+  "aliases": [
+   [
+    "RUTLAND"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710045:c1.m3",
+  "type": "organization",
+  "name": "Plaintiffs",
+  "name_as_extracted": "Plaintiffs",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710045",
+  "chunk": 28780,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "opposing_party"
+  ],
+  "raw_span": [
+   31649,
+   31659
+  ],
+  "clean_span": [
+   31649,
+   31659
+  ],
+  "forms": [
+   "Plaintiffs"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710085:m1",
+  "type": "organization",
+  "name": "Allstate Insurance Company",
+  "name_as_extracted": "Allstate Insurance Company",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710085",
+  "chunk": 0,
+  "occurrences": [
+   "Plaintiffs"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   609,
+   636
+  ],
+  "clean_span": [
+   609,
+   636
+  ],
+  "forms": [
+   "Allstate Insurance Company"
+  ],
+  "aliases": [
+   [
+    "ALLSTATE",
+    "INSURANCE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710085:m2",
+  "type": "organization",
+  "name": "Allstate Property & Casualty Insurance Company",
+  "name_as_extracted": "Allstate Property & Casualty Insurance Company",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710085",
+  "chunk": 0,
+  "occurrences": [
+   "Plaintiffs",
+   "Allstate Property & Casualty Insurance Company"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   638,
+   684
+  ],
+  "clean_span": [
+   638,
+   684
+  ],
+  "forms": [
+   "Allstate Property & Casualty Insurance Company"
+  ],
+  "aliases": [
+   [
+    "ALLSTATE",
+    "PROPERTY",
+    "CASUALTY",
+    "INSURANCE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710085:m3",
+  "type": "organization",
+  "name": "Allstate Indemnity Company",
+  "name_as_extracted": "Allstate Indemnity Company",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710085",
+  "chunk": 0,
+  "occurrences": [
+   "Plaintiffs",
+   "Allstate Indemnity Company"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   686,
+   713
+  ],
+  "clean_span": [
+   686,
+   713
+  ],
+  "forms": [
+   "Allstate Indemnity Company"
+  ],
+  "aliases": [
+   [
+    "ALLSTATE",
+    "INDEMNITY"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710085:m4",
+  "type": "organization",
+  "name": "Allstate Fire & Casualty Insurance Company",
+  "name_as_extracted": "Allstate Fire & Casualty Insurance Company",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710085",
+  "chunk": 0,
+  "occurrences": [
+   "Plaintiffs",
+   "Allstate Fire & Casualty Insurance Company"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   719,
+   761
+  ],
+  "clean_span": [
+   719,
+   761
+  ],
+  "forms": [
+   "Allstate Fire & Casualty Insurance Company"
+  ],
+  "aliases": [
+   [
+    "ALLSTATE",
+    "FIRE",
+    "CASUALTY",
+    "INSURANCE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710085:m5",
+  "type": "person",
+  "name": "BRADLEY PIERRE",
+  "name_as_extracted": "BRADLEY PIERRE",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710085",
+  "chunk": 0,
+  "occurrences": [
+   "Defendants Bradley Pien-e",
+   "Defendants Bradley Pien-e and Medical Reimbursement Consultants, Inc."
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "defendant"
+  ],
+  "raw_span": [
+   268,
+   282
+  ],
+  "clean_span": [
+   268,
+   282
+  ],
+  "forms": [
+   "BRADLEY PIERRE"
+  ],
+  "first": "BRADLEY",
+  "middle": "",
+  "last": "PIERRE",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:710085:m6",
+  "type": "organization",
+  "name": "Medical Reimbursement Consultants, Inc.",
+  "name_as_extracted": "Medical Reimbursement Consultants, Inc.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710085",
+  "chunk": 0,
+  "occurrences": [
+   "MEDICAL REIMBURSEMENT CONSULTANTS INC.,",
+   "Defendants",
+   "Medical Reimbursement Consultants, Inc."
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "defendant"
+  ],
+  "raw_span": [
+   824,
+   863
+  ],
+  "clean_span": [
+   824,
+   863
+  ],
+  "forms": [
+   "Medical Reimbursement Consultants, Inc.",
+   "MEDICAL REIMBURSEMENT CONSULTANTS INC.,"
+  ],
+  "aliases": [
+   [
+    "MEDICAL",
+    "REIMBURSEMENT",
+    "CONSULTANTS"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710085:m7",
+  "type": "person",
+  "name": "MARVIN MOY, M.D.",
+  "name_as_extracted": "MARVIN MOY, M.D.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710085",
+  "chunk": 0,
+  "occurrences": [
+   "Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   326,
+   342
+  ],
+  "clean_span": [
+   326,
+   342
+  ],
+  "forms": [
+   "MARVIN MOY, M.D."
+  ],
+  "first": "MARVIN",
+  "middle": "",
+  "last": "MOY",
+  "creds": [
+   "MD"
+  ],
+  "title": null,
+  "role_class": "professional"
+ },
+ {
+  "key": "note:710085:m8",
+  "type": "organization",
+  "name": "RUTLAND MEDICAL P.C.",
+  "name_as_extracted": "RUTLAND MEDICAL P.C.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710085",
+  "chunk": 0,
+  "occurrences": [
+   "d/b/a MEDICALNOW",
+   "Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   345,
+   365
+  ],
+  "clean_span": [
+   345,
+   365
+  ],
+  "forms": [
+   "RUTLAND MEDICAL P.C."
+  ],
+  "aliases": [
+   [
+    "RUTLAND",
+    "MEDICAL"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710085:m9",
+  "type": "person",
+  "name": "WILLIAM A. WEINER, D.O.",
+  "name_as_extracted": "WILLIAM A. WEINER, D.O.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710085",
+  "chunk": 0,
+  "occurrences": [
+   "Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   386,
+   409
+  ],
+  "clean_span": [
+   386,
+   409
+  ],
+  "forms": [
+   "WILLIAM A. WEINER, D.O."
+  ],
+  "first": "WILLIAM",
+  "middle": "A",
+  "last": "WEINER",
+  "creds": [
+   "DO"
+  ],
+  "title": null,
+  "role_class": "professional"
+ },
+ {
+  "key": "note:710085:m10",
+  "type": "organization",
+  "name": "NEXRA Y MEDICAL IMAGING, P.C.",
+  "name_as_extracted": "NEXRA Y MEDICAL IMAGING, P.C.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710085",
+  "chunk": 0,
+  "occurrences": [
+   "d/b/a SOUL RADIOLOGY MEDICAL IMAGING",
+   "Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   416,
+   445
+  ],
+  "clean_span": [
+   416,
+   445
+  ],
+  "forms": [
+   "NEXRA Y MEDICAL IMAGING, P.C."
+  ],
+  "aliases": [
+   [
+    "NEXRA",
+    "MEDICAL",
+    "IMAGING"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:710085:m11",
+  "type": "organization",
+  "name": "Allstate",
+  "name_as_extracted": "Allstate",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100001-236572-RI-01",
+  "occurrence_id": "100001-236572",
+  "client_id": "100001",
+  "note_key": "note:710085",
+  "chunk": 0,
+  "occurrences": [
+   "Allstate's"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "group",
+   "plaintiff"
+  ],
+  "raw_span": [
+   777,
+   785
+  ],
+  "clean_span": [
+   777,
+   785
+  ],
+  "forms": [
+   "Allstate",
+   "Allstate's"
+  ],
+  "aliases": [
+   [
+    "ALLSTATE"
+   ],
+   [
+    "ALLSTATES"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c0.m1",
+  "type": "organization",
+  "name": "American Transit Insurance Company",
+  "name_as_extracted": "American Transit Insurance Company",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 0,
+  "occurrences": [
+   "American Transit",
+   "\u201cAmerican Transit\u201d",
+   "Plaintiff",
+   "the largest taxi and livery No-Fault liability insurer in New York",
+   "the largest No-Fault insurers for the taxi and livery commercial automobile service industry in New York",
+   "insurers",
+   "it"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "affected_party",
+   "payer",
+   "recipient"
+  ],
+  "raw_span": [
+   381,
+   415
+  ],
+  "clean_span": [
+   381,
+   415
+  ],
+  "forms": [
+   "American Transit Insurance Company",
+   "American Transit",
+   "\u201cAmerican Transit\u201d"
+  ],
+  "aliases": [
+   [
+    "AMERICAN",
+    "TRANSIT",
+    "INSURANCE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c0.m2",
+  "type": "person",
+  "name": "Bradley Pierre",
+  "name_as_extracted": "Bradley Pierre",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 0,
+  "occurrences": [
+   "Pierre",
+   "Defendant Pierre",
+   "he",
+   "an unlicensed layperson",
+   "an architect of the scheme"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "controller",
+   "defendant",
+   "member",
+   "payer",
+   "recipient"
+  ],
+  "raw_span": [
+   531,
+   545
+  ],
+  "clean_span": [
+   531,
+   545
+  ],
+  "forms": [
+   "Bradley Pierre",
+   "Pierre",
+   "Defendant Pierre"
+  ],
+  "first": "BRADLEY",
+  "middle": "",
+  "last": "PIERRE",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c0.m3",
+  "type": "person",
+  "name": "Marvin Moy, M.D.",
+  "name_as_extracted": "Marvin Moy, M.D.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 0,
+  "occurrences": [
+   "Moy",
+   "Defendant Moy",
+   "he"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "former_controller",
+   "member",
+   "owner"
+  ],
+  "raw_span": [
+   559,
+   575
+  ],
+  "clean_span": [
+   559,
+   575
+  ],
+  "forms": [
+   "Marvin Moy, M.D.",
+   "Moy",
+   "Defendant Moy"
+  ],
+  "first": "MARVIN",
+  "middle": "",
+  "last": "MOY",
+  "creds": [
+   "MD"
+  ],
+  "title": null,
+  "role_class": "professional"
+ },
+ {
+  "key": "note:720001:c0.m4",
+  "type": "organization",
+  "name": "Rutland Medical P.C.",
+  "name_as_extracted": "Rutland Medical P.C.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 0,
+  "occurrences": [
+   "Rutland",
+   "Defendant Rutland",
+   "medical mill in New York",
+   "it",
+   "professional corporation"
+  ],
+  "details": [
+   [
+    "address",
+    "145|e|98th|street|1st|floor|brooklyn|new|york|11212",
+    "stated"
+   ]
+  ],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [
+   {
+    "number": "145",
+    "direction": "E",
+    "street": "98TH",
+    "street_type": "ST",
+    "unit": "",
+    "city": "BROOKLYN",
+    "state": "NY",
+    "zip": "11212"
+   }
+  ],
+  "locations": [
+   {
+    "city": "BROOKLYN",
+    "state": "NY"
+   }
+  ],
+  "roles": [
+   "actor",
+   "biller",
+   "controlled",
+   "member",
+   "organization",
+   "owned",
+   "recipient",
+   "referrer"
+  ],
+  "raw_span": [
+   585,
+   605
+  ],
+  "clean_span": [
+   585,
+   605
+  ],
+  "forms": [
+   "Rutland Medical P.C.",
+   "Rutland",
+   "Defendant Rutland"
+  ],
+  "aliases": [
+   [
+    "RUTLAND",
+    "MEDICAL"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c0.m5",
+  "type": "person",
+  "name": "William A. Weiner, D.O.",
+  "name_as_extracted": "William A. Weiner, D.O.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 0,
+  "occurrences": [
+   "Weiner",
+   "Defendant Weiner",
+   "he"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "defendant",
+   "former_controller",
+   "member",
+   "owner"
+  ],
+  "raw_span": [
+   619,
+   642
+  ],
+  "clean_span": [
+   619,
+   642
+  ],
+  "forms": [
+   "William A. Weiner, D.O.",
+   "Weiner",
+   "Defendant Weiner"
+  ],
+  "first": "WILLIAM",
+  "middle": "A",
+  "last": "WEINER",
+  "creds": [
+   "DO"
+  ],
+  "title": null,
+  "role_class": "professional"
+ },
+ {
+  "key": "note:720001:c0.m6",
+  "type": "organization",
+  "name": "Nexray Medical Imaging, P.C.",
+  "name_as_extracted": "Nexray Medical Imaging, P.C.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 0,
+  "occurrences": [
+   "Nexray",
+   "Defendant Nexray",
+   "CT scan and x -ray provider",
+   "it",
+   "professional corporation"
+  ],
+  "details": [
+   [
+    "address",
+    "135-25f|79th|street|suite|2b|howard|beach|new|york|11414",
+    "stated"
+   ]
+  ],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [
+   {
+    "number": "135-25F",
+    "direction": "",
+    "street": "79TH",
+    "street_type": "ST",
+    "unit": "2B",
+    "city": "HOWARD BEACH",
+    "state": "NY",
+    "zip": "11414"
+   }
+  ],
+  "locations": [
+   {
+    "city": "HOWARD BEACH",
+    "state": "NY"
+   }
+  ],
+  "roles": [
+   "actor",
+   "biller",
+   "controlled",
+   "member",
+   "organization",
+   "owned",
+   "recipient"
+  ],
+  "raw_span": [
+   660,
+   688
+  ],
+  "clean_span": [
+   660,
+   688
+  ],
+  "forms": [
+   "Nexray Medical Imaging, P.C.",
+   "Nexray",
+   "Defendant Nexray"
+  ],
+  "aliases": [
+   [
+    "NEXRAY",
+    "MEDICAL",
+    "IMAGING"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c0.m7",
+  "type": "organization",
+  "name": "JOHN DOES 1-15",
+  "name_as_extracted": "JOHN DOES 1-15",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 0,
+  "occurrences": [
+   "John Does 1 -15",
+   "individuals and entities whose names are not yet known to American Transit",
+   "These individuals and entities"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "member"
+  ],
+  "raw_span": [
+   295,
+   309
+  ],
+  "clean_span": [
+   295,
+   309
+  ],
+  "forms": [
+   "JOHN DOES 1-15",
+   "John Does 1 -15"
+  ],
+  "aliases": [
+   [
+    "JOHN",
+    "DOES",
+    "15"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c0.m8",
+  "type": "organization",
+  "name": "John Doe Defendants",
+  "name_as_extracted": "John Doe Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 0,
+  "occurrences": [
+   "John Does 1-15"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "group",
+   "member"
+  ],
+  "raw_span": [
+   761,
+   780
+  ],
+  "clean_span": [
+   761,
+   780
+  ],
+  "forms": [
+   "John Doe Defendants"
+  ],
+  "aliases": [
+   [
+    "JOHN",
+    "DOE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c0.m9",
+  "type": "organization",
+  "name": "Defendants",
+  "name_as_extracted": "Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 0,
+  "occurrences": [
+   "the other defendants",
+   "Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "group",
+   "provider"
+  ],
+  "raw_span": [
+   825,
+   835
+  ],
+  "clean_span": [
+   825,
+   835
+  ],
+  "forms": [
+   "Defendants"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c1.m1",
+  "type": "organization",
+  "name": "American Transit for",
+  "name_as_extracted": "American Transit",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 27574,
+  "occurrences": [
+   "all other au tomobile insurers",
+   "American Transit for",
+   "American transit"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "recipient"
+  ],
+  "raw_span": [
+   27685,
+   27701
+  ],
+  "clean_span": [
+   27685,
+   27701
+  ],
+  "forms": [
+   "American Transit for"
+  ],
+  "aliases": [
+   [
+    "AMERICAN",
+    "TRANSIT",
+    "FOR"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c1.m2",
+  "type": "person",
+  "name": "Moy",
+  "name_as_extracted": "Moy",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 27574,
+  "occurrences": [
+   "Moy recruited medical practitioners",
+   "Moy \u201cto conduct painful and medically unnecessary  electrodiagnostic test ing\u201d",
+   "Dr. Moy",
+   "his patients",
+   "Moy and Weiner"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "agent",
+   "defendant",
+   "provider",
+   "witness"
+  ],
+  "raw_span": [
+   29639,
+   29642
+  ],
+  "clean_span": [
+   29639,
+   29642
+  ],
+  "forms": [
+   "Moy",
+   "Dr. Moy"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "MOY",
+  "creds": [],
+  "title": "DR",
+  "role_class": "professional"
+ },
+ {
+  "key": "note:720001:c1.m3",
+  "type": "person",
+  "name": "Pierre",
+  "name_as_extracted": "Pierre",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 27574,
+  "occurrences": [
+   "Pierre, Moy, and Weiner",
+   "Pierre \u201cwas the actual owner, operator, and controller\u201d",
+   "Pierre \u201creceived the majority of the [c]linics\u2019 proceeds",
+   "Pierre \u201cpossessed the checkbooks",
+   "Pierre \u201ccontrolled hiring and firing",
+   "Pierre \u201cidentified the locations",
+   "Pierre \u201c chose the  attorneys",
+   "Pierre arranged",
+   "Pierre \u201cprofited every step of the way.\u201d",
+   "Pierre steered hundreds of patients",
+   "Pierre owned, operated, and controlled Nexray",
+   "Pierre controlled Nexray\u2019s bank accounts",
+   "Pierre influenced the hiring and firing",
+   "Pierre identified the locations",
+   "Pierre negotiated the rent",
+   "Pierre chose the attorneys",
+   "his control of the Clinics",
+   "his receipt of the No-Fault scheme proceeds",
+   "he then paid",
+   "Pierre purportedly gave loans",
+   "Pierre directly paid"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "arranger",
+   "causer",
+   "defendant",
+   "owner_operator_controller",
+   "participant",
+   "recruiter",
+   "referrer"
+  ],
+  "raw_span": [
+   30372,
+   30378
+  ],
+  "clean_span": [
+   30372,
+   30378
+  ],
+  "forms": [
+   "Pierre"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "PIERRE",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c1.m4",
+  "type": "person",
+  "name": "Weiner",
+  "name_as_extracted": "Weiner",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 27574,
+  "occurrences": [
+   "Moy, Pierre, and Weiner",
+   "licensed physician\u2014Weiner\u2014",
+   "Moy and Weiner",
+   "Weiner submitted bills"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "defendant",
+   "participant",
+   "submitter",
+   "witness"
+  ],
+  "raw_span": [
+   30169,
+   30175
+  ],
+  "clean_span": [
+   30169,
+   30175
+  ],
+  "forms": [
+   "Weiner"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "WEINER",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c1.m5",
+  "type": "organization",
+  "name": "Rutland",
+  "name_as_extracted": "Rutland",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 27574,
+  "occurrences": [
+   "Rutland\u2019s",
+   "Rutland patients",
+   "Rutland employees or agents",
+   "Rutland by Moy and Pierre",
+   "Ruland"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "clinic",
+   "member",
+   "provider",
+   "submitter"
+  ],
+  "raw_span": [
+   30616,
+   30623
+  ],
+  "clean_span": [
+   30616,
+   30623
+  ],
+  "forms": [
+   "Rutland",
+   "Rutland\u2019s"
+  ],
+  "aliases": [
+   [
+    "RUTLAND"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c1.m6",
+  "type": "organization",
+  "name": "Nexray",
+  "name_as_extracted": "Nexray",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 27574,
+  "occurrences": [
+   "Nexray purported to be operated and controlled",
+   "Nexray\u2019s proceeds",
+   "Nexray\u2019s bank accounts",
+   "Nexray\u2019s employees",
+   "Nexray\u2019s facilities",
+   "Nexray\u2019s leases",
+   "refer patients to Nexray"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "organization",
+   "recipient"
+  ],
+  "raw_span": [
+   30652,
+   30658
+  ],
+  "clean_span": [
+   30652,
+   30658
+  ],
+  "forms": [
+   "Nexray"
+  ],
+  "aliases": [
+   [
+    "NEXRAY"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c1.m7",
+  "type": "organization",
+  "name": "Marketing 4 You",
+  "name_as_extracted": "Marketing 4 You",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 27574,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   34923,
+   34938
+  ],
+  "clean_span": [
+   34923,
+   34938
+  ],
+  "forms": [
+   "Marketing 4 You"
+  ],
+  "aliases": [
+   [
+    "MARKETING",
+    "YOU"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c1.m8",
+  "type": "organization",
+  "name": "Medical Reimbursement\nConsultants (\u201cMRC\u201d)",
+  "name_as_extracted": "Medical Reimbursement\nConsultants (\u201cMRC\u201d)",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 27574,
+  "occurrences": [
+   "MRC"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "recipient"
+  ],
+  "raw_span": [
+   35113,
+   35155
+  ],
+  "clean_span": [
+   35113,
+   35155
+  ],
+  "forms": [
+   "Medical Reimbursement\nConsultants (\u201cMRC\u201d)",
+   "MRC"
+  ],
+  "aliases": [
+   [
+    "MEDICAL",
+    "REIMBURSEMENT",
+    "CONSULTANTS",
+    "MRC"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c1.m9",
+  "type": "organization",
+  "name": "American Medical Association (\u201cAMA\u201d)",
+  "name_as_extracted": "American Medical Association (\u201cAMA\u201d)",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 27574,
+  "occurrences": [
+   "AMA"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   42798,
+   42834
+  ],
+  "clean_span": [
+   42798,
+   42834
+  ],
+  "forms": [
+   "American Medical Association (\u201cAMA\u201d)",
+   "AMA"
+  ],
+  "aliases": [
+   [
+    "AMERICAN",
+    "MEDICAL",
+    "ASSOCIATION",
+    "AMA"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c1.m10",
+  "type": "person",
+  "name": "I.V.",
+  "name_as_extracted": "I.V.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 27574,
+  "occurrences": [
+   "the patient"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   38246,
+   38250
+  ],
+  "clean_span": [
+   38246,
+   38250
+  ],
+  "forms": [
+   "I.V."
+  ],
+  "first": "",
+  "middle": "",
+  "last": "",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c1.m11",
+  "type": "person",
+  "name": "L.J.",
+  "name_as_extracted": "L.J.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 27574,
+  "occurrences": [
+   "these patients"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   52098,
+   52102
+  ],
+  "clean_span": [
+   52098,
+   52102
+  ],
+  "forms": [
+   "L.J."
+  ],
+  "first": "",
+  "middle": "",
+  "last": "LJ",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c1.m12",
+  "type": "organization",
+  "name": "Andrew Carothers",
+  "name_as_extracted": "Andrew Carothers, M.D., P.C.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 27574,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   29119,
+   29147
+  ],
+  "clean_span": [
+   29119,
+   29147
+  ],
+  "forms": [
+   "Andrew Carothers"
+  ],
+  "aliases": [
+   [
+    "ANDREW",
+    "CAROTHERS"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c1.m13",
+  "type": "organization",
+  "name": "Progressive Ins. Co.",
+  "name_as_extracted": "Progressive Ins. Co.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 27574,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   29150,
+   29171
+  ],
+  "clean_span": [
+   29150,
+   29171
+  ],
+  "forms": [
+   "Progressive Ins. Co."
+  ],
+  "aliases": [
+   [
+    "PROGRESSIVE",
+    "INSURANCE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c1.m14",
+  "type": "organization",
+  "name": "No- Fault",
+  "name_as_extracted": "No-\nFault clinics",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 27574,
+  "occurrences": [
+   "the No-Fault clinics",
+   "the Clinics"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "clinic",
+   "group",
+   "transferor"
+  ],
+  "raw_span": [
+   30511,
+   30528
+  ],
+  "clean_span": [
+   30511,
+   30528
+  ],
+  "forms": [
+   "No- Fault"
+  ],
+  "aliases": [
+   [
+    "NO",
+    "FAULT"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c2.m1",
+  "type": "organization",
+  "name": "Rutland",
+  "name_as_extracted": "Rutland",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 57503,
+  "occurrences": [
+   "Rutland and Moy",
+   "Rutland and Nexray",
+   "Rutland\u2019s bills",
+   "Rutland billed American Transit",
+   "Rutland purportedly treated"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "controlled_party",
+   "provider",
+   "referrer"
+  ],
+  "raw_span": [
+   57839,
+   57846
+  ],
+  "clean_span": [
+   57839,
+   57846
+  ],
+  "forms": [
+   "Rutland"
+  ],
+  "aliases": [
+   [
+    "RUTLAND"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c2.m2",
+  "type": "organization",
+  "name": "American Transit",
+  "name_as_extracted": "American Transit",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 57503,
+  "occurrences": [
+   "American Transit is entitled to recover",
+   "bills submitted to American Transit",
+   "American Transit was billed"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "payor"
+  ],
+  "raw_span": [
+   57820,
+   57836
+  ],
+  "clean_span": [
+   57820,
+   57836
+  ],
+  "forms": [
+   "American Transit"
+  ],
+  "aliases": [
+   [
+    "AMERICAN",
+    "TRANSIT"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c2.m3",
+  "type": "person",
+  "name": "Moy",
+  "name_as_extracted": "Moy",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 57503,
+  "occurrences": [
+   "Moy also ordered",
+   "Moy was the referring physician",
+   "Moy purportedly examined S.S.",
+   "Moy referred P.A.",
+   "Moy evaluated T.C."
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "provider",
+   "referrer"
+  ],
+  "raw_span": [
+   60282,
+   60285
+  ],
+  "clean_span": [
+   60282,
+   60285
+  ],
+  "forms": [
+   "Moy"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "MOY",
+  "creds": [],
+  "title": null,
+  "role_class": "professional"
+ },
+ {
+  "key": "note:720001:c2.m4",
+  "type": "organization",
+  "name": "Nexray",
+  "name_as_extracted": "Nexray",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 57503,
+  "occurrences": [
+   "Rutland and Nexray",
+   "Nexray billed American Transit",
+   "Nexray purportedly performed",
+   "Nexray\u2019s bills"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "biller",
+   "controlled_party",
+   "provider",
+   "recipient"
+  ],
+  "raw_span": [
+   60978,
+   60984
+  ],
+  "clean_span": [
+   60978,
+   60984
+  ],
+  "forms": [
+   "Nexray"
+  ],
+  "aliases": [
+   [
+    "NEXRAY"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c2.m5",
+  "type": "person",
+  "name": "Pierre",
+  "name_as_extracted": "Pierre",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 57503,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "controller"
+  ],
+  "raw_span": [
+   62472,
+   62478
+  ],
+  "clean_span": [
+   62472,
+   62478
+  ],
+  "forms": [
+   "Pierre"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "PIERRE",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c2.m6",
+  "type": "person",
+  "name": "Weiner",
+  "name_as_extracted": "Weiner",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 57503,
+  "occurrences": [
+   "Weiner documented",
+   "Weiner purportedly conducted",
+   "Weiner performed"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "provider"
+  ],
+  "raw_span": [
+   65142,
+   65148
+  ],
+  "clean_span": [
+   65142,
+   65148
+  ],
+  "forms": [
+   "Weiner"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "WEINER",
+  "creds": [],
+  "title": null,
+  "role_class": "professional"
+ },
+ {
+  "key": "note:720001:c2.m7",
+  "type": "person",
+  "name": "D.W.",
+  "name_as_extracted": "D.W.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 57503,
+  "occurrences": [
+   "D.W w as allegedly involved",
+   "D.W.\u2019s right shoulder and brain",
+   "D.W. never claimed",
+   "her",
+   "she"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "patient"
+  ],
+  "raw_span": [
+   64263,
+   64267
+  ],
+  "clean_span": [
+   64263,
+   64267
+  ],
+  "forms": [
+   "D.W."
+  ],
+  "first": "",
+  "middle": "",
+  "last": "DW",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c2.m8",
+  "type": "person",
+  "name": "E.H.",
+  "name_as_extracted": "E.H.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 57503,
+  "occurrences": [
+   "He was taken by ambulance",
+   "E.H. was admitted to the hospital",
+   "E.H.\u2019s left knee",
+   "E.H.\u2019s right shoulder"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "patient"
+  ],
+  "raw_span": [
+   66949,
+   66953
+  ],
+  "clean_span": [
+   66949,
+   66953
+  ],
+  "forms": [
+   "E.H."
+  ],
+  "first": "",
+  "middle": "",
+  "last": "EH",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c2.m9",
+  "type": "person",
+  "name": "S.S.",
+  "name_as_extracted": "S.S.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 57503,
+  "occurrences": [
+   "S.S. sustained no lacera tions",
+   "her alleged accident",
+   "S.S.\u2019s left and right knees",
+   "SS"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "patient"
+  ],
+  "raw_span": [
+   71935,
+   71939
+  ],
+  "clean_span": [
+   71935,
+   71939
+  ],
+  "forms": [
+   "S.S."
+  ],
+  "first": "",
+  "middle": "",
+  "last": "SS",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c2.m10",
+  "type": "person",
+  "name": "P.A.",
+  "name_as_extracted": "P.A.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 57503,
+  "occurrences": [
+   "P.A. did not present",
+   "Rutland and Moy referred P.A.",
+   "P.A.\u2019s cervical and lumbar spine",
+   "PA"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "patient"
+  ],
+  "raw_span": [
+   75159,
+   75163
+  ],
+  "clean_span": [
+   75159,
+   75163
+  ],
+  "forms": [
+   "P.A."
+  ],
+  "first": "",
+  "middle": "",
+  "last": "",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c2.m11",
+  "type": "person",
+  "name": "A.C.",
+  "name_as_extracted": "A.C.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 57503,
+  "occurrences": [
+   "A.C. was taken to the hospital",
+   "Rutland evaluated A.C.",
+   "A.C.\u2019s cervical spine",
+   "A.C.\u2019s treatment"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "patient"
+  ],
+  "raw_span": [
+   80787,
+   80791
+  ],
+  "clean_span": [
+   80787,
+   80791
+  ],
+  "forms": [
+   "A.C."
+  ],
+  "first": "",
+  "middle": "",
+  "last": "AC",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c2.m12",
+  "type": "person",
+  "name": "Dr. Andrew J. Dowd",
+  "name_as_extracted": "Dr. Andrew J. Dowd",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 57503,
+  "occurrences": [
+   "who was convicted in December 2018"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "provider"
+  ],
+  "raw_span": [
+   83758,
+   83776
+  ],
+  "clean_span": [
+   83758,
+   83776
+  ],
+  "forms": [
+   "Dr. Andrew J. Dowd"
+  ],
+  "first": "ANDREW",
+  "middle": "J",
+  "last": "DOWD",
+  "creds": [],
+  "title": "DR",
+  "role_class": "professional"
+ },
+ {
+  "key": "note:720001:c2.m13",
+  "type": "person",
+  "name": "T.C.",
+  "name_as_extracted": "T.C.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 57503,
+  "occurrences": [
+   "T.C. was taken to the hospital",
+   "T.C.\u2019s treatment plan",
+   "Moy performed on T.C."
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "patient"
+  ],
+  "raw_span": [
+   84511,
+   84515
+  ],
+  "clean_span": [
+   84511,
+   84515
+  ],
+  "forms": [
+   "T.C."
+  ],
+  "first": "",
+  "middle": "",
+  "last": "TC",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c2.m14",
+  "type": "person",
+  "name": "J.J.",
+  "name_as_extracted": "J.J.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 57503,
+  "occurrences": [
+   "for patient J.J.",
+   "J.J. was still working"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   61232,
+   61236
+  ],
+  "clean_span": [
+   61232,
+   61236
+  ],
+  "forms": [
+   "J.J."
+  ],
+  "first": "",
+  "middle": "",
+  "last": "JJ",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c3.m1",
+  "type": "person",
+  "name": "D.L.",
+  "name_as_extracted": "D.L.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 87591,
+  "occurrences": [
+   "D.L.\u2019s",
+   "his"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "patient"
+  ],
+  "raw_span": [
+   87631,
+   87635
+  ],
+  "clean_span": [
+   87631,
+   87635
+  ],
+  "forms": [
+   "D.L."
+  ],
+  "first": "",
+  "middle": "",
+  "last": "DL",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c3.m2",
+  "type": "person",
+  "name": "A.W.",
+  "name_as_extracted": "A.W.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 87591,
+  "occurrences": [
+   "A.W.",
+   "A.W.\u2019s",
+   "she",
+   "her"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "patient"
+  ],
+  "raw_span": [
+   92509,
+   92513
+  ],
+  "clean_span": [
+   92509,
+   92513
+  ],
+  "forms": [
+   "A.W."
+  ],
+  "first": "",
+  "middle": "",
+  "last": "AW",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c3.m3",
+  "type": "person",
+  "name": "R.S.",
+  "name_as_extracted": "R.S.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 87591,
+  "occurrences": [
+   "R.S.",
+   "R.S.\u2019s",
+   "she",
+   "her"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "patient"
+  ],
+  "raw_span": [
+   96457,
+   96461
+  ],
+  "clean_span": [
+   96457,
+   96461
+  ],
+  "forms": [
+   "R.S."
+  ],
+  "first": "",
+  "middle": "",
+  "last": "RS",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c3.m4",
+  "type": "person",
+  "name": "I.V.",
+  "name_as_extracted": "I.V.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 87591,
+  "occurrences": [
+   "I.V.",
+   "I.V.\u2019s",
+   "she",
+   "her"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "patient"
+  ],
+  "raw_span": [
+   99681,
+   99685
+  ],
+  "clean_span": [
+   99681,
+   99685
+  ],
+  "forms": [
+   "I.V."
+  ],
+  "first": "",
+  "middle": "",
+  "last": "",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c3.m5",
+  "type": "person",
+  "name": "L.J.",
+  "name_as_extracted": "L.J.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 87591,
+  "occurrences": [
+   "L.J.",
+   "L.J.\u2019s"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "patient"
+  ],
+  "raw_span": [
+   104640,
+   104644
+  ],
+  "clean_span": [
+   104640,
+   104644
+  ],
+  "forms": [
+   "L.J."
+  ],
+  "first": "",
+  "middle": "",
+  "last": "LJ",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c3.m6",
+  "type": "person",
+  "name": "G.R.",
+  "name_as_extracted": "G.R.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 87591,
+  "occurrences": [
+   "G.R.",
+   "G.R.\u2019s",
+   "him"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "patient"
+  ],
+  "raw_span": [
+   108296,
+   108300
+  ],
+  "clean_span": [
+   108296,
+   108300
+  ],
+  "forms": [
+   "G.R."
+  ],
+  "first": "",
+  "middle": "",
+  "last": "GR",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c3.m7",
+  "type": "person",
+  "name": "E.J.",
+  "name_as_extracted": "E.J.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 87591,
+  "occurrences": [
+   "E.J."
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "patient"
+  ],
+  "raw_span": [
+   111027,
+   111031
+  ],
+  "clean_span": [
+   111027,
+   111031
+  ],
+  "forms": [
+   "E.J."
+  ],
+  "first": "",
+  "middle": "",
+  "last": "EJ",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c3.m8",
+  "type": "organization",
+  "name": "Rutland",
+  "name_as_extracted": "Rutland",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 87591,
+  "occurrences": [
+   "Rutland\u2019s"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "biller",
+   "provider",
+   "referrer"
+  ],
+  "raw_span": [
+   87749,
+   87756
+  ],
+  "clean_span": [
+   87749,
+   87756
+  ],
+  "forms": [
+   "Rutland",
+   "Rutland\u2019s"
+  ],
+  "aliases": [
+   [
+    "RUTLAND"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c3.m9",
+  "type": "person",
+  "name": "Weiner",
+  "name_as_extracted": "Weiner",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 87591,
+  "occurrences": [
+   "Weiner documented",
+   "Weiner did not indicate"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "provider"
+  ],
+  "raw_span": [
+   88394,
+   88400
+  ],
+  "clean_span": [
+   88394,
+   88400
+  ],
+  "forms": [
+   "Weiner"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "WEINER",
+  "creds": [],
+  "title": null,
+  "role_class": "professional"
+ },
+ {
+  "key": "note:720001:c3.m10",
+  "type": "organization",
+  "name": "Nexray",
+  "name_as_extracted": "Nexray",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 87591,
+  "occurrences": [
+   "Nexray\u2019s"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "biller",
+   "provider",
+   "referred_to"
+  ],
+  "raw_span": [
+   88554,
+   88560
+  ],
+  "clean_span": [
+   88554,
+   88560
+  ],
+  "forms": [
+   "Nexray",
+   "Nexray\u2019s"
+  ],
+  "aliases": [
+   [
+    "NEXRAY"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c3.m11",
+  "type": "person",
+  "name": "Moy",
+  "name_as_extracted": "Moy",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 87591,
+  "occurrences": [
+   "Moy referred",
+   "Moy evaluated"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "provider",
+   "referrer"
+  ],
+  "raw_span": [
+   89759,
+   89762
+  ],
+  "clean_span": [
+   89759,
+   89762
+  ],
+  "forms": [
+   "Moy"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "MOY",
+  "creds": [],
+  "title": null,
+  "role_class": "professional"
+ },
+ {
+  "key": "note:720001:c3.m12",
+  "type": "organization",
+  "name": "American Transit",
+  "name_as_extracted": "American Transit",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 87591,
+  "occurrences": [
+   "American Transit\u2019s"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "billed_party",
+   "recipient"
+  ],
+  "raw_span": [
+   88285,
+   88301
+  ],
+  "clean_span": [
+   88285,
+   88301
+  ],
+  "forms": [
+   "American Transit",
+   "American Transit\u2019s"
+  ],
+  "aliases": [
+   [
+    "AMERICAN",
+    "TRANSIT"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c3.m13",
+  "type": "person",
+  "name": "Pierre",
+  "name_as_extracted": "Pierre",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 87591,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "selector"
+  ],
+  "raw_span": [
+   115766,
+   115772
+  ],
+  "clean_span": [
+   115766,
+   115772
+  ],
+  "forms": [
+   "Pierre"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "PIERRE",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c4.m1",
+  "type": "organization",
+  "name": "American Transit Insurance Company",
+  "name_as_extracted": "American Transit",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 116330,
+  "occurrences": [
+   "American Transit Insurance Company",
+   "American Transit\u2019s"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "opposing_party",
+   "payer",
+   "recipient",
+   "target"
+  ],
+  "raw_span": [
+   116798,
+   116814
+  ],
+  "clean_span": [
+   116798,
+   116814
+  ],
+  "forms": [
+   "American Transit Insurance Company",
+   "American Transit\u2019s"
+  ],
+  "aliases": [
+   [
+    "AMERICAN",
+    "TRANSIT",
+    "INSURANCE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c4.m2",
+  "type": "organization",
+  "name": "Rutland/Moy",
+  "name_as_extracted": "Rutland",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 116330,
+  "occurrences": [
+   "Rutland enterprise",
+   "Rutland\u2019s",
+   "the Rutland enterprise",
+   "the Rutland RICO Enterprise",
+   "Rutland/Moy"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "recipient",
+   "represented_party",
+   "sender",
+   "subject",
+   "target"
+  ],
+  "raw_span": [
+   119548,
+   119555
+  ],
+  "clean_span": [
+   119548,
+   119555
+  ],
+  "forms": [
+   "Rutland/Moy",
+   "Rutland\u2019s"
+  ],
+  "aliases": [
+   [
+    "RUTLAND",
+    "MOY"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c4.m3",
+  "type": "organization",
+  "name": "Nexray/Weiner",
+  "name_as_extracted": "Nexray",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 116330,
+  "occurrences": [
+   "Nexray enterprise",
+   "Nexray\u2019s",
+   "the Nexray enterprise",
+   "the Nexray RICO Enterprise",
+   "Nexray/Weiner"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "recipient",
+   "represented_party",
+   "sender",
+   "subject",
+   "target"
+  ],
+  "raw_span": [
+   121994,
+   122000
+  ],
+  "clean_span": [
+   121994,
+   122000
+  ],
+  "forms": [
+   "Nexray/Weiner",
+   "Nexray\u2019s"
+  ],
+  "aliases": [
+   [
+    "NEXRAY",
+    "WEINER"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c4.m4",
+  "type": "person",
+  "name": "Pierre (\"Rose\")",
+  "name_as_extracted": "Pierre",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 116330,
+  "occurrences": [
+   "Pierre\u2019s",
+   "Pierre (through MRC)",
+   "Pierre and Moy",
+   "Pierre and Weiner",
+   "Pierre, Moy and the other Defendants",
+   "Pierre, Weiner, and the other Defendants",
+   "Pierre (\"Rose\")"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "communicator",
+   "payer"
+  ],
+  "raw_span": [
+   119864,
+   119870
+  ],
+  "clean_span": [
+   119864,
+   119870
+  ],
+  "forms": [
+   "Pierre (\"Rose\")",
+   "Pierre\u2019s"
+  ],
+  "first": "PIERRE",
+  "middle": "",
+  "last": "ROSE",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c4.m5",
+  "type": "person",
+  "name": "Rutland/Moy",
+  "name_as_extracted": "Moy",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 116330,
+  "occurrences": [
+   "Moy\u2019s",
+   "Moy, Pierre and their agents",
+   "Moy (or persons under his direction and control)",
+   "Moy and Pierre",
+   "Moy, as a duly licensed physician",
+   "Rutland/Moy"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor"
+  ],
+  "raw_span": [
+   128798,
+   128801
+  ],
+  "clean_span": [
+   128798,
+   128801
+  ],
+  "forms": [
+   "Rutland/Moy",
+   "Moy\u2019s"
+  ],
+  "first": "RUTLAND",
+  "middle": "",
+  "last": "MOY",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c4.m6",
+  "type": "person",
+  "name": "Nexray/Weiner",
+  "name_as_extracted": "Weiner",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 116330,
+  "occurrences": [
+   "Weiner\u2019s",
+   "Weiner and Pierre",
+   "Weiner, as a duly licensed physician",
+   "Nexray/Weiner"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "defendant"
+  ],
+  "raw_span": [
+   125144,
+   125150
+  ],
+  "clean_span": [
+   125144,
+   125150
+  ],
+  "forms": [
+   "Nexray/Weiner",
+   "Weiner\u2019s"
+  ],
+  "first": "NEXRAY",
+  "middle": "",
+  "last": "WEINER",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c4.m7",
+  "type": "organization",
+  "name": "MRC",
+  "name_as_extracted": "MRC",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 116330,
+  "occurrences": [
+   "MRC\u2019s",
+   "MRC maintained",
+   "MRC Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   118987,
+   118990
+  ],
+  "clean_span": [
+   118987,
+   118990
+  ],
+  "forms": [
+   "MRC",
+   "MRC\u2019s",
+   "MRC Defendants"
+  ],
+  "aliases": [
+   [
+    "MRC"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c4.m8",
+  "type": "person",
+  "name": "Anthony Rose",
+  "name_as_extracted": "Anthony Rose",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 116330,
+  "occurrences": [
+   "Rose",
+   "Anthony Rose (\u201cRose\u201d)"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "recipient"
+  ],
+  "raw_span": [
+   123169,
+   123182
+  ],
+  "clean_span": [
+   123169,
+   123182
+  ],
+  "forms": [
+   "Anthony Rose",
+   "Rose",
+   "Anthony Rose (\u201cRose\u201d)"
+  ],
+  "first": "ANTHONY",
+  "middle": "",
+  "last": "ROSE",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c4.m9",
+  "type": "person",
+  "name": "Nathaniel Coles",
+  "name_as_extracted": "Nathaniel Coles",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 116330,
+  "occurrences": [
+   "Coles"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "other_party"
+  ],
+  "raw_span": [
+   123711,
+   123726
+  ],
+  "clean_span": [
+   123711,
+   123726
+  ],
+  "forms": [
+   "Nathaniel Coles",
+   "Coles"
+  ],
+  "first": "NATHANIEL",
+  "middle": "",
+  "last": "COLES",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c4.m10",
+  "type": "organization",
+  "name": "Law Office of Jason Tenenbaum, P.C.",
+  "name_as_extracted": "Law Office of Jason Tenenbaum, P.C.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 116330,
+  "occurrences": [
+   "the Tenenbaum firm"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   136257,
+   136292
+  ],
+  "clean_span": [
+   136257,
+   136292
+  ],
+  "forms": [
+   "Law Office of Jason Tenenbaum, P.C."
+  ],
+  "aliases": [
+   [
+    "LAW",
+    "OFFICE",
+    "JASON",
+    "TENENBAUM"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c4.m11",
+  "type": "person",
+  "name": "Jason Tenenbaum",
+  "name_as_extracted": "Jason Tenenbaum",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 116330,
+  "occurrences": [
+   "Tenenbaum",
+   "Tenenbaum\u2019s"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   136311,
+   136327
+  ],
+  "clean_span": [
+   136311,
+   136327
+  ],
+  "forms": [
+   "Jason Tenenbaum",
+   "Tenenbaum",
+   "Tenenbaum\u2019s"
+  ],
+  "first": "JASON",
+  "middle": "",
+  "last": "TENENBAUM",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c4.m12",
+  "type": "person",
+  "name": "Roman Kravchenko",
+  "name_as_extracted": "Roman Kravchenko",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 116330,
+  "occurrences": [
+   "Kravchenko",
+   "Attorney Kravchenko"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "member"
+  ],
+  "raw_span": [
+   136353,
+   136369
+  ],
+  "clean_span": [
+   136353,
+   136369
+  ],
+  "forms": [
+   "Roman Kravchenko",
+   "Kravchenko",
+   "Attorney Kravchenko"
+  ],
+  "first": "ROMAN",
+  "middle": "",
+  "last": "KRAVCHENKO",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c4.m13",
+  "type": "organization",
+  "name": "Russel Friedman Law Group, LLP",
+  "name_as_extracted": "Russel Friedman Law Group, LLP",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 116330,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   136376,
+   136406
+  ],
+  "clean_span": [
+   136376,
+   136406
+  ],
+  "forms": [
+   "Russel Friedman Law Group, LLP"
+  ],
+  "aliases": [
+   [
+    "RUSSEL",
+    "FRIEDMAN",
+    "LAW",
+    "GROUP"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c4.m14",
+  "type": "organization",
+  "name": "No-Fault Attorneys",
+  "name_as_extracted": "No-Fault Attorneys",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 116330,
+  "occurrences": [
+   "the No-Fault Attorneys",
+   "certain No-Fault Attorneys"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "group"
+  ],
+  "raw_span": [
+   136443,
+   136461
+  ],
+  "clean_span": [
+   136443,
+   136461
+  ],
+  "forms": [
+   "No-Fault Attorneys",
+   "the No-Fault Attorneys"
+  ],
+  "aliases": [
+   [
+    "NO",
+    "FAULT",
+    "ATTORNEYS"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c4.m15",
+  "type": "organization",
+  "name": "New York Police Department",
+  "name_as_extracted": "New York Police Department",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 116330,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   122917,
+   122953
+  ],
+  "clean_span": [
+   122917,
+   122953
+  ],
+  "forms": [
+   "New York Police Department"
+  ],
+  "aliases": [
+   [
+    "NEW",
+    "YORK",
+    "POLICE",
+    "DEPARTMENT"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c4.m16",
+  "type": "person",
+  "name": "Investigator Paul Schneeloch",
+  "name_as_extracted": "Paul Schneeloch",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 116330,
+  "occurrences": [
+   "Investigator Paul Schneeloch",
+   "Schneeloch"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   124001,
+   124017
+  ],
+  "clean_span": [
+   124001,
+   124017
+  ],
+  "forms": [
+   "Investigator Paul Schneeloch",
+   "Schneeloch"
+  ],
+  "first": "INVESTIGATOR",
+  "middle": "P",
+  "last": "SCHNEELOCH",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c4.m17",
+  "type": "organization",
+  "name": "New York State Police",
+  "name_as_extracted": "New York State Police",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 116330,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   123966,
+   123987
+  ],
+  "clean_span": [
+   123966,
+   123987
+  ],
+  "forms": [
+   "New York State Police"
+  ],
+  "aliases": [
+   [
+    "NEW",
+    "YORK",
+    "STATE",
+    "POLICE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c4.m18",
+  "type": "organization",
+  "name": "State of New York",
+  "name_as_extracted": "State of New York",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 116330,
+  "occurrences": [
+   "State of New York forming Rutland",
+   "State of New York related to Rutland"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   127414,
+   127431
+  ],
+  "clean_span": [
+   127414,
+   127431
+  ],
+  "forms": [
+   "State of New York"
+  ],
+  "aliases": [
+   [
+    "STATE",
+    "NEW",
+    "YORK"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c4.m19",
+  "type": "organization",
+  "name": "United States Postal Service",
+  "name_as_extracted": "United States Postal Service",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 116330,
+  "occurrences": [
+   "U.S. Mail",
+   "United States mails"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   118085,
+   118114
+  ],
+  "clean_span": [
+   118085,
+   118114
+  ],
+  "forms": [
+   "United States Postal Service"
+  ],
+  "aliases": [
+   [
+    "UNITED",
+    "STATES",
+    "POSTAL",
+    "SERVICE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c5.m1",
+  "type": "person",
+  "name": "Pierre",
+  "name_as_extracted": "Pierre",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 143852,
+  "occurrences": [
+   "Pierre\u2019s continued attempt",
+   "Pierre continues to attempt",
+   "Pierre is an architect",
+   "Pierre and Moy",
+   "Pierre and Weiner"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "associate",
+   "member"
+  ],
+  "raw_span": [
+   143857,
+   143863
+  ],
+  "clean_span": [
+   143857,
+   143863
+  ],
+  "forms": [
+   "Pierre"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "PIERRE",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c5.m2",
+  "type": "person",
+  "name": "Moy",
+  "name_as_extracted": "Moy",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 143852,
+  "occurrences": [
+   "Moy is the owner of Rutland",
+   "Pierre and Moy",
+   "Moy and Weiner",
+   "Moy\u2019s extensive fraudulent conduct"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "associate",
+   "member",
+   "owner"
+  ],
+  "raw_span": [
+   164690,
+   164693
+  ],
+  "clean_span": [
+   164690,
+   164693
+  ],
+  "forms": [
+   "Moy"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "MOY",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c5.m3",
+  "type": "organization",
+  "name": "Rutland",
+  "name_as_extracted": "Rutland",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 143852,
+  "occurrences": [
+   "Rutland\u2019s affairs",
+   "through Rutland",
+   "Rutland was not entitled to receive",
+   "Rutland is not engaged in a legitimate medical practice",
+   "Rutland is engaged in inherently unlawful acts",
+   "the Rutland enterprise",
+   "Rutland, in turn, referred patients to Nexray",
+   "the owner of Rutland",
+   "Rutland and Nexray",
+   "services provided by Rutland and Moy",
+   "charges submitted through Rutland"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "beneficiary",
+   "enabled_party",
+   "enterprise",
+   "member",
+   "owned",
+   "recipient",
+   "referrer"
+  ],
+  "raw_span": [
+   145436,
+   145443
+  ],
+  "clean_span": [
+   145436,
+   145443
+  ],
+  "forms": [
+   "Rutland"
+  ],
+  "aliases": [
+   [
+    "RUTLAND"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c5.m4",
+  "type": "person",
+  "name": "Weiner",
+  "name_as_extracted": "Weiner",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 143852,
+  "occurrences": [
+   "Weiner the owner of Nexray",
+   "Pierre and Weiner",
+   "Moy and Weiner",
+   "Weiner\u2019s extensive fraudulent conduct"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "associate",
+   "member",
+   "owner"
+  ],
+  "raw_span": [
+   147387,
+   147393
+  ],
+  "clean_span": [
+   147387,
+   147393
+  ],
+  "forms": [
+   "Weiner"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "WEINER",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c5.m5",
+  "type": "organization",
+  "name": "Nexray",
+  "name_as_extracted": "Nexray",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 143852,
+  "occurrences": [
+   "Nexray\u2019s affairs",
+   "Nexray\u2019s business",
+   "Nexray is not engaged in a legitimate medical practice",
+   "Nexray is engaged in inherently unlawful acts",
+   "through Nexray",
+   "the owner of Nexray",
+   "Rutland referred patients to Nexray",
+   "Nexray, Pierre, and Weiner",
+   "charges submitted through Nexray"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "enabled_party",
+   "enterprise",
+   "member",
+   "owned",
+   "recipient"
+  ],
+  "raw_span": [
+   147228,
+   147234
+  ],
+  "clean_span": [
+   147228,
+   147234
+  ],
+  "forms": [
+   "Nexray"
+  ],
+  "aliases": [
+   [
+    "NEXRAY"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c5.m6",
+  "type": "organization",
+  "name": "American Transit Insurance Company",
+  "name_as_extracted": "American Transit Insurance Company",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 143852,
+  "occurrences": [
+   "American Transit",
+   "American Transit\u2019s expense",
+   "American Transit\u2019s payments",
+   "its injury",
+   "its business and property"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "injured_party",
+   "payer"
+  ],
+  "raw_span": [
+   173339,
+   173373
+  ],
+  "clean_span": [
+   173339,
+   173373
+  ],
+  "forms": [
+   "American Transit Insurance Company",
+   "American Transit"
+  ],
+  "aliases": [
+   [
+    "AMERICAN",
+    "TRANSIT",
+    "INSURANCE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c5.m7",
+  "type": "organization",
+  "name": "the John Doe Defendants",
+  "name_as_extracted": "the John Doe Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 143852,
+  "occurrences": [
+   "such Defendants",
+   "Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   156271,
+   156294
+  ],
+  "clean_span": [
+   156271,
+   156294
+  ],
+  "forms": [
+   "the John Doe Defendants"
+  ],
+  "aliases": [
+   [
+    "JOHN",
+    "DOE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c5.m8",
+  "type": "organization",
+  "name": "Associated In Fact Enterprise",
+  "name_as_extracted": "Associated In Fact Enterprise",
+  "linkable": true,
+  "kind": "construct",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 143852,
+  "occurrences": [
+   "the Associated In Fact Enterprise\u2019s affairs",
+   "the Associated In Fact Enterprise is distinct from"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "group"
+  ],
+  "raw_span": [
+   156472,
+   156501
+  ],
+  "clean_span": [
+   156472,
+   156501
+  ],
+  "forms": [
+   "Associated In Fact Enterprise"
+  ],
+  "aliases": [
+   [
+    "ASSOCIATED",
+    "IN",
+    "FACT",
+    "ENTERPRISE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c6.m1",
+  "type": "organization",
+  "name": "American Transit",
+  "name_as_extracted": "American Transit",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 173863,
+  "occurrences": [
+   "in favor of American Transit",
+   "American Transit has no obligation to pay",
+   "submitted to it by Rutland and Nexray ,",
+   "American Transit paid to them",
+   "its favor"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "claimant",
+   "demanding_party",
+   "payor"
+  ],
+  "raw_span": [
+   176797,
+   176813
+  ],
+  "clean_span": [
+   176797,
+   176813
+  ],
+  "forms": [
+   "American Transit"
+  ],
+  "aliases": [
+   [
+    "AMERICAN",
+    "TRANSIT"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c6.m2",
+  "type": "organization",
+  "name": "Rutland",
+  "name_as_extracted": "Rutland",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 173863,
+  "occurrences": [
+   "against Rutland",
+   "submitted to it by Rutland and Nexray ,"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "defendant",
+   "provider"
+  ],
+  "raw_span": [
+   175635,
+   175642
+  ],
+  "clean_span": [
+   175635,
+   175642
+  ],
+  "forms": [
+   "Rutland"
+  ],
+  "aliases": [
+   [
+    "RUTLAND"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c6.m3",
+  "type": "organization",
+  "name": "Nexray",
+  "name_as_extracted": "Nexray",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 173863,
+  "occurrences": [
+   "against Nexray",
+   "submitted to it by Rutland and Nexray ,"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "defendant",
+   "provider"
+  ],
+  "raw_span": [
+   174194,
+   174200
+  ],
+  "clean_span": [
+   174194,
+   174200
+  ],
+  "forms": [
+   "Nexray"
+  ],
+  "aliases": [
+   [
+    "NEXRAY"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720001:c6.m4",
+  "type": "person",
+  "name": "Pierre",
+  "name_as_extracted": "Pierre",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 173863,
+  "occurrences": [
+   "against Pierre and Weiner",
+   "Rutland, Pierre, and Moy",
+   "Nexray, Pierre, and Weiner"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "defendant"
+  ],
+  "raw_span": [
+   174579,
+   174585
+  ],
+  "clean_span": [
+   174579,
+   174585
+  ],
+  "forms": [
+   "Pierre"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "PIERRE",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c6.m5",
+  "type": "person",
+  "name": "Moy",
+  "name_as_extracted": "Moy",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 173863,
+  "occurrences": [
+   "against Pierre and Moy"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "defendant"
+  ],
+  "raw_span": [
+   175869,
+   175872
+  ],
+  "clean_span": [
+   175869,
+   175872
+  ],
+  "forms": [
+   "Moy"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "MOY",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c6.m6",
+  "type": "person",
+  "name": "Weiner",
+  "name_as_extracted": "Weiner",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 173863,
+  "occurrences": [
+   "against Pierre and Weiner"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "defendant"
+  ],
+  "raw_span": [
+   176144,
+   176150
+  ],
+  "clean_span": [
+   176144,
+   176150
+  ],
+  "forms": [
+   "Weiner"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "WEINER",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720001:c6.m7",
+  "type": "organization",
+  "name": "all Defendants",
+  "name_as_extracted": "all Defendants",
+  "linkable": false,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720001",
+  "chunk": 173863,
+  "occurrences": [
+   "against all Defendants",
+   "such defendants",
+   "such Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "defendant_group"
+  ],
+  "raw_span": [
+   176496,
+   176510
+  ],
+  "clean_span": [
+   176496,
+   176510
+  ],
+  "forms": [
+   "all Defendants"
+  ],
+  "aliases": [
+   [
+    "ALL"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720040:c0.m1",
+  "type": "organization",
+  "name": "AMERICAN TRANSIT INSURANCE COMPANY",
+  "name_as_extracted": "AMERICAN TRANSIT INSURANCE COMPANY",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 0,
+  "occurrences": [
+   "Plaintiffs",
+   "Plaintiffs\u2019",
+   "Plaintiff\u2019s",
+   "Plaintiffs\u2019 Complaint"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   138,
+   172
+  ],
+  "clean_span": [
+   138,
+   172
+  ],
+  "forms": [
+   "AMERICAN TRANSIT INSURANCE COMPANY"
+  ],
+  "aliases": [
+   [
+    "AMERICAN",
+    "TRANSIT",
+    "INSURANCE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720040:c0.m2",
+  "type": "person",
+  "name": "BRADLEY PIERRE",
+  "name_as_extracted": "BRADLEY PIERRE",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 0,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   215,
+   229
+  ],
+  "clean_span": [
+   215,
+   229
+  ],
+  "forms": [
+   "BRADLEY PIERRE"
+  ],
+  "first": "BRADLEY",
+  "middle": "",
+  "last": "PIERRE",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720040:c0.m3",
+  "type": "person",
+  "name": "MARVIN MOY, M.D.",
+  "name_as_extracted": "MARVIN MOY, M.D.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 0,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   231,
+   247
+  ],
+  "clean_span": [
+   231,
+   247
+  ],
+  "forms": [
+   "MARVIN MOY, M.D."
+  ],
+  "first": "MARVIN",
+  "middle": "",
+  "last": "MOY",
+  "creds": [
+   "MD"
+  ],
+  "title": null,
+  "role_class": "professional"
+ },
+ {
+  "key": "note:720040:c0.m4",
+  "type": "organization",
+  "name": "RUTLAND MEDICAL P.C.",
+  "name_as_extracted": "RUTLAND MEDICAL P.C.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 0,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   249,
+   270
+  ],
+  "clean_span": [
+   249,
+   270
+  ],
+  "forms": [
+   "RUTLAND MEDICAL P.C."
+  ],
+  "aliases": [
+   [
+    "RUTLAND",
+    "MEDICAL"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720040:c0.m5",
+  "type": "person",
+  "name": "WILLIAM A. WEINER, D.O.",
+  "name_as_extracted": "WILLIAM A. WEINER, D.O.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 0,
+  "occurrences": [
+   "Answering Defendants",
+   "The Answering Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   272,
+   295
+  ],
+  "clean_span": [
+   272,
+   295
+  ],
+  "forms": [
+   "WILLIAM A. WEINER, D.O."
+  ],
+  "first": "WILLIAM",
+  "middle": "A",
+  "last": "WEINER",
+  "creds": [
+   "DO"
+  ],
+  "title": null,
+  "role_class": "professional"
+ },
+ {
+  "key": "note:720040:c0.m6",
+  "type": "organization",
+  "name": "NEXRAY MEDICAL IMAGING, \nP.C. and d/b/a SOUL   RADIOLOGY MEDICA L IMAGING",
+  "name_as_extracted": "NEXRAY MEDICAL IMAGING, P.C.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 0,
+  "occurrences": [
+   "d/b/a SOUL   RADIOLOGY MEDICAL IMAGING",
+   "NEXRAY MEDICAL IMAGING, \nP.C. and d/b/a SOUL   RADIOLOGY MEDICA L IMAGING",
+   "Answering Defendants",
+   "The Answering Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   297,
+   326
+  ],
+  "clean_span": [
+   297,
+   326
+  ],
+  "forms": [
+   "NEXRAY MEDICAL IMAGING, \nP.C. and d/b/a SOUL   RADIOLOGY MEDICA L IMAGING"
+  ],
+  "aliases": [
+   [
+    "NEXRAY",
+    "MEDICAL",
+    "IMAGING"
+   ],
+   [
+    "SOUL",
+    "RADIOLOGY",
+    "MEDICA",
+    "IMAGING"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720040:c0.m7",
+  "type": "organization",
+  "name": "JOHN DOES 1-15",
+  "name_as_extracted": "JOHN DOES 1-15",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 0,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "member"
+  ],
+  "raw_span": [
+   371,
+   385
+  ],
+  "clean_span": [
+   371,
+   385
+  ],
+  "forms": [
+   "JOHN DOES 1-15"
+  ],
+  "aliases": [
+   [
+    "JOHN",
+    "DOES",
+    "15"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720040:c0.m8",
+  "type": "organization",
+  "name": "Defendants",
+  "name_as_extracted": "Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 0,
+  "occurrences": [
+   "the Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "group"
+  ],
+  "raw_span": [
+   388,
+   398
+  ],
+  "clean_span": [
+   388,
+   398
+  ],
+  "forms": [
+   "Defendants"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720040:c0.m9",
+  "type": "organization",
+  "name": "Answering Defendants",
+  "name_as_extracted": "Answering Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 0,
+  "occurrences": [
+   "The Answering Defendants",
+   "the Answering Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "group"
+  ],
+  "raw_span": [
+   692,
+   712
+  ],
+  "clean_span": [
+   692,
+   712
+  ],
+  "forms": [
+   "Answering Defendants"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720040:c1.m1",
+  "type": "organization",
+  "name": "Answering Defendants",
+  "name_as_extracted": "Answering Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 27756,
+  "occurrences": [
+   "The Answering Defendants",
+   "Answering Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "denier",
+   "responding_party"
+  ],
+  "raw_span": [
+   27994,
+   28014
+  ],
+  "clean_span": [
+   27994,
+   28014
+  ],
+  "forms": [
+   "Answering Defendants"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720040:c1.m2",
+  "type": "organization",
+  "name": "Plaintiffs",
+  "name_as_extracted": "Plaintiffs",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 27756,
+  "occurrences": [
+   "Plaintiffs\u2019"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "opposing_party"
+  ],
+  "raw_span": [
+   28070,
+   28080
+  ],
+  "clean_span": [
+   28070,
+   28080
+  ],
+  "forms": [
+   "Plaintiffs"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720040:c2.m1",
+  "type": "organization",
+  "name": "Answering Defendants",
+  "name_as_extracted": "Answering Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 56235,
+  "occurrences": [
+   "The Answering Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "denying_party"
+  ],
+  "raw_span": [
+   56244,
+   56264
+  ],
+  "clean_span": [
+   56244,
+   56264
+  ],
+  "forms": [
+   "Answering Defendants"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720040:c2.m2",
+  "type": "organization",
+  "name": "Plaintiffs",
+  "name_as_extracted": "Plaintiffs",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 56235,
+  "occurrences": [
+   "Plaintiffs\u2019 Complaint"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   56720,
+   56730
+  ],
+  "clean_span": [
+   56720,
+   56730
+  ],
+  "forms": [
+   "Plaintiffs"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720040:c3.m1",
+  "type": "organization",
+  "name": "The Answering Defendants",
+  "name_as_extracted": "The Answering Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 83880,
+  "occurrences": [
+   "Answering Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "denier"
+  ],
+  "raw_span": [
+   83880,
+   83904
+  ],
+  "clean_span": [
+   83880,
+   83904
+  ],
+  "forms": [
+   "The Answering Defendants"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720040:c3.m2",
+  "type": "organization",
+  "name": "Plaintiffs",
+  "name_as_extracted": "Plaintiffs",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 83880,
+  "occurrences": [
+   "Plaintiffs\u2019 Complaint"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   83961,
+   83971
+  ],
+  "clean_span": [
+   83961,
+   83971
+  ],
+  "forms": [
+   "Plaintiffs"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720040:c4.m1",
+  "type": "organization",
+  "name": "The Answering Defendants",
+  "name_as_extracted": "The Answering Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 112421,
+  "occurrences": [
+   "Answering Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "denier",
+   "incorporator",
+   "respondent"
+  ],
+  "raw_span": [
+   112421,
+   112445
+  ],
+  "clean_span": [
+   112421,
+   112445
+  ],
+  "forms": [
+   "The Answering Defendants"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720040:c4.m2",
+  "type": "organization",
+  "name": "Plaintiffs",
+  "name_as_extracted": "Plaintiffs",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 112421,
+  "occurrences": [
+   "Plaintiffs\u2019"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "opposing_party"
+  ],
+  "raw_span": [
+   112502,
+   112512
+  ],
+  "clean_span": [
+   112502,
+   112512
+  ],
+  "forms": [
+   "Plaintiffs"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720040:c5.m1",
+  "type": "organization",
+  "name": "The Answering Defendants",
+  "name_as_extracted": "The Answering Defendants",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 141025,
+  "occurrences": [
+   "The Answering Defendant",
+   "Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "denier"
+  ],
+  "raw_span": [
+   141030,
+   141054
+  ],
+  "clean_span": [
+   141030,
+   141054
+  ],
+  "forms": [
+   "The Answering Defendants"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720040:c5.m2",
+  "type": "organization",
+  "name": "The Plaintiffs",
+  "name_as_extracted": "The Plaintiffs",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 141025,
+  "occurrences": [
+   "the Plaintiffs\u2019 Complaint",
+   "The Plaintiffs",
+   "Plaintiffs",
+   "the Plaintiff"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "plaintiff",
+   "referenced_party"
+  ],
+  "raw_span": [
+   144327,
+   144341
+  ],
+  "clean_span": [
+   144327,
+   144341
+  ],
+  "forms": [
+   "The Plaintiffs"
+  ],
+  "aliases": [],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720040:c5.m3",
+  "type": "person",
+  "name": "WILLIAM A. WEINER, D.O.",
+  "name_as_extracted": "WILLIAM A. WEINER, D.O.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 141025,
+  "occurrences": [],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   147054,
+   147077
+  ],
+  "clean_span": [
+   147054,
+   147077
+  ],
+  "forms": [
+   "WILLIAM A. WEINER, D.O."
+  ],
+  "first": "WILLIAM",
+  "middle": "A",
+  "last": "WEINER",
+  "creds": [
+   "DO"
+  ],
+  "title": null,
+  "role_class": "professional"
+ },
+ {
+  "key": "note:720040:c5.m4",
+  "type": "organization",
+  "name": "NEXRAY MEDICAL IMAGING, P.C.",
+  "name_as_extracted": "NEXRAY MEDICAL IMAGING, P.C.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 141025,
+  "occurrences": [
+   "d/b/a SOUL RADIOLOGY MEDICAL IMAGING",
+   "the professional corporation",
+   "The professional corporation"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "defendant"
+  ],
+  "raw_span": [
+   147079,
+   147108
+  ],
+  "clean_span": [
+   147079,
+   147108
+  ],
+  "forms": [
+   "NEXRAY MEDICAL IMAGING, P.C."
+  ],
+  "aliases": [
+   [
+    "NEXRAY",
+    "MEDICAL",
+    "IMAGING"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720040:c5.m5",
+  "type": "organization",
+  "name": "SCHWARTZ, CONROY & HACK, PC",
+  "name_as_extracted": "SCHWARTZ, CONROY & HACK, PC",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 141025,
+  "occurrences": [],
+  "details": [
+   [
+    "address",
+    "666|old|country|road|9th|floor",
+    "inferred"
+   ],
+   [
+    "address",
+    "garden|city|new|york|11530",
+    "inferred"
+   ],
+   [
+    "phone",
+    "+15167451122",
+    "inferred"
+   ],
+   [
+    "phone",
+    "+15167450844",
+    "stated"
+   ],
+   [
+    "email",
+    "mjc@schlawpc.com",
+    "inferred"
+   ]
+  ],
+  "specialties": [],
+  "phone_types": {
+   "+15167450844": "fax"
+  },
+  "license_types": {},
+  "addresses": [
+   {
+    "number": "666",
+    "direction": "",
+    "street": "OLD COUNTRY",
+    "street_type": "RD",
+    "unit": "",
+    "city": "",
+    "state": "",
+    "zip": ""
+   },
+   {
+    "number": "",
+    "direction": "",
+    "street": "GARDEN CITY",
+    "street_type": "",
+    "unit": "",
+    "city": "GARDEN CITY",
+    "state": "NY",
+    "zip": "11530"
+   }
+  ],
+  "locations": [
+   {
+    "city": "GARDEN CITY",
+    "state": "NY"
+   }
+  ],
+  "roles": [],
+  "raw_span": [
+   146999,
+   147026
+  ],
+  "clean_span": [
+   146999,
+   147026
+  ],
+  "forms": [
+   "SCHWARTZ, CONROY & HACK, PC"
+  ],
+  "aliases": [
+   [
+    "SCHWARTZ",
+    "CONROY",
+    "HACK"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720040:c5.m6",
+  "type": "person",
+  "name": "Matthew J. Conroy",
+  "name_as_extracted": "Matthew J. Conroy",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 141025,
+  "occurrences": [
+   "Matthew J. Conroy___"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   147176,
+   147193
+  ],
+  "clean_span": [
+   147176,
+   147193
+  ],
+  "forms": [
+   "Matthew J. Conroy",
+   "Matthew J. Conroy___"
+  ],
+  "first": "MATTHEW",
+  "middle": "J",
+  "last": "CONROY",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720040:c5.m7",
+  "type": "organization",
+  "name": "GREENBERG TRAURIG, LLP",
+  "name_as_extracted": "GREENBERG TRAURIG, LLP",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720040",
+  "chunk": 141025,
+  "occurrences": [],
+  "details": [
+   [
+    "address",
+    "one|vanderbilt|avenue",
+    "inferred"
+   ],
+   [
+    "address",
+    "new|york|new|york|10017",
+    "inferred"
+   ],
+   [
+    "phone",
+    "+12128019200",
+    "inferred"
+   ],
+   [
+    "email",
+    "perkinsj@gtlaw.com",
+    "inferred"
+   ],
+   [
+    "email",
+    "serbarolif@gtlaw.com",
+    "inferred"
+   ],
+   [
+    "email",
+    "molluzzoj@gtlaw.com",
+    "inferred"
+   ]
+  ],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [
+   {
+    "number": "",
+    "direction": "",
+    "street": "ONE VANDERBILT",
+    "street_type": "AVE",
+    "unit": "",
+    "city": "",
+    "state": "",
+    "zip": ""
+   },
+   {
+    "number": "",
+    "direction": "",
+    "street": "NEW YORK",
+    "street_type": "",
+    "unit": "",
+    "city": "NEW YORK",
+    "state": "NY",
+    "zip": "10017"
+   }
+  ],
+  "locations": [
+   {
+    "city": "NEW YORK",
+    "state": "NY"
+   }
+  ],
+  "roles": [],
+  "raw_span": [
+   147332,
+   147354
+  ],
+  "clean_span": [
+   147332,
+   147354
+  ],
+  "forms": [
+   "GREENBERG TRAURIG, LLP"
+  ],
+  "aliases": [
+   [
+    "GREENBERG",
+    "TRAURIG"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720052:m1",
+  "type": "organization",
+  "name": "American Transit Insurance Company",
+  "name_as_extracted": "American Transit Insurance Company",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720052",
+  "chunk": 0,
+  "occurrences": [
+   "Plaintiff",
+   "plaintiff",
+   "American Transit",
+   "America Transit",
+   "the insurer",
+   "its"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "movant",
+   "target"
+  ],
+  "raw_span": [
+   569,
+   603
+  ],
+  "clean_span": [
+   569,
+   603
+  ],
+  "forms": [
+   "American Transit Insurance Company",
+   "American Transit"
+  ],
+  "aliases": [
+   [
+    "AMERICAN",
+    "TRANSIT",
+    "INSURANCE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720052:m2",
+  "type": "person",
+  "name": "BRADLEY PIERRE",
+  "name_as_extracted": "BRADLEY PIERRE",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720052",
+  "chunk": 0,
+  "occurrences": [
+   "Mr. Pierre",
+   "Mr. Pierre\u2019s",
+   "Pierre",
+   "he",
+   "his"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "controller",
+   "defendant",
+   "participant",
+   "speaker",
+   "subject"
+  ],
+  "raw_span": [
+   246,
+   260
+  ],
+  "clean_span": [
+   246,
+   260
+  ],
+  "forms": [
+   "BRADLEY PIERRE",
+   "Mr. Pierre",
+   "Mr. Pierre\u2019s",
+   "Pierre"
+  ],
+  "first": "BRADLEY",
+  "middle": "",
+  "last": "PIERRE",
+  "creds": [],
+  "title": "MR",
+  "role_class": "private"
+ },
+ {
+  "key": "note:720052:m3",
+  "type": "person",
+  "name": "MARVIN MOY, M.D.",
+  "name_as_extracted": "MARVIN MOY, M.D.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720052",
+  "chunk": 0,
+  "occurrences": [
+   "Dr. Marvin Moy",
+   "defendant Dr. Marvin Moy",
+   "who is now missing and presumed dead"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "owner"
+  ],
+  "raw_span": [
+   262,
+   278
+  ],
+  "clean_span": [
+   262,
+   278
+  ],
+  "forms": [
+   "MARVIN MOY, M.D.",
+   "Dr. Marvin Moy"
+  ],
+  "first": "MARVIN",
+  "middle": "",
+  "last": "MOY",
+  "creds": [
+   "MD"
+  ],
+  "title": "DR",
+  "role_class": "professional"
+ },
+ {
+  "key": "note:720052:m4",
+  "type": "person",
+  "name": "WILLIAM A.  WEINER, D.O.",
+  "name_as_extracted": "WILLIAM A.  WEINER, D.O.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720052",
+  "chunk": 0,
+  "occurrences": [
+   "Dr. Weiner",
+   "Mr. Weiner",
+   "Weiner",
+   "he",
+   "his"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "actor",
+   "defendant",
+   "opponent"
+  ],
+  "raw_span": [
+   303,
+   328
+  ],
+  "clean_span": [
+   303,
+   328
+  ],
+  "forms": [
+   "WILLIAM A.  WEINER, D.O.",
+   "Dr. Weiner",
+   "Mr. Weiner",
+   "Weiner"
+  ],
+  "first": "WILLIAM",
+  "middle": "A",
+  "last": "WEINER",
+  "creds": [
+   "DO"
+  ],
+  "title": "DR",
+  "role_class": "professional"
+ },
+ {
+  "key": "note:720052:m5",
+  "type": "organization",
+  "name": "RUTLAND MEDICAL P.C.",
+  "name_as_extracted": "RUTLAND MEDICAL P.C.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720052",
+  "chunk": 0,
+  "occurrences": [
+   "Rutland",
+   "defendants Rutland",
+   "that company",
+   "the clinics"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "clinic",
+   "enjoined_party",
+   "entity",
+   "owned_entity"
+  ],
+  "raw_span": [
+   281,
+   301
+  ],
+  "clean_span": [
+   281,
+   301
+  ],
+  "forms": [
+   "RUTLAND MEDICAL P.C.",
+   "Rutland"
+  ],
+  "aliases": [
+   [
+    "RUTLAND",
+    "MEDICAL"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720052:m6",
+  "type": "organization",
+  "name": "NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING",
+  "name_as_extracted": "NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720052",
+  "chunk": 0,
+  "occurrences": [
+   "Nexray",
+   "defendants Nexray",
+   "Nexray\u2019s",
+   "a medical facility",
+   "his medical practice"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "destination",
+   "enjoined_party",
+   "opponent",
+   "organization"
+  ],
+  "raw_span": [
+   330,
+   398
+  ],
+  "clean_span": [
+   330,
+   398
+  ],
+  "forms": [
+   "NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING",
+   "Nexray",
+   "Nexray\u2019s"
+  ],
+  "aliases": [
+   [
+    "NEXRAY",
+    "MEDICAL",
+    "IMAGING"
+   ],
+   [
+    "SOUL",
+    "RADIOLOGY",
+    "MEDICAL",
+    "IMAGING"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720052:m7",
+  "type": "organization",
+  "name": "JOHN DOES 1 \u201315",
+  "name_as_extracted": "JOHN DOES 1 \u201315",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720052",
+  "chunk": 0,
+  "occurrences": [
+   "Defendants"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   403,
+   418
+  ],
+  "clean_span": [
+   403,
+   418
+  ],
+  "forms": [
+   "JOHN DOES 1 \u201315"
+  ],
+  "aliases": [
+   [
+    "JOHN",
+    "DOES",
+    "15"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720077:c0.m1",
+  "type": "organization",
+  "name": "American Transit Insurance",
+  "name_as_extracted": "American Transit Insurance",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720077",
+  "chunk": 0,
+  "occurrences": [
+   "AMERICAN TRANSIT INS. CO.",
+   "American Transit",
+   "plaintiff",
+   "AT"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "plaintiff",
+   "target"
+  ],
+  "raw_span": [
+   426,
+   452
+  ],
+  "clean_span": [
+   426,
+   452
+  ],
+  "forms": [
+   "American Transit Insurance",
+   "American Transit"
+  ],
+  "aliases": [
+   [
+    "AMERICAN",
+    "TRANSIT",
+    "INSURANCE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720077:c0.m2",
+  "type": "person",
+  "name": "Bradley Pierre",
+  "name_as_extracted": "Bradley Pierre",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720077",
+  "chunk": 0,
+  "occurrences": [
+   "BRADLEY PIERRE",
+   "Pierre",
+   "defendant Pierre",
+   "him",
+   "he",
+   "his"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "claimant",
+   "client",
+   "defendant",
+   "denier",
+   "movant",
+   "served_party"
+  ],
+  "raw_span": [
+   520,
+   534
+  ],
+  "clean_span": [
+   520,
+   534
+  ],
+  "forms": [
+   "Bradley Pierre",
+   "BRADLEY PIERRE",
+   "Pierre"
+  ],
+  "first": "BRADLEY",
+  "middle": "",
+  "last": "PIERRE",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720077:c0.m3",
+  "type": "person",
+  "name": "Marvin Moy, M.D.",
+  "name_as_extracted": "Marvin Moy, M.D.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720077",
+  "chunk": 0,
+  "occurrences": [
+   "Moy"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "defendant"
+  ],
+  "raw_span": [
+   547,
+   563
+  ],
+  "clean_span": [
+   547,
+   563
+  ],
+  "forms": [
+   "Marvin Moy, M.D.",
+   "Moy"
+  ],
+  "first": "MARVIN",
+  "middle": "",
+  "last": "MOY",
+  "creds": [
+   "MD"
+  ],
+  "title": null,
+  "role_class": "professional"
+ },
+ {
+  "key": "note:720077:c0.m4",
+  "type": "organization",
+  "name": "Rutland Medical Facility",
+  "name_as_extracted": "Rutland Medical P.C.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720077",
+  "chunk": 0,
+  "occurrences": [
+   "Rutland",
+   "Rutland Medical, P.C.",
+   "Rutland Medical Facility",
+   "Rutland medical facilities",
+   "those facilities"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "defendant",
+   "facility",
+   "submitter"
+  ],
+  "raw_span": [
+   574,
+   594
+  ],
+  "clean_span": [
+   574,
+   594
+  ],
+  "forms": [
+   "Rutland Medical Facility",
+   "Rutland",
+   "Rutland Medical, P.C."
+  ],
+  "aliases": [
+   [
+    "RUTLAND",
+    "MEDICAL",
+    "FACILITY"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720077:c0.m5",
+  "type": "person",
+  "name": "William A. Weiner, D.O.",
+  "name_as_extracted": "William A. Weiner, D.O.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720077",
+  "chunk": 0,
+  "occurrences": [
+   "Weiner"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "defendant"
+  ],
+  "raw_span": [
+   608,
+   631
+  ],
+  "clean_span": [
+   608,
+   631
+  ],
+  "forms": [
+   "William A. Weiner, D.O.",
+   "Weiner"
+  ],
+  "first": "WILLIAM",
+  "middle": "A",
+  "last": "WEINER",
+  "creds": [
+   "DO"
+  ],
+  "title": null,
+  "role_class": "professional"
+ },
+ {
+  "key": "note:720077:c0.m6",
+  "type": "organization",
+  "name": "Nexray Medical Imaging, P.C., d/b/a Soul Radiology Medical Imaging",
+  "name_as_extracted": "Nexray Medical Imaging, P.C., d/b/a Soul Radiology Medical Imaging",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720077",
+  "chunk": 0,
+  "occurrences": [
+   "Nexray",
+   "Nexray medical facilities",
+   "those facilities"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "defendant",
+   "facility",
+   "submitter"
+  ],
+  "raw_span": [
+   644,
+   711
+  ],
+  "clean_span": [
+   644,
+   711
+  ],
+  "forms": [
+   "Nexray Medical Imaging, P.C., d/b/a Soul Radiology Medical Imaging",
+   "Nexray"
+  ],
+  "aliases": [
+   [
+    "NEXRAY",
+    "MEDICAL",
+    "IMAGING"
+   ],
+   [
+    "SOUL",
+    "RADIOLOGY",
+    "MEDICAL",
+    "IMAGING"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720077:c0.m7",
+  "type": "person",
+  "name": "John Does 1-15",
+  "name_as_extracted": "John Does 1-15",
+  "linkable": true,
+  "kind": "group",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720077",
+  "chunk": 0,
+  "occurrences": [
+   "John Does 1-15"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "defendant"
+  ],
+  "raw_span": [
+   728,
+   742
+  ],
+  "clean_span": [
+   728,
+   742
+  ],
+  "forms": [
+   "John Does 1-15"
+  ],
+  "first": "JOHN",
+  "middle": "",
+  "last": "DOES",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720077:c0.m8",
+  "type": "person",
+  "name": "Cary Scott Goldinger, Esq.",
+  "name_as_extracted": "Cary Scott Goldinger, Esq.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720077",
+  "chunk": 0,
+  "occurrences": [
+   "Mr. Goldinger",
+   "Mr. Goldinger\u2019s",
+   "Pierre\u2019s counsel"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "counsel"
+  ],
+  "raw_span": [
+   4230,
+   4256
+  ],
+  "clean_span": [
+   4230,
+   4256
+  ],
+  "forms": [
+   "Cary Scott Goldinger, Esq.",
+   "Mr. Goldinger",
+   "Mr. Goldinger\u2019s"
+  ],
+  "first": "CARY",
+  "middle": "S",
+  "last": "GOLDINGER",
+  "creds": [
+   "ESQ"
+  ],
+  "title": "MR",
+  "role_class": "professional"
+ },
+ {
+  "key": "note:720077:c0.m9",
+  "type": "person",
+  "name": "Skip Short, Esq.",
+  "name_as_extracted": "Skip Short, Esq.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720077",
+  "chunk": 0,
+  "occurrences": [
+   "Mr. Short",
+   "plaintiff\u2019s attorney"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "plaintiff_counsel"
+  ],
+  "raw_span": [
+   4576,
+   4592
+  ],
+  "clean_span": [
+   4576,
+   4592
+  ],
+  "forms": [
+   "Skip Short, Esq.",
+   "Mr. Short"
+  ],
+  "first": "SKIP",
+  "middle": "",
+  "last": "SHORT",
+  "creds": [
+   "ESQ"
+  ],
+  "title": "MR",
+  "role_class": "professional"
+ },
+ {
+  "key": "note:720077:c0.m10",
+  "type": "person",
+  "name": "Adam B. Dressler, Esq.",
+  "name_as_extracted": "Adam B. Dressler, Esq.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720077",
+  "chunk": 0,
+  "occurrences": [
+   "Mr. Dressler"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "counsel"
+  ],
+  "raw_span": [
+   4361,
+   4383
+  ],
+  "clean_span": [
+   4361,
+   4383
+  ],
+  "forms": [
+   "Adam B. Dressler, Esq.",
+   "Mr. Dressler"
+  ],
+  "first": "ADAM",
+  "middle": "B",
+  "last": "DRESSLER",
+  "creds": [
+   "ESQ"
+  ],
+  "title": "MR",
+  "role_class": "professional"
+ },
+ {
+  "key": "note:720077:c0.m11",
+  "type": "person",
+  "name": "Mr. Riopelle",
+  "name_as_extracted": "Mr. Riopelle",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720077",
+  "chunk": 0,
+  "occurrences": [
+   "Riopelle"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   6107,
+   6119
+  ],
+  "clean_span": [
+   6107,
+   6119
+  ],
+  "forms": [
+   "Mr. Riopelle",
+   "Riopelle"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "RIOPELLE",
+  "creds": [],
+  "title": "MR",
+  "role_class": "private"
+ },
+ {
+  "key": "note:720077:c0.m12",
+  "type": "organization",
+  "name": "Medical Reimbursement Consultants",
+  "name_as_extracted": "Medical Reimbursement Consultants",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720077",
+  "chunk": 0,
+  "occurrences": [
+   "MRC",
+   "Pierre\u2019s company",
+   "his personal company"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "submitter"
+  ],
+  "raw_span": [
+   21051,
+   21084
+  ],
+  "clean_span": [
+   21051,
+   21084
+  ],
+  "forms": [
+   "Medical Reimbursement Consultants"
+  ],
+  "aliases": [
+   [
+    "MEDICAL",
+    "REIMBURSEMENT",
+    "CONSULTANTS"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720077:c0.m13",
+  "type": "organization",
+  "name": "Allstate Ins. Co.",
+  "name_as_extracted": "Allstate Ins. Co.",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720077",
+  "chunk": 0,
+  "occurrences": [
+   "Allstate Ins. Co."
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   2561,
+   2578
+  ],
+  "clean_span": [
+   2561,
+   2578
+  ],
+  "forms": [
+   "Allstate Ins. Co."
+  ],
+  "aliases": [
+   [
+    "ALLSTATE",
+    "INSURANCE"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720077:c0.m14",
+  "type": "organization",
+  "name": "United States",
+  "name_as_extracted": "United States",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720077",
+  "chunk": 0,
+  "occurrences": [
+   "the government"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   3022,
+   3035
+  ],
+  "clean_span": [
+   3022,
+   3035
+  ],
+  "forms": [
+   "United States"
+  ],
+  "aliases": [
+   [
+    "UNITED",
+    "STATES"
+   ]
+  ],
+  "role_class": "organization"
+ },
+ {
+  "key": "note:720077:c0.m15",
+  "type": "person",
+  "name": "POLLAK",
+  "name_as_extracted": "POLLAK",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720077",
+  "chunk": 0,
+  "occurrences": [
+   "the undersigned",
+   "this court",
+   "the Court"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [],
+  "raw_span": [
+   352,
+   358
+  ],
+  "clean_span": [
+   352,
+   358
+  ],
+  "forms": [
+   "POLLAK"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "POLLAK",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720077:c1.m1",
+  "type": "person",
+  "name": "Pierre",
+  "name_as_extracted": "Pierre",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720077",
+  "chunk": 27709,
+  "occurrences": [
+   "Pierre has raised several factual assertions",
+   "this case is in the very earliest stages",
+   "Pierre\u2019s default",
+   "Pierre\u2019s failure to act diligently",
+   "defendant Pierre",
+   "him",
+   "his",
+   "Pierre asserts",
+   "Pierre\u2019s appearance",
+   "Pierre be ordered to pay"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "claimant",
+   "defendant",
+   "payer",
+   "speaker"
+  ],
+  "raw_span": [
+   28009,
+   28015
+  ],
+  "clean_span": [
+   28009,
+   28015
+  ],
+  "forms": [
+   "Pierre"
+  ],
+  "first": "",
+  "middle": "",
+  "last": "PIERRE",
+  "creds": [],
+  "title": null,
+  "role_class": "private"
+ },
+ {
+  "key": "note:720077:c1.m2",
+  "type": "organization",
+  "name": "[AT]",
+  "name_as_extracted": "[AT]",
+  "linkable": true,
+  "kind": "party",
+  "claim_id": "100002-240360-RI-01",
+  "occurrence_id": "100002-240360",
+  "client_id": "100002",
+  "note_key": "note:720077",
+  "chunk": 27709,
+  "occurrences": [
+   "plaintiff",
+   "plaintiff\u2019s",
+   "[AT]\u2019s"
+  ],
+  "details": [],
+  "specialties": [],
+  "phone_types": {},
+  "license_types": {},
+  "addresses": [],
+  "locations": [],
+  "roles": [
+   "recipient",
+   "speaker",
+   "submitter"
+  ],
+  "raw_span": [
+   29561,
+   29565
+  ],
+  "clean_span": [
+   29561,
+   29565
+  ],
+  "forms": [
+   "[AT]",
+   "[AT]\u2019s"
+  ],
+  "aliases": [
+   [
+    "AT"
+   ]
+  ],
+  "role_class": "organization"
+ }
+]

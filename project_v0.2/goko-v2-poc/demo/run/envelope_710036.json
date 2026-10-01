@@ -1,0 +1,3506 @@
+{
+  "note_id": 710036,
+  "note_key": "note:710036",
+  "claim_id": "100001-236572-RI-01",
+  "client_id": "100001",
+  "occurrence_id": "100001-236572",
+  "coverage_code": "RI",
+  "versions": {
+    "schema": "0.1",
+    "model": "gpt-6-luna",
+    "patterns": "1.7",
+    "gliner": null,
+    "clean_policy": "none",
+    "chunk_policy": "structure-v1/30000c/2s",
+    "structured": true,
+    "offline": false
+  },
+  "extraction_error": null,
+  "entity_mentions": [
+    {
+      "mention_id": "c0.m1",
+      "quote": "ALLSTATE INSURANCE COMPANY,",
+      "name": "ALLSTATE INSURANCE COMPANY",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        931,
+        957
+      ],
+      "raw_span": [
+        931,
+        957
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m2",
+      "quote": "ALLSTATE INDEMNITY COMPANY,",
+      "name": "ALLSTATE INDEMNITY COMPANY",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        960,
+        986
+      ],
+      "raw_span": [
+        960,
+        986
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m3",
+      "quote": "ALLSTATE FIRE & CASUALTY INSURANCE\nCOMPANY,",
+      "name": "ALLSTATE FIRE & CASUALTY INSURANCE\nCOMPANY",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        989,
+        1032
+      ],
+      "raw_span": [
+        989,
+        1032
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m4",
+      "quote": "ALLSTATE PROPERTY &\nCASUALTY INSURANCE COMPANY,",
+      "name": "ALLSTATE PROPERTY &\nCASUALTY INSURANCE COMPANY",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        1038,
+        1085
+      ],
+      "raw_span": [
+        1038,
+        1085
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m5",
+      "quote": "Defendants Bradley Pierre (\u201cPierre\u201d) and Medical Reimbursement Consultants Inc.",
+      "name": "Bradley Pierre",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "\u201cPierre\u201d"
+      ],
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        286,
+        300
+      ],
+      "raw_span": [
+        286,
+        300
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m6",
+      "quote": "and Medical Reimbursement Consultants Inc.",
+      "name": "Medical Reimbursement Consultants Inc.",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "\u201cMRC\u201d"
+      ],
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        316,
+        354
+      ],
+      "raw_span": [
+        316,
+        354
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m7",
+      "quote": "(collectively, \u201c MRC Defendants\u201d),",
+      "name": "MRC Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "MRC Defendants"
+      ],
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        381,
+        395
+      ],
+      "raw_span": [
+        381,
+        395
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m8",
+      "quote": "as to Defendants Marvin Moy, M.D.",
+      "name": "Marvin Moy, M.D.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "\u201cMoy\u201d"
+      ],
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        911,
+        927
+      ],
+      "raw_span": [
+        911,
+        927
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m9",
+      "quote": "Rutland Medical P.C. d/b/a MedicalNow (\u201cRutland\u201d),",
+      "name": "Rutland Medical P.C. d/b/a MedicalNow",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "\u201cRutland\u201d",
+        "RUTLAND d/b/a MEDICALNOW"
+      ],
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        1538,
+        1575
+      ],
+      "raw_span": [
+        1538,
+        1575
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m10",
+      "quote": "William A. Weiner, D.O. (\u201cWeiner\u201d),",
+      "name": "William A. Weiner, D.O.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "\u201cWeiner\u201d"
+      ],
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        1589,
+        1612
+      ],
+      "raw_span": [
+        1589,
+        1612
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m11",
+      "quote": "Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging\n(\u201cNexray\u201d)",
+      "name": "Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "\u201cNexray\u201d",
+        "NEXRAY MEDICAL IMAGING, P.C. d/b/a\nSOUL RADIOLOGY MEDICAL IMAGING"
+      ],
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        1630,
+        1695
+      ],
+      "raw_span": [
+        1630,
+        1695
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m12",
+      "quote": "(collectively, the \u201cOther Defendants\u201d).",
+      "name": "Other Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "Other Defendants"
+      ],
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        1727,
+        1743
+      ],
+      "raw_span": [
+        1727,
+        1743
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m1",
+      "quote": "MRC Defendants deny the allegations set forth in paragraph 69 of the Complaint.",
+      "name": "MRC Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "MRC Defendants lack the knowledge or information sufficient to form a basis",
+        "MRC Defendants respectfully refer the Court",
+        "the allegations against MRC Defendants"
+      ],
+      "_chunk": [
+        27774,
+        56646
+      ],
+      "clean_span": [
+        28393,
+        28408
+      ],
+      "raw_span": [
+        28393,
+        28408
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m2",
+      "quote": "the truth of the allegations as to the Other Defendants. As to the allegations against MRC Defendants, MRC Defendants deny the allegations set forth in paragraph 69 of the Complaint.",
+      "name": "Other Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "the allegations as to the Other Defendants"
+      ],
+      "_chunk": [
+        27774,
+        56646
+      ],
+      "clean_span": [
+        28329,
+        28345
+      ],
+      "raw_span": [
+        28329,
+        28345
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m3",
+      "quote": "Plaintiff\u2019s Complaint",
+      "name": "Plaintiff",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        27774,
+        56646
+      ],
+      "clean_span": [
+        27813,
+        27822
+      ],
+      "raw_span": [
+        27813,
+        27822
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c2.m1",
+      "quote": "MRC Defendants deny the allegations contained in paragraph 141 of the Complaint.",
+      "name": "MRC Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "As to the allegations against MRC Defendants",
+        "MRC Defendants lack the knowledge or information sufficient to form a basis as to the truth of the allegations as to the Other Defendants",
+        "MRC Defendants respectfully refer the Court to these affidavits",
+        "MRC Defendants lack knowledge or information sufficient to form a basis",
+        "MRC Defendants deny the allegations set forth in paragraph 142 of the Complaint"
+      ],
+      "_chunk": [
+        56428,
+        84896
+      ],
+      "clean_span": [
+        56474,
+        56489
+      ],
+      "raw_span": [
+        56474,
+        56489
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c2.m2",
+      "quote": "142. The allegations set forth in paragraph 142 of the Complaint are argument and call for legal conclusion, to which no response is necessary. To the extent a response is required, MRC Defendants lack the knowledge or information sufficient to form a basis as to the truth of the allegations as to the Other Defendants.",
+      "name": "Other Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "the Other Defendants"
+      ],
+      "_chunk": [
+        56428,
+        84896
+      ],
+      "clean_span": [
+        56957,
+        56973
+      ],
+      "raw_span": [
+        56957,
+        56973
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c3.m1",
+      "quote": "231. MRC Defendants lack knowledge or information sufficient to form a basis",
+      "name": "MRC Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "MRC Defendants deny the allegations",
+        "the allegations against MRC Defendants",
+        "MRC Defendants lack the knowledge or information sufficient to form a basis",
+        "MRC Defendants lack knowledge or information sufficient to form a basis"
+      ],
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        85532,
+        85546
+      ],
+      "raw_span": [
+        85532,
+        85546
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c3.m2",
+      "quote": "the allegations as to the Other Defendants.",
+      "name": "Other Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [],
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        84927,
+        84943
+      ],
+      "raw_span": [
+        84927,
+        84943
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m1",
+      "quote": "MRC Defendants deny the allegations contained in paragraph 365 of the Complaint.",
+      "name": "MRC Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "MRC Defendants"
+      ],
+      "_chunk": [
+        113988,
+        143607
+      ],
+      "clean_span": [
+        114900,
+        114915
+      ],
+      "raw_span": [
+        114900,
+        114915
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m2",
+      "quote": "truth of the allegations as to the Other Defendants. As to the allegations against MRC Defendants",
+      "name": "Other Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "Other Defendants"
+      ],
+      "_chunk": [
+        113988,
+        143607
+      ],
+      "clean_span": [
+        114836,
+        114852
+      ],
+      "raw_span": [
+        114836,
+        114852
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c4.m3",
+      "quote": "MISREPRESENTATIONS MADE TO AND RELIED ON BY ALLSTATE",
+      "name": "ALLSTATE",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        113988,
+        143607
+      ],
+      "clean_span": [
+        134577,
+        134585
+      ],
+      "raw_span": [
+        134577,
+        134585
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c5.m1",
+      "quote": "459. MRC Defendants repeat and reassert the above response as though fully set forth",
+      "name": "MRC Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "MRC Defendants lack the knowledge or information sufficient to form a basis",
+        "MRC Defendants deny the allegations contained in paragraph 445 of the Complaint",
+        "the allegations against MRC Defendants"
+      ],
+      "_chunk": [
+        143339,
+        172652
+      ],
+      "clean_span": [
+        149843,
+        149857
+      ],
+      "raw_span": [
+        149843,
+        149857
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c5.m2",
+      "quote": "454. MRC Defendants lack the knowledge or information sufficient to form a basis as\nto the truth of the allegations as to the Other Defendants.",
+      "name": "Other Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "the allegations as to the Other Defendants"
+      ],
+      "_chunk": [
+        143339,
+        172652
+      ],
+      "clean_span": [
+        147632,
+        147648
+      ],
+      "raw_span": [
+        147632,
+        147648
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c5.m3",
+      "quote": "VIII. ALLSTATE\u2019S JUSTIFIABLE RELIANCE",
+      "name": "ALLSTATE",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        143339,
+        172652
+      ],
+      "clean_span": [
+        145793,
+        145801
+      ],
+      "raw_span": [
+        145793,
+        145801
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c6.m1",
+      "quote": "Defendants Pierre and MRC (collectively, \u201cMRC Defendants\u201d)",
+      "name": "MRC Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "MRC Defendants",
+        "answering MRC Defendants",
+        "they"
+      ],
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        201864,
+        201878
+      ],
+      "raw_span": [
+        201864,
+        201878
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c6.m2",
+      "quote": "Pierre and MRC (collectively",
+      "name": "MRC",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        201844,
+        201847
+      ],
+      "raw_span": [
+        201844,
+        201847
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c6.m3",
+      "quote": "Defendants Pierre",
+      "name": "Pierre",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        201833,
+        201839
+      ],
+      "raw_span": [
+        201833,
+        201839
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c6.m4",
+      "quote": "Rutland is a professional corporation organized",
+      "name": "Rutland",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Rutland"
+      ],
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        202157,
+        202164
+      ],
+      "raw_span": [
+        202157,
+        202164
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c6.m5",
+      "quote": "Rutland and Nexray (collectively, the \u201cPC Defendants\u201d)",
+      "name": "Nexray",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        201924,
+        201930
+      ],
+      "raw_span": [
+        201924,
+        201930
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c6.m6",
+      "quote": "Rutland and Nexray (collectively, the \u201cPC Defendants\u201d)",
+      "name": "PC Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "PC Defendants"
+      ],
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        201951,
+        201964
+      ],
+      "raw_span": [
+        201951,
+        201964
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c6.m7",
+      "quote": "as to the Other Defendants.",
+      "name": "Other Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "the Other Defendants"
+      ],
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        172963,
+        172979
+      ],
+      "raw_span": [
+        172963,
+        172979
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c6.m8",
+      "quote": "by Plaintiffs\u2019 failure to mitigate, minimize, or avoid their own damages.",
+      "name": "Plaintiffs",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "Plaintiffs",
+        "Plaintiffs\u2019"
+      ],
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        200750,
+        200760
+      ],
+      "raw_span": [
+        200750,
+        200760
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c6.m9",
+      "quote": "under Defendant Moy\u2019s name and medical license.",
+      "name": "Moy",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Defendant Moy"
+      ],
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        202299,
+        202302
+      ],
+      "raw_span": [
+        202299,
+        202302
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c7.m3",
+      "quote": "599. Upon information and belief,  Nexray is a professional corporation",
+      "name": "Nexray",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Nexray"
+      ],
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        202464,
+        202470
+      ],
+      "raw_span": [
+        202464,
+        202470
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c7.m4",
+      "quote": "under Defendant Weiner\u2019s name and medical license.",
+      "name": "Weiner",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Defendant Weiner\u2019s"
+      ],
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        202605,
+        202611
+      ],
+      "raw_span": [
+        202605,
+        202611
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c7.m5",
+      "quote": "600. Plaintiffs have filed a complaint against MRC Defendants and PC Defendants.",
+      "name": "Plaintiffs",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "Plaintiffs have alleged damages",
+        "Plaintiffs recover against MRC Defendants",
+        "Plaintiffs allege Defendants engaged"
+      ],
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        202647,
+        202657
+      ],
+      "raw_span": [
+        202647,
+        202657
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c7.m6",
+      "quote": "600. Plaintiffs have filed a complaint against MRC Defendants",
+      "name": "MRC Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "MRC Defendants owed",
+        "MRC Defendants are entitled",
+        "MRC Defendants repeat and reallege",
+        "MRC Defendants entered into agreements",
+        "MRC Defendants seek indemnification",
+        "MRC Defendants have been exposed",
+        "MRC Defendants are obligated",
+        "MRC Defendants have suffered",
+        "MRC Defendants demand judgment"
+      ],
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        202689,
+        202703
+      ],
+      "raw_span": [
+        202689,
+        202703
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c7.m7",
+      "quote": "against MRC Defendants and PC Defendants.",
+      "name": "PC Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "PC Defendants actions",
+        "PC Defendants owed statutory duties",
+        "PC Defendants in proportion",
+        "crossclaim against PC Defendants",
+        "PC Defendants are obligated",
+        "PC Defendants\u2019 actions",
+        "PC Defendants\u2019 acts and/or omissions",
+        "PC Defendants breach of the Agreements",
+        "against PC Defendants for Contribution",
+        "against PC Defendants for Indemnification",
+        "against PC Defendants for Breach of Contract"
+      ],
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        202708,
+        202721
+      ],
+      "raw_span": [
+        202708,
+        202721
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c7.m8",
+      "quote": "as against Pierre and MRC;",
+      "name": "Pierre",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Pierre or MRC",
+        "Pierre or MRC is found liable",
+        "Pierre"
+      ],
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        205770,
+        205776
+      ],
+      "raw_span": [
+        205770,
+        205776
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c7.m9",
+      "quote": "Attorney for Defendants Medical Reimbursement Consultants, Inc., and Bradley Pierre",
+      "name": "Medical Reimbursement Consultants, Inc.",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "MRC",
+        "MRC Defendants"
+      ],
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        207208,
+        207248
+      ],
+      "raw_span": [
+        207208,
+        207248
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c7.m10",
+      "quote": "Attorney for Defendants Medical Reimbursement Consultants, Inc., and Bradley Pierre",
+      "name": "Bradley Pierre",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Pierre"
+      ],
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        207254,
+        207268
+      ],
+      "raw_span": [
+        207254,
+        207268
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c7.m11",
+      "quote": "MINTZ & GOLD LLP",
+      "name": "MINTZ & GOLD LLP",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [],
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        206989,
+        207005
+      ],
+      "raw_span": [
+        206989,
+        207005
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c7.m12",
+      "quote": "By: /s/ Ryan W. Lawler",
+      "name": "Ryan W. Lawler",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Ryan W. Lawler"
+      ],
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        207025,
+        207039
+      ],
+      "raw_span": [
+        207025,
+        207039
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    }
+  ],
+  "entity_candidates": [],
+  "detail_mentions": [
+    {
+      "detail_type": "address",
+      "raw_value": "600 Third Avenue, 25th Floor\n      New York, New York 10016",
+      "normalized": "600|third|avenue|25th|floor|new|york|new|york|10016",
+      "clean_span": [
+        207069,
+        207129
+      ],
+      "owner_ref": "UNASSIGNED",
+      "basis": "stated",
+      "issuer": null,
+      "subtype": null,
+      "parts": {
+        "number": "600",
+        "direction": "",
+        "street": "THIRD",
+        "street_type": "AVE",
+        "unit": "NEW",
+        "city": "TH FLOOR NEW YORK",
+        "state": "NY",
+        "zip": "10016"
+      },
+      "detected_by": [
+        "llm"
+      ],
+      "checksum": "n/a",
+      "cue": null,
+      "recall_gap": false,
+      "raw_span": [
+        207069,
+        207129
+      ]
+    },
+    {
+      "detail_type": "phone",
+      "raw_value": "(212) 696-4848",
+      "normalized": "+12126964848",
+      "clean_span": [
+        207137,
+        207151
+      ],
+      "owner_ref": "UNASSIGNED",
+      "basis": "stated",
+      "issuer": null,
+      "subtype": null,
+      "parts": null,
+      "detected_by": [
+        "llm",
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "cue": false,
+      "recall_gap": false,
+      "raw_span": [
+        207137,
+        207151
+      ]
+    },
+    {
+      "detail_type": "email",
+      "raw_value": "lawler@mintzandgold.com",
+      "normalized": "lawler@mintzandgold.com",
+      "clean_span": [
+        207159,
+        207182
+      ],
+      "owner_ref": "UNASSIGNED",
+      "basis": "stated",
+      "issuer": null,
+      "subtype": null,
+      "parts": null,
+      "detected_by": [
+        "llm",
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "cue": false,
+      "recall_gap": false,
+      "raw_span": [
+        207159,
+        207182
+      ]
+    }
+  ],
+  "action_mentions": [
+    {
+      "action_id": "c0.a1",
+      "quote": "Defendants Bradley Pierre (\u201cPierre\u201d) and Medical Reimbursement Consultants Inc.\n(\u201cMRC\u201d) (collectively, \u201c MRC Defendants\u201d), by and through their attorneys, answer Plaintiffs\u2019 complaint",
+      "action_type": "answer",
+      "participants": [
+        {
+          "mention_id": "c0.m5",
+          "role": "answering_party"
+        },
+        {
+          "mention_id": "c0.m6",
+          "role": "answering_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        275,
+        460
+      ],
+      "raw_span": [
+        275,
+        460
+      ]
+    },
+    {
+      "action_id": "c0.a2",
+      "quote": "Defendants Bradley Pierre (\u201cPierre\u201d) and",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m5",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m7",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        275,
+        315
+      ],
+      "raw_span": [
+        275,
+        315
+      ]
+    },
+    {
+      "action_id": "c0.a3",
+      "quote": "and Medical Reimbursement Consultants Inc.\n(\u201cMRC\u201d) (collectively, \u201c MRC Defendants\u201d)",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m6",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m7",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        312,
+        397
+      ],
+      "raw_span": [
+        312,
+        397
+      ]
+    },
+    {
+      "action_id": "c0.a4",
+      "quote": "\u201cMoy\u201d), Rutland Medical P.C. d/b/a MedicalNow (\u201cRutland\u201d), William A. Weiner, D.O. (\u201cWeiner\u201d), and Nexray Medical Imaging",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m8",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m12",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        1530,
+        1652
+      ],
+      "raw_span": [
+        1530,
+        1652
+      ]
+    },
+    {
+      "action_id": "c0.a5",
+      "quote": "Rutland Medical P.C. d/b/a MedicalNow (\u201cRutland\u201d), William A. Weiner, D.O.",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m9",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m12",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        1538,
+        1612
+      ],
+      "raw_span": [
+        1538,
+        1612
+      ]
+    },
+    {
+      "action_id": "c0.a6",
+      "quote": "William A. Weiner, D.O. (\u201cWeiner\u201d), and Nexray Medical Imaging, P.C.",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m10",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m12",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        1589,
+        1658
+      ],
+      "raw_span": [
+        1589,
+        1658
+      ]
+    },
+    {
+      "action_id": "c0.a7",
+      "quote": "Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging\n(\u201cNexray\u201d)(collectively, the \u201cOther Defendants\u201d)",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m11",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m12",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        1630,
+        1745
+      ],
+      "raw_span": [
+        1630,
+        1745
+      ]
+    },
+    {
+      "action_id": "c0.a8",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 1 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c0.m7",
+          "role": "denying_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        1747,
+        1872
+      ],
+      "raw_span": [
+        1747,
+        1872
+      ]
+    },
+    {
+      "action_id": "c0.a9",
+      "quote": "28. MRC Defendants admit the allegations set forth in paragraph 28 of the Complaint.",
+      "action_type": "admit",
+      "participants": [
+        {
+          "mention_id": "c0.m7",
+          "role": "admitting_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        28019
+      ],
+      "clean_span": [
+        12978,
+        13062
+      ],
+      "raw_span": [
+        12978,
+        13062
+      ]
+    },
+    {
+      "action_id": "c1.a1",
+      "quote": "MRC Defendants deny the allegations set forth in paragraph 69 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c1.m1",
+          "role": "denier"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        27774,
+        56646
+      ],
+      "clean_span": [
+        28393,
+        28473
+      ],
+      "raw_span": [
+        28393,
+        28473
+      ]
+    },
+    {
+      "action_id": "c1.a2",
+      "quote": "71. MRC Defendants lack the knowledge or information sufficient to form a basis as to the truth of the allegations contained in paragraph 71 of the Complaint.",
+      "action_type": "lack_knowledge",
+      "participants": [
+        {
+          "mention_id": "c1.m1",
+          "role": "respondent"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        27774,
+        56646
+      ],
+      "clean_span": [
+        28979,
+        29138
+      ],
+      "raw_span": [
+        28979,
+        29138
+      ]
+    },
+    {
+      "action_id": "c1.a3",
+      "quote": "MRC Defendants respectfully refer the Court to N.Y. Ins. Law \u00a7 403(d)",
+      "action_type": "refer_to",
+      "participants": [
+        {
+          "mention_id": "c1.m1",
+          "role": "referring_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        27774,
+        56646
+      ],
+      "clean_span": [
+        36818,
+        36887
+      ],
+      "raw_span": [
+        36818,
+        36887
+      ]
+    },
+    {
+      "action_id": "c2.a1",
+      "quote": "MRC Defendants deny the allegations contained in paragraph 141 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c2.m1",
+          "role": "responding_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        56428,
+        84896
+      ],
+      "clean_span": [
+        56474,
+        56555
+      ],
+      "raw_span": [
+        56474,
+        56555
+      ]
+    },
+    {
+      "action_id": "c2.a2",
+      "quote": "145. MRC Defendants lack knowledge or information sufficient to form a basis as to the truth of the allegations contained in paragraph 145 of the Complaint.",
+      "action_type": "lack_knowledge",
+      "participants": [
+        {
+          "mention_id": "c2.m1",
+          "role": "responding_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        56428,
+        84896
+      ],
+      "clean_span": [
+        58011,
+        58168
+      ],
+      "raw_span": [
+        58011,
+        58168
+      ]
+    },
+    {
+      "action_id": "c2.a3",
+      "quote": "MRC Defendants respectfully refer the Court to these affidavits for the effect and meaning thereof.",
+      "action_type": "refer_to",
+      "participants": [
+        {
+          "mention_id": "c2.m1",
+          "role": "responding_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        56428,
+        84896
+      ],
+      "clean_span": [
+        58281,
+        58381
+      ],
+      "raw_span": [
+        58281,
+        58381
+      ]
+    },
+    {
+      "action_id": "c3.a1",
+      "quote": "MRC Defendants lack knowledge or information sufficient to form a basis as to the truth of the allegations contained in paragraph 231 of the Complaint.",
+      "action_type": "lack_knowledge",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        85532,
+        85684
+      ],
+      "raw_span": [
+        85532,
+        85684
+      ]
+    },
+    {
+      "action_id": "c3.a2",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 229 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        84945,
+        85072
+      ],
+      "raw_span": [
+        84945,
+        85072
+      ]
+    },
+    {
+      "action_id": "c3.a3",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 230 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        85398,
+        85525
+      ],
+      "raw_span": [
+        85398,
+        85525
+      ]
+    },
+    {
+      "action_id": "c3.a4",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 247 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        88505,
+        88632
+      ],
+      "raw_span": [
+        88505,
+        88632
+      ]
+    },
+    {
+      "action_id": "c3.a5",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 248 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        89052,
+        89179
+      ],
+      "raw_span": [
+        89052,
+        89179
+      ]
+    },
+    {
+      "action_id": "c3.a6",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 264 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        91999,
+        92126
+      ],
+      "raw_span": [
+        91999,
+        92126
+      ]
+    },
+    {
+      "action_id": "c3.a7",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 265 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        92452,
+        92579
+      ],
+      "raw_span": [
+        92452,
+        92579
+      ]
+    },
+    {
+      "action_id": "c3.a8",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 284 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        95973,
+        96100
+      ],
+      "raw_span": [
+        95973,
+        96100
+      ]
+    },
+    {
+      "action_id": "c3.a9",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 285 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        96426,
+        96553
+      ],
+      "raw_span": [
+        96426,
+        96553
+      ]
+    },
+    {
+      "action_id": "c3.a10",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 286 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        96973,
+        97100
+      ],
+      "raw_span": [
+        96973,
+        97100
+      ]
+    },
+    {
+      "action_id": "c3.a11",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 299 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        99440,
+        99567
+      ],
+      "raw_span": [
+        99440,
+        99567
+      ]
+    },
+    {
+      "action_id": "c3.a12",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 300 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        99893,
+        100020
+      ],
+      "raw_span": [
+        99893,
+        100020
+      ]
+    },
+    {
+      "action_id": "c3.a13",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 314 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        102614,
+        102741
+      ],
+      "raw_span": [
+        102614,
+        102741
+      ]
+    },
+    {
+      "action_id": "c3.a14",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 315 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        103067,
+        103194
+      ],
+      "raw_span": [
+        103067,
+        103194
+      ]
+    },
+    {
+      "action_id": "c3.a15",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 316 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        103520,
+        103647
+      ],
+      "raw_span": [
+        103520,
+        103647
+      ]
+    },
+    {
+      "action_id": "c3.a16",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 329 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        105987,
+        106114
+      ],
+      "raw_span": [
+        105987,
+        106114
+      ]
+    },
+    {
+      "action_id": "c3.a17",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 330 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        106534,
+        106661
+      ],
+      "raw_span": [
+        106534,
+        106661
+      ]
+    },
+    {
+      "action_id": "c3.a18",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 341 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        108681,
+        108808
+      ],
+      "raw_span": [
+        108681,
+        108808
+      ]
+    },
+    {
+      "action_id": "c3.a19",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 342 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        109134,
+        109261
+      ],
+      "raw_span": [
+        109134,
+        109261
+      ]
+    },
+    {
+      "action_id": "c3.a20",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 349 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        110641,
+        110768
+      ],
+      "raw_span": [
+        110641,
+        110768
+      ]
+    },
+    {
+      "action_id": "c3.a21",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 350 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        111094,
+        111221
+      ],
+      "raw_span": [
+        111094,
+        111221
+      ]
+    },
+    {
+      "action_id": "c3.a22",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 357 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        112601,
+        112728
+      ],
+      "raw_span": [
+        112601,
+        112728
+      ]
+    },
+    {
+      "action_id": "c3.a23",
+      "quote": "As to the allegations against MRC Defendants, MRC Defendants deny the allegations contained in paragraph 358 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c3.m1",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        84532,
+        114352
+      ],
+      "clean_span": [
+        113054,
+        113181
+      ],
+      "raw_span": [
+        113054,
+        113181
+      ]
+    },
+    {
+      "action_id": "c4.a1",
+      "quote": "MRC Defendants deny the allegations contained in paragraph 365 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c4.m1",
+          "role": "denier"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        113988,
+        143607
+      ],
+      "clean_span": [
+        114900,
+        114981
+      ],
+      "raw_span": [
+        114900,
+        114981
+      ]
+    },
+    {
+      "action_id": "c4.a2",
+      "quote": "366. MRC Defendants lack knowledge or information sufficient to form a basis as to the truth of the allegations contained in paragraph 366 of the Complaint.",
+      "action_type": "lack_knowledge",
+      "participants": [
+        {
+          "mention_id": "c4.m1",
+          "role": "responding_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        113988,
+        143607
+      ],
+      "clean_span": [
+        114983,
+        115140
+      ],
+      "raw_span": [
+        114983,
+        115140
+      ]
+    },
+    {
+      "action_id": "c5.a1",
+      "quote": "MRC Defendants deny the allegations contained in paragraph 444 of the Complaint.",
+      "action_type": "deny",
+      "participants": [
+        {
+          "mention_id": "c5.m1",
+          "role": "denier"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        143339,
+        172652
+      ],
+      "clean_span": [
+        143798,
+        143879
+      ],
+      "raw_span": [
+        143798,
+        143879
+      ]
+    },
+    {
+      "action_id": "c5.a2",
+      "quote": "449. MRC Defendants lack knowledge or information sufficient to form a basis as to\nthe truth of the allegations contained in paragraph 449 of the Complaint.",
+      "action_type": "lack_knowledge",
+      "participants": [
+        {
+          "mention_id": "c5.m1",
+          "role": "subject"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        143339,
+        172652
+      ],
+      "clean_span": [
+        145826,
+        145983
+      ],
+      "raw_span": [
+        145826,
+        145983
+      ]
+    },
+    {
+      "action_id": "c6.a1",
+      "quote": "MRC Defendants deny the allegations contained in paragraph 518 of the Complaint.",
+      "action_type": "deny_allegations",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "denying_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        172480,
+        172561
+      ],
+      "raw_span": [
+        172480,
+        172561
+      ]
+    },
+    {
+      "action_id": "c6.a2",
+      "quote": "The allegations set forth in paragraph 519 of the Complaint are argument",
+      "action_type": "characterize_as_argument",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "responding_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        172662,
+        172734
+      ],
+      "raw_span": [
+        172662,
+        172734
+      ]
+    },
+    {
+      "action_id": "c6.a3",
+      "quote": "MRC Defendants lack the knowledge or information sufficient to form a basis as to the truth of the allegations as to the Other Defendants.",
+      "action_type": "lack_knowledge",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "responding_party"
+        },
+        {
+          "mention_id": "c6.m7",
+          "role": "referenced_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        172841,
+        172980
+      ],
+      "raw_span": [
+        172841,
+        172980
+      ]
+    },
+    {
+      "action_id": "c6.a4",
+      "quote": "534. MRC Defendants repeat and reassert the above response as though fully set forth herein.",
+      "action_type": "repeat_and_reassert",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "responding_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        179755,
+        179848
+      ],
+      "raw_span": [
+        179755,
+        179848
+      ]
+    },
+    {
+      "action_id": "c6.a5",
+      "quote": "570. MRC Defendants lack knowledge or information sufficient to form a basis as to the truth of the allegations contained in paragraph 570 of the Complaint.",
+      "action_type": "lack_knowledge",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "responding_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        194686,
+        194843
+      ],
+      "raw_span": [
+        194686,
+        194843
+      ]
+    },
+    {
+      "action_id": "c6.a6",
+      "quote": "The Complaint fails to state a cause of action as to the answering MRC Defendants.",
+      "action_type": "fail_to_state_cause_of_action",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "defending_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        199729,
+        199812
+      ],
+      "raw_span": [
+        199729,
+        199812
+      ]
+    },
+    {
+      "action_id": "c6.a7",
+      "quote": "The claims in the Complaint as to the answering MRC Defendants are barred in whole or in part by applicable statutes of limitation.",
+      "action_type": "barred_by_statute_of_limitation",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "defending_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        199848,
+        199980
+      ],
+      "raw_span": [
+        199848,
+        199980
+      ]
+    },
+    {
+      "action_id": "c6.a8",
+      "quote": "The claims in the Complaint as to the answering MRC Defendants are barred in whole or in part by the doctrine of laches.",
+      "action_type": "barred_by_laches",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "defending_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        200016,
+        200137
+      ],
+      "raw_span": [
+        200016,
+        200137
+      ]
+    },
+    {
+      "action_id": "c6.a9",
+      "quote": "The claims in the Complaint as to the answering MRC Defendants are barred in whole or in part by the doctrine of estoppel.",
+      "action_type": "barred_by_estoppel",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "defending_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        200173,
+        200296
+      ],
+      "raw_span": [
+        200173,
+        200296
+      ]
+    },
+    {
+      "action_id": "c6.a10",
+      "quote": "The claims in the Complaint as to the answering MRC Defendants are barred in whole or in part by the doctrine of waiver.",
+      "action_type": "barred_by_waiver",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "defending_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        200331,
+        200452
+      ],
+      "raw_span": [
+        200331,
+        200452
+      ]
+    },
+    {
+      "action_id": "c6.a11",
+      "quote": "The claims in the Complaint as to the answering MRC Defendants are barred in whole or in part by the doctrine of unclean hands.",
+      "action_type": "barred_by_unclean_hands",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "defending_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        200487,
+        200615
+      ],
+      "raw_span": [
+        200487,
+        200615
+      ]
+    },
+    {
+      "action_id": "c6.a12",
+      "quote": "The claims in the Complaint as to the answering MRC Defendants are barred in whole or in part by Plaintiffs\u2019 failure to mitigate, minimize, or avoid their own damages.",
+      "action_type": "barred_by_failure_to_mitigate",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "defending_party"
+        },
+        {
+          "mention_id": "c6.m8",
+          "role": "referenced_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        200652,
+        200820
+      ],
+      "raw_span": [
+        200652,
+        200820
+      ]
+    },
+    {
+      "action_id": "c6.a13",
+      "quote": "The claims in the Complaint as to the answering MRC Defendants are barred in whole or in part because the injury and/or damages alleged to have been sustained by Plaintiffs were caused by persons other than the answering MRC Defendants.",
+      "action_type": "attribute_cause_to_other_persons",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "defending_party"
+        },
+        {
+          "mention_id": "c6.m8",
+          "role": "referenced_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        200951,
+        201189
+      ],
+      "raw_span": [
+        200951,
+        201189
+      ]
+    },
+    {
+      "action_id": "c6.a14",
+      "quote": "the answering MRC Defendants deny any fraud and did not possess the requisite scienter.",
+      "action_type": "deny_fraud",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "denying_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "denied",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        201327,
+        201415
+      ],
+      "raw_span": [
+        201327,
+        201415
+      ]
+    },
+    {
+      "action_id": "c6.a15",
+      "quote": "MRC Defendants reserve the right to assert additional defenses",
+      "action_type": "reserve_right_to_assert_defenses",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "reserving_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        201621,
+        201684
+      ],
+      "raw_span": [
+        201621,
+        201684
+      ]
+    },
+    {
+      "action_id": "c6.a16",
+      "quote": "Defendants Pierre and MRC (collectively, \u201cMRC Defendants\u201d), cross complain of",
+      "action_type": "cross_complain",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "cross_complainant"
+        },
+        {
+          "mention_id": "c6.m3",
+          "role": "member"
+        },
+        {
+          "mention_id": "c6.m2",
+          "role": "member"
+        },
+        {
+          "mention_id": "c6.m6",
+          "role": "cross_defendant_group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        201822,
+        201899
+      ],
+      "raw_span": [
+        201822,
+        201899
+      ]
+    },
+    {
+      "action_id": "c6.a17",
+      "quote": "MRC Defendants adopt by reference the allegations of the Complaint as against the PC Defendants.",
+      "action_type": "adopt_by_reference",
+      "participants": [
+        {
+          "mention_id": "c6.m1",
+          "role": "adopting_party"
+        },
+        {
+          "mention_id": "c6.m6",
+          "role": "referenced_party"
+        }
+      ],
+      "time_qualifier": "For purposes of the crossclaims only",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        202023,
+        202120
+      ],
+      "raw_span": [
+        202023,
+        202120
+      ]
+    },
+    {
+      "action_id": "c6.a18",
+      "quote": "Rutland is a professional corporation organized under the laws of the State of New York",
+      "action_type": "organized_under_laws",
+      "participants": [
+        {
+          "mention_id": "c6.m4",
+          "role": "organization"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        202157,
+        202245
+      ],
+      "raw_span": [
+        202157,
+        202245
+      ]
+    },
+    {
+      "action_id": "c6.a19",
+      "quote": "registered to practice medicine under Defendant Moy\u2019s name and medical license.",
+      "action_type": "registered_to_practice_medicine",
+      "participants": [
+        {
+          "mention_id": "c6.m4",
+          "role": "registered_entity"
+        },
+        {
+          "mention_id": "c6.m9",
+          "role": "under_name_and_license"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        202250,
+        202330
+      ],
+      "raw_span": [
+        202250,
+        202330
+      ]
+    },
+    {
+      "action_id": "c6.a20",
+      "quote": "Defendants Pierre and MRC (collectively, \u201cMRC Defendants\u201d)",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c6.m3",
+          "role": "member"
+        },
+        {
+          "mention_id": "c6.m1",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        201822,
+        201880
+      ],
+      "raw_span": [
+        201822,
+        201880
+      ]
+    },
+    {
+      "action_id": "c6.a21",
+      "quote": "MRC (collectively, \u201cMRC Defendants\u201d), cross complain of",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c6.m2",
+          "role": "member"
+        },
+        {
+          "mention_id": "c6.m1",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        201844,
+        201899
+      ],
+      "raw_span": [
+        201844,
+        201899
+      ]
+    },
+    {
+      "action_id": "c6.a22",
+      "quote": "Defendants Rutland and Nexray (collectively, the \u201cPC Defendants\u201d)",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c6.m4",
+          "role": "member"
+        },
+        {
+          "mention_id": "c6.m6",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        201901,
+        201966
+      ],
+      "raw_span": [
+        201901,
+        201966
+      ]
+    },
+    {
+      "action_id": "c6.a23",
+      "quote": "Rutland and Nexray (collectively, the \u201cPC Defendants\u201d)",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c6.m5",
+          "role": "member"
+        },
+        {
+          "mention_id": "c6.m6",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        172434,
+        202423
+      ],
+      "clean_span": [
+        201912,
+        201966
+      ],
+      "raw_span": [
+        201912,
+        201966
+      ]
+    },
+    {
+      "action_id": "c7.a1",
+      "quote": "Rutland is a professional corporation organized \nunder the laws of the State of New York",
+      "action_type": "organized_under",
+      "participants": [
+        {
+          "mention_id": "c6.m4",
+          "role": "organization"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        202157,
+        202245
+      ],
+      "raw_span": [
+        202157,
+        202245
+      ]
+    },
+    {
+      "action_id": "c7.a3",
+      "quote": "Nexray is a professional corporation organized \nunder the laws of the State of New York",
+      "action_type": "organized_under",
+      "participants": [
+        {
+          "mention_id": "c7.m3",
+          "role": "organization"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        202464,
+        202551
+      ],
+      "raw_span": [
+        202464,
+        202551
+      ]
+    },
+    {
+      "action_id": "c7.a4",
+      "quote": "registered to practice medicine under Defendant \nWeiner\u2019s name and medical license.",
+      "action_type": "registered_to_practice_medicine",
+      "participants": [
+        {
+          "mention_id": "c7.m3",
+          "role": "organization"
+        },
+        {
+          "mention_id": "c7.m4",
+          "role": "person"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        202556,
+        202639
+      ],
+      "raw_span": [
+        202556,
+        202639
+      ]
+    },
+    {
+      "action_id": "c7.a5",
+      "quote": "600. Plaintiffs have filed a complaint against MRC Defendants and PC Defendants.",
+      "action_type": "filed_complaint_against",
+      "participants": [
+        {
+          "mention_id": "c7.m5",
+          "role": "plaintiff"
+        },
+        {
+          "mention_id": "c7.m6",
+          "role": "defendant"
+        },
+        {
+          "mention_id": "c7.m7",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        202642,
+        202722
+      ],
+      "raw_span": [
+        202642,
+        202722
+      ]
+    },
+    {
+      "action_id": "c7.a6",
+      "quote": "601. Plaintiffs have alleged damages resulting from PC Defendants actions.",
+      "action_type": "alleged_damages",
+      "participants": [
+        {
+          "mention_id": "c7.m5",
+          "role": "plaintiff"
+        },
+        {
+          "mention_id": "c7.m7",
+          "role": "party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        202725,
+        202799
+      ],
+      "raw_span": [
+        202725,
+        202799
+      ]
+    },
+    {
+      "action_id": "c7.a7",
+      "quote": "PC Defendants owed statutory duties of honesty, fiduciary duties, a common law \nduty of care",
+      "action_type": "owed_duties",
+      "participants": [
+        {
+          "mention_id": "c7.m7",
+          "role": "obligor"
+        },
+        {
+          "mention_id": "c7.m5",
+          "role": "duty_beneficiary"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        202807,
+        202899
+      ],
+      "raw_span": [
+        202807,
+        202899
+      ]
+    },
+    {
+      "action_id": "c7.a8",
+      "quote": "they allegedly breached independent \nof any conduct on the part of Pierre or MRC",
+      "action_type": "breached_duties",
+      "participants": [
+        {
+          "mention_id": "c7.m7",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c7.m8",
+          "role": "other_party"
+        },
+        {
+          "mention_id": "c7.m9",
+          "role": "other_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        202948,
+        203028
+      ],
+      "raw_span": [
+        202948,
+        203028
+      ]
+    },
+    {
+      "action_id": "c7.a9",
+      "quote": "to the extent that Pierre or MRC is found liable for any of the damages or injury",
+      "action_type": "found_liable",
+      "participants": [
+        {
+          "mention_id": "c7.m8",
+          "role": "party"
+        },
+        {
+          "mention_id": "c7.m9",
+          "role": "party"
+        },
+        {
+          "mention_id": "c7.m5",
+          "role": "claimant"
+        }
+      ],
+      "time_qualifier": "to the extent",
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        203086,
+        203167
+      ],
+      "raw_span": [
+        203086,
+        203167
+      ]
+    },
+    {
+      "action_id": "c7.a10",
+      "quote": "they shall be entitled to contribution from PC Defendants.",
+      "action_type": "entitled_to_contribution",
+      "participants": [
+        {
+          "mention_id": "c7.m8",
+          "role": "party"
+        },
+        {
+          "mention_id": "c7.m9",
+          "role": "party"
+        },
+        {
+          "mention_id": "c7.m7",
+          "role": "contributor"
+        }
+      ],
+      "time_qualifier": "to the extent",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        203203,
+        203261
+      ],
+      "raw_span": [
+        203203,
+        203261
+      ]
+    },
+    {
+      "action_id": "c7.a11",
+      "quote": "MRC Defendants entered into agreements with Rutland and Nexray respectfully",
+      "action_type": "entered_into_agreements",
+      "participants": [
+        {
+          "mention_id": "c7.m6",
+          "role": "party"
+        },
+        {
+          "mention_id": "c6.m4",
+          "role": "party"
+        },
+        {
+          "mention_id": "c7.m3",
+          "role": "party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        203822,
+        203897
+      ],
+      "raw_span": [
+        203822,
+        203897
+      ]
+    },
+    {
+      "action_id": "c7.a12",
+      "quote": "607. MRC Defendants seek indemnification herein under the Agreements",
+      "action_type": "seek_indemnification",
+      "participants": [
+        {
+          "mention_id": "c7.m6",
+          "role": "claimant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        203935,
+        204003
+      ],
+      "raw_span": [
+        203935,
+        204003
+      ]
+    },
+    {
+      "action_id": "c7.a13",
+      "quote": "608. As a result of PC Defendants\u2019 actions, MRC Defendants have been exposed to liability",
+      "action_type": "exposed_to_liability",
+      "participants": [
+        {
+          "mention_id": "c7.m6",
+          "role": "affected_party"
+        },
+        {
+          "mention_id": "c7.m7",
+          "role": "alleged_cause"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        204500,
+        204590
+      ],
+      "raw_span": [
+        204500,
+        204590
+      ]
+    },
+    {
+      "action_id": "c7.a14",
+      "quote": "PC Defendants are obligated to indemnify and hold MRC Defendants harmless.",
+      "action_type": "indemnify",
+      "participants": [
+        {
+          "mention_id": "c7.m7",
+          "role": "indemnitor"
+        },
+        {
+          "mention_id": "c7.m6",
+          "role": "indemnitee"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        204788,
+        204863
+      ],
+      "raw_span": [
+        204788,
+        204863
+      ]
+    },
+    {
+      "action_id": "c7.a15",
+      "quote": "612. MRC Defendants entered into the Agreements with PC Defendants.",
+      "action_type": "entered_into_agreements",
+      "participants": [
+        {
+          "mention_id": "c7.m6",
+          "role": "party"
+        },
+        {
+          "mention_id": "c7.m7",
+          "role": "party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        205108,
+        205175
+      ],
+      "raw_span": [
+        205108,
+        205175
+      ]
+    },
+    {
+      "action_id": "c7.a16",
+      "quote": "614. As a result of PC Defendants breach of the Agreements, MRC Defendants have \nsuffered",
+      "action_type": "suffered_damages",
+      "participants": [
+        {
+          "mention_id": "c7.m6",
+          "role": "affected_party"
+        },
+        {
+          "mention_id": "c7.m7",
+          "role": "alleged_cause"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        205456,
+        205545
+      ],
+      "raw_span": [
+        205456,
+        205545
+      ]
+    },
+    {
+      "action_id": "c7.a17",
+      "quote": "MRC Defendants demand judgment as follows:",
+      "action_type": "demand_judgment",
+      "participants": [
+        {
+          "mention_id": "c7.m6",
+          "role": "claimant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        202128,
+        207359
+      ],
+      "clean_span": [
+        205651,
+        205693
+      ],
+      "raw_span": [
+        205651,
+        205693
+      ]
+    }
+  ],
+  "review_items": [
+    {
+      "flag": "multi_hit_identical",
+      "id": "c3.m2",
+      "quote": "the allegations as to the Other Defendants.",
+      "count": 22
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c4.m2",
+      "quote": "truth of the allegations as to the Other Defendants. As to the allegations against MRC Defendants",
+      "count": 46
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c6.m7",
+      "quote": "as to the Other Defendants.",
+      "count": 52
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c2.a3",
+      "quote": "MRC Defendants respectfully refer the Court to these affidavits for the effect and meaning thereof.",
+      "count": 3
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c6.a3",
+      "quote": "MRC Defendants lack the knowledge or information sufficient to form a basis as to the truth of the allegations as to the Other Defendants.",
+      "count": 46
+    }
+  ]
+}

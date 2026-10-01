@@ -1,0 +1,1493 @@
+{
+  "note_id": 710045,
+  "note_key": "note:710045",
+  "claim_id": "100001-236572-RI-01",
+  "client_id": "100001",
+  "occurrence_id": "100001-236572",
+  "coverage_code": "RI",
+  "versions": {
+    "schema": "0.1",
+    "model": "gpt-6-luna",
+    "patterns": "1.7",
+    "gliner": null,
+    "clean_policy": "none",
+    "chunk_policy": "structure-v1/30000c/2s",
+    "structured": true,
+    "offline": false
+  },
+  "extraction_error": null,
+  "entity_mentions": [
+    {
+      "mention_id": "c0.m1",
+      "quote": "AllSTATE INSURANCE COMPANY, AllSTATE",
+      "name": "AllSTATE INSURANCE COMPANY",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Allstate Insurance Company"
+      ],
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        60,
+        86
+      ],
+      "raw_span": [
+        60,
+        86
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m2",
+      "quote": "AllSTATE INDEMNITY COMPANY, AllSTATE FIRE &",
+      "name": "AllSTATE INDEMNITY COMPANY",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Allstate Indemnity Company"
+      ],
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        88,
+        115
+      ],
+      "raw_span": [
+        88,
+        115
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m3",
+      "quote": "AllSTATE PROPERTY & CASUALTY INSURANCE COMPANY,",
+      "name": "AllSTATE PROPERTY & CASUALTY INSURANCE COMPANY",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Allstate Property and Casualty Insurance Company"
+      ],
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        167,
+        214
+      ],
+      "raw_span": [
+        167,
+        214
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m4",
+      "quote": "AllSTATE FIRE & CASUALTY INSURANCE COMPANY, and",
+      "name": "AllSTATE FIRE & CASUALTY INSURANCE COMPANY",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Allstate Fire and Casualty Insurance Company"
+      ],
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        117,
+        160
+      ],
+      "raw_span": [
+        117,
+        160
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m5",
+      "quote": "\"Plaintiffs\") bring this action against Defendants",
+      "name": "Plaintiffs",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "All-\nstate"
+      ],
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        766,
+        776
+      ],
+      "raw_span": [
+        766,
+        776
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m6",
+      "quote": "BRADLEY PIERRE, MEDICAL",
+      "name": "BRADLEY PIERRE",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Bradley Pierre",
+        "Defendant Pierre",
+        "Pierre"
+      ],
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        240,
+        254
+      ],
+      "raw_span": [
+        240,
+        254
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m7",
+      "quote": "MEDICAL REIMBURSEMENT CONSULTANTS INC.,\nMARVIN",
+      "name": "MEDICAL REIMBURSEMENT CONSULTANTS INC.",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Medical Reimbursement Consultants Inc.",
+        "Medical Reimbursement Consultants, Inc.",
+        "MR1"
+      ],
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        256,
+        295
+      ],
+      "raw_span": [
+        256,
+        295
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m8",
+      "quote": "MARVIN MOY, M.D., RUTLAND",
+      "name": "MARVIN MOY, M.D.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Marvin Moy, M.D.",
+        "Defendant Moy",
+        "Moy",
+        "Dr. May"
+      ],
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        298,
+        314
+      ],
+      "raw_span": [
+        298,
+        314
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m9",
+      "quote": "RUTLAND MEDICAL P.C. d/b/a MEDICALNOW, WILLIAM",
+      "name": "RUTLAND MEDICAL P.C. d/b/a MEDICALNOW",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Rutland Medical P.C. d/b/a Medica!Now",
+        "Defendant Rutland",
+        "Rutland"
+      ],
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        316,
+        354
+      ],
+      "raw_span": [
+        316,
+        354
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m10",
+      "quote": "WILLIAM A. WEINER,\nD.O., and NEXRAY",
+      "name": "WILLIAM A. WEINER, D.O.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "William A. Weiner, D.O.",
+        "Defendant Weiner",
+        "Weiner"
+      ],
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        356,
+        380
+      ],
+      "raw_span": [
+        356,
+        380
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m11",
+      "quote": "NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING,",
+      "name": "NEXRAY MEDICAL IMAGING, P.C. d/b/a SOUL RADIOLOGY MEDICAL IMAGING",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging",
+        "Nexray",
+        "Nexray's facility"
+      ],
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        386,
+        452
+      ],
+      "raw_span": [
+        386,
+        452
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m12",
+      "quote": "( collectively, \"Defendants\") 1, alleging",
+      "name": "Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "Defendant",
+        "Defendants"
+      ],
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        1046,
+        1056
+      ],
+      "raw_span": [
+        1046,
+        1056
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m13",
+      "quote": "are hereinafter referred to as the PC Defendants.",
+      "name": "PC Defendants",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "the PC Defendants",
+        "two other PC Defendants"
+      ],
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        1534,
+        1547
+      ],
+      "raw_span": [
+        1534,
+        1547
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c0.m14",
+      "quote": "the \"Clin-\nics\"), including Nexray",
+      "name": "Clin-\nics",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "the Clinics",
+        "Clinics"
+      ],
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        10048,
+        10057
+      ],
+      "raw_span": [
+        10048,
+        10057
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m1",
+      "quote": "For the reasons this court has previously discussed, Allstate will",
+      "name": "Allstate",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Allstate's motion",
+        "Allstate also asks",
+        "Allstate need",
+        "Allstate's request",
+        "against Allstate"
+      ],
+      "_chunk": [
+        28780,
+        32127
+      ],
+      "clean_span": [
+        29567,
+        29575
+      ],
+      "raw_span": [
+        29567,
+        29575
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m2",
+      "quote": "Allstate's motion to enjoin future state court collection lawsuits by Rutland",
+      "name": "Rutland",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "by Rutland (or its agents)",
+        "Rutland is enjoined"
+      ],
+      "_chunk": [
+        28780,
+        32127
+      ],
+      "clean_span": [
+        30154,
+        30161
+      ],
+      "raw_span": [
+        30154,
+        30161
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "c1.m3",
+      "quote": "against Plaintiffs are stayed",
+      "name": "Plaintiffs",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [],
+      "_chunk": [
+        28780,
+        32127
+      ],
+      "clean_span": [
+        31649,
+        31659
+      ],
+      "raw_span": [
+        31649,
+        31659
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    }
+  ],
+  "entity_candidates": [],
+  "detail_mentions": [],
+  "action_mentions": [
+    {
+      "action_id": "c0.a1",
+      "quote": "Plaintiffs Allstate Insurance Company, Allstate Indemnity Com-\npany, Allstate Property and Casualty Insurance Company, and Allstate Fire and Casualty Insurance Company",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m1",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m5",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        565,
+        733
+      ],
+      "raw_span": [
+        565,
+        733
+      ]
+    },
+    {
+      "action_id": "c0.a2",
+      "quote": "Allstate Insurance Company, Allstate Indemnity Com-\npany, Allstate Property and Casualty Insurance Company, and\nAllstate Fire and Casualty Insurance Company (collectively, \"All-\nstate\"",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m2",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m5",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        576,
+        761
+      ],
+      "raw_span": [
+        576,
+        761
+      ]
+    },
+    {
+      "action_id": "c0.a3",
+      "quote": "Allstate Property and Casualty Insurance Company, and\nAllstate Fire and Casualty Insurance Company (collectively, \"All-\nstate\"",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m3",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m5",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        634,
+        761
+      ],
+      "raw_span": [
+        634,
+        761
+      ]
+    },
+    {
+      "action_id": "c0.a4",
+      "quote": "Allstate Fire and Casualty Insurance Company (collectively, \"All-\nstate\" or \"Plaintiffs\")",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m4",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m5",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        689,
+        778
+      ],
+      "raw_span": [
+        689,
+        778
+      ]
+    },
+    {
+      "action_id": "c0.a5",
+      "quote": "Plaintiffs Allstate Insurance Company, Allstate Indemnity Com-\npany, Allstate Property and Casualty Insurance Company, and Allstate Fire and Casualty Insurance Company (collectively, \"All-\nstate\" or \"Plaintiffs\") bring this action",
+      "action_type": "bring_action",
+      "participants": [
+        {
+          "mention_id": "c0.m5",
+          "role": "plaintiff"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        565,
+        796
+      ],
+      "raw_span": [
+        565,
+        796
+      ]
+    },
+    {
+      "action_id": "c0.a6",
+      "quote": "Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\ndiology Medical Imaging ( collectively, \"Defendants\")",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m6",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m12",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        805,
+        1058
+      ],
+      "raw_span": [
+        805,
+        1058
+      ]
+    },
+    {
+      "action_id": "c0.a7",
+      "quote": "Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\ndiology Medical Imaging ( collectively, \"Defendants\")",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m7",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m12",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        805,
+        1058
+      ],
+      "raw_span": [
+        805,
+        1058
+      ]
+    },
+    {
+      "action_id": "c0.a8",
+      "quote": "Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\ndiology Medical Imaging ( collectively, \"Defendants\")",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m8",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m12",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        805,
+        1058
+      ],
+      "raw_span": [
+        805,
+        1058
+      ]
+    },
+    {
+      "action_id": "c0.a9",
+      "quote": "Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\ndiology Medical Imaging ( collectively, \"Defendants\")",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m9",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m12",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        805,
+        1058
+      ],
+      "raw_span": [
+        805,
+        1058
+      ]
+    },
+    {
+      "action_id": "c0.a10",
+      "quote": "Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\ndiology Medical Imaging ( collectively, \"Defendants\")",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m10",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m12",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        805,
+        1058
+      ],
+      "raw_span": [
+        805,
+        1058
+      ]
+    },
+    {
+      "action_id": "c0.a11",
+      "quote": "Defendants Bradley Pierre, Medical Reimbursement Consultants Inc., Marvin Moy,\nM.D., Rutland Medical P.C. d/b/a MedicalNow, William A.\nWeiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\ndiology Medical Imaging ( collectively, \"Defendants\")",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m11",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m12",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        805,
+        1058
+      ],
+      "raw_span": [
+        805,
+        1058
+      ]
+    },
+    {
+      "action_id": "c0.a12",
+      "quote": "alleging\nthat Defendants defrauded Allstate",
+      "action_type": "defrauded",
+      "participants": [
+        {
+          "mention_id": "c0.m12",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c0.m5",
+          "role": "target"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        1062,
+        1106
+      ],
+      "raw_span": [
+        1062,
+        1106
+      ]
+    },
+    {
+      "action_id": "c0.a13",
+      "quote": "Defendants Medical Reimbursement Consultants Inc., Rutland Medical\nP.C. d/b/a MedicalNow, and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\ndiology Medical Imaging are hereinafter referred to as the PC Defendants.",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m7",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m13",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        1336,
+        1548
+      ],
+      "raw_span": [
+        1336,
+        1548
+      ]
+    },
+    {
+      "action_id": "c0.a14",
+      "quote": "Rutland Medical\nP.C. d/b/a MedicalNow, and Nexray Medical Imaging, P.C. d/b/a Soul Ra-\ndiology Medical Imaging are hereinafter referred to as the PC Defendants.",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m9",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m13",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        1387,
+        1548
+      ],
+      "raw_span": [
+        1387,
+        1548
+      ]
+    },
+    {
+      "action_id": "c0.a15",
+      "quote": "Nexray Medical Imaging, P.C. d/b/a Soul Ra-\ndiology Medical Imaging are hereinafter referred to as the PC Defendants.",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m11",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m13",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        1431,
+        1548
+      ],
+      "raw_span": [
+        1431,
+        1548
+      ]
+    },
+    {
+      "action_id": "c0.a16",
+      "quote": "Nexray and Medical Reimbursement Consultants, Inc.",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m11",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m14",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        10071,
+        10121
+      ],
+      "raw_span": [
+        10071,
+        10121
+      ]
+    },
+    {
+      "action_id": "c0.a17",
+      "quote": "Medical Reimbursement Consultants, Inc. (\"MR1\"), the two other PC Defendants in this action.",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "c0.m7",
+          "role": "member"
+        },
+        {
+          "mention_id": "c0.m14",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        10082,
+        10175
+      ],
+      "raw_span": [
+        10082,
+        10175
+      ]
+    },
+    {
+      "action_id": "c0.a18",
+      "quote": "Plaintiffs Allstate Insurance Company, Allstate Indemnity Com-\npany, Allstate Property and Casualty Insurance Company, and Allstate Fire and Casualty Insurance Company (collectively, \"All-\nstate\" or \"Plaintiffs\") bring this action against Defendants Bradley",
+      "action_type": "bring_action_against",
+      "participants": [
+        {
+          "mention_id": "c0.m5",
+          "role": "plaintiff"
+        },
+        {
+          "mention_id": "c0.m12",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        565,
+        823
+      ],
+      "raw_span": [
+        565,
+        823
+      ]
+    },
+    {
+      "action_id": "c0.a19",
+      "quote": "alleging\nthat Defendants defrauded Allstate in violation of the Racketeer-",
+      "action_type": "defrauded",
+      "participants": [
+        {
+          "mention_id": "c0.m12",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c0.m5",
+          "role": "target"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        1062,
+        1136
+      ],
+      "raw_span": [
+        1062,
+        1136
+      ]
+    },
+    {
+      "action_id": "c0.a20",
+      "quote": "Allstate's motion for a preliminary\ninjunction to stay all 40 pending no-fault insurance collection ar-\nbitrations commenced against Allstate by Defendant Rutland",
+      "action_type": "commenced_arbitrations_against",
+      "participants": [
+        {
+          "mention_id": "c0.m9",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c0.m5",
+          "role": "target"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        1828,
+        1991
+      ],
+      "raw_span": [
+        1828,
+        1991
+      ]
+    },
+    {
+      "action_id": "c0.a21",
+      "quote": "Moy ceded actual control over Rutland to Defendant Bradley\nPierre",
+      "action_type": "ceded_control_to",
+      "participants": [
+        {
+          "mention_id": "c0.m8",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c0.m9",
+          "role": "target"
+        },
+        {
+          "mention_id": "c0.m6",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        9260,
+        9326
+      ],
+      "raw_span": [
+        9260,
+        9326
+      ]
+    },
+    {
+      "action_id": "c0.a22",
+      "quote": "Pierre received the majority of the proceeds from various Clin-\nics, including Rutland",
+      "action_type": "received_proceeds_from",
+      "participants": [
+        {
+          "mention_id": "c0.m6",
+          "role": "recipient"
+        },
+        {
+          "mention_id": "c0.m9",
+          "role": "source"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        9520,
+        9606
+      ],
+      "raw_span": [
+        9520,
+        9606
+      ]
+    },
+    {
+      "action_id": "c0.a23",
+      "quote": "Pierre utilized \"phony lending agreements, check-cashing enti-\nties, and shell companies\" to conceal the scheme",
+      "action_type": "concealed",
+      "participants": [
+        {
+          "mention_id": "c0.m6",
+          "role": "actor"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        10452,
+        10563
+      ],
+      "raw_span": [
+        10452,
+        10563
+      ]
+    },
+    {
+      "action_id": "c0.a24",
+      "quote": "Defendant Moy participated in this scheme by ensur-\ning that Rutland \"continued to submit bills to Allstate",
+      "action_type": "submitted_bills_to",
+      "participants": [
+        {
+          "mention_id": "c0.m9",
+          "role": "actor"
+        },
+        {
+          "mention_id": "c0.m5",
+          "role": "recipient"
+        },
+        {
+          "mention_id": "c0.m8",
+          "role": "facilitator"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        11097,
+        11204
+      ],
+      "raw_span": [
+        11097,
+        11204
+      ]
+    },
+    {
+      "action_id": "c0.a25",
+      "quote": "Rutland patients were also referred to Nexray for\nMRis, seemingly as a matter of course.",
+      "action_type": "referred_to",
+      "participants": [
+        {
+          "mention_id": "c0.m9",
+          "role": "referrer"
+        },
+        {
+          "mention_id": "c0.m11",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "alleged",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": null,
+      "raw_span": null
+    },
+    {
+      "action_id": "c0.a26",
+      "quote": "Allstate has paid in excess of\n$2,749,000.00 for no-fault claims submitted by the PC Defend-\nants.",
+      "action_type": "paid_claims_submitted_by",
+      "participants": [
+        {
+          "mention_id": "c0.m5",
+          "role": "payer"
+        },
+        {
+          "mention_id": "c0.m13",
+          "role": "submitter"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        12961,
+        13060
+      ],
+      "raw_span": [
+        12961,
+        13060
+      ]
+    },
+    {
+      "action_id": "c0.a27",
+      "quote": "Allstate asserts that as a result of these fraudulent\nclaims, it has paid at least $1,309,811.48 to Rutland alone.",
+      "action_type": "paid",
+      "participants": [
+        {
+          "mention_id": "c0.m5",
+          "role": "payer"
+        },
+        {
+          "mention_id": "c0.m9",
+          "role": "recipient"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        14435,
+        14550
+      ],
+      "raw_span": [
+        14435,
+        14550
+      ]
+    },
+    {
+      "action_id": "c0.a28",
+      "quote": "Defendant Rutland has failed to appear in this action",
+      "action_type": "failed_to_appear",
+      "participants": [
+        {
+          "mention_id": "c0.m9",
+          "role": "party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        29260
+      ],
+      "clean_span": [
+        16333,
+        16386
+      ],
+      "raw_span": [
+        16333,
+        16386
+      ]
+    },
+    {
+      "action_id": "c1.a1",
+      "quote": "Allstate will be irreparably harmed if it is subject to numerous state court proceedings",
+      "action_type": "be_irreparably_harmed",
+      "participants": [
+        {
+          "mention_id": "c1.m1",
+          "role": "harmed_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        28780,
+        32127
+      ],
+      "clean_span": [
+        29567,
+        29658
+      ],
+      "raw_span": [
+        29567,
+        29658
+      ]
+    },
+    {
+      "action_id": "c1.a2",
+      "quote": "Allstate's motion to enjoin future state court collection lawsuits by Rutland pending disposition of the declaratory judgment action is therefore GRANTED.",
+      "action_type": "motion_granted",
+      "participants": [
+        {
+          "mention_id": "c1.m1",
+          "role": "movant"
+        },
+        {
+          "mention_id": "c1.m2",
+          "role": "opposing_party"
+        }
+      ],
+      "time_qualifier": "pending disposition of the declaratory judgment action",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        28780,
+        32127
+      ],
+      "clean_span": [
+        30083,
+        30239
+      ],
+      "raw_span": [
+        30083,
+        30239
+      ]
+    },
+    {
+      "action_id": "c1.a3",
+      "quote": "Allstate also asks the court to use its discretion to waive the security requirement",
+      "action_type": "asks_to_waive",
+      "participants": [
+        {
+          "mention_id": "c1.m1",
+          "role": "requesting_party"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        28780,
+        32127
+      ],
+      "clean_span": [
+        30273,
+        30359
+      ],
+      "raw_span": [
+        30273,
+        30359
+      ]
+    },
+    {
+      "action_id": "c1.a4",
+      "quote": "Allstate need not post bond in this case",
+      "action_type": "need_not_post_bond",
+      "participants": [
+        {
+          "mention_id": "c1.m1",
+          "role": "party"
+        }
+      ],
+      "time_qualifier": "in this case",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        28780,
+        32127
+      ],
+      "clean_span": [
+        31213,
+        31254
+      ],
+      "raw_span": [
+        31213,
+        31254
+      ]
+    },
+    {
+      "action_id": "c1.a5",
+      "quote": "all pending no-fault collection arbitrations by Rutland (or its agents) against Plaintiffs are stayed",
+      "action_type": "stayed",
+      "participants": [
+        {
+          "mention_id": "c1.m2",
+          "role": "party"
+        },
+        {
+          "mention_id": "c1.m3",
+          "role": "opposing_party"
+        }
+      ],
+      "time_qualifier": "pending",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        28780,
+        32127
+      ],
+      "clean_span": [
+        31567,
+        31670
+      ],
+      "raw_span": [
+        31567,
+        31670
+      ]
+    },
+    {
+      "action_id": "c1.a6",
+      "quote": "Rutland is enjoined from filing any further no-fault collection arbitrations or lawsuits against Allstate",
+      "action_type": "enjoined_from_filing",
+      "participants": [
+        {
+          "mention_id": "c1.m2",
+          "role": "restrained_party"
+        },
+        {
+          "mention_id": "c1.m1",
+          "role": "opposing_party"
+        }
+      ],
+      "time_qualifier": "pending resolution of the instant federal action",
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        28780,
+        32127
+      ],
+      "clean_span": [
+        31679,
+        31785
+      ],
+      "raw_span": [
+        31679,
+        31785
+      ]
+    }
+  ],
+  "review_items": [
+    {
+      "flag": "unverifiable_quote",
+      "id": "c0.a25",
+      "quote": "Rutland patients were also referred to Nexray for\nMRis, seemingly as a matter of course.",
+      "reason": "unverifiable_quote:0.87"
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c0.m7",
+      "quote": "MEDICAL REIMBURSEMENT CONSULTANTS INC.,\nMARVIN",
+      "count": 2
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c0.m9",
+      "quote": "RUTLAND MEDICAL P.C. d/b/a MEDICALNOW, WILLIAM",
+      "count": 2
+    },
+    {
+      "flag": "multi_hit_identical",
+      "id": "c0.m10",
+      "quote": "WILLIAM A. WEINER,\nD.O., and NEXRAY",
+      "count": 2
+    }
+  ]
+}

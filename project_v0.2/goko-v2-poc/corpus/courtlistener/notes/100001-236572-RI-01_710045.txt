@@ -1,0 +1,522 @@
+UNITED STATES DISTRICT COURT 
+EASTERN DISTRICT OF NEW YORK 
+AllSTATE INSURANCE COMPANY, AllSTATE 
+INDEMNITY COMPANY, AllSTATE FIRE & 
+CASUALTY INSURANCE COMPANY, and 
+AllSTATE PROPERTY & CASUALTY 
+INSURANCE COMPANY, 
+Plaintiffs, 
+-against-
+BRADLEY PIERRE, MEDICAL 
+REIMBURSEMENT CONSULTANTS INC., 
+MARVIN MOY, M.D., RUTLAND MEDICAL P.C. 
+d/b/a MEDICALNOW, WILLIAM A. WEINER, 
+D.O., and NEXRAY MEDICAL IMAGING, P.C. 
+d/b/a SOUL RADIOLOGY MEDICAL IMAGING, 
+Defendants. 
+MEMORANDUM & ORDER 
+23-CV-06572 (NGG) (LB) 
+NICHOLAS G. GARAUFIS, United States District Judge. 
+Plaintiffs Allstate Insurance Company, Allstate Indemnity Com­
+pany, Allstate Property and Casualty Insurance Company, and 
+Allstate Fire and Casualty Insurance Company (collectively, "All­
+state" or "Plaintiffs") bring this action against Defendants Bradley 
+Pierre, Medical Reimbursement Consultants Inc., Marvin Moy, 
+M.D., Rutland Medical P.C. d/b/a MedicalNow, William A. 
+Weiner, D.O., and Nexray Medical Imaging, P.C. d/b/a Soul Ra­
+diology Medical Imaging ( collectively, "Defendants") 1, alleging 
+that Defendants defrauded Allstate in violation of the Racketeer­
+ing Influenced and Corrupt Organizations Act ("RICO," 18 U.S.C. 
+§ 1962(c), (d)), by submitting hundreds of fraudulent bills for 
+no-fault insurance payments. (See Comp!. (Dkt. 1) '!'I 459-542.) 
+1 Defendants Medical Reimbursement Consultants Inc., Rutland Medical 
+P.C. d/b/a MedicalNow, and Nexray Medical Imaging, P.C. d/b/a Soul Ra­
+diology Medical Imaging are hereinafter referred to as the PC Defendants. 
+1 
+Case 1:23-cv-06572-NGG-LB   Document 45   Filed 01/08/24   Page 1 of 16 PageID #: 2031Plaintiffs also allege common law fraud and unjust enrichment 
+and seek a declaratory judgment as to all past, present, or future 
+bills. (Id. '!'I 543-86.) 
+Currently before the court is Allstate's motion for a preliminary 
+injunction to stay all 40 pending no-fault insurance collection ar­
+bitrations commenced against Allstate by Defendant Rutland 
+Medical P.C. d/b/a Medica!Now ("Rutland").2 (See Not. of Mot. 
+(Dkt. 37); Mot. to Stay (Dkt. 37-1) at 1, 14.) Additionally, Plain­
+tiffs request that this court waive their obligation to post security 
+for the injunction. (See id. at 24-25.) For the reasons set forth 
+below, Plaintiffs' motion for injunctive relief is GRANTED and 
+their request for oral argument is DENIED as moot. Allstate's re­
+quest that the court waive their obligation to post security is also 
+GRANTED. 
+I. BACKGROUND3 
+A. New York's No-Fault Insurance Scheme 
+Under New York's Comprehensive Motor Vehicle Insurance Rep­
+arations Act (N.Y. Ins. Law§ 5101, et seq.), and the regulations 
+2 Following the service of Allstate's opening motion, Defendant Nexray 
+Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging ("Nexray") 
+entered into a joint stipulation with Allstate agreeing to stay and enjoin its 
+no-fault collection actions until the disposition of Allstate's declaratory 
+judgment claim against Nexray in this action. Judge Nina R. Morrison so­
+ordered the stipulation on November 13, 2023. (See Min. Entry dated 
+11/13/2023; see also Consent Motion to Stay and Enjoin Nexray's Collec­
+tion Actions (Dkt. 34) .) Accordingly, this court need not address the claims 
+against Nexray pursuant to the So-Ordered Stipulation. 
+3 The following background is taken from the allegations of the Complaint 
+and declarations submitted by Allstate in connection with this motion. The 
+court also takes judicial notice of certain facts pertaining to Defendants 
+Pierre, Moy, and Weiner because they are drawn from reasonable accurate 
+sources, including public and published dockets. See 725 Eatery Corp. v. 
+CityofN.Y., 408 F. Supp. 3d 424,456 (S.D.N.Y. 2019) (citing Fed. R. Evid. 
+2 
+Case 1:23-cv-06572-NGG-LB   Document 45   Filed 01/08/24   Page 2 of 16 PageID #: 2032promulgated pursuant thereto (11 N.Y.C.R.R. § 65, et seq.) (col­
+lectively, "the No-Fault Laws"), an automobile insurer is required 
+provide certain no-fault insurance benefits ("Personal Injury Pro­
+tection" or "No-Fault Benefits") to the individuals that they insure 
+("Insureds"). No-Fault Benefits cover up to $50,000 for reasona­
+ble expenses incurred for necessary healthcare goods and 
+services resulting from automobile accidents. See N.Y. Ins. Law 
+§§ 5102(a)(l), 5102(b), 5103; N.Y. Comp. Codes R. & Regs. 
+("NYCRR") tit. 11 § 65-1.1. These benefits are provided "to en­
+sure that injured victims of motor vehicle accidents have an 
+efficient mechanism to pay reasonable frees for necessary 
+healthcare services." (Compl. 'f 72.) Consequently, this legislative 
+scheme is designed to "ensure prompt compensation for losses 
+incurred by accident victims without regard to fault or negli­
+gence, to reduce the burden on the courts and to provide 
+substantial premium savings to New York motorists." State Farm 
+Mut. Auto. Ins. Co. v. Herschel Kotkes, M.D., P.C., No. 22-CV-
+03611 (NRM) (RER), 2023 WL 4532460, at *1 (E.D.N.Y. July 
+13, 2023)). 4 
+Insureds may assign their No-Fault Benefits to healthcare provid­
+ers in exchange for services, and in tum, the provider, rather than 
+the Insured, files no-fault claims with the insurance company di­
+rectly. See 11 N.Y.C.R.R. § 65-3.11 (a) (providing that the benefits 
+may be paid only "directly to the applicant" or "upon assignment 
+by the applicant ... directly to providers of health care services"). 
+Providers are prohibited from receiving No-Fault Benefits, how­
+ever, if they "fail[] to meet any applicable New York State or local 
+201 (b)-(d)). The court need not take judicial notice of the exhibits cited by 
+Allstate, however, as the court considers those documents as part of the 
+record on this motion. Id. 
+4 When quoting cases, and unless otherwise noted, all citations and 
+quotation marks are omitted, and all alterations are adopted. 
+3 
+Case 1:23-cv-06572-NGG-LB   Document 45   Filed 01/08/24   Page 3 of 16 PageID #: 2033licensing requirement necessary to perform such healthcare ser­
+vices." Id.§ 65-3.16(a)(12); see also State Fann Mut. Ins. Co. v. 
+Malle/a, 4 N.Y.3d 313, 321 (2005). This includes, inter alia, that 
+unlicensed professionals, i.e., non-physicians, may not own or 
+control a medical professional corporation; serve as a director or 
+officer of said corporation; enter into any agreements with the 
+corporation's shareholders; and receive shares or otherwise de­
+rive economic benefit from the corporation's professional 
+services. (Comp!. 'f'f 81-86); see N.Y. Bus. Corp. Law§§ 1507-08; 
+New York Education Law§ 6530(19); see also Allstate Ins. Co. v. 
+Lyons, 843 F. Supp. 2d 358, 371 (E.D.N.Y. 2012). Licensed 
+healthcare services providers, including physicians, are also pro­
+hibited from engaging in fraudulent activity, including ordering 
+excessive tests or treatment not warranted by the condition of 
+the patient, failing to maintain accurate records for patients, 
+maldng material misrepresentations regarding a provider's eligi­
+bility to seek or collect payment under New York's No-Fault laws, 
+and/ or accepting kickbacks in exchange for patient referrals. 
+(Comp!. 'f'f 8, 87, 95-102); see, e.g., N.Y. Bus. Corp. Law§§ 1503, 
+1507; New York Education Law§ 6530; N.Y. Ins. Law§ 5102(a). 
+Moreover, insurers are only given 30 days to review and investi­
+gate claims before paying those claims to avoid risk of penalty for 
+denying or delaying a claim. See 11 N.Y.C.R.R. § 65-3.8(a); see 
+also Med. Soc'y of State of N.Y., 100 N.Y.2d at 861. After 30 days, 
+interest begins to accrue at a rate of two percent per month. See 
+N.Y. Ins. Law§ 5106(a). Claimants may dispute unpaid no-fault 
+claims either in a state civil action or in an arbitration proceeding. 
+See 11 N.Y.C.R.R. § 65-4.1, et seq.; N.Y. Ins. Law§ 5106(a). In 
+no-fault collection actions, including arbitrations before the 
+American Arbitration Association ("AM"), the proceedings are 
+conducted through "an expedited, simplified affair meant to 
+work as quickly and efficiently as possible." Allstate Ins. Co. v. 
+Mun, 751 F.3d 94, 99 (2d Cir. 2014). And these proceedings typ­
+ically have "limited opportunities for pre-hearing discovery or 
+4 
+Case 1:23-cv-06572-NGG-LB   Document 45   Filed 01/08/24   Page 4 of 16 PageID #: 2034examinations of witnesses during the hearing," which "can pro­
+duce differing-and often inconsistent-results." (Michael 
+Flaherty Declaration ("Flaherty Deel.") (Dkt. 37-2) 'l'l 8-9.) More­
+over, New York's No-Fault laws impose mandatory, non­
+refundable fees upon insurers to help fund the costs of the no­
+fault arbitration system. (Id. 'l 19); see 11 N.Y.C.R.R. § 65-
+4.2(c)(l). These fees are apportioned to insurers based on the 
+number of collection arbitrations filed against them, meaning 
+that costs to the insurers increase with each new arbitration filed 
+regardless of whether the insurer prevails in the action. (Flaherty 
+Deel. 'l 19); see 11 N.Y.C.R.R. § 65-4.2(c)(l). 
+B. Operation of the Alleged Scheme 
+The allegations reviewing the fraudulent scheme in Allstate's 
+Complaint are overwhelming. 
+Defendant Marvin Moy, M.D., a licensed physician, purported to 
+be the sole officer, director, and shareholder of Rutland but was 
+merely a nominal owner. (Comp!. 'l'l 3, 11, 34-35.) In reality, 
+Moy ceded actual control over Rutland to Defendant Bradley 
+Pierre5, a layperson who does not hold a medical license and 
+therefore is not authorized to own, control, or manage a medical 
+professional corporation ("PC"). (Id. 'l'l 3, 11, 29, 32) In doing 
+so, Pierre received the majority of the proceeds from various Clin­
+ics, including Rutland, and determined payment for nominal 
+owners; possessed and pre-signed checks from the Clinics' bank 
+accounts; controlled debit and credit cards for the Clinics; con­
+trolled the hiring and firing of employees; invested the initial 
+funds to establish the Clinics; identified the locations for the Clin­
+ics; negotiated rent for the Clinics; and chose the attorneys to 
+5 Defendant Pierre purported to control several no-fault clinics (the "Clin­
+ics"), including Nexray and Medical Reimbursement Consultants, Inc. 
+("MR1"), the two other PC Defendants in this action. (Id. '! 113 (citing Ex. 
+2 to Comp!. (Dkt. 1-4) ("Superseding Indictment filed in Criminal Action") 
+'I'! 14, 19).) 
+5 
+Case 1:23-cv-06572-NGG-LB   Document 45   Filed 01/08/24   Page 5 of 16 PageID #: 2035represent the Clinics in no-fault collection actions. (Id. If 114.) 
+Pierre utilized "phony lending agreements, check-cashing enti­
+ties, and shell companies" to conceal the scheme and as a result, 
+"profited every step of the way'' from his control of Rutland and 
+other Clinics, generating millions of dollars in kickback payments 
+to Pierre. (Id. lflf 119-24.) 
+According to Allstate, "[t]he success of the Defendants' scheme 
+relied on a steady stream of patients with available No-Fault ben­
+efits." (Id. If 142.) As part of this complex scheme, several players 
+were involved as well as the use of bribery, runners, and kick­
+backs to generate patient referrals. (Id. lflf 143-157.) As relevant 
+to Rutland, Defendant Moy participated in this scheme by ensur­
+ing that Rutland "continued to submit bills to Allstate for as many 
+services as possible-regardless of medical necessity-to gener­
+ate money for the benefit of Pierre." (Id. If 158.) 
+Rutland patients were examined soon after their motor vehicular 
+accidents and ordered to undergo unnecessary and excessive ser­
+vices, including "(a) diagnostic imaging studies, (b) 
+computerized range of motion and manual muscle testing, (c) 
+physical performance testing, ( d) chiropractic, acupuncture, and 
+physical therapy, and (e) electrodiagnostic testing." (Id. lflf 159-
+61.) For example, patients were ordered to undergo MRls with­
+out any indication for such eatly imaging studies; without 
+evidence of injury; and before any meaningful opportunity to un­
+dergo a course of conservative treatment. (Id. lflf 162-67.) 6 
+Rutland patients were also ordered to undergo several other un­
+necessary and excessive services, such as physical therapy 
+treatment, (id. lflf 183-88), bogus computerized range of motion 
+6 Rutland patients, as alleged by Allstate, were also referred to Nexray for 
+MRis, seemingly as a matter of course. (Mot. to Stay at 9). Notably, 
+Nexray's facility was located next door to Rutland and Nexray billed for 
+the MRis without determining whether they were necessary. (Comp!. 'l'l 
+169, 177-82.) 
+6 
+Case 1:23-cv-06572-NGG-LB   Document 45   Filed 01/08/24   Page 6 of 16 PageID #: 2036and manual muscle testing, (id. '1'1189-97), fraudulent physical 
+performance testing, (id. 'l'l 198-203), medically unnecessary 
+outcome assessment testing, (id. 'l'l 204-11), and medically un­
+necessary electrodiagnostic ("EDX") testing, (id. 'l'l 212-30). 
+Allstate alleges many of these services were duplicative, unnec­
+essary, and costly. (Mot. to Stay at 9.) 
+AI; a result of this extensive scheme, Allstate has paid in excess of 
+$2,749,000.00 for no-fault claims submitted by the PC Defend­
+ants. (Comp!. 'l 458.) 
+Moreover, Defendants Pierre, Moy, and Weiner are currently fac­
+ing criminal charges related to the scheme and the very 
+allegations at issue in this case. See United States v. Pierre, No. 
+1:22-CR-00019 (PGG) (S.D.N.Y.) (hereinafter, the "Criminal Ac­
+tion"). 
+C. Evidence of the Alleged Scheme 
+In support of its fraud claims, Allstate has submitted an abun­
+dance of evidence, including several tables listing charges for 
+various services and testing at the Clinics. One table, totaling 518 
+pages, shows claims submitted by Rutland for physical therapy. 
+(See Ex. 4 to Comp!. ("Rutland PT Claims") (Dkt. 1-6) .) Many of 
+these claims include several of the same services listed for one 
+claimant and others do not specify the service provided, noting 
+them only as an "Unlisted therapeutic procedure." (Id.) Another 
+chart, totaling 142 pages, shows claims submitted by Rutland for 
+chiropractic services. (See Ex. 5 to Comp!. (Dkt. 1-7).) One chart 
+lists Rutland's physical performance testing claims running be­
+tween $166 and $250 per claim. (See Ex. 7 to Comp!. (Dkt. 1-
+9).). Allstate provides other charts for Rutland's services, includ­
+ing for muscle testing and range of motion testing, (Ex. 6 to 
+Comp!. (Dkt. 1-8)), outcome assessment testing, (Ex. 8 to Comp!. 
+(Dkt. 1-10)), and electrodiagnostic studies, (Ex. 9 to Comp!. 
+(Dkt. 1-11)). Allstate asserts that as a result of these fraudulent 
+claims, it has paid at least $1,309,811.48 to Rutland alone. 
+7 
+Case 1:23-cv-06572-NGG-LB   Document 45   Filed 01/08/24   Page 7 of 16 PageID #: 2037(Compl. 'l 458; see also Ex. 13 to Comp!. (Dkt. 1-15).) Accord­
+ingly, Allstate seeks reimbursement of the more than 
+$2,749,000.00 it has paid Defendants, (Compl. 'l 458), in addi­
+tion to a declaration that it is under no obligation to pay any 
+pending or future no-fault insurance claims. (Id. 'l'l 567-86.) 
+D. Procedural History 
+Allstate commenced this action on September 1, 2023 by filing 
+its Complaint alleging 12 counts, including violations of the 
+Racketeering Influenced Corrupt Organizations Act, 18 U.S.C. § 
+1962(c), (d); common law fraud; and unjust emichment. 
+(Compl. 'l'l 459-556.) It also seeks a declaration that Defendants' 
+"activities are unlawful, and that Allstate has no obligation to pay 
+the pending, previously denied, and/or any future No-Fault 
+claims[.]" (Comp!. 'l'l 567-86.) On October 26, 2023, Allstate 
+served their motion for injunctive relief on Defendants Rutland 
+and Nexray. (See Letter to Defendants (Dkt. 27).) On November 
+3, 2023, the court entered a briefing schedule related to the mo­
+tion. (See Min. Entry dated 11/3/2023.) On November 9, 2023, 
+Allstate notified the court that Allstate and Nexray entered into a 
+joint stipulation consenting to the stay, and the court subse­
+quently endorsed the stipulation. (See Min. Entry dated 
+11/13/2023; see also Consent Motion to Stay and Enjoin 
+Nexray's Collection Actions (0kt. 34).) Allstate's stipulation with 
+Nexray did not change their request for relief nor the briefing 
+schedule as to Rutland and as a result, Allstate filed their fully 
+briefed motion for injunctive relief on November 14, 2023. (See 
+Not. of Mot.; Mot. to Stay; see also Letter to Court re Mot. (Dkt. 
+38) at 1.) 
+Defendant Rutland has failed to appear in this action and there­
+fore has not opposed the instant motion. (See Certificate of 
+Default as to Rutland (0kt. 33).) Its time to do so has now 
+passed. 
+The court now turns to the motion. 
+8 
+Case 1:23-cv-06572-NGG-LB   Document 45   Filed 01/08/24   Page 8 of 16 PageID #: 2038II. LEGAL STANDARD 
+A party seeking a preliminary injunction must "demonstrate (1) 
+irreparable harm absent injunctive relief; and (2) either a likeli­
+hood of success on the merits, or a serious question going to the 
+merits to make them a fair ground for trial, with a balance of 
+hardships tipping decidedly in the plaintiffs favor." See Allstate 
+Ins. Co. v. Elzanaty, 929 F. Supp. 2d 199,217 (E.D.N.Y. 2013). 7 
+Plaintiffs must establish these elements by a preponderance of 
+the evidence. SeeAFA Dispensing Grp. B. V. v. Anheuser-Busch, Inc., 
+740 F. Supp. 2d 465, 471 (S.D.N.Y. 2010). 
+Numerous courts in this Circuit-including this court-have 
+granted injunctive relief for similar no-fault insurance fraud 
+schem.es. See, e.g., See Allstate Ins. Co. v. Sky Radiology P.C., No. 
+23-CV-01832 (ENV) (CLP) (Dkt. 37), at 10 (E.D.N.Y. July 28, 
+2023); Kot/ces, 2023 WL 4532460, at *13; Gov't Emps. Ins. Co. v. 
+Binns, No. 22-CV-1553 (NGG) (PK), 2022 WL 4539361, at *10 
+(E.D.N.Y. Sept. 28, 2022); Gov'tEmps. Ins. Co. v. Landow, No. 21-
+CV-1440 (NGG) (RER), 2022 WL 939717, at ''14 (E.D.N.Y. Mar. 
+29, 2022);Allstateins. Co. v. Metro Pain Specialists Pro. Corp., No. 
+21-CV-5586 (DG) (RER), 2022 WL 2467571, at *7 (E.D.N.Y. 
+June 2, 2022); Gov't Emps. Ins. Co. v. Relief Med., P.C., 554 F. 
+Supp. 3d 482, 506 (E.D.N.Y. 2021); Gov't Emps. Ins. Co. v. 
+Wallegood, Inc., No. 21-CV-1986 (PKC) (RLM) (Dkt. 36), at 21 
+(E.D.N.Y. July 16, 2021); Gov't Emps. Ins. Co. v. Beynin, No. 19-
+CV-06118 (DG) (PK), 2021 WL 1146051, at *10 (E.D.N.Y. Mar. 
+25, 2021); Gov't Emps. Ins. Co. v. Big Apple Med. Equip., Inc., No. 
+20-CV-5786 (PKC) (JRC) (Dkt. 52), at 22 (E.D.N.Y. Mar. 25, 
+2021); Gov't Emps. Ins. Co. v. Wellmart RX, Inc., 435 F. Supp. 3d 
+7 "Likelihood of success is not the focus at the early stages of a case such 
+as this, because any likelihood of success inquiry would be premature. In­
+stead, the Court looks to whether there is a serious question going to the 
+merits to make them a fair ground for trial." Id. 
+9 
+Case 1:23-cv-06572-NGG-LB   Document 45   Filed 01/08/24   Page 9 of 16 PageID #: 2039443, 456 (E.D.N.Y. 2020); State Fann Mut. Auto. Ins. Co. v. Pa­
+risien, 352 F. Supp. 3d 215, 235 (E.D.N.Y. 2018). 
+III. DISCUSSION 
+A. Stay of All Pending and Future No-Fault Collection 
+Arbitrations 
+Plaintiffs ask this court to stay all pending no-fault collections ac­
+tions before the AM and enjoin Rutland from filing any further 
+no-fault collection arbitrations until this action is resolved. (Mot. 
+to Stay at 13.) 
+1. Irreparable Harm 
+To establish irreparable harm, a party seeking preliminary in­
+junctive relief must show that "there is a continuing harm which 
+cannot be adequately redressed by final relief on the merits and 
+for which money damages cannot provide adequate compensa­
+tion." Kamerlingv. Massanari, 295 F.3d 206,214 (2d Cir. 2002). 
+The harm "must be shown to be actual and imminent, not remote 
+or speculative." Id. 
+Allstate argues that it will suffer irreparable harm because (1) 
+there is significant risk of inconsistent results in the arbitration 
+proceedings, (2) the time, effort, and money spent litigating 
+these proceedings cannot be cured by money damages, and (3) 
+arbitrations continue to be filed and adjudicated despite Defend­
+ant Moy, the sole official shareholder of Rutland, disappearing in 
+October 2022.8 (Mot. to Stay at 13-20.) 
+8 It appears Defendant Moy may have died as a result of a boating accident 
+and this court judicially notices the facts surrounding his disappearance. 
+See Glob. Network Commc'ns, Inc. v. City of New York, 458 F.3d 150, 157 
+(2d Cir. 2006) ("A court may take judicial notice of a document filed in 
+another court not for the truth of the matters asserted in the other litiga­
+tion, but rather to establish the fact of such litigation and related filings."). 
+10 
+Case 1:23-cv-06572-NGG-LB   Document 45   Filed 01/08/24   Page 10 of 16 PageID #: 2040Allstate alleges there are currently 40 arbitration proceedings 
+pending between Rutland and Allstate, and each involves a de­
+termination of whether or not Rutland is entitled to collect no­
+fault payments. (Id. at 15; see also Flaherty Deel. 'I 11.) Allstate 
+argues that this is the same determination that will be made in 
+this federal action thereby creating a risk of inconsistent out­
+comes between the collection actions and the declaratory 
+judgement claims at issue in this case. (Mot. to Stay at 15.) In 
+support, Allstate presents evidence to show that there have al­
+ready been varying outcomes in prior arbitrations with Rutland. 
+Mr. Flaherty, Special Investigation Unit Field Analyst for Allstate, 
+submits to the court in his declaration that arbitrators have ruled 
+in favor of Rutland, awarding it no-fault payments in some cases, 
+and finding Rutland was not entitled to payments in other cases. 
+(See Flaherty Deel. '19.) He further asserts that Allstate has iden­
+tified thousands of additional no-fault bills submitted by Rutland 
+and Nexray that could be filed before the AM absent a prelimi­
+nary injunction. (Id. 'I 14.) Allstate argues that it will suffer 
+irreparable harm if Rutland is allowed to bring these additional 
+collection actions during the pendency of this case because the 
+"outcome of those actions could be inconsistent with one another 
+and, perhaps, the ruling in this case." (Mot. to Stay at 16 (quoting 
+Gov't Emps. Ins. Co. v. Granovsky, No. 19-CV-6048 (EK) (RER), 
+2022 WL 1810727, at *7 (E.D.N.Y. June 2, 2022)).) 
+This risk of inconsistent judgments is in addition to the expendi­
+ture of time, effort, and money that Allstate will exhaust "dealing 
+with a 'morass of litigation' in the absence of relief that will "not 
+be cured by money damages." (Mot. to Stay at 16 (quoting 
+Granovsky, 2022 WL 1810727, at *7).) Allstate argues that even 
+In the Criminal Action, a "Letter of Presumed Death" was filed by Defend­
+ant Moy's counsel wherein they state that the United States Coast Guard 
+"investigated Dr. May's disappearance" and because Moy was "not found 
+in the ensuing search" he is "presumed dead." See Pierre, No. 1 :22-CR-
+00019 (PGG), Letter of Presumed Death (Dkt. 262) at 1. 
+11 
+Case 1:23-cv-06572-NGG-LB   Document 45   Filed 01/08/24   Page 11 of 16 PageID #: 2041with a complete victory on all claims in this action, it will not be 
+able to fully recover the money paid in connection with the arbi­
+trations and state court proceedings absent injunctive relief. 
+(Mot. to Stay at 17.) Moreover, Defendants are currently under 
+indictment for their role in the fraudulent scheme and if con­
+victed, they will likely be unable to satisfy an award of 
+compensatory damages in the excess of $2,749,000.00 sought by 
+Allstate in the present case. (Id. at 17-19.) 
+Several courts have found irreparable harm where, as here, "an 
+insurer is required to waste time defending numerous no-fault 
+actions when those same proceedings could be resolved globally 
+in a single, pending declaratory judgment action." Parisien, 352 
+F. Supp. 3d at 233; see also Gov't Emps. Ins. Co. v. Moshe, No. 20-
+CV-1098 (FB) (RER), 2020 WL 3503176, at *1 (E.D.N.Y. June 
+29, 2020); see also Elzanaty, 929 F. Supp. 2d at 222; Gov't Emps. 
+Ins. Co. v. Zaitsev, No. 20-CV-03495 (FB) (SJB), 2021 WL 
+3173171, at *2 (E.D.N.Y. July 27, 2021); Wellmart RX, Inc., 435 
+F. Supp. 3d at 449-50 (E.D.N.Y. 2020) (collecting cases). And 
+"[t]he unlikelihood that defendants ... would, in any event, be 
+able to satisfy a sustain damage award further supports a finding 
+of irreparable harm." Granovslgr, 2022 WL 1810727, at *8. These 
+concerns, coupled with undisputed evidence that a portion of the 
+costs "awarded to Defendants in a AM or state court collection 
+proceeding may be permanently unrecoverable, even if [Allstate] 
+ultimately prevails in this case" satisfy the irreparable harm re­
+quirement. Gov'tEmps. Ins. Co. v. Tolmasov, 602 F. Supp. 3d 380, 
+390 (E.D.N.Y. 2022); see Granovslgr, 2022 WL 1810727, at *8. 
+2. Serious Question Going to the Merits 
+"District courts in the Second Circuit have generally found that 
+likelihood of success is not the focus at the early stages of a case 
+involving an alleged scheme to defraud an insurer of assigned 
+no-fault benefits because any likelihood of success inquiry would 
+be premature." Relief Med., P.C., 554 F. Supp. 3d at 498. Instead, 
+12 
+Case 1:23-cv-06572-NGG-LB   Document 45   Filed 01/08/24   Page 12 of 16 PageID #: 2042in these types of cases, courts look to ''whether there is a serious 
+question going to the merits to make them a fair ground for trial." 
+Elzanaty, 929 F. Supp. 2d at 217; Kotkes, 2023 WL 4532460, at 
+1'10; see also Parisien, 352 F. Supp. 3d at 234; Landow, 2022 WL 
+939717, at *12; Wellmart RX, 435 F. Supp. 3d at 453. "A serious 
+question can be found when a plaintiff has adequately detailed a 
+complicated scheme of alleged fraud activity, and its request for 
+relief does not rest on mere hypotheticals." Metro Pain Specialists, 
+2022 WL 2467571, at *5. 
+Here, Allstate has sufficiently alleged that there is a serious ques­
+tion going to the merits of its declaratory judgment claim against 
+Defendant Rutland. In its 102-page Complaint supported by nu­
+merous exhibits totaling thousands of pages, Allstate details an 
+extensive and complex scheme centered around the fraudulent 
+operation and control of Rutland, among other PCs, by non-phy­
+sician Pierre for his own personal financial gain (Comp!. '1'1110-
+41); unlawful patient referrals to the PC Defendants pursuant to 
+improper agreements and kickback schemes, (id. 'l'I 142-144, 
+162-76); and fraudulent billing for unnecessary and excessive 
+services yielding hundreds of false claims submitted to Allstate in 
+violation of various New York state licensing laws. (Id. '1'1158-
+161, 183-230.) Allstate further provides specific examples of Rut­
+land's fraudulent billing practices, identifying numerous patient 
+claims where services were billed as a product of predetermined 
+treatment protocols and illegal referral arrangements, but unre­
+ported or misrepresented in treatment records. (Id. '1'1231-373.) 
+Because Rutland has failed to respond to the allegations raised, 
+the court finds that Allstate has "adequately detailed a compli­
+cated scheme of alleged fraud activity," Elzanaty, 929 F. Supp. 
+2d at 222. Moreover, in reviewing the voluminous record evi­
+dence, "it cannot be said that [Allstate's] request for injunctive 
+relief rests on mere hypotheticals. Parisien, 352 F. Supp. 3d at 
+13 
+Case 1:23-cv-06572-NGG-LB   Document 45   Filed 01/08/24   Page 13 of 16 PageID #: 2043234. Accordingly, Allstate has raised serious questions going to 
+the merits of its declaratory judgment claim. 
+3. Balance of Hardships 
+Finally, the court must determine whether the "balance of hard­
+ships tip[s] decidedly'' in Allstate's favor. Citigroup Glob. Markets, 
+Inc. v. VCG Special Opportunities Master Fund Ltd., 598 F.3d 30, 
+35 (2d Cir. 2010). The court "need not pause on this question for 
+long, as the irreparable harm factors discussed above also tip the 
+equities squarely in [Plaintiffs'] favor." Parisien, 352 F. Supp. 3d 
+at 234. Accordingly, Allstate's motion to stay pending and future 
+no-fault arbitration proceedings is GRANTED. 
+B. Authority to Enjoin Future No-Fault Collection 
+Lawsuits 
+In addition to the arbitration proceedings, Allstate seeks a stay 
+enjoining Rutland from commencing any no-fault insurance col­
+lection lawsuits against Plaintiffs pending the disposition of its 
+declaratory judgment claim in this action. (Mot. to Stay at 13.) 
+Allstate does not address this court's authority to enjoin new state 
+court proceedings, presumably because it recognizes this court's 
+authority to do so. The Anti-Injunction Act "bars a federal court 
+from enjoining a proceeding in state court unless that action is 
+expressly authorized by Act of Congress, or where necessary in 
+aid of its jurisdiction, or to protect or effectuate its judgments." 
+Relief Med., P.C., 554 F. Supp. 3d at 495 (quoting Doc.'s Assocs., 
+LLC v. Tripathi, 794 F. App'x 91, 93 (2d Cir. 2019)). While the 
+Anti-Injunction Act may limit federal district courts' authority to 
+enjoin pending state court proceedings, Mayzenberg, 2018 WL 
+6031156, at *7 (citing 28 U.S.C. § 2283) 9, there is no dispute 
+that the Act does not "prevent a federal court from restraining a 
+9 But see this court's holding in Landow, 2022 WL 939717, at *13, staying 
+pending state civil court proceedings. 
+14 
+Case 1:23-cv-06572-NGG-LB   Document 45   Filed 01/08/24   Page 14 of 16 PageID #: 2044party from instituting.future state proceedings." Relief Med., P.C., 
+554 F. Supp. 3d at 496 (emphasis added) (collecting cases). Ac­
+cordingly, courts look to the "traditional standards" for such 
+injunctive relief. Mayzenberg, 2018 WL 6031156, at *9. 
+For the reasons this court has previously discussed, Allstate will 
+be irreparably harmed if it is subject to numerous state court pro­
+ceedings with the potential to result in varying outcomes. See id. 
+("It is in the interests of judicial economy to resolve the contro­
+versy in a single action, rather than require the parties and the 
+lower courts to engage in piecemeal and repetitive litigation."); 
+see also Elzanaty, 929 F. Supp. 2d at 222 (finding that "all parties 
+will benefit from having the issue of fraudulent incorporation de­
+termined in one action"). Allstate's motion to enjoin future state 
+court collection lawsuits by Rutland pending disposition of the 
+declaratory judgment action is therefore GRANTED. 
+C. Security for the Injunction 
+Allstate also asks the court to use its discretion to waive the secu­
+rity requirement of Fed. R. Civ. P. 65(c). Rule 65(c) provides that 
+"the court may issue a preliminary injunction or a temporary re­
+straining order only if the movant gives security in an amount 
+that the court considers proper to pay the costs and damages sus­
+tained by any party found to have been wrongfully enjoined or 
+restrained." Courts in this district have repeatedly concluded 
+when granting a motion to stay no-fault arbitrations that claims 
+of fraud pertaining to New York's no-fault insurance laws, and 
+fraud against the healthcare system generally, implicate the "en­
+forcement of public interests," an exception to Rule 65(c)'s 
+requirement of security. See Wallegood, No. 21-CV-01986, at 19-
+20; Landow, 2022 WL 939717, at *14. 
+Because this court has determined that a preliminary injunction 
+will not result in prejudice to Rutland, it finds that Allstate need 
+not post bond in this case. Accordingly, the court WAIVES Rule 
+65(c)'s security requirement. 
+15 
+Case 1:23-cv-06572-NGG-LB   Document 45   Filed 01/08/24   Page 15 of 16 PageID #: 2045s/Nicholas G. Garaufis
+IV. CONCLUSION 
+For the reasons stated above, Allstate's motion for preliminary 
+injunctive relief is GRANTED. Consequently, (1) all pending no­
+fault collection arbitrations by Rutland (or its agents) against 
+Plaintiffs are stayed and (2) Rutland is enjoined from filing any 
+further no-fault collection arbitrations or lawsuits against Allstate 
+pending resolution of the instant federal action. Allstate's request 
+that the court waive their obligation to post security is also 
+GRANTED. 
+SO ORDERED. 
+Dated: Brooklyn, New York 
+January l, 2024 
+16 
+CHOIAS G. GARAUFI 
+United States District Ju e 
+Case 1:23-cv-06572-NGG-LB   Document 45   Filed 01/08/24   Page 16 of 16 PageID #: 2046

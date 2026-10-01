@@ -1,0 +1,436 @@
+{
+  "_comment": "Recorded extraction payloads for OFFLINE_MODE. Keyed by note_id. These are what a model returned for the bundled fixture notes; they let the pipeline be exercised end to end without an Azure deployment. A note with no entry here fails loudly as offline_fixture_missing rather than returning empty. `categories` is keyed by entity_id, which is stable across runs because cell 18 numbers components by their lowest member key.",
+  "extractions": {
+    "188213": {
+      "entity_mentions": [
+        {
+          "mention_id": "m1",
+          "quote": "Dr. Monroe",
+          "type": "person",
+          "occurrences": [
+            "The treating physician",
+            "He"
+          ],
+          "name": "Dr. Monroe"
+        },
+        {
+          "mention_id": "m2",
+          "quote": "Lakeshore PT",
+          "type": "organization",
+          "occurrences": [],
+          "name": "Lakeshore PT"
+        }
+      ],
+      "detail_mentions": [
+        {
+          "detail_id": "d1",
+          "quote": "Dr. Monroe (NPI 1548392012)",
+          "raw_value": "1548392012",
+          "detail_type": "npi",
+          "issuer": null,
+          "owner_ref": "m1",
+          "basis": "stated"
+        },
+        {
+          "detail_id": "d2",
+          "quote": "He is reachable at (312) 555-0101 after 5 pm",
+          "raw_value": "(312) 555-0101",
+          "detail_type": "phone",
+          "issuer": null,
+          "owner_ref": "m1",
+          "basis": "inferred"
+        },
+        {
+          "detail_id": "d3",
+          "quote": "Office at 4410 N Broadway, Chicago IL 60640",
+          "raw_value": "4410 N Broadway, Chicago IL 60640",
+          "detail_type": "address",
+          "issuer": null,
+          "owner_ref": "UNASSIGNED",
+          "basis": "stated"
+        }
+      ],
+      "action_mentions": [
+        {
+          "action_id": "a1",
+          "quote": "Clmt seen 3/14 by Dr. Monroe",
+          "action_type": "examined",
+          "participants": [
+            {
+              "mention_id": "m1",
+              "role": "examiner"
+            }
+          ],
+          "time_qualifier": "3/14",
+          "stance": "asserted",
+          "basis": "stated"
+        },
+        {
+          "action_id": "a2",
+          "quote": "Referred to Lakeshore PT for six sessions",
+          "action_type": "referred_to",
+          "participants": [
+            {
+              "mention_id": "m2",
+              "role": "referee"
+            }
+          ],
+          "time_qualifier": null,
+          "stance": "asserted",
+          "basis": "stated"
+        }
+      ]
+    },
+    "188219": {
+      "entity_mentions": [
+        {
+          "mention_id": "m1",
+          "quote": "A. Monroe, MD",
+          "type": "person",
+          "occurrences": [],
+          "name": "A. Monroe, MD"
+        },
+        {
+          "mention_id": "m2",
+          "quote": "Lakeshore Physical Therapy",
+          "type": "organization",
+          "occurrences": [],
+          "name": "Lakeshore Physical Therapy"
+        }
+      ],
+      "detail_mentions": [
+        {
+          "detail_id": "d1",
+          "quote": "A. Monroe, MD (NPI 1548392012)",
+          "raw_value": "1548392012",
+          "detail_type": "npi",
+          "issuer": null,
+          "owner_ref": "m1",
+          "basis": "stated"
+        },
+        {
+          "detail_id": "d2",
+          "quote": "listing 4410 N Broadway, Chicago IL 60640 as the service location",
+          "raw_value": "4410 N Broadway, Chicago IL 60640",
+          "detail_type": "address",
+          "issuer": null,
+          "owner_ref": "m2",
+          "basis": "inferred"
+        }
+      ],
+      "action_mentions": [
+        {
+          "action_id": "a1",
+          "quote": "Lakeshore Physical Therapy submitted an invoice on 3/22",
+          "action_type": "billed",
+          "participants": [
+            {
+              "mention_id": "m2",
+              "role": "biller"
+            }
+          ],
+          "time_qualifier": "3/22",
+          "stance": "asserted",
+          "basis": "stated"
+        }
+      ]
+    },
+    "188301": {
+      "entity_mentions": [
+        {
+          "mention_id": "m1",
+          "quote": "Northside Auto Body",
+          "type": "organization",
+          "occurrences": [
+            "Shop"
+          ],
+          "name": "Northside Auto Body"
+        },
+        {
+          "mention_id": "m2",
+          "quote": "Dr. Monroe office",
+          "type": "person",
+          "occurrences": [],
+          "name": "Dr. Monroe office"
+        }
+      ],
+      "detail_mentions": [
+        {
+          "detail_id": "d1",
+          "quote": "Dr. Monroe office at 312.555.0101",
+          "raw_value": "312.555.0101",
+          "detail_type": "phone",
+          "issuer": null,
+          "owner_ref": "m2",
+          "basis": "stated"
+        }
+      ],
+      "action_mentions": [
+        {
+          "action_id": "a1",
+          "quote": "Vehicle inspected at Northside Auto Body",
+          "action_type": "inspected",
+          "participants": [
+            {
+              "mention_id": "m1",
+              "role": "inspector"
+            }
+          ],
+          "time_qualifier": null,
+          "stance": "asserted",
+          "basis": "stated"
+        }
+      ]
+    },
+    "190455": {
+      "entity_mentions": [
+        {
+          "mention_id": "m1",
+          "quote": "Midwest Spine Clinic",
+          "type": "organization",
+          "occurrences": [],
+          "name": "Midwest Spine Clinic"
+        },
+        {
+          "mention_id": "m2",
+          "quote": "J. Whitfield",
+          "type": "person",
+          "occurrences": [],
+          "name": "J. Whitfield"
+        }
+      ],
+      "detail_mentions": [
+        {
+          "detail_id": "d1",
+          "quote": "which lists (312) 555-0101 on the intake form",
+          "raw_value": "(312) 555-0101",
+          "detail_type": "phone",
+          "issuer": null,
+          "owner_ref": "m1",
+          "basis": "stated"
+        },
+        {
+          "detail_id": "d2",
+          "quote": "J. Whitfield, ARDC 6224417",
+          "raw_value": "6224417",
+          "detail_type": "bar_number",
+          "issuer": null,
+          "owner_ref": "m2",
+          "basis": "stated"
+        }
+      ],
+      "action_mentions": [
+        {
+          "action_id": "a1",
+          "quote": "Claimant treated at Midwest Spine Clinic",
+          "action_type": "treated_at",
+          "participants": [
+            {
+              "mention_id": "m1",
+              "role": "provider"
+            }
+          ],
+          "time_qualifier": null,
+          "stance": "asserted",
+          "basis": "stated"
+        }
+      ]
+    },
+    "190470": {
+      "entity_mentions": [
+        {
+          "mention_id": "m1",
+          "quote": "Claimant Maria Lopez (DOB",
+          "type": "person",
+          "occurrences": [
+            "the claimant",
+            "Her"
+          ],
+          "name": "Maria Lopez"
+        },
+        {
+          "mention_id": "m2",
+          "quote": "treated by Dr. Alan Kessler, DEA",
+          "type": "person",
+          "occurrences": [
+            "Dr. Kessler"
+          ],
+          "name": "Dr. Alan Kessler"
+        },
+        {
+          "mention_id": "m3",
+          "quote": "Her 2019 Honda Civic, NY plate",
+          "type": "vehicle",
+          "occurrences": [],
+          "name": "2019 Honda Civic"
+        },
+        {
+          "mention_id": "m4",
+          "quote": "towed to Eastside Collision",
+          "type": "organization",
+          "occurrences": [],
+          "name": "Eastside Collision"
+        }
+      ],
+      "detail_mentions": [
+        {
+          "detail_id": "d1",
+          "quote": "(DOB 04/12/1979, SSN",
+          "raw_value": "04/12/1979",
+          "detail_type": "dob",
+          "issuer": null,
+          "owner_ref": "m1",
+          "basis": "stated"
+        },
+        {
+          "detail_id": "d2",
+          "quote": "SSN 123-45-6789) was treated",
+          "raw_value": "123-45-6789",
+          "detail_type": "ssn",
+          "issuer": null,
+          "owner_ref": "m1",
+          "basis": "stated"
+        },
+        {
+          "detail_id": "d3",
+          "quote": "DEA AK1234563, NY medical",
+          "raw_value": "AK1234563",
+          "detail_type": "dea_number",
+          "issuer": null,
+          "owner_ref": "m2",
+          "basis": "stated"
+        },
+        {
+          "detail_id": "d4",
+          "quote": "NY medical license 212345",
+          "raw_value": "212345",
+          "detail_type": "state_license",
+          "issuer": "NY",
+          "owner_ref": "m2",
+          "basis": "stated"
+        },
+        {
+          "detail_id": "d5",
+          "quote": "reached at akessler@kesslerpain.com",
+          "raw_value": "akessler@kesslerpain.com",
+          "detail_type": "email",
+          "issuer": null,
+          "owner_ref": "m2",
+          "basis": "stated"
+        },
+        {
+          "detail_id": "d6",
+          "quote": "routing 021000021, account 4417229108",
+          "raw_value": "4417229108",
+          "detail_type": "bank_account",
+          "issuer": "021000021",
+          "owner_ref": "m1",
+          "basis": "stated"
+        },
+        {
+          "detail_id": "d7",
+          "quote": "NY plate KLM-4821, was towed",
+          "raw_value": "KLM-4821",
+          "detail_type": "license_plate",
+          "issuer": "NY",
+          "owner_ref": "m3",
+          "basis": "stated"
+        }
+      ],
+      "action_mentions": [
+        {
+          "action_id": "a1",
+          "quote": "was treated by Dr. Alan Kessler",
+          "action_type": "treated_by",
+          "participants": [
+            {
+              "mention_id": "m1",
+              "role": "patient"
+            },
+            {
+              "mention_id": "m2",
+              "role": "treating_physician"
+            }
+          ],
+          "time_qualifier": null,
+          "stance": "asserted",
+          "basis": "stated"
+        },
+        {
+          "action_id": "a2",
+          "quote": "was towed to Eastside Collision",
+          "action_type": "towed_to",
+          "participants": [
+            {
+              "mention_id": "m3",
+              "role": "vehicle"
+            },
+            {
+              "mention_id": "m4",
+              "role": "destination"
+            }
+          ],
+          "time_qualifier": null,
+          "stance": "asserted",
+          "basis": "stated"
+        }
+      ]
+    }
+  },
+  "categories": {
+    "123456-789012-AB-01:E2": {
+      "category": "medical",
+      "subcategory": "physical_therapy_clinic",
+      "basis": "inferred",
+      "evidence_ids": [
+        "note:188213:a2"
+      ]
+    },
+    "123456-789012-AB-01:E3": {
+      "category": "medical",
+      "subcategory": "physical_therapy_clinic",
+      "basis": "inferred",
+      "evidence_ids": [
+        "note:188219:a1"
+      ]
+    },
+    "123456-789012-CG-01:E1": {
+      "category": "repair_shop",
+      "subcategory": "auto_body_shop",
+      "basis": "inferred",
+      "evidence_ids": [
+        "note:188301:a1"
+      ]
+    },
+    "123456-789012-CG-01:E2": {
+      "category": "insufficient_evidence",
+      "subcategory": null,
+      "basis": "inferred",
+      "evidence_ids": []
+    },
+    "774100-220945-CG-01:E1": {
+      "category": "medical",
+      "subcategory": "spine_clinic",
+      "basis": "inferred",
+      "evidence_ids": [
+        "note:190455:a1"
+      ]
+    },
+    "774100-220950-AB-01:E1": {
+      "category": "other",
+      "subcategory": "claimant",
+      "basis": "inferred",
+      "evidence_ids": [
+        "note:190470:a1"
+      ]
+    },
+    "774100-220950-AB-01:E4": {
+      "category": "repair_shop",
+      "subcategory": "collision_shop",
+      "basis": "inferred",
+      "evidence_ids": [
+        "note:190470:a2"
+      ]
+    }
+  }
+}

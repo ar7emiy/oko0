@@ -1,0 +1,34 @@
+column,goes_to,detail_type,ownership,note
+record_id,row,,,required; unique per file
+claim_id,row,,,extracted file only
+note_id,row,,,extracted file only
+category,row,,,given category; the package infers another beside it
+first_name,person,,,a first or last name creates the person part
+middle_name,person,,,
+last_name,person,,,
+dob,person,dob,own,placeholder dates are flagged invalid
+ssn,person,ssn,own,one per party: two different single-holder values veto
+driver_license_number,person,dl,own,joined with driver_license_state as STATE:NUMBER; veto only within one state
+driver_license_state,person,,,qualifier of driver_license_number
+provider_npi,person,npi,own,Luhn-checked; one per party: veto
+professional_license_number,person,license,own,joined with professional_license_state as STATE:NUMBER
+professional_license_state,person,,,qualifier of professional_license_number
+professional_license_type,person,,,drives inferred category (category_map.csv source=license_type)
+provider_specialty,person,,,canonicalised by specialty_canon.csv; drives watchlist category
+business_name,business,,,a business name creates the business part
+tin,business,tin,own,EIN; one per party: veto; a TIN with no name still creates a business part
+clinic_npi,business,cnpi,own,Luhn-checked; organizations can hold several: never vetoes; creates a business part with no name
+street_number,row,address,row,address is held by both parts of the row
+street_direction,row,address,row,
+street_name,row,address,row,
+street_type,row,address,row,
+unit,row,address,row,
+city,row,address,row,
+state,row,address,row,
+zip,row,address,row,
+home_phone,person,phone,own,
+work_phone,row,phone,row,held by both parts of the row
+email,person_else_business,email,own,the person's; the business's when the row has no person
+vin,person,vin,own,moderate weight (learned); check digit verified
+plate_number,person,plate,own,joined with plate_state as STATE:PLATE
+plate_state,person,,,qualifier of plate_number

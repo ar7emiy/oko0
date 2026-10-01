@@ -1,0 +1,72 @@
+{
+  "span_whitespace": {
+    "stored": "Jane Smith",
+    "actual": "Jane\n  Smi",
+    "exact": false
+  },
+  "repeated_quote": {
+    "positions": [
+      0,
+      0
+    ],
+    "expected_occurrences": [
+      0,
+      13
+    ]
+  },
+  "nested_span": [
+    {
+      "text": "Jane Smith Foundation",
+      "label": "organization",
+      "extractors": [
+        "llm",
+        "ner"
+      ]
+    }
+  ],
+  "typing_corpus_change": {
+    "before": "organization",
+    "after": "person"
+  },
+  "typing_legal_form": "person",
+  "ambiguous_coreference": [
+    {
+      "start": 20,
+      "end": 23,
+      "surface": "She",
+      "antecedent_surface": "Mary",
+      "antecedent_start": 14,
+      "antecedent_end": 18,
+      "antecedent_type": "person",
+      "kind": "pronoun",
+      "backend": "rulebased",
+      "confidence": 0.75
+    }
+  ],
+  "unresolved_pronoun": 0,
+  "vehicle_pronoun": 0,
+  "ddl_human_decision_enforcement": {
+    "dangling_endpoints_accepted": true,
+    "accepted_status_after_update": "auto"
+  },
+  "dossier_reassertion": {
+    "timeline": {
+      "has_phone": [
+        {
+          "value": "5550100",
+          "value_norm": "5550100",
+          "tier": "validated_id",
+          "polarity": "negated",
+          "valid_from": null,
+          "valid_to": null,
+          "known_to": "retracted",
+          "source": "invented[0:7]",
+          "assertion_id": "old",
+          "conflict_flag": 0
+        }
+      ]
+    },
+    "known_from": null
+  },
+  "normalized_phone_tier": "validated_id"
+}

@@ -1,0 +1,33 @@
+phrase,category,note
+AUTO BODY,repair shop,DESIGN.md example
+COLLISION,repair shop,DESIGN.md example
+TOWING,repair shop,DESIGN.md example
+TOW,repair shop,
+BODY SHOP,repair shop,
+AUTO REPAIR,repair shop,
+AUTO SERVICE,repair shop,
+AUTOMOTIVE,repair shop,
+GARAGE,repair shop,
+PAINT AND BODY,repair shop,
+TRANSMISSION,repair shop,
+LAW OFFICE,legal,DESIGN.md example
+LAW OFFICES,legal,
+LAW FIRM,legal,
+LAW GROUP,legal,
+ATTORNEY,legal,
+ATTORNEYS,legal,
+ESQ,legal,DESIGN.md example
+LLP,legal,DESIGN.md example; also used by accounting firms (weak)
+LEGAL,legal,
+MEDICAL,medical,added by the build: keyword medical is weaker than an NPI or a licence type
+CHIROPRACTIC,medical,added by the build
+PHYSICAL THERAPY,medical,added by the build
+REHABILITATION,medical,added by the build
+IMAGING,medical,added by the build
+RADIOLOGY,medical,added by the build
+CLINIC,medical,added by the build
+ACUPUNCTURE,medical,added by the build
+ORTHOPEDIC,medical,added by the build
+PHARMACY,medical,added by the build
+DIAGNOSTIC,medical,added by the build
+HEALTH,medical,added by the build

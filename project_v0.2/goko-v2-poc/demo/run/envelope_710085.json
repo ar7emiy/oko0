@@ -1,0 +1,560 @@
+{
+  "note_id": 710085,
+  "note_key": "note:710085",
+  "claim_id": "100001-236572-RI-01",
+  "client_id": "100001",
+  "occurrence_id": "100001-236572",
+  "coverage_code": "RI",
+  "versions": {
+    "schema": "0.1",
+    "model": "gpt-6-luna",
+    "patterns": "1.7",
+    "gliner": null,
+    "clean_policy": "none",
+    "chunk_policy": "structure-v1/30000c/2s",
+    "structured": true,
+    "offline": false
+  },
+  "extraction_error": null,
+  "entity_mentions": [
+    {
+      "mention_id": "m1",
+      "quote": "Plaintiffs Allstate Insurance Company, Allstate Property & Casualty Insurance Company",
+      "name": "Allstate Insurance Company",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Plaintiffs"
+      ],
+      "_chunk": [
+        0,
+        2121
+      ],
+      "clean_span": [
+        609,
+        636
+      ],
+      "raw_span": [
+        609,
+        636
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "m2",
+      "quote": "Allstate Property & Casualty Insurance Company, Allstate Indemnity Company, and Allstate Fire & Casualty Insurance Company (collectively \"Allstate\")",
+      "name": "Allstate Property & Casualty Insurance Company",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Plaintiffs",
+        "Allstate Property & Casualty Insurance Company"
+      ],
+      "_chunk": [
+        0,
+        2121
+      ],
+      "clean_span": [
+        638,
+        684
+      ],
+      "raw_span": [
+        638,
+        684
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "m3",
+      "quote": "Allstate Indemnity Company, and Allstate Fire & Casualty Insurance Company (collectively \"Allstate\")",
+      "name": "Allstate Indemnity Company",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Plaintiffs",
+        "Allstate Indemnity Company"
+      ],
+      "_chunk": [
+        0,
+        2121
+      ],
+      "clean_span": [
+        686,
+        713
+      ],
+      "raw_span": [
+        686,
+        713
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "m4",
+      "quote": "Allstate Fire & Casualty Insurance Company (collectively \"Allstate\")",
+      "name": "Allstate Fire & Casualty Insurance Company",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "Plaintiffs",
+        "Allstate Fire & Casualty Insurance Company"
+      ],
+      "_chunk": [
+        0,
+        2121
+      ],
+      "clean_span": [
+        719,
+        761
+      ],
+      "raw_span": [
+        719,
+        761
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "m5",
+      "quote": "BRADLEY PIERRE,",
+      "name": "BRADLEY PIERRE",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Defendants Bradley Pien-e",
+        "Defendants Bradley Pien-e and Medical Reimbursement Consultants, Inc."
+      ],
+      "_chunk": [
+        0,
+        2121
+      ],
+      "clean_span": [
+        268,
+        282
+      ],
+      "raw_span": [
+        268,
+        282
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "m6",
+      "quote": "Defendants Bradley Pien-e and Medical Reimbursement Consultants, Inc.,",
+      "name": "Medical Reimbursement Consultants, Inc.",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "MEDICAL REIMBURSEMENT CONSULTANTS INC.,",
+        "Defendants",
+        "Medical Reimbursement Consultants, Inc."
+      ],
+      "_chunk": [
+        0,
+        2121
+      ],
+      "clean_span": [
+        824,
+        863
+      ],
+      "raw_span": [
+        824,
+        863
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "m7",
+      "quote": "MARVIN MOY, M.D.,",
+      "name": "MARVIN MOY, M.D.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Defendants"
+      ],
+      "_chunk": [
+        0,
+        2121
+      ],
+      "clean_span": [
+        326,
+        342
+      ],
+      "raw_span": [
+        326,
+        342
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "m8",
+      "quote": "RUTLAND MEDICAL P.C.\nd/b/a MEDICALNOW,",
+      "name": "RUTLAND MEDICAL P.C.",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "d/b/a MEDICALNOW",
+        "Defendants"
+      ],
+      "_chunk": [
+        0,
+        2121
+      ],
+      "clean_span": [
+        345,
+        365
+      ],
+      "raw_span": [
+        345,
+        365
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "m9",
+      "quote": "WILLIAM A. WEINER, D.O., AND",
+      "name": "WILLIAM A. WEINER, D.O.",
+      "type": "person",
+      "is_group": false,
+      "occurrences": [
+        "Defendants"
+      ],
+      "_chunk": [
+        0,
+        2121
+      ],
+      "clean_span": [
+        386,
+        409
+      ],
+      "raw_span": [
+        386,
+        409
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "m10",
+      "quote": "NEXRA Y MEDICAL IMAGING, P.C.\nd/b/a SOUL RADIOLOGY MEDICAL IMAGING,",
+      "name": "NEXRA Y MEDICAL IMAGING, P.C.",
+      "type": "organization",
+      "is_group": false,
+      "occurrences": [
+        "d/b/a SOUL RADIOLOGY MEDICAL IMAGING",
+        "Defendants"
+      ],
+      "_chunk": [
+        0,
+        2121
+      ],
+      "clean_span": [
+        416,
+        445
+      ],
+      "raw_span": [
+        416,
+        445
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    },
+    {
+      "mention_id": "m11",
+      "quote": "(collectively \"Allstate\")",
+      "name": "Allstate",
+      "type": "organization",
+      "is_group": true,
+      "occurrences": [
+        "Allstate's"
+      ],
+      "_chunk": [
+        0,
+        2121
+      ],
+      "clean_span": [
+        777,
+        785
+      ],
+      "raw_span": [
+        777,
+        785
+      ],
+      "detected_by": [
+        "llm"
+      ]
+    }
+  ],
+  "entity_candidates": [],
+  "detail_mentions": [
+    {
+      "detail_type": "phone",
+      "raw_value": "(347) 710-0050",
+      "normalized": "+13477100050",
+      "clean_span": [
+        1573,
+        1587
+      ],
+      "owner_ref": "UNASSIGNED",
+      "basis": "stated",
+      "issuer": null,
+      "subtype": null,
+      "parts": null,
+      "detected_by": [
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "cue": false,
+      "recall_gap": true,
+      "raw_span": [
+        1573,
+        1587
+      ]
+    },
+    {
+      "detail_type": "email",
+      "raw_value": "mwhitcher@ktmpc.com",
+      "normalized": "mwhitcher@ktmpc.com",
+      "clean_span": [
+        1589,
+        1608
+      ],
+      "owner_ref": "UNASSIGNED",
+      "basis": "stated",
+      "issuer": null,
+      "subtype": null,
+      "parts": null,
+      "detected_by": [
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "cue": false,
+      "recall_gap": true,
+      "raw_span": [
+        1589,
+        1608
+      ]
+    },
+    {
+      "detail_type": "phone",
+      "raw_value": "(516) 227-3344",
+      "normalized": "+15162273344",
+      "clean_span": [
+        1934,
+        1948
+      ],
+      "owner_ref": "UNASSIGNED",
+      "basis": "stated",
+      "issuer": null,
+      "subtype": null,
+      "parts": null,
+      "detected_by": [
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "cue": false,
+      "recall_gap": true,
+      "raw_span": [
+        1934,
+        1948
+      ]
+    },
+    {
+      "detail_type": "email",
+      "raw_value": "csg@goldinger.com",
+      "normalized": "csg@goldinger.com",
+      "clean_span": [
+        1950,
+        1967
+      ],
+      "owner_ref": "UNASSIGNED",
+      "basis": "stated",
+      "issuer": null,
+      "subtype": null,
+      "parts": null,
+      "detected_by": [
+        "pattern"
+      ],
+      "checksum": "n/a",
+      "cue": false,
+      "recall_gap": true,
+      "raw_span": [
+        1950,
+        1967
+      ]
+    }
+  ],
+  "action_mentions": [
+    {
+      "action_id": "a1",
+      "quote": "Plaintiffs Allstate Insurance Company, Allstate Property & Casualty Insurance Company, Allstate Indemnity Company, and Allstate Fire & Casualty Insurance Company (collectively \"Allstate\")",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "m1",
+          "role": "member"
+        },
+        {
+          "mention_id": "m11",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        2121
+      ],
+      "clean_span": [
+        598,
+        787
+      ],
+      "raw_span": [
+        598,
+        787
+      ]
+    },
+    {
+      "action_id": "a2",
+      "quote": "Allstate Property & Casualty Insurance Company, Allstate Indemnity Company, and Allstate Fire & Casualty Insurance Company (collectively \"Allstate\")",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "m2",
+          "role": "member"
+        },
+        {
+          "mention_id": "m11",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        2121
+      ],
+      "clean_span": [
+        638,
+        787
+      ],
+      "raw_span": [
+        638,
+        787
+      ]
+    },
+    {
+      "action_id": "a3",
+      "quote": "Allstate Indemnity Company, and Allstate Fire & Casualty Insurance Company (collectively \"Allstate\")",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "m3",
+          "role": "member"
+        },
+        {
+          "mention_id": "m11",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        2121
+      ],
+      "clean_span": [
+        686,
+        787
+      ],
+      "raw_span": [
+        686,
+        787
+      ]
+    },
+    {
+      "action_id": "a4",
+      "quote": "Allstate Fire & Casualty Insurance Company (collectively \"Allstate\")",
+      "action_type": "member_of",
+      "participants": [
+        {
+          "mention_id": "m4",
+          "role": "member"
+        },
+        {
+          "mention_id": "m11",
+          "role": "group"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        2121
+      ],
+      "clean_span": [
+        719,
+        787
+      ],
+      "raw_span": [
+        719,
+        787
+      ]
+    },
+    {
+      "action_id": "a5",
+      "quote": "that Allstate's Complaint (Dkt. No. 1) be dismissed as to Defendants Bradley Pien-e and Medical Reimbursement Consultants, Inc.,",
+      "action_type": "dismissed",
+      "participants": [
+        {
+          "mention_id": "m11",
+          "role": "plaintiff"
+        },
+        {
+          "mention_id": "m5",
+          "role": "defendant"
+        },
+        {
+          "mention_id": "m6",
+          "role": "defendant"
+        }
+      ],
+      "time_qualifier": null,
+      "stance": "asserted",
+      "basis": "stated",
+      "_chunk": [
+        0,
+        2121
+      ],
+      "clean_span": [
+        901,
+        1030
+      ],
+      "raw_span": [
+        901,
+        1030
+      ]
+    }
+  ],
+  "review_items": []
+}

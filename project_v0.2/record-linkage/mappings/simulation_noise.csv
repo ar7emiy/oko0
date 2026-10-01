@@ -1,0 +1,30 @@
+noise,rate,applies_to,description
+surname_typo,0.04,person,one character substituted/deleted/inserted/transposed in the surname
+surname_compound_dropped,0.03,person,one part of a two-part surname dropped (GARCIA LOPEZ -> GARCIA); only when compound
+surname_change,0.04,person,surname replaced by another drawn from the Census table (marriage)
+first_nickname,0.10,person,first name replaced by a nickname from the nickname table when one exists
+first_initial_only,0.06,person,first name reduced to its initial
+first_typo,0.04,person,one character error in the first name
+first_missing,0.05,person,first name blank
+names_swapped,0.015,person,first and last name exchanged
+middle_dropped,0.40,person,middle name blank
+middle_initial,0.30,person,middle name reduced to its initial (of those not dropped)
+dob_day_month_swap,0.02,person,day and month exchanged when day <= 12
+dob_digit_typo,0.03,person,one digit of YYYYMMDD changed (kept a valid date)
+dob_year_off,0.01,person,year +/- 1
+dob_missing,0.20,person,date of birth blank
+dob_placeholder,0.01,person,date of birth replaced by 1900-01-01
+id_digit_typo,0.015,person+business,one digit of SSN / NPI / DL / TIN changed
+id_transposition,0.01,person+business,two adjacent digits of SSN / NPI / DL / TIN exchanged
+moved_within_state,0.35,row,new street address in the same state
+moved_other_state,0.12,row,new address in another state
+unit_dropped,0.25,row,unit blank
+zip_typo,0.02,row,one digit of the ZIP changed
+phone_changed,0.35,row,phone replaced by a new number
+email_changed,0.25,person+business,email replaced by a new address
+business_suffix_dropped,0.35,business,legal suffix (INC / LLC / PC ...) dropped
+business_abbreviated,0.15,business,a word replaced by its abbreviation (MEDICAL -> MED) or initials
+business_dba_used,0.15,business,the trade name used instead of the legal name (only when the row declares one)
+business_typo,0.04,business,one character error in one word of the business name
+category_disagrees,0.20,row,given category replaced by another category
+specialty_coarser,0.25,person,specialty replaced by a coarser description (PHYSICIAN)

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOKO Search</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body class="at-home">
+<header id="top">
+  <div class="brand" title="Read-only view of one pipeline run">GOKO</div>
+  <div id="run-meta" class="muted"></div>
+  <div class="grow"></div>
+  <div class="merge" title="Decides what counts as one party and who is flagged for review, in the list and in every card that does not override it">
+    <span class="merge-lab">Merge on</span>
+    <div class="lens" id="lens" role="group" aria-label="Merge on">
+      <button data-lens="strict">Identifiers only</button>
+      <button data-lens="default">Names + identifiers, confident</button>
+      <button data-lens="broad">Also weak name matches</button>
+    </div>
+  </div>
+  <div class="work-tools">
+    <button id="trail-btn" class="pill" title="Every card opened in this trace, in order, closed ones included">Trail</button>
+    <button id="save-btn" class="pill" title="Save this trace in this browser and start fresh">Save trace</button>
+  </div>
+</header>
+
+<div id="shell">
+  <!-- one finder: centred on Home, the left sidebar in the work view -->
+  <aside id="finder">
+    <div class="wordmark">GOKO</div>
+    <div class="search" data-search>
+      <input id="q" type="search" placeholder="Find a party, identifier, note or claim — or ask a question"
+             autocomplete="off" spellcheck="false" aria-label="Search or ask">
+      <div class="suggest" hidden></div>
+    </div>
+    <p class="hint">Typing narrows the list. Pick a row or a suggestion to open it; press Enter to ask the librarian.</p>
+    <div class="finder-bar">
+      <div class="switch" role="tablist" aria-label="List">
+        <button data-tab="entities" class="on" role="tab">Entities</button>
+        <button data-tab="traces" role="tab">Saved traces</button>
+      </div>
+      <button id="inv-btn" class="pill ghost" title="Read one note with every extracted mention and detail highlighted">Investigate a note</button>
+    </div>
+    <div id="list-meta" class="muted"></div>
+    <div id="entity-list" role="list"></div>
+    <div id="trace-list" hidden></div>
+  </aside>
+
+  <section id="work" hidden>
+    <div id="bubbles" aria-label="Open cards"></div>
+    <div id="stage">
+      <button class="edge left" hidden></button>
+      <div id="cards"></div>
+      <button class="edge right" hidden></button>
+    </div>
+    <div id="investigate" hidden></div>
+  </section>
+</div>
+
+<div id="trail-pop" class="pop" hidden>
+  <div class="pop-head"><strong>Trail</strong><span class="muted">every card, in the order it was opened</span><div class="grow"></div>
+    <button class="icon-btn" data-close-pop aria-label="Close">×</button></div>
+  <ol id="trail-list"></ol>
+</div>
+
+<div id="save-pop" class="pop" hidden>
+  <div class="pop-head"><strong>Save this trace and start fresh?</strong><div class="grow"></div>
+    <button class="icon-btn" data-close-pop aria-label="Close">×</button></div>
+  <label class="field">Name <input id="trace-name" type="text" autocomplete="off" spellcheck="false"></label>
+  <p class="muted">The cards (closed ones too), pins, merge settings and times are kept in this browser only.</p>
+  <div class="row end"><button class="pill ghost" data-close-pop>Cancel</button><button id="save-go" class="pill strong">Save and start fresh</button></div>
+</div>
+
+<script src="/static/card.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

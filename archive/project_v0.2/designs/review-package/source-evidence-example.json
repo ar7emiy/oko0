@@ -1,0 +1,92 @@
+[
+  {
+    "mention_id": "M01",
+    "claim_number": "C104",
+    "note_id": "N01",
+    "source_version": "TEXT-1",
+    "text": "Maya Chen",
+    "start_character": 0,
+    "end_character": 9
+  },
+  {
+    "mention_id": "M02",
+    "claim_number": "C104",
+    "note_id": "N01",
+    "source_version": "TEXT-1",
+    "text": "She",
+    "start_character": 18,
+    "end_character": 21
+  },
+  {
+    "mention_id": "M03",
+    "claim_number": "C104",
+    "note_id": "N01",
+    "source_version": "TEXT-1",
+    "text": "Elena Ruiz",
+    "start_character": 27,
+    "end_character": 37
+  },
+  {
+    "mention_id": "M04",
+    "claim_number": "C104",
+    "note_id": "N01",
+    "source_version": "TEXT-1",
+    "text": "Harbor Legal",
+    "start_character": 41,
+    "end_character": 53
+  },
+  {
+    "mention_id": "M05",
+    "claim_number": "C104",
+    "note_id": "N01",
+    "source_version": "TEXT-1",
+    "text": "her",
+    "start_character": 65,
+    "end_character": 68
+  },
+  {
+    "mention_id": "M06",
+    "claim_number": "C104",
+    "note_id": "N02",
+    "source_version": "TEXT-1",
+    "text": "Harbor Legal",
+    "start_character": 0,
+    "end_character": 12
+  },
+  {
+    "mention_id": "M07",
+    "claim_number": "C104",
+    "note_id": "N02",
+    "source_version": "TEXT-1",
+    "text": "Maya Chen",
+    "start_character": 21,
+    "end_character": 30
+  },
+  {
+    "mention_id": "M08",
+    "claim_number": "C104",
+    "note_id": "N02",
+    "source_version": "TEXT-1",
+    "text": "Harbor Legal",
+    "start_character": 32,
+    "end_character": 44
+  },
+  {
+    "mention_id": "M09",
+    "claim_number": "C104",
+    "note_id": "N02",
+    "source_version": "TEXT-1",
+    "text": "The firm",
+    "start_character": 64,
+    "end_character": 72
+  },
+  {
+    "mention_id": "M10",
+    "claim_number": "C104",
+    "note_id": "N02",
+    "source_version": "TEXT-1",
+    "text": "Elena Ruiz",
+    "start_character": 79,
+    "end_character": 89
+  }
+]

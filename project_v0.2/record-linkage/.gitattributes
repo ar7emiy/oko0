@@ -1,0 +1,4 @@
+# Reference tables are hashed (reference/SOURCES.md): keep them byte-exact on every checkout.
+reference/** -text
+# The stub packets' manifest records a SHA-256 per file: keep their bytes exactly as generated.
+review/stubs/** -text

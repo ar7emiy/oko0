@@ -1,0 +1,2430 @@
+ 
+ 
+UNITED STATES DISTRICT COURT 
+EASTERN DISTRICT OF NEW YORK 
+ 
+ 
+AMERICAN TRANSIT INSURANCE COMPANY,  
+ 
+Plaintiff,  
+ 
+- against – 
+ 
+BRADLEY PIERRE, MARVIN MOY, M.D., 
+RUTLAND MEDICAL P.C., WILLIAM A. WEINER, 
+D.O., NEXRAY MEDICAL IMAGING, P.C. d/b/a 
+SOUL   RADIOLOGY MEDICAL IMAGING and 
+JOHN DOES 1-15, 
+ 
+  Defendants. 
+(i) : 
+ 
+____ CV ____ 
+ 
+ 
+ 
+COMPLAINT  
+ Plaintiff American Transit Insurance Company  (“American Transit”), by and through its 
+attorneys, Greenberg Traurig, LLP, for its Complaint against Defendants Bradley Pierre (“Pierre”), 
+Marvin Moy, M.D. (“Moy”), Rutland Medical P.C. (“Rutland”), William A. Weiner, D.O. 
+(“Weiner”), and Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical Imaging  
+(“Nexray”), John Does 1-15 (the “John Doe Defendants,” and together with the other defendants, 
+“Defendants”), hereby alleges as follows on personal knowledge as to itself and information and 
+belief as to all other matters: 
+NATURE OF THE ACTION 
+1. This is an action pursuant to the Racketeer Influenced and Corrupt Organizations 
+Act (“RICO”), 18 U.S.C. § 1961 et seq. and other applicable laws, rules, and regulations, and the 
+common law, to seek redress for the illegal scheme that Defendants have perpetrated for well over 
+a decade against American Transit, the largest taxi and livery No-Fault liability insurer in New 
+York.  During that time, Defendants have presented to American Transit and demanded payment 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 1 of 93 PageID #: 1 
+2 
+for numerous false, inflated, and otherwise fraudulent No-Fault claims. As detailed below, as part 
+of the rampant fraud that is permeating the No-Fault insurance industry, a cadre of purported 
+medical providers and their agents have built an industry on bilking insurance carriers, here 
+American Transit, out of millions of dollars by filing, pursuing , and obtaining recovery for false 
+insurance claims, in many instances where the claimant has suffered no injury at all, the treatment 
+allegedly received is not required, or it far exceeds what is medically necessary to treat the injury 
+sustained.  The perpetrators of this scheme hide behind the inordinate volume of No-Fault claims, 
+the dated system that resolves them in a superficial way given their volume, and the know ledge 
+that the carriers cannot possibly detect, much less protect themselves against , the fraud that lies 
+within this deluge of claims.   
+2. By t his action  American Transit seeks redress for one such scheme  by which 
+Defendants submitted, and caused to be submitted to American Transit for payment, thousands of 
+fraudulent No-Fault insurance reimbursement claims for medically unnecessary, non-existent, and 
+what would otherwise be non-reimbursable healthcare services, including for purported  
+examinations, computerized range of motion and muscle strength testing, physical performance 
+testing, outcome assessment testing, physical therapy services, electrodiagnostic testing, 
+acupuncture services, chiropractic services, radiological tests, and ma gnetic resonance imaging .  
+These claims were for services Defendants represented to American Transit were legitimately and 
+necessarily provided to New York automobile accident victims covered by insurance policies 
+issued by American Transit.  In truth, the services were either not provided or not necessary, but 
+Defendants told American Transit otherwise and concealed the truth.  All told, Defendants’ scheme 
+has caused American Transit to pay out millions of dollars in false claims. 
+3. Defendants perpetrated their scheme by using medical professional corporations 
+Defendants Rutland and Nexray  to generate and process a high volume of patients by paying 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 2 of 93 PageID #: 2 
+3 
+referral sources hundreds of thousands of dollars in illegal kickbacks.  It has surfaced only recently, 
+as the federal government has separately sued Defendants for their wrongful conduct. 
+4. As reported in the federal indictment in United States v. Pierre, No. 1:22-cv-00019-
+PGG (S.D.N.Y.) (hereinafter, the “Criminal Action”) , Defendant Pierre was an architect  of the 
+scheme by paying bribes to 911 operators, and hospital employees, among others, in exchange for 
+the referral of automobile accident victims to Rutland , a No-Fault medical mill in New York .   
+Rutland, in turn, referred patients to Nexray , a CT scan and x -ray provider,  for unnecessary 
+diagnostic imaging.  Pierre has since pled guilty to conspiracy to commit bribery and conspiracy 
+to defraud the Internal Revenue Service.  Weiner has since pled guilty to conspiracy to commit 
+healthcare fraud and to defraud the United States. 
+5. As part  of the scheme, the Defendants provided patients with medically 
+unnecessary treatment not tied to an accident victim’s actual physical condition and then billed for 
+these medically unnecessary procedures .  In short, Defendants subjected patients to medical 
+services they did not need for the sole purpose of billing American Transit and receiving payment.  
+Defendants exploited the insureds’ No-Fault insurance benefits and billed for huge volumes of 
+medical services provided solely for profit and without regard for genuine patient care. 
+6. Rutland is purportedly owned by Defendant Moy, but upon information and belief, 
+is actually owned and controlled by Pierre —an unlicensed layperson—through his management 
+company, Medical Reimb ursement Consultants Inc . (“MRC”).  Nexray is nominally owned by 
+Weiner, but upon information and belief, is actually owned and controlled by Pierre through his 
+management company, MRC. Rutland and Nexray fraudulently held themselves out as prop erly 
+licensed professional corporations that are entitled to reimbursement under Article 51 of the 
+Insurance Law in violation of  the New York State Department of Financial Services (“DFS”) 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 3 of 93 PageID #: 3 
+4 
+regulations and the New York State Court of Appeals holding in State Farm Mutual Auto. Ins. Co. 
+v. Mallela, 827 N.E.2d 758 (N.Y. 2005). 
+7. Pierre controls Rutland and Nexray in violation of New York law because non-
+physicians—like Pierre —are prohibited fr om owning or controlling medical professional 
+corporations in New York.   See United States v. Weiner , No. 1:22-cr-00019-PGG at ECF 367 
+(S.D.N.Y. Jan. 11, 2024). 
+8. Defendants’ fraudulent scheme was exposed in 202 2, when Pierre, Moy, Weiner 
+and other conspirators were indicted in the United States District Court for the Southern District 
+of New York in the Criminal Action and arrested on charges of conspiracy to commit healthcare 
+fraud, conspiracy to commit money laundering, conspiracy to commit Travel Act bribery, 
+aggravated identity theft, and conspiracy to defraud the United States.  
+9. The indictment, superseding indictments, and informations  filed in the C riminal 
+Actions detail the Defendants’ scheme to defraud No -Fault insurance providers, including 
+American Transit, in the tens of millions of dollars.   
+10. Here, American Transit seeks recovery of the millions of dollars Defendants stole 
+from it  through their fraudulent scheme.  It  seeks a declaration that it was and is not legally 
+obligated to pay reimbursement of the more than $2,300,000.00 in No-Fault insurance claims that 
+have been submitted by or on behalf of Rutland and Nexray, as they are the product of this illegal 
+scheme.  As alleged herein, and as will be shown at trial :  Rutland and Nexray ha d and have no 
+right to receive payment for any bills presented to American Transit because of the illicit scheme, 
+including because the services they purported to provide were and are not medically necessary and 
+were provided—to the extent they were provided at all—pursuant to fraudulent protocols designed 
+solely to charge prescribed fees to financially enrich the Defendants, rather than to treat or 
+otherwise benefit the patients who purportedly were injured and receiving treatment;  they are the 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 4 of 93 PageID #: 4 
+5 
+result of unlawful kickback and referral arrangements in violation of federal and state laws ; and 
+they are part of the scheme controlled in part by an unlicensed principal—Pierre—rendering void 
+all bills presented through this scheme.  
+11. As discussed below, the Defendants, at all relevant times, knowingly (a) engaged 
+together in a scheme to defraud American Transit using unlawful kickback and referral 
+arrangements in violation of New York law ; (b) ordered and provided medical services pursuant 
+to fraudulent protocols designed solely to maximize charges to American Transit, and not because 
+they were medically necessary or designed to treat  the patients who were subjected to them; and 
+(c) presented to American Transit for payment thousand s of No-Fault claims for the alleged cost 
+of treatment reimbursement, even though they also knew that a substantial part of those claims 
+was false, in that the services were either not performed or medically unnecessary  and that they 
+were not eligible to receive payment for those claims. 
+12. American Transit reasonably relied on the representations that Rutland, Nexray, 
+and their principals Pierre, Moy, and Weiner made to it, including representations in the bills and 
+other claims records mailed to American Transit, representations that the charges reflected in such 
+documents were true and correct, and representations that the medical procedures for which they 
+sought reimbursement had, in fact, occurred and were medically necessary.  As alleged herein, 
+such representations were knowingly false when made by Defendants in that the services had  not 
+been performed, were medically unnecessary, and/or the reimbursement sought was far in excess 
+of what the services actually cost.  
+13. Based on such representations , American Transit paid Rutland  and Nexray’s No -
+Fault claims, which, to date, exceed  $2,300,000.00.  American Transit has been damaged by 
+Defendants’ No-Fault scheme, in that it has paid out millions of dollars in false claims.  As a result 
+of the Defendants’ scheme, American Transit has incurred damages of more than $3,240,000.00. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 5 of 93 PageID #: 5 
+6 
+14. Defendants’ fraudulent scheme has continued uninterrupted since in or about 2008, 
+as Defendants, including through their agents, continue to seek to recover for these fraudulent bills 
+submitted to American Transit, including through litigation against American Transit. 
+15. In this action  for (a) violatio ns of the federal Racketeer Influenced and Corrupt 
+Organizations (RICO) Act, 18 U.S.C. § 1961, et seq.; (b) common-law fraud; (c) unjust enrichment 
+and (d) violations of New York Public Health Law § 238-a, American Transit seeks to recover all 
+monies wrongfully paid to Rutland, Nexray, Pierre, Moy, and Weine r as a result of their 
+submission of millions of dollars of fraudulent bills presented to and paid by American Transit.   
+16. American Transit also seeks a declaration pursuant to 28 U.S.C. § 2201 that it is 
+not obligated to make any payments to Rutland or Nexray in connection with any No-Fault claims 
+they have submitted to American Transit. 
+THE PARTIES 
+A. Plaintiff American Transit Insurance Company 
+17. Plaintiff American Transit Insurance Company is duly organized and existing under 
+the laws of the State of New York and has its principal place of business in Brooklyn, New York.  
+At all times relevant to the allegations contained in this Complaint, American Transit has been and 
+is authorized to conduct business in the State of New York. 
+18. American Transit is engaged in the writing of automobile insurance policies in the 
+State of New York and provides specialized insurance coverage for the taxi and livery commercial 
+auto industry, particularly No-Fault insurance coverage.  American Transit is the one of the largest 
+No-Fault insurers for the taxi and livery commercial automobile service industry in New York.   
+19. This is not the first time when American Transit has been a victim of insurance 
+fraud.  It has on several other occasions  been forced to commence litigation in both federal and 
+state courts to protect its rights against this fraud and to preserve its business.  These suits include 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 6 of 93 PageID #: 6 
+7 
+American Transit Insurance Company v. Albis, et  al. (Index No. 656455/2018) (N.Y. Sup. Ct. 
+N.Y. Cnty.); American Transit I nsurance Company v. Koppel, et al.  (Index No. 603360/2018) 
+(N.Y. Sup. Ct. Nassau Cnty.) ; American Transit Insurance Company v. Akpan, et al.  (Case No. 
+18-cv-04420) (E.D.N.Y.); American Transit Insurance Company v. Bilyk, et al. (Case No. 19-cv-
+5171) (E.D.N. Y.); American Transit Insurance Company v. Advanced Comprehensive 
+Laboratory, LLC, et al. (Case No. 21-cv-413) (E.D.N.Y.); American Transit Insurance Company 
+v. Allbody Healing Supplies LLC, et al. (Case No. 22 -cv-5200) (E.D.N.Y.) ; American Transit 
+Insurance Company v. Medsource Solutions, Inc., et al.  (Case No. 22 -cv-5317) (E.D.N.Y.) ;  
+American Transit Insurance Company v. QBS Solutions, et al. (Case No. 22-cv-6585) (E.D.N.Y). 
+B. Defendant Bradley Pierre 
+20. Upon information and belief , Defendant Bradley Pierre resides in and is a citizen 
+of the State of New Jersey. 
+21. Upon information and belief, Pierre is not authorized to practice medicine in the 
+State of New York.  Upon information and belief, Pierre is not a licensed medical practitioner. 
+22. Contrary to law, Pierre upon further information and belief has owned and 
+controlled medical facilit ies that engaged in fraudulent billing to American Transit, including 
+Rutland and Nexray in New York. 
+23. According to the indictment in the Criminal Action , Pierre is an architect of the 
+fraudulent billing scheme involving Rutland and Nexray and has pled guilty  to conspiracy to 
+commit bribery and conspiracy to defraud the Internal Revenue Service in that case. 
+C. Defendant Marvin Moy, M.D. 
+24. Upon information and belief, at all relevant times, Defendant Moy resides in and is 
+a citizen of the State of New York.   Moy was and is licensed to practice medicine in the State of 
+New York.   
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 7 of 93 PageID #: 7 
+8 
+25. Beginning in or about 2009, and numerous times thereafter, Moy represented 
+himself to American Transit to be the sole officer, director, and shareholder of Rutland.   Upon 
+information and belief, since at least 2009, Moy ceded operation and management over Rutland to 
+Defendant Pierre. 
+26. In or about October 13, 2022, Moy allegedly disappeared during a fishing trip 
+onboard a recreational vessel approximately 16 miles off the coast of Long Island, New York.  
+According to a “Letter of Presumed Death” issued by the United States Coast Guard, Moy was not 
+found in the ensuing search.  The letter was intended to document “the loss and presumptive death 
+of Marvin Moy, in lieu of a Death Certificate.”   Notwithstanding his disappearance, and alleged 
+sole ownership and control of Rutland, Rutland continues through attorneys to prosecute insurance 
+collection cases against American Transit. 
+27. Moy is a named defendant in the Criminal Action  concerning the criminal 
+prosecution of the Nexray/Rutland fraudulent billing scheme. 
+D. Defendant William A. Weiner, D.O. 
+28. Upon information and belief, at all rele vant times, Defendant Weiner has resided 
+in and is a citizen of the State of New York.  Upon information and belief, Weiner is licensed to 
+practice medicine in the State of New York. 
+29. Beginning in 2011 and numerous times thereafter, Weiner represented himself to 
+American Transit to be the sole office, director, and shareholder of Nexray.  Upon information and 
+belief, at least since 2008, Weiner ceded operation and management of Nexray to Defendant Pierre. 
+30. On January 16, 2024, Weiner pled guilty in  Criminal Action of one count of 
+conspiracy to commit healthcare fraud and to defraud the United States, in violation of 18 U.S.C. 
+§ 371. 
+ 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 8 of 93 PageID #: 8 
+9 
+E. Defendant Rutland Medical, P.C. 
+31. Defendant Rutland is organized as a professional corporation under New York law. 
+32. Rutland’s principal place of business is 145 E 98th Street, 1st Floor, Brooklyn, New 
+York 11212. 
+33. Rutland is an enterprise whose activities affect interstate commerce. 
+34. Upon information and belief, at lease since in or around 2008, Pierre and Moy have 
+participated in the operation and management of Rutland. 
+35. Rutland was and is registered under Moy’s name and medical license .  Upon 
+information and belief , Rutland was and is in truth owned and controlled by Pierre during the 
+course of this scheme. 
+36. As alleged herein, Rutland’s bills for services that it presented to American Transit 
+were and are fraudulent because the medical services it provided were medically unnecessary, 
+excessive, and designed not to provide No -Fault claimants with medical care they needed but 
+rather to maximize No-Fault payments paid to it by American Transit.  
+37. As alleged herein, Rutland violated numerous applicable New York licensing 
+requirements by (a) allowing unlicensed persons to own and control the entity, (b) billing for 
+fraudulent and/or unnecessary medical services , including to American Transit , and ( c) treating 
+patients with standardized procedures without regard for the need for those procedures. 
+38. Rutland violated N.Y. Public Health Law Section 238, which prohibits cer tain 
+health care providers, including providers providing radiological services, from referring the 
+performance of such services to those with whom they have financial relationships.  Rutland 
+violated N.Y. Pub. Health L. § 238 -a(1)(a) by referring patients  to other providers with which it 
+has a financial relationship, including Nexray.  
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 9 of 93 PageID #: 9 
+10 
+39. Rutland was and is therefore not eligible to  collect No-Fault payments from 
+American Transit under New York’s No-Fault laws. 
+F. Defendant Nexray Medical Imaging, P.C. d/b/a Soul Radiology Medical  
+Imaging 
+40. Defendant Nexray is organized as a professional corporation under New York law. 
+41. Upon information and belief, Nexray’s principal place of business is 135-25F 79th 
+Street, Suite 2B, Howard Beach, New York 11414. 
+42. Nexray is an enterprise whose activities affect interstate commerce. 
+43. Upon information and belief, a t least since in or around 2008, Weiner and Pierre 
+operated and managed Nexray. 
+44. Nexray was registered under Weiner’s name and medical license, but upon further 
+information and belief, Nexray was owned and controlled by Pierre during the course of this 
+scheme. 
+45. As alleged herein, Nexray billed American Transit for unnecessary and/or 
+excessive diagnostic radiology services throughout the course of this scheme. 
+46. As alleged herein, Nexray’s bills for services that it presented to American Transit 
+were and are fraudulent because the radiological services it provided were medically unnecessary, 
+excessive, and designed not to provide No-Fault claimants with medical care they needed but 
+rather to maximize No-Fault payments paid to it from American Transit. 
+47. Nexray violated numerous applicable New York licensing requirements by (a) 
+allowing unlicensed persons to own and control the entity, (b) billing insurance carriers, including 
+American Transit, for fraudulent and/or unnecessary medical services, and ( c) treating patients 
+with standardized procedures without regard for the need for those procedures. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 10 of 93 PageID #: 10 
+11 
+48. Nexray was and is therefore not eligible to collect no -fault payments from 
+American Transit under New York’s No-Fault laws. 
+G. John Doe Defendants 
+ 
+49. John Does 1 -15 are individuals and entities whose names are not yet known to 
+American Transit, and who have conspired to and did assist in the fraudulent and unlawful conduct 
+alleged in this Complaint.  These individuals and entities will be added as defendants when their 
+names and the extent of their participation become known through discovery. 
+JURISDICTION AND VENUE 
+50. This Court has subject matter jurisdiction over this action pursuant to 28 U.S.C. §§ 
+1331, as the claims arise under the laws of the United States , including the Racketeer Influenced 
+and Corrupt Organizations Act.  See 18 U.S.C. § 1962(c). 
+51. This Court has supplemental jurisdiction over Plaintiff’s state law claims pursuant 
+to 28 U.S.C. § 1367. 
+52. Venue in the Eastern District of New York is proper pursuant to 28 U.S.C. § 
+1391(b)(2), as the District where Plaintiff maintains its principal place of business and where a 
+substantial amount of the activities providing the basis for this Complaint occurred.  
+FACTS COMMON TO ALL CLAIMS 
+A. New York’s No-Fault Statutory and Regulatory Framework 
+53. New York’s No-Fault laws are designed to ensure that injured victims of motor 
+vehicle accidents have an efficient mechanism to pay reasonable fees for necessary professional 
+healthcare services.  
+54. Under New York’s Comprehensive Motor Vehicle Insurance Repar ations Act 
+(N.Y. Ins. Law § 5101, et seq.), and the regulations promulgated pursuant thereto (11 N.Y.C.R.R. 
+§ 65, et seq.) (collectively the “ No-Fault laws”), motor vehicle insurers are required to provide 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 11 of 93 PageID #: 11 
+12 
+coverage to persons involved in motor vehicle acci dents, regardless of fault. These benefits are 
+known as “No-Fault benefits.”  
+55. New York law mandates that No -Fault benefit coverage in the amount of 
+$50,000.00 be available to each eligible claimant.  However, under The New York City Taxi and 
+Limousine Commission (TLC) rules, which are applicable to  both medallion taxicabs and for-hire 
+vehicles, owners of such vehicles must maintain bodily injury liability coverage for injury to one 
+person in a motor vehicle accident in an amount not less than $100,000 per person and for injury 
+to two or more persons for injury in an accident in an amount of not less than $300,000 and to 
+maintain personal injury protection ( No-Fault) coverage in an amount of not less than $200,000 
+per person.  The No-Fault insurance policies issued by American Transit at issue in this case are 
+subject to these rules.   
+56. Each eligible insured person (i.e., “claimant”) may use such No-Fault benefits as a 
+source of compensation for any “basic economic loss” incurred as the result of a motor vehicle 
+accident.  
+57. Under New York’s No-Fault laws, “basic economic loss” is defined to include “all 
+necessary expenses” for an array of professional healthcare services, including the evaluations, 
+treatments, injections, and surgical procedures purportedly provided by the defendants. N.Y. I ns. 
+Law § 5102(a)(1); 11 N.Y.C.R.R. § 65-1.1.  
+58. A claimant may assign their No-Fault benefits to third parties, such as professional 
+healthcare service providers.  
+59. Pursuant to a duly executed assignment of benefits, a healthcare provider may 
+submit claims directly to an insurance company and receive paymen t for necessary healthcare 
+services rendered, using the claim form required by the New York State Department of Insurance 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 12 of 93 PageID #: 12 
+13 
+(known by its title “Verification of Treatment by Attending Physician or Other Provider of Health 
+Service” or more commonly known as an “NF-3”). 
+60. The NF -3 form is important documents in the insurance industry. Th is form  
+represents and certifies that the provider’s request for payment is not materially false, misleading, 
+or fraudulent. 11 N.Y.C.R.R. § 65.3-11(a); N.Y. Ins. Law § 403(d).  
+61. No-Fault automobile insurance was intended to be a form of coverage designed to 
+be useful to the consumer and to provide medical coverage, lost wages, and other benefits to people 
+injured in automobile accidents so that they can recover from their injuries with minimal disruption 
+in their lives.   
+62. For approximately twenty years, commencing with its inception in 1974, the No -
+Fault system functioned to the benefit of the consumer with premiums that were generally 
+affordable. 
+63. Since the mid-1990s, however, New York’s No-Fault coverage has been targeted  
+by perpetrators of fraud.  An increasingly large number of such persons have gone into business  
+with the purpose of abusively billing the New York No -Fault system.  The New York Court of  
+Appeals commented in uphol ding changes to the Insurance Department ’s No-Fault regulations 
+that the No -Fault system has been targeted by and is permeated with fraud.   As the Court of  
+Appeals explained in Matter of Medical Society of New York v. Serio, 100 N.Y.2d 854, 768  
+N.Y.S.2d 423 (2003), the fraud has included staged accidents, billing for unnecessary services,  
+and organized crime involvement.  Id. at 861-62, 768 N.Y.S.2d at 731. 
+64. The problem continues .  DFS explained in  its March 15, 2016  Health Care 
+Insurance Fraud Report (the “Report”) that health care fraud has serious adverse impacts on the 
+public, consumers, and the insurers.  According to DFS, this fraud includes medical providers that 
+bill for services that were not provided or that were  unnecessary, and constituted the majo rity of 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 13 of 93 PageID #: 13 
+14 
+all health care fraud in New York.  DFS noted that insurers are required to investigate fraud and 
+have a plan for the investigation and initiation of civil actions.  In the transmittal of the Report to 
+the Governor, DFS reported that No-Fault insurance fraud costs the public in New York “hundreds 
+of millions of dollars” in insurance costs.  
+65. The abusive practices set forth herein not only drive up the cost of insurance  and 
+place its availability at risk, they place in peril the quality of health care available to the public. 
+66. New York law prohibits licensed healthcare services providers from paying or 
+accepting kickbacks in exchange for patient referrals.  See, e.g., N.Y. Pub. Health Law 238. 
+67. Therefore, under the New York No-Fault laws, a healthcare services provider is not 
+eligible to receive personal injury protection (“PIP”) benefits if it is fraudulently licensed, if it pays 
+or receives unlawful kickbacks in exchange for patient referrals, if it permits unlicensed laypersons 
+to control or dictate the treatments rendered or allows unlicensed laypersons to share in the fees 
+for the professional services.   
+68. When a healthcare services provider submits a claim for PIP Benefits using the  
+current procedural terminology (“CPT”) codes set forth in the NY Fee Schedule, it represents that: 
+(i) the service described by the specific CPT code that is used was performed in a competent 
+manner in accordance with applicable laws and regulations; (ii) the service described by the 
+specific CPT code that is used was reasonable and medically necessary; and (iii) the service and 
+the attendant fee were not excessive. 
+69. Pursuant to New York Insurance Law § 403, the NF -3s form  submitted by a 
+healthcare services provider to American Transit, and to all other au tomobile insurers, must be  
+verified by the health care provider subject to the following warning: 
+Any person who knowingly and with intent to defraud any 
+insurance company or other  person files an application for 
+insurance or statement of claim containing any materially false  
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 14 of 93 PageID #: 14 
+15 
+information, or conceals for the purpose of misleading, information 
+concerning any fact  material thereto, commits a fraudulent 
+insurance act, which is a crime. 
+ 
+70. Further, under New York’s No-Fault laws and regulations,  medical providers are 
+not eligible to seek or receive payment under Insurance Law § 5102 if they fail to meet any New 
+York State licensing requirement necessary to perform such service in New York. 
+71. An insurer may withhold No-Fault benefit payments to a medical provider if there 
+is a “willful and material failure” by the provider to abide by licensing and incorporation statutes.   
+Mallela, 827 N.E.2d at 761; N.Y.C.R.R. § 65-3.16(a)(12). 
+72. Parties may “look beyond the face of licensing documents” to demonstrate illegal 
+ownership and control.  Id.  Factors that may be considered when determining actual control of a 
+medical provider include one-sided agreements, control of assets, profit sharing, and the extent of 
+the nominal owner’s role in the entity’s business.  See Andrew Carothers, M.D., P.C. v Progressive 
+Ins. Co., 979 N.Y.S.2d 439, 443-44 (2d Dep’t 2013). 
+73. A medical provider’s illegal corporate practice “may support a finding t hat the 
+provider is not an eligible recipient of reimbursement under 11 N.Y.C.R.R. § 65 -3.16(a)(12) 
+without meeting the traditional elements of common -law fraud.”  Andrew Carothers, M.D., P.C. 
+v. Progressive Ins. Co., 128 N.E.3d 153, 163 (N.Y. 2019). 
+B. Defendants’ Fraudulent Scheme  
+74. Defendants’ scheme surfaced in January 2022, when Moy, Pierre, and Weiner were 
+indicted in the Criminal Action on charges of conspiracy to commit healthcare fraud, conspiracy 
+to commit money laundering, conspiracy to commit Travel Act bribery, and aggravated identify 
+theft.  A superseding indictment was filed on June 26, 2023 (the “Superseding Indictment”). 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 15 of 93 PageID #: 15 
+16 
+75. As set forth in the indictment, “[f]rom at least in or about 2008 up to and including 
+in or about 2021 ,” Pierre, Moy, Weiner, and other co -conspirators “participated in a criminal 
+scheme to exploit insurance programs designed to protect motor vehicle accident victims.” 
+76. As set forth in the Superseding Indictment, Pierre recruited medical practitioners to 
+open No-Fault clinics from at least 2008 through 2021.  These clinics fell into two groups: the No-
+Fault clinics that conduct initial evaluations of patients and prescribed specialized care, such as 
+Rutland, and MRI facilities—such as Nexray—that provide medical imaging services. 
+77. These No -Fault clinics “wer e not owned, operated, and controlled by licensed 
+medical practitioners as is required by law.”  (Superseding Indictment ¶ 15.)  Pierre “was the actual 
+owner, operator, and controller” of the No-Fault clinics.  (Id.) 
+78. Pierre “received the majority of the [c]linics’ proceeds and decided how much the 
+nominal owners would be paid.”  (Id.) 
+79. Pierre “possessed the checkbooks  and pre-signed checks from the [c]linic’s bank 
+accounts; controlled the debit and credit cards for the [c]linics.”  (Id.) 
+80. Pierre “controlled hiring and firing of the [c]linic’s employees; invested the initial 
+funds to establish the Clinics.”  (Superseding Indictment ¶ 15.) 
+81. Pierre “identified the locations for the [c]linics; negotiated the rent for the [c]linics’ 
+leases.”  (Id.) 
+82. Pierre “ chose the  attorneys that would represent the [c]linics in arbitration, 
+litigation, and sworn depositions before insurance companies.”  (Id.) 
+83. Pierre arranged for the No -Fault clinics to use Moy “ to conduct painful and 
+medically unnecessary  electrodiagnostic test ing” on patients including electromyography and 
+nerve conduction velocity testing.  (Id. ¶ 16.) 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 16 of 93 PageID #: 16 
+17 
+84. As set forth in the Superseding Indictment, Pierre “profited every step of the way.”  
+In addition to receiving the majority of the proceeds of the No -Fault clinics, Pierre required the 
+No-Fault clinics to refer patients to a network of  pharmacies, attorneys, and medical  specialists 
+“handpicked” by Pierre for one reason – “they paid [Pierre] millions of dollars for illegal referrals.”  
+(Superseding Indictment ¶ 17.) 
+85. According to the  Superseding Indictment, Pierre engaged in the following illegal 
+activities:  
+a. Pierre steered hundreds of patients from the clinics to Nexray.  (Id. ¶¶ 18-19.) 
+b. Nexray purported to be operated and controlled by a licensed physician—Weiner—
+but in practice, Pierre owned, operated, and controlled Nexray.  (Id.) 
+c. Pierre received the majority of Nexray’s proceeds.  (Id.) 
+d. Pierre controlled Nexray’s bank accounts.  (Id.) 
+e. Pierre influenced the hiring and firing of Nexray’s employees.  (Id.) 
+f. Pierre identified the locations for Nexray’s facilities.  (Id.) 
+g. Pierre negotiated the rent for Nexray’s leases.  (Id.) 
+h. Pierre chose the attorneys that would represent Nexray in arbitration, litigation, and 
+sworn depositions before insurance companies.  (Id.) 
+86. Pierre further arranged for a network of No-Fault doctors and attorneys to refer 
+patients to Nexray for medical care —often through bribery —in addition to the No -Fault clinics 
+under his control.  (Id. ¶¶ 18-19.) 
+87. To boost referrals to Nexray, Pierre, and Weiner “agreed to falsify clinical findings 
+of injuries on MRI reports and pressure radiologists working for Nexray to exaggerate findings of 
+injuries in their own reports.”  (Id. ¶ 20.)   
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 17 of 93 PageID #: 17 
+18 
+88. These false clinical findings  allowed referring physicians and at torneys to bill for  
+additional benefits under the No-Fault laws and obtain larger legal settlements and judgments.   
+(Superseding Indictment ¶ 20.)   
+89. Pierre arranged for physicians, including Moy and Weiner “to lie under  oath to 
+insurance companies to conceal the healthcare fraud scheme.”  (Id. ¶ 21.)   
+90. Pierre, Moy, and Weiner  were aware that insurance companies would deny  
+reimbursement for the No -Fault clinics if Moy and Weiner  testified truthfully about the  medical 
+necessity of treatments and Pierre’s control of the Clinics. (Id. ¶ 21.)    
+91. Pierre arranged for Moy and Weiner to falsely state under oath, among other things, 
+that Pierre was solely a lender for Rutland and Nexray  and Pierre played no role in r eferring 
+patients to the clinics.  (Id. ¶ 21.)   
+92. Pierre, Moy, and Weiner laundered the proceeds of the No-Fault scheme to conceal 
+the operation.  (Superseding Indictment ¶ 22.) 
+93. To conceal the scheme, Pierre relied on co -conspirators to set up shell companies, 
+which he then paid using one of the companies he controlled, Marketing 4 You.  (Id. ¶ 23.)   
+94. To conceal his receipt of the No-Fault scheme proceeds, Pierre caused the No-Fault 
+clinics to transfer the proceeds from the scheme to his own company, Medical Reimbursement 
+Consultants (“MRC”).  (Id. ¶ 24.)  The payments were falsely described as loan repayments.  (Id. 
+¶ 25.) 
+95. As part of these phony financing arrangements, Pierre purportedly gave loans to 
+Moy and Weiner “in return for a percentage of any money later paid by insurance companies.”  
+(Id. ¶ 26.)  In reality, Moy and Weiner directly paid Pierre in excess of at least $2.4 million of what 
+Pierre was entitled to receive under the phony agreements.  (Id.)   
+ 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 18 of 93 PageID #: 18 
+19 
+C. Fraudulent Billing for Unnecessary Medical Services 
+96. As part of the scheme, Rutland and Weiner submitted bills to American Transit for 
+as many services as possible —even for services that were medically unnecessary —to enrich 
+Pierre, Moy, Weiner, and others.  This scheme is described in further detail below. 
+1. The Initial Examinations: Gateway to the Scheme 
+97. As part of  Defendants’ fraudulent scheme, Rutland , through Moy,  provided 
+virtually every patient with a purported initial examination.  These initial examinations were used 
+to provide phony diagnoses so that Defendants could use them as a false basis to refer patients to 
+obtain medically unnecessary exams, tests, or procedures.  Defendants then billed American 
+Transit for these medically unnecessary follow-up examinations, chiropractic services, injections, 
+electrodiagnostic testing, and related services. 
+98. The charges for the reported initial examinations were fraudulent in that the initial 
+examinations—to the extent they were performed at all —were part of a scheme to use the 
+examinations merely as a gateway to referring patients to obtain more expensive lucrative exams, 
+tests, and procedures that could be billed to American Transit.   
+99. The charges for the purported initial examinations also were fraudulent in that they 
+misrepresented the nature  of and justifications for  the purported examinations.  For example, as 
+described in the case studies below, in certain instances claimants  went to the emergency room 
+following the alleged motor vehicle accident in question and were released the same day with no 
+material injury, no surgery, no prescriptions for pain medication, and no referrals for imaging  or 
+testing.   Yet, shortly thereafter upon examination by Moy, many of these same patients who had 
+been released by hospitals suddenly needed referrals for expensive imaging, physical therapy,  
+neurological testing, and other services. 
+ 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 19 of 93 PageID #: 19 
+20 
+2. Fraudulent Chiropractic Services 
+100. Defendants’ scheme involved Rutland’s and Moy’s provision of and billing for a 
+highly templated and generic regimen of often unnecessary chiropractic care that was accompanied 
+by a barrage of overlapping , redundant, and unnecessary  diagnostic tests, the results of which 
+Rutland and Moy routinely disregarded and ignored.  
+101. These tests and services were not provided based on any medical necessity  or 
+request of the patient.  For example, patient I.V., whose treatment is described below, was provided 
+with repeated chiropractic services at Rutland, in addition to various tests, imagining, and office 
+visits, even though the patient had been seen and received MRI imaging at a hospital immediately 
+following the relevant motor vehicle accident.  
+102. The tests and servi ces, including but not limited to those received by the patients 
+described the paragraphs below, were administered as a means to (a) maximize Rutland’s profits 
+through the submission of billing to American Transit and (b) justify the provision of additional, 
+excessive, and medically unnecessary treatment, all of which was purposely provided as part of 
+the Defendants’ scheme involving unlawful referrals and to provide unnecessary services and bill 
+American Transit for those services.  
+103. Rutland, by Moy and Pierre, promoted, administered, and billed for these 
+chiropractic services and related diagnostic tests.  
+3. Fraudulent Electrodiagnostic Testing 
+104. A central part of the Defendants’ scheme was also to fraudulently provide and bill 
+for unnecessary and excessive electrodiagnostic (“EDX”) testing.   EDX testing is generally used 
+in the clinical evaluation of patients with disorders of the peripheral and/or central nervous system.  
+105. EDX testing involves multiple studies performed by a healthcare provider, such as 
+(a) electromyography studies, which evaluate the health of muscles and the nerve cells that control 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 20 of 93 PageID #: 20 
+21 
+them and (b) nerve conduction studies , which measure how fast an electrical impulse moves  
+through the nerve.  EDX is used to help a practitioner evaluate symptoms, generate a proper 
+diagnosis, and monitor patient response to treatments.  
+106. EDX testing is not to be administered uniformly across a patient population .  
+Because proper EDX testing should involve the use of a patient-specific approach, the nature and 
+scope of the testing should change (and evolve) based on the condition of the particular patient, 
+and as the testing is administered to a patient.  
+107. Here, the E DX testing provided by M oy (or those Rutland employees or agents 
+acting under M oy’s direction and control) provides a clear example of the Defendants’ sham 
+treatment protocol in which the same litany of services was provided to patients regardless of the 
+patients’ condition, age, gender, or prior medical history.  
+108. For example, the use of electromyography was so excessive that many Rutland 
+patients that underwent EDX were subjected to (and thus subsequently billed for) this testing on 
+all four limbs, which is exceedingly rare and uncommon.   
+109. Not only was Rutland and Moy’s barrage of testing redundant and unnecessary, it 
+also posed a serious risk of harm to patients because (a) patients were most often needlessly 
+subjected to  these invasive te sts, (b) the tests yielded incorrect or inaccurate findings and 
+diagnoses, and (c) Moy often disregarded or ignored the results of the tests causing Rutland 
+patients to not receive proper care. 
+110. This barrage of testing also created significant unnecessary expense.  
+i. Fraudulent Nerve Conduction Studies 
+111. In a legitimate clinical setting, nerve conduction studies  are administered to 
+measure nerve conduction by stimulating the nerves with a small electrical current.  
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 21 of 93 PageID #: 21 
+22 
+112. Nerve conduction s tudies involve both F -Wave (“F -Wave”) and H -Reflex (“H -
+Reflex”) studies.  F-wave studies are used to examine the t ransmission of stimulation sites in the 
+arm and leg and related motor neuron responses.  H-Reflex studies involving stimulation of a nerve 
+and recording the reflex electrical discharge from a muscle in limb, and evaluates other nerve 
+impulses. 
+113. Nerve conduction studie s typical ly confirm whether the nerves are functioning 
+properly.  
+114. Nerve conductio n studies should be applied in a dynamic  (meaning patient by 
+patient) rather than  by using a generally applicable  protocol; in other words, the format and 
+application of these studies should vary from pat ient to patient and should also be based on the 
+patient’s symptoms, findings and suspect diagnosis determined by the professional.  
+115. Dynamic decision making regarding each individual test is required by the provider 
+to properly administer EDX testing such as nerve conduction studies. 
+116. According to the American Medical Association (“AMA”), the use of dynamic 
+decision-making in electrodiagnostic testing, such as nerve conduction studies, is a prerequisite to 
+obtain reimbursement for electrodiagnostic CPT coding.  
+117. Contrary to the AMA’s requirements, Moy administered nerve conduction studies 
+without regard to his patient’s symptoms, findings or suspect diagnoses  as evidenced by the 
+virtually identical justifications he recorded for administering nerve conduction studies  to his 
+patients, without regard to the varying medical conditions of these patients.  
+118. Moy failed to tailor his EDX testing to each individual patient and instead followed 
+a pre-determined protocol approach when using nerve conduction studies, which resulted in both 
+the over-utilization of nerve conduction studies and the administration of the same studies to most 
+of Rutland’s patients.  
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 22 of 93 PageID #: 22 
+23 
+119. Moy administered nerve conduction studies to (a) generate billing for otherwise 
+unnecessary services, (b) create a false foundation for the provision of additional tests and services, 
+and (c) produce profits for Rutland and for Moy.  
+120. As a direct resu lt of Moy’s protocol approach to nerve conduction s tudies—
+including (a) his overutilization of the studies, (b) misinterpretation of the results, (c) 
+misrepresentation of the diagnoses, and (d) his failure to utilize the results in his patients’ treatment 
+plans—the charges submitted to American Transit by Ruland for nerve conduction studies were 
+excessive and not compensable under New York No-Fault laws.  
+121. The studies listed in Exhibit A (i.e., the nerve conduction studies billed by Rutland 
+under CPT codes 95903 and 95904) demonstrate Moy’s intentional and grossly irresponsible 
+pattern and practice of misusing nerve conduction studies in connection with Rutland patients  in 
+order to generate billing for services and to present false billing statements to American Transit.  
+122. Because the nerve conduction st udies administered to Rutland patients were 
+excessive unwarranted, and presented by a company owned or controlled by a person who is not a 
+licensed physician, each charge submitted to American Transit by Rutland for these studies is not 
+compensable under New York No-Fault laws. 
+123. American Transit is entitled to recover all payments it made to Rutland for such 
+nerve conduction studies, including, but not limited to those listed in Exhibit A. 
+124. As to Rutland’s bills for nerve conduction studies  presented to American Transit 
+that remain unpaid, American Transit is under no obligation to pay them because those studies 
+were excessive, not warranted, presented by a company owned or controlled by a person who is 
+not a licensed physician, and are therefore not compensable under New York’s No-Fault laws.  
+ 
+ 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 23 of 93 PageID #: 23 
+24 
+ii. Fraudulent Electromyography Studies 
+125. Electromyography studies measure electrical activity in  specific muscles and are 
+often performed in conjunction with nerve conduction studies.  
+126. Electromyography studies involve the insertion of a needle into various muscles—
+the studies can be performed on any muscle accessible to an electromyography needle. 
+Electromyography testing is invasive, as very fine needles are inserted into several muscles.  The 
+needles have a microscopic electrode that picks up electronical signals from the muscles.  If the 
+muscles are found to be functioning normally, then an inference is creat ed that the connection 
+between the motor nerve and the spinal cord is normal.   
+127. An abnormal result from an electromyography study indicates, among other 
+possibilities, the presence of problems with the nerve root near the spinal cord, or with the 
+peripheral nerve near the muscle.  
+128. Similar to nerve conduction studies, the use of electromyography studies should 
+vary from patient-to-patient; otherwise, the testing provider risks reaching an incorrect diagnosis 
+if the same muscles are being tested in the same number and sequence across the entire patient 
+population.  
+129. As such, electromyography studies should be used with a dynamic (patient by 
+patient) rather than general protocol approach.  
+130. Because each patient should be evaluated based upon their individual needs, 
+electromyography studies should be limited and reserved for when specific outcomes are bei ng 
+investigated, such as when a single limb’s muscles are being reviewed for radiculopathy, which is 
+the pinching of a nerve root in the spinal column.  
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 24 of 93 PageID #: 24 
+25 
+131. Furthermore, the muscles selected for electromyography studies should present the 
+least amount of pain possible for the patient. As such, the testing provider should know how to test 
+each muscle and know how to best limit the amount of pain for her or his patient.  
+132. Regardless of these proscriptions, Rutland and Moy used a protocol approach when 
+administering electromyography studies to Rutland patients and did not  tailor the 
+electromyography studies to the specific, individualized needs of each patient. 
+133. Testing in this manner is not just excessive and medically unnecessary, but it can 
+also harm the pat ient because of the risk of pain, bleeding, infection and nerve injury  associated 
+with these tests.  
+134. Rutland and Moy subjected Rutland pat ients to needless and unwarranted (and 
+sometimes painful) electromyography studies as part of a pre -determined protocol that was 
+intentionally employed to (a) generate billing for otherwise unnecessary services, (b) create a false 
+foundation for the provision of additional te sts and services, and (c) produce profits for Rutland 
+and for Moy.  
+135. As a direct result of Rutland and Moy’s protocol approach to electromyography 
+studies—including (a) his overutilization of these studies, (b) misinterpretation of the results, (c) 
+misrepresentation of the diagnoses, and (d) his f ailure to utilize the results of these studies in his 
+patients’ treatment plan—the charges submitted to American Transit for electromyography studies 
+were excessive and not compensable under New York No-Fault laws, including, but not limited 
+to, those listed in Exhibit B.  
+136. The electromyography studies bil led by Rutland under CPT code 95861  
+demonstrate Moy’s intentional and grossly irresponsible pattern and practice of misusing 
+electromyography studies in connection with Rutland patients.  
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 25 of 93 PageID #: 25 
+26 
+137. American Transit is entitled to recover all payments  it made to Rutland for such 
+electromyography studies, including, but not limited to those listed in Exhibit B.  
+138. As to Rutland’s bills for electromyography studies presented to American Transit 
+that remain unpaid, American Transit is under no obligation to pay  them because those studies 
+were excessive, not warranted, presented by a company owned or controlled by a person who is 
+not a licensed physician, and therefore not compensable under New York’s No-Fault laws.  
+iii. Fraudulent H-Reflex Tests 
+139. An H -Reflex is a reflectory reaction of muscles after electrical stimulation of 
+sensory fibers in their innervating nerves.  An H-Reflex is performed using an electric stimulator. 
+140. While H-Reflex can occur in multiple mixed nerves, H -Reflex testing is best 
+practiced clinically only through stimulation of the tibial nerve. 
+141. H-Reflex testing is rarely practiced on additional mixed nerves and even then it i s 
+mainly for research purposes, not for patient diagnosis.  
+142. Upper limb H-Reflex testing in the median nerve is not a common clinical practice; 
+indeed, it borders on experimental and its routine use is below the standard of care.  
+143. As such, H -Reflex testing dictates that a dynamic approach, rather than a set 
+protocol, is needed for its diagnosis and use.  
+144. Ignoring the standard of care and reasonable practice, Moy used H-Reflex testing 
+on both the upper limbs and lower limbs when treating virtually every Rutland patient that 
+underwent H-Reflect testing.   
+145. Rutland and Moy’s abuse of H-Reflex testing is illustrated by billing for hundreds 
+and hundreds of these tests on patients already receiving other, similar tests.  For example, Dr. 
+Moy regularly used H -Reflex tests in several lower limb studies, even where they were not 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 26 of 93 PageID #: 26 
+27 
+medically necessary.  There was no basis for all of these tests, as standard electromyography 
+studies and nerve conduction studies are more than adequate for diagnoses.      
+146. The uniform provision of H -Reflex testing demonstrates that Moy ordered these 
+tests as part of a scheme to prescribe expensive treatments so that Rutland could bill American 
+Transit for them without regard to individualized needs of his patients.  
+147. In at least one instance, Moy also made a diagnosis that was contrary to the H -
+Reflex test that he ordered.  This occurred in the lower limb stu dy of patient L.J., in which the 
+given diagnoses included left L5 -S1 radiculopathy. The H reflex testing should have shown the 
+left H reflex delayed in latency by at least two milliseconds. Instead, the right H reflex was longer 
+by 1.34 milliseconds. The H reflex result was contrary to Moy’s diagnosis of left L5 -S1 
+radiculopathy.  By failing to recognize and report these critical findings, Moy did not meet the 
+standard of care and placed these patients at risk of receiving the wrong medical treatment. 
+148. Rutland and Moy subjected Rutland patients to needless and unwarranted (and 
+sometimes painful) H -Reflex tests as part of a scheme that was intentionally employed to (a) 
+generate billing for otherwise unnecessary services, (b) create a false foundation for the provision 
+of additional tests and services, and (c) produce profits for Rutland and for Moy.  
+149. The H-Reflex testing administered to Rutland patients by M oy (or those Rutland 
+employees or agents working under his direction and control) was excessive and not medically 
+necessary, and the results were materially misrepresented.  
+150. As a direct result of Rutland’s and Moy’s protocol approach to H -Reflex tests—
+including (a) his overutilization of these studies, (b) misinterpretation of the results,  (c) 
+misrepresentation of the diagnoses; and (d) his failure to utilize the results of these studies in his 
+patients’ treatment plan —the charges submitted to A merican Transit for H -Reflex tests were 
+excessive and not compensable under New York No-Fault laws.  
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 27 of 93 PageID #: 27 
+28 
+151. The services listed in Exhibit C (i.e., the H -Reflex tests billed by Rutland under 
+CPT code 95934 ) demonstrate Rutland and Moy’s intentional and grossly irresponsible pattern 
+and practice of misusing H -Reflex tests in connection with Rutland patients, by employing them 
+to virtually the entire Rutland patient population, regardless of medical necessity, and 
+misdiagnosing the results of those tests.  
+152. American Transit is entitled to recover all payments it made to for such H-Reflex 
+tests, including, but not limited to those listed in Exhibit C. 
+153. As to Rutland’s bills for H-Reflex presented to American transit that remain unpaid, 
+American Transit  is under no obligation to pay them because those tests were excessive, not 
+warranted, presented by a company owned or contr olled by a person who is not a licensed 
+physician, and therefore not compensable under New York’s No-Fault laws.  
+iv. Fraudulent Range of Motion Testing 
+154. Spinal range of motion (“ ROM”) occurs in three separate segments of the spine: 
+cervical, thoracic, and lumbar.  It can become impaired in automobile accidents. 
+155. Testing is used to measure spinal ROM in three planes of motion.  ROM testing is 
+typically initially performed by a series of manual tests. 
+156. Rutland and Moy administered computerized ROM testing, a far more expensive 
+procedure, when a manual determination of a patient’s ROM in the initial evaluation was sufficient 
+and constitutes the standard of care.  
+157. As a direct result of Rutland’s and Moy’s protocol approach to ROM tests—
+including (a) his overutilization of these tests, (b) misinterpretation of the results,  (c) 
+misrepresentation of the diagnoses ; and (d) his f ailure to utilize the results of these tests in his 
+patients’ treatment plan—the charges submitted to American Transit for ROM tests were excessive 
+and not compensable under New York No-Fault laws.  
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 28 of 93 PageID #: 28 
+29 
+158. For these reasons, the charges submitted by Rutland for ROM testing were false 
+and fraudulent and, therefore, not compensable.  
+159. Because the charges for the ROM tests administered to Rutland patients were false 
+and fraudulent  because they were medically unnecessary , presented by a company owned or 
+controlled by a person who is not a licensed physician, and/or otherwise billed improperly, each 
+charge submitted to A merican Transit by Rutland for these tests is not compensable unde r New 
+York No-Fault laws, including, but not limited to, the ROM tests billed by Rutland under CPT 
+code 95851 that are listed in Exhibit D.  
+160. American Transit is entitled to recover all payments it made to Rutland for such 
+ROM tests, including, but not limited to those listed in Exhibit D.  
+161. As t o Rutland’s bills for ROM test s presented to American Transit that remain 
+unpaid, American Transit is under no obligation to  pay them because the charges for those tests 
+were misrepresented and false, and, therefore, not compensable under New York’s No-Fault laws.  
+v. Fraudulent Manual Muscle Testing  
+162. Manual muscle testing (“MMT”) is generally utilized to measure a patient’s muscle 
+strength by applying opposing, resistant forces against the body of the patient, who is attempting 
+to move against this force.  
+163. As the standard of care in a  clinical setting, MMT is used only on a case -by-case 
+basis. 
+164. Moy provided virtually the same justification for providing MMT for each of his  
+patients.  For each patient , he issued the same boilerplate “Letter of Medical Necessity for 
+Computerized Range of Motion & Manual Muscle Test” that did not take into the account the 
+individual medial needs of each patient.  Each letter stated that “these assessments must be made 
+on a monthly basis to monitor progress and efficient treatment.”  But thes e tests were never used 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 29 of 93 PageID #: 29 
+30 
+for that purpose and were conducted for the sole purpose of billing American Transit.  Rutland’s 
+billing for MMT is false and fraudulent because multiple charges under the same CPT code were 
+submitted for a particular patient, even though the testing was conducted in the same session  on 
+the same patient.  
+165. Because the muscle testing was unnecessary and because the associated charges for 
+this testing were false and fraudulent, including being presented by a company owned or controlled 
+by a person who is not a licensed physician, the bills submitted to American Transit by Rutland 
+for muscle testing (i.e., the charges billed by Rutland under CPT code 95831) are not compensable 
+under New York No-Fault laws, including, but not limited to, those listed in Exhibit E.  
+166. American Transit is entitled to recover all payments it made to Rutland for such 
+testing, including, but not limited to those tests listed in Exhibit E. 
+167. As to Rutland’s bills presented to American Transit that remain unpaid (including, 
+but not limited to, billing by Rutland under CPT code  95831, American Transit is under no 
+obligation to pay them because the services were unnecessary and unwarranted, because the 
+charges for those tests were misrepresented  and false, and because they were invoiced by a 
+company owned or controlled by a person who is not a licensed physician, they are  not 
+compensable under New York’s No-Fault laws.  
+4. Fraudulent Diagnostic Imaging 
+168. Imaging includes provision of x-ray photography, MRIs, and CT scans, which are 
+used to examine internal conditions of the human body. 
+169. MRI testing is an imaging technique that can produce high quality images of the  
+muscle, bone, tissue , and nerves inside the human body. MRIs often are used following auto  
+accidents to diagnose abnormalities in the nerve roots through the images of the nerves, nerve 
+roots, and surrounding areas. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 30 of 93 PageID #: 30 
+31 
+170. Early imaging (i.e., shortly following an injury) is indicated for the evaluation of 
+spinal or musculoskeletal injuries where there is a concern for a fracture, a dislocated joint, or a 
+spinal injury with impending neurological compromise. 
+171. Early imaging may also be warranted if there is a concern for infection or 
+malignancy. 
+172. In the case of low impact motor vehicle accidents, early imaging studies for patients 
+are only warranted in limited circumstances. 
+173. Nonetheless, Rutland and Moy referred patients for early diagnostic imaging 
+without any indication that such imaging was necessary at the outset of their care. 
+174. Despite the absence of indications for early imaging, Moy ordered multiple MRI 
+scans at the initial examination of Rutland patients before they were afforded any meaningful 
+opportunity to undergo a course of conservative treatment.   Moy also ordered MRIs even where 
+patients had already had imaging performed at hospitals following their motor vehicle inci dents, 
+without any indication additional MRIs were warranted. 
+175. Moy also ordered MRI scans for asymptomatic areas of multiple Rutland patients. 
+176. Moy systemically referred patients to Nexray for imaging, including MRIs, 
+regardless of where patients lived or the specific type of imaging necessary.   
+177. In several instances, Moy ordered MRIs of the head, spine, and peripheral joint on 
+initial visits.  For example, for one patient, J.J., Moy ordered seven MRIs at the initial examination, 
+which only occurred three weeks post -accident.  Moy’s typical practice was to order an MRI on 
+any body part where a patient said they were having pain.  With respect to J.J., it is unlikely all 
+seven MRIs were medically indicated particularly given that J.J. was still working as a home health 
+aide at the time of her examination. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 31 of 93 PageID #: 31 
+32 
+178. The letters of medical necessity that Rutland submitted to support the MRIs were 
+also boilerplate and failed to describe patients ’ clinical situations correctly.  For example, for 
+patient J.J., the letter stated that J.J. had a head injury and “head pain,” yet the initial exam report 
+indicated that the patient had only “intermittent” headache without blurred vision or tinni tus.  
+Further, the letter of medical necessity for J.J. stated that J.J. was “on a comprehensive 
+rehabilitation program,” and yet she had not had any physical therapy or any other rehabilitation 
+treatments prior to the MRI.  
+179. Rather, Rutland and M oy knowingly prescribed medically unnecessary and 
+unwarranted imaging.  Further, Rutland and Nexray were under Pierre’s control and knowingly 
+participated in a scheme whereby Rutland referred patients for medically unnecessary imaging so 
+that Nexray could conduct these expensive tests and bill American Transit for them , all to 
+Defendants’ benefit.   
+180. Because the imaging was unnecessary and because the associated charges for this 
+testing were false and fraudulent, including being presented by a company owned or controlled by 
+a person who is not a licensed physician, the bills submitted to American Transit by Nexray for 
+imaging are not compensable under New York No-Fault laws, including, but not limited to, those 
+listed in Exhibit F.  
+181. American Transit is entitled to recover all payments it made to Nexray for such 
+testing, including, but not limited to those tests listed in Exhibit F. 
+182. American Transit is entitled to recover all payments it made to Nexray for such 
+imaging.  
+183. As to Nexray’s bills for imaging presented to American Transit that remain unpaid, 
+American Transit is under no obligation to pay them because the imaging was unnecessary, and 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 32 of 93 PageID #: 32 
+33 
+because the bills were presented by a company owned or controlled by a person who is not a 
+licensed physician, and therefore not compensable under New York’s No-Fault laws. 
+D. Specific Examples of Fraudulent Billing by Defendants 
+184. Medical records of particular patients obtained by American Transit confirm 
+Defendants’ fraud and repeatedly subjecting their patients to unnecessary medically unnecessary 
+procedures and billing American Transit for those services.   These services were intentionally 
+provided for the purpose of generating billing to American Transit and enriching Defendants. 
+a. Patient D.W. (claim no. TNC17000535-301)  
+ 
+185. Patient D.W w as allegedly involved in a motor vehicle accident on December 1, 
+2017. 
+186. D.W. was taken to the hospital for evaluation.  X -rays were taken of D.W.’s right 
+hip and knee.  No fractures were identified and she was released from the hospital the same day 
+with instructions to rest. 
+187. Despite any indication that early imaging was warranted , o n January 3, 2018, 
+Nexray purportedly took two MRIs of D.W.’s right shoulder and brain .  Nexray billed American 
+Transit for these MRIs, which were medically unnecessary. 
+188. There were no reports of any injuries to D.W.’s shoulder or brain.  D.W. never 
+claimed she sustained trauma or impact to her head.  No physical examination of the head was 
+ever conducted to determine whether there were any head bruises, lacerations, abrasions, and/or 
+bleeding.  Defendant Weiner noted that the MRI of the brain was “unremarkable.” 
+189. The documented indication for the shoulder MRI was “pain status post injury” but 
+Weiner did not document the location of the pain or explain why D.W. would need a shoulder 
+MRI.  That indication is also contrary to the hospital records of the diagnosis following the alleged 
+accident. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 33 of 93 PageID #: 33 
+34 
+190. On January 5, 2018, Nexray purportedly took MRIs of D.W.’s right knee and hip.  
+Weiner documented the indication for these services as “[p]ain status post injury.”  There were no 
+indications for knee or hip MRIs at this time.  Nexray billed American Transit for these services. 
+which were medically unnecessary. 
+191. On January 17, 2018, Nexray purportedly took MRIs of D.W.’s lumbar and cervical 
+spine MRIs.  The documented indication for the MRIs was “pain, MVA” but Weiner did not 
+document the location of the purported pain.   Nexray billed American Transit for these services. 
+which were medically unnecessary. 
+192. Weiner documented “L4-L5 disc bulging,” for the purpose of subjecting D.W.  to 
+further unnecessary medical services.   This diagnosis was false and made to generate billing to 
+American Transit.  The MRIs allegedly performed on D.W. for which Nexray billed American 
+Transit were not justified or medically ne cessary, as D.W. did not exhibit any symptoms (e.g. , 
+fracture, impending neurologic compromise infection, or malignancy) that would require such 
+diagnostic testing. 
+193. As alleged herein, Nexray’s bills and the representations therein were false and 
+fraudulent, in that the services for which it sought reimbursement were medically unnecessary 
+and/or the result of overcharging for such services.  
+b. Patient E.H. (claim no. 101359902) 
+ 
+194. Patient E.H. was purportedly involved in an automobile accident as a pedestrian on 
+or around December 10, 2017.   
+195. He was taken by ambulance to the hospital, where he was examined and underwent 
+diagnostic testing.  The hospital performed X-rays on his knees and shoulder.  No fracture or 
+instability was noted. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 34 of 93 PageID #: 34 
+35 
+196. E.H. was admitted to the hospital, was treated with medication, provided a cane and 
+an arm sling, and was subsequently released home the following day. 
+197. Three days later, on December 14, 2017, Rutland purportedly evaluated E.H.  As a 
+result of the initial evaluation, Rutland recorded non-specific neurological findings.  Despite this, 
+Rutland recorded that E.H. should undergo “a course of physical therapy treatments,” as well as 
+MRI testing, chiropractic care, and acupuncture.  This was unnecessary. 
+198. On December 28, 2017, Rutland purportedly conducted initial chiropractic physical 
+examination of E.H.  D espite no concerning orthopedic signs warranting additional treatment, 
+Rutland recommended E.H. attend chiropractic treatment 3-4 times per week and receive monthly 
+re-evaluations.  Rutland billed American Transit for these services, which were medically 
+unnecessary. 
+199. On January 9, 2018, Weiner purportedly conducted MRI of E.H.’s left knee, which 
+was unnecessary.  Moy was the referring physician.  The documented indication for this MRI was 
+“[p]ain status post injury” but, Weiner did not indicate the location of the purported pain.  Nexray 
+billed American Transit for this MRI, which was medically unnecessary.  
+200. On January 17, 2018, Weiner purportedly conducted MRIs of E.H.’s right knee and 
+cervical spine , which were unnecessary .  Moy was the referring physician.  The documented 
+indication for the right knee MRI was “[p]ain status post injury” but Weiner did not indicate the 
+location of the purported pain.  The documented indication for the cervical spine MRI was “[p]ain 
+following MVA” but, Weiner did not indicate the location of the purported pain.  Nexray billed 
+American Transit for these MRIs, which were medically unnecessary. 
+201. Rutland then billed American Transit for a follow-up visit with E.H. on January 31, 
+2018.  Rutland and Moy recorded non-specific motor changes and no reflex or sensory exam.  
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 35 of 93 PageID #: 35 
+36 
+Despite no concerning findings, Rutland and Moy recommended ROM/MMT testing, physical 
+capacity testing, outcome assessment testing, and physical therapy for E.H. 
+202. On February 1, 2018, Weiner purportedly conducted an MRI of E.H.’s right 
+shoulder.  The referring physician was Moy.  Weiner documented the indication as “[p]ain status 
+post injury” but did not indicate the location of the purported pain.  Nexray billed American Transit 
+for this MRI, which was medically unnecessary. 
+203. On February 14, 2018 Moy purportedly conducted an electromyography study on 
+E.H. Rutland billed American Transit for this electromyography st udy, which was medically 
+unnecessary.  
+204. On February 20, 2018, Rutland purportedly treated E.H. and billed American 
+Transit for a chiropractic re-examination of E.H., which was medically unnecessary.  Despite no 
+concerning orthopedic signs warranting additional treatment, Rutland recommended a three-week 
+treatment plan and evaluation in four to six weeks. 
+205. On February 26, 2018, Rutland purportedly conduced MMT (neck, shoulder, and 
+knees) on E.H.  Rutland billed American Transit for these services , which were medically 
+unnecessary. 
+206. On March 13,  2018, Rutland purportedly treated E.H. and again billed American 
+Transit for a follow-up visit with E.H.  Rutland recorded the same findings and recommendation 
+as on January 31, 2018.  Despite reporting non -specific motor changes and no reflex or sensory 
+exam, Rutland again recommended ROM/MMT testing, physical capacity testing, outcome 
+assessment testing, and physical therapy. 
+207. On April 10, 2018, American Transit was billed for Lidocaine Patches prescribed 
+by a Rutland physician , which were medically unnecessary.  Rutland recorded that E.H. was on 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 36 of 93 PageID #: 36 
+37 
+“conservative care,” which is not consistent with use of this medication.  Furthermore, the injuries 
+reported by E.H. would not require this type of medication. 
+208. In total, as to purported treatment of E.H., Rutland billed American Transit 58 bills  
+for 40 visits and Nexray billed American Transit 4 bills for 3 visits.   
+209. Because the testing, treatment, medication, and services billed to American Transit 
+by Rutland and Nexray were medically unnecessary, Rutland’s and Nexray’s bills for E.H. are 
+false, and thus are not compensable under New York’s No-Fault laws. 
+c. Patient S.S. (claim no. 1044824-01)  
+ 
+210. Patient S.S. was allegedly involved in a motor vehicle accident in November 2018.   
+211. S.S. sustained no lacera tions or loss of consciousness.  S.S. was taken from the 
+scene of the alleged accident to the emergency room where x-rays of both her shoulders and both 
+knees were taken.  These x-rays did not indicate any fractures.  S.S. was discharged the same day 
+and with instructions to rest.   
+212. S.S. presented to the ER again approximately six days after her alleged accident 
+because of purported pain in her knees.  X-rays were performed on both knees, but the x-rays did 
+not indicate any fractures .  An x -ray was also taken  of S.S.’s left shoulder.  The x-rays did not 
+indicate any fractures or injuries. 
+213. Moy purportedly examined S.S. on November 29, 2018.  Rutland billed American 
+Transit for this evaluation.  Moy recommended MRIs and x-rays even though S.S. did not exhibit 
+any symptoms warranting such diagnostic testing.   
+214. On November 9, 2018, Nexray purportedly performed MRIs of S.S.’s left and right 
+knees.  Nexray billed American Transit for these MRIs, which were medically unnecessary. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 37 of 93 PageID #: 37 
+38 
+215. On November 9, 2018 , Nexray purportedly performed on SS MRIs of S.S.’s  left 
+and right shoulders.  Nexray billed American Transit for these MRIs, which were medically 
+unnecessary. 
+216. Moy subsequently referred S.S. for additional MRIs.   
+217. On December 17, 2018, Nexray purportedly conducted four MRIs on S.S.’s  
+cervical spine, a right hand, and right and left hip on December 17, 2018.  Nexray billed American 
+Transit for these MRIs, which were medically unnecessary. 
+218. On December 26, 2018, Nexray purportedly conducted two MRIs on S.S.’s right 
+and left hip.  Nexray billed American Transit for these MRIs, which were medically unnecessary. 
+219. Moy purportedly treated S.S. and billed American Transit for a follow up 
+evaluation with S.S.  
+220. On January 3, 2019, Rutland purportedly conducted on S.S. ROM testing, outcome 
+assessment testing, and physical capacity testing.  Rutland billed American Transit for this testing, 
+which was medically unnecessary. 
+221. On January 4, 2019, Nexray purportedly conducted  two MRIs on S.S.’s cervical 
+and lumbar spine on January 4, 2019.  Nexray billed American Transit for this testing, which was 
+medically unnecessary. 
+222. On March 1, 2019, Nexray performed an MRI of S.S.’s right hand.  Nexray billed 
+American Transit for this testing, which was medically unnecessary.   
+223. In total, Nexray purportedly conducted 13 MRIs on various parts of S.S.’s body, 
+even though none of these MRI’s were medically necessary  and used solely to generate billing 
+from American Transit. 
+224. Because the services billed to American Trans it by Rutland and Nexray were 
+medically unnecessary, and presented by companies owned or controlled by a person who is not a 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 38 of 93 PageID #: 38 
+39 
+licensed physician, Rutland and Nexray’s bills for S.S. are false and are not compensable under 
+New York’s No-Fault laws. 
+d. Patient P.A. (claim no. 1043121-02) 
+ 
+225. Patient P.A. was allegedly involved in a motor vehicle accident on November 7, 
+2018.   
+226. Because the alleged accident was low -impact, P.A. did not present to the hospital 
+for evaluation .  There is  no indication in any medical reco rd that P.A. had any fracture or 
+instability. 
+227. Moy purportedly evaluated P.A. on November 19, 2018 .  Despite the lack of any 
+indication of injury, Rutland and Moy referred P.A. to Nexray for cervical and lumbar spine MRIs.  
+Moy also referred P.A. for acupuncture services, despite the lack of any indication that acupuncture 
+services were appropriate or necessary for P.A.’s treatment.  
+228. On November 12, 2018, Rutland purportedly provided chiropractic services to P.A.  
+Rutland billed American Transit for these services, which were medically unnecessary. 
+229. On November 13, 2018 and January 22, 2019, Rutland purportedly conducted on 
+MMT on P.A.  Rutland billed American Transit for these services, which were medically 
+unnecessary. 
+230. On November 15, 2018 and January 23, 2019, Rutland purportedly conducted on 
+ROM testing on P.A.  Rutland billed American Transit for these services, which were medically 
+unnecessary. 
+231. On November 19, 2018 , Rutland purportedly treated P.A. and billed American 
+Transit an initial examination at which time Moy prescribed a course of  physical therapy 
+treatments for P.A.   
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 39 of 93 PageID #: 39 
+40 
+232. On November 19, 2018 , Rutland also purportedly treated P.A. for electrical 
+stimulation on P.A.  Rutland billed American Transit for this testing tests, which was medically 
+unnecessary. 
+233. On November 20, 2018, Rutland purportedly conducted on performance testing on 
+P.A.    Rutland billed American Transit for this testing, which was medically unnecessary.   
+234. On December 12, 2018 , Rutland also purportedly performed outcome assessment 
+testing on P.A.  Rutland billed American Transit for this testing, which was medically unnecessary. 
+235. On December 12, 2018, based on Rutland’s referrals, P.A. was also provided with 
+additional acupuncture services .  Rutland billed American Transit for this testing, which was 
+medically unnecessary. 
+236. Rutland and Moy referred P.A. for cervical and lumbar spine MRIs. On December 
+17, 2018, Nexray purportedly performed an MRI  on P.A.’s cervical and lumbar spine.  Weiner 
+documented the indication for these MRIs as “[Pain status post injury].”  Weiner did not indicate 
+where P.A. experienced this alleged pain.  Nexray billed American Transit for these MRIs, which 
+were medically unnecessary. 
+237. On December 17, 2018 , Nexray purportedly performed x-rays of P.A.’s cervical 
+spine, lumbar spine, and thoracic spine.  There was no indication that P.A. had any fractures in his 
+cervical spine, lumbar spine, or thoracic spine.  Nexray billed American Transit for this imaging, 
+which was medically unnecessary. 
+238. On January 10, 2019 , Rutland purportedly performed on P.A. electromyography  
+and nerve conduction velocity testing.  Rutl and billed American Transit for these MRIs, which 
+were medically unnecessary. 
+239. On January 17, 2019, Nexray purportedly performed on P.A. an MRI and x-ray of 
+P.A.’s hip.  Nexray billed American Transit for this imaging, which were medically unnecessary. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 40 of 93 PageID #: 40 
+41 
+240. On January 17, 2019, Rutland purportedly performed outcome assessment testing 
+on P.A.  Rutland billed American Transit for this testing, which was medically unnecessary.  
+241. On January 22, 2019, Rutland purportedly performed MMT on P.A.  Rutland billed 
+American Transit for this testing, which was medically unnecessary. 
+242. On January 23, 2019, Rutland purportedly performed on ROM testing on P.A. for 
+the cervical and lumbar spine.  Rutland billed American Transit for this testing, which was 
+medically unnecessary. 
+243. Moy referred P.A. for additional MRIs.   On January 28, 2019, Nexray purportedly 
+provided P.A. an MRI and x-ray of P.A.’s left hip and billed American Transit for those services.  
+The same imaging was taken just days before so there would have been no reason to subject P.A. 
+to further left hip imaging.  Nexray billed American Transit for this imaging, which was medically 
+unnecessary. 
+244. On January 29, 2019, Rutland purportedly performed performance testing on P.A. 
+Rutland billed American Transit for this imaging, which was medically unnecessary. 
+245. On February 28, 2019, Rutland purportedly performed outcome assessment testing 
+on PA.  Rutland did not indicate in its notes what this additional testing would contribute to P.A.’s 
+course of treatment.  Rutland billed Amer ican Transit for this imaging, which was medically 
+unnecessary. 
+246. On August 8, 2019 , Rutland purportedly performed ROM testing on P.A.  of the 
+lumbar spine.  Rutland billed American Transit for this service, which was medically unnecessary. 
+247. On August 22, 2019, Rutland purportedly performed on P.A. performance testing.  
+Rutland billed American Transit for this testing, which was medically unnecessary.  
+248. Because the services billed to American Transit by Rutland and Nexray were 
+medical unnecessary, and presented by companies owned or controlled by a person who is not a 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 41 of 93 PageID #: 41 
+42 
+licensed physician, Rutland and Nexray’s bills for P.A. are false and are not compensable under 
+New York’s No-Fault laws. 
+e. Patient A.C. (claim no. 1028221-01) 
+ 
+249. Patient A.C. was allegedly involved in a motor vehicle accident on May 10, 2018.   
+250. A.C. was taken to the hospital, given unspecified pain medication, and released the 
+same day. 
+251. Rutland evaluated A.C. on May 14, 2018 and referred A.C.  to Nexray for cervical 
+spine and thoracic spine MRIs.  A.C. was also referred to physical therapy treatment 3-4 times per 
+week, chiropractic treatment, and acupuncture.  
+252. On June 5, 2018, Rutland purportedly performed on A.C. ROM testing (cervical 
+spine and thoracic spine).  The results of these tests were not utilized in the treatment plan for A.C.  
+Rutland billed American Transit for this testing, which was medically unnecessary. 
+253. On June 8, 2018, Rutland purportedly performed on A.C. MMT (neck extension 
+and trunk e xtension).  The results of these tests were not utilized in the treatment plan for A.C.   
+Rutland billed American Transit for this testing, which was medically unnecessary. 
+254. On June 28, 2018, Rutland purportedly performed on A.C. needle 
+electromyography (upper and lower extremities), nerve conduction studies, and an H-reflex study.  
+The result of these tests were not utilized in the treatment plan for A.C.  Rutland billed American 
+Transit for this testing, which was medically unnecessary. 
+255. On June 8, 2018, Weiner performed MRIs of A.C.’s cervical spine and thoracic 
+spine.   
+256. On June 22, 2018, Weiner performed an MRI of A.C.’s lumbar spine on June 22, 
+2018.  
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 42 of 93 PageID #: 42 
+43 
+257. The documented indication for these MRIs was “[p]ain status post injury” but 
+Weiner did not indicate the location of the alleged pain.  Nexray billed American Transit for these 
+MRIs, which were medically unnecessary. 
+258. On June 15, 2018 , July 13, 2018, and August 24, 2018, Rutland purportedly 
+performed on A.C. outcome assessment testing.   Rutland billed American Transit for these tests, 
+which were medically unnecessary. 
+259. On July 6, 2018, Rutland purportedly performed on A.C. ROM testing (cervical 
+spine and lumbar spine) .  Rutland billed American Transit for these tests, which were medically 
+unnecessary. 
+260. On July 20, 2018 and August 31, 2018, Rutland purportedly performed on A.C. 
+performance testing .  Rutland billed American Transit for this testing, which was medically 
+unnecessary. 
+261. On August 28, 2018, Rutland purportedly performed on A.C. MMT (neck 
+extension, trunk extension, and shoulder extension) .  Rutland billed American Transit for these 
+tests, which were medically unnecessary. 
+262. Moy referred A.C. for a right shoulder MRI and on July 24, 2018, Weiner 
+performed an unnecessary right shoulder MRI on A.C.  The docu mented indication for the MRI 
+was “[p]ain status post injury” but Weiner did not indicate the location of the alleged pain. 
+263. On or about August 11, 2018, A.C. underwent a treatment by Dr. Andrew J. Dowd, 
+who was convicted in December 2018 for mail fraud, wi re fraud, conspiracy to commit mail and 
+wire fraud in connection with, among other things, his performance of hundreds of medically 
+unnecessary surgeries. 
+264. Rutland submitted at least 68 bills to American Transit for A.C.’s treatment and 
+Nexray submitted four bills. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 43 of 93 PageID #: 43 
+44 
+265. Because the services billed to American Transit by Rutland and Nexray were 
+medical unnecessary, and presented by companies owned or controlled by a person who is not a 
+licensed physician, Rutland and Nexray’s bills for A.C. are false and are not c ompensable under 
+New York’s No-Fault laws. 
+f. Patient T.C. (claim no. 100980102)  
+ 
+266. Patient T.C. was allegedly involved in a motor vehicle accident on October 26, 
+2017.   
+267. T.C. was taken to the hospital where x -rays of her cervical spine, thoracic spine, 
+and lumbar spine were taken as well as a CT scan of her head. 
+268. Moy evaluated T.C. on November 2, 2017 and referred T.C. to Nexray for cervical 
+spine, thoracic spine, lumbar spine, left shoulder, and left and right knee MRIs, despite the lack of 
+any indication warranting such early diagnostic testing.   
+269. On November 2, 6, 14, and 17, 2017, Rutland purportedly provided T.C. with 
+physical therapy treatment, which included four therapeutic massages and four electrical 
+stimulation sessions.  Rutland billed American Tr ansit for this treatment, which was medically 
+unnecessary.   
+270. On December 7, 2017, Rutland purportedly conducted on T.C. M MT (neck 
+extension, trunk extension, shoulder extension, and knee extension).  Rutland billed American 
+Transit for these services, which were medically unnecessary. 
+271. On December 14, 2017 , Rutland purportedly conducted on T.C. performance 
+testing.  Rutland billed American Transit for this testing, which was medically unnecessary.  
+272. On January 30, 2018, Rutland purportedly conducted on T.C. outcome assessment 
+testing.  The results of these tests were never utilized in the treatment plan for T.C.  Rutland billed 
+American Transit for this testing, which was medically unnecessary. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 44 of 93 PageID #: 44 
+45 
+273. On February 21, 2018 , Moy performed on T.C. needle electromyograph y (upper 
+and lower extremities), nerve conduction studies, and an H-reflex study.  The results of these tests 
+were not utilized in T.C.’s treatment plan.  Rutland billed American Transit for this testing, which 
+was medically unnecessary. 
+274. On February  12, 2018, Rutland purportedly conducted on T.C. ROM testing 
+(cervical spine, lumbar spine, shoulder extension, and knee extension).  The results of these tests 
+were not utilized in T.C.’s treatment plan.  Rutland billed American Transit for this testing, which 
+was medically unnecessary. 
+275. On February 15, 2018, Rutland purportedly conducted on T.C. MMT (neck 
+extension, trunk extension, shoulder extension, and knee extension).  The results of these tests 
+were not utilized in T.C.’s treatment plan.  Rutland billed American Transit for this testing, which 
+was medically unnecessary. 
+276. On March 13, 2018 and May 7, 2018, Rutland purportedly conducted on T.C. 
+outcome assessment testing.  The results of these tests were not utilized in T.C.’s treatment plan .  
+Rutland billed American Transit for this testing, which was medically unnecessary.  
+277. Because the services billed to American Transit by Rutland and Nexray were 
+medical unnecessary, and presented by companies owned or controlled by a person who is not a 
+licensed physician, Rutland and Nexray’s bills for T.C. are false and are not compensable under 
+New York’s No-Fault laws. 
+g. Patient D.L. (claim no. 1043632-03)  
+ 
+278. Patient D.L. was allegedly involved in a motor vehicle accident on November 7, 
+2018.  D.L. did not go to the hospital. 
+279. Rutland evaluated D.L. the next day and noted that D.L. had a “total” impairment 
+and referred D.L. to a psychotherapist, chiropractor, and an acupuncturist.  Rutland also referred 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 45 of 93 PageID #: 45 
+46 
+D.L. for MRIs of t his brain cervical spine, lumbar spine, and left knee even though there was no 
+need for early diagnostic testing.   
+280. On November 8, 2018, Rutland purportedly provided to D.L. physical therapy and 
+chiropractic treatment.  Rutland billed American Transit for this treatment, which was medically 
+unnecessary.   
+281. On or about November 8, 2018, Weiner performed MRIs of D.L.’s cervical spine, 
+lumbar spine, brain, left shoulder, and left knee and took x-rays of D.L.’s cervical spine and lumbar 
+spine.  Nexray billed American Transit for this imaging, which was medically unnecessary. 
+282. On November 15, 2018 and December 21, 2018, Rutland purportedly performed 
+MMT (neck extension, trunk extension, shoulder extension, and knee extension) .  The results of 
+these services were never utilized in the treatment plan for D.L.  Rutland billed American Transit 
+for these services, which were medically unnecessary. 
+283. On November 19, 2018, Rutland purportedly performed on D.L. performance 
+testing.  The results of these tests were never utilized in the treatment plan for D.L.  Rutland billed 
+American Transit for this testing, which was medically unnecessary. 
+284. On December 12, 2018, Rutland purportedly performed on D.L. outcome 
+assessment testing.  The results of these tests were never utilized in the treatment plan for D.L.  
+Rutland billed American Transit for this testing, which was medically unnecessary.  
+285. On December 6, 2018, December 7, 2018, December 12, 2018, December 13, 2018, 
+December 14, 2018, and December 17, 2018, Rutland purportedly provided to D.L. chiropractic 
+treatment.   Rutland billed American Transit for this testing, which was medically unnecessary. 
+286. Moy referred D.L. to Nexray for brain and shoulder MRIs, even though there was 
+no indication that MRIs were necessary for D.L.’s treatment.   
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 46 of 93 PageID #: 46 
+47 
+287. On December 21, 2018, Weiner purportedly performed MRIs of D.L.’s brain  and 
+left shoulder.  Nexray billed American Transit for these MRIs, which were medically unnecessary. 
+288. Moy referred D.L. for cervical spine and lumbar spine MRIs despite the lack of any 
+indication that MRIs were necessary for D.L.’s treatment. 
+289. On January 4, 2019, Weiner purportedly performed MRIs of D.L.’s cervical spine 
+and lumbar spine.  The documented indication for these MRIs was “[p]ain status post injury” but 
+Weiner did not indicate the location of the alleged pain.  Nexray billed American Transit for these 
+MRIs, which were medically unnecessary. 
+290. On January 14, 2019, Rutland purportedly performed on D.L. ROM testing 
+(right/left knee, cervical spine, lumbar spine, and shoulder extension) .  The results of these tests 
+were not utilized in the treatment plan for D.L.  Rutland billed American Transit for these services, 
+which were medically unnecessary. 
+291. On January 4, 2019, Weiner  purportedly took x-rays of D.L.’s cervical spine and 
+lumbar spine.  The documented indication of these two x -rays was “[p]ain status post injury” but 
+Weiner did not indicate the location of the alleged pain.  These x -rays were unnecessary as there 
+was no indication that D.L. had a fracture.  Nexray billed American Transit for these x-rays, which 
+were medically unnecessary. 
+292. On January 9, 2019, Moy purportedly performed needle electromyography, nerve 
+conduction studies (upper and lower extremities), and an H -reflex study on D.L .  The results of 
+these tests were not utilized in D.L.’s treatment plan.  Rutland billed American Transit for these 
+tests, which were medically unnecessary. 
+293. Moy referred D.L. to Nexray for an MRI of his left knee.  On February 22, 2019, 
+Weiner purportedly performed an MRI of D.L.’s left knee.   Nexray billed American Transit for 
+this MRI, which was medically unnecessary. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 47 of 93 PageID #: 47 
+48 
+294. Rutland submitted at least 42 bills to American Transit for its purported treatment 
+of D.L. and Nexray submitted seven bills. 
+295. Because the services billed to American Transit by Rutland and Nexray were 
+medical unnecessary, and presented by companies owned or controlled by a person w ho is not a 
+licensed physician, Rutland and Nexray’s bills for D.L are false and are not compensable under 
+New York’s No-Fault laws. 
+h. Patient A.W. (claim no. 10717041)  
+ 
+296. Patient A.W. was allegedly involved in a motor vehicle accident on October 29, 
+2019. 
+297. Moy evaluated A.W. the next day.  Moy noted that A.W. had a “total” disability 
+and that she was “not fit for duty.”   
+298. Moy referred A.W. to a psychotherapist, chiropractor, and acupuncturist and  for 
+MRIs of her cervical spine, thoracic spine, lumbar spine, and the left shoulder.   
+299. On October 31, 2019 , Rutland purportedly conducted on A.W. MMT (neck 
+extension, trunk extension, and shoulder extension).  Rutland billed American Transit for  these 
+services, which were medically unnecessary. 
+300. On N ovember 5, 2019 , Rutland purportedly conducted  on A.W . performance 
+testing.  Rutland billed American Transit for these services, which were medically unnecessary. 
+301. On November 12, 2019,  Rutland purportedly conducted  on A.W. ROM testing 
+(cervical spine, lumba r spine, and shoulder extension).  The results of these tests were never 
+utilized in the treatment plan for A.W.  Rutland billed American Transit for these services, which 
+were medically unnecessary. 
+302. On November 20, 2019, a fter Moy referred A.W. to Nexray  for MRIs, Nexray 
+purportedly performed MRIs on A.W. of the cervical and lumbar spine . Weiner documented the 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 48 of 93 PageID #: 48 
+49 
+indication as “pain status post injury,” but Weiner did not indicate the location of the pain.  Nexray 
+falsely recorded that there was “straightenin g of the physiologic lordosis consistent with pain 
+and/or spasm.”  Nexray also false ly recorded that A.W. had disc herniation.   Nexray billed 
+American Transit for these MRIs, which were medically unnecessary. 
+303. On November 27, 2019, Nexray purportedly perfor med an MRI on A.W.’s left 
+shoulder.  The documented indication was “pain status post injury” but Weiner did not indicate 
+the location of the pain.   Nexray billed American Transit for  this MRI, which was medically 
+unnecessary. 
+304. On November 27, 2019, Nexray p urportedly performed on A.W. x -rays of the 
+cervical and lumbar spine.  The documented indication was “pain status post injury” but Weiner 
+did not indicate the location of the pain.  Weiner documented that there was “foraminal narrowing 
+L5-S1” and noted tha t this “correlate[d] clinically and neurologically and consider MRI as 
+appropriate.”  Nexray billed American Transit for these x-rays, which were medically unnecessary. 
+305. On December 2, 2019 , Rutland purportedly performed on A.W. outcome 
+assessment testing.  Rutland billed American Transit for  this testing, which was medically 
+unnecessary. 
+306. On December 4, 2019, Rutland purportedly performed  on A.W. needle 
+electromyography and nerve conduction studies.  Rutland billed American Transit for this testing, 
+which was medically unnecessary. 
+307. On December 6, 2019, Rutland purportedly performed  on A.W. performance 
+testing.  Rutland billed American Transit for this testing, which was medically unnecessary.   
+308. On December 11, 2019, Rutland purportedly performed  on A.W. outcome 
+assessment testing.   Rutland billed American Transit for  this testing, which was medically 
+unnecessary. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 49 of 93 PageID #: 49 
+50 
+309. On December 26, 201 9, Rutland purportedly performed  on A.W. ROM testing 
+(cervical and lumbar spine and shoulder extension).  The results of these tests were never utilized 
+in the treatment plan for A.W.  Rutland billed American Transit for  this testing, which was 
+medically unnecessary. 
+310. Because the services billed to American Transit by Rutland and Nexray were 
+medical unnecessary, and presented by companies owned or controlled by a person who is not a 
+licensed physician, Rutland and Nexray’s bills for A.W. are false and are not compensa ble under 
+New York’s No-Fault laws. 
+i. Patient R.S. (claim no. 1087141) 
+ 
+311. Patient R.S. was allegedly involved in a motor vehicle accident on August 19, 2020.   
+312. The same day, R.S. was taken to the hospital where she received a CT scan of her 
+head.   
+313. On August 27, 2020, Rutland evaluated R.S. and referred her to Nexray for MRIs 
+of her cervical spine, lumbar spine, left shoulder, right shoulder, and left knee.   
+314. On August 27, 2020, August 28, 2020, September 1, 2020, September 3, 2020, 
+September 4, 2020, September 9, 2020, and September 10, 2020, Rutland provided unnecessary 
+physical therapy treatment to R.S., including at least seven therapeutic massages and seven 
+electrical stimulation sessions.  Rutland billed American Transit for these treatments, all of which 
+were medically unnecessary. 
+315. On September 3, 2020, Rutland purportedly conducted MMT (neck extension, 
+trunk extension, shoulder extension, and knee extension) on R.S.  The results of these tests were 
+never utilized in the treatment plan for R.S.  Rutland billed American Transit for this testing, which 
+was medically unnecessary. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 50 of 93 PageID #: 50 
+51 
+316. On September 24, 2020, Rutland purportedly conducted ROM testing (right/lef t 
+knee, cervical spine, lumbar spine, and shoulder extension) on R.S.  The results of these tests were 
+never utilized in the treatment plan for R.S.  Rutland billed American Transit for this testing, which 
+was medically unnecessary. 
+317. On September 17, 2020 , Rutland purportedly conducted performance testing on 
+R.S.  The results of these tests were never utilized in the treatment plan for R.S.   Rutland billed 
+American Transit for this testing, which was medically unnecessary. 
+318. Rutland referred R.S. to Nexray for cervical spine, lumbar spine, and right shoulder 
+MRIs.  On September 30, 2020, Weiner performed MRIs of R.S.’s  cervical spine, lumbar spine, 
+and right shoulder.  The documented indication was “[p]ain status post injury,” but Weiner did not 
+indicate the location of the alleged pain .  Nexray billed American Transit for these MRIs, which 
+were medically unnecessary. 
+319. Rutland also referred R.S. to Nexray for an MRI of her right knee.  On October 5, 
+2020, Weiner performed an MRI of R.S.’s right knee.  The documented indication again was 
+“[p]ain status post injury ,” but Weiner did not indicate the location of the alleged pain.  Nexray 
+billed American Transit this MRI, which was medically unnecessary. 
+320. On October 14, 2020, Moy conducted needle electromyography (upper and lower 
+extremities) and motor and sensory nerve conduction on R.S.  The results of these tests were not 
+utilized in R.S.’s treatment plan.   Rutland billed American Transit for these tests, which were 
+medically unnecessary. 
+321. Because the services billed to American Transit by Rutland and Nexray were 
+medical unnecessary, and presented by companies owned or controlled by a person who is not a 
+licensed physician, Rutland and Nexray’s bills for R.S. are false and are not compensable unde r 
+New York’s No-Fault laws. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 51 of 93 PageID #: 51 
+52 
+j. Patient I.V. (claim no. 1084559)  
+ 
+322. Patient I.V. was allegedly involved in a motor vehicle accident on May 23, 2020.   
+323. I.V. was taken to the hospital where she had an MRI and x-ray of her left knee.  She 
+was released the same day. 
+324. Rutland evaluated I.V. on June 11, 2020  and referred I.V. to Nexray for MRIs of 
+her lumbar spine and left knee.   
+325. On June 11, 2020 and on June 16, 2020, June 17, 2020, June 24, 2020, and June 
+25, 2020, Rutland also purportedly provided I.V. with physical therapy treatment, which included 
+five therapeutic massages and five electrical stimulation sessions.  Rutland billed American Transit 
+for these services, which were medically unnecessary.  
+326. On June 17, 2020, June 24, 2020, and June 25, 2020, Rutland purportedly provided 
+I.V. with chiropractic treatment.  There is no indication these treatments were necessary for I.V.’s 
+treatment plan.  Rutland billed American Transit for these treatments, which were medically 
+unnecessary.   
+327. Pursuant to Rutland’s referral, on June 23, 2020, Nexray purportedly performed on 
+I.V. a lumbar spine MRI.  The documented indication for the MRI was “[p]ain status post injury” 
+but Nexray did not indicate the location of the alleged pain.  Nexray billed American Transit for 
+this MRI, which was medically unnecessary.   
+328. The same day, Weiner purportedly performed on I.V. an MRI of the left knee.  The 
+documented indication for this MRI was “[p]ain status post injury” but Weiner did not indicate the 
+location of the pain.  Nexray billed American Transit for this MRI, which was medically 
+unnecessary.  
+329. On June 25, 2020 and August 27, 2020 , Rutland purportedly performed on I.V. 
+MMT (neck, trunk extension, shoulder extension, and knee extension ).  The results of the MMT 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 52 of 93 PageID #: 52 
+53 
+were not used in I.V.’s treatment plan.  Rutland billed American Transit for this testing, which was 
+medically unnecessary. 
+330. On July 8, 2020, Rutland purportedly performed on I.V. ROM testing (right/left 
+knee, cervical spine, and shoulder  extension).  The results of the ROM were not used in I.V.’s 
+treatment plan.  Rutland billed American Transit for this testing, which was medically 
+unnecessary. 
+331. On July 16, 2020 and September 10, 2020, Rutland purportedly performed on I.V. 
+performance testing.  The results of the performance testing were not used in I.V.’s treatment plan.  
+Rutland billed American Transit for this testing, which was medically unnecessary. 
+332. On June 29, 2020, July 1, 2020, July 8, 2020, July 9, 2020, July 13, 2020, July 14, 
+2020, July 16, 2020, August 5, 2020, August 10, 2020, August 11, 2020, August 13, 2020, August 
+17, 2020, September 1, 2020, September 2, 2020, September 3, 2020, September 8, 2020, 
+September 10, 2020, September 11, 2020, October 2, 2020, October 6, 2020, Octo ber 7, 2020, 
+October 8, 2020, October 14, 2020, October 15, 2020, October 17, 2020, November 4, 2020, 
+November 5, 2020, November 6, 2020, November 11, 2020, November 12, 2020, and November 
+13, 2020, Rutland purportedly performed chiropractic treatment on I.V.  Rutland billed American 
+Transit for these treatments, which were medically unnecessary. 
+333. On July 29, 2020, Rutland purportedly performed on I.V. needle electromyography, 
+nerve conduction studies, and  an H-Reflex study.  The results of these tests were never used by 
+Rutland or any other medical provider in the treatment plan for I.V.  Rutland billed American 
+Transit for these tests, which were medically unnecessary. 
+334. On September 3, 2020, Rutland purportedly conducted on I.V. ROM testing 
+(right/left knee and lumbar spine).  Rutland billed American Transit for this testing, which was 
+medically unnecessary. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 53 of 93 PageID #: 53 
+54 
+335. On September 17, 2020, Rutland purportedly conducted on I.V. MMT (ankle, neck 
+extension, trunk extension, and knee extension).  Rutland billed American Transit for this testing, 
+which was medically unnecessary. 
+336. On September 30, 2020 , Rutland purportedly conducted on I.V.  outcome 
+assessment testing.  Rutland billed American Transit for this testing, which was medically 
+unnecessary. 
+337. On October 2, 2020, Rutland purportedly conducted on I.V. MMT (trunk and knee).    
+Rutland billed American Transit for this testing, which was medically unnecessary. 
+338. Rutland also purportedly conducted numerous follow up evaluations.   Rutland 
+billed American Transit for these evaluations, which were medically unnecessary 
+339. Because the services billed to American Transit by Rutland and Nexray were 
+medical unnecessary, and presented by companies owned or controlled by a person who is not a 
+licensed physician, Rutland and Nexray’s bills for I.V. are false and are not compensable under 
+New York’s No-Fault laws. 
+k. Patient L.J. (claim no. 1068535-02) 
+ 
+340. Patient L.J. was allegedly involved in a motor vehicle accident on or around 
+September 22, 2019.   
+341. L.J. was a back seat passenger and wore a seatbelt.   
+342. L.J. did not present to the emergency room after the alleged accident. 
+343. Rutland billed American Transit for an examination of L.J. on October 2, 2019. 
+344. Rutland also referred L.J. for MRIs of the cervical spine, lumbar spine, left 
+shoulder, and right knee, which were medically unnecessary. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 54 of 93 PageID #: 54 
+55 
+345. Between October 2, 2019 and October 16, 2019, Rutland purportedly provided L.J. 
+with physical therapy services and billed American Transit for them.  This therapy was medically 
+unnecessary. 
+346. Between October 3, 2019 and October 15, 2019, Rutland purportedly provided L.J. 
+with chiropractic services.  These services were medically unnecessary. 
+347. On October 4, 2019, Rutland purportedly provided performance testing on L.J.  
+This testing was medically unnecessary and the results of this test were never used in L.J.’s 
+treatment plan.   
+348. On October 9, 2019, Rutland purportedly provided MMT s for L.J.   This test was 
+medically unnecessary and the results of this test were never used in L.J.’s treatment plan.  Rutland 
+billed American Transit for these services, which were medically unnecessary. 
+349. On October 11, 2019, Nexray purportedly provided L.J. with MRIs of the left 
+shoulder and right knee.  Nexray billed American Transit for these MRIs , which were medically 
+unnecessary. 
+350. On October 15, 2019, Rutland purportedly performed ROM testing on L.J for the 
+right/left knee, cervical and lumbar spine, and for shoulder extension.   Rutland billed American 
+Transit for these services, which were medically unnecessary. 
+351. On October 30, 2019, Rutland purportedly performed needle electromyography 
+(lower and upper extremities), nerve conduction studies, and H re flex study (lower) on L.J. on 
+October 30, 2019.   Rutland billed American transit for these tests, which were medically 
+unnecessary. 
+352. On November 5, 2019 and December 12, 2019, Rutland purportedly performed 
+performance testing on L.J.  Rutland billed American Transit for this testing,  which was medically 
+unnecessary.  The results of these tests were never utilized in the treatment plan for L.J. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 55 of 93 PageID #: 55 
+56 
+353. On November 7, 2019, December 9, 2019, and January 20, 2020 , Rutland 
+purportedly performed outcome assessment testi ng on L.J.  Rutland billed American Transit for 
+this testing, which was medically unnecessary.   The results of these tests were never utilized in 
+the treatment plan for L.J. 
+354. On November 12, 2019, December 24, 2019, and January 23, 2020 , Rutland 
+purportedly performed on L.J. ROM testing (right/left knee, cervical and lumbar spine, and 
+shoulder extension).  Rutland billed American Transit for these services, which were medically 
+unnecessary. 
+355. On November 19, 2019 and December 18, 2019 , Rutland purpo rtedly performed 
+on L.J. MMT (neck extension, trunk extension, shoulder extension, and knee extension).  Rutland 
+billed American Transit for these services, which were medically unnecessary. 
+356. Because the services billed to American Transit by Rutland and Ne xray were 
+medical unnecessary, and presented by companies owned or controlled by a person who is not a 
+licensed physician, Rutland and Nexray’s bills for L.J. are false and are not compensable under 
+New York’s No-Fault laws. 
+l. Patient G.R. (claim no. 1084692-02)  
+ 
+357. Patient G.R. was allegedly involved in a motor vehicle accident on May 29, 2020.   
+358. G.R. was a passenger and was taken to the hospital.   There is no indication in any 
+medical record that G.R. had any fractures.   
+359. The same day, May 29, 2020, Rutland evaluated G.R. and referred him to Nexray 
+for MRIs of the brain, left shoulder, and right knee MRIs.  Rutland billed American Transit for a 
+consultation with G.R. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 56 of 93 PageID #: 56 
+57 
+360. On June 15, 2020 and August 19, 2020, Rutland purportedly performed on G.R. 
+MMT (neck extension, trunk extension, shoulder extension  and knee extension).  Rutland billed 
+American Transit for these tests, which were medically unnecessary. 
+361. On June 23, 2020, Rutland purportedly performed on G.R. performance testing and 
+ROM testing (right/left knee, cervical and lumbar spine, and shoulder extension ).  Rutland billed 
+American Transit for these tests, which were medically unnecessary. 
+362. On August 24, 2020, Rutland purportedly performed ROM testing on G.R.  Rutland 
+billed American Transit for this test, which was medically unnecessary. 
+363. As a result of Rutland’s referrals to Nexray, on  June 29, 2020, July 27, 2020, and 
+July 28, 2020, Nexray purportedly performed on G.R. MR Is of the left shoulder, right knee, and 
+brain.  Nexray billed American Transit for these MRIs, which were medically unnecessary. 
+364. On August 26, 2020 , Rutland purportedly conducted outcome assessment testing 
+on G.R.   Nexray billed Ame rican Transit for this test, which was medically unnecessary.  The 
+results of these tests were never utilized in the treatment plan for G.R. 
+365. Moy referred G.R. to Nexray for additional MRIs.  On September 2, 2020, Nexray 
+purportedly provided G.R. an MRI of the cervical spine and lumbar spine.  Nexray billed American 
+Transit for this MRI, which was medically unnecessary. 
+366. On October 7, 2020 , Rutland purported performed on G.R needle 
+electromyography (lower and upper extremities), motor and sensory nerve conduc tion, and 
+neuromuscular junction studies.   Rutland billed American Transit for this test, which was 
+medically unnecessary. 
+367. On November 11, 2020 , Rutland purportedly performed outcome assessment 
+testing on G.R.  Rutland billed American Transit for this test ing, which was medically 
+unnecessary.  
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 57 of 93 PageID #: 57 
+58 
+368. Because the services billed to American Transit by Rutland were medical 
+unnecessary, Rutland’s bills for G.R. are false and are not compensable under New York’s No-
+Fault laws. 
+m. Patient E.J. (claim no. 680163-04)  
+ 
+369. Patient E.J. was allegedly involved in a motor vehicle accident on June 16, 2017 as 
+a backseat passenger.  Following the accident, E.J.  was taken to the hospital, where E.J. received 
+C.T. Scans.   
+370. On July 11, 2017, nearly a month later, Rutland purportedly conducted an initial 
+examination on E.J.  Rutland billed American Transit for the initial examination.  Rutland also 
+referred E.J. to Nexray for MRs of the cervical spine, lumbar spine, and left and right shoulder. 
+371. On August 3, 2017, Rutland purportedly performed on E.J. MMT (trunk extension, 
+neck extension, and shoulder extension).  Rutland billed American Transit for this testing, which 
+was medically unnecessary. 
+372. Per Rutland’s referral, on August 16, 2017, Nexray purportedly performed MRI’s 
+on E.J. on the left and right shoulder .  The documented indication was “pain status post injury ” 
+but there was no indication of the location of the pain.  Nexray billed American Transit for these 
+MRIs, which were medically unnecessary.   
+373. On August 17, 2017, Nexray purportedly performed MRI s on E.J. on the cervical 
+spine and lumbar spine.  The documented indication was “pain status post injury” but there was 
+no indication of the location of the pain.   Nexray billed American Transit for these MRIs, which 
+were medically unnecessary.   
+374. On August 17, 2017, Rutland purportedly performed outcome assessment testing 
+on E.J.   The results of this tests was never utilized in the treatment plan for E.J.  Rutland  billed 
+American Transit for this testing, which was medically unnecessary.   
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 58 of 93 PageID #: 58 
+59 
+375. On August 24, 2017, Rutland purportedly performed on E.J. needle 
+electromyography (upper and lower extremities), nerve conduction studies, and an H reflex study.  
+Rutland billed American Transit for these studies, which were medically unnecessary.   
+376. On November 2, 2017 , Rutland purportedly performed on E.J. ROM testing 
+(cervical spine and  lumbar spine).  Rutland billed American Transit for this testing, which was 
+medically unnecessary. 
+377. On November 16, 2017 and March 6, 2018 , purportedly performed on E.J. MMT 
+(trunk extension, neck extension, and shoulder extension ).  Rutland  billed American Transit for 
+this testing, which was medically unnecessary.  
+378. On November 30, 2017 Rutland purportedly performed on E.J. performance 
+testing.  Rutland billed American Transit for this testing, which was medically unnecessary. 
+379. On December 7, 2017 and January 10, 2018 , Rutland purportedly performed on 
+E.J. outcome assessment testing.  The results of these tests were never utilized in the treatment 
+plan for E.J.  Rutland billed American Transit for this testing, which was medically unnecessary. 
+380. On December 12, 2017 , Rutland purportedly performed on E.J.  ROM testing 
+(shoulder extension, cervical spine and lumbar spine).  Rutland billed American Transit for this 
+testing, which was medically unnecessary. 
+381. Because the services billed to American Transit by Rutland and Nexray were 
+medical unnecessary, and presented by companies o wned or controlled by a person who is not a 
+licensed physician, Rutland and Nexray’s bills for G.R. are false and are not compensable under 
+New York’s No-Fault laws. 
+E. American Transit’s Justifiable Reliance 
+382. Each bill submitted to American Transit by Rutland  and Nexray was verified 
+pursuant to Insurance Law § 403. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 59 of 93 PageID #: 59 
+60 
+383. Moy and Weiner, as duly licensed physicians, were legally and ethically obligated 
+to act honestly and with integrity, and to act in accordance with all other aspects of their oath as 
+licensed medical professionals. 
+384. To induce American Transit to promptly pay Rutland’s and Nexray’s patient bills, 
+the Defendants submitted (or caused to be submitted) to American Transit NF -3 forms certifying 
+that Rutland and Nexray were eligible to be reimbursed under New York’s No-Fault laws. 
+385. To induce American Transit to promptly pay the fraudulent charges for the medical 
+evaluations, diagnostic testing, diagnostic medical imaging, and/or other treatment purportedly 
+provided to patients of Rutland and Nexray, the Defendants hired attorneys to pursue collection of 
+the fraudulent charges from American Transit, including the prosecution and defense of claims.   
+386. These attorneys have routinely file d and continue to file  time-consuming and 
+expensive lawsuits and arbitration matters against American Transit to collect a substantial part of 
+the false claims alleged herein. As alleged in the indictment in the Criminal Action, Pierre selected 
+attorneys to pursue the fraudulen t Nexray and Rutland bills they had presented to insurance 
+companies. 
+387. American Transit is under statutory and contractual obligations to promptly and 
+fairly process claims within 30 days.  The facially valid documents submitted to American Transit 
+in support of the charges at issue  (which have turned out to be fraudulent) , combined with the 
+material misrepresentations described above, were designed to and did cause American Transit to 
+justifiably rely on them when determining to pay them. 
+388. The Defendants concealed from American Transit the truth regarding Rutland and 
+Nexray’s reimbursement eligibility under New York law, purporting that such billed were eligible 
+for payment when, in fact, they were not  as the bills we re presented by companies owned or 
+controlled by a person who is not a licensed physician. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 60 of 93 PageID #: 60 
+61 
+389. In reliance on these misrepre sentations, American Transit paid money to Rutland 
+and Nexray to satisfy the bills Defendants presented to its detriment.  
+390. American Transit would not have paid these monies had the Defendants provided 
+true and accurate information about the Defendants’ reim bursement eligibility under New York 
+law, including the lack of necessity of the services provided. 
+391. American Transit has paid in excess of $ 3,240,000.00 to Nexray, Rut land and 
+others in reasonable reliance on the Defendants’ false medical documentation and false 
+representations contained therein regarding Rutland and Nexray’s eligibility for reimbursement 
+under New York’s No-Fault laws. 
+F. Specific Allegations of Mail Fraud Racketeering Activity  
+392. Pierre, Moy, Weiner, and others working through and with Rutland and Ne xray, 
+created, prepared, and submitted (or caused to be created, prepared, and submitted) false medical 
+documentation to American Transit and intentionally violated the laws of the United States by 
+devising and intending to devise schemes to defraud and ob tain money and property by means of 
+false and fraudulent pretenses in representations, and in placing or causing to be placed, in a post 
+office and/or authorized depository for mail matter, things to be sent and delivered by the United 
+States Postal Service in violation of 18 U.S.C. § 1341 (mail fraud) for the purpose of executing, 
+and attempting, such fraudulent schemes. 
+393. Unless otherwise pled to the contrary, all documents, notes, reports, health 
+insurance claim forms, medical diagnoses, CPT code tally she ets, referrals, letters, and requests 
+for payment in connection with the insurance claims referenced throughout this pleading traveled 
+through the U.S. Mail. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 61 of 93 PageID #: 61 
+62 
+394. Every automobile insurance claim detailed within involved at least one use of the 
+U.S. Mail, including the mailing of, among other things, the notice of claim, initial policies, and 
+insurance claim payments. 
+i. The Rutland RICO Enterprise 
+395. Through the course of their operating , management and use of the Rutland 
+enterprise, Pierre (through MRC) Moy and their agents either (a) personally used the U.S. Mail to 
+further their fraudulent scheme by causing false medical bills and records from Rutland to be 
+mailed to American Transit and/or counsel for the claimants, or (b) acted with knowledge that the 
+use of the U.S. Mail would follow in the ordinary course of Rutland’s business by sending NF-3s 
+to American Transit. 
+396. At all relevant times, Pierre (through MRC) and Moy caused Rutland to certify 
+falsely that it was eligible to be reimbursed under New York’s No-Fault laws each time that 
+Rutland mailed (or was caused to mail) a demand for payment (i.e., bill) to American Transit. 
+397. Pierre’s operation, management, and/or control of Rutland combined with his 
+unlawful receipt of Rutland’s fees and profits, rendered Rutland ineligible for No -Fault 
+reimbursement under New York law. 
+398. Because Pierre (a non -physician) unlawfully participated in the operation, 
+management, and/or control of Rutland, Moy and Pierre purposely caused Rutland to make a 
+material misrepresentation each and every time that Rutland mailed (or caused to mail) a document 
+to American Transit claiming eligibility for reimbursement. 
+399. Because (a) Pierre participated in the operation and control of Rutland, (b) Moy 
+and Pierre purposely caused Rutland to seek No -Fault reimbursement from American Transit 
+(even though Rutland was not lawfully entitled to such reimbursement), and (c) Rutland used the 
+U.S. Mail to seek reimbursement, Moy and Pierre committed mail fraud. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 62 of 93 PageID #: 62 
+63 
+400. Rutland’s provision of unnecessary medical services to patients also rendered it 
+ineligible to receive payment from American Transit under New York law.  
+401. At all relevant times, Moy, Pierre and their agents working with them, knew that 
+Rutland, MRC, Rutland’s billing companies, a patient, a claimant, an insurance carrier, patient’s 
+attorney, another medical provide r, or American Transit would use the U.S. Mail in connection 
+with each of the fraudulent claims, including issuing payments based upon documentation mailed 
+by Rutland. 
+402. American Transit estimates that the unlawful operation of the Rutland enterprise 
+generated thousands of mailings. 
+ii. The Nexray RICO Enterprise 
+403. Through the course of their operating , management, and use  of the Nexray 
+enterprise, Pierre (through MRC), Weiner, and their agents either (a) personally used the U.S. Mail 
+to further their fraudulent sc heme by causing false medical bills and records from Nexray to be 
+mailed to American Transit and/or counsel for the claimants, or (b) acted with knowledge that the 
+use of the U.S. Mail would follow in the ordinary course of Nexray’s business  by sending NF-3s 
+to American Transit. 
+404. At all relevant times, Pierre (through MRC) and Weiner caused Nexray to certify 
+that it was eligible to be reimbursed under New York’s No-Fault laws each time that Nexray mailed 
+(or was caused to mail) a demand for payment (i.e., bill) to American Transit. 
+405. Pierre’s operation, management, and/or control of Nexray combined with his 
+unlawful receipt of Nexray’s fees and profits, rendered Nexray  ineligible for No -Fault 
+reimbursement under New York law. 
+406. Because Pierre (a non-physician) unlawfully participated in the operation, 
+management, and/or control of Nexray, Weiner and Pierre purposely caused Nexray to make a 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 63 of 93 PageID #: 63 
+64 
+misrepresentation each and every time that Nexray mailed (or caused to mail) a document to 
+American Transit claiming eligibility for reimbursement. 
+407. In United States of America v. Anthony Rose, et al. , No. 19-cr-00789-PGG 
+(S.D.N.Y.) (“United States v. Rose”) numerous individuals were indicted for paying bribes to 911 
+operators, medical personnel, N ew York Police Department officers, and others in exchange for  
+information regarding motor vehicle accident victims, who could be contacted and steered to 
+medical providers.  As alleged in the indictment and evidenced in the filings in that case, Anthony 
+Rose (“Rose”), who ran the scheme, set up a fully staffed call center in order to contact the patients 
+and to steer them to a network of medical clinics (and lawyers) in New York and New Jersey.  
+408. Government affidavits  unsealed years later in the case , include references to 
+wiretaps detail ing the massive scope of the patient referral scheme, and identify numerous 
+layperson controllers, including Pierre, and fraudulent clinic locations.  
+409. The wiretaps showed that Pierre was communicating with another layperson, 
+Nathaniel Coles ( “Coles”) in 2016 about the possibility of setting up additional medical clinics.  
+The affidavit refers to Pierre as a “known player in the medical - mill business.” United States v. 
+Rose, ECF 398 -4, Exhibit A at 821-822 (Affidavit of New York State Police Investigator Paul 
+Schneeloch (“Schneeloch”), dated December 8, 2016).   
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 64 of 93 PageID #: 64 
+65 
+ 
+ 
+ 
+ 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 65 of 93 PageID #: 65 
+66 
+ 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 66 of 93 PageID #: 66 
+67 
+ 
+410. On June 28, 2021, Coles pleaded guilty to one count of conspiracy to engage in a 
+bribery scheme, and admitted to running an illegal medical clinic and engaging in unlawful 
+referrals.   
+411. The facts alleged showed that Pierre was also in personal contact with Rose.  See 
+id. Exhibit A at 991.  Pierre paid Rose in exchange for Rose’s referral of patients to Pierre’s 
+clinics. 
+ 
+ 
+(Id. at 991.)   
+ 
+412. As the Government has made clear in the Criminal Action, the fraudulent clinic 
+locations include Rutland and Ne xray, and that Pierre was communicating with Weiner via text 
+messages for years as well as other Nexray staff members. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 67 of 93 PageID #: 67 
+68 
+413. On January 16, 2024, Weiner pled guilty in the Criminal Action to one count of 
+conspiracy to commit healthcare fraud and to defraud the United States, in violation of 18 U.S.C. 
+§ 371.  As set forth in the Superseding Information, Weiner, together with “others known and 
+unknown, willfully and knowingly . . . did execute and attempt to execute a scheme and artifice to 
+defraud a health care benefit program, and to obtain, by means of false and fraudulent pretenses, 
+representations, and promises, money and property owned by, and under the custody and control 
+of a health care ben efit program in connection with the delivery of and payment for health care 
+benefits, items and services.”  (Id. ¶ 2.)   
+414. The Superseding Information alleges that Weiner made “materially false statements 
+during Examinations under Oath . . . regarding Bradle y Pierre’s role and involvement in Nexray 
+Medical Imaging.”  (Id. ¶ 4a.) 
+415. Because (a) Pierre participated in the operation and control of Nexray, (b) Weiner 
+and Pierre purposely caused Weiner to seek No-Fault reimbursement from American Transit (even 
+though Nexray was not lawfully entitled to such reimbursement), and (c) Nexray used the U.S. 
+Mail to seek reimbursement, Weiner, and Pierre committed mail fraud. 
+416. Nexray’s provision of unnecessary medical services to patients also rendered it 
+ineligible to receive payment from American Transit under New York law. 
+417. At all relevant times, Weiner and Pierre knew that Nexray, MRC, Nexray’s billing 
+companies, a patient, a claimant, an insurance carrier, patient’s attorney, another medical provider, 
+or American Transit w ould use the U.S. Mail in connection with each of the fraudulent claims, 
+including issuing payments based upon documentation mailed by Nexray. 
+418. American Transit estimates that the unlawful operation of the Nexray enterprise 
+generated thousands of mailings. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 68 of 93 PageID #: 68 
+69 
+G. Specific Allegations of Fraudulent Concealment and Representations Made 
+to and Relied Upon by American Transit  
+ 
+i. Fraudulent Concealment of Pierre’s Control of the Rutland 
+Enterprise 
+ 
+419.   Upon information and belief, Pierre and Moy agreed that Moy would register with 
+the State of New York as Rutland’s sole officer, director, and shareholder. 
+420. The documents created and filed with the State of New York forming Rutland and 
+allowing it to do business deliberately omitted any reference to Pierre’s involvement with o r 
+control over Moy or Rutland. 
+421. The documents created and filed with the State of New York related to Rutland did 
+not indicate to American Transit or the general public that Pierre or his companies, including MRC, 
+in any way maintained a controlling interest in Rutland. 
+422. Based on the representations contained in the documents filed with the State of New 
+York on behalf of Rutland, American Transit—even acting with reasonable diligence—could not 
+possibly have discovered the nature and extent of Pierre’s dominat ion and control over Moy and 
+Rutland, and Moy and the other Defendants’ complicity in that domination and control. 
+423. Pierre, Moy and the other Defendants’ purposeful concealment of Pierre’s 
+controlling interest in Rutland allowed Pierre to unlawfully control Rutland undetected. 
+424. At all relevant times during the operation of the Rutland enterprise, to induce 
+American Transit to pay promptly charges for healthcare services billed by Rutland, Moy , and 
+Pierre caused Rutland to falsely certify that it was, in all respects, eligible to be reimbursed under 
+New York’s No-Fault laws. 
+425. Moy attested (or caused the attestation) to the medical necessity of the services that 
+he (or persons under his direction and control) allegedly performed in connection with the 
+treatment and/or testing of Rutland patients. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 69 of 93 PageID #: 69 
+70 
+426. At all relevant times, Moy, as a duly licensed physician, was legally and ethically 
+obligated to act honestly and with integrity. 
+427. At all relevant times, Pierre and Moy actively concealed fro m American Transit 
+facts regarding Rutland’s true ownership and control to prevent American Transit from 
+discovering that Rutland was unlawfully incorporated, owned, and controlled by non -physicians, 
+and therefore ineligible to bill for or collect No-Fault benefits. 
+428. These facts, including  Pierre’s involvement in the direction and control of the 
+treatment and/or testing of Rutland’s patients are not readily evident within the documents 
+submitted to American Transit by these defendants and upon which American Transit in adjusting 
+the claims and tendering payment in connection with each patient claim. 
+429. Claims under New York’s No-Fault laws can only be submitted, and reimbursed 
+for treatment that was provided in accord with all applicable New York State licensing  
+requirements. 
+430. Thus, every time that Pierre and Moy caused Rutland to submit No -Fault 
+reimbursement demands to American Transit, Pierre and Moy necessarily certified that Rutland 
+was eligible to be reimbursed under New York’s No-Fault laws. 
+431. The full extent of Pierre’s and Moy’s fraudulent and unlawful acts relative to their 
+control over the Rutland enterprise, including (a) Pierre’s involvement in the direction and control 
+of the treatment of Rutland’s patients, (b) Pierre’s participation in the operation a nd control of 
+Rutland, and (c) the unlawful channeling of Rutland’s professional proceeds to Pierre through  
+phony arrangements that MRC maintained with Moy and Rutland, was not known to American 
+Transit until shortly before it commenced this action. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 70 of 93 PageID #: 70 
+71 
+ii. Fraudulent Concealment of Pierre’s Unlawful Control of the 
+Nexray Enterprise 
+ 
+432. Upon information and belief, Pierre and Weiner agreed that Weiner would register 
+with the State of New York as Nexray’s sole officer, director, and shareholder. 
+433. The documents created and filed with the State of New York forming Nexray and 
+allowing it to do business  deliberately omitted any reference to Pierre’s involvement with or 
+control over Weiner or Nexray. 
+434. The documents created and filed with the State of New York related to Nexray did 
+not indicate to American Transit or the general public that Pierre or his companies, including MRC, 
+in any way maintained a controlling interest in Nexray. 
+435. Based on the representations contained in the documents filed with the State of New 
+Yor on beh alf of Nexray, American Transit —even acting with reasonable diligence —could not 
+possibly have discovered the nature and extent of Pierre’s domination and control over Weiner 
+and Nexray and Weiner and the other Defendants’ complicity in that domination and control. 
+436. Pierre, Weiner, and the other Defendants ’ purposeful concealment of Pierre’s 
+controlling interest in Nexray allowed Pierre to unlawfully control Nexray undetected. 
+437. At all relevant times during the operation of the Nexray enterprise, to induce 
+American Transit to pay promptly charges for healthcare services billed by Nexray, Weiner and 
+Pierre caused Rutland to falsely certify that it was, in all respects, eligible to be reimbursed under 
+New York’s No-Fault laws. 
+438. Moy attested (or caused the attestation) to the medical necessity of the services that 
+he (or persons under his direction and control) allegedly performed in connection with the 
+treatment of Nexray patients. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 71 of 93 PageID #: 71 
+72 
+439. Pierre and Weiner also c onspired to conceal the fact that Nexray was owned and 
+controlled by Pierre in violation of New York law. 
+440. At all relevant times, Weiner, as a duly licensed physician, was legally and ethically 
+obligated to act honestly and with integrity. 
+441. At all relevant times, Pierre and Weiner actively concealed from American Transit 
+facts regarding Nexray’s true ownership and control to prevent American Transit from discovering 
+that Nexray was unlawfully incorporated, owned, and controlled by non-physicians, and therefore 
+ineligible to bill for or collect No-Fault benefits. 
+442. These facts, including Pierre’s involvement in the direction and control of the 
+treatment and/or testing of Nexray’s patients  are not readily evident within the documents 
+submitted to American Transit by these defendants and upon which American Transit in adjusting 
+the claims and tendering payment in connection with each patient claim. 
+443. Claims under New York’s No-Fault laws can only be submitted, and reimbursed 
+for treatment that was provided in accord with all applicable New York State licensing 
+requirements. 
+444. Thus, every time that Pierre and Weiner caused Nexray to submit No -Fault 
+reimbursement demands to American Transit, Pierre and Weiner necessarily certified that Nexray 
+was eligible to be reimbursed under New York’s No-Fault laws. 
+445. The full extent of Pierre’s and Weiner’s fraudulent and unlawful acts relative to 
+their control over the Nexray enterprise, including (a) Pierre’s involvement in the direction and 
+control of the treatment of Nexray’s patients, (b) Pierre’s participation in the operation and control 
+of Nexray, and (c) the unlawful channeling of Nexray’s professional proceeds to Pierre through  
+phony arrangements that MRC maintained with Weiner and Nexray, was not known to American 
+Transit until shortly before it commenced this action. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 72 of 93 PageID #: 72 
+73 
+H. The Use of Counsel in the Scheme to Defraud 
+ 
+446. In order to perpetrate their fraudulent scheme on American Transit , Defendants 
+worked in concert with attorneys registered to practice law in the State of New York  to collect 
+amounts they alleged were due and owing under bills they had presented to American Transit for 
+payment. 
+447. As alleged in the indictment in the Criminal Action, Pierre  selected counsel to 
+prosecute claims against insurance companies like American Transit to ensure they would be 
+forced to pay the fraudulent bills.  Upon information and belief, Defendants well knew that given 
+the high volume of claims that would be submitted, and the limited process in the no fault regime, 
+they would be able to flood American Transit with invoices , threats of litigation and litigation to 
+force it to pay. 
+448. Therefore, to obtain payment from American Transit for Defendants’ fraudulent 
+charges for the medical evaluations, diagnostic testing, diagnostic medical imaging, and/or other 
+treatment purportedly provided to patients of Rutland and Nexray, the Defendants hired attorneys 
+to pursue collection of the fraudulent charges from American Transit, including the prosecution 
+and defense of claims.  These attorneys routinely file time-consuming and expensive lawsuits and 
+arbitration matters against American Transit. 
+449. For example,  the Law Office of Jason Tenenbaum, P.C. , its p rincipal, Jason 
+Tenenbaum, an affiliated attorney, Roman Kravchenko , the Russel Friedman Law Group, LLP, 
+among others (collectively, the “ No-Fault Attorneys”)  appeared on behalf of Rut land and/or 
+Nexray, to prosecute dozens of actions against American Transit.   
+450. Many of these lawsuits involve the No-Fault Attorneys  filing purported 
+verifications on behalf of Rutland/Moy and Nexray/Weiner .  Even though Moy purportedly died 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 73 of 93 PageID #: 73 
+74 
+at sea more than a year ago,1 certain No-Fault Attorneys have signed verifications on behalf of 
+Rutland, which is questionable, a s it does not account for how they could possibly obtain 
+information about the cases from someone lost at sea .  Indeed, when recently challenged on the 
+issue Attorney Kravchenko admitted to bringing actions against American Transit on behalf  of 
+Rutland and Nexray without actually being engaged by them. 
+451. The No-Fault Attorneys have attempted to confirm master arbitration awards 
+pursuant to CPLR § 7510 on behalf of Defendants, and to obtain judgments with full knowledge 
+that American Transit has already paid all or part of the arbitration award and, therefore, that there 
+was no basis for a judgment or to enforce the later -obtained judgment.  Upon information and 
+belief, the No-Fault Attorneys have pursued these claims solely to recover attorneys’ fees against 
+American Transit, ignoring American Transit’s payments of judgments and refusing to provide it 
+with partial satisfactions of judgment pursuant to CPLR § 5020(a). 
+452. Kravchenko has admitted in award enforcement litigation that he has no contact 
+with the medical services providers themselves at all and only received the engagements through 
+the attorneys handling the arbitrations.   Attorney Kravchenko has also admitted in testimony in 
+such litigation to fee splitting.  Upon information and belief, the referring attorneys are working in 
+concert with the No-Fault Attorneys to prosecute No -Fault claims on behalf of Defendants to 
+obtain payment from American Transit for false and medically unnecessary services, procedures, 
+and tests, and otherwise legally unenforceable claims. 
+453. In addition to obtaining recovery for Defendants’ medically unnecessary 
+procedures and services and fraudulent billing, the No-Fault Attorneys profit from the scheme by 
+seeking fees well in excess of any reasonable amount for work performed in connection wi th the 
+ 
+1 See supra ¶ 26; https://www.nytimes.com/2022/12/22/nyregion/marvin-moy-boat-missing.html. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 74 of 93 PageID #: 74 
+75 
+CPLR § 7510 proceedings, even though they use substantially the same form filings in each case. 
+New York courts have started to notice this scheme and have been drastically slashing their fees 
+as inappropriate.  
+454. Tenenbaum, Kravchenko and the Tenenba um firm are also defendants in separate 
+litigation brought by American Transit in New York Supreme Court, captioned American Transit 
+Insurance Company v. The Law Office of Jason Tenenbaum, P.C., (Index No. 619985/2023) (Sup. 
+Ct. Nassau Cnty.).  They represented American Transit for years in hundreds of cases of No-Fault 
+litigation, helped develop American Transit’s litigation strategies, and are now using that 
+confidential information to litigate No-Fault cases against American Transit in breach of their 
+obligations to American Transit.  
+I. Damages 
+ 
+455. The Defendants’ pattern of fraudulent conduct injured American Transit in its 
+business and property by reason of violations of federal and state law.  American Transit’s injury 
+includes, but is not limited to, compensatory damages for payments made to Rutland and Nexray. 
+456. American Transit seeks compensatory damages for payments made to Rutland for 
+false and fraudulent No-Fault claims in excess of $ 1,300,000.00, the exact amount to be 
+determined at trial.  The chart annexed at Exhibit G sets forth representative examples of American 
+Transit’s payments to Rutland in connection with No-Fault claims determined to be fraudulent and 
+non-compensable. 
+457. American Transit seeks compensatory damages for p ayments made to Nexray for 
+false and fraudulent No-Fault claims in excess of $ 1,000.000.00, the exact amount to be 
+determined at trial.  The chart annexed at Exhibit H sets forth representative examples of American 
+Transit’s payments to Nexray in connection with No-Fault claims determined to be fraudulent and 
+non-compensable. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 75 of 93 PageID #: 75 
+76 
+458. American Transit seeks comp ensatory damages  made to others in reli ance on 
+Rutland, Nexray, Moy, and Weiner’s representations that the Rutland and Nexray were owned or 
+controlled by a person who is a licensed physician. 
+FIRST CAUSE OF ACTION 
+(Declaratory Judgment – 28 U.S.C. §§ 2201 and 2202 
+Against All Defendants) 
+ 
+459. American Transit incorporates each and every allegation set forth above as though 
+fully set forth herein. 
+460. There is an actual case and controversy between American Transit and Defendants 
+regarding paid and unpaid billing for the services and treatment purportedly provided by Rutland, 
+Nexray, Moy, and Weiner that Defendants have submitted to American Transit. 
+461. Defendants had and have no right to receive payment from American Transit on the 
+paid and unpaid billing because the services and treatment purportedly provided by Rutland, 
+Nexray, Moy, and Weiner  were not medically necessary and were provided —to the extent that 
+they were provided at all —pursuant to pre -determined protocols that serve to financially enrich 
+Defendants, rather than to treat or otherwise benefit their patients. 
+462. Rutland and Nexray had and have no right to receive payment from American 
+Transit on the paid and unpaid billing because they are not in fact owned or controlled by a licensed 
+physician, but by Pierre and the unlicensed John Doe Defendants , and are thus ineligible for 
+payment under New York law. 
+463. Rutland and Nexray  had and have no right to receive payment from American 
+Transit on the paid and unpaid billing because the billing codes used for the services and treatment 
+purportedly provided by Rutland, Nexray, Moy, and Weiner misrepresented and exaggerated the 
+level of services that purportedly were provided in order to inflate the charges submitted to 
+American Transit. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 76 of 93 PageID #: 76 
+77 
+464. Defendants had and have no right to receive payment from American Transit on the 
+paid and unpaid billing because the services and treatment provided by Rutland, Nexray, Moy, and 
+Weiner were provided—to the extent that they were provided at all—pursuant to illegal kickback 
+and self-referral arrangements amongst Defendants and others. 
+465. Accordingly, American Transit is entitled to judgment pursuant to the Declaratory 
+Judgment Act, 28 U.S.C. §§ 2201 and 2202, declaring that Defendants had and have no right to 
+receive payment for bills submitted to American Transit. 
+SECOND CAUSE OF ACTION 
+(Violation of RICO, 18 U.S.C. § 1962(c) 
+Against Rutland) 
+ 
+466. American Transit incorporates each and every allegation set forth above as though 
+fully set forth herein. 
+467. Rutland is an ongoing “enterprise” as that term is defined in 18 U.S.C.  § 1961(4), 
+that engages in activities which affect interstate commerce. 
+468. Pierre, Moy and others  knowingly conducted and/or participated, directly or 
+indirectly, in the conduct of Rutland’s affairs through a pattern of racketeering activity consisting 
+of repeated violations of the fed eral mail fraud statute, 18 U.S.C.  § 1341, based upon the use of 
+the United States mails to submit or cause to be submitted thousands of fraudulent charges on a 
+continuous basis for more than six years seeking payments that Rutland was not entitled to receive 
+under New York No-Fault laws because: (i) the billed-for-services were not medically necessary; 
+(ii) the billed -for-services were performed and billed pursuant to a pre -determined, fraudulent 
+treatment and billing protocol designed solely to enrich the Defendants; (iii) the billing codes used 
+for the services misrepresented and exaggerated the level of services that purportedly  were 
+provided in order to inflate the charges that could be submitted; (iv) the billed-for-services were 
+performed pursuant to illegal kickback and referral schemes in violation of law; and (v) the billed-
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 77 of 93 PageID #: 77 
+78 
+for-services were per formed by a  company that was not owned and  controlled by a licensed 
+physician, and was thus ineligible to receive payment under New York law.   Representative 
+examples of the fraudulent charges and corresponding mailings submitted to American Transit that 
+comprise, in part, the pattern of racketeering activity identified are set forth in the chart annexed 
+hereto as Exhibit I. 
+469. Rutland’s business is racketeering activity, inasmuch as the enterprise exists for the 
+purpose of submitting fraudulent charges to insurers.  The predicate acts of ma il fraud are  the 
+regular way in which Pierre, Moy and others operated Rutland, insofar as Rutland is not engaged 
+in a legitimate medical practice, and acts of mail fraud therefore are essential in order for Rutland 
+to function.  Furthermore, the intricate planning required to carry out and conceal the  predicate 
+acts of mail fraud implies a continued threat of criminal activity, as does Pierre’s continued attempt 
+to collect on the fraudulent billing submitted through Rutland to the present day. 
+470. Rutland is engaged in inherently unlawful acts, inasmuch as it continues to submit 
+and attempt collection on fraudulent billing submitted to American Transit and other insurers. 
+These inherently unlawful acts are taken by Rutland in pursuit of inherently unlawful goals —
+namely, the theft of money from American Transit and other insurers through fraudulent No-Fault 
+billing. 
+471. American Transit has been injured in its business and property by reason of the 
+above-described conduct in that it has pai d at least $1,640,000.00 because of the fraudulent bills 
+submitted through Rutland. 
+472. By reason of its injury, American Transit is entitled to treble damages, costs, and 
+reasonable attorneys’ fees pursuant to 18 U.S.C. §1964(c), against Rutland and any other relief the 
+Court deems just and proper. 
+ 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 78 of 93 PageID #: 78 
+79 
+THIRD CAUSE OF ACTION 
+(Violation of RICO, 18 U.S.C. § 1962(c) 
+Against Nexray) 
+ 
+473. American Transit incorporates each and every allegation set forth above as though 
+fully set forth herein. 
+474. Nexray is an ongoing “enterprise” as that term is defined in 18 U.S.C.  § 1961(4), 
+that engages in activities which affect interstate commerce. 
+475. Pierre, Weiner , and others  knowingly conducted and/or participated, directly or 
+indirectly, in the conduct of Nexray’s affairs through a pattern of racketeering activity consisting 
+of repeated violations of the federal mail fraud statute, 18 U.S.C. § 1341, based upon the use of 
+the United States mails to submit or cause to be submitted thousands of fraudulent charges on a 
+continuous basis for more than six years seeking payments that Rutland was not entitled to receive 
+under New York No-Fault laws because: (i) the billed-for-services were not medically necessary; 
+(ii) the billed -for-services were performed and bil led pursuant to a pre -determined, fraudulent 
+treatment and billing protocol designed solely to enrich the Defendants; (iii) the billing codes used 
+for the services misrepresented and exaggerated the level of services that purportedly were 
+provided in order to inflate the charges that could be submitted;  (iv) the billed-for-services were 
+performed pursuant to illegal kickback and referral schemes in violation of law; and (v) the billed-
+for-services were per formed by a  company that was not owned and controlled by a licensed 
+physician, and was thus ineligible to receive payment under New York law .   Representative 
+examples of fraudulent charges and corresponding mailings submitted to American Transit that 
+comprise, in part, the pattern of racketeering activity identified  are set forth in the chart annexed 
+hereto as Exhibit J. 
+476. Nexray’s business is racketeering activity, inasmuch as the enterprise exists for the 
+purpose of submitting fraudulent charges to insurers.  The predicate acts of mail fraud are the 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 79 of 93 PageID #: 79 
+80 
+regular way in which Pierre, Weiner, and others operated Nexray, insofar as Nexray is not engaged 
+in a legitimate medical practice, and acts of mail fraud therefore are essential in order for Nexray 
+to function.  Furthermore, the intricate planning required to carry out and conceal the predicate 
+acts of mail fraud implies a continued threat of criminal activity, as does the fact that Pierre 
+continues to attempt to collect on the fraudulent billing submitted through Rutland to the present 
+day. 
+477. Nexray is engaged in inherently unlawful acts, inasmuch as it continues to submit 
+and attempt collection on fraudulent billing submitted to American Transit and ot her insurers. 
+These inherently unlawful acts are taken by Nexray in pursuit of inherently unlawful goals — 
+namely, the theft of money from American Transit and other insurers through fraudulent No-Fault 
+billing. 
+478. American Transit has been injured in its busi ness and property by reason of the 
+above-described conduct in that it has paid at least $1,600,000.00 because of the fraudulent bills 
+submitted through Nexray. 
+479. By reason of its injury, American Transit is entitled to treble damages, costs, and 
+reasonable attorneys’ fees pursuant to 18 U.S.C. §1964(c), against Nexray and any other relief the 
+Court deems just and proper. 
+FOURTH CAUSE OF ACTION 
+(Violation of RICO, 18 U.S.C. § 1962(d) 
+Against Pierre and Moy) 
+ 
+480. American Transit incorporates each and every allegation set forth above as though 
+fully set forth herein. 
+481. Rutland is an ongoing “enterprise”, as that term is defined in 18 U.S.C. § 1961(4), 
+that engages in activities which affect interstate commerce. 
+482. Pierre and Moy are employed by or associated with the Rutland enterprise. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 80 of 93 PageID #: 80 
+81 
+483. Pierre and Moy knowingly have agreed, combined, and conspired to conduct and/or 
+participate, directly or indirectly, in the conduct of Rutland’s affairs through a pattern  of 
+racketeering activity consisting of repeated violations of the federal mail fraud statute, 18 U.S.C.  
+§ 1341, based upon the use of the United States mails to submit or cause to be submitted hundreds 
+of fraudulent charges on a continuous basis for years seeking payments that Rutland was not  
+eligible to receive under the New York No-Fault laws because: (i) the billed-for-services were not 
+medically necessary; (ii) the billed -for-services were performed and billed pursuant to a  pre-
+determined, fraudulent treatment and billing protocol designed solely to enrich the Defendants;  
+(iii) the billing codes used for the services misrepresented  and exaggerated the level of services 
+that purportedly were provided in order to inflate the charges that could be submitted; (iv) Rutland 
+obtained its patients through the Defendants’ illegal kickback scheme ; and (v) the billed -for-
+services were performed by a company that was not owned and controlled by a licensed physician, 
+and was thus ineligible to receive payment under New York law . Representative examples of  
+fraudulent bil ls and corresponding mailings submitted to  American Transit  that comprise the 
+pattern of racketeering activity identified are set forth in the chart annexed hereto as Exhibit I. 
+484. Pierre and Moy knew of, agreed to , and acted in furtherance of the common  and 
+overall objective (i.e., to defraud American Transit and other insurers of money) by submitting or 
+facilitating the submission of the fraudulent charges to American Transit. 
+485. American Transit has been injured in its business and property by reason of the  
+above-described conduct in that it has paid at least $1,640,000.00 because of the fraudulent bills 
+submitted through Rutland. 
+486. By reason of its injury, American Transit is entitled to treble damages, costs, and 
+reasonable attorneys’ fees pursuant to 18 U.S.C. § 1964(c), Pierre, Moy, and Weiner and any other 
+relief the Court deems just and proper. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 81 of 93 PageID #: 81 
+82 
+FIFTH CAUSE OF ACTION 
+(Violation of RICO, 18 U.S.C. § 1962(d) 
+Against Pierre and Weiner) 
+ 
+487. American Transit incorporates each and every allegation set forth above as though 
+fully set forth herein. 
+488. Nexray is an ongoing “enterprise”, as that term is defined in 18 U.S.C. § 1961(4), 
+that engages in activities which affect interstate commerce. 
+489. Pierre and Weiner are employed by or associated with the Rutland enterprise. 
+490. Pierre and Weiner knowingly have agreed, combined, and conspired to conduct 
+and/or participate, directly or indirectly, in the conduct of Nexray’s affairs through a pattern of 
+racketeering activity consisting of repeated violations of the federal mail fraud statute, 18 U.S.C. 
+§ 1341, based upon the use of the United States mails to submit or cause to be submitted hundreds 
+of fraudulent charges on a continuous basis for years seeking payments that Nexray was not 
+eligible to receive under the New York No-Fault laws because: (i) the billed-for-services were not 
+medically necessary; (ii) the billed -for-services were performed and billed pursuant to a pre -
+determined, fraudulent treatment and billing protocol designed solely to enrich the Defendants; 
+(iii) the billing codes used for the services misrepresented and e xaggerated the level of services 
+that purportedly were provided in order to inflate the charges that could be submitted; (iv) Rutland 
+obtained its patients through the Defendants’ illegal kickback scheme; and (v) the billed -for-
+services were performed by a company that was not owned and controlled by a licensed physician, 
+and was thus ineligible to receive payment under New York law. Representative examples of 
+fraudulent bills and corresponding mailings submitted to American Transit that comprise the 
+pattern of racketeering activity identified are set forth in the chart annexed hereto as Exhibit J. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 82 of 93 PageID #: 82 
+83 
+491. Pierre and Weiner knew of, agreed to, and acted in furtherance of the common and 
+overall objective (i.e., to defraud American Transit and other insurers of money) by submitting or 
+facilitating the submission of the fraudulent charges to American Transit. 
+492. American Transit has been injured in its business and property by reason of the 
+above-described conduct in that it has paid at least $1,6 00,000.00 because of the frau dulent bills 
+submitted through Nexray. 
+493. By reason of its injury, American Transit is entitled to treble damages, costs, and 
+reasonable attorneys’ fees pursuant to 18 U.S.C. § 1964(c), Pierre and Weiner and any other relief 
+the Court deems just and proper. 
+SIXTH CAUSE OF ACTION 
+(Violation of RICO, 18 U.S.C. § 1962(c) 
+Against Defendants) 
+(Association In Fact Enterprise) 
+494. American Transit incorporates each and every allegation set forth above as though 
+fully set forth herein. 
+495. At all times relevant to this complaint, Defendants Pierre, Moy, Weiner, Rutland, 
+Nexray and the John Doe Defendants constituted a separate associated in fact enterprise within the 
+meaning of 18 U.S.C. § 1961(4), which engaged in, and the activities of which affect interstate 
+commerce (the “Associated In Fact Enterprise”).  Such enterprise was formed with the common 
+purpose of engaging in fraudulent activities, including but not limited to using the No-Fault system 
+in New York State as a tool for committed improper acts against American Transit to enrich the 
+enterprise. 
+496. At all times relevant to this Complaint, such Defendants were “persons” associated 
+with an enterprise within the meaning of 18 U.S.C. §§ 1961(3) and 1965(c), with an existence 
+separate and apart from the Associated In Fact Enterprise. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 83 of 93 PageID #: 83 
+84 
+497. The Defendants conducted or participated, directly or indirectly, in the conduct of 
+the Associated In Fact Enterprise’s affairs through a pattern of racketeering activity in violation of 
+18 U.S.C. § 1962(c).  Pierre is an architect of a scheme involving paying bribes to 911 op erators, 
+hospital employees, among others, in exchange for the referral of automobile accident victims to 
+Rutland, a No-Fault medical mill in New York.   Rutland, in turn, referred patients to Nexray, a n 
+MRI and x-ray provider, for unnecessary diagnosti c imaging.  On paper, Moy is the owner of 
+Rutland and Weiner the owner of Nexray, and in that capacity, Moy and Weiner enabled Rutland 
+and Nexray to regularly recommend unnecessary procedures so that they could bill for inflated 
+charges to maximize billing  even though those procedures were not necessary and could have 
+harmed patients.  The alleged acts herein constitute a pattern of racketeering activity within the 
+meaning of 18 U.S.C. § 1961, to wit, in violation of 18 U.S.C. §§ 1341 and 1343: 
+a. Such Defendants devised and executed a scheme and artifice to defraud American 
+Transit of its money and property by means of false and fraudulent pretenses, 
+representations, and promises and by concealment of material facts regarding the 
+health care claims for payment; 
+ 
+b. Pursuant to this scheme, such Defendants submitted to American Transit false and 
+fraudulent claims and information in that such Defendants concealed that the 
+Nexray was not eligible to receive No -Fault benefits pursuant to Insurance Law § 
+5102(a)(1) and 1 1 N.Y.C.R.R. § 65 -3.16(a)(12), when in fact it was not properly 
+licensed in that it obtained patients through an illegal kickback scheme. 
+ 
+c. Pursuant to this scheme, such Defendants submitted to American Transit false and 
+fraudulent claims and information in that such Defendants concealed that Rutland 
+was not eligible to receive No -Fault benefits pursuant to Insurance Law § 
+5102(a)(1) and 11 N. Y.C.R.R. § 65-3.16(a)(12), when in fact it was not properly 
+licensed in that it obtained patients through an illegal kickback scheme. 
+ 
+d. Pursuant to this scheme, such Defendants submitted to American Transit false and 
+fraudulent claims and information in tha t such Defendants concealed that Nexray 
+was not eligible to receive No -Fault benefits pursuant to Insurance Law § 
+5102(a)(1) and 11 N.Y.C.R.R. § 65 -3.16(a)(12), when in fact it was not properly 
+licensed in that it obtained patients through an illegal kickback scheme. 
+ 
+e. Pursuant to this scheme, such Defendants submitted to American Transit false and 
+fraudulent claims and information in that such Defendants concealed that Nexray 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 84 of 93 PageID #: 84 
+85 
+and Rutland’s representations that the billed-for services were medically necessary 
+were false, when in fact the billed-for services were not medically necessary and 
+were performed and billed pursuant to fraudulent scheme to profit off the No-Fault 
+system and particularly American Transit.  These fraudulent and medically 
+unnecessary ser vices included, but were not limited to, improper and medically 
+unnecessary medical examinations and consultations, provision of medically 
+unnecessary chiropractic services, and electrodiagnostic testing. 
+ 
+f. Pursuant to this scheme, such Defendants submitted to American Transit false and 
+fraudulent claims and information in that such Defendants concealed that Nexray 
+and Rutland’s representation that the billed -for services were properly billed in 
+accordance with the Fee Schedule were false, when in fact the billing codes used 
+for the billed -for services misrepresented and exaggerated the level and type of 
+services that purportedly were provided in order to inflate the charges submitted to 
+American Transit. 
+ 
+g. Pursuant to this scheme, such Defendants submitted to American Transit false and 
+fraudulent claims and information in that such Defendants concealed that Nexray 
+and Rutland were not eligible to receive paym ents from American Transit in that 
+they were not owned or controlled by a licensed physician. 
+ 
+h. For the purpose of executing this scheme and artifice to defraud, s uch Defendants 
+submitted such false and fraudulent claims and information to American Transit by 
+use of the mail and interstate wire facilities and cause d American Transit to make 
+payments for said fraudulent claims by use of the mail and interstate wire facilities. 
+ 
+498. The Defendants have engaged in this scheme from 2009 and up to the present and 
+continuing if the Court does not provide relief, the fraudulent enterprise will continue to seek and 
+submit and collect fraudulent claims.  Every singly claim submitted by Defendants associated with 
+this enterprise has been fraudulent. 
+499. A list of the various mailings constituting a substantial number of the requ isite 
+predicate acts is annexed hereto as Exhibit I and Exhibit J. 
+500. The Associated In Fact Enterprise is distinct from, and has an existence beyond, 
+the pattern of racketeering that is described herein, namely by recruiting, overseeing, and 
+coordinating many professionals and non-professionals who have been responsible for facilitating 
+and performing a variety of administrative and professional functions beyond the acts of mail fraud 
+(i.e. the submission of the fraudulent bills to American Transit), by providing benefits for the staff 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 85 of 93 PageID #: 85 
+86 
+of the enterprise, by creating and maintaining files and other records and by negotiating and 
+executing various facility lease agreements. 
+501. By reason of its injury, American Transit is entitled to treble damages, costs, and 
+reasonable attorneys’ fees pursuant to 18 U.S.C. § 1964(c)  in an amount no l and any other relief 
+the Court deems just and proper. 
+SEVENTH CAUSE OF ACTION 
+(New York Public Health Law § 238-a 
+Against All Defendants) 
+ 
+502. American Transit incorporates each and every allegation set forth above as though 
+fully set forth herein. 
+503. Section 238-a of the New York Public Health Law provides, in relevant part: 
+Prohibition of financial arrangements and referrals. 1. (a)  A 
+practitioner authorized to order clinical laborator y services,  
+pharmacy services, radiation therapy services, physical therapy 
+services or x-ray or imaging services may not make a referral for 
+such services to a health care provider authorized to provide such 
+services where such  practitioner or immediate f amily member of 
+such practitioner has a  financial relationship with such health care 
+provider. 
+ 
+(b) A health care provider or a referring practitioner may not present 
+or cause to be presented to any individual or third party payor or  
+other entity a claim, bill, or other demand for payment for clinical  
+laboratory services, pharmacy services, radiation therapy services,  
+physical therapy services or x -ray or imaging services furnished  
+pursuant to a referral prohibited by this subdivision. 
+ 
+7. If a referring pr actitioner or a health care provider furnishing  
+clinical laboratory services, pharmacy services, radiation therapy  
+services, physical therapy services or x -ray or imaging services or 
+any other person or entity collects any amounts that were billed in  
+violation of this section, such referring practitioner and health care  
+provider and other person or entity shall be jointly and severally  
+liable to the payor for any amounts so collected. 
+ 
+504. Moy and Weiner are practitioners as that term is defined under Section 2 38(1l) of 
+the New York Public Health Law. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 86 of 93 PageID #: 86 
+87 
+505. Moy and Weiner regularly made referrals to entities they had financial relationships 
+with including referrals for physical therapy services and x-ray or imaging services.   
+506. Rutland and Nexray are each “health care providers” as that term is defined under 
+Section 238(6) of the New York Public Health Law. 
+507. Moy and Weiner had a “financial relationship” with Rutland and Nexray as that 
+term is defined under Section 238(3) of the New York Public Health Law. 
+508. The referrals by Moy and Weiner violate Section 238-a(9) of the New York Public 
+Health Law which prohibits arrangements or schemes which a practitioner or health care provider 
+knows or should know has a principal purpose of assuring referrals to a particular health care 
+provider which, if the practitioner directly made referrals to such health care provider, would be 
+in violation of Section 238-a(l) of the Public Health Law. 
+509. American Transit has made payments to Rutland and Nexray in an amount to be 
+determined at trial, for services billed in violation of Section 238-a of the Public Health Law and, 
+pursuant to Section 238-a(7) of the Public Health Law, are entitled to recover such amounts from 
+Rutland, Nexray, Moy, and Weiner who, as health care providers and practitioners are jointly and 
+severally liable to such plaintiffs for the amounts they received in violation of New York Public 
+Health Law§ 238-a.  
+510. Plaintiffs are also entitled to an order and judgment against all Defendants declaring 
+all amounts billed as violative of New York Public Health Law§ 238 -a and not eligible for  
+payment. 
+EIGHTH CAUSE OF ACTION 
+(Common Law Fraud 
+Against Rutland, Pierre, and Moy) 
+511. American Transit incorporates each and every allegation set forth above as though 
+fully set forth herein. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 87 of 93 PageID #: 87 
+88 
+512. Rutland, Pierre, and Moy intentionally and knowingly made false and fraudulent 
+statements of material fact to American Transit and concealed material facts fro m American 
+Transit in the course of their submission of fraudulent bills seeking payment for the services and 
+treatments provided by Rutland and Moy. 
+513. The false and fraudulent statements of material fact and acts of fraudulent 
+concealment include: (i) in every claim, the representation that Rutland was properly licensed, and 
+therefore, eligible to receive No -Fault benefits pursuant to Insurance Law § 510 2(a)(1) and 11 
+N.Y.C.R.R. § 65-3.16(a)(12), when in fact it was not properly licensed in that it obtained patients 
+through an illegal kickback scheme; (ii) in every claim, the representation that the billed -for 
+services were medically necessary, when in fa ct the billed -for services were not medically 
+necessary and were performed and billed pursuant to a fraudulent scheme to profit off the No-Fault 
+system and particularly American Transit ; (iii) in every claim, the representation that the billed -
+for services were properly billed , when in fact the billing codes used for the billed -for services 
+misrepresented and exaggerated the level and type of services that purportedly were provided in 
+order to inflate the charges subm itted to American Transit ; and ( iv) in e very claim, the 
+representation that Rutland was owned or controlled by a l icensed physician and was eli gible to 
+receive payment under New York law.   
+514. Rutland, Pierre, and Moy intentionally made the above -described false and 
+fraudulent statements and concealed material facts in a calculated effort to induce American 
+Transit to pay charges submitted through Rutland that were not compensable under the New York 
+No-Fault laws. 
+515. American Transit has been injured in its business and property by reason of the 
+above-described conduct in that it has paid at leas t $1,640,000.00 because of the fraudulent bills 
+submitted through Rutland. 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 88 of 93 PageID #: 88 
+89 
+516. Rutland, Pierre, and Moy’s extensive fraudulent conduct demonstrates a high 
+degree of moral turpitude and wanton dishonesty that entitles American Transit to recover punitive 
+damages. 
+517. American Transit is entitled to compensatory and punitive damages, together with 
+interests and costs, against Rutland, Pierre, and Moy and any other relief the Court deems just and 
+proper. 
+NINTH CAUSE OF ACTION 
+(Common Law Fraud 
+Against Nexray, Pierre, and Weiner) 
+518. American Transit incorporates each and every allegation set forth above as though 
+fully set forth herein. 
+519. Nexray, Pierre, and Weiner intentionally and knowingly made false and fraudulent 
+statements of material fact to American Transit and concealed material facts from American 
+Transit in the course of their submission of fraudulent bills seeking payment for the services and 
+treatments provided by Nexray and Weiner. 
+520. The false and fraudulent statements of material fact and acts of fraudulent 
+concealment include: (i) in every claim, the representation that Nexray was properly licensed, and 
+therefore, eligible to receive No -Fault benefits pursuant to Insurance Law § 5102(a)(1) and 11 
+N.Y.C.R.R. § 65-3.16(a)(12), when in fact it was not properly licensed in that it obtained patients 
+through an illegal kickback scheme; (ii) in every claim, the representati on that the billed -for 
+services were medically necessary, when in fact the billed -for services were not medically 
+necessary and were performed and billed pursuant to fraudulent scheme to profit off the No-Fault 
+system and particularly American Transit ; (iii) in every claim, the representation that the billed -
+for services were properly billed  when in fact the billing codes used for the billed -for services 
+misrepresented and exaggerated the level and type of services that purportedly were provided in 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 89 of 93 PageID #: 89 
+90 
+order to inflate the charges submitted to American Transit. ; and ( iv) in e very claim, the 
+representation that Nexray was owned or controlled by a l icensed physician and was eli gible to 
+receive payment under New York law. 
+521. Nexray, Pierre, and Weiner intentionally made the above -described false and 
+fraudulent statements and concealed material facts in a calculated effort to induce Am erican 
+Transit to pay charges submitted through Nexray that were not compensable under the New York 
+No-Fault laws. 
+522. American Transit has been injured in its business and property by reason of the 
+above-described conduct in that it has paid at leas t $1,600,00.00 pursuant to the fraudulent bills 
+submitted through Nexray. 
+523. Nexray, Pierre, and Weiner’s extensive fraudulent conduct demonstrates a high 
+degree of moral turpitude and wanton dishonesty that entitles American Transit to recover punitive 
+damages. 
+524. American Transit is entitled to compensatory and punitive damages, together with 
+interests and costs, Nexray, Pierre, and Weiner and any other relief the Court deems just and  
+proper. 
+TENTH CAUSE OF ACTION 
+(Unjust Enrichment 
+Against All Defendants) 
+525. American Transit incorporates each and every allegation set forth above as though 
+fully set forth herein. 
+526. As set forth above, Rutland, Nexray, Pierre, Moy, and Weiner have engaged in 
+improper, unlawful, and/or unjust acts, all to the harm and detriment of American Transit. 
+527. Based on Defendants’ improper, unlawful, and/or unjust acts , all of which were 
+concealed from American Transit, w hen American Transit received and then paid the bills, 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 90 of 93 PageID #: 90 
+91 
+including the charges submitted by or on behalf of Rutland and Nexray, it reasonably believed that 
+it was legally obligated to make such payments. 
+528. Defendants have been enriched at American Transit’s expense by American 
+Transit’s payments, which constituted a benefit that Rutland and Nexray voluntarily accepted and 
+distributed amongst themselves notwithstanding their improper, unlawful, and unjust billing 
+scheme. 
+529. Rutland and Nexray’s retention of American Transit’s payments violates 
+fundamental principles of justice, equity, and good conscience. 
+530. By reason of the above, Defendants have been unjustly enriched in an amount to be 
+determined at trial. 
+PRAYER FOR RELIEF 
+ WHEREFORE, Plaintiff American Transit Insurance Company respectfully requests that 
+judgment enter in its favor as follows: 
+A. On the First Cause of Action against all Defendants, a declaration pursuant to the 
+Declaratory Judgment Act, 28 U.S.C. §§ 2201 and 2202, that Rutland and Nexray have no right to 
+receive payment for any prior, pending or future  bills they submitted or attempt to submit to 
+American Transit , and an order that Defendants must disgorge all monies they received from 
+American Transit in payment of these bills; 
+B. On the Second Cause of Action against Rutland, for compensatory damages in 
+favor of American Transit in an amount to be determined at trial but in excess of $1,640,000.00, 
+together with treble damages, costs, and reasonable attorneys’ fees pursuant to 18 U.S.C. § 1964(c) 
+plus interest; 
+C. On the Third Cause of Action against Nexray, for compensatory damages in favor 
+of American Transit in an amount to be determined at trial but in excess of $1,600,000.00, together 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 91 of 93 PageID #: 91 
+92 
+with treble damages, costs, and reasonable attorneys’ fees pursuant to 18 U.S.C. § 1964(c) plus 
+interest; 
+D. On the Fourth Cause of Action against Pierre and Moy, for compensatory damages 
+in favor of American Transit in an amount to be determined at trial but in excess of $1,640,000.00, 
+together with treble damages, costs, and reasonable attorneys’ fees pursuant to 18 U.S.C. § 1964(c) 
+plus interest; 
+E. On the Fifth Cause of Action against Pierre and Weiner, for compensatory damages 
+in favor of American Transit in an amount to be determined at trial but in excess of $1,600,000.00, 
+together with treble damages, costs, and reasonable attorneys’ fees pursuant to 18 U.S.C. § 1964(c) 
+plus interest; 
+F. On the Sixth Cause of Action against all Defendants for compensatory damages in 
+favor of American Transit in an amount to be determined at trial but in excess of $3,240,000.00, 
+together with treble damages, costs, and reasonable attorneys’ fees pursuant to 18 U.S.C. § 1964(c) 
+plus interest; 
+G. On the Seventh Cause of Action against all Defendants, a declaratory judgment 
+declaring that American Transit has no obligation to pay pending or future No -Fault claims 
+submitted to it by Rutland and Nexray , an order obligating Defendants to d isgorge the monies 
+American Transit paid to them in an amount no less than, and a money judgment in such amount. 
+H. On the Eighth Cause of Action against Rutland, Pierre, and Moy, a money judgment 
+in its favor and against such defendants for compensatory damages in an amount to be determined 
+at trial but in excess of $1,640,000.00, together with punitive damages, costs, and interest; 
+I. On the Ninth Cause of Action against Nexray, Pierre, and Weiner, a money 
+judgment in its favor and against such defendants for compensatory damages in an amount to be 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 92 of 93 PageID #: 92 
+93 
+determined at trial but in excess of $ 1,600,000.00, together with punitive damages, costs, and 
+interest; 
+J. On the Tenth Cause of Action against all Defendants, a money judgment in its 
+favor and against such Defendants for compensatory damages in an amount to be determined at 
+trial but in excess of $2,300,000.00, together with costs, and interest; and 
+K. Such other and further relief as the Court deems to be just and proper. 
+JURY DEMAND 
+American Transit hereby demands a jury trial on all issues so triable. 
+Dated: New York, New York 
+January 17, 2024 
+ 
+GREENBERG TRAURIG, LLP 
+ 
+ 
+By: /s/ James W. Perkins     
+James W. Perkins 
+Francis J. Serbaroli 
+John C. Molluzzo, Jr. 
+One Vanderbilt Avenue 
+New York, New York 10017 
+(212) 801-9200 
+perkinsj@gtlaw.com   
+serbarolif@gtlaw.com 
+molluzzoj@gtlaw.com 
+ 
+Attorneys for American Transit  
+Insurance Company 
+ 
+ 
+ 
+ 
+Case 1:24-cv-00360-RPK-CLP   Document 1   Filed 01/17/24   Page 93 of 93 PageID #: 93
